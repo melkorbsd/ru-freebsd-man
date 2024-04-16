@@ -1,861 +1,854 @@
-.\" Copyright (c) 1995
-.\"	Jordan K. Hubbard
+.\" Авторское право (c) 1995
+.\"   Джордан К. Хаббард
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
+.\" Распространение и использование в исходных и двоичных формах, с модификациями или без
+.\", разрешается при соблюдении следующих условий
+.\" соблюдаются:
+.\" 1. Распространение исходного кода должно сохранять вышеуказанное уведомление об авторских правах
+.\" уведомление об авторских правах, этот список условий и следующий отказ от ответственности.
+.\" 2. Распространение в двоичной форме должно воспроизводить вышеуказанное уведомление об авторских правах
+.\" уведомление об авторских правах, этот список условий и следующий отказ от ответственности в
+.\" документации и/или других материалах, поставляемых вместе с дистрибутивом.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ АВТОРОМ ``КАК ЕСТЬ`` И
+.\" ЛЮБЫЕ ЯВНЫЕ ИЛИ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ
+.\" ПОДРАЗУМЕВАЕМЫМИ ГАРАНТИЯМИ ТОВАРНОГО СОСТОЯНИЯ И ПРИГОДНОСТИ ДЛЯ КОНКРЕТНОЙ ЦЕЛИ
+.\" НЕ ПРИНИМАЮТСЯ.  НИ ПРИ КАКИХ ОБСТОЯТЕЛЬСТВАХ АВТОР НЕ НЕСЕТ ОТВЕТСТВЕННОСТИ
+.\" ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, СПЕЦИАЛЬНЫЕ, ПРИМЕРНЫЕ ИЛИ КОСВЕННЫЕ УБЫТКИ.
+.\" (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПРИОБРЕТЕНИЕМ ТОВАРОВ-ЗАМЕНИТЕЛЕЙ
+.\" ИЛИ УСЛУГ; ПОТЕРЮ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПЕРЕРЫВ В РАБОТЕ)
+.\" НЕЗАВИСИМО ОТ ПРИЧИН И ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО КОНТРАКТ, СТРОГИЕ
+.\" ОБЯЗАТЕЛЬСТВА, ИЛИ ПРАВОНАРУШЕНИЯ (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНОЕ), ВОЗНИКАЮЩИЕ КАКИМ-ЛИБО ОБРАЗОМ
+.\" В СВЯЗИ С ИСПОЛЬЗОВАНИЕМ ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ ВЫ БЫЛИ ПРЕДУПРЕЖДЕНЫ О ВОЗМОЖНОСТИ
+.\" ТАКОГО УЩЕРБА.
 .\"
-.Dd May 11, 2023
+.Dd 11 Мая, 2023
 .Dt RC.CONF 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm rc.conf
-.Nd system configuration information
-.Sh DESCRIPTION
-The file
+.Nd информация о конфигурации системы
+.Sh ОПИСАНИЕ
+Файл
 .Nm
-contains descriptive information about the local host name, configuration
-details for any potential network interfaces and which services should be
-started up at system initial boot time.
-In new installations, the
+содержит описательную информацию об имени локального хоста, сведения о конфигурации
+конфигурации всех возможных сетевых интерфейсов и о том, какие службы должны быть
+запущены при начальной загрузке системы.
+При новых установках файл
 .Nm
-file is generally initialized by the system installation utility.
+обычно инициализируется утилитой установки системы.
 .Pp
-The purpose of
+Назначением
 .Nm
-is not to run commands or perform system startup actions
-directly.
-Instead, it is included by the
-various generic startup scripts in
+не является запуск команд или выполнение действий по запуску системы
+непосредственно.
+Вместо этого он включает
+различные общие сценарии запуска в
 .Pa /etc
-which conditionalize their
-internal actions according to the settings found there.
+которые обуславливают свои
+внутренние действия в соответствии с содержащимися там настройками.
 .Pp
-The
+Файл
 .Pa /etc/rc.conf
-file is included from the file
+включается из файла
 .Pa /etc/defaults/rc.conf ,
-which specifies the default settings for all the available options.
-Options need only be specified in
-.Pa /etc/rc.conf
-when the system administrator wishes to override these defaults.
-The file
+в котором указаны настройки по умолчанию для всех доступных опций.
+Опции необходимо указывать только в
+.Pa /etc/rc.conf	
+когда системный администратор хочет отменить эти настройки по умолчанию.
+Файл
 .Pa /etc/defaults/vendor.conf
-allows vendors to override
+позволяет поставщикам переопределять
 .Fx
-defaults.
-The file
+значения по умолчанию.	
 .Pa /etc/rc.conf.local
-is used to override settings in
+используется для переопределения настроек в
 .Pa /etc/rc.conf
-for historical reasons.
+по историческим причинам.
 .Pp
-The sysrc(8) command provides a scripting interface to modify system
-config files.
 .Pp
-In addition to
+Команда sysrc(8) предоставляет скриптовый интерфейс для изменения системных
+конфигурационных файлов.
+.Pp
+В дополнение к
 .Pa /etc/rc.conf.local
-you can also place smaller configuration files for each
+вы также можете разместить меньшие конфигурационные файлы для каждого
 .Xr rc 8
-script in the
+в
 .Pa /etc/rc.conf.d
-directory or
+каталог или
 .Ao Ar dir Ac Ns Pa /rc.conf.d
-directories (where
+каталогах (где
 .Ao Ar dir Ac
-is each entry specified in
+это каждая запись, указанная в
 .Va local_startup ,
-but with any trailing
+но с любыми примыкающими
 .Pa /rc.d
-stripped),
-which will be included by the
+удалены),
+которые будут включены в
 .Va load_rc_config
-function.
-For jail configurations you could use the file
+функцией.
+Для jail-конфигурации можно использовать файл
 .Pa /etc/rc.conf.d/jail
-to store jail-specific configuration options.
-If
+для хранения параметров конфигурации, специфичных для jail.
+Если
 .Va local_startup
-contains
+содержит
 .Pa /usr/local/etc/rc.d
-and
+и
 .Pa /opt/conf ,
 .Pa /usr/local/etc/rc.conf.d/jail
-and
+и
 .Pa /opt/conf/rc.conf.d/jail
-will be loaded.
-If
+будут загружены.
+Если
 .Ao Ar dir Ac Ns Pa /rc.conf.d/ Ns Ao Ar name Ac
-is a directory,
-all of the files in the directory will be loaded.
-Also see the
+является каталогом,
+будут загружены все файлы из этого каталога.
+Также см.
 .Va rc_conf_files
-variable below.
+переменную ниже.
 .Pp
-Options are set with
+Параметры задаются с помощью
 .Dq Ar name Ns Li = Ns Ar value
-assignments that use
+задания, использующее
 .Xr sh 1
-syntax.
-The following list provides a name and short description for each
-variable that can be set in the
+синтаксис.
+В следующем списке приведены имена и краткое описание каждой
+переменной, которая может быть задана в 
 .Nm
-file:
+файле:
 .Bl -tag -width indent-two
 .It Va rc_debug
 .Pq Vt bool
-If set to
+Если установлено значение
 .Dq Li YES ,
-enable output of debug messages from rc scripts.
-This variable can be helpful in diagnosing mistakes when
-editing or integrating new scripts.
-Beware that this produces copious output to the terminal and
+разрешить вывод отладочных сообщений из rc-скриптов.
+Эта переменная может быть полезна для диагностики ошибок при
+редактировании или интеграции новых скриптов.
+Следует иметь в виду, что это приводит к обильному выводу сообщений в терминал и
 .Xr syslog 3 .
 .It Va rc_info
 .Pq Vt bool
-If set to
+Если установлено значение
 .Dq Li NO ,
-disable informational messages from the rc scripts.
-Informational messages are displayed when
-a condition that is not serious enough to warrant a warning or
-an error occurs.
+отключает информационные сообщения от rc-скриптов.
+Информационные сообщения отображаются, когда
+возникает состояние, недостаточно серьезное для предупреждения или
+ошибки.
 .It Va rc_startmsgs
 .Pq Vt bool
-If set to
+Если установлено значение
 .Dq Li YES ,
-show
+показать
 .Dq Starting foo:
-when faststart is used (e.g., at boot time).
+если используется быстрый запуск (например, во время загрузки).
 .It Va early_late_divider
 .Pq Vt str
-The name of the script that should be used as the
-delimiter between the
+Имя скрипта, которое должно использоваться в качестве
+разделителя между
 .Dq early
-and
+и
 .Dq late
-stages of the boot process.
-The early stage should contain all the services needed to
-get the disks (local or remote) mounted so that the late
-stage can include scripts contained in the directories
-listed in the
+этапами процесса загрузки.
+Ранняя стадия должна содержать все службы, необходимые для
+получения дисков (локальных или удаленных), чтобы на поздней стадии
+этап может включать сценарии, содержащиеся в каталогах
+перечисленных в
 .Va local_startup
-variable (see below).
-Thus, the two likely candidates for this value are
+переменной (см. ниже).
+Таким образом, двумя вероятными кандидатами на это значение являются
 .Pa mountcritlocal
-for the typical system, and
+для типичной системы, и
 .Pa mountcritremote
-if the system needs remote file
-systems mounted to get access to the
+если системе нужны удаленные файловые
+системы, чтобы получить доступ к
 .Va local_startup
-directories; for example when
+каталогов; например, когда
 .Pa /usr/local
-is NFS mounted.
-For
+установлена по NFS.
+Для
 .Pa rc.conf
-within a
+в
 .Xr jail 8
 .Pa NETWORKING
-is likely to be an appropriate value.
-Extreme care should be taken when changing this value,
-and before changing it one should ensure that there are
-adequate provisions to recover from a failed boot
-(such as physical contact with the machine,
-or reliable remote console access).
+скорее всего, будет подходящим значением.
+При изменении этого значения следует соблюдать особую осторожность,
+перед изменением этого значения необходимо убедиться, что есть
+подходящие меры по восстановлению после неудачной загрузки
+(например, физический контакт с машиной,
+или удаленный доступ к консоли).
 .It Va always_force_depends
 .Pq Vt bool
-Various
+Различные
 .Pa rc.d
-scripts use the force_depend function to check whether required
-services are already running, and to start them if necessary.
-By default during boot time this check is bypassed if the
-required service is enabled in
+сценарии используют функцию force_depend для проверки того, запущены ли уже необходимые
+службы, и при необходимости запустить их.
+По умолчанию во время загрузки эта проверка обходится, если
+необходимая служба включена в
 .Pa /etc/rc.conf[.local] .
-Setting this option will bypass that check at boot time and
-always test whether or not the service is actually running.
-Enabling this option is likely to increase your boot time if
-services are enabled that utilize the force_depend check.
+Установка этого параметра позволит обойти эту проверку во время загрузки и
+всегда проверять, запущена служба или нет.	
+Включение этого параметра, вероятно, увеличит время загрузки, если
+включены службы, использующие проверку force_depend.
 .It Ao Ar name Ac Ns Va _chroot
 .Pq Vt str
 .Xr chroot 8
-to this directory before running the service.
+в этот каталог перед запуском службы.
 .It Ao Ar name Ac Ns Va _cpuset
 .Pq Vt str
-A list of CPUs to run the service on.
-Passed to
+Список процессоров, на которых будет запущена служба.
+Передается в
 .Xr cpuset 1
-using the
+с помощью
 .Fl l
-flag.
+флага.
 .It Ao Ar name Ac Ns Va _fib
 .Pq Vt int
-The
+Значение
 .Xr setfib 1
-value to run the service under.
+для запуска службы.
 .It Ao Ar name Ac Ns Va _group
 .Pq Vt str
-Run the chrooted service under this system group.
-Unlike the
+Запуск службы chrooted под этой системной группой.
+В отличие от
 .Ao Ar name Ac Ns Va _user
-setting, this setting has no effect if the service is not chrooted.
+этот параметр не влияет, если служба не является chrooted.
 .It Ao Ar name Ac Ns Va _limits
 .Pq Vt str
-Resource limits to apply to the service using
+Ограничения ресурсов, которые необходимо применить к службе
 .Xr limits 1 .
-By default, resource limits are based on the login class defined in
+По умолчанию ограничения ресурсов основаны на классе входа, определенном в
 .Ao Ar name Ac Ns Va _login_class .
 .It Ao Ar name Ac Ns Va _login_class
 .Pq Vt str
-Login class to be used with
+Класс логина, который будет использоваться с
 .Ao Ar name Ac Ns Va _limits .
-Defaults to
+По умолчанию
 .Dq Li daemon .
-.It Ao Ar name Ac Ns Va _nice
+.It Ao Ar имя Ac Ns Va _nice
 .Pq Vt int
-The
+Значение
 .Xr nice 1
-value to run the service under.
+для запуска службы.
 .It Ao Ar name Ac Ns Va _oomprotect
 .Pq Vt str
-Use
+Используйте
 .Xr protect 1
-to prevent the service from being killed when swap space
-is exhausted.
-Use
+чтобы предотвратить завершение работы службы при исчерпании пространства подкачки.
+Используйте
 .Dq Li YES
-to protect only the service itself, and
+чтобы защитить только саму службу, и
 .Dq Li ALL
-to protect the service and all its child processes.
+для защиты службы и всех ее дочерних процессов.
 .Pp
-Please note that rc scripts which redefine
-.Dl ${argument}_cmd
-.Pq see Xr rc.subr 8
-such as PostgreSQL will not inherit the OOM killer protection.
+Обратите внимание, что rc-сценарии, переопределяющие
+.Dl ${аргумент}_cmd
+.Pq см. Xr rc.subr 8
+такие как PostgreSQL, не наследуют защиту OOM killer.
 .Pp
-This variable has no effect on services running within a
+Эта переменная не влияет на службы, запущенные внутри
 .Xr jail 8 .
 .It Ao Ar name Ac Ns Va _umask
 .Pq Vt int
-Run the service using this
+Запустите службу, используя 
 .Xr umask 1
-value.
+переменную.
 .It Ao Ar name Ac Ns Va _user
 .Pq Vt str
-Run the service under this user account.
+Запустите службы под этой учетной записью пользователя.
 .It Va apm_enable
 .Pq Vt bool
-If set to
+Если установлено значение
 .Dq Li YES ,
-enable support for Automatic Power Management with
-the
+включается поддержка автоматического управления питанием с
 .Xr apm 8
-command.
+командой.
 .It Va apmd_enable
 .Pq Vt bool
-Run
+Запустите
 .Xr apmd 8
-to handle APM event from userland.
-This also enables support for APM.
+для обработки событий APM из пользовательской среды.
+Это также включает поддержку APM.
 .It Va apmd_flags
 .Pq Vt str
-If
+Если
 .Va apmd_enable
-is set to
+установлено значение
 .Dq Li YES ,
-these are the flags to pass to the
-.Xr apmd 8
-daemon.
+это флаги, которые нужно передать в
+.Xr apmd 8  
+демон.
 .It Va devd_enable
 .Pq Vt bool
-Run
+Запустите
 .Xr devd 8
-to handle device added, removed or unknown events from the kernel.
+для обработки событий добавления, удаления или неизвестности устройства из ядра.
 .It Va ddb_enable
 .Pq Vt bool
-Run
+Запустите
 .Xr ddb 8
-to install
+для установки
 .Xr ddb 4
-scripts at boot time.
+скриптов во время загрузки.
 .It Va ddb_config
 .Pq Vt str
-Configuration file for
+Файл конфигурации для
 .Xr ddb 8 .
-Default
+По умолчанию
 .Pa /etc/ddb.conf .
 .It Va devmatch_enable
 .Pq Vt bool
-If set to
+Если установлено значение
 .Dq Li NO ,
-disable auto-loading of kernel modules with
+отключите автоматическую загрузку модулей ядра с
 .Xr devmatch 8 .
 .It Va devmatch_blocklist
 .Pq Vt str
-A whitespace-separated list of kernel modules to be ignored by
+Список модулей ядра, разделенных пробелами, который должен игнорироваться программой
 .Xr devmatch 8 .
-In addition, the
+В дополнение к этому
 .Xr kenv 1
 .Va devmatch_blocklist
-is appended to this variable to allow disabling of
+добавляется к этой переменной, чтобы отключить
 .Xr devmatch 8
-loaded modules from the boot loader.
+загруженные модулей из загрузчика.
 .It Va devmatch_blacklist
 .Pq Vt str
 This variable is deprecated.
-Use
+Эта переменная является устаревшей.
+Используйте
 .Va devmatch_blocklist
-instead.
-A whitespace-separated list of kernel modules to be ignored by
+вместо нее.
+Список модулей ядра, разделенных пробелами, который должен игнорироваться
 .Xr devmatch 8 .
 .It Va kld_list
 .Pq Vt str
-A whitespace-separated list of kernel modules to load right after
-the local disks are mounted, without any
+Список модулей ядра, разделенных пробелами, который нужно загрузить сразу после
+монтирования локальных дисков, без каких-либо
 .Pa .ko
-extension or path.
-Loading modules at this point in the boot process is
-much faster than doing it via
+расширений или путей.
+Загрузка модулей на этом этапе процесса загрузки происходит
+гораздо быстрее, чем при загрузке через
 .Pa /boot/loader.conf
-for those modules not necessary for mounting local disks.
+для тех модулей, которые не нужны для установки локальных дисков.
 .It Va kldxref_enable
 .Pq Vt bool
-Set to
+Установите в
 .Dq Li NO
-by default.
-Set to
+по умолчанию.
+Установите значение
 .Dq Li YES
-to automatically rebuild
+чтобы автоматически перестроить
 .Pa linker.hints
-files with
+файлы с
 .Xr kldxref 8
-at boot time.
+во время загрузки.
 .It Va kldxref_clobber
 .Pq Vt bool
-Set to
+Установите в
 .Dq Li NO
-by default.
-If
+по умолчанию.
+Если
 .Va kldxref_enable
-is true,
-setting to
+истина,
+установка на
 .Dq Li YES
-will overwrite existing
+перезапишет существующие
 .Pa linker.hints
-files at boot time.
-Otherwise,
-only missing
+во время загрузки.
+Иначе,	
+только отсутствующие
 .Pa linker.hints
-files are generated.
+будут сгенерированы.
 .It Va kldxref_module_path
 .Pq Vt str
-Empty by default.
-A semi-colon
+По умолчанию пустой.
+Точка с запятой
 .Pq Ql \&;
-delimited list of paths containing
+разграниченный список путей, содержащих
 .Xr kld 4
-modules.
-If empty,
-the contents of the
+модули.
+Если пустой,
+содержимое
 .Va kern.module_path
 .Xr sysctl 8
-are used.
+используется.
 .It Va powerd_enable
 .Pq Vt bool
-If set to
+Если установлено значение
 .Dq Li YES ,
-enable the system power control facility with the
+включите функцию управления питанием системы с помощью параметра
 .Xr powerd 8
-daemon.
 .It Va powerd_flags
 .Pq Vt str
-If
+Если
 .Va powerd_enable
-is set to
+установлено значение
 .Dq Li YES ,
-these are the flags to pass to the
+это флаги, которые нужно передать в
 .Xr powerd 8
-daemon.
+демон.
 .It Va tmpmfs
-Controls the creation of a
+Управляет созданием
 .Pa /tmp
-memory file system.
-Always happens if set to
+файловой системы памяти.
+Всегда происходит, если установлено значение
 .Dq Li YES
-and never happens if set to
+и никогда не происходит, если установлено значение
 .Dq Li NO .
-If set to anything else, a memory file system is created if
-.Pa /tmp
-is not writable.
+Если установлено любое другое значение, файловая система памяти будет создана, если
+.Pa /tmp	
+не является доступной для записи.
 .It Va tmpsize
-Controls the size of a created
+Определяет размер создаваемой
 .Pa /tmp
-memory file system.
+файловой системы памяти.
 .It Va tmpmfs_flags
-Extra options passed to the
+Дополнительные параметры, передаваемые программе
 .Xr mdmfs 8
-utility when the memory file system for
+когда память для файловой системы
 .Pa /tmp
-is created.
-The default is
-.Dq Li "-S" ,
-which inhibits the use of softupdates on
+создается.
+По умолчанию
+.Dq Li "-S" ,	
+что запрещает использование программных обновлений на
 .Pa /tmp
-so that file system space is freed without delay
-after file truncation or deletion.
-See
+чтобы место в файловой системе освобождалось без задержки
+после усечения или удаления файлов.
+См.
 .Xr mdmfs 8
-for other options you can use in
+о других параметрах, которые можно использовать в
 .Va tmpmfs_flags .
 .It Va varmfs
-Controls the creation of a
+Управляет созданием
 .Pa /var
-memory file system.
-Always happens if set to
+файловой системы памяти.
+Всегда происходит, если установлено значение
 .Dq Li YES
-and never happens if set to
+и никогда не происходит, если установлено значение
 .Dq Li NO .
-If set to anything else, a memory file system is created if
+Если установлено любое другое значение, файловая система памяти будет создана, если
 .Pa /var
-is not writable.
+не является доступной для записи.
 .It Va varsize
-Controls the size of a created
+Управляет размером создаваемой
 .Pa /var
-memory file system.
+файловой системы памяти.
 .It Va varmfs_flags
-Extra options passed to the
+Дополнительные параметры, передаваемые в программу
 .Xr mdmfs 8
-utility when the memory file system for
+когда файловая система памяти для
 .Pa /var
-is created.
-The default is
-.Dq Li "-S" ,
-which inhibits the use of softupdates on
+создается.
+По умолчанию
+.Dq Li "-S" ,	
+что запрещает использование программных обновлений на
 .Pa /var
-so that file system space is freed without delay
-after file truncation or deletion.
-See
+чтобы место в файловой системе освобождалось без задержки
+после усечения или удаления файла.
+См.
 .Xr mdmfs 8
-for other options you can use in
+о других параметрах, которые можно использовать в
 .Va varmfs_flags .
 .It Va populate_var
-Controls the automatic population of the
+Управляет автоматическим заполнением
 .Pa /var
-file system.
-Always happens if set to
+файловой системы.
+Всегда происходит, если установлено значение
 .Dq Li YES
-and never happens if set to
+и никогда не происходит, если установлено значение
 .Dq Li NO .
-If set to anything else, a memory file system is created if
+Если установлено любое другое значение, файловая система памяти будет создана, если
 .Pa /var
-is not writable.
-Note that this process requires access to certain commands in
+недоступна для записи.
+Обратите внимание, что этот процесс требует доступа к определенным командам в
 .Pa /usr
-before
+прежде чем
 .Pa /usr
-is mounted on normal systems.
+устанавливается на обычных системах.
 .It Va cleanvar_enable
 .Pq Vt bool
-Clean the
+Очищает
 .Pa /var
-directory.
+каталог.
 .It Va var_run_enable
 .Pq Vt bool
-Set to "YES" to enable saving of the
+Установите значение "YES", чтобы разрешить сохранение каталога
 .Pa /var/run
-directory structure into an mtree file at shutdown and the reload of the
+в файл mtree при выключении и повторной загрузки каталога
 .Pa /var/run
-directory structure at boot.
+при загрузке.
 .It Va var_run_autosave
 .Pq Vt bool
-In some cases it may be undesirable to save
+В некоторых случаях может быть нежелательно сохранять
 .Pa /var/run
-at shutdown.
-When set to "NO"
+при выключении.
+Если установлено значение "NO"
 .Pa /var/run
-is loaded at reboot but not saved at shutdown.
-Typically in this scenario
+загружается при перезагрузке, но не сохраняется при выключении.
+Обычно в этом сценарии
 .Ql service var_run save
-would be performed to save a copy of the
+выполняется для сохранения копии
 .Pa /var/run
-directory structure once, to be reloaded during all subsequent reboots.
+для однократного сохранения копии структуры каталога,
+которая будет перезагружаться при всех последующих перезагрузках.
 .It Va var_run_mtree
 .Pq Vt str
-Where to save the
+Куда сохранить
 .Pa /var/run
 mtree.
-The default location is
+По умолчанию используется следующее расположение
 .Pa /var/db/mtree/BSD.var-run.mtree .
 .It Va local_startup
 .Pq Vt str
-List of directories to search for startup script files.
-.It Va script_name_sep
+Список каталогов для поиска файлов сценариев запуска.
+.It Va имя_скрипта_sep
 .Pq Vt str
-The field separator to use for breaking down the list of startup script files
-into individual filenames.
-The default is a space.
-It is not necessary to change this unless there are startup scripts with names
-containing spaces.
+Разделитель полей, используемый для разбиения списка файлов сценариев запуска
+на отдельные имена файлов.
+Нет необходимости изменять это значение, если в списке нет сценариев запуска, имена которых
+содержат пробелы.
 .It Va hostapd_enable
 .Pq Vt bool
-Set to
+Установите значение
 .Dq Li YES
-to start
+для запуска
 .Xr hostapd 8
-at system boot time.
+при загрузке системы.
 .It Va hostname
 .Pq Vt str
-The fully qualified domain name (FQDN) of this host on the network.
-This should almost certainly be set to something meaningful, even if
-there is no network connection.
-If
+Полное доменное имя (FQDN) этого хоста в сети.
+Это имя почти наверняка должно быть установлено на что-то значимое, даже если
+нет сетевого подключения.
+Если
 .Xr dhclient 8
-is used to set the hostname via DHCP,
-this variable should be set to an empty string.
-Within a
+используется для установки имени хоста через DHCP,
+эта переменная должна быть установлена в пустую строку.
+В пределах
 .Xr jail 8
-the hostname is generally already set and this variable may be absent.
-If this value remains unset when the system is done booting
-your console login will display the default hostname of
+имя хоста обычно уже установлено, и эта переменная может отсутствовать.
+Если после загрузки системы это значение не будет установлено
+при входе в консоль будет отображаться имя хоста по умолчанию
 .Dq Amnesiac .
 .It Va nisdomainname
 .Pq Vt str
-The NIS domain name of this host, or
+Доменное имя NIS этого хоста, или
 .Dq Li NO
-if NIS is not used.
+если NIS не используется.
 .It Va hostid_enable
 .Pq Vt bool
-If set to
+Если установлено значение
 .Dq Li NO ,
-disable the generation or saving of the
+отключите генерацию или сохранение
 .Pa hostid
-and
+и
 .Pa machine-id
-files at system boot and shutdown.
+при загрузке и выключении системы.
 .It Va hostid_file
 .Pq Vt str
-Path to the
+Путь к	
 .Pa hostid
-file, default
+файлу, по умолчанию
 .Pa /etc/hostid .
 .It Va hostid_uuidgen_flags
 .Pq Vt str
-Flags passed to
+Флаги, передаваемые в
 .Xr uuidgen 1
-when generating a software host UUID.
+при генерации UUID программного хоста.
 This is used only if the system cannot determine a hardware UUID.
-Set to
+Установлено в
 .Dq Li -r
-by default.
+по умолчанию.
 .It Va machine_id_file
 .Pq Vt str
-Path to the
+Путь к	
 .Pa machine-id
-file, default
+файлу, по умолчанию
 .Pa /etc/machine-id .
 .It Va dhclient_program
 .Pq Vt str
-Path to the DHCP client program, defaulting to
+Путь к программе клиента DHCP, по умолчанию
 .Pa /sbin/dhclient .
 .It Va dhclient_flags
 .Pq Vt str
-Additional flags to pass to the DHCP client program.
-See the
+Дополнительные флаги для передачи программе DHCP-клиента.
+См.
 .Xr dhclient 8
-manpage for a description of the command line options available.
+описание доступных опций командной строки.
 .It Va dhclient_flags_ Ns Aq Ar iface
-Additional flags to pass to the DHCP client program running on
-.Ar iface
-only.
-When specified, this variable overrides
+Дополнительные флаги для передачи программе DHCP-клиента, запущенной только на
+.Ar iface .
+При указании эта переменная переопределяет
 .Va dhclient_flags .
 .It Va background_dhclient
 .Pq Vt bool
-Set to
+Установите в
 .Dq Li YES
-to start the DHCP client in background.
-This can cause trouble with applications depending on
-a working network, but it will provide a faster startup
-in many cases.
+чтобы запустить DHCP-клиент в фоновом режиме.
+Это может вызвать проблемы с приложениями, зависящими от
+работающей сети, но это обеспечит более быстрый запуск
+во многих случаях.
 .It Va background_dhclient_ Ns Aq Ar iface
-When specified, this variable overrides the
+При указании эта переменная отменяет значение
 .Va background_dhclient
-variable for interface
+переменной только для
 .Ar iface
-only.
+интерфейса.
 .It Va synchronous_dhclient
 .Pq Vt bool
-Set to
+Установите в
 .Dq Li YES
-to start
+для запуска
 .Xr dhclient 8
-synchronously at startup.
-This behavior can be overridden on a per-interface basis by replacing
-the
+синхронно при запуске.
+Это поведение можно переопределить для каждого интерфейса, заменив
+параметр
 .Dq Li DHCP
-keyword in the
+ключевого слова в
 .Va ifconfig_ Ns Aq Ar interface
-variable with
+переменной на
 .Dq Li SYNCDHCP
-or
+или
 .Dq Li NOSYNCDHCP .
 .It Va defaultroute_delay
 .Pq Vt int
-When set to a positive value, wait up to this long after configuring
-DHCP interfaces at startup to give the interfaces time to receive a lease.
+Если установлено положительное значение, подождите после конфигурирования
+DHCP-интерфейсов при запуске, чтобы дать интерфейсам время на получение данных.
 .It Va firewall_enable
 .Pq Vt bool
-Set to
+Установите в
 .Dq Li YES
-to load firewall rules at startup.
-If the kernel was not built with
+для загрузки правил брандмауэра при запуске.
+Если ядро не было собрано с
 .Cd "options IPFIREWALL" ,
-the
+на	
 .Pa ipfw.ko
-kernel module will be loaded.
-See also
+будет загружен модуль ядра.
+См. также
 .Va ipfilter_enable .
 .It Va firewall_script
 .Pq Vt str
-This variable specifies the full path to the firewall script to run.
-The default is
+Эта переменная указывает полный путь к запускаемому сценарию брандмауэра.
+По умолчанию
 .Pa /etc/rc.firewall .
 .It Va firewall_type
 .Pq Vt str
-Names the firewall type from the selection in
+Указывает тип брандмауэра из списка в
 .Pa /etc/rc.firewall ,
-or the file which contains the local firewall ruleset.
-Valid selections from
+или файла, содержащего локальный набор правил брандмауэра
+Допустимыми вариантами выбора из
 .Pa /etc/rc.firewall
-are:
+являются:
 .Pp
-.Bl -tag -width ".Li workstation" -compact
+.Bl -tag -width ".Li рабочая станция" -compact
 .It Li open
-unrestricted IP access
-.It Li closed
-all IP services disabled, except via
+неограниченный IP-доступ
+.It Li client
+все IP-службы отключены, кроме как через
 .Dq Li lo0
 .It Li client
-basic protection for a workstation
+базовая защита рабочей станции
 .It Li workstation
-basic protection for a workstation using stateful firewalling
+базовая защита рабочей станции с помощью межсетевого брандмауэра
 .It Li simple
-basic protection for a LAN.
+базовая защита для локальной сети.
 .El
 .Pp
-If a filename is specified, the full path
-must be given.
+Если указано имя файла, необходимо указать полный путь
 .Pp
-Most of the predefined rulesets define additional configuration variables.
-These are documented in
+Большинство предопределенных наборов правил определяют дополнительные переменные конфигурации.
+Они документированы в
 .Pa /etc/rc.firewall .
 .It Va firewall_quiet
 .Pq Vt bool
-Set to
+Установите в
 .Dq Li YES
-to disable the display of firewall rules on the console during boot.
+чтобы отключить отображение правил брандмауэра на консоли во время загрузки.
 .It Va firewall_logging
 .Pq Vt bool
-Set to
+Установите значение
 .Dq Li YES
-to enable firewall event logging.
-This is equivalent to the
+чтобы включить регистрацию событий брандмауэра.
+Это эквивалентно параметру
 .Dv IPFIREWALL_VERBOSE
-kernel option.
+опции ядра.
 .It Va firewall_logif
 .Pq Vt bool
-Set to
+Установите на
 .Dq Li YES
-to create pseudo interface
+для создания псевдоинтерфейса
 .Li ipfw0
-for logging.
-For more details, see
+для записи.
+Для получения более подробной информации см.
 .Xr ipfw 8
-manual page.
+страницу руководства.
 .It Va firewall_flags
 .Pq Vt str
-Flags passed to
+Флаги, передаваемые в
 .Xr ipfw 8
-if
+если
 .Va firewall_type
-specifies a filename.
+указывает имя файла.
 .It Va firewall_coscripts
 .Pq Vt str
-List of executables and/or rc scripts to run after firewall starts/stops.
-Default is empty.
-.\" ----- firewall_nat_enable setting --------------------------------
+Список исполняемых файлов и/или rc-скриптов для запуска после запуска/остановки брандмауэра.
+По умолчанию пустой.
+.\" ----- настройка firewall_nat_enable --------------------------------
 .It Va firewall_nat_enable
 .Pq Vt bool
-The
-.Xr ipfw 8
-equivalent of
+эквивалент
 .Va natd_enable .
-Setting this to
+Установка этого значения на
 .Dq Li YES
-will automatically load the
+автоматически загрузит
 .Xr ipfw 8
-NAT kernel module if
+модуль ядра NAT, если
 .Va firewall_enable
-is also set to
+также установлено значение
 .Dq Li YES .
 .It Va firewall_nat_interface
 .Pq Vt str
-The
 .Xr ipfw 8
 equivalent of
 .Va natd_interface .
-This is the name of the public interface or IP address on which
-kernel NAT should run.
+Это имя публичного интерфейса или IP-адреса, на котором
+ядро NAT должно работать.
 .It Va firewall_nat_flags
 .Pq Vt str
-Additional configuration parameters for kernel NAT should be placed here.
+Здесь должны быть размещены дополнительные параметры конфигурации для ядра NAT.
 .It Va firewall_nat64_enable
 .Pq Vt bool
-Setting this to
+Установка этого значения в
 .Dq Li YES
-will automatically load the
+автоматически загрузит
 .Xr ipfw 8
-NAT64 kernel module if
+модуль ядра NAT64, если
 .Va firewall_enable
-is also set to
+также установлен в
 .Dq Li YES .
 .It Va firewall_nptv6_enable
 .Pq Vt bool
-Setting this to
+Установка этого значения в
 .Dq Li YES
-will automatically load the
+автоматически загрузит
 .Xr ipfw 8
-NPTv6 kernel module if
+модуль ядра NPTv6, если
 .Va firewall_enable
-is also set to
+также установлено значение
 .Dq Li YES .
 .It Va firewall_pmod_enable
 .Pq Vt bool
-Setting this to
+Установка этого значения в
 .Dq Li YES
-will automatically load the
+автоматически загрузит
 .Xr ipfw 8
-pmod kernel module if
+pmod модуль ядра, если
 .Va firewall_enable
-is also set to
+также установлен в
 .Dq Li YES .
 .It Va dummynet_enable
 .Pq Vt bool
-Setting this to
+Установка этого значения в
 .Dq Li YES
-will automatically load the
+автоматически загрузит
 .Xr dummynet 4
-module if
+модуль, если
 .Va firewall_enable
-is also set to
+также установлен в
 .Dq Li YES .
 .\" -------------------------------------------------------------------
 .It Va ipfw_netflow_enable
 .Pq Vt bool
-Setting this to
+Установка этого значения в
 .Dq Li YES
-will enable netflow logging via
+включит протоколирование netflow через
 .Xr ng_netflow 4 .
 .Pp
-By default a ipfw rule is inserted and all packets are duplicated with
-the ngtee command and netflow packets are sent to 127.0.0.1 on the netflow
-port using protocol version 5.
+По умолчанию вводится правило ipfw, все пакеты дублируются с помощью команды
+ngtee, а пакеты netflow отправляются на 127.0.0.1 на порт netflow
+порт, используя протокол версии 5.
 .It Va ipfw_netflow_hook
 .Pq Vt int
-netflow hook name, must be numerical
-(default
+имя крючка netflow должно быть числовым
+(по умолчанию
 .Pa 9995 ) .
 .It Va ipfw_netflow_rule
 .Pq Vt int
-ipfw rule number
-(default
+номер правила ipfw
+(по умолчанию
 .Pa 1000 ) .
 .It Va ipfw_netflow_ip
 .Pq Vt str
-Destination server ip for receiving netflow data
-(default
+IP-адрес сервера назначения для получения данных netflow
+(по умолчанию
 .Pa 127.0.0.1 ) .
 .It Va ipfw_netflow_port
 .Pq Vt int
-Destination server port for receiving netflow data
-(default
+Порт сервера назначения для получения данных netflow
+(по умолчанию
 .Pa 9995 ) .
 .It Va ipfw_netflow_version
 .Pq Vt int
-Do not set for using version 5 of the netflow protocol, set it to 9 for using
-version 9.
+Не задавайте для использования версии 5 протокола netflow, задайте значение 9 для использования
+версии 9.
 .It Va ipfw_netflow_fib
 .Pq Vt int
-Only match packet in FIB
+Совпадение только с пакетами в FIB
 .Pa ipfw_netflow_fib
-(default is undefined meaning all FIBs).
+(по умолчанию неопределено, означает все FIB).
 .It Va natd_program
 .Pq Vt str
-Path to
+Путь к
 .Xr natd 8 .
 .It Va natd_enable
 .Pq Vt bool
-Set to
+Установите в
 .Dq Li YES
-to enable
+чтобы разрешить
 .Xr natd 8 .
 .Va firewall_enable
-must also be set to
+также должен быть установлен на
 .Dq Li YES ,
-and
+и
 .Xr divert 4
-sockets must be enabled in the kernel.
-If the kernel was not built with
+сокеты должны быть включены в ядре.
+Если ядро не было собрано с
 .Cd "options IPDIVERT" ,
-the
+то
 .Pa ipdivert.ko
-kernel module will be loaded.
+будет загружен модуль ядра.
 .It Va natd_interface
 .Pq Vt str
-This is the name of the public interface on which
+Это имя общедоступного интерфейса, на котором
 .Xr natd 8
-should run.
-The interface may be given as an interface name or as an IP address.
+должен быть запущен.
+Интерфейс может быть указан как имя интерфейса или как IP-адрес.
 .It Va natd_flags
 .Pq Vt str
-Additional
+Дополнительные
 .Xr natd 8
-flags should be placed here.
-The
+флаги должны быть размещены здесь.
+Адрес
 .Fl n
-or
+или
 .Fl a
-flag is automatically added with the above
+автоматически добавляется с вышеуказанным флагом
 .Va natd_interface
-as an argument.
-.\" ----- ipfilter_enable setting --------------------------------
+в качестве аргумента.
+.\" ----- настройка ipfilter_enable  --------------------------------
 .It Va ipfilter_enable
 .Pq Vt bool
-Set to
+Установлено на
 .Dq Li NO
-by default.
-Setting this to
+по умолчанию.
+Установка этого значения на
 .Dq Li YES
-enables
+включает
 .Xr ipf 8
-packet filtering.
+фильтрацию пакетов.
 .Pp
-Typical usage will require putting
+При типичном использовании необходимо поставить
 .Bd -literal
 ipfilter_enable="YES"
 ipnat_enable="YES"
@@ -863,447 +856,461 @@ ipmon_enable="YES"
 ipfs_enable="YES"
 .Ed
 .Pp
-into
+в
 .Pa /etc/rc.conf
-and editing
+и редактирование
 .Pa /etc/ipf.rules
-and
+и
 .Pa /etc/ipnat.rules
-appropriately.
+соответствующим образом.
 .Pp
-Note that
+Обратите внимание, что
 .Va ipfilter_enable
-and
+и
 .Va ipnat_enable
-can be enabled independently.
+могут быть включены независимо друг от друга.
 .Va ipmon_enable
-and
+и
 .Va ipfs_enable
-both require at least one of
+требуют наличия хотя бы одной из опций
 .Va ipfilter_enable
-and
+и
 .Va ipnat_enable
-to be enabled.
+быть включенным.
 .Pp
-Having
+Наличие
 .Bd -literal
 options IPFILTER
 options IPFILTER_LOG
 options IPFILTER_DEFAULT_BLOCK
 .Ed
 .Pp
-in the kernel configuration file is a good idea, too.
-.\" ----- ipfilter_program setting ------------------------------
+в конфигурационном файле ядра - тоже хорошая идея.
+.\" ----- настройка ipfilter_program ------------------------------
 .It Va ipfilter_program
 .Pq Vt str
-Path to
+Путь к
 .Xr ipf 8
-(default
+(по умолчанию
 .Pa /sbin/ipf ) .
-.\" ----- ipfilter_rules setting --------------------------------
+.\" ----- настройка ipfilter_rules --------------------------------
 .It Va ipfilter_rules
 .Pq Vt str
-Set to
+Установите в
 .Pa /etc/ipf.rules
-by default.
-This variable contains the name of the filter rule definition file.
-The file is expected to be readable for the
+по умолчанию.
+Эта переменная содержит имя файла определения правил фильтрации.
+Ожидается, что этот файл будет доступен для чтения в программе
 .Xr ipf 8
-command to execute.
+для выполнения команды.
 .\" ----- ipfilter_flags setting --------------------------------
 .It Va ipfilter_flags
 .Pq Vt str
-Empty by default.
-This variable contains flags passed to the
+По умолчанию пустая.
+Эта переменная содержит флаги, передаваемые в
 .Xr ipf 8
-program.
-.\" ----- ipnat_enable setting ----------------------------------
+программе.
+.\" ----- настройка ipnat_enable ----------------------------------
 .It Va ipnat_enable
 .Pq Vt bool
-Set to
+Установлена на
 .Dq Li NO
-by default.
-Set it to
+по умолчанию.
+Установите значение
 .Dq Li YES
-to enable
+чтобы включить
 .Xr ipnat 8
-network address translation.
-See
+трансляцию сетевых адресов.
+См.
 .Va ipfilter_enable
-for a detailed discussion.
-.\" ----- ipnat_program setting ---------------------------------
+для подробного описания.
+.\" ----- настройка ipnat_program ---------------------------------
 .It Va ipnat_program
 .Pq Vt str
-Path to
+.Pq Vt str
+Путь к
 .Xr ipnat 8
-(default
+(по умолчанию
 .Pa /sbin/ipnat ) .
-.\" ----- ipnat_rules setting -----------------------------------
+.\" ----- настройка ipnat_rules -----------------------------------
 .It Va ipnat_rules
 .Pq Vt str
-Set to
+Установлена в
 .Pa /etc/ipnat.rules
-by default.
-This variable contains the name of the file
-holding the network address translation definition.
-This file is expected to be readable for the
+по умолчанию.
+Эта переменная содержит имя файла
+содержащего определение трансляции сетевых адресов.
+Ожидается, что этот файл будет доступен для чтения для
 .Xr ipnat 8
-command to execute.
-.\" ----- ipnat_flags setting -----------------------------------
+для выполнения команды.
+.\" ----- установка ipnat_flags -----------------------------------
 .It Va ipnat_flags
 .Pq Vt str
-Empty by default.
-This variable contains flags passed to the
-.Xr ipnat 8
-program.
-.\" ----- ipmon_enable setting ----------------------------------
+По умолчанию пустая.
+Эта переменная содержит флаги, передаваемые программе
+.Xr ipnat 8 .
+.\" ----- установка ipmon_enable ----------------------------------
 .It Va ipmon_enable
 .Pq Vt bool
-Set to
+Установлена на
 .Dq Li NO
-by default.
-Set it to
+по умолчанию.
+Установите значение
 .Dq Li YES
-to enable
+чтобы включить
 .Xr ipmon 8
-monitoring (logging
+мониторинг (ведение журнала
 .Xr ipf 8
-and
+и
 .Xr ipnat 8
-events).
-Setting this variable needs setting
+событий).
+Установка этой переменной требует установки
 .Va ipfilter_enable
-or
+или
 .Va ipnat_enable
-too.
-See
+тоже.
+См.
 .Va ipfilter_enable
-for a detailed discussion.
-.\" ----- ipmon_program setting ---------------------------------
+для подробного описания.
+.\" ----- установка ipmon_program ---------------------------------
 .It Va ipmon_program
 .Pq Vt str
-Path to
+Путь к
 .Xr ipmon 8
-(default
+(по умолчанию
 .Pa /sbin/ipmon ) .
-.\" ----- ipmon_flags setting -----------------------------------
+.\" ----- настройка ipmon_flags -----------------------------------
 .It Va ipmon_flags
 .Pq Vt str
-Set to
+Установлена на
 .Dq Li -Ds
-by default.
-This variable contains flags passed to the
-.Xr ipmon 8
-program.
-Another typical example would be
+по умолчанию.
+Эта переменная содержит флаги, передаваемые в программу
+.Xr ipmon 8 .
+Другим типичным примером может быть
 .Dq Fl D Pa /var/log/ipflog
-to have
+чтобы
 .Xr ipmon 8
-log directly to a file bypassing
+записывать журнал непосредственно в файл, минуя
 .Xr syslogd 8 .
-Make sure to adjust
+Обязательно настройте
 .Pa /etc/newsyslog.conf
-in such case like this:
+в этом случае следующим образом:
 .Bd -literal
 /var/log/ipflog  640  10  100  *  Z  /var/run/ipmon.pid
 .Ed
-.\" ----- ipfs_enable setting -----------------------------------
+.\" ----- настройка ipfs_enable -----------------------------------
 .It Va ipfs_enable
 .Pq Vt bool
-Set to
+Установлена на
 .Dq Li NO
-by default.
-Set it to
-.Dq Li YES
-to enable
+по умолчанию.
+Установите значение
+.Dq Li YES	
+чтобы включить
 .Xr ipfs 8
-saving the filter and NAT state tables during shutdown
-and reloading them during startup again.
-Setting this variable needs setting
+сохранение таблиц состояния фильтров и NAT во время выключения
+и повторно загружать их при запуске.
+Установка этой переменной требует установки
 .Va ipfilter_enable
-or
+или
 .Va ipnat_enable
-to
+на
 .Dq Li YES
-too.
-See
+тоже.
+См.
 .Va ipfilter_enable
-for a detailed discussion.
-Note that if
+для подробного описания.
+Обратите внимание, что если
 .Va kern_securelevel
-is set to 3,
+установлено значение 3,
 .Va ipfs_enable
-cannot be used
-because the raised securelevel will prevent
+не может быть использован
+поскольку повышенный уровень безопасности не позволит
 .Xr ipfs 8
-from saving the state tables at shutdown time.
-.\" ----- ipfs_program setting ----------------------------------
+сохранить таблицы состояний во время выключения.
+.\" ----- установка ipfs_program ----------------------------------
 .It Va ipfs_program
 .Pq Vt str
-Path to
+Путь к
 .Xr ipfs 8
-(default
+(по умолчанию
 .Pa /sbin/ipfs ) .
-.\" ----- ipfs_flags setting ------------------------------------
+.\" ----- настройка ipfs_flags ------------------------------------
 .It Va ipfs_flags
 .Pq Vt str
-Empty by default.
-This variable contains flags passed to the
+По умолчанию пустая.
+Эта переменная содержит флаги, передаваемые
 .Xr ipfs 8
-program.
-.\" ----- end of added ipf hook ---------------------------------
+программе.
+.\" ----- конец добавленного ipf-хука ---------------------------------
 .It Va pf_enable
 .Pq Vt bool
-Set to
+Установлена на
 .Dq Li NO
-by default.
-Setting this to
+по умолчанию.
+Установка этого значения на
 .Dq Li YES
-enables
+включает
 .Xr pf 4
-packet filtering.
+фильтрацию пакетов.
 .Pp
-Typical usage will require putting
+При типичном использовании необходимо установить
 .Pp
 .Dl pf_enable="YES"
 .Pp
-into
+в
 .Pa /etc/rc.conf
-and editing
+и отредактировать
 .Pa /etc/pf.conf
-appropriately.
-Adding
+надлежащим образом.
+Добавление
 .Pp
-.Dl "device pf"
+.Dl "устройство pf"
 .Pp
-builds support for
+обеспечивает поддержку
 .Xr pf 4
-into the kernel, otherwise the
-kernel module will be loaded.
+в ядро, иначе будет загружен
+будет загружен модуль ядра.
 .It Va pf_rules
 .Pq Vt str
-Path to
+Путь к	
 .Xr pf 4
-ruleset configuration file
-(default
+файл конфигурации набора правил
+(по умолчанию
 .Pa /etc/pf.conf ) .
 .It Va pf_program
 .Pq Vt str
-Path to
+Путь к
 .Xr pfctl 8
-(default
+(по умолчанию
 .Pa /sbin/pfctl ) .
 .It Va pf_flags
 .Pq Vt str
-If
+Если
 .Va pf_enable
-is set to
+установлен в
 .Dq Li YES ,
-these flags are passed to the
+эти флаги передаются в программу
 .Xr pfctl 8
-program when loading the ruleset.
+при загрузке набора правил.
 .It Va pf_fallback_rules_enable
 .Pq Vt bool
-Set to
+Установлена в
 .Dq Li NO
-by default.
-Setting this to
+по умолчанию.
+Установка этого значения на
 .Dq Li YES
-enables loading
+разрешает загрузку
 .Va pf_fallback_rules_file
-or
+или
 .Va pf_fallback_rules
-in case of a problem when loading the ruleset in
+в случае возникновения проблем при загрузке набора правил в
 .Va pf_rules .
 .It Va pf_fallback_rules_file
 .Pq Vt str
-Path to a pf ruleset to load in case of failure when loading the
-ruleset in
+Путь к набору правил pf для загрузки в случае сбоя при загрузке набора правил
+набора правил в
 .Va pf_rules
-(default
+(по умолчанию
 .Pa /etc/pf-fallback.conf ) .
 .It Va pf_fallback_rules
 .Pq Vt str
-A pf ruleset to load in case of failure when loading the ruleset in
+Набор правил pf для загрузки в случае сбоя при загрузке набора правил в
 .Va pf_rules
-and
+и
 .Va pf_fallback_rules_file
-is not found.
-Multiple rules can be set as follows:
+не найден.
+Несколько правил могут быть заданы следующим образом:
 .Bd -literal
-pf_fallback_rules="\\
-	block drop log all\\
-	pass in quick on em0"
+pf_fallback_rules="\\\\
+	блокировать сброс журнала\\\\\
+	пройти быстро на em0"
 .Pp
 .Ed
-The default fallback rule is
+По умолчанию используется следующее правило
 .Dq block drop log all
 .It Va pflog_enable
 .Pq Vt bool
-Set to
+Установлена на
 .Dq Li NO
-by default.
-Setting this to
+по умолчанию.
+Установка этого значения на
 .Dq Li YES
-enables
+включает
 .Xr pflogd 8
-which logs packets from the
+который регистрирует пакеты из
 .Xr pf 4
-packet filter.
+пакетного фильтра.
 .It Va pflog_logfile
 .Pq Vt str
-If
+Если
 .Va pflog_enable
-is set to
+установлено значение
 .Dq Li YES
-this controls where
+это контролирует, где
 .Xr pflogd 8
-stores the logfile
-(default
+хранит файл журнала
+(по умолчанию
 .Pa /var/log/pflog ) .
-Check
+Посмотрите
 .Pa /etc/newsyslog.conf
-to adjust logfile rotation for this.
+чтобы настроить ротацию лог-файла.
 .It Va pflog_program
 .Pq Vt str
-Path to
+Путь к
 .Xr pflogd 8
-(default
+(по умолчанию
 .Pa /sbin/pflogd ) .
 .It Va pflog_flags
 .Pq Vt str
-Empty by default.
-This variable contains additional flags passed to the
-.Xr pflogd 8
-program.
+По умолчанию пустая.
+Эта переменная содержит дополнительные флаги, передаваемые программе
+.Xr pflogd 8 .
 .It Va pflog_instances
 .Pq Vt str
-If logging to more than one
+Если вы регистрируетесь более чем в одном
 .Xr pflog 4
-interface is desired,
+необходимо вести логи на нескольких интерфейсах,
 .Va pflog_instances
-is set to the list of
+устанавливается в список
 .Xr pflogd 8
-instances that should be started at system boot time.
-If
+которые должны запускаться при загрузке системы.
+Если
 .Va pflog_instances
-is set, for each whitespace-separated
-.Ar element
-in the list,
+установлен, то для каждого разделенного пробелами
+элемента  .Ar
+в списке,
+.Ao Ar элемент Ac Ns Va _dev
+и
+.Ao Ar элемент Ac Ns Va _logfile
+предполагаются существующими.
 .Ao Ar element Ac Ns Va _dev
-and
-.Ao Ar element Ac Ns Va _logfile
-elements are assumed to exist.
-.Ao Ar element Ac Ns Va _dev
-must contain the
+должен содержать
 .Xr pflog 4
-interface to be watched by the named
+интерфейс, за которым будет следить именованный
 .Xr pflogd 8
-instance.
-.Ao Ar element Ac Ns Va _logfile
-must contain the name of the logfile that will be used by the
-.Xr pflogd 8
-instance.
+объект.
 .It Va ftpproxy_enable
 .Pq Vt bool
-Set to
+Установлено значение
 .Dq Li NO
-by default.
-Setting this to
+по умолчанию.
+Установка этого значения на
 .Dq Li YES
-enables
+включает
 .Xr ftp-proxy 8
-which supports the
+который поддерживает
 .Xr pf 4
-packet filter in translating ftp connections.
+фильтр пакетов при переводе ftp-соединений.
 .It Va ftpproxy_flags
 .Pq Vt str
-Empty by default.
-This variable contains additional flags passed to the
-.Xr ftp-proxy 8
-program.
+По умолчанию пустая.
+Эта переменная содержит дополнительные флаги, передаваемые программе
+.Xr ftp-proxy 8 .
 .It Va ftpproxy_instances
 .Pq Vt str
-Empty by default.
-If multiple instances of
+По умолчанию пустая.
+Если несколько объектов
 .Xr ftp-proxy 8
-are desired at boot time,
+требуется во время загрузки,
 .Va ftpproxy_instances
-should contain a whitespace-separated list of instance names.
-For each
-.Ar element
-in the list, a variable named
+должен содержать список имен экземпляров, разделенных пробелами.
+Для каждого
+элемента .Ar
+в списке, переменная с именем
 .Ao Ar element Ac Ns Va _flags
-should be defined, containing the command-line flags to be passed to the
+должна быть определена переменная, содержащая флаги командной строки, которые будут переданы 
 .Xr ftp-proxy 8
-instance.
+объекту.
 .It Va pfsync_enable
 .Pq Vt bool
-Set to
+Установлена в
 .Dq Li NO
-by default.
-Setting this to
+по умолчанию.
+Установка этого значения на
 .Dq Li YES
-enables exposing
+позволяет экспонировать
 .Xr pf 4
-state changes to other hosts over the network by means of
+изменения состояния другим узлам по сети с помощью
 .Xr pfsync 4 .
-The
 .Va pfsync_syncdev
-variable
-must also be set then.
+переменная
+также должна быть установлена.
 .It Va pfsync_syncdev
 .Pq Vt str
-Empty by default.
-This variable specifies the name of the network interface
+По умолчанию пустая.
+Эта переменная задает имя сетевого интерфейса
 .Xr pfsync 4
-should operate through.
-It must be set accordingly if
+через который он должен работать.
+Она должна быть установлена соответствующим образом, если
 .Va pfsync_enable
-is set to
+установлено значение
 .Dq Li YES .
 .It Va pfsync_syncpeer
 .Pq Vt str
-Empty by default.
-This variable is optional.
-By default, state change messages are sent out on the synchronisation
-interface using IP multicast packets.
-The protocol is IP protocol 240, PFSYNC, and the multicast group used is
+По умолчанию пустая.
+Эта переменная является необязательной.
+По умолчанию сообщения об изменении состояния рассылаются на интерфейс синхронизации
+с помощью многоадресных пакетов IP.
+Протокол - IP-протокол 240, PFSYNC, а используемая группа многоадресной рассылки -
 224.0.0.240.
-When a peer address is specified using the
+Если адрес пира указан с помощью параметра
 .Va pfsync_syncpeer
-option, the peer address is used as a destination for the pfsync
-traffic, and the traffic can then be protected using
+этот адрес используется в качестве адреса назначения для трафика pfsync
+и трафик может быть защищен с помощью опции
 .Xr ipsec 4 .
-See the
+См.
 .Xr pfsync 4
-manpage for more details about using
+дополнительную информацию об использовании
 .Xr ipsec 4
-with
+с
 .Xr pfsync 4
-interfaces.
+интерфейсами.
 .It Va pfsync_ifconfig
 .Pq Vt str
-Empty by default.
-This variable can contain additional options to be passed to the
+По умолчанию пустая.
+Эта переменная может содержать дополнительные опции, которые будут переданы программе
 .Xr ifconfig 8
-command used to set up
+команде, используемой для настройки
 .Xr pfsync 4 .
 .It Va tcp_extensions
 .Pq Vt bool
-Set to
+Установлена на
 .Dq Li YES
-by default.
-Setting this to
+по умолчанию.
+Установлена на
+.Dq Li YES
+по умолчанию.
+Установка этого значения на
 .Dq Li NO
-disables certain TCP options as described by
+отключает некоторые опции TCP, как описано в
 .Rs
 .%T "RFC 1323"
 .Re
-Setting this to
+Установка этого значения на
 .Dq Li NO
-might help remedy such problems with connections as randomly hanging
-or other weird behavior.
+может помочь устранить такие проблемы с соединениями, как случайное зависание
+или другое странное поведение.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Some network devices are known
 to be broken with respect to these options.
 .It Va log_in_vain
