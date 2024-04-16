@@ -1,32 +1,15 @@
-.\" Copyright (c) 1990, 1991, 1993
-.\"	The Regents of the University of California.  All rights reserved.
-.\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
-.\" 3. Neither the name of the University nor the names of its contributors
-.\"    may be used to endorse or promote products derived from this software
-.\"    without specific prior written permission.
-.\"
-.\" THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
-.\"
-.\"     @(#)syslog.conf.5	8.1 (Berkeley) 6/9/93
-.\"
+.**  Авторское право (c) 1990, 1991, 1993**
+.**  Регенты Калифорнийского университета. Все права защищены.**
+.**
+Перераспределение и использование в исходном и двоичном кодах, с или без изменений, разрешается при условии соблюдения следующих условий:
+.** 1. При перераспределении исходного кода необходимо сохранить указанное выше уведомление об авторских правах, этот список условий и следующее заявление об отказе от ответственности.**
+.** 2. При перераспределении в двоичном виде необходимо воспроизвести указанное выше уведомление об авторских правах, этот список условий и следующее заявление об отказе от ответственности в документации и/или других материалах, предоставляемых вместе с распространением.**
+.** 3. Ни название университета, ни имена его авторов не могут использоваться для поддержки или продвижения продуктов, полученных из этого программного обеспечения, без предварительного письменного разрешения.**
+.**
+ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ РЕГЕНТАМИ И АВТОРАМИ «КАК ЕСТЬ», И ЛЮБЫЕ ЯВНЫЕ ИЛИ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ ЭТИМ, ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ КОММЕРЧЕСКОЙ ПРИГОДНОСТИ И ПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ ЦЕЛИ, ОТКЛОНЯЮТСЯ. РЕГЕНТЫ ИЛИ АВТОРЫ НИ ПРИ КАКИХ ОБСТОЯТЕЛЬСТВАХ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ ЗА КАКИЕ-ЛИБО ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, СПЕЦИАЛЬНЫЕ, ШТРАФНЫЕ ИЛИ КОСВЕННЫЕ УЩЕРБЫ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ ЭТИМ, ПРИОБРЕТЕНИЕ ЗАМЕННЫХ ТОВАРОВ ИЛИ УСЛУГ; ПОТЕРЮ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПЕРЕРЫВ В БИЗНЕСЕ), КАКИМ БЫ ОНО НИ БЫЛО ВЫЗВАНО И ПО ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО ПО ДОГОВОРУ, СТРОГОЙ ОТВЕТСТВЕННОСТИ ИЛИ ДЕЛИКТУ (ВКЛЮЧАЯ НЕОСТОРОЖНОСТЬ ИЛИ ИНЫМ ОБРАЗОМ), ВОЗНИКАЮЩИХ КАКИМ-ЛИБО ОБРАЗОМ В СВЯЗИ С ИСПОЛЬЗОВАНИЕМ ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ ИМ БЫЛО СООБЩЕНО О ВОЗМОЖНОСТИ ТАКОГО УЩЕРБА.
+.**
+**   @(#)syslog.conf.5  8.1 (Berkeley) 6/9/93**
+.**
 .Dd December 10, 2020
 .Dt SYSLOG.CONF 5
 .Os
@@ -34,185 +17,169 @@
 .Nm syslog.conf
 .Nd
 .Xr syslogd 8
-configuration file
+файл конфигурации
 .Sh DESCRIPTION
-The
+Этот
 .Nm
-file is the configuration file for the
+файл это файл конфигурации для
 .Xr syslogd 8
-program.
-It consists of
-blocks of lines separated by
-.Em program ,
-.Em hostname
-or
-.Em property-based filter
-specifications (separations appear alone on their lines),
-with each line containing two fields: the
-.Em selector
-field which specifies the types of messages and priorities to which the
-line applies, and an
-.Em action
-field which specifies the action to be taken if a message
+программы.
+Он состоит из
+блоков строк, разделённых
+.Em программой ,
+.Em именем хоста
+или
+.Em фильтром на основе свойств
+(разделители появляются отдельно в своих строках),
+при этом каждая строка содержит два поля: поле
+.Em селектора, которое указывает типы сообщений и приоритеты, к которым применяется строка, и поле
+.Em действия, которое указывает действие, выполняемое если данные, полученные в сообщении
 .Xr syslogd 8
-receives matches the selection criteria.
-The
-.Em selector
-field is separated from the
-.Em action
-field by one or more tab characters or spaces.
+соответствуют критериям отбора.
+Поле
+.Em селектора
+отделено от поля
+.Em действия
+одним или несколькими символами табуляции или пробелами.
 .Pp
-A special
+Специальное слово
 .Em include
-keyword can be used to include all files with names ending in '.conf' and not
-beginning with a '.' contained in the directory following the keyword.
-This keyword can only be used in the first level configuration file.
+может использоваться для включения всех файлов с именами, заканчивающимися на '.conf' и не начинающимися с точки '.', содержащихся в каталоге, следующем за ключевым словом.
+Это ключевое слово можно использовать только в конфигурационном файле первого уровня.
 .Pp
-Note that if you use spaces as separators, your
+Обратите внимание на то, что если вы используете пробелы в качестве разделителей, ваш
 .Nm
-might be incompatible with other Unices or Unix-like systems.
-This functionality was added for ease of configuration
-(e.g.,\& it is possible to cut-and-paste into
+файл может быть несовместим с другими системами Unix или Unix-подобными системами.
+Эта функциональность была добавлена ​​для упрощения конфигурации
+(например, ее можно вырезать и вставить в
 .Nm ) ,
-and to avoid possible mistakes.
-This change however preserves
-backwards compatibility with the old style of
+и избежать возможных ошибок.
+Однако, это изменение сохраняет
+обратную совместимость со старым стилем
 .Nm
-(i.e., tab characters only).
+(т.е., только символы табуляции).
 .Pp
-The
-.Em selectors
-are encoded as a
-.Em facility ,
-a period
+.Em Селекторы
+закодированы как
+.Em объект ,
+период
 .Pq Dq \&. ,
-an optional set of comparison flags
+опциональный набор флагов сравнения
 .Pq Oo \&! Oc Op <=> ,
-and a
-.Em level ,
-with no intervening white-space.
-Both the
-.Em facility
-and the
-.Em level
-are case insensitive.
+а так же
+.Em уровень ,
+без каких-либо промежуточных пробелов.
+ Как
+.Em объект,
+так и 
+.Em уровень
+являются чувствительными к регистру.
 .Pp
-The
-.Em facility
-describes the part of the system generating the message, and is one of
-the following keywords:
+.Em Объект
+описывает часть системы, генерирующую сообщение, и является одним из следующих ключевых слов:
 .Cm auth , authpriv , console , cron , daemon , ftp , kern , lpr ,
 .Cm mail , mark , news , ntp , security , syslog , user , uucp ,
-and
+и
 .Cm local0
-through
+через
 .Cm local7 .
-These keywords (with the exception of mark) correspond to
-similar
+Эти ключевые слова (за исключением mark) соответствуют
+аналогичным
 .Dq Dv LOG_
-values specified to the
+значениям, указанным для
 .Xr openlog 3
-and
+и
 .Xr syslog 3
-library routines.
+библиотечных функций.
 .Pp
-The
-.Em comparison flags
-may be used to specify exactly what is logged.
-The default comparison is
+.Em Флаги сравнения
+могут использоваться для указания того, что именно должно быть записано в журнал.
+Значение для сравнения по умолчанию
 .Dq =>
-(or, if you prefer,
+(или, если предпочитаете
 .Dq >= ) ,
-which means that messages from the specified
-.Em facility
-list, and of a priority
-level equal to or greater than
-.Em level
-will be logged.
-Comparison flags beginning with
+это означает, что сообщения из указанного списка
+.Em объектов
+с уровнем приоритета,
+равным или превышающим 
+.Em уровень
+будут записываться в журнал.
+Флаги сравнения, начинающиеся с 
 .Dq Li \&!
-will have their logical sense inverted.
-Thus
+будут иметь обратное логическое значение
+Таким образом,
 .Dq !=info
-means all levels except info and
+означает, что все уровни, кроме info и
 .Dq !notice
-has the same meaning as
+означают то же, что и
 .Dq <notice .
 .Pp
-The
-.Em level
-describes the severity of the message, and is a keyword from the
-following ordered list (higher to lower):
+.Em Уровень
+описывает серьезность сообщения и является ключевым словом из следующего упорядоченного списка (от высшего к низшему):
 .Cm emerg , alert , crit , err , warning , notice , info
-and
+и
 .Cm debug .
-These keywords correspond to
-similar
+Эти ключевые слова соответствуют
+аналогичным значениям
 .Dq Dv LOG_
-values specified to the
+, указанным для
 .Xr syslog 3
-library routine.
+библиотечной функции.
 .Pp
-Each block of lines is separated from the previous block by a
-.Em program ,
-.Em hostname
-or
-.Em property-based filter
-specification.
-A block will only log messages corresponding to the most recent
-.Em program ,
-.Em hostname
-and
-.Em property-based filter
-specifications given.
-Thus, with a block which selects
+Каждый блок строк отделяется от предыдущего блока
+.Em программой ,
+.Em именем хоста
+или
+.Em фильтром на основе свойств.
+Блок будет регистрировать только сообщения, соответствующие самой последней
+.Em программе ,
+.Em имени хоста
+и
+.Em заданным спецификациям фильтра на основе свойств.
+Таким образом, за блоком, который выбирает
 .Ql ppp
-as the
+в качестве программы
 .Em program ,
-directly followed by a block that selects messages from the
-.Em hostname
+непосредственно следует блок, которые выбирает сообщения из
+.Em имени хоста
 .Ql dialhost ,
-the second block will only log messages
-from the
+второй блок будет регистрировать только сообщения
+из программы
 .Xr ppp 8
-program on dialhost.
+на dialhost.
 .Pp
-A
-.Em program
-specification is a line beginning with
+.Em программная
+спецификация это строка, начинающаяся с
 .Ql #!prog
-or
+или
 .Ql !prog
-(the former is for compatibility with the previous syslogd, if one is sharing
-.Nm
-files, for example)
-and the following blocks will be associated with calls to
+(первое из них предназначено для совместимости с предыдущей версией syslogd, если кто-то использует файлы .Nm , например)
+и следующие блоки будут связаны с вызовыми
 .Xr syslog 3
-from that specific program.
-A
-.Em program
-specification for
+из этой конкретной программы.
+.Em программная
+спецификация для
 .Ql foo
-will also match any message logged by the kernel with the prefix
+также будет соответствовать любому сообщению, зарегистрированному ядром с префиксом
 .Ql "foo: " .
-The
+Спецификация
 .Ql #!+prog
-or
+или
 .Ql !+prog
-specification works just like the previous one,
-and the
+работает так же, как и предыдущая,
+а спецификация
 .Ql #!-prog
-or
+или
 .Ql !-prog
-specification will match any message but the ones from that
-program.
-Multiple programs may be listed, separated by commas:
+будет соответствовать любому сообщению, кроме сообщений из этой
+программы.
+Несколько программ могут быть перечислены через запятую:
 .Ql !prog1,prog2
-matches messages from either program, while
+соответствует сообщениям из любой программы, когда как
 .Ql !-prog1,prog2
-matches all messages but those from
+соответствует всем сообщениям, кроме сообщений из
 .Ql prog1
-or
+или
 .Ql prog2 .
 .Pp
 A
