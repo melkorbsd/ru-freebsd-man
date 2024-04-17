@@ -25,10 +25,10 @@
 .Dd May 4, 2020
 .Dt BHYVECTL 8
 .Os
-.Sh NAME
+.Sh НАИМЕНОВАНИЕ
 .Nm bhyvectl
-.Nd "control utility for bhyve instances"
-.Sh SYNOPSIS
+.Nd "это утилита направленная на управление экземплярами bhyve"
+.Sh СИНТАКСИС
 .Nm
 .Fl -vm= Ns Ar <vmname>
 .Op Fl -create
@@ -39,74 +39,74 @@
 .Op Fl -force-poweroff
 .Op Fl -checkpoint= Ns Ar <filename>
 .Op Fl -suspend= Ns Ar <filename>
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Команда
 .Nm
-command is a control utility for active
+это утилита управления активными
 .Xr bhyve 8
-virtual machine instances.
+экземплярами виртуальных машин.
 .Pp
-.Em Note :
-Most
+.Em Примечание :
+Большинство флагов
 .Nm
-flags are intended for querying and setting the state of an active instance.
-These commands are intended for development purposes, and are not documented here.
-A complete list can be obtained by executing
+предназначены для запроса и установки состояния активного экземпляра.
+Эти команды предназначены для разработки и здесь не документированы.
+Полный список команд можно получить, выполнив
 .Nm
-without any arguments.
+без каких-либо аргументов.
 .Pp
-The user-facing options are as follows:
+Параметры взаимодействия с пользователем следующие:
 .Bl -tag -width ".Fl d Ar argument"
 .It Fl -vm= Ns Ar <vmname>
-Operate on the virtual machine
+Работать на виртуальной машине
 .Ar <vmname> .
 .It Fl -create
-Create the specified VM.
+Создать указанную виртуальную машину VM.
 .It Fl -destroy
-Destroy the specified VM.
+Уничтожить указанную виртуальную машину VM.
 .It Fl -get-stats
-Retrieve statistics for the specified VM.
+Получить статистику для указанной виртуальной машины VM.
 .It Fl -inject-nmi
-Inject a non-maskable interrupt (NMI) into the VM.
+Внедрите немаскируемое прерывание (NMI) в виртуальную машину.
 .It Fl -force-reset
-Force the VM to reset.
+Принудительно перезагрузить виртуальную машину.
 .It Fl -force-poweroff
-Force the VM to power off.
+Принудительно выключите виртуальную машину.
 .It Fl -checkpoint= Ns Ar <filename>
-Save a snapshot of a virtual machine.
-The guest memory contents are saved in the file given in
+Сохраните текущее состояние виртуальной машины (снимок).
+Содержимое гостевой памяти сохраняется в файле, указанном в
 .Ar <filename> .
-The guest device and vCPU state are saved in the file
+Состояние гостевого устройства и виртуального ЦП сохраняются в файле
 .Ar <filename>.kern .
 .It Fl -suspend= Ns Ar <filename>
-Save a snapshot of a virtual machine similar to
+Сохраните снимок виртуальной машины, аналогичный
 .Fl -checkpoint .
-The virtual machine will terminate after the snapshot has been
-saved.
+Работа виртуальной машины завершится после сохранения моментального
+снимка.
 .El
-.Sh EXIT STATUS
+.Sh ВОЗВРАЩАЕМОЕ ЗНАЧЕНИЕ
 .Ex -std
-.Sh EXAMPLES
-Destroy the VM called fbsd10:
+.Sh ПРИМЕРЫ
+Уничтожьте виртуальную машину под названием fbsd10:
 .Pp
 .Dl "bhyvectl --vm=fbsd10 --destroy"
-.Sh COMPATIBILITY
-The snapshot file format is not yet stable and is subject to future changes.
-Backwards compatibility support for the current snapshot file format is not
-guaranteed when future changes are made.
-.Sh SEE ALSO
+.Sh СОВМЕСТИМОСТЬ
+Формат файла моментального снимка еще не стабилен и может быть изменен в будущем.
+Поддержка обратной совместимости для текущего формата файла моментального снимка
+не гарантируется при внесении будущих изменений.
+.Sh СМОТРИ ТАКЖЕ
 .Xr bhyve 8 ,
 .Xr bhyveload 8
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Команда
 .Nm
-command first appeared in
+впервые появилась в
 .Fx 10.1 .
-.Sh AUTHORS
+.Sh АВТОРЫ 
 .An -nosplit
-The
+Утилита
 .Nm
-utility was written by
+была написана
 .An Peter Grehan
-and
+и
 .An Neel Natu .
