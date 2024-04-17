@@ -60,9 +60,9 @@
 (т.е., только символы табуляции).
 .Pp
 .Em Селекторы
-закодированы как
+закодированы как:
 .Em объект ,
-период
+точка
 .Pq Dq \&. ,
 опциональный набор флагов сравнения
 .Pq Oo \&! Oc Op <=> ,
@@ -182,215 +182,207 @@
 или
 .Ql prog2 .
 .Pp
-A
-.Em hostname
-specification of the form
+Спецификация
+.Em имени хоста
+в виле
 .Ql #+hostname
-or
+или
 .Ql +hostname
-means the following blocks will be applied to messages
-received from the specified hostname.
-Alternatively, the
-.Em hostname
-specification
+означает, что блоки будут применяться к сообщениям,
+полученным от указанного хоста
+В качестве альтернативы спецификация
+.Em имени хоста
 .Ql #-hostname
-or
+или
 .Ql -hostname
-causes the following blocks to be applied to messages
-from any host but the one specified.
-If the hostname is given as
+означает, что следующие блоки будут применяться к сообщениям
+от любого хоста, кроме указанного.
+Если имя хоста задано как
 .Ql @ ,
-the local hostname will be used.
-As for program specifications, multiple comma-separated
-values may be specified for hostname specifications.
+будет использоваться локальное имя хоста.
+Как и для программных спецификаций, для спецификаций имени хоста
+может быть указано несколько значений, разделённых запятыми.
 .Pp
-A
-.Em property-based filter
-specification is a line beginning with
+.Em Спецификация фильтра на основе свойств
+представляет собой строку, начинающуюся с
 .Ql #:
-or
+или
 .Ql \&:
-and the following blocks will be applied only when filter value
-matches given filter propertie's value.
-See
-.Sx PROPERTY-BASED FILTERS
-section for more details.
+и следующие блоки будут применяться только в том случае, если значение фильтра
+совпадает со значением данного свойства фильтра.
+См. раздел
+.Sx ФИЛЬТРА НА ОСНОВЕ СВОЙСТВ
+для более подробной информации.
 .Pp
-A
-.Em program ,
-.Em hostname
-or
-.Em property-based filter
-specification may be reset by giving
+Спецификация
+.Em программы ,
+.Em имени хоста
+или
+.Em фильтра на основе свойств
+может быть сброшена, указав
 .Ql *
-as an argument.
+в качестве аргумента.
 .Pp
-See
+Дополнительные описания ключевых слов и значения
+.Em объекта
+и
+.Em уровня
+см. в разделе
 .Xr syslog 3
-for further descriptions of both the
-.Em facility
-and
-.Em level
-keywords and their significance.
-It is preferred that selections be made on
-.Em facility
-rather than
-.Em program ,
-since the latter can easily vary in a networked environment.
-In some cases,
-though, an appropriate
-.Em facility
-simply does not exist.
+Предпочтительнее выбирать
+.Em объект ,
+а не
+.Em программу ,
+так как последняя может легко меняться в сетевом окружении.
+Однако, в некоторых ситуациях
+подходящего
+.Em объекта
+просто не существует.
 .Pp
-If a received message matches the specified
-.Em facility
-and is of the specified
-.Em level
-.Em (or a higher level) ,
-and the first word in the message after the date matches the
-.Em program ,
-the action specified in the
-.Em action
-field will be taken.
+Если полученное сообщение соответствует указанному
+.Em объекту
+и имеет указанный
+.Em уровень
+.Em (или более высокий уровень) ,
+а первое слово в сообщении после даты соответствует
+.Em программе ,
+будет выполнено действие, указанное в поле
+.Em действия
 .Pp
-Multiple
-.Em selectors
-may be specified for a single
-.Em action
-by separating them with semicolon
+Для одного
+.Em действия
+можно указать несколько
+.Em селекторов ,
+разделив их точкой с запятой
 .Pq Dq \&;
-characters.
-It is important to note, however, that each
-.Em selector
-can modify the ones preceding it.
+Важно отметить, что каждый
+.Em селектор
+может изменять предшествующие ему.
 .Pp
-Multiple
-.Em facilities
-may be specified for a single
-.Em level
-by separating them with comma
+Для одного
+.Em уровня
+можно укзать несколько
+.Em объектов ,
+разделив их символами запятой
 .Pq Dq \&,
-characters.
 .Pp
-An asterisk
+Звёздочка
 .Pq Dq *
-can be used to specify all
-.Em facilities ,
-all
-.Em levels ,
-or all
-.Em programs .
+может использоваться для указания всех
+.Em объектов ,
+всех
+.Em уровней ,
+или всех
+.Em программ .
 .Pp
-The special
-.Em facility
+Специальный
+.Em объект
 .Dq mark
-receives a message at priority
+получает сообщение с приоритетом
 .Dq info
-every 20 minutes
-(see
+каждый 20 минут
+(см.
 .Xr syslogd 8 ) .
-This is not enabled by a
-.Em facility
-field containing an asterisk.
+Это не разрешается полем
+.Em объекта ,
+содержащим звёздочку.
 .Pp
-The special
-.Em level
+Специальный
+.Em уровень
 .Dq none
-disables a particular
-.Em facility .
+отключает определённый
+.Em объект .
 .Pp
-The
-.Em action
-field of each line specifies the action to be taken when the
-.Em selector
-field selects a message.
-There are five forms:
+Поле
+.Em действия
+каждой стоки определяет действие, которое должно быть выполнено, когда поле
+.Em селектора
+выбирает сообщение.
+Существует пять форм:
 .Bl -bullet
 .It
-A pathname (beginning with a leading slash).
-Selected messages are appended to the file.
+Имя пуим (начинающееся с ведущей косой черты).
+Выбранные сообщения добавляются в файл.
 .Pp
-To ensure that kernel messages are written to disk promptly,
+Чтобы обеспечить своевременную запись сообщений ядра на диск ,
 .Nm
-calls
+вызывает
 .Xr fsync 2
-after writing messages from the kernel.
-Other messages are not synced explicitly.
-You may prefix a pathname with the minus sign,
+после записи сообщений от ядра.
+Другие сообщения не синхронизируются в явном виде.
+Вы можете поставить перед именем пути знак минус,
 .Dq - ,
-to forego syncing the specified file after every kernel message.
-Note that you might lose information if the system crashes
-immediately following a write attempt.
-Nevertheless, using the
+чтобы не синхронизировать указанный файл после каждого сообщения ядра.
+Обратите внимание на то, что вы можете потерять информацию, если система аварийно завершит работу
+сразу после попытки записи.
+Тем не менее, использование опции
 .Dq -
-option may improve performance,
-especially if the kernel is logging many messages.
+может повысить производительность,
+особенно, если ядро регистрирует много сообщений.
 .It
-A hostname (preceded by an at
+Имя хоста (перед ним ставится знак
 .Pq Dq @
-sign).
-Selected messages are forwarded to the
+).
+Выбранные сообщения направляются программе
 .Xr syslogd 8
-program on the named host.
-If a port number is added after a colon
-.Pq Ql :\&
-then that port will be used as the destination port
-rather than the usual syslog port.
-IPv6 addresses can be used
-by surrounding the address portion with
-square brackets
+на указанном хосте.
+Если номер порта добавлен после двоеточия
+.Pq Ql :\& ,
+то в качестве порта назначения будет использоваться этот порт,
+а не обычный порт syslog.
+Адреса IPv6 можно использовать, 
+заключив часть адреса в
+квадратные скобки
 .Po
 .Ql [\&
-and
+и
 .Ql ]\&
 .Pc .
 .It
-A comma separated list of users.
-Selected messages are written to those users
-if they are logged in.
+Список пользователей, разделённый запятыми.
+Выьранные сообщения будут написаны этим пользователем, 
+если они вошли в систему.
 .It
-An asterisk.
-Selected messages are written to all logged-in users.
+Звёздочка.
+Выбранные сообщения будут написаны всем вошедшим пользователям.
 .It
-A vertical bar
+Вертикальная черта
 .Pq Dq \&| ,
-followed by a command to pipe the selected
-messages to.
-The command is passed to
+за которой следует команда для отправки выбранных сообщений по каналам.
+Команда передаётся в
 .Xr sh 1
-for evaluation, so usual shell metacharacters or input/output
-redirection can occur.
-(Note however that redirecting
+для оценки, поэтому могут использоваться обычные метасимволы или перенаправление
+ввода/вывода.
+(Обратите внимание, что перенаправление буферизированного вывода
 .Xr stdio 3
-buffered output from the invoked command can cause additional delays,
-or even lost output data in case a logging subprocess exited with a
-signal.)
-The command itself runs with
+от вызванной команды может привести к дополнительным задержкам,
+или даже к потере выходных данных в случае, если процесспротоколирования завершился с
+сигналом.)
+Сама команда выполняется с перенаправлением
 .Em stdout
-and
+и
 .Em stderr
-redirected to
+в
 .Pa /dev/null .
-Upon receipt of a
+Получив сигнал
 .Dv SIGHUP ,
 .Xr syslogd 8
-will close the pipe to the process.
-If the process did not exit
-voluntarily, it will be sent a
+закроет канал связи с процессом.
+Если процесс не завершился
+добровольно, ему будет послан сигнал
 .Dv SIGTERM
-signal after a grace period of up to 60 seconds.
+после льготного периода до 60 секунд.
+.\" Все переводчики перводят как "льготный"
 .Pp
-The command will only be started once data arrives that should be piped
-to it.
-If it exited later, it will be restarted as necessary.
-So if it
-is desired that the subprocess should get exactly one line of input only
-(which can be very resource-consuming if there are a lot of messages
-flowing quickly), this can be achieved by exiting after just one line of
-input.
-If necessary, a script wrapper can be written to this effect.
+Команда будет запущена только после поступления данных, которые должны быть переданы ей по каналу связи. 
+Если она завершилась позже, она будет будет перезапущена при необходимости.
+Таким образом,
+если необходимоЮ чтобы подпроцесс получал только одну строку вхоных данных
+(что может быть очень ресурсоёмким при быстром поступлении большого количества сообщений), этого можно добиться, завершив работу только после одной строки
+ввода.
+При необходимости, для этого может быть написана оболочка скрипта.
 .Pp
-Unless the command is a full pipeline, it is probably useful to
+Если команда не является полным Unless the command is a full pipeline, it is probably useful to
 start the command with
 .Em exec
 so that the invoking shell process does not wait for the command to
