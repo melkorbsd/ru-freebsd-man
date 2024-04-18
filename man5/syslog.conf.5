@@ -1,15 +1,32 @@
-.**  Авторское право (c) 1990, 1991, 1993**
-.**  Регенты Калифорнийского университета. Все права защищены.**
-.**
-Перераспределение и использование в исходном и двоичном кодах, с или без изменений, разрешается при условии соблюдения следующих условий:
-.** 1. При перераспределении исходного кода необходимо сохранить указанное выше уведомление об авторских правах, этот список условий и следующее заявление об отказе от ответственности.**
-.** 2. При перераспределении в двоичном виде необходимо воспроизвести указанное выше уведомление об авторских правах, этот список условий и следующее заявление об отказе от ответственности в документации и/или других материалах, предоставляемых вместе с распространением.**
-.** 3. Ни название университета, ни имена его авторов не могут использоваться для поддержки или продвижения продуктов, полученных из этого программного обеспечения, без предварительного письменного разрешения.**
-.**
-ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ РЕГЕНТАМИ И АВТОРАМИ «КАК ЕСТЬ», И ЛЮБЫЕ ЯВНЫЕ ИЛИ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ ЭТИМ, ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ КОММЕРЧЕСКОЙ ПРИГОДНОСТИ И ПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ ЦЕЛИ, ОТКЛОНЯЮТСЯ. РЕГЕНТЫ ИЛИ АВТОРЫ НИ ПРИ КАКИХ ОБСТОЯТЕЛЬСТВАХ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ ЗА КАКИЕ-ЛИБО ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, СПЕЦИАЛЬНЫЕ, ШТРАФНЫЕ ИЛИ КОСВЕННЫЕ УЩЕРБЫ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ ЭТИМ, ПРИОБРЕТЕНИЕ ЗАМЕННЫХ ТОВАРОВ ИЛИ УСЛУГ; ПОТЕРЮ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПЕРЕРЫВ В БИЗНЕСЕ), КАКИМ БЫ ОНО НИ БЫЛО ВЫЗВАНО И ПО ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО ПО ДОГОВОРУ, СТРОГОЙ ОТВЕТСТВЕННОСТИ ИЛИ ДЕЛИКТУ (ВКЛЮЧАЯ НЕОСТОРОЖНОСТЬ ИЛИ ИНЫМ ОБРАЗОМ), ВОЗНИКАЮЩИХ КАКИМ-ЛИБО ОБРАЗОМ В СВЯЗИ С ИСПОЛЬЗОВАНИЕМ ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ ИМ БЫЛО СООБЩЕНО О ВОЗМОЖНОСТИ ТАКОГО УЩЕРБА.
-.**
-**   @(#)syslog.conf.5  8.1 (Berkeley) 6/9/93**
-.**
+.\" Copyright (c) 1989, 1990, 1993
+.\"	The Regents of the University of California.  All rights reserved.
+.\"
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
+.\" 3. Neither the name of the University nor the names of its contributors
+.\"    may be used to endorse or promote products derived from this software
+.\"    without specific prior written permission.
+.\"
+.\" THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+.\" SUCH DAMAGE.
+.\"
+.\"	@(#)ascii.7	8.1 (Berkeley) 6/5/93
+.\"
 .Dd December 10, 2020
 .Dt SYSLOG.CONF 5
 .Os
@@ -502,91 +519,91 @@ complete.
 .Sh ПРИМЕРЫ
 Файл конфигурации может выглядеть следующим образом:
 .Bd -literal
-# Log all kernel messages, authentication messages of
-# level notice or higher, and anything of level err or
-# higher to the console.
-# Do not log private authentication messages!
+# Сохраняет все сообщения ядра, сообщения об аутентификации
+# уровня notice или выше, а также всё от уровня err или 
+# выше в консоль.
+# Не регистрирует приватные сообщения об аутентификации!
 *.err;kern.*;auth.notice;authpriv.none;mail.crit	/dev/console
 
-# Log anything (except mail) of level info or higher.
-# Do not log private authentication messages!
+# Регистрирует всё (кроме почты) с уровнем info или выше.
+# Не регистрирует приватные сообщения об аутентификации!
 *.info;mail.none;authpriv.none		/var/log/messages
 
-# Log daemon messages at debug level only
+# Регистрирует сообщения от daemon только на уровне отладки
 daemon.=debug						/var/log/daemon.debug
 
-# The authpriv file has restricted access.
+# Ограничивает доступ к файлу authpriv.
 authpriv.*						/var/log/secure
 
-# Log all the mail messages in one place.
+# Сохраняет все почтовые сообщения в одном месте.
 mail.*							/var/log/maillog
 
-# Everybody gets emergency messages, plus log them on another
-# machine.
+# Все получают экстренныые сообщения, а также регистрируют их на другой
+# машине.
 *.emerg							*
 *.emerg							@arpa.berkeley.edu
 
-# Root and Eric get alert and higher messages.
+# Root и Eric получают сообщения с предупреждениями и выше.
 *.alert							root,eric
 
-# Save mail and news errors of level err and higher in a
-# special file.
+# Сохраняет сообщения об ошибках в почте и новостях уровня err и выше в 
+# специальном файле.
 uucp,news.crit						/var/log/spoolerr
 
-# Pipe all authentication messages to a filter.
+# Передаёт все сообщения об аутентификации в фильтр.
 auth.*					|exec /usr/local/sbin/authfilter
 
-# Log all security messages to a separate file.
+# Сохраняет все сообщееия о безопасности в отдельном файле.
 security.*						/var/log/security
 
-# Log all writes to /dev/console to a separate file.
+# Сохраняет все записи в /dev/console в отдельный файл.
 console.*						/var/log/console.log
 
-# Save ftpd transactions along with mail and news
+# Сохраняет ftpd транзакции вместе с почтой и новостями
 !ftpd
 *.*							/var/log/spoolerr
 
-# Log ipfw messages without syncing after every message.
+#  Сохраняет ipfw сообщения без синхронизации после каждого сообщения.
 !ipfw
 *.*							-/var/log/ipfw
 
-# Log ipfw messages with "Deny" in the message body.
+# Сохраняет ipfw сообщения с "Deny" в теле сообщения.
 :msg, contains, ".*Deny.*"
 *.*							/var/log/ipfw.deny
 
-# Reset program name filtering
+# Сбрасывает фильтрацию имён программ
 !*
 
-# Log messages from bird or bird6 into one file
+# Сохраняет сообщения от bird или bird6 в один файл
 :programname, regex, "^bird6?$"
 *.*							/var/log/bird-all.log
 
-# Log messages from servers in racks 10-19 in multiple locations, case insensitive
+# Сохраняет сообщения с серверов в стойках 10-19 в разные места, без учёта регистра
 :hostname, icase_ereregex, "^server-(dcA|podB|cdn)-rack1[0-9]{2}\\..*"
 *.*							/var/log/racks10..19.log
 .Ed
-.Sh SEE ALSO
+.Sh Смотреть также
 .Xr syslog 3 ,
 .Xr syslogd 8
-.Sh BUGS
-The effects of multiple
-.Em selectors
-are sometimes not intuitive.
-For example
+.Sh ОШИБКИ
+Эффекты использования нескольких
+.Em селекторов
+иногда не интуитивны.
+Например, 
 .Dq mail.crit,*.err
-will select
+будет выбирать сообщения
 .Dq mail
-facility messages at the level of
+на уровне
 .Dq err
-or higher, not at the level of
+или выше, а не на уровне
 .Dq crit
-or higher.
+или выше.
 .Pp
-In networked environments, note that not all operating systems
-implement the same set of facilities.
-The facilities
-authpriv, cron, ftp, and ntp that are known to this implementation
-might be absent on the target system.
-Even worse, DEC UNIX uses
-facility number 10 (which is authpriv in this implementation) to
-log events for their AdvFS file system.
+Обратите внимание, что в сетевых средах не все операционные системы
+реализуют одинаковый набор функций.
+Функции
+authpriv, cron, ftp, и ntp, которые известны для этой реализации
+могут отсутствовать с целевой системе.
+Ещё хуже, DEC UNIX использует
+средство под номером 10 (которым в данной реализации является authpriv) для
+регистрации событий в своейir AdvFS файловой системе.
