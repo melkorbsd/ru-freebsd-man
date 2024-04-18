@@ -25,10 +25,10 @@
 .Dd October 12, 2023
 .Dt BHYVE 8
 .Os
-.Sh NAME
+.Sh НАИМЕНОВАНИЕ
 .Nm bhyve
-.Nd "run a guest operating system inside a virtual machine"
-.Sh SYNOPSIS
+.Nd "запуск гостевой операционной системы внутри виртуальной машины"
+.Sh СИНТАКСИС
 .Nm
 .Op Fl AaCDeHhPSuWwxY
 .Oo
@@ -89,87 +89,87 @@
 .Fl l Cm help
 .Nm
 .Fl s Cm help
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 .Nm
-is a hypervisor that runs guest operating systems inside a
-virtual machine.
+это гипервизор, который запускает гостевые операционные системы внутри
+виртуальной машины.
 .Pp
-Parameters such as the number of virtual CPUs, amount of guest memory, and
-I/O connectivity can be specified with command-line parameters.
+Такие параметры, как количество виртуальных процессоров, объем гостевой
+памяти, и возможности ввода-вывода, могут быть заданы с помощью параметров
+командной строки.
 .Pp
-If not using a boot ROM, the guest operating system must be loaded with
+Если не используется загрузочное ПЗУ, гостевая операционная система должна
+быть загружена с помощью команды
 .Xr bhyveload 8
-or a similar boot loader before running
+или аналогичным загрузчиком перед запуском
 .Nm ,
-otherwise, it is enough to run
+в противном случае, достаточно запустить
 .Nm
-with a boot ROM of choice.
+с выбранным загрузочным ПЗУ.
 .Pp
 .Nm
-runs until the guest operating system reboots or an unhandled hypervisor
-exit is detected.
-.Sh OPTIONS
+работает до тех пор, пока гостевая операционная система не перезагрузится или
+не будет обнаружен необработанный выход из гипервизора.
+.Sh КЛЮЧИ
 .Bl -tag -width 10n
 .It Fl A
-Generate ACPI tables.
-Required for
-.Fx Ns /amd64
-guests.
+Генерировать таблицы ACPI.
+Требуется для гостей
+.Fx Ns /amd64 .
 .It Fl a
-The guest's local APIC is configured in xAPIC mode.
-The xAPIC mode is the default setting so this option is redundant.
-It will be deprecated in a future version.
+Локальный APIC гостя настроен в режиме xAPIC.
+На xAPIC является настройкой по умолчанию, поэтому эта опция является
+избыточной.
+В будущих версиях она будет упразднена.
 .It Fl C
-Include guest memory in core file.
+Включить гостевую память в файл ядра.
 .It Fl c Op Ar setting ...
-Number of guest virtual CPUs
-and/or the CPU topology.
-The default value for each of
+Количество гостевых виртуальных процессоров
+и/или топология процессоров.
+Значение значение по умолчанию для каждого из параметров
 .Ar numcpus ,
 .Ar sockets ,
 .Ar cores ,
-and
+и
 .Ar threads
-is 1.
-If
+равно 1.
+Если значение
 .Ar numcpus
-is not specified then it will be calculated from the other arguments.
-The topology must be consistent in that the
+не указано, то оно будет вычислено из других аргументов.
+Топология должна быть последовательной, так как
 .Ar numcpus
-must equal the product of
+должно быть равно произведению
 .Ar sockets ,
 .Ar cores ,
-and
+и
 .Ar threads .
-If a
+Если
 .Ar setting
-is specified more than once the last one has precedence.
+указан более одного раза, приоритет имеет последний.
 .Pp
-The maximum number of virtual CPUs defaults to the number of active
-physical CPUs in the system available via the
+Максимальное количество виртуальных процессоров по умолчанию равно количеству
+активных физических процессоров в системе, доступных через переменную
 .Va hw.vmm.maxcpu
-.Xr sysctl 8
-variable.
-The limit can be adjusted via the
-.Va hw.vmm.maxcpu
-loader tunable.
+.Xr sysctl 8 .
+Ограничение можно настроить с помощью настраиваемой переменной загрузчика
+.Va hw.vmm.maxcpu .
 .It Fl D
-Destroy the VM on guest initiated power-off.
+Уничтожить виртуальную машину при выключении по инициативе гостя.
 .It Fl e
-Force
+Заставить
 .Nm
-to exit when a guest issues an access to an I/O port that is not emulated.
-This is intended for debug purposes.
+завершать работу, когда гость обращается к порту ввода-вывода, который не эмулируется.
+Это предназначено для целей отладки.
 .It Fl f Ar name Ns Cm \&, Ns Oo Cm string Ns No | Ns Cm file Ns Oc Ns Cm \&= Ns Ar data
-Add a fw_cfg file
+Добавляет файл fw_cfg
 .Ar name
-to the fw_cfg interface.
-If a
+в интерфейс fw_cfg .
+Если указано
 .Cm string
-is specified, the fw_cfg file contains the string as data.
-If a
+то файл fw_cfg содержит строку в качестве данных.
+Если указан
 .Cm file
-is specified, bhyve reads the file and adds the file content as fw_cfg data.
+bhyve считывает файл и добавляет его содержимое в качестве данных fw_cfg.
 .It Fl G Xo
 .Sm off
 .Oo Ar w Oc
@@ -177,66 +177,69 @@ is specified, bhyve reads the file and adds the file content as fw_cfg data.
 .Ar port
 .Sm on
 .Xc
-Start a debug server that uses the GDB protocol to export guest state to a
-debugger.
-An IPv4 TCP socket will be bound to the supplied
+Запускает отладочный сервер, использующий протокол GDB для экспорта состояния
+гостя в отладчик.
+Сокет IPv4 TCP будет привязан к указанному адресу
 .Ar bind_address
-and
+и
 .Ar port
-to listen for debugger connections.
-Only a single debugger may be attached to the debug server at a time.
-If the option begins with
+для прослушивания соединений с отладчиком.
+Одновременно к отладочному серверу может быть подключен только один отладчик.
+Если опция начинается с
 .Sq w ,
 .Nm
-will pause execution at the first instruction waiting for a debugger to attach.
+приостановит выполнение на первой инструкции, ожидая подключения отладчика.
 .It Fl H
-Yield the virtual CPU thread when a HLT instruction is detected.
-If this option is not specified, virtual CPUs will use 100% of a host CPU.
+Выводить виртуальный поток процессора при обнаружении инструкции HLT.
+Если эта опция не указана, виртуальные процессоры будут использовать 100 %
+процессора хоста.
 .It Fl h
-Print help message and exit.
+Вывести справочное сообщение и выйти.
 .It Fl k Ar config_file
-Set configuration variables from a simple, key-value config file.
-Each line of the config file is expected to consist of a config variable
-name, an equals sign
+Установка переменных конфигурации из простого конфигурационного файла с
+ключами-значениями файла.
+Ожидается, что каждая строка конфигурационного файла будет состоять из из
+имени переменной конфигурации, знака равенства
 .It Fl K Ar layout
-Specify the keyboard layout.
-The value that can be specified sets the file name in
+Укажите раскладку клавиатуры.
+Значение, которое может быть указано, задает имя файла в
 .Ar /usr/share/bhyve/kbdlayout .
-This specification only works when loaded with UEFI mode for VNC.
-When using a VNC client that supports QEMU Extended Key Event Message (e.g. TigerVNC), this option isn't needed.
-When using a VNC client that doesn't support QEMU Extended Key Event Message (e.g. tightVNC), the layout defaults to the US keyboard unless specified otherwise.
+Эта спецификация работает только при загрузке с UEFI mode для VNC.
+При использовании VNC-клиента, поддерживающего QEMU Extended Key Event Message
+(например, TigerVNC), этот параметр не нужен. 
+При использовании VNC-клиента, не поддерживающего QEMU Extended Key Event 
+Message (например, tightVNC), раскладка по умолчанию будет соответствовать 
+клавиатуре США, если не указано иное.
 .Pq Sq = ,
-and a value.
-No spaces are permitted between the variable name, equals sign, or
-value.
-Blank lines and lines starting with
+и значение.
+Пробелы между именем переменной, знаком равенства или значением не допускаются.
+Пустые строки и строки, начинающиеся с
 .Sq #
-are ignored.
-See
+игнорируются.
+См. раздел
 .Xr bhyve_config 5
-for more details.
+для более подробной информации.
 .It Fl l Cm help
-Print a list of supported LPC devices.
+Вывести список поддерживаемых устройств LPC.
 .It Fl l Ar lpcdev Ns Op Cm \&, Ns Ar conf
-Allow devices behind the LPC PCI-ISA bridge to be configured.
-The only supported devices are the TTY-class devices
+Позволяет конфигурировать устройства за мостом LPC PCI-ISA.
+Поддерживаются только устройства класса TTY
 .Cm com1 , com2 , com3 ,
-and
+и
 .Cm com4 ,
-the TPM module
+модуль TPM
 .Cm tpm ,
-the boot ROM device
+устройство загрузочного ПЗУ
 .Cm bootrom ,
-the
+тип
 .Cm fwcfg
-type and the debug/test device
+и устройство отладки/тестирования
 .Cm pc-testdev .
 .Pp
-The possible values for the
+Возможные значения аргумента
 .Ar conf
-argument are listed in the
-.Fl s
-flag description.
+перечислены в описании флага
+.Fl s .
 .It Xo
 .Fl m Ar memsize Ns Oo
 .Sm off
@@ -244,62 +247,58 @@ flag description.
 .Sm on
 .Oc
 .Xc
-Set the guest physical memory size
-This must be the same size that was given to
+Установка размера физической памяти гостя Это должен быть тот же размер,
+который был задан в 
 .Xr bhyveload 8 .
 .Pp
-The size argument may be suffixed with one of
+Аргумент size может иметь суффикс
 .Cm K , M , G
-or
+или
 .Cm T
-(either upper or lower case)
-to indicate a multiple of kilobytes, megabytes, gigabytes, or terabytes.
-If no suffix is given, the value is assumed to be in megabytes.
+(в верхнем или нижнем регистре),
+чтобы указать кратное число килобайт, мегабайт, гигабайт или терабайт.
+Если суффикс не указан, предполагается, что значение будет в мегабайтах.
 .Pp
-The default is 256M.
+По умолчанию используется значение 256M.
 .It Fl o Ar var Ns Cm = Ns Ar value
-Set the configuration variable
+ Установить переменную конфигурации
 .Ar var
-to
+в значение
 .Ar value .
 .It Fl P
-Force the guest virtual CPU to exit when a PAUSE instruction is detected.
+Заставить гостевой виртуальный процессор завершить работу при обнаружении 
+инструкции PAUSE.
 .It Fl p Ar vcpu Ns Cm \& : Ns Ar hostcpu
-Pin guest's virtual CPU
+Привязать виртуальный процессор гостя
 .Em vcpu
-to
+к
 .Em hostcpu .
 .It Fl r Ar file
-Resume a guest from a snapshot.
-The guest memory contents are restored from
+Возобновление работы гостя из моментального снимка.
+Содержимое памяти гостя восстанавливается из
 .Ar file ,
-and the guest device and vCPU state are restored from the file
+а состояние гостевого устройства и vCPU - из файла
 .Dq Ar file Ns .kern .
 .Pp
-Note that the current snapshot file format requires that the configuration of
-devices in the new VM match the VM from which the snapshot was taken by specifying the
-same
+Обратите внимание, что текущий формат файла снапшота требует, чтобы конфигурация устройств в новой виртуальной машине соответствовала конфигурации виртуальной машины, из которой был сделан снапшот, для чего необходимо указать те же опции
 .Fl s
-and
-.Fl l
-options.
-The count of vCPUs and memory configuration are read from the snapshot.
+и
+.Fl l .
+Количество vCPU и конфигурация памяти считываются из моментального снимка.
 .It Fl S
-Wire guest memory.
+Проводка гостевой памяти.
 .It Fl s Cm help
-Print a list of supported PCI devices.
+Вывод списка поддерживаемых PCI-устройств.
 .It Fl s Ar slot Ns Cm \&, Ns Ar emulation Ns Op Cm \&, Ns Ar conf
-Configure a virtual PCI slot and function.
+Настройка виртуального слота PCI и его функций.
 .Pp
 .Nm
-provides PCI bus emulation and virtual devices that can be attached to
-slots on the bus.
-There are 32 available slots, with the option of providing up to 8 functions
-per slot.
+предоставляет эмуляцию шины PCI и виртуальные устройства, которые могут быть
+подключены к слотам на шине.	
+Имеется 32 доступных слота с возможностью предоставления до 8 функций на слот.
 .Pp
-The
-.Ar slot
-can be specified in one of the following formats:
+.Ar Слот
+может быть указан в одном из следующих форматов:
 .Pp
 .Bl -bullet -compact
 .It
@@ -314,87 +313,85 @@ can be specified in one of the following formats:
 .Sm on
 .El
 .Pp
-The
+Значение
 .Ar pcislot
-value is 0 to 31.
-The optional
+от 0 до 31.
+Необязательное значение
 .Ar function
-value is 0 to 7.
-The optional
+от 0 до 7.
+Необязательное значение 
 .Ar bus
-value is 0 to 255.
-If not specified, the
+от 0 до 255.
+Если значение
 .Ar function
-value defaults to 0.
-If not specified, the
+не указано, по умолчанию принимается значение 0.
+Если значение
 .Ar bus
-value defaults to 0.
+не указано, по умолчанию принимается значение 0.
 .Pp
-The
+Аргумент
 .Ar emulation
-argument
-can be one of the following:
+может быть одним из следующих:
 .Bl -tag -width "amd_hostbridge"
 .It Cm hostbridge
-A simple host bridge.
-This is usually configured at slot 0, and is required by most guest
-operating systems.
+Простой хост-мост.
+Обычно он настраивается в слоте 0 и требуется большинством гостевых
+операционных систем.
 .It Cm amd_hostbridge
-Emulation identical to
+Эмуляция, идентичная
 .Cm hostbridge
-using a PCI vendor ID of AMD.
+с идентификатором производителя PCI - AMD.
 .It Cm passthru
-PCI pass-through device.
+Проходное устройство PCI.
 .It Cm virtio-net
-Virtio network interface.
+Сетевой интерфейс Virtio.
 .It Cm virtio-blk
-Virtio block storage interface.
+Интерфейс блочного хранения данных Virtio.
 .It Cm virtio-scsi
-Virtio SCSI interface.
+Интерфейс SCSI Virtio.
 .It Cm virtio-9p
-Virtio 9p (VirtFS) interface.
+Интерфейс Virtio 9p (VirtFS).
 .It Cm virtio-rnd
-Virtio RNG interface.
+Интерфейс Virtio RNG.
 .It Cm virtio-console
-Virtio console interface, which exposes multiple ports
-to the guest in the form of simple char devices for simple IO
-between the guest and host userspaces.
+Консольный интерфейс Virtio, который предоставляет гостю несколько портов в 
+виде простых char-устройств для простых операций ввода-вывода между 
+пользовательскими пространствами гостя и хоста.
 .It Cm virtio-input
-Virtio input interface.
+Интерфейс ввода Virtio.
 .It Cm ahci
-AHCI controller attached to arbitrary devices.
+AHCI-контроллер, подключаемый к произвольным устройствам.
 .It Cm ahci-cd
-AHCI controller attached to an ATAPI CD/DVD.
+AHCI-контроллер, подключенный к ATAPI CD/DVD.
 .It Cm ahci-hd
-AHCI controller attached to a SATA hard drive.
+AHCI-контроллер, подключенный к жесткому диску SATA.
 .It Cm e1000
-Intel e82545 network interface.
+Сетевой интерфейс Intel e82545.
 .It Cm uart
-PCI 16550 serial device.
+Последовательное устройство PCI 16550.
 .It Cm lpc
-LPC PCI-ISA bridge with COM1, COM2, COM3, and COM4 16550 serial ports,
-a boot ROM, and,
-optionally, a fwcfg type and the debug/test device.
-The LPC bridge emulation can only be configured on bus 0.
+LPC PCI-ISA мост с последовательными портами COM1, COM2, COM3, and COM4 16550,
+загрузочным ПЗУ и, опционально, типом fwcfg и устройством отладки/тестирования.
+Эмуляция моста LPC может быть настроена только на шину 0.
 .It Cm fbuf
-Raw framebuffer device attached to VNC server.
+Необработанное устройство фреймбуфера, подключенное к VNC-серверу.
 .It Cm xhci
-eXtensible Host Controller Interface (xHCI) USB controller.
+eXtensible Host Controller Interface (xHCI) Контроллер USB.
 .It Cm nvme
-NVM Express (NVMe) controller.
+Контроллер NVM Express (NVMe).
 .It Cm hda
 High Definition Audio Controller.
 .El
 .Pp
-The optional parameter
+Необязательный параметр
 .Ar conf
-describes the backend for device emulations.
-If
+описывает бэкэнд для эмуляции устройств.
+Если
 .Ar conf
-is not specified, the device emulation has no backend and can be
-considered unconnected.
+не указан, эмуляция устройства не имеет бэкэнда и может считаться 
+неподключенной.
 .Pp
-Network device backends:
+Бэкенды сетевых устройств:
 .Sm off
 .Bl -bullet
 .It
@@ -420,47 +417,43 @@ Network device backends:
 .El
 .Sm on
 .Pp
-If
+Если
 .Cm mac
-is not specified, the MAC address is derived from a fixed OUI and the
-remaining bytes from an MD5 hash of the slot and function numbers and
-the device name.
+не указан, MAC-адрес определяется из фиксированного OUI, а остальные байты -
+из MD5-хэша номеров слота и функции, а также имени устройства.
 .Pp
-The MAC address is an ASCII string in
-.Xr ethers 5
-format.
+MAC-адрес представляет собой строку ASCII в формате
+.Xr ethers 5 .
 .Pp
-With
+Для устройств
 .Cm virtio-net
-devices, the
+можно указать параметр
 .Cm mtu
-parameter can be specified to inform the guest about the largest MTU
-that should be allowed, expressed in bytes.
+чтобы сообщить гостю наибольший разрешенный MTU, выраженный в байтах.
 .Pp
-With
+Для бэкенда
 .Cm netgraph
-backend, the
+необходимо указать параметры
 .Cm path
-and
+и
 .Cm peerhook
-parameters must be specified to set the destination node and corresponding hook.
-The optional parameters
+чтобы задать узел назначения и соответствующий хук.
+Необязательные параметры
 .Cm socket
-and
+и
 .Cm hook
-may be used to set the
+могут использоваться для задания имени узла
 .Xr ng_socket 4
-node name and source hook.
-The
+и исходного хука.
+Параметры
 .Ar ADDRESS ,
 .Ar HOOK ,
-and
+и
 .Ar NAME
-must comply with
-.Xr netgraph 4
-addressing rules.
+должны соответствовать правилам адресации 
+.Xr netgraph 4 .
 .Pp
-Block storage device backends:
+Бэкенды блочных устройств хранения:
 .Sm off
 .Bl -bullet
 .It
@@ -475,30 +468,29 @@ The
 are:
 .Bl -tag -width 10n
 .It Cm nocache
-Open the file with
+Открыть файл с помощью
 .Dv O_DIRECT .
 .It Cm direct
-Open the file using
+Открыть файл с помощью
 .Dv O_SYNC .
 .It Cm ro
-Force the file to be opened read-only.
+Принудительное открытие файла только для чтения.
 .It Cm sectorsize= Ns Ar logical Ns Oo Cm \&/ Ns Ar physical Oc
-Specify the logical and physical sector sizes of the emulated disk.
-The physical sector size is optional and is equal to the logical sector size
-if not explicitly specified.
+Укажите логический и физический размеры секторов эмулируемого диска.
+Размер физического сектора необязателен и равен размеру логического сектора,
+если он не указан явно.
 .It Cm nodelete
-Disable emulation of guest trim requests via
-.Dv DIOCGDELETE
-requests.
+Отключить эмуляцию запросов на обрезку гостевого диска через запросы
+.Dv DIOCGDELETE .
 .It Li bootindex= Ns Ar index
-Add the device to the bootorder at
+Добавить устройство в загрузчик по
 .Ar index .
-A fwcfg file is used to specify the bootorder.
-The guest firmware may ignore or doesn't support this fwcfg file.
-In that case, this feature doesn't work as expected.
+Для указания порядка загрузки используется файл fwcfg.
+Гостевая прошивка может игнорировать или не поддерживать этот файл fwcfg.
+В этом случае данная функция не будет работать так, как ожидалось.
 .El
 .Pp
-SCSI device backends:
+Бэкенды SCSI-устройств:
 .Sm off
 .Bl -bullet
 .It
@@ -511,17 +503,18 @@ The
 are:
 .Bl -tag -width 10n
 .It Cm iid= Ns Ar IID
-Initiator ID to use when sending requests to specified CTL port.
-The default value is 0.
+Идентификатор инициатора для использования при отправке запросов на указанный
+порт CTL.
+По умолчанию значение равно 0.
 .It Li bootindex= Ns Ar index
-Add the device to the bootorder at
+Добавить устройство в порядок загрузки по
 .Ar index .
-A fwcfg file is used to specify the bootorder.
-The guest firmware may ignore or doesn't support this fwcfg file.
-In that case, this feature doesn't work as expected.
+Для указания порядка загрузки используется файл fwcfg.
+Гостевая прошивка может игнорировать или не поддерживать этот файл fwcfg.
+В этом случае данная функция не будет работать так, как ожидалось.
 .El
 .Pp
-9P device backends:
+Бэкенды устройств 9P:
 .Sm off
 .Bl -bullet
 .It
@@ -529,79 +522,79 @@ In that case, this feature doesn't work as expected.
 .El
 .Sm on
 .Pp
-The
-.Ar 9p-device-options
-are:
+Параметры
+.Ar 9p-device-options :
 .Bl -tag -width 10n
 .It Cm ro
-Expose the share in read-only mode.
+Открыть общий ресурс в режиме только для чтения.
 .El
 .Pp
-TTY device backends:
+Бэкенды устройств TTY:
 .Bl -tag -width 10n
 .It Cm stdio
-Connect the serial port to the standard input and output of
-the
-.Nm
-process.
+Подключить последовательный порт к стандартному вводу и выводу процесса
+.Nm .
 .It Ar /dev/xxx
-Use the host TTY device for serial port I/O.
+Используйте TTY-устройство хоста для ввода/вывода через последовательный порт.
 .El
 .Pp
-TPM device backends:
+Бэкенды TPM-устройств:
 .Bl -tag -width 10n
 .It Ar type Ns \&, Ns Ar path Ns Op Cm \&, Ns Ar tpm-device-options
-Emulate a TPM device.
+Эмуляция устройства TPM.
 .El
 .Pp
-The
+Параметры 
 .Ar tpm-device-options
-are:
+следующие:
 .Bl -tag -width 10n
 .It Cm version= Ns Ar version
-Version of the TPM device according to the TCG specification.
-Defaults to
+Версия устройства TPM в соответствии со спецификацией TCG.
+По умолчанию
 .Cm 2.0
 .El
 .El
 .Pp
-Boot ROM device backends:
+Бэкенды для загрузки ROM-устройств:
 .Bl -tag -width 10n
 .It Ar romfile Ns Op Cm \&, Ns Ar varfile
-Map
+Сопоставление
 .Ar romfile
-in the guest address space reserved for boot firmware.
-If
+в гостевом адресном пространстве, зарезервированном для загрузочной
+микропрограммы.
+Если указан
 .Ar varfile
-is provided, that file is also mapped in the boot firmware guest
-address space, and any modifications the guest makes will be saved
-to that file.
+этот файл также отображается в гостевом адресном пространстве загрузочной
+микропрограммы, и все изменения, вносимые гостем, будут сохранены в этом файле.
 .El
 .Pp
-Fwcfg types:
+Типы Fwcfg:
 .Bl -tag -width 10n
 .It Ar fwcfg
-The fwcfg interface is used to pass information such as the CPU count or ACPI tables to the guest firmware.
-Supported values are
+Интерфейс fwcfg используется для передачи гостевой микропрограмме такой
+информации, как количество CPU или таблицы ACPI.
+Поддерживаются следующие значения
 .Ql bhyve
-and
+и
 .Ql qemu .
-Due to backward compatibility reasons,
+По соображениям обратной совместимости,
 .Ql bhyve
-is the default option.
-When
+является опцией по умолчанию.
+Когда используется
 .Ql bhyve
-is used, bhyve's fwctl interface is used.
-It currently reports only the CPU count to the guest firmware.
-The
+применяется интерфейс fwctl от bhyve.
+В настоящее время он сообщает гостевой микропрограмме только количество
+процессоров.
+Опция
 .Ql qemu
-option uses QEMU's fwcfg interface.
-This interface is widely used and allows user-defined information to be passed to the guest.
-It is used for passing the CPU count, ACPI tables, a boot order and many other things to the guest.
-Some operating systems such as Fedora CoreOS can be configured by qemu's fwcfg interface as well.
+использует интерфейс fwcfg QEMU.
+Этот интерфейс широко используется и позволяет передавать гостю информацию,
+заданную пользователем.
+Он используется для передачи гостю количества процессоров, таблиц ACPI, порядка загрузки и многого другого.
+Некоторые операционные системы, такие как Fedora CoreOS, также могут быть настроены с помощью интерфейса fwcfg в qemu.
 .El
 .Pp
-Pass-through device backends:
+Бэкенды проходных устройств:
 .Sm off
 .Bl -bullet
 .It
@@ -615,62 +608,61 @@ Pass-through device backends:
 .El
 .Sm on
 .Pp
-Connect to a PCI device on the host either named ppt
+Подключение к PCI-устройству на хосте либо с именем ppt
 .Ns Ar N
-or at the selector described by
+либо с селектором, описанным номерами
 .Ar slot ,
 .Ar bus ,
-and
-.Ar function
-numbers.
+и
+.Ar function .
 .Pp
-The
+Параметры
 .Ar passthru-device-options
-are:
+следующие:
 .Bl -tag -width 10n
 .It Cm rom= Ns Ar romfile
-Add
+Добавить
 .Ar romfile
-as option ROM to the PCI device.
-The ROM will be loaded by firmware and should be capable of initializing the device.
+в качестве дополнительного ПЗУ к PCI-устройству.
+ПЗУ будет загружаться микропрограммой и должно быть способно инициализировать устройства.
 .It Li bootindex= Ns Ar index
-Add the device to the bootorder at
+Добавить устройство в загрузчик по
 .Ar index .
-A fwcfg file is used to specify the bootorder.
-The guest firmware may ignore or doesn't support this fwcfg file.
-In that case, this feature doesn't work as expected.
+Для указания порядка загрузки используется файл fwcfg.
+Гостевая прошивка может игнорировать или не поддерживать этот файл fwcfg.
+В этом случае данная функция не будет работать так, как ожидается.
 .El
 .Pp
-Guest memory must be wired using the
+Гостевая память должна быть подключена с помощью опции
 .Fl S
-option when a pass-through device is configured.
+если настроено сквозное устройство.
 .Pp
-The host device must have been reserved at boot-time using the
+Хост-устройство должно быть зарезервировано во время загрузки с помощью
+переменной загрузчика
 .Va pptdevs
-loader variable as described in
+как описано в
 .Xr vmm 4 .
 .Pp
-TPM devices:
+Устройства TPM:
 .Bl -tag -width 10n
 .It Ns Ar type
-Specifies the type of the TPM device.
+Указывает тип устройства TPM.
 .Pp
-Supported types:
+Поддерживаемые типы:
 .Bl -tag -width 10n
 .It Cm passthru
 .El
 .It Cm version= Ns Ar version
-The
-.Ar version
-of the emulated TPM device according to the TCG specification.
+Версия эмулируемого TPM-устройства в соответствии со спецификацией TCG
+спецификации.
 .Pp
-Supported versions:
+Поддерживаемые версии:
 .Bl -tag -width 10n
 .It Cm 2.0
 .El
 .El
 .Pp
-Virtio console device backends:
+Бэкенды консольных устройств Virtio:
 .Bl -bullet
 .Sm off
 .It
@@ -678,38 +670,36 @@ Virtio console device backends:
 .Sm on
 .El
 .Pp
-A maximum of 16 ports per device can be created.
-Every port is named and corresponds to a Unix domain socket created by
+На одно устройство может быть создано не более 16 портов.
+Каждый порт имеет имя и соответствует сокету домена Unix, созданному
 .Nm .
 .Nm
-accepts at most one connection per port at a time.
+принимает не более одного соединения на порт одновременно.
 .Pp
-Limitations:
+Ограничения:
 .Bl -bullet
 .It
-Due to lack of destructors in
+Из-за отсутствия деструкторов в
 .Nm ,
-sockets on the filesystem must be cleaned up manually after
-.Nm
-exits.
+сокеты на файловой системе должны должны быть очищены вручную после выхода
+.Nm .
 .It
-There is no way to use the
+В настоящее время нет возможности использовать функцию
 .Dq console port
-feature, nor the console port
-resize at present.
+а также функцию ни изменения размера порта.
 .It
-Emergency write is advertised, but no-op at present.
+Объявлена аварийная запись, но на данный момент она не работает.
 .El
 .Pp
-Virtio input device backends:
+Бэкенды устройств ввода Virtio:
 .Bl -tag -width 10n
 .It Ar /dev/input/eventX
-Send input events of
+Передача событий ввода
 .Ar /dev/input/eventX
-to guest by VirtIO Input Interface.
+гостю через интерфейс ввода VirtIO.
 .El
 .Pp
-Framebuffer devices backends:
+Бэкенды устройств фреймбуфера:
 .Bl -bullet
 .Sm off
 .It
@@ -722,11 +712,11 @@ Framebuffer devices backends:
 .Sm on
 .El
 .Pp
-Configuration options are defined as follows:
+Параметры конфигурации определяются следующим образом:
 .Bl -tag -width 10n
 .It Cm rfb= Ns Ar ip-and-port Pq or Cm tcp= Ns Ar ip-and-port
-An IP address and a port VNC should listen on.
-There are two formats:
+IP-адрес и порт, на котором должен прослушиваться VNC.
+Существует два формата:
 .Pp
 .Bl -bullet -compact
 .It
@@ -740,73 +730,74 @@ There are two formats:
 .Sm on
 .El
 .Pp
-The default is to listen on localhost IPv4 address and default VNC port 5900.
-An IPv6 address must be enclosed in square brackets and may contain an
-optional zone identifier.
+По умолчанию прослушивается IPv4-адрес localhost и стандартный порт VNC 5900.
+IPv6-адрес должен быть заключен в квадратные скобки и может содержать
+необязательный идентификатор зоны.
 .It Cm w= Ns Ar width No and Cm h= Ns Ar height
-A display resolution, width and height, respectively.
-If not specified, a default resolution of 1024x768 pixels will be used.
-Minimal supported resolution is 640x480 pixels,
-and maximum is 1920x1200 pixels.
+Разрешение дисплея, ширина и высота соответственно.
+Если не указано, то по умолчанию будет использоваться разрешение 1024x768
+пикселей.
+Минимальное поддерживаемое разрешение - 640x480 пикселей, максимальное -
+1920x1200 пикселей.
 .It Cm vga= Ns Ar vgaconf
-Possible values for this option are
+Возможные значения этой опции
 .Cm io
 (default),
 .Cm on
-, and
+, и
 .Cm off .
-PCI graphics cards have a dual personality in that they are
-standard PCI devices with BAR addressing, but may also
-implicitly decode legacy VGA I/O space
+PCI-графические карты имеют двойственный характер: они являются стандартными
+PCI-устройствами с BAR-адресацией, но также могут неявно декодировать
+устаревшее пространство ввода-вывода VGA
 .Pq Ad 0x3c0-3df
-and memory space
+и пространство памяти
 .Pq 64KB at Ad 0xA0000 .
-The default
+Опция
 .Cm io
-option should be used for guests that attempt to issue BIOS calls which result
-in I/O port queries, and fail to boot if I/O decode is disabled.
+по умолчанию должна использоваться для гостей, которые пытаются выполнить
+вызовы BIOS, приводящие к запросам портов ввода-вывода, и не могут
+загрузиться, если декодирование ввода-вывода отключено.
 .Pp
-The
+Параметр
 .Cm on
-option should be used along with the CSM BIOS capability in UEFI
-to boot traditional BIOS guests that require the legacy VGA I/O and
-memory regions to be available.
+следует использовать вместе с возможностью CSM BIOS в UEFI для загрузки гостей
+с традиционным BIOS, которым требуется доступ к традиционным областям
+ввода-вывода и памяти VGA.
 .Pp
-The
+Опцию 
 .Cm off
-option should be used for the UEFI guests that assume that
-VGA adapter is present if they detect the I/O ports.
-An example of such a guest is
+следует использовать для гостей UEFI, которые предполагают наличие
+VGA-адаптера при обнаружении портов ввода/вывода.
+Примером такого гостя является
 .Ox
-in UEFI mode.
+в режиме UEFI.
 .Pp
-Please refer to the
+Обратитесь к вики-странице
 .Nm
 .Fx
-wiki page
 .Pq Lk https://wiki.freebsd.org/bhyve
-for configuration notes of particular guests.
+для получения информации о конфигурации конкретных гостей.
 .It Cm wait
-Instruct
+Укажите
 .Nm
-to only boot upon the initiation of a VNC connection, simplifying the
-installation of operating systems that require immediate keyboard input.
-This can be removed for post-installation use.
+загружаться только при инициировании VNC-соединения, что упростит установку
+операционных систем, требующих немедленного ввода с клавиатуры.
+Эта опция может быть удалена для использования после установки.
 .It Cm password= Ns Ar password
-This type of authentication is known to be cryptographically weak and is not
-intended for use on untrusted networks.
-Many implementations will want to use stronger security, such as running
-the session over an encrypted channel provided by IPsec or SSH.
+Этот тип аутентификации известен как криптографически слабый и не предназначен
+для использования в ненадежных сетях.
+Многие реализации захотят использовать более надежную защиту, например, запуск
+сессии по зашифрованному каналу, обеспечиваемому IPsec или SSH.
 .El
 .Pp
-xHCI USB device backends:
+Бэкенды USB-устройств xHCI:
 .Bl -tag -width 10n
 .It Cm tablet
-A USB tablet device which provides precise cursor synchronization
-when using VNC.
+Планшетное USB-устройство, обеспечивающее точную синхронизацию курсора при
+использовании VNC.
 .El
 .Pp
-NVMe device backends:
+Бэкенды устройств NVMe:
 .Bl -bullet
 .Sm off
 .It
@@ -821,36 +812,36 @@ NVMe device backends:
 .Sm on
 .El
 .Pp
-Configuration options are defined as follows:
+Параметры конфигурации определяются следующим образом:
 .Bl -tag -width 10n
 .It Ar devpath
-Accepted device paths are:
+Допустимыми путями устройств являются:
 .Ar /dev/blockdev
-or
+или
 .Ar /path/to/image
-or
+или
 .Cm ram= Ns Ar size_in_MiB .
 .It Cm maxq
-Max number of queues.
+Максимальное количество очередей.
 .It Cm qsz
-Max elements in each queue.
+Максимальное количество элементов в каждой очереди.
 .It Cm ioslots
-Max number of concurrent I/O requests.
+Максимальное количество одновременных запросов ввода-вывода.
 .It Cm sectsz
-Sector size (defaults to blockif sector size).
+Размер сектора (по умолчанию - размер сектора blockif).
 .It Cm ser
-Serial number with maximum 20 characters.
+Серийный номер, содержащий не более 20 символов.
 .It Cm eui64
-IEEE Extended Unique Identifier (8 byte value).
+Расширенный уникальный идентификатор IEEE (8-байтовое значение).
 .It Cm dsm
-DataSet Management support.
-Supported values are:
+Поддержка управления наборами данных.
+Поддерживаются следующие значения:
 .Cm auto , enable ,
-and
+и
 .Cm disable .
 .El
 .Pp
-AHCI device backends:
+Бэкенды устройств AHCI:
 .Bl -bullet
 .It
 .Sm off
@@ -862,21 +853,21 @@ AHCI device backends:
 .Sm on
 .El
 .Pp
-Configuration options are defined as follows:
+Параметры конфигурации определяются следующим образом:
 .Bl -tag -width 10n
 .It Cm nmrr
-Nominal Media Rotation Rate, known as RPM.
-Value 1 will indicate device as Solid State Disk.
-Default value is 0, not report.
+оминальная скорость вращения носителя, известная как RPM.
+Значение 1 указывает на то, что устройство является твердотельным диском.
+Значение по умолчанию - 0, не сообщать.
 .It Cm ser
-Serial Number with maximum 20 characters.
+Серийный номер, содержащий не более 20 символов.
 .It Cm rev
-Revision Number with maximum 8 characters.
+Номер ревизии максимум 8 символов.
 .It Cm model
-Model Number with maximum 40 characters.
+Номер модели, содержащий не более 40 символов.
 .El
 .Pp
-HD Audio device backends:
+Бэкенды устройств HD Audio:
 .Bl -bullet
 .It
 .Sm off
@@ -885,127 +876,132 @@ HD Audio device backends:
 .Sm on
 .El
 .Pp
-Configuration options are defined as follows:
+Параметры конфигурации определяются следующим образом:
 .Bl -tag -width 10n
 .It Cm play
-Playback device, typically
+Устройство воспроизведения, обычно
 .Ar /dev/dsp0 .
 .It Cm rec
-Recording device, typically
+Устройство записи, обычно
 .Ar /dev/dsp0 .
 .El
 .It Fl U Ar uuid
-Set the universally unique identifier
+Установка универсального уникального идентификатора
 .Pq UUID
-in the guest's System Management BIOS System Information structure.
-By default a UUID is generated from the host's hostname and
+в структуре System Management BIOS System Information гостевой системы.
+По умолчанию UUID генерируется из имени хоста и имени 
 .Ar vmname .
 .It Fl u
-RTC keeps UTC time.
+RTC поддерживает время UTC.
 .It Fl W
-Force virtio PCI device emulations to use MSI interrupts instead of MSI-X
-interrupts.
+Заставить эмуляцию PCI-устройств virtio использовать прерывания MSI вместо
+прерываний MSI-X.
 .It Fl w
-Ignore accesses to unimplemented Model Specific Registers (MSRs).
-This is intended for debug purposes.
+Игнорировать обращения к нереализованным регистрам Model Specific Registers (MSRs).
+Это предназначено для целей отладки.
 .It Fl x
-The guest's local APIC is configured in x2APIC mode.
+Локальный APIC гостя настроен в режиме x2APIC.
 .It Fl Y
-Disable MPtable generation.
+Отключить генерацию MPtable.
 .It Ar vmname
-Alphanumeric name of the guest.
-This should be the same as that created by
+Буквенно-цифровое имя гостя.
+Оно должно быть таким же, как и созданное командой
 .Xr bhyveload 8 .
 .El
-.Sh CONFIGURATION VARIABLES
+.Sh Переменные настройки
 .Nm
-uses an internal tree of configuration variables to describe global and
-per-device settings.
-When
+использует внутреннее дерево конфигурационных переменных для описания
+глобальных и индивидуальных настроек устройства.
+Когда
 .Nm
-starts,
-it parses command line options (including config files) in the order given
-on the command line.
-Each command line option sets one or more configuration variables.
-For example,
-the
+запускается, он анализирует опции командной строки (включая файлы
+конфигурации) в порядке, указанном в командной строке.
+Каждый параметр командной строки задает одну или несколько конфигурационных переменных.
+Например,
+опция
 .Fl s
-option creates a new tree node for a PCI device and sets one or more variables
-under that node including the device model and device model-specific variables.
-Variables may be set multiple times during this parsing stage with the final
-value overriding previous values.
+создает новый узел дерева для PCI-устройства и устанавливает одну или
+несколько переменных в этом узле, включая модель устройства и переменные,
+специфичные для модели устройства.
+Переменные могут быть заданы несколько раз на этапе разбора, при этом
+окончательное значение отменяет предыдущие.
 .Pp
-Once all of the command line options have been processed,
-the configuration values are frozen.
+После обработки всех параметров командной строки значения конфигурации
+замораживаются.
 .Nm
-then uses the value of configuration values to initialize device models
-and global settings.
+использует значения конфигурации для инициализации моделей устройств
+и глобальных настроек.
 .Pp
-More details on configuration variables can be found in
+Более подробную информацию о конфигурационных переменных можно найти в разделе
 .Xr bhyve_config 5 .
-.Sh DEBUG SERVER
-The current debug server provides limited support for debuggers.
-.Ss Registers
-Each virtual CPU is exposed to the debugger as a thread.
+.Sh Сервер отладки
+Текущий отладочный сервер обеспечивает ограниченную поддержку отладчиков.
+.Ss Регистры
+Каждый виртуальный процессор доступен отладчику как поток.
 .Pp
-General purpose registers can be queried for each virtual CPU, but other
-registers such as floating-point and system registers cannot be queried.
-.Ss Memory
-Memory (including memory mapped I/O regions) can be read and written by the debugger.
-Memory operations use virtual addresses that are resolved to physical addresses
-via the current virtual CPU's active address translation.
-.Ss Control
-The running guest can be interrupted by the debugger at any time
-.Pq for example, by pressing Ctrl-C in the debugger .
+Регистры общего назначения могут быть запрошены для каждого виртуального
+процессора, но другие регистры, такие как регистры с плавающей точкой и
+системные регистры, запрашивать нельзя.
+.Ss Память
+Отладчик может считывать и записывать данные из памяти (включая регионы
+ввода/вывода, отображенные на память).
+Операции с памятью используют виртуальные адреса, которые преобразуются в
+физические адреса с помощью активной трансляции адресов текущего виртуального
+процессора.
+.Ss Управление
+Работающий гость может быть прерван отладчиком в любой момент
+.Pq for например, нажав Ctrl-C в отладчике .
 .Pp
-Single stepping is only supported on Intel CPUs supporting the MTRAP VM exit.
+Одиночный шаг поддерживается только на процессорах Intel, поддерживающих MTRAP
+VM выход.
 .Pp
-Breakpoints are supported on Intel CPUs that support single stepping.
-Note that continuing from a breakpoint while interrupts are enabled in the
-guest may not work as expected due to timer interrupts firing while single
-stepping over the breakpoint.
-.Sh SIGNAL HANDLING
+Точки останова поддерживаются на процессорах Intel, поддерживающих одиночный шаг.
+Обратите внимание, что продолжение работы с точки останова при включенных
+прерываниях в гостя может работать не так, как ожидалось, из-за срабатывания
+прерываний таймера во время прерываний таймера при одиночном переходе через
+точку останова.
+.Sh Обработка сигналов
 .Nm
-deals with the following signals:
+работает со следующими сигналами:
 .Pp
 .Bl -tag -width SIGTERM -compact
 .It SIGTERM
-Trigger ACPI poweroff for a VM
+Триггер выключения питания ACPI для виртуальной машины
 .El
-.Sh EXIT STATUS
-Exit status indicates how the VM was terminated:
+.Sh ВОЗВРАЩАЕМОЕ ЗНАЧЕНИЕ
+Статус выхода указывает, как была завершена работа виртуальной машины:
 .Pp
 .Bl -tag -width indent -compact
 .It 0
-rebooted
+перезагружена
 .It 1
-powered off
+выключено питание
 .It 2
-halted
+остановлена
 .It 3
-triple fault
+тройная ошибка
 .It 4
-exited due to an error
+завершилась из-за ошибки
 .El
-.Sh EXAMPLES
-If not using a boot ROM, the guest operating system must have been loaded with
-.Xr bhyveload 8
-or a similar boot loader before
+.Sh ПРИМЕРЫ
+Если не используется загрузочное ПЗУ, то перед запуском
 .Xr bhyve 4
-can be run.
-Otherwise, the boot loader is not needed.
+гостевая операционная система должна быть загружена с помощью
+.Xr bhyveload 8
+или аналогичного загрузчика.
+В противном случае загрузчик не нужен.
 .Pp
-To run a virtual machine with 1GB of memory, two virtual CPUs, a virtio
-block device backed by the
+Чтобы запустить виртуальную машину с 1 ГБ памяти, двумя виртуальными
+процессорами, блочным устройством virtio с образом файловой системы
 .Pa /my/image
-filesystem image, and a serial port for the console:
+и последовательным портом для консоли:
 .Bd -literal -offset indent
 bhyve -c 2 -s 0,hostbridge -s 1,lpc -s 2,virtio-blk,/my/image \\
   -l com1,stdio -A -H -P -m 1G vm1
 .Ed
 .Pp
-Run a 24GB single-CPU virtual machine with three network ports, one of which
-has a MAC address specified:
+Запустите виртуальную машину с одним процессором и 24 ГБ памяти с тремя
+сетевыми портами, один из которых которых указан MAC-адрес:
 .Bd -literal -offset indent
 bhyve -s 0,hostbridge -s 1,lpc -s 2:0,virtio-net,tap0 \\
   -s 2:1,virtio-net,tap1 \\
@@ -1014,11 +1010,10 @@ bhyve -s 0,hostbridge -s 1,lpc -s 2:0,virtio-net,tap0 \\
   -A -H -P -m 24G bigvm
 .Ed
 .Pp
-Run an 8GB quad-CPU virtual machine with 8 AHCI SATA disks, an AHCI ATAPI
-CD-ROM, a single virtio network port, an AMD hostbridge, and the console
-port connected to an
-.Xr nmdm 4
-null-modem device.
+Запустите виртуальную машину с четырьмя процессорами по 8 ГБ, 8 дисками AHCI
+SATA, CD-ROM AHCI ATAPI, одним сетевым портом virtio, хостбриджем AMD и
+консольным портом, подключенным к нуль-модему
+.Xr nmdm 4 .
 .Bd -literal -offset indent
 bhyve -c 4 \\
   -s 0,amd_hostbridge -s 1,lpc \\
@@ -1032,8 +1027,8 @@ cd:/images/install.iso \\
   -A -H -P -m 8G
 .Ed
 .Pp
-Run a UEFI virtual machine with a display resolution of 800 by 600 pixels
-that can be accessed via VNC at: 0.0.0.0:5900.
+Запустите виртуальную машину UEFI с разрешением экрана 800 на 600 пикселей,
+доступ к которой можно получить через VNC по адресу: 0.0.0.0:5900.
 .Bd -literal -offset indent
 bhyve -c 2 -m 4G -w -H \\
   -s 0,hostbridge \\
@@ -1047,8 +1042,7 @@ bhyve -c 2 -m 4G -w -H \\
    uefivm
 .Ed
 .Pp
-Run a UEFI virtual machine with a VNC display that is bound to all IPv6
-addresses on port 5900.
+Запустите виртуальную машину UEFI с VNC-дисплеем, который привязан ко всем IPv6 адресам на порту 5900.
 .Bd -literal -offset indent
 bhyve -c 2 -m 4G -w -H \\
   -s 0,hostbridge \\
@@ -1061,11 +1055,12 @@ bhyve -c 2 -m 4G -w -H \\
    uefivm
 .Ed
 .Pp
-Run a UEFI virtual machine with a VARS file to save EFI variables.
-Note that
+Запустите виртуальную машину UEFI с файлом VARS для сохранения переменных
+EFI.
+Обратите внимание, что
 .Nm
-will write guest modifications to the given VARS file.
-Be sure to create a per-guest copy of the template VARS file from
+будет записывать модификации гостя в заданный файл VARS.
+Обязательно создайте для каждого гостя копию шаблонного VARS-файла из
 .Pa /usr .
 .Bd -literal -offset indent
 bhyve -c 2 -m 4g -w -H \\
@@ -1074,7 +1069,7 @@ bhyve -c 2 -m 4g -w -H \\
   -l bootrom,/usr/local/share/uefi-firmware/BHYVE_UEFI_CODE.fd,BHYVE_UEFI_VARS.fd
    uefivm
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРИ ТАКЖЕ
 .Xr bhyve 4 ,
 .Xr netgraph 4 ,
 .Xr ng_socket 4 ,
@@ -1090,10 +1085,11 @@ bhyve -c 2 -m 4g -w -H \\
 .%B 64 and IA-32 Architectures Software Developer’s Manual
 .%V Volume 3
 .Re
-.Sh HISTORY
+.Sh ИСТОРИЯ
+Впервые
 .Nm
-first appeared in
+появился во
 .Fx 10.0 .
-.Sh AUTHORS
+.Sh АВТОРЫ 
 .An Neel Natu Aq Mt neel@freebsd.org
 .An Peter Grehan Aq Mt grehan@freebsd.org
