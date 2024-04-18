@@ -30,98 +30,97 @@
 .Dd April 14, 2014
 .Dt FSTAB 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm fstab
-.Nd static information about the file systems
-.Sh SYNOPSIS
+.Nd статическая информация о файловых системах
+.Sh КРАТКИЙ ОБЗОР
 .In fstab.h
-.Sh DESCRIPTION
-The file
+.Sh ОПИСАНИЕ
+Файл
 .Nm
-contains descriptive information about the various file
-systems.
+содержит описательную информацию о различных файловых
+системах.
 .Nm
-is only read by programs, and not written;
-it is the duty of the system administrator to properly create
-and maintain this file.
-Each file system is described on a separate line;
-fields on each line are separated by tabs or spaces.
-The order of records in
+читается только программами и не записывается;
+в обязанности системного администратора входит надлежащее создание
+и ведение этого файла.
+Каждая файловая система описана в отдельной строке;
+Поля в каждой строке разделены символами табуляции или пробелами.
+Порядок следования записей в
 .Nm
-is important because
+важен, протому что
 .Xr fsck 8 ,
 .Xr mount 8 ,
-and
+и
 .Xr umount 8
-sequentially iterate through
-.Nm
-doing their thing.
+последовательно проходят через
+.Nm ,
+выполняя свою работу.
 .Pp
-The first field,
+Первое поле,
 .Pq Fa fs_spec ,
-describes the special device or
-remote file system to be mounted.
-The contents are decoded by the
-.Xr strunvis 3
-function.
-This allows using spaces or tabs in the device name which would be
-interpreted as field separators otherwise.
+описывает специальное устройство или
+удаленную файловую систему, которые должны быть подключены.
+Содержимое расшифровывается с помощью функции
+.Xr strunvis 3 .
+Это позволяет использовать пробелы или символы табуляции в названии устройства, которые в противном случае были бы
+интерпретированы как разделители полей.
 .Pp
-The second field,
+Второе поле, 
 .Pq Fa fs_file ,
-describes the mount point for the file system.
-For swap partitions, this field should be specified as
+описывает точку подключения файловой системы.
+Для разделов подкачки это поле должно быть указано как
 .Dq none .
-The contents are decoded by the
+Содержимое расшифровывается с помощью функции
 .Xr strunvis 3
-function, as above.
+как и выше.
 .Pp
-The third field,
+Третье поле,
 .Pq Fa fs_vfstype ,
-describes the type of the file system.
-The system can support various file system types.
-Only the root, /usr, and /tmp file systems need be statically
-compiled into the kernel;
-everything else will be automatically loaded at mount
-time.
-(Exception: the FFS cannot currently be demand-loaded.)
-Some people still prefer to statically
-compile other file systems as well.
+описывает тип файловой системы.
+Система может поддерживать различные типы файловых систем.
+Только файловые системы root, /usr и /tmp должны быть статически
+скомпилированы в ядро;
+все остальное будет автоматически загружено во
+время монтирования.
+(Исключение: в настоящее время FFS не может быть загружена по требованию.)
+Некоторые пользователи по-прежнему предпочитают статически
+компилировать и другие файловые системы.
 .Pp
-The fourth field,
+Четвертое поле,
 .Pq Fa fs_mntops ,
-describes the mount options associated with the file system.
-It is formatted as a comma separated list of options.
-It contains at least the type of mount (see
+описывает параметры монтирования, связанные с файловой системой.
+Он представлен в виде списка параметров, разделенных запятыми.
+В нем указан, по крайней мере, тип монтирования (см.
 .Fa fs_type
-below) plus any additional options appropriate to the file system type.
-See the options flag
+ниже), а также любые дополнительные параметры, соответствующие типу файловой системы.
+Смотрите флажок "Параметры".
 .Pq Fl o
-in the
+на странице
 .Xr mount 8
-page and the file system specific page, such as
+и странице, относящаяся к конкретной файловой системе, например,
 .Xr mount_nfs 8 ,
-for additional options that may be specified.
-All options that can be given to the file system specific mount commands
-can be used in
+для получения дополнительных опций, которые могут быть указаны.
+Все параметры, которые могут быть заданы командам монтирования, специфичным для файловой системы
+, также могут быть использованы в
+файле
 .Nm
-as well.
-They just need to be formatted a bit differently.
-The arguments of the
+Их просто нужно отформатировать немного по-другому.
+Аргументы параметра
 .Fl o
-option can be used without the preceding
+можно использовать без предшествующего
 .Fl o
-flag.
-Other options need both the file system specific flag and its argument,
-separated by an equal sign.
-For example, mounting an
+флага.
+Для других параметров требуются как флаг, относящийся к конкретной файловой системе, так и его аргумент,
+разделенные знаком равенства.
+Например, для установки
 .Xr msdosfs 5
 filesystem, the options
 .Bd -literal -offset indent
 -o sync -o noatime -m 644 -M 755 -u foo -g bar
 .Ed
 .Pp
-should be written as
+должно быть записано как
 .Bd -literal -offset indent
 sync,noatime,-m=644,-M=755,-u=foo,-g=bar
 .Ed
@@ -129,257 +128,252 @@ sync,noatime,-m=644,-M=755,-u=foo,-g=bar
 in the option field of
 .Nm .
 .Pp
-If the options
+Если параметры
 .Dq userquota
-and/or
+и/или
 .Dq groupquota
-are specified,
-the file system is automatically processed by the
+указаны,
+файловая система автоматически обрабатывает
 .Xr quotacheck 8
-command, and user and/or group disk quotas are enabled with
+команду, а пользовательские и/или групповые дисковые квоты включаются с помощью
 .Xr quotaon 8 .
-By default,
-file system quotas are maintained in files named
+По умолчанию
+квоты файловой системы сохраняются для файлов с именами
 .Pa quota.user
-and
+и
 .Pa quota.group
-which are located at the root of the associated file system.
-These defaults may be overridden by putting an equal sign
-and an alternative absolute pathname following the quota option.
-Thus, if the user quota file for
+которые расположены в корневом каталоге соответствующей файловой системы.
+Эти значения по умолчанию можно изменить, поставив знак равенства
+и альтернативный абсолютный путь после параметра quota.
+Таким образом, если файл пользовательской квоты для
 .Pa /tmp
-is stored in
+хранятся в
 .Pa /var/quotas/tmp.user ,
-this location can be specified as:
+это местоположение может быть указано следующим образом:
 .Bd -literal -offset indent
 userquota=/var/quotas/tmp.user
 .Ed
 .Pp
-If the option
+Если опция
 .Dq failok
-is specified,
-the system will ignore any error which happens during the mount of that filesystem,
-which would otherwise cause the system to drop into single user mode.
-This option is implemented by the
+указана, то
+система будет игнорировать любую ошибку, возникающую при монтировании этой файловой системы,
+которая в противном случае привела бы к переходу системы в однопользовательский режим.
+Эта опция реализована с помощью команды
 .Xr mount 8
-command and will not be passed to the kernel.
+и не будет передана ядру.
 .Pp
-If the option
+Если опция
 .Dq noauto
-is specified, the file system will not be automatically
-mounted at system startup.
-Note that, for network file systems
-of third party types
-(i.e., types supported by additional software
-not included in the base system)
-to be automatically mounted at system startup,
-the
+указана, то файловая система не будет автоматически
+монтироваться при запуске системы.
+Обратите внимание, что для сетевых файловых систем
+сторонних
+производителей (т.е. типов, поддерживаемых дополнительным программным
+обеспечением, не входящим в базовую систему)
+будет автоматически монтироваться при запуске системы,
+Переменная
 .Va extra_netfs_types
 .Xr rc.conf 5
-variable must be used to extend the
+должна использоваться для расширения
+списка типов сетевых файловых систем в сценарии запуска
 .Xr rc 8
-startup script's list of network file system types.
 .Pp
-If the option
+Если опция
 .Dq late
-is specified, the file system will be automatically mounted
-at a stage of system startup after remote mount points are mounted.
-For more detail about this option,
-see the
+указана, то  tфайловая система будет автоматически подключена
+на этапе запуска системы после установки удаленных точек монтирования.
+Более подробную информацию об этой опции
+смотрите в разделе
 .Xr mount 8
-manual page.
 .Pp
-If the option
-.Dq update
-is specified, it indicates that the status of an already mounted file
-system should be changed accordingly.
-This allows, for example, file systems mounted read-only to be upgraded
-read-write and vice-versa.
-By default, an entry corresponding to a file systems that is already
-mounted is going to be skipped over when processing
+Если указана опция
+.Dq update ,
+is это означает, что статус уже смонтированной файловой
+системы должен быть соответствующим образом изменен.
+Это позволяет, например, обновлять файловые системы, подключенные только для
+чтения, для записи и наоборот.
+По умолчанию запись, соответствующая уже
+подключенной файловой системе, будет пропущена при обработке
 .Nm ,
-unless it's a root file system, in which case logic similar to
-.Dq update
-is applied automatically.
+если только это не корневая файловая система, и в этом случае логика аналогична
+.Dq update ,
+применяется автоматически.
 .Pp
-The
+Опция
 .Dq update
-option is typically used in conjunction with two
+обычно используется в сочетании с двумя
 .Nm
-files.
-The first
+файлами.
+Первый файл
 .Nm
-file is used to set up the initial set of file systems.
-The second
+используется для настройки исходного набора файловых систем.
+Затем запускается второй файл
 .Nm
-file is then run to update the initial set of file systems and
-to add additional file systems.
+для обновления исходного набора файловых систем и
+добавления дополнительных файловых систем.
 .Pp
-The type of the mount is extracted from the
+Тип монтирования извлекается из поля
 .Fa fs_mntops
-field and stored separately in the
+и сохраняется отдельно в поле
 .Fa fs_type
-field (it is not deleted from the
+(он не удаляется из поля
 .Fa fs_mntops
-field).
-If
+).
+Если
 .Fa fs_type
-is
+равен
 .Dq rw
-or
+или
 .Dq ro
-then the file system whose name is given in the
+то файловая система, имя которой указано в поле
 .Fa fs_file
-field is normally mounted read-write or read-only on the
-specified special file.
+обычно монтируется для чтения-записи или только для чтения в
+указанном специальном файле.
 .Pp
-If
+Если
 .Fa fs_type
-is
+равен
 .Dq sw
-then the special file is made available as a piece of swap
-space by the
+то специальный файл становится доступным как часть пространства подкачки
+с помощью команды
 .Xr swapon 8
-command at the end of the system reboot procedure.
-For swap devices, the keyword
+в конце процедуры перезагрузки системы.
+Для устройств подкачки ключевое
+слово 
 .Dq trimonce
-triggers the delivery of a
+запускает отправку команды на устройство.
 .Dv BIO_DELETE
-command to the device.
-This command marks the device's blocks as unused, except those that
-might store a disk label.
-This marking can erase a crash dump.
-To delay
+Эта команда помечает блоки устройства как неиспользуемые, за исключением тех, в которых
+может храниться метка диска.
+Эта пометка может стереть аварийный дамп.
+Чтобы отложить замену
 .Nm swapon
-for a device until after
+для устройства до тех пор, пока
 .Nm savecore
-has copied the crash dump to another location, use the
-.Dq late
-option.
-For vnode-backed swap spaces,
+не скопирует аварийный дамп в другое место, используйте опцию
+.Dq late .
+Для пространств подкачки, поддерживаемых vnode, поддерживается файл
 .Dq file
-is supported in the
+в поле
 .Fa fs_mntops
-field.
-When
+Когда
 .Fa fs_spec
-is an
+- это файл устройства
 .Xr md 4
-device file
 .Pq Do md Dc or Do md[0-9]* Dc
-and
+и
 .Dq file
-is specified in
+указан в 
 .Fa fs_mntopts ,
-an
+устройство
 .Xr md 4
-device is created with the specified file used as backing store,
-and then the new device is used as swap space.
-Swap entries on
+создается с использованием указанного файла, используемого в качестве резервного хранилища,
+а затем новое устройство используется в качестве пространства подкачки.
+Замена записей на устройствах с расширением
 .Pa .eli
-devices will cause automatic creation of encrypted devices.
-The
+приведет к автоматическому созданию зашифрованных устройств.
+Опции
 .Dq ealgo ,
 .Dq aalgo ,
 .Dq keylen ,
 .Dq notrim ,
-and
+и
 .Dq sectorsize
-options may be passed to control those
+могут быть переданы для управления 
 .Xr geli 8
-parameters.
-The fields other than
+параметрам.
+Поля, отличные от
 .Fa fs_spec
-and
+и
 .Fa fs_type
-are unused.
-If
+не используются.
+Если
 .Fa fs_type
-is specified as
+указан как
 .Dq xx
-the entry is ignored.
-This is useful to show disk partitions which are currently unused.
+, запись игнорируется.
+Это полезно для отображения разделов диска, которые в данный момент не используются.
 .Pp
-The fifth field,
+Пятое поле,
 .Pq Fa fs_freq ,
-is used for these file systems by the
+используется для этих файловых систем командой
 .Xr dump 8
-command to determine which file systems need to be dumped.
-If the fifth field is not present, a value of zero is returned and
+чтобы определить, какие файловые системы необходимо удалить.
+Если пятое поле отсутствует, возвращается нулевое значение, и
 .Nm dump
-will assume that the file system does not need to be dumped.
-If the fifth field is greater than 0, then it specifies the number of days
-between dumps for this file system.
+будет считать, что файловая система не нуждается в удалении.
+Если пятое поле больше 0, то оно указывает количество дней
+между удалениями для этой файловой системы.
 .Pp
-The sixth field,
+Шестое поле
 .Pq Fa fs_passno ,
-is used by the
+используется программами
 .Xr fsck 8
-and
+и
 .Xr quotacheck 8
-programs to determine the order in which file system and quota
-checks are done at reboot time.
-The
+для определения порядка, в котором выполняются проверки файловой системы и квот
+во время перезагрузки.
+Поле
 .Fa fs_passno
-field can be any value between 0 and
+может содержать любое значение от 0 до
 .Ql INT_MAX Ns -1 .
 .Pp
-The root file system should be specified with a
+Корневая файловая система должна быть указана с номером
 .Fa fs_passno
-of 1, and other file systems should have a
+равным
+1, а другие файловые системы должны иметь значение
 .Fa fs_passno
-of 2 or greater.
-A file system with a
+ равное 2 или более.
+Файловая система с параметром
 .Fa fs_passno
-value of 1 is always checked sequentially and be completed before
-another file system is processed, and it will be processed before
-all file systems with a larger
+без значения 1 всегда проверяется последовательно и завершается перед
+обработкой другой файловой системы, и она будет обработана перед
+всеми файловыми системами с большим значением
 .Fa fs_passno .
 .Pp
-For any given value of
+При любом заданном значении параметра
 .Fa fs_passno ,
-file systems within a drive will be checked sequentially,
-but file systems on different drives will be checked at the
-same time to utilize parallelism available in the hardware.
-Once all file system checks are complete for the current
+файловые системы на диске будут проверяться последовательно,
+но файловые системы на разных дисках будут проверяться
+одновременно, чтобы использовать параллелизм, доступный в аппаратном обеспечении.
+Как только все проверки файловой системы будут завершены для текущего
 .Fa fs_passno ,
-the same process will start over for the next
+тот же процесс начнется заново для следующего
 .Fa fs_passno .
 .Pp
-If the sixth field is not present or is zero,
-a value of zero is returned and
+Если шестое поле отсутствует или равно нулю,
+возвращается нулевое значение и
 .Xr fsck 8
-and
+и
 .Xr quotacheck 8
-will assume that the file system does not need to be checked.
+будут предполагать, что файловая система не нуждается в проверке.
 .Pp
-The
+Поле
 .Fa fs_passno
-field can be used to implement finer control when
-the system utilities may determine that the file system resides
-on a different physical device, when it actually does not, as with a
-.Xr ccd 4
-device.
-All file systems with a lower
+может использоваться для более точного управления, когда
+системные утилиты могут определить, что файловая система находится
+на другом физическом устройстве, хотя на самом деле это не так, как в случае с устройством
+.Xr ccd 4 .
+Все файловые системы с более низким значением
 .Fa fs_passno
-value will be completed before starting on file systems with a
-higher
+будут завершены перед запуском в файловых системах с более высоким
+значением
+.Fa fs_passno .
+Например, все файловые системы с номером
 .Fa fs_passno
-value.
-E.g. all file systems with a
+равным 2, будут завершены до запуска любых файловых систем с номером
 .Fa fs_passno
-of 2 will be completed before any file systems with a
+равным 3 или более.
+Между различными значениями 
 .Fa fs_passno
-of 3 or greater are started.
-Gaps are allowed between the different
-.Fa fs_passno
-values.
-E.g. file systems listed in
+допускаются пробелы
+Например, файловые системы, перечисленные в файле
 .Pa /etc/fstab
-may have
+могут иметь
 .Fa fs_passno
-values such as 0, 1, 2, 15, 100, 200, 300, and may appear in any order
-within
+такие значения, как 0, 1, 2, 15, 100, 200, 300, и могут располагаться в любом порядке
+внутри
 .Pa /etc/fstab .
 .Bd -literal
 #define	FSTAB_RW	"rw"	/* read/write device */
@@ -399,58 +393,58 @@ struct fstab {
 };
 .Ed
 .Pp
-The proper way to read records from
+Правильный способ чтения записей из
 .Pa fstab
-is to use the routines
+заключается в использовании процедур
 .Xr getfsent 3 ,
 .Xr getfsspec 3 ,
 .Xr getfstype 3 ,
-and
+и
 .Xr getfsfile 3 .
 .Sh FILES
 .Bl -tag -width /etc/fstab -compact
 .It Pa /etc/fstab
-The file
+Файл
 .Nm
-resides in
+Находится по следующему пути:
 .Pa /etc .
 .El
 .Sh EXAMPLES
 .Bd -literal
-# Device	Mountpoint	FStype	Options		Dump	Pass#
+# Устройство	Точка монтирования	FStype	Опции	Дамп	Pass#
 #
-# UFS file system.
+# Файловая система UFS.
 /dev/da0p2	/		ufs	rw		1	1
 #
-# Swap space on a block device.
+# Пространство подкачки на заблокированном устройстве
 /dev/da0p1	none		swap	sw		0	0
 #
-# Swap space using a block device with GBDE/GELI encryption.
-# aalgo, ealgo, keylen, sectorsize options are available
-# for .eli devices.
+# Пространство подкачки с помощью заблокированного устройства с шифрованием GBDE/GELI.
+# доступны варианты algo, ealgo, keylen, sectorsize
+# для устройств .eli.
 /dev/da1p1.bde	none		swap	sw		0	0
 /dev/da1p2.eli	none		swap	sw		0	0
 #
 # tmpfs.
 tmpfs		/tmp		tmpfs	rw,size=1g,mode=1777	0 0
 #
-# UFS file system on a swap-backed md(4).  /dev/md10 is
-# automatically created.  If it is "md", a unit number
-# will be automatically selected.
+#Файловая система UFS на md с поддержкой подкачки(4). 
+# Автоматически создается файл /dev/md10. Если это "md", то 
+# автоматически будет выбран номер устройства.
 md10		/scratch	mfs	rw,-s1g		0	0
 #
-# Swap space on a vnode-backed md(4).
+# Пространство подкачки на md с поддержкой vnode(4).
 md11		none		swap	sw,file=/swapfile	0 0
 #
-# CDROM.  "noauto" option is typically used because the
-# media is removable.
+# CD-ROM. Обычно используется опция "noauto", поскольку носитель
+# является съемным.
 /dev/cd0	/cdrom		cd9660	ro,noauto	0	0
 #
-# NFS-exported file system.  "serv" is an NFS server name
-# or IP address.
+# NFS-экспортируемая файловая система. "serv" - это имя сервера NFS
+# или IP-адрес.
 serv:/export	/nfs		nfs	rw,noinet6	0	0
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРЕТЬ ТАКЖЕ
 .Xr getfsent 3 ,
 .Xr getvfsbyname 3 ,
 .Xr strunvis 3 ,
@@ -463,8 +457,8 @@ serv:/export	/nfs		nfs	rw,noinet6	0	0
 .Xr quotaon 8 ,
 .Xr swapon 8 ,
 .Xr umount 8
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Формат файля
 .Nm
-file format appeared in
+появился в версии
 .Bx 4.0 .
