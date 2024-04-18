@@ -41,609 +41,583 @@
 .Dd December 1, 2022
 .Dt DEVD.CONF 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm devd.conf
-.Nd configuration file for
+.Nd файл конфигурации для
 .Xr devd 8
-.Sh DESCRIPTION
-.Ss General Syntax
-A
+.Sh Описание
+.Ss Общий синтакс
+Конфигурация
 .Xr devd 8
-configuration consists of two general features, statements
-and comments.
-All statements end with a semicolon.
-Many statements can contain substatements, which are also
-terminated with a semicolon.
+состоит из двух основных компонентов: операторов и коментариев.
+Все операторы заканчиваются точкой с запятой.
+Многие операторы могут содержать вложенные инструкции, которые также 
+заканчиваются точкой с запятой.
 .Pp
-The following statements are supported:
+Поддерживаются следующие инструкции:
 .Bl -tag -width ".Ic options"
 .It Ic attach
-Specifies various matching criteria and actions to perform when
-a newly attached device matches said criteria.
+Определяет различные критерии соответствия и действия, которые необходимо выполнить, когда
+новое подключенное утройство соответствует указанным критериями.
 .It Ic detach
-Specifies various matching criteria and actions to perform when
-a newly detached device matches said criteria.
+Определяет различные критерии соответствия и действия, которые необходимо выполнить, когда
+недавно отключенное устройство соответствует указанным критериям.
 .It Ic nomatch
-Specifies various matching criteria and actions to perform when
-no device driver currently loaded in the kernel claims a (new)
-device.
+Определяет различные критерии соответствия и действия, которые необходимо выполнить, если
+ни один драйвер устройства, загруженный в ядро, не соответствует (новому)
+устройству.
 .It Ic notify
-Specifies various matching criteria and actions to perform when the kernel
-sends an event notification to userland.
+Определяет различные критерии соответствия и действия, которые необходимо выполнить, когда ядро
+отправляет уведомление о событиии в пользвательскую часть.
 .It Ic options
-Specifies various options and parameters for the operation of
+Определяет различные опции и параметры для работы
 .Xr devd 8 .
 .El
 .Pp
-Statements may occur in any order in the configuration file, and may be
-repeated as often as required.
-Further details on the syntax and meaning of each statement and their
-substatements are explained below.
+Утверждения могут встречаться в конфигурационном файле в любом порядке и могут
+повторяться столько раз, сколько потребуется.
+Более подробная информация о синтаксисе и значении
+каждого утверждения и их подстановок описаны ниже.
 .Pp
-Each statement, except
-.Ic options
-has a priority (an arbitrary number) associated with it, where
-.Ql 0
-is defined as the lowest priority.
-If two statements match the same event, only the action of the statement with
-highest priority will be executed.
-In this way generic statements can be overridden for devices or
-notifications that require special attention.
+Каждое утверждение, за исключением
+.Ic опций ,
+имеет приоритет (произвольное число). где '0' определяется как самый низкий приоритет.
+
+Если два оператора соответствуют одному и тому же событию, будет выполнено только действие оператора
+с наивысшим приоритетом. 
+Таким образом, общие инструкции могут быть переопределены для устройств
+или уведомлений, требующих особого внимания.
 .Pp
-The general syntax of a statement is:
+Общий синтакс оператора:
 .Bd -literal -offset indent
 statement priority {
-	substatement "value";
+	substatement "значение";
 	...
-	substatement "value";
+	substatement "значение";
 };
 .Ed
-.Ss Sub-statements
-The following sub-statements are supported within the
+.Ss Вспомогательные операторы
+Следующие вспомогательные операторы поддерживаются в операторе
 .Ic options
-statement.
 .Bl -tag -width ".Ic directory"
-.It Ic directory Qq Ar /some/path ;
-Adds the given directory to the list of directories from which
+.It Ic каталог Qq Ar /some/path ;
+Добавляет данный каталог в список каталогов, из которых
 .Xr devd 8
-will read all files named "*.conf" as further
-configuration files.
-Any number of
-.Ic directory
-statements can be used.
+будет считывать все файлы с именем "*.conf" в качестве дополнительных
+конфигурационных файлов.
+ Можно использовать любое количество инструкций для
+.Ic каталогов
 .It Ic pid-file Qq Pa /var/run/devd.pid ;
-Specifies PID file.
+Указывает PID-файл.
 .It Ic set Ar regexp-name Qq Ar (some|regexp) ;
-Creates a regular expression and assigns it to the variable
+Создает регулярное выражение и присваивает его переменной
 .Ar regexp-name .
-The variable is available throughout the rest of
-the configuration file.
-If the string begins with
+Переменная доступна во всем остальном 
+конфигурационном файле. 
+Если строка начинается с
 .Ql \&! ,
-it matches if the regular expression formed by the rest of the string
-does not match.
-All regular expressions have an implicit
+она соответствует, если регулярное выражение, образованное остальной частью строки,
+не соответствует.
+Все регулярные выражения имеют неявный символ
 .Ql ^$
-around them.
 .El
 .Pp
-The following sub-statements are supported within the
+Следующие вложенные инструкции поддерживаются в командах
 .Ic attach
-and
+и
 .Ic detach
-statements.
 .Bl -tag -width ".Ic directory"
 .It Ic action Qq Ar command ;
-Command to execute upon a successful match.
-Example
-.Dq Li "/etc/pccard_ether $device-name start" .
+Команда, выполняемая при успешном совпадении.
+Пример
+.Dq Li "/etc/pccard_ether $начало имени" .
 .It Ic class Qq Ar string ;
-This is shorthand for
+Это сокращение для
 .Dq Ic match Qo Li class Qc Qq Ar string .
 .It Ic device-name Qq string ;
-This is shorthand for
+Это сокращение для
 .Dq Ic match Qo Li device-name Qc Qq Ar string .
-This matches a device named
+Это соответствует устройству с именем 
 .Ar string ,
-which is allowed to be a regular expression or a variable previously created
-containing a regular expression.
-The
+оторое может быть регулярным выражением или ранее созданной переменной, 
+содержащей регулярное выражение. 
+Переменная
 .Dq Li device-name
-variable
-is available for later use with the
+оступна для последующего использования с инструкцией 
 .Ic action
-statement.
 .It Ic match Qo Ar variable Qc Qq Ar value ;
-Matches the content of
-.Ar value
-against
-.Ar variable ;
-the content of
-.Ar value
-may be a regular expression.
-Not required during
-.Ic attach
-nor
-.Ic detach
-events since the
+Сопоставляет содержимое
+.Ar значение
+с
+.Ar переменной ;
+содержимое
+.Ar значения
+может быть регулярным выражением.
+Не требуется во время событий
+.Ic присоединения
+или
+.Ic отсоединения ,
+поскольку оператор
 .Ic device-name
-statement takes care of all device matching.
-For a partial list of variables, see below.
+обеспечивает сопоставление всех устройств. 
+Неполный список переменных приведен ниже.
 .It Ic media-type Qq Ar string ;
-For network devices,
+Для сетевых устройств,
 .Ic media-type
-will match devices that have the given media type.
-Valid media types are:
+будет соответствовать устройствам, имеющим указанный тип носителя.
+Допустимыми типами носителей являются:
 .Dq Li Ethernet ,
 .Dq Li 802.11 ,
-and
+и
 .Dq Li ATM .
 .It Ic subdevice Qq Ar string ;
-This is shorthand for
+Это сокращение для 
 .Dq Ic match Qo Li subdevice Qc Qq Ar string .
 .El
 .Pp
-The following sub-statements are supported within the
-.Ic nomatch
-statement.
+Следующие вложенные инструкции поддерживаются в инструкции
+.Ic nomatch :
 .Bl -tag -width ".Ic directory"
 .It Ic action Qq Ar command ;
-Same as above.
+То же, что и выше
 .It Ic match Qo Ar variable Qc Qq Ar value ;
-Matches the content of
+Сопоставляет содержимое
 .Ar value
-against
+с
 .Ar variable ;
-the content of
+Содержимое
 .Ar value
-may be a regular expression.
-For a partial list of variables, see below.
+может быть регулярным выражением.
+Неполный список переменных приведён ниже.
 .El
 .Pp
-The following sub-statements are supported within the
+Следующие вложенные инструкции поддерживаются в инструкции
 .Ic notify
-statement.
-The
+Переменная
 .Dq Li notify
-variable is available inside this statement and contains, a value, depending
-on which system and subsystem that delivered the event.
+доступна внутри этой инструкции и содержит значение, зависящее от 
+системы и подсистемы, которые передали событие.
 .Bl -tag -width ".Ic directory"
 .It Ic action Qq Ar command ;
-Command to execute upon a successful match.
-Example
+Команда, которую нужно выполнить при успешном совпадении.
+Пример
 .Dq Li "/etc/rc.d/power_profile $notify" .
 .It Ic match Qo Ar system | subsystem | type | notify Qc Qq Ar value ;
-Any number of
+Любое количество операторов
 .Ic match
-statements can exist within a
-.Ic notify
-statement;
-.Ar value
-can be either a fixed string or a regular expression.
-Below is a list of available systems, subsystems, and types.
+может существовать внутри оператора
+.Ic notify ;
+.Ar значение
+может быть как фиксированной строкой, так и регулярным выражением.
+Снизу приведён список доступных систем, подсистем и типов.
 .It Ic media-type Qq Ar string ;
-See above.
+См. выше.
 .El
-.Ss Variables that can be used with the match statement
-A partial list of variables and their possible values that can be used together
-with the
-.Ic match
-statement.
-The variables are published by the bus based on characteristics of the device
-that generated the event (for device events).
-Variables for other classes of events are dependent on those events.
+.Ss Переменные, которые можно использовать с оператором match
+Неполный список переменных и их возможных значений, которые можно использовать с оператором
+.Ic match .
+Переменные публикуются шиной на основе характеристик устройства,
+сгенерировшего ивент (для ивентов устройств).
+Переменные для других классов ивентов зависят от этих событий.
 .Pp
 .Bl -tag -width ".Li manufacturer" -compact
-.It Ic Variable
-.Ic Description
+.It Ic Переменная
+.Ic Описание
 .It Li *
-The entire message from the current event.
+Всё сообщение из текущего ивента.
 .It Li _
-The entire message from the current event, after the initial type character.
+Всё сообщение из текущего ивента, после начального типа символа.
 .It Li timestamp
-The time this event was processed, in seconds since 1970 dot fraction.
+время, в течение которого это событие было обработано, в секундах с 1970 года.
 .It Li bus
-Device name of parent bus.
+Имя устройства родительской шины.
 .It Li cdev
-Device node path if one is created by the
+Путь к узлу устройства, если он создан с помощью
 .Xr devfs 5
-filesystem.
+файловой системы.
 .It Li class
-Device class.
+Класс устройства.
 .It Li comm
-Executable name (kernel).
+Имя исполняемого файла (ядро).
 .It Li core
-Path to core file (kernel).
+Путь к файлу ядра.
 .It Li device
-Device ID.
+Идентификатор устройства.
 .It Li devclass
-Device Class (USB).
+Класс устройства (USB).
 .It Li devsubclass
-Device Sub-class (USB).
+Подкласс устройств (USB).
 .It Li device-name
-Name of attached/detached device.
+Название подключенного/отсоединенного устройства.
 .It Li endpoints
-Endpoint count (USB).
+Количество конечных точек (USB).
 .It Li function
-Card functions.
+Функции карты.
 .It Li interface
-Interface ID (USB).
+Идентификатор интерфейса (USB).
 .It Li intclass
-Interface Class (USB).
+Класс интерфейса (USB).
 .It Li intprotocol
-Interface Protocol (USB).
+Протокол интерфейса (USB).
 .It Li intsubclass
-Interface Sub-class (USB).
+Подкласс интерфейса (USB).
 .It Li jail
-Jail name for the process triggering the rule (RCTL).
+Имя Jail-сервера для процесса, запускающего правило (RCTL).
 .It Li mode
-Peripheral mode (USB).
+Периферийный режим (USB).
 .It Li notify
-Match the value of the
+Соответствует значению переменной
 .Dq Li notify
-variable.
 .It Li parent
-Parent device.
+Родительское устройство.
 .It Li pid
-PID of the process triggering the rule (RCTL).
+PID процесса, запускающего правило (RCTL).
 .It Li port
-Hub port number (USB).
+Номер порта концентратора (USB).
 .It Li product
-Product ID (USB).
+Идентификатор продукта (USB).
 .It Li release
-Hardware revision (USB).
+Аппаратная ревизия (USB).
 .It Li ruid
-Real UID of the process triggering the rule (RCTL).
+Реальный идентификатор процесса, запускающего правило (RCTL).
 .It Li rule
-Rule (RCTL).
+Правило (RCTL).
 .It Li sernum
-Serial Number (USB).
+Серийный номер (USB).
 .It Li slot
-Card slot.
+Слот для карт памяти.
 .It Li subvendor
-Sub-vendor ID (PCI).
+Идентификатор субвендора (PCI).
 .It Li subdevice
-Sub-device ID (PCI).
+Идентификатор вспомогательного устройства (PCI).
 .It Li subsystem
 Matches a subsystem of a system, see below.
 .It Li system
-Matches a system type, see below.
+Соответствует подсистеме системы, см. ниже.
 .It Li type
-Type of notification, see below.
+Тип уведомления, см. ниже.
 .It Li vendor
-Vendor ID.
+Идентификатор вендора.
 .El
-.Ss Notify matching
-A partial list of systems, subsystems, and types used within the
-.Ic notify
-mechanism.
+.Ss Уведомления о совпадениях
+Неполный список систем, подсистем и типов, используемых в рамках механизма
+.Ic уведомлений
 .\"
 .\" Please keep these tables sorted. Also, please use the same parameters
 .\" for each of the tables so that things line up in columns nicely.
 .\" Please do not omit the type column for notifiers that omit it.
 .Pp
 .Bl -column "System" "Subsystem" "1234567" -compact
-.Sy "System" Ta Sy "Subsystem" Ta Sy "Type" Ta Sy "Description"
+.Sy "Система" Ta Sy "Подсистема" Ta Sy "Тип" Ta Sy "Описание"
 .It Li ACPI Ta Ta Ta
-Events related to the ACPI Subsystem.
+События, связанные с подсистемой ACPI.
 .It Li ACPI Ta Li ACAD Ta Ta
 AC line state ($notify=0x00 is offline, 0x01 is online).
 .It Li ACPI Ta Li Button Ta Ta
-Button state ($notify=0x00 is power, 0x01 is sleep).
+Состояние AC ($notify=0x00 отключен, 0x01 подключен к сети).
 .It Li ACPI Ta Li CMBAT Ta Ta
-Battery events.
+События, связанные с батареей.
 .It Li ACPI Ta Li Dock Ta Ta
-Dock state ($notify=0x00 is undocked, 0x01 is docked).
+Состояние стыковки ($notify=0x00 отстыкован, 0x01 пристыкован).
 .It Li ACPI Ta Li Lid Ta Ta
-Lid state ($notify=0x00 is closed, 0x01 is open).
+Состояние крышки ($notify=0x00 - закрыта, 0x01 - открыта).
 .It Li ACPI Ta Li PROCESSOR Ta Ta
-Processor state/configuration ($notify=0x81 is a change in available Cx states).
+Состояние/конфигурация процессора ($notify=0x81 - изменение доступных состояний Cx).
 .It Li ACPI Ta Li Resume Ta Ta
-Resume notification.
+Уведомление о возобновлении работы.
 .It Li ACPI Ta Li Suspend Ta Ta
-Suspend notification.
+Приостановить уведомление.
 .It Li ACPI Ta Li Thermal Ta Ta
-Thermal zone events.
+События в термальных зонах.
 .El
 .Pp
 .Bl -column "System" "Subsystem" "1234567" -compact
-.Sy "System" Ta Sy "Subsystem" Ta Sy "Type" Ta Sy "Description"
+.Sy "Система" Ta Sy "Подсистема" Ta Sy "Тип" Ta Sy "Описание"
 .It Li AEON Ta Li power Ta Li press Ta
-The power button on an Amiga has been pressed.
+На Amiga была нажата кнопка питания.
 .El
 .Pp
 .Bl -column "System" "Subsystem" "1234567" -compact
-.Sy "System" Ta Sy "Subsystem" Ta Sy "Type" Ta Sy "Description"
+.Sy "Система" Ta Sy "Подсистема" Ta Sy "Тип" Ta Sy "Описание"
 .It Li CAM Ta Ta Ta
-Events related to the
-.Xr cam 4
-system.
+События, связанные с системой
+.Xr cam 4 .
 .It Li CAM Ta Li periph Ta Ta
-Events related to peripheral devices.
+События, связанные с периферийными устройствами.
 .It Li CAM Ta Li periph Ta Li error Ta
-Generic errors.
+Общие ошибки.
 .It Li CAM Ta Li periph Ta Li timeout Ta
-Command timeouts.
+Тайм-ауты команд.
 .El
 .Pp
 .Bl -column "System" "Subsystem" "1234567" -compact
-.Sy "System" Ta Sy "Subsystem" Ta Sy "Type" Ta Sy "Description"
+.Sy "Система" Ta Sy "Подсистема" Ta Sy "Тип" Ta Sy "Описание"
 .It Li CARP Ta Ta Ta
-Events related to the
-.Xr carp 4
-protocol.
+События, связанные с протоколом
+.Xr carp 4 .
 .It CARP Ta Ar vhid@inet Ta Ta
-The
-.Dq subsystem
-contains the actual CARP vhid and the name of the network interface
-on which the event took place.
+.Dq Подсистема
+содержит фактический vhid CARP и название сетевого интерфейса
+на котором и произошло это событие.
 .It CARP Ta Ar vhid@inet Ta MASTER Ta
-Node become the master for a virtual host.
+Узел становится ведущим для виртуального хоста.
 .It CARP Ta Ar vhid@inet Ta BACKUP Ta
-Node become the backup for a virtual host.
+Узел становится ведущим для виртуального хоста.
 .El
 .Pp
 .Bl -column "System" "Subsystem" "1234567" -compact
-.Sy "System" Ta Sy "Subsystem" Ta Sy "Type" Ta Sy "Description"
+.Sy "Система" Ta Sy "Подсистема" Ta Sy "Тип" Ta Sy "Описание"
 .It Li coretemp Ta Ta Ta
-Events related to the
-.Xr coretemp 4
-device.
+События, связанные с устройством
+.Xr coretemp 4 .
 .It Li coretemp Ta Li Thermal Ta Ta
-Notification that the CPU core has reached critical temperature.
+Уведомление о том, что ядро процессора достигло критической температуры.
 .It Li coretemp Ta Li Thermal Ta Li temperature Ta
-String containing the temperature of the core that has become too hot.
+Строка, содержащая температуру ядра, которое стало слишком горячим.
 .El
 .Pp
 .Bl -column "System" "Subsystem" "1234567" -compact
-.Sy "System" Ta Sy "Subsystem" Ta Sy "Type" Ta Sy "Description"
+.Sy "Система" Ta Sy "Подсистема" Ta Sy "Тип" Ta Sy "Описание"
 .It Li DEVFS
 .It Li DEVFS Ta Li CDEV Ta Li CREATE Ta
-The
+Узел
 .Xr devfs 5
-node is created.
+создан.
 .It Li DEVFS Ta Li CDEV Ta Li DESTROY Ta
-The
+Узел
 .Xr devfs 5
-node is destroyed.
+уничтожен.
 .El
 .Pp
 .Bl -column "System" "Subsystem" "1234567" -compact
-.Sy "System" Ta Sy "Subsystem" Ta Sy "Type" Ta Sy "Description"
+.Sy "Система" Ta Sy "Подсистема" Ta Sy "Тип" Ta Sy "Описание"
 .It Li ETHERNET Ta Ar inet Ta IFATTACH Ta
-Notification when the default VNET instance of the
+Уведомление о том, что подключен экземпляр виртуальной сети по умолчанию для интерфейса
 .Em inet
-interface is attached.
 .El
 .Pp
 .Bl -column "System" "Subsystem" "1234567" -compact
-.Sy "System" Ta Sy "Subsystem" Ta Sy "Type" Ta Sy "Description"
+.Sy "Система" Ta Sy "Подсистема" Ta Sy "Тип" Ta Sy "Описание"
 .It Li GEOM Ta Ta Ta
-Events related to the
-.Xr geom 4
-framework.
-The difference compared to
+События, связанные с фреймворком
+.Xr geom 4.
+Разница по сравнению с
 .Li DEVFS
-is that
+заключается в том, что
 .Li GEOM
-only includes disk-like devices.
+включает только дископодобные устройства.
 .It Li GEOM Ta Li DEV Ta Li CREATE Ta
-A
+Провайдер
 .Xr geom 4
-provider is created.
+создан.
 .It Li GEOM Ta Li DEV Ta Li DESTROY Ta
-A
+Провайдер
 .Xr geom 4
-provider is destroyed.
+уничтожен.
 .It Li GEOM Ta Li DEV Ta Li GEOM::physpath Ta
-The physical path of a device has changed.
+Физический путь к устройству изменился.
 .It Li GEOM Ta Li DEV Ta Li GEOM::rotation_rate Ta
-The rotation rate of the disk has changed.
+Скорость вращения диска изменилась.
 .It Li GEOM Ta Li DEV Ta Li MEDIACHANGE Ta
-Physical media has changed.
+Физические носители информации изменились.
 .It Li GEOM Ta Li DEV Ta Li SIZECHANGE Ta
-A
+Размер провайдера
 .Xr geom 4
-provider size has changed.
+изменился.
 .El
 .Pp
 .Bl -column "System" "Subsystem" "1234567" -compact
-.Sy "System" Ta Sy "Subsystem" Ta Sy "Type" Ta Sy "Description"
+.Sy "Система" Ta Sy "Подсистема" Ta Sy "Тип" Ta Sy "Описание"
 .It Li IFNET
 .It Li IFNET Ta Em inet Ta Ta
-The
 .Dq subsystem
-is the actual name of the network interface on which the event
-took place.
+это фактическое название сетевого интерфейса, на котором
+произошло событие.
 .It Li IFNET Ta Em inet Ta Li LINK_UP Ta
-Carrier status changed to UP.
+Статус носителя изменен на "UP".
 .It Li IFNET Ta Em inet Ta Li LINK_DOWN Ta
-Carrier status changed to DOWN.
+Статус носителя изменен на DOWN.
 .It Li IFNET Ta Em inet Ta Li ATTACH Ta
-The network interface is attached to the system.
+Сетевой интерфейс подключен к системе.
 .It Li IFNET Ta Em inet Ta Li DETACH Ta
-The network interface is detached from the system.
+Сетевой интерфейс отсоединен от системы.
 .It Li IFNET Ta Em inet Ta Li RENAME Ta
-The network interface is renamed.
+Сетевой интерфейс будет переименован.
 .It Li IFNET Ta Em inet Ta Li ADDR_ADD Ta
-The network interface address added.
+Добавлен адрес сетевого интерфейса.
 .It Li IFNET Ta Em inet Ta Li ADDR_DEL Ta
-The network interface address removed.
+Удален адрес сетевого интерфейса.
 .El
 .Pp
 .Bl -column "System" "Subsystem" "1234567" -compact
-.Sy "System" Ta Sy "Subsystem" Ta Sy "Type" Ta Sy "Description"
+.Sy "Система" Ta Sy "Подсистема" Ta Sy "Тип" Ta Sy "Описание"
 .It Li kernel Ta Li signal Ta Li coredump Ta
-Notification that a process has crashed and dumped core.
+Уведомление о том, что процесс завершился сбоем и случился дамп ядра.
 .It Li kernel Ta Li power Ta Li resume Ta
-Notification that the system has woken from the suspended state.
+Уведомление о том, что система вышла из приостановленного состояния.
 .El
 .Pp
 .Bl -column "System" "Subsystem" "1234567" -compact
-.Sy "System" Ta Sy "Subsystem" Ta Sy "Type" Ta Sy "Description"
+.Sy "Система" Ta Sy "Подсистема" Ta Sy "Тип" Ta Sy "Описание"
 .It Li PMU Ta Ta Ta
-Notification of events from various types of Power Management Units.
+Оповещение о событиях от различных типов блоков управления питанием.
 .It Li PMU Ta Li "AC" Ta Ta
-Notifications of AC power related events.
+Уведомления о событиях, связанных с питанием от сети переменного тока.
 .It Li PMU Ta Li "AC" Ta Li overvoltage Ta
-An over-voltage condition was detected on the AC power line.
+На линии электропередачи переменного тока было обнаружено перенапряжение.
 .It Li PMU Ta Li "AC" Ta Li plugged Ta
-Power has been applied to the AC power line.
+К линии электропередачи переменного тока подано питание.
 .It Li PMU Ta Li "AC" Ta Li unplugged Ta
-Power has been removed from the AC power line.
+Из сети переменного тока было отключено питание.
 .It Li PMU Ta Li Battery Ta Ta
 .It Li PMU Ta Li Battery Ta absent Ta
-Battery is no longer absent.
+Аккумулятора больше не отсутствует.
 .It Li PMU Ta Li Battery Ta charged Ta
-The battery has become charged.
+Аккумулятор полностью заряжен.
 .It Li PMU Ta Li Battery Ta charging Ta
-The battery has started charging.
+Батарея начала заряжаться.
 .It Li PMU Ta Li Battery Ta disconnected Ta
-The battery has been disconnected.
+Аккумулятор был отсоединен.
 .It Li PMU Ta Li Battery Ta high-temp Ta
-The battery reported a temperature over the limit.
+Батарея сообщила о превышении предельной температуры.
 .It Li PMU Ta Li Battery Ta low-temp Ta
-The battery reported a temperature under the limit.
+Батарея сообщала о том, что температура ниже предельного значения.
 .It Li PMU Ta Li Battery Ta plugged Ta
-The battery has become plugged (eg connected).
+Аккумулятор подключен к розетке (например, подсоединен).
 .It Li PMU Ta Li Battery Ta shutdown-threshold Ta
-The power in the battery has fallen below the shutdown threshold.
+Уровень заряда аккумулятора упал ниже порогового значения отключения.
 .It Li PMU Ta Li Battery Ta warning-threshold Ta
-The power in the battery has fallen below the warn the user threshold.
+Уровень заряда батареи упал ниже порогового значения предупреждения пользователя.
 .It Li PMU Ta Li Button Ta pressed Ta
-A button on a
+Кнопка на 
 .Xr adb 4
-or
+или
 .Xr pmu 4
-has been pressed.
+была нажата.
 .It Li PMU Ta Li keys Ta Ta
-One of the keys on the
-.Xr adb 4
-keyboard has been pressed.
+Была нажата одна из клавиш на клавиатуре
+.Xr adb 4.
 .It Li PMU Ta Li keys Ta brightness Ta
-A brightness level change has been requested.
-Direction is in the $notify variable.
+Поступил запрос на изменение уровня яркости.
+Направление находится в переменной $notify.
 .It Li PMU Ta Li keys Ta mute Ta
-The mute key
+Клавиша отключения звука
 .It Li PMU Ta Li keys Ta volume Ta
-A volume level change has been requested.
-Direction is in the $notify variable.
+Поступил запрос на изменение уровня громкости.
+Направление находится в переменной $notify.
 .It Li PMU Ta Li keys Ta eject Ta
-An ejection has been requested.
+Поступил запрос на выдачу
 .It Li PMU Ta Li lid Ta close Ta
-The
+Устройство
 .Xr pmc 4
-device has detected the lid closing.
+зафиксировало закрытие крышки.
 .It Li PMU Ta Li lid Ta open Ta
-The
+Устройство
 .Xr pmc 4
-device has detected the lid openinging.
+зафиксировало открытие крышки
 .It Li PMU Ta Li POWER Ta ACLINE Ta
-The
+Устройство
 .Xr pmc 4
-device has detected an AC line state ($notify=0x00 is offline, 0x01 is online).
+обнаружило состояние сети переменного тока ($notify=0x00 отключено, 0x01 подключено к сети).
 .It Li PMU Ta Li USB Ta overvoltage Ta
-An over-voltage condition on the power lines for the USB power pins.
+Состояние перенапряжения на линиях питания для контактов питания USB.
 .It Li PMU Ta Li USB Ta plugged Ta
-A device has been plugged into a USB device.
+Устройство было подключено к USB-устройству.
 .It Li PMU Ta Li USB Ta undervoltage Ta
-An under-voltage condition on the power lines for the USB power pins.
+Пониженное напряжение на линиях питания для контактов питания USB.
 .It Li PMU Ta Li USB Ta unplugged Ta
-A device has been unplugged into a USB device.
+Устройство было подключено к USB-разъему.
 .El
 .Pp
 .Bl -column "System" "Subsystem" "1234567" -compact
-.Sy "System" Ta Sy "Subsystem" Ta Sy "Type" Ta Sy "Description"
+.Sy "Система" Ta Sy "Подсистема" Ta Sy "Тип" Ta Sy "Описание"
 .It Li RCTL Ta Ta Ta
-Events related to the
+События, связанные с фреймворком
 .Xr rctl 8
-framework.
 .It Li RCTL Ta Li rule Ta Li matched Ta
-A rule with action specified as "devctl" was triggered.
+Было запущено правило с действием, указанным как "devctl".
 .El
 .Pp
 .Bl -column "System" "Subsystem" "1234567" -compact
-.Sy "System" Ta Sy "Subsystem" Ta Sy "Type" Ta Sy "Description"
+.Sy "Система" Ta Sy "Подсистема" Ta Sy "Тип" Ta Sy "Описание"
 .It Li USB Ta Ta Ta
-Events related to the USB subsystem.
+События, связанные с подсистемой USB.
 .It Li USB Ta Li DEVICE Ta Li ATTACH Ta
-USB device is attached to the system.
+К системе подключено USB-устройство.
 .It Li USB Ta Li DEVICE Ta Li DETACH Ta
-USB device is detached to the system.
+К системе подключено USB-устройство.
 .It Li USB Ta Li INTERFACE Ta Li ATTACH Ta
-USB interface is attached to a device.
+USB-интерфейс подключен к устройству
 .It Li USB Ta Li INTERFACE Ta Li DETACH Ta
-USB interface is detached from a device.
+USB-интерфейс отсоединен от устройства.
 .El
 .Pp
 .Bl -column "System" "Subsystem" "1234567" -compact
-.Sy "System" Ta Sy "Subsystem" Ta Sy "Type" Ta Sy "Description"
+.Sy "Система" Ta Sy "Подсистема" Ta Sy "Тип" Ta Sy "Описание"
 .It Li VFS Ta Ta Ta
-Events from the vfs system.
+События из системы vfs.
 .It Li VFS Ta Li FS Ta Ta
-Events that change what is mounted to the system.
+События, которые изменяют то, что подключено к системе.
 .It Li VFS Ta Li FS Ta Li MOUNT Ta
-Notification of a filesystem is mounted for the first time.
+Уведомление о том, что файловая система монтируется в первый раз.
 .It Li VFS Ta Li FS Ta Li REMOUNT Ta
-Notification of a filesystem is remounted (whether or not the options actually change).
+Уведомление о перемонтировании файловой системы (независимо от того, изменяются ли параметры на самом деле).
 .It Li VFS Ta Li FS Ta Li UNMOUNT Ta
-Notification of a filesystem being unmounted.
+Уведомление о размонтировании файловой системы.
 .El
 .Pp
 .Bl -column "System" "Subsystem" "1234567" -compact
-.Sy "System" Ta Sy "Subsystem" Ta Sy "Type" Ta Sy "Description"
+.Sy "Система" Ta Sy "Подсистема" Ta Sy "Тип" Ta Sy "Описание"
 .It Li VT Ta BELL Ta RING Ta
-Notification that the console bell has rung.
-See
-.Xr vt 4
-for details.
+Уведомление о том, что прозвенел звонок консоли.
+Подробности см. в
+.Xr vt 4.
 .El
 .Pp
 .Bl -column "System" "Subsystem" "1234567" -compact
-.Sy "System" Ta Sy "Subsystem" Ta Sy "Type" Ta Sy "Description"
+.Sy "Система" Ta Sy "Подсистема" Ta Sy "Тип" Ta Sy "Описание"
 .It Li ZFS Ta ZFS Ta Ta
-Events about the ZFS subsystem.
-See
+События, связанные с подсистемой ZFS.
+Подробности см. в
 .Xr zfsd 8
-and
+и
 .Pa /etc/devd/zfs.conf
-for details.
 .El
 .Pp
 .\"
 .\" End of tables
 .\"
-A link state change to UP on the interface
+Изменение состояния соединения на UP в интерфейсе
 .Dq Li fxp0
-would result in the following notify event:
+приведет к следующему событию уведомления:
 .Bd -literal -offset indent
 system=IFNET subsystem=fxp0 type=LINK_UP
 .Ed
 .Pp
-An AC line state change to
+Изменение состояния линии переменного тока на
 .Dq offline
-would result in the following event:
+приведет к следующему событию:
 .Bd -literal -offset indent
 system=ACPI subsystem=ACAD notify=0x00
 .Ed
-.Ss Comments
-Comments may appear anywhere that whitespace may appear in a
-configuration file.
-To appeal to programmers of all kinds, they can
-be written in C, C++, or shell/Perl constructs.
+.Ss Комментарии
+Комментарии могут появляться в любом
+месте файла конфигурации, где могут появляться пробелы.
+Чтобы заинтересовать программистов всех мастей, они могут
+быть написаны на C, C++ или конструкциях shell/Perl.
 .Pp
-C-style comments start with the two characters
+Комментарии в стиле C начинаются с двух символов
 .Ql /*
-(slash, star) and end with
+((косая черта, звездочка) и заканчивать словами
 .Ql */
-(star, slash).
-Because they are completely delimited with these characters,
-they can be used to comment only a portion of a line or to span
-multiple lines.
+(звёздочка, косая черта).
+Поскольку они полностью разделены этими символами,
+их можно использовать для комментирования только части строки или для
+заполнения нескольких строк.
 .Pp
-C-style comments cannot be nested.
-For example, the following is
-not valid because the entire comment ends with the first
+Комментарии в стиле C не могут быть вложенными.
+Например, приведенный ниже
+текст недопустим, поскольку весь комментарий заканчивается первым
 .Ql */ :
 .Bd -literal -offset indent
 /* This is the start of a comment.
@@ -652,83 +626,80 @@ not valid because the entire comment ends with the first
    This is no longer in any comment. */
 .Ed
 .Pp
-C++-style comments start with the two characters
+Комментарии в стиле C++ начинаются с двух символов
 .Ql //
-(slash, slash) and continue to the end of the physical line.
-They cannot be continued across multiple physical lines; to have
-one logical comment span multiple lines, each line must use the
+(косая черта, косая черта) и продолжайте до конца физической строки.
+Они не могут быть продолжены в нескольких физических строках; чтобы
+один логический комментарий охватывал несколько строк, в каждой строке должна использоваться
+пара
 .Ql //
-pair.
-For example:
+Например:
 .Bd -literal -offset indent
 // This is the start of a comment.  The next line
 // is a new comment, even though it is logically
 // part of the previous comment.
 .Ed
-.Ss Notes on Variable Expansion
-To prevent issues with special shell characters, the following happens for each
-variable
+.Ss Примечания по расширению переменной
+Чтобы избежать проблем со специальными символами оболочки, для каждой переменной выполняется 
+следующее
 .Ic $foo .
 .Bl -enum
 .It
-The characters
+Вставляются символы
 .Dq $'
-are inserted.
 .It
-The string
+Cтрока
 .Dq $foo
-is removed.
+удаляется
 .It
-The value of the
+Значение переменной
 .Ic foo
-variable is inserted into the buffer with all single quote characters
-prefixed by a backslash.
+вставляется в буфер со всеми символами одинарных кавычек, перед которыми
+ставится обратная косая черта.
 .El
 .Pp
-See
-.Xr sh 1
-for what this construct means.
-It is safe in all context, except one: inside single quotes.
-If foo=meta and bar=var, then a rule like the following:
+См. значение контрукции в
+.Xr sh 1 .
+Это безопасно во всех контекстах, кроме одного: внутри одинарных кавычек.
+Если foo=meta и bar=var, то применяется правило, подобное следующему:
 .Bd -literal -offset indent -compact
 action "echo '$foo $bar'";
 .Ed
-will be presented to the shell via
+будет передан в оболочку через
 .Xr system 3
-as
+как
 .Bd -literal -offset indent -compact
 echo '$'meta' $'var''
 .Ed
-which produces the following output:
+который выдает следующий результат:
 .Bd -literal -offset indent -compact
 $meta $var
 .Ed
-as its output.
-This is an unanticipated result.
-A future version of this software will change this behavior.
-Users are discouraged from using single quotes inside
+как его результат.
+Это непредвиденный результат.
+В будущей версии этого программного обеспечения это поведение изменится.
+Пользователям не рекомендуется использовать одинарные кавычки внутри значения
 .Ic action
-value without due care.
+без должной осторожности
 .Pp
-The above should be written as
+Все вышесказанное должно быть записано следующим образом
 .Bd -literal -offset indent -compact
 action "echo $foo' '$bar"
 .Ed
-to produce a single argument to echo.
-Given the above expansion, juxtaposing bare variables with
-single quote expressions will produce the right output,
-regardless of the value of the variable.
+чтобы создать единственный аргумент для echo.
+Учитывая приведенное выше расширение, сопоставление простых переменных с
+выражениями, заключенными в одинарные кавычки, приведет к правильному выводу
+независимо от значения переменной.
 .Sh FILES
 .Bl -tag -width ".Pa /etc/devd.conf" -compact
 .It Pa /etc/devd.conf
-The
+Конфигурационный файл
 .Xr devd 8
-configuration file.
 .El
 .Sh EXAMPLES
 .Bd -literal
 #
-# This will catch link down events on the interfaces fxp0 and ath0
+# Это приведет к перехвату событий отключения ссылок на интерфейсах fxp0 и ath0
 #
 notify 0 {
 	match "system"			"IFNET";
@@ -738,9 +709,9 @@ notify 0 {
 };
 
 #
-# Match lid open/close events
-# These can be combined to a single event, by passing the
-# value of $notify to the external script.
+# Сопоставление событий открытия/закрытия крышки.
+# Их можно объединить в одно событие, 
+# передав значение $notify внешнему скрипту.
 #
 notify 0 {
 	match "system"			"ACPI";
@@ -757,7 +728,7 @@ notify 0 {
 };
 
 #
-# Match a USB device type
+# Сопоставление типов USB-устройств
 #
 notify 0 {
 	match "system"			"USB";
@@ -768,8 +739,8 @@ notify 0 {
 };
 
 #
-# Try to configure ath and iwn devices with pccard_ether
-# as they are attached.
+# Попробуйте настроить собственные устройства с помощью pccard_ether
+# по мере их подключения.
 #
 attach 0 {
         device-name "(ath|iwn)[0-9]+";
@@ -777,8 +748,8 @@ attach 0 {
 };
 
 #
-# Stop ath and iwn devices as they are detached from
-# the system.
+# Останавливайте собственные устройства, когда они отсоединены
+# от системы.
 #
 detach 0 {
         device-name "(ath|iwn)[0-9]+";
@@ -786,15 +757,15 @@ detach 0 {
 };
 .Ed
 .Pp
-The installed
+Файл, установленный по этому пути:
 .Pa /etc/devd.conf
-has many additional examples.
-.Sh SEE ALSO
+содержит множество дополнительных примеров.
+.Sh СМОТРЕТЬ ТАКЖЕ
 .Xr cam 4 ,
 .Xr coretemp 4 ,
 .Xr devfs 5 ,
 .Xr re_format 7 ,
 .Xr devd 8
-.Sh BUGS
-The variable expansion's interaction with single quotes is
-suboptimal and surprising.
+.Sh ОШИБКИ
+Взаимодействие с расширением переменной с помощью одинарных кавычек является
+неоптимальным и неожиданным.
