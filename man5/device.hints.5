@@ -26,93 +26,90 @@
 .Dd November 19, 2019
 .Dt DEVICE.HINTS 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm device.hints
 .Nd device resource hints
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
 .Nm
-file is read in by the boot
+файл считывается при загрузке
 .Xr loader 8
-when the system is about to start, and its contents are
-passed to the kernel.
-It contains various variables to control the boot behavior of
-the kernel.
-These variables are typically
-.Dq device hints ,
-but can include any kernel tunable values.
+когда система собирается стартовать, и его содержимое
+передается ядру.
+Он содержит различные переменные для управления поведением загрузочного
+ядра.
+Эти переменные обычно
+.Dq подсказки устройства ,
+но могут включать любые настраиваемые значения ядра.
 .Pp
-The file contains one variable per line.
-Lines starting with the
+Файл содержит по одной переменной в строке.
+Строки, начинающиеся с
 .Ql #
-character are comments and are ignored by the boot loader.
+являются комментариями и игнорируются загрузчиком.
 .Pp
-After the file is read by the boot loader, you may examine
-the variables with the
+После того как файл будет прочитан загрузчиком, вы можете изучить
+переменные с помощью программы
 .Ic show
-command, and may add a new variable, modify an existing one,
-or delete a variable with the
+и добавить новую переменную, изменить существующую,
+или удалить переменную с помощью команды
 .Ic set
-and
+и
 .Ic unset
-commands of the boot loader
-(see
-.Xr loader 8 ) .
+командами загрузчика
+(см. .Xr loader 8 ).
 .Pp
-After the system has started, you can dump these variables
-with the
-.Xr kenv 1
-command.
-.Sh DEVICE HINTS
-Device hint variables are used by device drivers to set up
-the device.
-They are most often used by ISA device drivers to specify
-where the driver will probe for the relevant devices, and what
-resources it will attempt to use.
+После запуска системы вы можете сбросить эти переменные
+с помощью команды
+.Xr kenv 1 .
+.Sh ПОДСКАЗКИ УСТРОЙСТВА
+Переменные подсказки устройства используются драйверами устройств для настройки
+устройства.
+Чаще всего они используются драйверами устройств ISA для указания
+где драйвер будет искать соответствующие устройства и какие
+какие ресурсы он будет пытаться использовать.
 .Pp
-A device hint line looks like:
+Строка подсказки устройства выглядит следующим образом:
 .Pp
 .Sm off
 .D1 Li hint. Ar driver . Ar unit . Ar keyword Li = Qq Ar value
 .Sm on
 .Pp
-where
+где
 .Ar driver
-is the name of a device driver,
+это имя драйвера устройства,
 .Ar unit
-is the unit number, and
+номер единицы, и
 .Ar keyword
-is the keyword of the hint.
-The keyword may be:
+ключевое слово подсказки.
+Ключевое слово может быть:
 .Pp
 .Bl -tag -width ".Li disabled" -compact -offset indent
 .It Li at
-specifies a bus to which the device is attached.
+указывает шину, к которой подключено устройство.
 .It Li port
-specifies the start address of I/O ports to be used by the device.
+sзадает начальный адрес портов ввода/вывода, которые будут использоваться устройством.
 .It Li portsize
-specifies the number of ports used by the device.
+указывает количество портов, используемых устройством.
 .It Li irq
-is the interrupt line number to be used.
+номер используемой строки прерывания.
 .It Li drq
-is the DMA channel number.
+номер канала DMA.
 .It Li maddr
-specifies the physical memory address used by the device.
+указывает физический адрес памяти, используемый устройством.
 .It Li msize
-specifies the physical memory size used by the device.
+задает размер физической памяти, используемой устройством.
 .It Li flags
-sets various flag bits for the device.
+устанавливает различные биты флагов для устройства.
 .It Li disabled
-can be set to
+может быть установлен на
 .Qq 1
-to disable the device.
+чтобы отключить устройство.
 .El
 .Pp
-A device driver may require one or more hint lines with these keywords,
-and may accept other keywords not listed here, through
+Драйвер устройства может потребовать одну или несколько строк подсказок с этими ключевыми словами,
+и может принимать другие ключевые слова, не перечисленные здесь, через
 .Xr resource_int_value 9 .
-Consult individual device drivers' manual pages for available
-keywords and their possible values.
+Обратитесь к страницам руководств отдельных драйверов устройств, чтобы узнать о доступных
+ключевых слов и их возможных значений.
 .\" .Sh CONTROL VARIABLES
 .\" Lines not starting with
 .\" .Dq hint.
@@ -126,18 +123,18 @@ keywords and their possible values.
 .Sh FILES
 .Bl -tag -width ".Pa /sys/ Ns Ar ARCH Ns Pa /conf/GENERIC.hints" -compact
 .It Pa /boot/device.hints
-Device resource hints file.
+Файл подсказок ресурсов устройства.
 .It Pa /sys/ Ns Ar ARCH Ns Pa /conf/GENERIC.hints
-Sample resource hints for the
+Образцы подсказок по ресурсам для
 .Pa GENERIC
-kernel.
+ядра.
 .It Pa /sys/ Ns Ar ARCH Ns Pa /conf/NOTES
-Notes on the kernel configuration file and device resource hints.
+Заметки о файле конфигурации ядра и подсказки о ресурсах устройств.
 .El
 .Sh EXAMPLES
-The following example sets up resources for the
+В следующем примере задаются ресурсы для драйвера
 .Xr uart 4
-driver on the ISA bus:
+на шине ISA:
 .Bd -literal -offset indent
 hint.uart.0.at="isa"
 hint.uart.0.port="0x3F8"
@@ -145,21 +142,21 @@ hint.uart.0.flags="0x10"
 hint.uart.0.irq="4"
 .Ed
 .Pp
-The following example disables the ACPI driver:
+В следующем примере драйвер ACPI отключен:
 .Bd -literal -offset indent
 hint.acpi.0.disabled="1"
 .Ed
 .Pp
-Setting a tunable variable:
+Установка настраиваемой переменной:
 .Bd -literal -offset indent
 vm.pmap.pg_ps_enabled=1
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРЕТЬ ТАКЖЕ
 .Xr kenv 1 ,
 .Xr loader.conf 5 ,
 .Xr loader 8 ,
 .Xr resource_int_value 9
-.Sh HISTORY
+.Sh ИСТОРИЯ
 The
 .Nm
 file first appeared in
