@@ -1180,9 +1180,9 @@ pf_fallback_rules="\\
 установлен, то для каждого разделенного пробелами
 .Ar element
 в списке,
-.Ao Ar элемент Ac Ns Va _dev
+.Ao Ar element Ac Ns Va _dev
 и
-.Ao Ar элемент Ac Ns Va _logfile
+.Ao Ar elememt Ac Ns Va _logfile
 предполагаются существующими.
 .Ao Ar element Ac Ns Va _dev
 должен содержать
@@ -2958,7 +2958,7 @@ static_arp_gw="192.168.1.1 00:01:02:03:04:05"
 .Pq Vt str
 Устанавливает список статических пар NDP, которые должны быть добавлены при загрузке системы.
 Для каждого разделенного пробелами
-.Ar элемента
+.Ar element
 в значении
 .Va static_ndp_ Ns Aq Ar element
 предполагается наличие переменной, содержимое которой впоследствии будет передано 
@@ -2976,7 +2976,7 @@ static_ndp_gw="2001:db8:3::1 00:01:02:03:04:05"
 Если не установлено значение
 .Dq Li NO
 то для каждого разделенного пробелами
-.Ar элемента
+.Ar element
 в значении, предполагается, что существует переменная
 .Va route_ Ns Aq Ar element ,
 содержимое которой впоследствии будет передано в
@@ -3772,7 +3772,7 @@ Interlink VersaPad (серийная)
 .Pq Vt int
 Уровень безопасности ядра, устанавливаемый при запуске.
 Допустимый диапазон
-.Ar значения
+.Ar value
 варьируется от \-1 (значение по умолчанию при компиляции) до 3 (самый
 самый безопасный).
 См.
@@ -4018,340 +4018,323 @@ PПары уже установленных
 .Pq Ql \&;
 ограниченный список
 .Dq key=value .
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-For more details,
-see
+Подробнее,
+см.
 .Xr jail 8
-manual page.
+страница руководства.
 .Bl  -tag -width "host.hostname" -offset indent
 .It Li path
-set from
+установленный из
 .Va jail_ Ns Ao Ar jname Ac Ns Va _rootdir
 .It Li host.hostname
-set from
+установленный из
 .Va jail_ Ns Ao Ar jname Ac Ns Va _hostname
 .It Li exec.consolelog
-set from
+установленный из
 .Va jail_ Ns Ao Ar jname Ac Ns Va _consolelog .
-The default value is
+По умолчанию
 .Pa /var/log/jail_ Ns Ao Ar jname Ac Ns Pa _console.log .
 .It Li interface
-set from
+установленный из
 .Va jail_ Ns Ao Ar jname Ac Ns Va _interface .
 .It Li vnet.interface
-set from
+установленный из
 .Va jail_ Ns Ao Ar jname Ac Ns Va _vnet_interface .
-This implies
+Это подразумевает
 .Li vnet
-parameter will be enabled and cannot be specified with
+будет включен и не может быть указан с помощью
 .Va jail_ Ns Ao Ar jname Ac Ns Va _interface ,
 .Va jail_ Ns Ao Ar jname Ac Ns Va _ip
-and/or
+и/или
 .Va jail_ Ns Ao Ar jname Ac Ns Va _ip_multi Ns Aq Ar n
-at the same time.
+одновременно.
 .It Li fstab
-set from
+установленный из
 .Va jail_ Ns Ao Ar jname Ac Ns Va _fstab
 .It Li mount
-set from
+установленный из
 .Va jail_ Ns Ao Ar jname Ac Ns Va _procfs_enable .
 .It Li exec.fib
-set from
+установленный из
 .Va jail_ Ns Ao Ar jname Ac Ns Va _fib
 .It Li exec.start
-set from
+установленный из
 .Va jail_ Ns Ao Ar jname Ac Ns Va _exec_start .
-The parameter name was
+Имя параметра было
 .Li command
-in some older releases.
+в некоторых из старых версий.
 .It Li exec.prestart
-set from
+установленный из
 .Va jail_ Ns Ao Ar jname Ac Ns Va _exec_prestart
 .It Li exec.poststart
-set from
+установленный из
 .Va jail_ Ns Ao Ar jname Ac Ns Va _exec_poststart
 .It Li exec.stop
-set from
+установленный из
 .Va jail_ Ns Ao Ar jname Ac Ns Va _exec_stop
 .It Li exec.prestop
-set from
+установленный из
 .Va jail_ Ns Ao Ar jname Ac Ns Va _exec_prestop
 .It Li exec.poststop
-set from
+установленный из
 .Va jail_ Ns Ao Ar jname Ac Ns Va _exec_poststop
 .It Li ip4.addr
-set if
+установите, если
 .Va jail_ Ns Ao Ar jname Ac Ns Va _ip
-or
+или
 .Va jail_ Ns Ao Ar jname Ac Ns Va _ip_multi Ns Aq Ar n
-contain IPv4 addresses
+содержат IPv4-адреса
 .It Li ip6.addr
-set if
+установите, если
 .Va jail_ Ns Ao Ar jname Ac Ns Va _ip
-or
+или
 .Va jail_ Ns Ao Ar jname Ac Ns Va _ip_multi Ns Aq Ar n
-contain IPv6 addresses
+содержат IPv6-адреса
 .It Li allow.mount
-set from
+установленный из
 .Va jail_ Ns Ao Ar jname Ac Ns Va _mount_enable
 .It Li mount.devfs
-set from
+установленный из
 .Va jail_ Ns Ao Ar jname Ac Ns Va _devfs_enable
 .It Li devfs_ruleset
-set from
+установленный из
 .Va jail_ Ns Ao Ar jname Ac Ns Va _devfs_ruleset .
-This must be an integer,
-not a string.
+Это должно быть целое число,
+а не строка.
 .It Li mount.fdescfs
-set from
+установленный из
 .Va jail_ Ns Ao Ar jname Ac Ns Va _fdescfs_enable
 .It Li allow.set_hostname
-set from
+установленный из
 .Va jail_ Ns Ao Ar jname Ac Ns Va _set_hostname_allow
 .It Li allow.rawsocket
-set from
+установленный из
 .Va jail_ Ns Ao Ar jname Ac Ns Va _socket_unixiproute_only
 .It Li allow.sysvipc
-set from
+установленный из
 .Va jail_ Ns Ao Ar jname Ac Ns Va _sysvipc_allow
 .El
 .\" -----------------------------------------------------
 .It Va harvest_mask
 .Pq Vt int
-Set to a bit-mask
-representing the entropy sources
-you wish to harvest.
-Refer to
+Устанавливается на битную маску,
+представляющую источники энтропии,
+которые вы хотите собрать.
+См.
 .Xr random 4
-for more information.
+для получения дополнительной информации.
 .It Va entropy_dir
 .Pq Vt str
-Set to
+Установите на
 .Dq Li NO
-to disable caching entropy via
+чтобы отключить кэширование энтропии через
 .Xr cron 8 .
-Otherwise set to the directory
-in which the entropy files are stored.
-To be useful,
-there must be
-a system cron job
-that regularly writes and rotates
-files here.
-All files found
-will be used at boot time.
-The default is
+В противном случае задайте каталог
+в котором хранятся файлы энтропии.
+Будет полезным создание
+системного задания cron
+которое регулярно записывает и редактирует
+файлы здесь.
+Все найденные файлы
+будут использоваться во время загрузки.
+По умолчанию
 .Pa /var/db/entropy .
 .It Va entropy_file
 .Pq Vt str
-Set to
+Установите значение
 .Dq Li NO
-to disable caching entropy through reboots.
-Otherwise set to the name
-of a file used to store cached entropy.
-This file should be located
-on a file system that is readable
-before all the volumes specified in
+чтобы отключить кэширование энтропии при перезагрузке.
+В противном случае задайте имя
+файла, используемого для хранения кэшированной энтропии.
+Этот файл должен быть расположен
+в файловой системе, доступной для чтения
+перед тем, как все тома, указанные в
 .Xr fstab 5
-are mounted.
-By default,
+будут устновлены.
+По умолчанию,
 .Pa /entropy
-is used,
-but if
+используется,
+но если
 .Pa /var/db/entropy-file
-is found it will also be used.
-This will be of some use to
+будет также использован.
+Это будет полезно для
 .Xr bsdinstall 8 .
 .It Va entropy_boot_file
 .Pq Vt str
-Set to
+Установите в
 .Dq Li NO
-to disable
-very early caching entropy
-through reboots.
-Otherwise set to the filename
-used to read
-very early reboot cached entropy.
-This file should be located where
+чтобы отключить
+очень раннее кэширование энтропии
+через перезагрузку.
+В противном случае устанавливается имя файла
+используемого для чтения
+очень раннего кэширования энтропии при перезагрузке.
+Этот файл должен находиться там, где
 .Xr loader 8
-can read it.
-See also
+может его прочитать.
+См. также
 .Xr loader.conf 5 .
-The default location is
+По умолчанию он расположен в
 .Pa /boot/entropy .
 .It Va entropy_save_sz
 .Pq Vt int
-Size of the entropy cache files saved by
+Размер файлов энтропийного кэша, сохраняемых командой
 .Nm save-entropy
-periodically.
+периодически.
 .It Va entropy_save_num
 .Pq Vt int
-Number of entropy cache files to save by
+Количество файлов энтропийного кэша, сохраняемых программой
 .Nm save-entropy
-periodically.
+периодически.
 .It Va ipsec_enable
 .Pq Vt bool
-Set to
+Установите значение
 .Dq Li YES
-to run
+для запуска
 .Xr setkey 8
-on
+на
 .Va ipsec_file
-at boot time.
+во время загрузки.
 .It Va ipsec_file
 .Pq Vt str
-Configuration file for
+Файл конфигурации для
 .Xr setkey 8 .
 .It Va dmesg_enable
 .Pq Vt bool
-Set to
+Установите на
 .Dq Li YES
-to save
+для сохранения
 .Xr dmesg 8
-to
+на
 .Pa /var/run/dmesg.boot
-on boot.
+при загрузке.
 .It Va rcshutdown_timeout
 .Pq Vt int
-If set, start a watchdog timer in the background which will terminate
+Если установлено, запускает сторожевой таймер в фоновом режиме, который завершит
 .Pa rc.shutdown
-if
+если
 .Xr shutdown 8
-has not completed within the specified time (in seconds).
-Notice that in addition to this soft timeout,
+не завершится в течение указанного времени (в секундах).
+Обратите внимание, что в дополнение к этому мягкому таймауту,
 .Xr init 8
-also applies a hard timeout for the execution of
+также применяется жесткий таймаут для выполнения
 .Pa rc.shutdown .
-This is configured via
+Это настраивается с помощью
 .Xr sysctl 8
-variable
+переменной
 .Va kern.init_shutdown_timeout
-and defaults to 120 seconds.
-Setting the value of
+и по умолчанию составляет 120 секунд.
+Установка значения
 .Va rcshutdown_timeout
-to more than 120 seconds will have no effect until the
+более чем на 120 секунд не будет иметь никакого эффекта до тех пор, пока
 .Xr sysctl 8
-variable
+переменная
 .Va kern.init_shutdown_timeout
-is also increased.
+также будет увеличена.
 .It Va virecover_enable
 .Pq Vt bool
-Set to
+Установите на
 .Dq Li NO
-to prevent the system from trying to
-recover prematurely terminated
+чтобы предотвратить попытки системы
+восстановить преждевременно завершенную работу
 .Xr vi 1
-sessions.
+сеансов.
 .It Va ugidfw_enable
 .Pq Vt bool
-Set to
+Установите значение
 .Dq Li YES
-to load the
+для загрузки
 .Xr mac_bsdextended 4
-module upon system initialization and load a default
-ruleset file.
+модуля при инициализации системы и загрузки файла набора правил по умолчанию.
 .It Va bsdextended_script
 .Pq Vt str
-The default
+По умолчанию
 .Xr mac_bsdextended 4
-ruleset file to load.
-The default value of this variable is
+файл набора правил для загрузки.
+По умолчанию эта переменная имеет значение
 .Pa /etc/rc.bsdextended .
 .It Va newsyslog_enable
 .Pq Vt bool
-If set to
+Если установлено значение
 .Dq Li YES ,
-run
+запустите
 .Xr newsyslog 8
-command at startup.
+при запуске.
 .It Va newsyslog_flags
 .Pq Vt str
-If
+Если для 
 .Va newsyslog_enable
-is set to
+установлено значение
 .Dq Li YES ,
-these are the flags to pass to the
+это флаги, которые нужно передать 
 .Xr newsyslog 8
-program.
-The default is
+программе.
+По умолчанию
 .Dq Li -CN ,
-which causes log files flagged with a
+что приводит к тому, что файлы журналов, помеченные флагом
 .Cm C
-to be created.
+будут созданы.
 .It Va mdconfig_md Ns Aq Ar X
 .Pq Vt str
-Arguments to
+Аргументы к
 .Xr mdconfig 8
-for
+для
 .Xr md 4
-device
+устройства
 .Ar X .
-At minimum a
+Как минимум
 .Fl t Ar type
-must be specified and either a
+должен быть указан и либо
 .Fl s Ar size
-for malloc or swap backed
+для malloc или swap backed
 .Xr md 4
-devices or a
+устройства, либо
 .Fl f Ar file
-for vnode backed
+для vnode с поддержкой
 .Xr md 4
-devices.
-Note that
+устройств.
+Обратите внимание, что
 .Va mdconfig_md Ns Aq Ar X
-variables are evaluated until one variable is unset or null.
+переменные оцениваются до тех пор, пока одна из них не станет неустановленной или нулевой.
 .It Va mdconfig_md Ns Ao Ar X Ac Ns Va _newfs
 .Pq Vt str
-Optional arguments passed to
+Необязательные аргументы, передаваемые в
 .Xr newfs 8
-to initialize
+для инициализации
 .Xr md 4
-device
+устройства
 .Ar X .
 .It Va mdconfig_md Ns Ao Ar X Ac Ns Va _owner
 .Pq Vt str
-An ownership specification passed to
+Спецификация владения, передаваемая в
 .Xr chown 8
-after the specified
+после указанного
 .Xr md 4
-device
+устройства
 .Ar X
-has been mounted.
-Both the
+была установлена.
+Оба устройства
 .Xr md 4
-device and the mount point will be changed.
+и устройство, и точка установки будут изменены.
 .It Va mdconfig_md Ns Ao Ar X Ac Ns Va _perms
 .Pq Vt str
-A mode string passed to
+Строка режима, передаваемая в
 .Xr chmod 1
-after the specified
+после выполнения указанного
 .Xr md 4
-device
+устройства
 .Ar X
-has been mounted.
-Both the
+была установлена.
+Оба устройства
 .Xr md 4
-device and the mount point will be changed.
+и устройство, и точка установки будут изменены.
 .It Va mdconfig_md Ns Ao Ar X Ac Ns Va _files
 .Pq Vt str
-Files to be copied to the mount point of the
+Файлы, которые необходимо скопировать в точку установки устройства
 .Xr md 4
-device
+устройства
 .Ar X
-after it has been mounted.
+после его установки.
 .It Va mdconfig_md Ns Ao Ar X Ac Ns Va _cmd
 .Pq Vt str
 Command to execute after the specified
@@ -4359,538 +4342,531 @@ Command to execute after the specified
 device
 .Ar X
 has been mounted.
-Note that the command is passed to
+Обратите внимание, что команда передается в
 .Ic eval
-and that both
+и что обе
 .Va _dev
-and
+и
 .Va _mp
-variables can be used to reference respectively the
+переменные могут быть использованы для ссылки соответственно на
 .Xr md 4
-device and the mount point.
-Assuming that the
+устройство и точку установки.
+Предполагая, что
 .Xr md 4
-device is
+Устройство это
 .Li md0 ,
-one could set the following:
+можно задать следующее:
 .Bd -literal
 mdconfig_md0_cmd="tar xfzC /var/file.tgz \e${_mp}"
 .Ed
 .It Va autobridge_interfaces
 .Pq Vt str
-Set to the list of bridge interfaces that will have newly arriving interfaces
-checked against to be automatically added.
-If not set to
+Устанавливается в список интерфейсов моста, по которым будут проверяться вновь прибывающие интерфейсы для автоматического добавления.
+Если не установлено значение
 .Dq Li NO
-then for each whitespace separated
+то для каждого разделенного пробелами
 .Ar element
-in the value, a
-.Va autobridge_ Ns Aq Ar element
-variable is assumed to exist which has a whitespace separated list of interface
-names to match, these names can use wildcards.
-For example:
+в значении, будет добавлен
+.Va autobridge_ Ns Aq Ar element ,
+предполагается наличие переменной, которая содержит список имен интерфейсов, разделенных пробелами, которые нужно сопоставить, причем в этих именах могут использоваться подстановочные знаки.
+Например:
 .Bd -literal
 autobridge_interfaces="bridge0"
 autobridge_bridge0="tap* dc0 vlan[345]"
 .Ed
 .It Va mixer_enable
 .Pq Vt bool
-If set to
+Если установлено значение
 .Dq Li YES ,
-enable support for sound mixer.
+включите поддержку звукового микшера.
 .It Va hcsecd_enable
 .Pq Vt bool
-If set to
+Если установлено значение
 .Dq Li YES ,
-enable Bluetooth security daemon.
+включите демон безопасности Bluetooth.
 .It Va hcsecd_config
 .Pq Vt str
-Configuration file for
+Файл конфигурации для
 .Xr hcsecd 8 .
-Default
+По умолчанию
 .Pa /etc/bluetooth/hcsecd.conf .
 .It Va sdpd_enable
 .Pq Vt bool
-If set to
+Если установлено значение
 .Dq Li YES ,
-enable Bluetooth Service Discovery Protocol daemon.
+включите демон Bluetooth Service Discovery Protocol.
 .It Va sdpd_control
 .Pq Vt str
-Path to
+Путь к
 .Xr sdpd 8
-control socket.
-Default
+управляющему сокету.
+По умолчанию
 .Pa /var/run/sdp .
 .It Va sdpd_groupname
 .Pq Vt str
-Sets
+Устанавливает
 .Xr sdpd 8
-group to run as after it initializes.
-Default
+группу для запуска после инициализации.
+По умолчанию
 .Dq Li nobody .
 .It Va sdpd_username
 .Pq Vt str
-Sets
+Устанавливает
 .Xr sdpd 8
-user to run as after it initializes.
-Default
+пользователя для запуска после инициализации.
+По умолчанию
 .Dq Li nobody .
 .It Va bthidd_enable
 .Pq Vt bool
-If set to
+Если установлено значение
 .Dq Li YES ,
-enable Bluetooth Human Interface Device daemon.
+включите демона Bluetooth Human Interface Device.
 .It Va bthidd_config
 .Pq Vt str
-Configuration file for
+Файл конфигурации для
 .Xr bthidd 8 .
-Default
+По умолчанию
 .Pa /etc/bluetooth/bthidd.conf .
 .It Va bthidd_hids
 .Pq Vt str
-Path to a file, where
+Путь к файлу, где
 .Xr bthidd 8
-will store information about known HID devices.
-Default
+будет хранить информацию об известных HID-устройствах.
+По умолчанию
 .Pa /var/db/bthidd.hids .
 .It Va rfcomm_pppd_server_enable
 .Pq Vt bool
-If set to
+Если установлено значение
 .Dq Li YES ,
-enable Bluetooth RFCOMM PPP wrapper daemon.
+включитедемона обёртки Bluetooth RFCOMM PPP.
 .It Va rfcomm_pppd_server_profile
 .Pq Vt str
-The name of the profile to use from
+Имя профиля, который необходимо использовать из
 .Pa /etc/ppp/ppp.conf .
-Multiple profiles can be specified here.
-Also used to specify per-profile overrides.
-When the profile name contains any of the characters
+Здесь можно указать несколько профилей.
+Также используется для указания переопределений для каждого профиля.
+Если имя профиля содержит любой из символов
 .Dq Li .-/+
-they are translated to
+они переводятся в
 .Dq Li _
-for the proposes of the override variable names.
+для предложений имен переменных переопределения.
 .It Va rfcomm_pppd_server_ Ns Ao Ar profile Ac Ns _bdaddr
 .Pq Vt str
-Overrides local address to listen on.
-By default
+Переопределяет локальный адрес для прослушивания.
+По умолчанию
 .Xr rfcomm_pppd 8
-will listen on
+будет прослушивать
 .Dq Li ANY
-address.
-The address can be specified as BD_ADDR or name.
+адрес.
+Адрес может быть указан как BD_ADDR или имя.
 .It Va rfcomm_pppd_server_ Ns Ao Ar profile Ac Ns _channel
 .Pq Vt str
-Overrides local RFCOMM channel to listen on.
-By default
+Переопределяет локальный канал RFCOMM для прослушивания.
+По умолчанию
 .Xr rfcomm_pppd 8
-will listen on RFCOMM channel 1.
-Must set properly if multiple profiles used in the same time.
+будет прослушивать канал RFCOMM 1.
+Должно быть установлено правильно, если используется несколько профилей одновременно.
 .It Va rfcomm_pppd_server_ Ns Ao Ar profile Ac Ns _register_sp
 .Pq Vt bool
-Tells
+Сообщает 
 .Xr rfcomm_pppd 8
-if it should register Serial Port service on the specified RFCOMM channel.
-Default
+следует ли ему зарегистрировать службу последовательного порта на указанном канале RFCOMM.
+По умолчанию
 .Dq Li NO .
 .It Va rfcomm_pppd_server_ Ns Ao Ar profile Ac Ns _register_dun
 .Pq Vt bool
-Tells
+Cообщает
 .Xr rfcomm_pppd 8
-if it should register Dial-Up Networking service on the specified
-RFCOMM channel.
-Default
+следует ли ему зарегистрировать услугу Dial-Up Networking на указанном
+RFCOMM канале.
+По умолчанию
 .Dq Li NO .
 .It Va ubthidhci_enable
 .Pq Vt bool
-If set to
+Если установлено значение
 .Dq Li YES ,
-change the USB Bluetooth controller from HID mode to HCI mode.
-You also need to specify the location of USB Bluetooth controller with the
+переключите контроллер USB Bluetooth из режима HID в режим HCI.
+Также необходимо указать местоположение контроллера USB Bluetooth с помощью переменных
 .Va ubthidhci_busnum
-and
-.Va ubthidhci_addr
-variables.
+и
+.Va ubthidhci_addr .
 .It Va ubthidhci_busnum
-Bus number where the USB Bluetooth controller is located.
-Check the output of
+Номер шины, на которой расположен контроллер USB Bluetooth.
+Проверьте вывод
 .Xr usbconfig 8
-on your system to find this information.
+в вашей системе, чтобы найти эту информацию.
 .It Va ubthidhci_addr
-Bus address of the USB Bluetooth controller.
-Check the output of
+Адрес шины, на которой расположен контроллер USB Bluetooth.
+Проверьте вывод
 .Xr usbconfig 8
-on your system to find this information.
+в вашей системе, чтобы найти эту информацию.
 .It Va utx_enable
 .Pq Vt bool
-Set to
+Установите значение
 .Dq Li YES
-to enable user accounting through the
+чтобы включить учет пользователей через
 .Xr utx 8
-facility.
+средство.
 .It Va netwait_enable
 .Pq Vt bool
-If set to
+Если установлено значение
 .Dq Li YES ,
-delays the start of network-reliant services until
+откладывает запуск служб, зависящих от сети, до тех пор, пока
 .Va netwait_if
-is up and ICMP packets to a destination defined in
+и ICMP-пакеты к месту назначения, определенному в параметре
 .Va netwait_ip
-are flowing.
-Link state is examined first, followed by
+будут отправлены.
+Сначала проверяется состояние соединения, затем
 .Dq Li pinging
-an IP address to verify network usability.
-If no destination can be reached or timeouts are exceeded,
-network services are started anyway with no guarantee that
-the network is usable.
-Use of this variable requires both
+проверяется IP-адрес для проверки работоспособности сети.
+Если адресат не может быть достигнут или превышен тайм-аут,
+сетевые службы запускаются в любом случае без гарантии того.
+что сеть пригодна для использования.
+Для использования этой переменной требуется, чтобы
 .Va netwait_ip
-and
+и
 .Va netwait_if
-to be set.
+были установлены.
 .It Va netwait_ip
 .Pq Vt str
-Empty by default.
-This variable contains a space-delimited list of IP addresses to
+По умолчанию пустая.
+Эта переменная содержит ограниченный пробелами список IP-адресов для
 .Xr ping 8 .
-DNS hostnames should not be used as resolution is not guaranteed
-to be functional at this point.
-If multiple IP addresses are specified,
-each will be tried until one is successful or the list is exhausted.
+Имена хостов DNS не следует использовать, так какдля разрешения не гарантируется
+работоспособность на данном этапе.
+Если указано несколько IP-адресов,
+каждый из них будет опробован до тех пор, пока один из них не будет подходящим или список не будет исчерпан.
 .It Va netwait_timeout
 .Pq Vt int
-Indicates the total number of seconds to perform a
+Указывает общее количество секунд для выполнения
 .Dq Li ping
-against each IP address in
+для каждого IP-адреса в списке
 .Va netwait_ip ,
-at a rate of one ping per second.
-If any of the pings are successful,
-full network connectivity is considered reliable.
-The default is 60.
+со скоростью один пинг в секунду.
+Если хоть один из пингов будет успешным,
+полное подключение к сети считается надежным.
+По умолчанию это значение равно 60.
 .It Va netwait_if
 .Pq Vt str
-Empty by default.
-Defines the name of the network interface on which watch for link.
+По умолчанию пустое.
+Определяет имя сетевого интерфейса, на котором необходимо следить за соединением.
 .Xr ifconfig 8
-is used to monitor the interface, looking for
+используется для мониторинга интерфейса в поисках
 .Dq Li status: no carrier .
-Once gone, the link is considered up.
-This can be a
+После этого соединение считается восстановленным.
+Это может быть
 .Xr vlan 4
-interface if desired.
+при желании.
 .It Va netwait_if_timeout
 .Pq Vt int
-Defines the total number of seconds to wait for link to become usable,
-polled at a 1-second interval.
-The default is 30.
+Определяет общее количество секунд, в течение которых нужно ждать, пока соединение станет пригодным для использования,
+опрашивается с интервалом в 1 секунду.
+По умолчанию - 30.
 .It Va rctl_enable
 .Pq Vt bool
-If set to
+Если установлено значение
 .Dq Li YES ,
-load
+загрузите
 .Xr rctl 8
-rules from the defined ruleset.
-The kernel must be built with
+правила из определенного набора правил.
+Ядро должно быть собрано с
 .Cd "options RACCT"
-and
+и
 .Cd "options RCTL" .
 .It Va rctl_rules
 .Pq Vt str
-Set to
+Установите в
 .Pa /etc/rctl.conf
-by default.
-This variables contains the
+по умолчанию.
+Эти переменные содержат
 .Xr rctl.conf 5
-ruleset to load for
+набор правил, загружаемый для
 .Xr rctl 8 .
 .It Va iovctl_files
 .Pq Vt str
-A space-separated list of configuration files used by
+Разделенный пробелами список конфигурационных файлов, используемых
 .Xr iovctl 8 .
-The default value is an empty string.
+Значение по умолчанию - пустая строка.
 .It Va autofs_enable
 .Pq Vt bool
-If set to
+Если установлено значение
 .Dq Li YES ,
-start the
+запустите
 .Xr automount 8
-utility and the
+утилиту и
 .Xr automountd 8
-and
+и
 .Xr autounmountd 8
-daemons at boot time.
+демоны во время загрузки.
 .It Va automount_flags
 .Pq Vt str
-If
+Если для
 .Va autofs_enable
-is set to
+установлено значение
 .Dq Li YES ,
-these are the flags to pass to the
-.Xr automount 8
-program.
-By default no flags are passed.
+это флаги, которые нужно передать программе
+.Xr automount 8 .
+По умолчанию флаги не передаются.
 .It Va automountd_flags
 .Pq Vt str
-If
+Если для
 .Va autofs_enable
-is set to
+установлено значение
 .Dq Li YES ,
-these are the flags to pass to the
+это флаги, которые нужно передать 
 .Xr automountd 8
-daemon.
-By default no flags are passed.
+демону.
+По умолчанию флаги не передаются.
 .It Va autounmountd_flags
 .Pq Vt str
-If
+Если для
 .Va autofs_enable
-is set to
+установлено значение
 .Dq Li YES ,
-these are the flags to pass to the
+это флаги, которые нужно передать 
 .Xr autounmountd 8
-daemon.
-By default no flags are passed.
+демону.
+По умолчанию флаги не передаются.
 .It Va ctld_enable
 .Pq Vt bool
-If set to
+Если установлено значение
 .Dq Li YES ,
-start the
+запустите
 .Xr ctld 8
-daemon at boot time.
+демон во время загрузки.
 .It Va iscsid_enable
 .Pq Vt bool
-If set to
+Если установлено значение
 .Dq Li YES ,
-start the
+запустите
 .Xr iscsid 8
-daemon at boot time.
+демон во время загрузки.
 .It Va iscsictl_enable
 .Pq Vt bool
-If set to
+Если установлено значение
 .Dq Li YES ,
-start the
+запустите
 .Xr iscsictl 8
-utility at boot time.
+утилиту во время загрузки.
 .It Va iscsictl_flags
 .Pq Vt str
-If
+Если для 
 .Va iscsictl_enable
-is set to
+установлено значение
 .Dq Li YES ,
-these are the flags to pass to the
+это флаги, которые нужно передать 
 .Xr iscsictl 8
-program.
-The default is
+программе.
+По умолчанию
 .Dq Li -Aa ,
-which configures sessions based on the
-.Pa /etc/iscsi.conf
-configuration file.
+который настраивает сеансы на основе конфмгурационного файла
+.Pa /etc/iscsi.conf .
 .It Va cfumass_enable
 .Pq Vt bool
-If set to
+Если установлено значение
 .Dq Li YES ,
-create and export an USB LUN using
+создайте и экспортируйте USB LUN с помощью
 .Xr cfumass 4
-at boot time.
+во время загрузки.
 .It Va cfumass_dir
 .Pq Vt str
-The directory where the files exported by USB LUN are located.
-The default directory is
+Каталог, в котором находятся файлы, экспортируемые USB LUN.
+По умолчанию используется каталог
 .Pa /var/cfumass .
 .It Va service_delete_empty
 .Pq Vt bool
-If set to
+Если установлено значение
 .Dq Li YES ,
 .Ql Li service delete
-removes empty
+удаляет пустые
 .Dq Li rc.conf.d
-files.
+файлы.
 .It Va zfs_bootonce_activate
 .Pq Vt bool
-If set to
+Если установлено значение
 .Dq Li YES ,
-and a boot environment marked bootonce is successfully booted,
-it will be made permanently active.
+и загрузочная среда, помеченная как bootonce, успешно загружена,
+она будет сделана постоянно активной.
 .It Va zfskeys_enable
 .Pq Vt bool
-If set to
+Если установлено значение
 .Dq Li YES ,
-enable auto-loading of encryption keys for encrypted ZFS datasets.
-For every dataset the script will first load the appropriate encryption key
-and then attempt to unlock the dataset.
+включите автоматическую загрузку ключей шифрования для зашифрованных наборов данных ZFS.
+Для каждого набора данных сценарий сначала загрузит соответствующий ключ шифрования, 
+а затем попытается разблокировать набор данных.
 .Pp
-The script operates only on datasets which are encrypted with
-ZFS native encryption
-and have a ZFS
+Сценарий работает только с наборами данных, которые зашифрованы с помощью
+собственного шифрования ZFS
+и имеют расположение ключа ZFS
 .Dq Li keylocation
-dataset property beginning with
+свойства набора данных, начинающееся с
 .Dq Li file:// .
 .It Va zfskeys_datasets
 .Pq Vt str
-A whitespace-separated list of ZFS datasets to unlock.
-The list is empty by default,
-which means that the script will attempt to unlock all datasets.
+Разделенный пробелами список наборов данных ZFS для разблокировки.
+По умолчанию список пуст,
+что означает, что сценарий попытается разблокировать все наборы данных.
 .It Va zfskeys_timeout
 .Pq Vt int
-Define the total number of seconds to wait for the zfskeys script
-to unlock an encrypted dataset.
-The default is 10.
+Определяет общее количество секунд, в течение которых сценарий zfskeys будет ждать
+для разблокировки зашифрованного набора данных.
+По умолчанию - 10.	
 .It Va sendmail_enable
 .Pq Vt str
-If set to
+Если установлено значение
 .Dq Li YES ,
-run the
+запустите
 .Xr sendmail 8
-daemon at system boot time.
-If set to
+демона при загрузке системы.
+Если установлено значение
 .Dq Li NO ,
-do not run a
+не запускайте демона
 .Xr sendmail 8
-daemon to listen for incoming network mail.
-This does not preclude a
+для прослушивания входящей сетевой почты.
+Это не запрещает
 .Xr sendmail 8
-daemon listening on the SMTP port of the loopback interface.
-The
+демону прослушивать SMTP-порт интерфейса loopback.
+Опция
 .Dq Li NONE
-option sets each
+устанавливает каждый
 .Va sendmail_enable ,
 .Va sendmail_submit_enable ,
 .Va sendmail_outbound_enable ,
 .Va sendmail_msp_queue_enable
-to
+на
 .Dq Li NO .
 .It Va sendmail_cert_create
 .Pq Vt str
-If
+Если для
 .Va sendmail_enable
-is set to
+установлено значение
 .Dq Li YES ,
-create a signed certificate
+создайте подписанный сертификат
 .Pa /etc/mail/certs/host.cert
-representing
+представляющий
 .Pa /etc/mail/certs/host.key
-by the CA certificate in
+сертификатом центра сертификации в
 .Pa /etc/mail/certs/cacert.pem .
-This will enable connecting hosts to negotiate STARTTLS allowing incoming
-email to be encrypted in transit.
+Это позволит соединяющимся узлам согласовать STARTTLS, что позволит
+шифровать входящую почту при передаче.
 .Xr sendmail 8
-needs to be configured to use these generated files.
-The default configuration in
+должен быть настроен для использования этих сгенерированных файлов.
+Конфигурация по умолчанию в
 .Pa /etc/mail/freebsd.mc
-has the required options in it.
+содержит необходимые параметры.
 .It Va sendmail_cert_cn
 .Pq Vt str
-If
+Если для
 .Va sendmail_enable
-is set to
+установлено значение
 .Dq Li YES
-and
+и
 .Va sendmail_cert_create
-is set to
+установлен на
 .Dq Li YES ,
-this is the Common Name (CN) of the certificate that will be created.
-If
+это общее имя (CN) создаваемого сертификата.
+Если
 .Va sendmail_cert_cn
-is not set, the system's hostname will be used.
-If there is no hostname set,
-.Dq Li amnesiac
-will be used.
+не задано, будет использоваться имя хоста системы.
+Если имя хоста не задано, будет использоваться
+.Dq Li amnesiac .
 .It Va sendmail_flags
 .Pq Vt str
-If
+Если для
 .Va sendmail_enable
-is set to
+установлено значение
 .Dq Li YES ,
-these are the flags to pass to the
+это флаги, которые нужно передать 
 .Xr sendmail 8
-daemon.
+демону.
 .It Va sendmail_submit_enable
 .Pq Vt bool
-If set to
+Если установлено значение
 .Dq Li YES
-and
+и
 .Va sendmail_enable
-is set to
+установлен в
 .Dq Li NO ,
-run
+запустите
 .Xr sendmail 8
-using
+используя
 .Va sendmail_submit_flags
-instead of
+вместо
 .Va sendmail_flags .
-This is intended to allow local mail submission via
-a localhost-only listening SMTP service required for running
+Это позволяет отправлять локальную почту через
+SMTP-службу, прослушивающую только локальный хост, что необходимо для работы
 .Xr sendmail 8
-as a non-set-user-ID binary.
-Note that this does not work inside
+как двоичного файла без идентификатора пользователя.
+Обратите внимание, что это не работает внутри
 .Xr jail 2
-systems, as jails do not allow binding to just the localhost interface.
+поскольку джейлы не позволяют привязываться только к интерфейсу localhost.
 .It Va sendmail_submit_flags
 .Pq Vt str
-If
+Если для 
 .Va sendmail_enable
-is set to
+установлено значение
 .Dq Li NO
-and
+и
 .Va sendmail_submit_enable
-is set to
+установлен на
 .Dq Li YES ,
-these are the flags to pass to the
+это флаги, которые нужно передать
 .Xr sendmail 8
-daemon.
+демону.
 .It Va sendmail_outbound_enable
 .Pq Vt bool
-If set to
+Если установлено значение
 .Dq Li YES
-and both
+и оба
 .Va sendmail_enable
-and
+и
 .Va sendmail_submit_enable
-are set to
+установлены в
 .Dq Li NO ,
-run
+запустите
 .Xr sendmail 8
-using
+используя
 .Va sendmail_outbound_flags
-instead of
+вместо
 .Va sendmail_flags .
-This is intended to allow local mail queue management
-for systems that do not offer a listening SMTP service.
+Это позволяет управлять локальной почтовой очередью
+системам, которые не предлагают службу SMTP для прослушивания.
 .It Va sendmail_outbound_flags
 .Pq Vt str
-If both
+Если оба
 .Va sendmail_enable
-and
+и
 .Va sendmail_submit_enable
-are set to
+установлены в
 .Dq Li NO
-and
+и
 .Va sendmail_outbound_enable
-is set to
+установлен на
 .Dq Li YES ,
-these are the flags to pass to the
+это флаги, которые нужно передать 
 .Xr sendmail 8
-daemon.
+демону.
 .It Va sendmail_msp_queue_enable
 .Pq Vt bool
-If set to
+Если установлено значение
 .Dq Li YES ,
-start a client (MSP) queue runner
+запустите бегунок очереди клиента (MSP)
 .Xr sendmail 8
-daemon at system boot time.
-As of sendmail 8.12, a separate queue is used for command line
-submissions.
-The client queue runner ensures that nothing is
-left behind in the submission queue.
+при загрузке системы.
+Начиная с версии sendmail 8.12, для командной строки используется отдельная очередь отправки. 
+Бегунок клиентской очереди следит за тем, чтобы ничего не оставалось
+в очереди отправки.
 .It Va sendmail_msp_queue_flags
 .Pq Vt str
-If
+Если для
 .Va sendmail_msp_queue_enable
-is set to
-daemon.
+установлено значение
+демон.
 .Dq Li YES ,
-these are the flags to pass to the
+это флаги, которые нужно передать программе
 .Xr sendmail 8
 .El
-.Sh FILES
+.Sh ФАЙЛЫ
 .Bl -tag -width "/etc/defaults/rc.conf" -compact
 .It Pa /etc/defaults/rc.conf
 .It Pa /etc/defaults/vendor.conf
@@ -4898,7 +4874,7 @@ these are the flags to pass to the
 .It Pa /etc/rc.conf.local
 .It Pa /etc/rc.conf.d/
 .El
-.Sh SEE ALSO
+.Sh СМ. ТАКЖЕ
 .Xr chmod 1 ,
 .Xr cpuset 1 ,
 .Xr gdb 1 Pq Pa ports/devel/gdb ,
@@ -5005,10 +4981,9 @@ these are the flags to pass to the
 .Xr ypbind 8 ,
 .Xr ypserv 8 ,
 .Xr ypset 8
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
 .Nm
-file appeared in
+Версия файла
 .Fx 2.2.2 .
-.Sh AUTHORS
-.An Jordan K. Hubbard .
+.Sh АВТОРЫ
+.An Джордан К. Хаббард .
