@@ -27,64 +27,71 @@
 .\"
 .\"	@(#)intro.8	8.2 (Berkeley) 12/11/93
 .\"
-.Dd October 22, 2006
+.Dd Октябрь 22, 2006
 .Dt INTRO 8
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm intro
-.Nd "introduction to system maintenance procedures and commands"
-.Sh DESCRIPTION
-This section contains information related to system operation
-and maintenance.
+.Nd "введение в процедуры и команды обслуживания системы"
+.Sh ОПИСАНИЕ
+Этот раздел содержит информацию, связанную с эксплуатацией 
+и обслуживанием системы.
 .Pp
-It describes commands used to create new file systems
+В нем описаны команды, используемые для создания новых файловых систем
 .Pq Xr newfs 8 ,
-verify the integrity of the file systems
+проверки целостности файловых систем
 .Pq Xr fsck 8 ,
-control disk usage
+контроля использования дискового пространства
 .Pq Xr edquota 8 ,
-maintain system backups
+создания резервных копий
 .Pq Xr dump 8 ,
-and recover files when disks die an untimely death
+и восстанавления файлов в ситуациях, когда диски преждевременно выходят из строя 
 .Pq Xr restore 8 .
 .\" The
 .\" .Xr format 8
 .\" manual
 .\" for the specific architecture the system is running on should be
 .\" consulted when formatting disks and tapes.
-Network related services like
+Сетевые службы, такие как
 .Xr inetd 8
 and
 .Xr ftpd 8
-are also described.
+также рассмотрены.
 .Pp
-All commands set an exit status.
-Its value may be tested
-to see if the command completed normally.
-Unless otherwise noted (rare), the value 0 signifies successful
-completion of the command, while a value >0 indicates an error.
-Some commands attempt to describe the nature of the failure by using
-error codes defined in
+Все команды устанавливают статус завершения.
+Его значение может проверяться, 
+чтобы убедиться в правильном выполнении команды.
+Если не указано иное (редко), значение 0 означает успешное
+выполнение команды, а значения >0 обозначают ошибку.
+Некоторые командаы пытаются описать природу сбоя, используя
+коды ошибки, описанные в 
 .Xr sysexits 3 ,
-or set the status to arbitrary values >0 (typically 1), but many
-such values are not described in the manual.
+или устанавливают в качестве статуса произвольные значения >0 (обычно 1), но многие
+такие значения не описываются в руководстве.
 .Pp
 A number of pages in this section describe general system
 management topics.
+Некоторые страницы этого раздела описывают общие темы,
+связанные с управлением системой.
 .Pp
-For example, the
+
+Например, на странице руководства по загрузке(8) описывается загрузка системы
+процедуры, а на странице руководства по бездисковой системе(8) описано, как загрузить
+системы по сети. Чтобы понять, как интерпретировать сообщения о сбоях системы, следует ознакомиться со страницей руководства по сбою(8)
+.
+
+
+Например, страница руководства
 .Xr boot 8
-manual page describes the system bootstrapping procedures,
-and the
+описывает процесс загрузки системы,
+а страница
 .Xr diskless 8
-manual page describes how to boot a system over a network.
-The
-.Xr crash 8
-manual page
-should be consulted to understand how to interpret system
-crash dumps.
-.Sh HISTORY
-The
+описывает загрузку системы по сети.
+Чтобы понять, как интерпретировать снимки, создаваемые при сбоях системы,
+следует ознакомиться со страницей
+.Xr crash 8 .
+.Sh ИСТОРИЯ
+Страница руководства
 .Nm
-section manual page appeared in
+впервые появилась в 
 .Bx 4.2 .
