@@ -26,12 +26,12 @@
 .Dd June 24, 2016
 .Dt BHYVELOAD 8
 .Os
-.Sh NAME
+.Sh НАИМЕНОВАНИЕ
 .Nm bhyveload
-.Nd load a
+.Nd загрузить гостя
 .Fx
-guest inside a bhyve virtual machine
-.Sh SYNOPSIS
+в виртуальную машину bhyve
+.Sh СИНТАКСИС
 .Nm
 .Op Fl C
 .Op Fl S
@@ -42,132 +42,127 @@ guest inside a bhyve virtual machine
 .Op Fl l Ar os-loader
 .Op Fl m Ar memsize Ns Op Ar K|k|M|m|G|g|T|t
 .Ar vmname
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 .Nm
-is used to load a
+используется для загрузки гостя
 .Fx
-guest inside a
+внутри
 .Xr bhyve 4
-virtual machine.
+виртуальной машины.
 .Pp
 .Nm
-is based on
+основан на
 .Xr loader 8
-and will present an interface identical to the
+и предоставляет интерфейс, идентичный
 .Fx
-loader on the user's terminal.
-This behavior can be changed by specifying a different OS loader.
+загрузчику, на пользовательском интерфейсе.
+Это поведение можно изменить, указав другой загрузчик ОС.
 .Pp
-The virtual machine is identified as
+Виртуальная машина идентифицируется как
 .Ar vmname
-and will be created if it does not already exist.
-.Sh OPTIONS
-The following options are available:
+и будет создана, если она еще не существует.
+.Sh КЛЮЧИ
+Доступны следующие варианты:
 .Bl -tag -width indent
 .It Fl c Ar cons-dev
 .Ar cons-dev
-is a
+это
 .Xr tty 4
-device to use for
+устройство использумое для 
 .Nm
-terminal I/O.
+терминального ввода-вывода.
 .Pp
-The text string "stdio" is also accepted and selects the use of
-unbuffered standard I/O. This is the default value.
+Текстовая строка "stdio" также принимается и выбирает использование
+небуферизованного стандартного ввода-вывода. Это значение по умолчанию.
 .It Fl d Ar disk-path
-The
 .Ar disk-path
-is the pathname of the guest's boot disk image.
+это путь к образу загрузочного диска гостя.
 .It Fl e Ar name=value
-Set the
+Установите переменную среды загрузчика 
 .Fx
-loader environment variable
 .Ar name
-to
+на
 .Ar value .
 .Pp
-The option may be used more than once to set more than one environment
-variable.
+Эту опцию можно использовать несколько раз, чтобы установить более одной
+переменной среды.
 .It Fl h Ar host-path
-The
 .Ar host-path
-is the directory at the top of the guest's boot filesystem.
+это каталог в верхней части загрузочной файловой системы гостя.
 .It Fl l Ar os-loader
-Specify a different OS loader.
-By default
+Укажите другой загрузчик ОС.
+По умолчанию
 .Nm
-will use
+будет использовать
 .Pa /boot/userboot.so ,
-which presents a standard
+представляющий стандартный загрузчик
 .Fx
-loader.
 .It Fl m Ar memsize Ns Op Ar K|k|M|m|G|g|T|t
 .Ar memsize
-is the amount of memory allocated to the guest.
+объем памяти, выделенный гостю.
 .Pp
-The
+К аргументу
 .Ar memsize
-argument may be suffixed with one of
+можно добавить один из суффиксов
 .Cm K ,
 .Cm M ,
 .Cm G
-or
+или
 .Cm T
-(either upper or lower case) to indicate a multiple of
-Kilobytes, Megabytes, Gigabytes or Terabytes
-respectively.
+(в верхнем или нижнем регистре) чтобы указать число, кратное
+килобайтам, мегабайтам, гигабайтам или терабайтам соответственно.
 .Pp
 .Ar memsize
-defaults to 256M.
+по умолчанию равен 256M.
 .It Fl C
-Include guest memory in the core file when
+Включить гостевую память в файл ядра, когда
 .Nm
-dumps core.
-This is intended for debugging an OS loader as it allows inspection of
-the guest memory.
+выгружает ядро.
+Это предназначено для отладки загрузчика ОС, поскольку позволяет
+проверять гостевую память.
 .It Fl S
-Wire guest memory.
+Подключить гостевую память.
 .El
-.Sh EXAMPLES
-To create a virtual machine named
+.Sh ПРИМЕРЫ
+Чтобы создать виртуальную машину с именем
 .Ar freebsd-vm
-that boots off the ISO image
+которая загружается с образа ISO
 .Pa /freebsd/release.iso
-and has 1GB memory allocated to it:
+и имеет выделенный для нее 1 ГБ памяти:
 .Pp
 .Dl "bhyveload -m 1G -d /freebsd/release.iso freebsd-vm"
 .Pp
-To create a virtual machine named
+Чтобы создать виртуальную машину с именем
 .Ar test-vm
-with 256MB of memory allocated, the guest root filesystem under the host
-directory
+с выделенной памятью 256 МБ, гостевая корневая файловая система находится
+в каталоге хоста
 .Pa /user/images/test
-and terminal I/O sent to the
+и терминал ввода-вывода отправляются на
 .Xr nmdm 4
-device
+устройство
 .Pa /dev/nmdm1B
 .Pp
 .Dl "bhyveload -m 256MB -h /usr/images/test -c /dev/nmdm1B test-vm"
-.Sh SEE ALSO
+.Sh СМОТРИ ТАКЖЕ
 .Xr bhyve 4 ,
 .Xr nmdm 4 ,
 .Xr vmm 4 ,
 .Xr bhyve 8 ,
 .Xr loader 8
-.Sh HISTORY
+.Sh ИСТОРИЯ
 .Nm
-first appeared in
+впервые появился во
 .Fx 10.0 ,
-and was developed at NetApp Inc.
-.Sh AUTHORS
+и был разработан в NetApp Inc.
+.Sh АВТОРЫ
 .Nm
-was developed by
+был разработан
 .An -nosplit
 .An Neel Natu Aq Mt neel@FreeBSD.org
-at NetApp Inc with a lot of help from
+в NetApp Inc при огромной помощи
 .An Doug Rabson Aq Mt dfr@FreeBSD.org .
-.Sh BUGS
+.Sh ПРОБЛЕМЫ
 .Nm
-can only load
+может загружать
 .Fx
-as a guest.
+только в качестве гостя.
