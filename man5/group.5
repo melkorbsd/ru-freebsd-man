@@ -27,81 +27,80 @@
 .\"
 .\"     From: @(#)group.5	8.3 (Berkeley) 4/19/94
 .\"
-.Dd February 8, 2013
+.Dd 8 февраля, 2013
 .Dt GROUP 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm group
-.Nd format of the group permissions file
-.Sh DESCRIPTION
-The
+.Nd формат разрешений файла разрешений группы
+.Sh ОПИСАНИЕ
+Файл
 .Nm
-file is the local source of group information.
-It can be used in conjunction with the Hesiod domain
-`group', and the NIS maps `group.byname' and `group.bygid',
-as controlled by
+является локальным источником информации о группе.
+Он может быть использован вместе с Hesiod доменом
+`group', а также NIS картами `group.byname' и `group.bygid',
+контроллируемыми
 .Xr nsswitch.conf 5 .
 .Pp
-The file
+Файл
 .Nm
-consists of newline separated
+состоит из разделенных разрывом строки
 .Tn ASCII
-records, one per group, containing four colon
+записей, одна на группу, содержащих четыре разделенных двотечиями
 .Ql \&:
-separated fields.
-These fields are as follows:
+поля.
+Этими полями являются:
 .Bl -tag -width password -offset indent -compact
 .It group
-Name of the group.
+Название группы.
 .It passwd
-Group's
-.Em encrypted
-password.
+.Em зашифрованный
+пароль группы.
 .It gid
-The group's decimal ID.
+ID группы в десятичном формате.
 .It member
-Group members.
+Члены группы.
 .El
 .Pp
-Lines whose first non-whitespace character is a pound-sign (#)
-are comments, and are ignored.
-Blank lines that consist
-only of spaces, tabs or newlines are also ignored.
+Строчки, первым символом (кроме пробела) которых является символ фунта (#)
+являются комментариями и игнорируются.
+Пустые строчки, которые состоят 
+только из пробелов, табуляций или разрывов строки также игнорируются.
 .Pp
-The
+Поле 
 .Ar group
-field is the group name used for granting file access to users
-who are members of the group.
-The
+является именем группы, которое используется для предоставления файлового доступа
+пользователям, которые являются членами группы.
+Поле
 .Ar gid
-field is the number associated with the group name.
-They should both be unique across the system (and often
-across a group of systems) since they control file access.
-The
+является числом, связанное с именем группы.
+Они оба должны быть уникальны для всей системы (и
+зачастую для целой группы систем), поскольку они 
+контроллируют доступ к файлам.
+Поле
 .Ar passwd
-field
-is an optional
-.Em encrypted
-password.
-This field is rarely used
-and an asterisk is normally placed in it rather than leaving it blank.
-The
+является необязательным
+.Em зашифрованным
+паролем.
+Это поле редко используется и обычно оно
+заполняется звездочкой вместо того, чтобы 
+оставлять его пустым.
+Поле
 .Ar member
-field contains the names of users granted the privileges of
+содержит имена пользователей, имеющих разрешения группы
 .Ar group .
-The member names are separated by commas without spaces or newlines.
-A user is automatically in a group if that group was specified
-in their
+Имена пользователей отделены запятыми без пробелов или разрывов строки.
+Пользователь автоматически находится в группе 
+если она прописана в их записи в
 .Pa /etc/passwd
-entry and does not need to be added to that group in the
+и его не нужно добавлять в эту группу в файле
 .Nm
-file.
 .\" .Pp
-.\" When the system reads the file
+.\" Когда система читает файл
 .\" .Pa /etc/group
-.\" the fields are read into the structure
+.\" ,поля считываются из структуры
 .\" .Fa group
-.\" declared in
+.\" , объявленной в
 .\" .In grp.h :
 .\" .Bd -literal -offset indent
 .\" struct group {
@@ -111,40 +110,38 @@ file.
 .\"	char    **gr_mem;        /* group members */
 .\" };
 .\" .Ed
-.Sh IMPLEMENTATION NOTES
-The
+.Sh УКАЗАНИЯ ПО РЕАЛИЗАЦИИ
+Команда
 .Xr passwd 1
-command does not change the
+не изменяет пароли
 .Nm
-passwords.
-The
+Вместо нее, команда
 .Xr pw 8
-utility's
+программы
 .Cm groupmod
-command should be used instead.
-.Sh LIMITS
-There are various limitations which are explained in
-the function where they occur; see section
+рекомендуется к использованию.
+.Sh ОГРАНИЧЕНИЯ
+Существуют различные ограничения, которые обьясняются в 
+функции, где они случаются; смотрите секцию
 .Sx SEE ALSO .
 .Pp
-In older implementations,
-a group cannot have more than 200 members.
-The maximum line length of
+В старых реализациях,
+в группе не может состоять более двухсот человек.
+Максимальная длина строки файла
 .Pa /etc/group
-is 1024 characters.
-Longer lines will be skipped.
-This limitation disappeared in
+является 1024 символа.
+Более длинные строки пропускаются.
+Это ограничение исчезло в
 .Fx 3.0 .
-Older binaries that are statically linked, depend on old
-shared libraries, or
+Старые двоичные файлы со статической связью 
+зависят от старых разделяемых библиотек или от
 .No non- Ns Fx
-binaries in compatibility mode
-may still have this limit.
-.Sh FILES
+двоичных файлов в режиме совместимости.
+.Sh ФАЙЛЫ
 .Bl -tag -width /etc/group -compact
 .It Pa /etc/group
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr newgrp 1 ,
 .Xr passwd 1 ,
 .Xr setgroups 2 ,
@@ -156,10 +153,10 @@ may still have this limit.
 .Xr chkgrp 8 ,
 .Xr pw 8 ,
 .Xr yp 8
-.Sh HISTORY
-A
+.Sh ИСТОРИЯ
+Файловый формат
 .Nm
-file format appeared in
+появился в
 .At v6 .
-Support for comments first appeared in
+Поддержка комментариев впервые появилась в
 .Fx 3.0 .
