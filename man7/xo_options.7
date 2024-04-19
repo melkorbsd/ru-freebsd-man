@@ -10,130 +10,130 @@
 .Dd May 11, 2017
 .Dt LIBXO 3
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm xo_options
-.Nd common options for libxo\-based commands
-.Sh DESCRIPTION
+.Nd общие опции для команд, основанных на libxo\
+.Sh ОПИСАНИЕ
 .Pp
 .Nm libxo
-allows the rendering of data into
-various output styles, including
-.Em text ,
+позволяет выводить данные в
+различные стили вывода, включая
+.Em текст ,
 .Em XML ,
 .Em JSON ,
-and
-.Em HTML .
+и
+.Em HTML.
 .Nm libxo
-uses command line options to trigger rendering behavior.
-Options are recognised in three forms:
+использует параметры командной строки для запуска поведения рендеринга.
+Опции распознаются в трех формах:
 .Bl -bullet
 .It
-\-\-libxo <options>
+\-\-libxo <опции>
 .It
-\-\-libxo=<options>
+\-\-libxo=<опции>
 .It
-\-\-libxo:<brief\-options>
+\-\-libxo: <краткие\-опции>
 .El
 .Pp
-The first two forms accept a comma\-separated set of words, detailed
-below, while the third form accepts a set of letters, also below.
-The triggered functionality is identical.
+Первые две формы принимают набор слов, разделенных запятыми\, о чем подробно говорится ниже.
+ниже, а третья форма принимает набор букв, также описанный ниже.
+Функциональность триггера идентична.
 .Bl -column "Token2341234"
-.It Sy "Option     " "Action"
-.It "color      " "Enable colors/effects for display styles (TEXT, HTML)"
-.It "flush      " "Flush after each emit call"
-.It "flush\-line " "Flush each line of output"
-.It "html       " "Emit HTML output"
-.It "indent=xx  " "Set the indentation level"
-.It "info       " "Add info attributes (HTML)"
-.It "json       " "Emit JSON output"
-.It "keys       " "Emit the key attribute for keys (XML)"
-.It "log\-gettext" "Log (via stderr) each gettext(3) string lookup"
-.It "log\-syslog " "Log (via stderr) each syslog message (via xo_syslog)"
-.It "no\-humanize" "Ignore the {h:} modifier (TEXT, HTML)"
-.It "no\-locale  " "Do not initialize the locale setting"
-.It "no\-retain  " "Prevent retaining formatting information"
-.It "pretty     " "Emit pretty\-printed output"
-.It "retain     " "Force retaining formatting information"
-.It "text       " "Emit TEXT output"
-.It "underscores" "Replace XML\-friendly \"\-\"s with JSON friendly \"_\"s"
-.It "units      " "Add the 'units' (XML) or 'data\-units (HTML) attribute"
-.It "warn       " "Emit warnings when libxo detects bad calls"
-.It "warn\-xml   " "Emit warnings in XML"
-.It "xml        " "Emit XML output"
-.It "xpath      " "Add XPath expressions (HTML)"
+.It Sy "Option " "Действие"
+.It "color " "Включить цвета/эффекты для стилей отображения (TEXT, HTML)"
+.It "flush " "Промывать после каждого вызова emit"
+.It "flush\-line " "Промывать каждую строку вывода"
+.It "html " " Выводить HTML"
+.It "indent=xx " "Установить уровень отступа"
+.It "info " "Добавить информационные атрибуты (HTML)"
+.It "json " "Эмиттировать вывод JSON"
+.It "keys " "Выдавать атрибут ключа для ключей (XML)"
+.It "log\-gettext" "Регистрировать (через stderr) каждый поиск строки gettext(3)"
+.It "log\-syslog " "Регистрировать (через stderr) каждое сообщение syslog (через xo_syslog)"
+.It "no\-humanize" "Игнорировать модификатор {h:} (TEXT, HTML)"
+.It "no\-locale " "Не инициализировать настройки локали"
+.It "no\-retain " "Не сохранять информацию о форматировании"
+.It "pretty " "Выводить красивую\-печатную информацию"
+.It "retain " "Принудительно сохранять информацию о форматировании"
+.It "text " "Выводить TEX"
+
+.It "units " "Добавить атрибут 'units' (XML) или 'data\-units (HTML)"
+.It "warn " "Выдавать предупреждения, когда libxo обнаруживает неправильные вызовы"
+.It "warn\-xml " "Выдавать предупреждения в XML"
+.It "xml " " Выводить XML"
+.It "xpath " "Добавление выражений XPath (HTML)"
 .El
 .Pp
-The brief options are a set of single\-letter aliases for the longer
-terms, used as a single string:
+Краткие опции представляют собой набор однобуквенных псевдонимов для более длинных
+терминов, используемых как одна строка:
 .Bl -column "Value" "Equivalent Token"
 .It Sy "Value" "Equivalent Token"
 .It "c 
-.It "f     " "flush"
-.It "F     " "flush\-line"
-.It "H     " "html"
-.It "I     " "info"
-.It "i<num>" "indent=<num>"
-.It "J     " "json"
-.It "k     " "keys"
-.It "n     " "no\-humanize"
-.It "P     " "pretty"
-.It "T     " "text"
-.It "U     " "units"
-.It "u     " "underscore
-.It "W     " "warn"
-.It "X     " "xml"
-.It "x     " "xpath"
+.It "f "  "флэш"
+.It "F " " флеш\лайн "
+.It "H " "html"
+.It "I " " информация"
+.It "i<num>" " отступ=<число>"
+.It "J " "json"
+.It "k " " "ключи"
+.It "n " ""нет\-гуманизация"
+.It "P " " красивый "
+.It "T " "текст"
+.It "U " "единицы"
+.It "u " "подчеркивание
+.It "W " " предупреждение "
+.It "X " "xml"
+.It "x " "xpath"
 .El
 .Pp
-Most of these option are simple and direct, but some require
-additional details:
+Большинство из этих опций просты и прямы, но некоторые требуют
+дополнительных деталей:
 .Pp
 .Fa "flush\-line"
-performs line buffering, even when the output is not directed to
-a TTY device.
+выполняет буферизацию строк, даже если вывод не направлен на
+TTY-устройство.
 .Pp
 .Fa info
-generates additional data for HTML, encoded in attributes using
-names that state with "data\-".
+генерирует дополнительные данные для HTML, закодированные в атрибутах, использующих
+имена которых начинаются с "data\-".
 .Pp
 .Fa keys
-adds a "key" attribute for XML output to indicate that a leaf is
-an identifier for the list member.
+добавляет атрибут "key" для вывода XML, чтобы указать, что лист является
+идентификатором члена списка.
 .Pp
 .Fa no\-humanize
-avoids "humanizing" numeric output (see
+позволяет избежать "очеловечивания" числового вывода (см.
 .Xr humanize_number 3
-for details).
+для подробностей).
 .Pp
 .Fa no\-locale
-instructs
+предписывает использовать .
 .Nm libxo
-to avoid translating output to the current locale.
+не переводить вывод в текущую локаль.
 .Pp
 .Fa no\-retain
-disables the ability of
+отключает возможность
 .Nm libxo
-to internally retain "compiled" information about formatting strings.
+внутренне сохранять "скомпилированную" информацию о строках форматирования.
 .Pp
-.Fa underscores
-can be used with
+.Fa Подчеркивания
+можно использовать в
 .Em JSON
-output to change
+для изменения
 .Em XML \-friendly
-names with dashes into
+имен с тире в
 .Em JSON \-friendly
-name with underscores.
+имена с подчеркиванием.
 .Pp
-.Fa warn
-allows
+.Fa предупреждение 
+разрешает
 .Nm libxo
-to emit warnings on stderr when application code make incorrect calls.
-.Fa warn\-xml causes those warnings to be placed in
+выдавать предупреждения на stderr, когда код приложения совершает некорректные вызовы.
+.Fa warn\-xml заставляет помещать эти предупреждения в
 .Em XML
-inside the output.
-.Sh EXAMPLES
-The following are three example invocations of
+внутри выходных данных.
+.Sh ПРИМЕРЫ
+Ниже приведены три примера вызова
 .Xr ps 1 :
 .Bd -literal
       ps \-\-libxo json,pretty,warn \-ux
@@ -145,12 +145,11 @@ The following are three example invocations of
 .Sh SEE ALSO
 .Xr libxo 3 ,
 .Xr xo_format 5
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
 .Nm libxo
-library first appeared in
+впервые появилась в
 .Fx 11.0 .
-.Sh AUTHORS
+.Sh АВТОРЫ
 .Nm libxo
-was written by
+была написана
 .An Phil Shafer Aq Mt phil@freebsd.org .
