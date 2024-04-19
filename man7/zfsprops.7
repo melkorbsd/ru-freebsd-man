@@ -42,2011 +42,1947 @@
 .Dt ZFSPROPS 7
 .Os
 .
-.Sh NAME
+.Sh ИМЯ
 .Nm zfsprops
-.Nd native and user-defined properties of ZFS datasets
+.Nd собственные и определяемые пользователем свойства наборов данных ZFS
 .
-.Sh DESCRIPTION
-Properties are divided into two types, native properties and user-defined
-.Po or
-.Qq user
+.Sh ОПИСАНИЕ
+Свойства делятся на два типа: собственные и определяемые пользователем.
+.Po или
+.Qq пользователя
 .Pc
-properties.
-Native properties either export internal statistics or control ZFS behavior.
-In addition, native properties are either editable or read-only.
-User properties have no effect on ZFS behavior, but you can use them to annotate
-datasets in a way that is meaningful in your environment.
-For more information about user properties, see the
-.Sx User Properties
-section, below.
+свойства.
+Собственные свойства либо экспортируют внутреннюю статистику, либо управляют поведением ZFS.
+Кроме того, родные свойства могут быть как редактируемыми, так и доступными только для чтения.
+Пользовательские свойства не влияют на поведение ZFS, но вы можете использовать их для аннотирования
+наборов данных таким образом, который будет полезен в вашей среде.
+Для получения дополнительной информации о пользовательских свойствах см.
+.Sx Пользовательские свойства 
+ниже.
 .
-.Ss Native Properties
-Every dataset has a set of properties that export statistics about the dataset
-as well as control various behaviors.
-Properties are inherited from the parent unless overridden by the child.
-Some properties apply only to certain types of datasets
-.Pq file systems, volumes, or snapshots .
+.Ss Нативные свойства 
+Каждый набор данных имеет набор свойств, которые экспортируют статистику о наборе данных,
+а также управляют различным поведением.
+Свойства наследуются от родительского набора, если они не переопределены дочерним набором.
+Некоторые свойства применяются только к определенным типам наборов данных
+.Pq файловые системы, тома или моментальные снимки .
 .Pp
-The values of numeric properties can be specified using human-readable suffixes
-.Po for example,
+Значения числовых свойств могут быть указаны с помощью человекочитаемых суффиксов
+.Po, например,
 .Sy k ,
 .Sy KB ,
 .Sy M ,
 .Sy Gb ,
-and so forth, up to
+и так далее, вплоть до
 .Sy Z
-for zettabyte
+для зеттабайта
 .Pc .
-The following are all valid
-.Pq and equal
-specifications:
+Следующие варианты являются допустимыми
+.Pq и аналогичные
+спецификации:
 .Li 1536M ,
 .Li 1.5g ,
 .Li 1.50GB .
 .Pp
-The values of non-numeric properties are case sensitive and must be lowercase,
-except for
-.Sy mountpoint ,
+Значения нечисловых свойств чувствительны к регистру и должны быть в нижнем регистре,
+за исключением
+.Sy точка монтирования ,
 .Sy sharenfs ,
-and
+и
 .Sy sharesmb .
 .Pp
-The following native properties consist of read-only statistics about the
-dataset.
-These properties can be neither set, nor inherited.
-Native properties apply to all dataset types unless otherwise noted.
+Следующие собственные свойства содержат статистику о
+наборе данных, доступную только для чтения.
+Эти свойства не могут быть ни установлены, ни унаследованы.
+Собственные свойства применяются ко всем типам наборов данных, если не указано иное
 .Bl -tag -width "usedbyrefreservation"
 .It Sy available
-The amount of space available to the dataset and all its children, assuming that
-there is no other activity in the pool.
-Because space is shared within a pool, availability can be limited by any number
-of factors, including physical pool size, quotas, reservations, or other
-datasets within the pool.
+Объем пространства, доступный для набора данных и всех его дочерних элементов, при условии,
+что 
+в пуле нет другой активности.
+Поскольку пространство в пуле используется совместно, доступность может быть ограничена любым количеством
+факторов, включая физический размер пула, квоты, резервирование или другие
+наборы данных в пуле.
 .Pp
-This property can also be referred to by its shortened column name,
+На это свойство также можно ссылаться по сокращенному названию столбца,
 .Sy avail .
 .It Sy compressratio
-For non-snapshots, the compression ratio achieved for the
+Для не-снимков коэффициент сжатия, достигаемый для параметра
 .Sy used
-space of this dataset, expressed as a multiplier.
-The
+пространства этого набора данных, выраженный в виде множителя.
 .Sy used
-property includes descendant datasets, and, for clones, does not include the
-space shared with the origin snapshot.
-For snapshots, the
-.Sy compressratio
-is the same as the
+включает наборы данных-потомков, а для клонов не включает
+пространство, совместно используемое с исходным моментальным снимком.
+Для моментальных снимков свойство
+.Sy коэффициент сжатия 
+такое же, как
 .Sy refcompressratio
-property.
-Compression can be turned on by running:
-.Nm zfs Cm set Sy compression Ns = Ns Sy on Ar dataset .
-The default value is
-.Sy off .
+Сжатие можно включить, выполнив команду:
+.Nm zfs Cm set Sy compression Ns = Ns Sy на наборе данных Ar .
+По умолчанию используется значение
+.Sy выключено .
 .It Sy createtxg
-The transaction group (txg) in which the dataset was created.
-Bookmarks have the same
+Группа транзакций (txg), в которой был создан набор данных.
+Закладки имеют одинаковые значения
 .Sy createtxg
-as the snapshot they are initially tied to.
-This property is suitable for ordering a list of snapshots,
-e.g. for incremental send and receive.
+что и снимок, к которому они изначально привязаны.
+Это свойство подходит для упорядочивания списка моментальных снимков,
+например, для инкрементной отправки и получения.
 .It Sy creation
-The time this dataset was created.
-.It Sy clones
-For snapshots, this property is a comma-separated list of filesystems or volumes
-which are clones of this snapshot.
-The clones'
+Время создания этого набора данных.
+.It Sy клоны 
+Для моментальных снимков это свойство представляет собой список файловых систем или томов, разделенных запятыми.
+которые являются клонами этого моментального снимка.
+Клоны
 .Sy origin
-property is this snapshot.
-If the
+является этот снимок.
+Если
 .Sy clones
-property is not empty, then this snapshot can not be destroyed
-.Po even with the
+не пусто, то этот снимок не может быть уничтожен.
+.Po даже при
 .Fl r
-or
+или
 .Fl f
-options
+варианты
 .Pc .
-The roles of origin and clone can be swapped by promoting the clone with the
+Роли оригинала и клона можно поменять местами, продвинув клон с помощью команды
 .Nm zfs Cm promote
-command.
 .It Sy defer_destroy
-This property is
+Это свойство
 .Sy on
-if the snapshot has been marked for deferred destroy by using the
+если снимок был помечен для отложенного уничтожения с помощью команды
 .Nm zfs Cm destroy Fl d
-command.
-Otherwise, the property is
+В противном случае это свойство
 .Sy off .
 .It Sy encryptionroot
-For encrypted datasets, indicates where the dataset is currently inheriting its
-encryption key from.
-Loading or unloading a key for the
+Для зашифрованных наборов данных указывает, откуда набор данных в настоящее время наследует свой
+ключ шифрования.
+Загрузка или выгрузка ключа для
 .Sy encryptionroot
-will implicitly load / unload the key for any inheriting datasets (see
+неявно загрузит / выгрузит ключ для всех наследующих наборов данных (см.
 .Nm zfs Cm load-key
-and
+и
 .Nm zfs Cm unload-key
-for details).
-Clones will always share an
-encryption key with their origin.
-See the
-.Sx Encryption
-section of
+для подробностей).
+Клоны всегда будут совместно использовать
+ключ шифрования со своим источником.
+См.
+Шифрование .Sx
+раздел
 .Xr zfs-load-key 8
-for details.
+для получения подробной информации.
 .It Sy filesystem_count
-The total number of filesystems and volumes that exist under this location in
-the dataset tree.
-This value is only available when a
+Общее количество файловых систем и томов, существующих под этим расположением в
+дереве наборов данных.
+Это значение доступно только в том случае, если
 .Sy filesystem_limit
-has been set somewhere in the tree under which the dataset resides.
+было установлено где-то в дереве, в котором находится набор данных.
 .It Sy keystatus
-Indicates if an encryption key is currently loaded into ZFS.
-The possible values are
-.Sy none ,
-.Sy available ,
-and
-.Sy unavailable .
-See
+Указывает, загружен ли в данный момент ключ шифрования в ZFS.
+Возможны следующие значения
+.Sy нет ,
+.Sy доступен ,
+и
+.Sy недоступен .
+См.
 .Nm zfs Cm load-key
-and
+и
 .Nm zfs Cm unload-key .
 .It Sy guid
-The 64 bit GUID of this dataset or bookmark which does not change over its
-entire lifetime.
-When a snapshot is sent to another pool, the received snapshot has the same
+64-битный GUID этого набора данных или закладки, который не изменяется в течение
+всего срока службы.
+Когда снимок отправляется в другой пул, полученный снимок имеет тот же
 GUID.
-Thus, the
-.Sy guid
-is suitable to identify a snapshot across pools.
+Таким образом
+идентификатор .Sy
+подходит для идентификации моментального снимка в разных пулах.
 .It Sy logicalreferenced
-The amount of space that is
-.Qq logically
-accessible by this dataset.
-See the
-.Sy referenced
-property.
-The logical space ignores the effect of the
-.Sy compression
-and
-.Sy copies
-properties, giving a quantity closer to the amount of data that applications
-see.
-However, it does include space consumed by metadata.
+Объем пространства, которое
+.Qq логически
+доступные в этом наборе данных.
+См.
+.Sy, на который ссылаются
+свойство.
+Логическое пространство игнорирует эффект
+.Sy сжатия 
+и
+.Sy копии 
+что позволяет получить количество, более близкое к объему данных, которые видят приложения.
+Однако в него входит пространство, занимаемое метаданными.
 .Pp
-This property can also be referred to by its shortened column name,
+На это свойство также можно ссылаться по сокращенному имени столбца,
 .Sy lrefer .
 .It Sy logicalused
-The amount of space that is
-.Qq logically
-consumed by this dataset and all its descendents.
-See the
-.Sy used
-property.
-The logical space ignores the effect of the
-.Sy compression
-and
-.Sy copies
-properties, giving a quantity closer to the amount of data that applications
-see.
-However, it does include space consumed by metadata.
-.Pp
-This property can also be referred to by its shortened column name,
+Объем пространства, которое
 .Sy lused .
 .It Sy mounted
-For file systems, indicates whether the file system is currently mounted.
-This property can be either
-.Sy yes
-or
+Для файловых систем указывает, смонтирована ли файловая система в данный момент.
+Это свойство может быть либо
+.Sy да
+либо
 .Sy no .
 .It Sy objsetid
-A unique identifier for this dataset within the pool.
-Unlike the dataset's
-.Sy guid , No the Sy objsetid
-of a dataset is not transferred to other pools when the snapshot is copied
-with a send/receive operation.
-The
+Уникальный идентификатор данного набора данных в пуле.
+В отличие от идентификатора набора данных
+.Sy guid , нет, Sy objsetid
+набора данных не передается в другие пулы при копировании снимка
+с помощью операции отправки/получения.
+Адрес
 .Sy objsetid
-can be reused (for a new dataset) after the dataset is deleted.
+может быть повторно использован (для нового набора данных) после удаления набора данных.
 .It Sy origin
-For cloned file systems or volumes, the snapshot from which the clone was
-created.
-See also the
-.Sy clones
-property.
+Для клонированных файловых систем или томов - снимок, из которого был создан клон.
+создан.
+См. также
+.Sy клоны
 .It Sy receive_resume_token
-For filesystems or volumes which have saved partially-completed state from
+Для файловых систем или томов, которые сохранили частично завершенное состояние из
 .Nm zfs Cm receive Fl s ,
-this opaque token can be provided to
+этот непрозрачный токен может быть предоставлен
 .Nm zfs Cm send Fl t
-to resume and complete the
+для возобновления и завершения
 .Nm zfs Cm receive .
 .It Sy redact_snaps
-For bookmarks, this is the list of snapshot guids the bookmark contains a
-redaction
-list for.
-For snapshots, this is the list of snapshot guids the snapshot is redacted with
-respect to.
+Для закладок это список гидов моментальных снимков, которые содержит закладка
+редактирование
+список.
+Для моментальных снимков это список руководств по созданию моментальных снимков, в
+отношении которых выполняется редактирование моментального снимка.
 .It Sy referenced
-The amount of data that is accessible by this dataset, which may or may not be
-shared with other datasets in the pool.
-When a snapshot or clone is created, it initially references the same amount of
-space as the file system or snapshot it was created from, since its contents are
-identical.
+Объем данных, доступных этому набору данных, который может быть или не быть общим с другими наборами данных в пуле.
+Когда создается снимок или клон, он первоначально ссылается на тот же объем
+пространства, что и файловая система или снимок, из которого он был создан, поскольку его содержимое
+идентично.
 .Pp
-This property can also be referred to by its shortened column name,
+На это свойство также можно ссылаться по сокращенному имени столбца,
 .Sy refer .
 .It Sy refcompressratio
-The compression ratio achieved for the
+Степень сжатия, достигнутая для свойства
 .Sy referenced
-space of this dataset, expressed as a multiplier.
-See also the
+пространства этого набора данных, выраженный в виде множителя.
+См. также
 .Sy compressratio
-property.
 .It Sy snapshot_count
-The total number of snapshots that exist under this location in the dataset
-tree.
-This value is only available when a
+Общее количество моментальных снимков, существующих под этим местом в дереве набора данных
+дереве.
+Это значение доступно только при наличии свойства
 .Sy snapshot_limit
-has been set somewhere in the tree under which the dataset resides.
-.It Sy type
-The type of dataset:
-.Sy filesystem ,
-.Sy volume ,
+было установлено где-то в дереве, в котором находится набор данных.
+Тип .It Sy
+Тип набора данных:
+.Sy файловая система ,
+.Sy том ,
 .Sy snapshot ,
-or
-.Sy bookmark .
+или
+.Sy закладка .
 .It Sy used
-The amount of space consumed by this dataset and all its descendents.
-This is the value that is checked against this dataset's quota and reservation.
-The space used does not include this dataset's reservation, but does take into
-account the reservations of any descendent datasets.
-The amount of space that a dataset consumes from its parent, as well as the
-amount of space that is freed if this dataset is recursively destroyed, is the
-greater of its space used and its reservation.
+Объем пространства, занимаемый этим набором данных и всеми его потомками.
+Это значение сверяется с квотой и резервированием данного набора данных.
+Используемое пространство не включает резервирование этого набора данных, но учитывает
+резервирование всех последующих наборов данных.
+Объем пространства, который набор данных потребляет от своего родителя, а также
+объем пространства, который освобождается при рекурсивном уничтожении этого набора данных, равен
+больше используемого и резервируемого пространства.
 .Pp
-The used space of a snapshot
-.Po see the
-.Sx Snapshots
-section of
+Используемое пространство моментального снимка
+.Po см.
+.Sx Снимки 
+раздел
 .Xr zfsconcepts 7
 .Pc
-is space that is referenced exclusively by this snapshot.
-If this snapshot is destroyed, the amount of
-.Sy used
-space will be freed.
-Space that is shared by multiple snapshots isn't accounted for in this metric.
-When a snapshot is destroyed, space that was previously shared with this
-snapshot can become unique to snapshots adjacent to it, thus changing the used
-space of those snapshots.
-The used space of the latest snapshot can also be affected by changes in the
-file system.
-Note that the
-.Sy used
-space of a snapshot is a subset of the
-.Sy written
-space of the snapshot.
+это пространство, на которое ссылается только этот снимок.
+Если этот снимок уничтожен, объем
+.Sy использованного
+пространства будет очищено.
+Пространство, совместно используемое несколькими моментальными снимками, не учитывается в этой метрике.
+При уничтожении моментального снимка пространство, которое ранее было общим для этого снимка, может стать уникальным для соседних с ним моментальных снимков, что изменит используемое
+пространство этих снимков.
+На используемое пространство последнего моментального снимка также могут повлиять изменения в
+файловой системе.
+Обратите внимание, что файл
+.Sy используемое
+пространства моментального снимка является подмножеством
+.Sy записанного
+пространства моментального снимка.
 .Pp
-The amount of space used, available, or referenced does not take into account
-pending changes.
-Pending changes are generally accounted for within a few seconds.
-Committing a change to a disk using
+Объем используемого, доступного или указанного пространства не учитывает
+ожидающие изменения.
+Ожидающие изменения обычно учитываются в течение нескольких секунд.
+Запись изменений на диск с помощью
 .Xr fsync 2
-or
+или
 .Sy O_SYNC
-does not necessarily guarantee that the space usage information is updated
-immediately.
+не всегда гарантирует, что информация об использовании пространства будет обновлена
+немедленно.
 .It Sy usedby*
-The
+Адрес
 .Sy usedby*
-properties decompose the
+свойства разлагают
 .Sy used
-properties into the various reasons that space is used.
-Specifically,
+на различные причины использования пространства.
+В частности,
 .Sy used No =
 .Sy usedbychildren No +
 .Sy usedbydataset No +
 .Sy usedbyrefreservation No +
 .Sy usedbysnapshots .
-These properties are only available for datasets created on
+Эти свойства доступны только для наборов данных, созданных на
 .Nm zpool
-.Qo version 13 Qc
-pools.
+.Qo версия 13 Qc
+пулы.
 .It Sy usedbychildren
-The amount of space used by children of this dataset, which would be freed if
-all the dataset's children were destroyed.
+Объем пространства, используемый дочерними элементами этого набора данных, который будет освобожден, если
+все дочерние наборы данных были бы уничтожены.
 .It Sy usedbydataset
-The amount of space used by this dataset itself, which would be freed if the
-dataset were destroyed
-.Po after first removing any
+Объем пространства, используемый самим этим набором данных, который будет освобожден, если
+если бы набор данных был уничтожен
+.Po после предварительного удаления любых
 .Sy refreservation
-and destroying any necessary snapshots or descendents
+и уничтожения всех необходимых моментальных снимков или потомков
 .Pc .
 .It Sy usedbyrefreservation
-The amount of space used by a
-.Sy refreservation
-set on this dataset, which would be freed if the
-.Sy refreservation
-was removed.
+Объем пространства, используемый
+.Sy сохранением
+установленным на этом наборе данных, который будет освобожден, если
+.Sy резервирование 
+будет удалено.
 .It Sy usedbysnapshots
-The amount of space consumed by snapshots of this dataset.
-In particular, it is the amount of space that would be freed if all of this
-dataset's snapshots were destroyed.
-Note that this is not simply the sum of the snapshots'
+Объем пространства, занимаемый моментальными снимками этого набора данных.
+В частности, это объем пространства, который будет освобожден, если все снимки этого
+наборов данных были бы уничтожены.
+Обратите внимание, что это не просто сумма значений снимков
 .Sy used
-properties because space can be shared by multiple snapshots.
+поскольку пространство может быть разделено между несколькими снимками.
 .It Sy userused Ns @ Ns Ar user
-The amount of space consumed by the specified user in this dataset.
-Space is charged to the owner of each file, as displayed by
+Объем пространства, потребленного указанным пользователем в этом наборе данных.
+Пространство оплачивается владельцем каждого файла, как показано на странице
 .Nm ls Fl l .
-The amount of space charged is displayed by
-.Nm du No and Nm ls Fl s .
-See the
+Количество занятого пространства отображается
+.Nm du No и Nm ls Fl s .
+См.
 .Nm zfs Cm userspace
-command for more information.
+для получения дополнительной информации.
 .Pp
-Unprivileged users can access only their own space usage.
-The root user, or a user who has been granted the
+Непривилегированные пользователи могут получить доступ только к своему собственному пространству.
+Пользователь root или пользователь, которому предоставлены права
 .Sy userused
-privilege with
+привилегией
 .Nm zfs Cm allow ,
-can access everyone's usage.
+может получить доступ к использованию всех.
 .Pp
-The
-.Sy userused Ns @ Ns Ar …
-properties are not displayed by
+Сайт
+.Sy userused Ns @ Ns Ar ...
+не отображаются
 .Nm zfs Cm get Sy all .
-The user's name must be appended after the
+Имя пользователя должно быть добавлено после символа
 .Sy @
-symbol, using one of the following forms:
-.Bl -bullet -compact -offset 4n
+символ, используя одну из следующих форм:
+.Bl - пуля - компактный - смещение 4n
 .It
-POSIX name
+POSIX-имя
 .Pq Qq joe
 .It
-POSIX numeric ID
+Цифровой идентификатор POSIX
 .Pq Qq 789
 .It
-SID name
+имя SID
 .Pq Qq joe.smith@mydomain
 .It
-SID numeric ID
+Цифровой идентификатор SID
 .Pq Qq S-1-123-456-789
 .El
 .Pp
-Files created on Linux always have POSIX owners.
+Файлы, созданные в Linux, всегда имеют владельцев POSIX.
 .It Sy userobjused Ns @ Ns Ar user
-The
+Сайт
 .Sy userobjused
-property is similar to
+аналогично свойству
 .Sy userused
-but instead it counts the number of objects consumed by a user.
-This property counts all objects allocated on behalf of the user,
-it may differ from the results of system tools such as
+но вместо этого оно подсчитывает количество объектов, потребляемых пользователем.
+Это свойство подсчитывает все объекты, выделенные от имени пользователя,
+это может отличаться от результатов системных инструментов, таких как
 .Nm df Fl i .
 .Pp
-When the property
+Когда свойство
 .Sy xattr Ns = Ns Sy on
-is set on a file system additional objects will be created per-file to store
-extended attributes.
-These additional objects are reflected in the
+в файловой системе будут созданы дополнительные объекты на файл для хранения
+расширенных атрибутов.
+Эти дополнительные объекты отражаются в файле
 .Sy userobjused
-value and are counted against the user's
+и учитываются в пользовательской квоте
 .Sy userobjquota .
-When a file system is configured to use
+Когда файловая система настроена на использование
 .Sy xattr Ns = Ns Sy sa
-no additional internal objects are normally required.
+никаких дополнительных внутренних объектов обычно не требуется.
 .It Sy userrefs
-This property is set to the number of user holds on this snapshot.
-User holds are set by using the
+Это свойство задает количество пользовательских удержаний на данном снимке.
+Пользовательские удержания устанавливаются с помощью функции
 .Nm zfs Cm hold
-command.
+команды.
 .It Sy groupused Ns @ Ns Ar group
-The amount of space consumed by the specified group in this dataset.
-Space is charged to the group of each file, as displayed by
+Объем пространства, занимаемый указанной группой в этом наборе данных.
+Пространство распределяется по группам каждого файла, как показано на рисунке
 .Nm ls Fl l .
-See the
+См.
 .Sy userused Ns @ Ns Ar user
-property for more information.
+для получения дополнительной информации.
 .Pp
-Unprivileged users can only access their own groups' space usage.
-The root user, or a user who has been granted the
+Непривилегированные пользователи могут получить доступ к использованию пространства только в своих группах.
+Пользователь root или пользователь, которому предоставлено право
 .Sy groupused
-privilege with
-.Nm zfs Cm allow ,
-can access all groups' usage.
+с привилегией
+.Nm zfs Cm allow
+может получить доступ к использованию всех групп.
 .It Sy groupobjused Ns @ Ns Ar group
-The number of objects consumed by the specified group in this dataset.
-Multiple objects may be charged to the group for each file when extended
-attributes are in use.
-See the
+Количество объектов, использованных указанной группой в данном наборе данных.
+При использовании расширенных атрибутов в группу может быть добавлено несколько объектов 
+для каждого файла.
+См.
 .Sy userobjused Ns @ Ns Ar user
-property for more information.
+для получения дополнительной информации.
 .Pp
-Unprivileged users can only access their own groups' space usage.
-The root user, or a user who has been granted the
+Непривилегированные пользователи могут получить доступ к использованию пространства только для своих групп.
+Пользователь root или пользователь, которому предоставлено право
 .Sy groupobjused
-privilege with
+с помощью
 .Nm zfs Cm allow ,
-can access all groups' usage.
+может получить доступ к использованию пространства всех групп.
 .It Sy projectused Ns @ Ns Ar project
-The amount of space consumed by the specified project in this dataset.
-Project is identified via the project identifier (ID) that is object-based
-numeral attribute.
-An object can inherit the project ID from its parent object (if the
-parent has the flag of inherit project ID that can be set and changed via
+Объем пространства, занимаемый указанным проектом в данном наборе данных.
+Проект идентифицируется с помощью идентификатора проекта (ID), который является объектно-ориентированным
+числовой атрибут.
+Объект может унаследовать идентификатор проекта от своего родительского объекта (если у родителя установлен флаг
+у родителя установлен флаг наследования ID проекта, который можно установить и изменить с помощью команды
 .Nm chattr Fl /+P
-or
+или
 .Nm zfs project Fl s )
-when being created.
-The privileged user can set and change object's project
-ID via
+при создании.
+Привилегированный пользователь может устанавливать и изменять идентификатор проекта объекта
+идентификатор через
 .Nm chattr Fl p
-or
+или
 .Nm zfs project Fl s
-anytime.
-Space is charged to the project of each file, as displayed by
+в любое время.
+Место для каждого файла распределяется по проекту, как показано на экране
 .Nm lsattr Fl p
-or
+или
 .Nm zfs project .
-See the
+См.
 .Sy userused Ns @ Ns Ar user
-property for more information.
+для получения дополнительной информации.
 .Pp
-The root user, or a user who has been granted the
+Пользователь root или пользователь, которому предоставлены права
 .Sy projectused
-privilege with
+привилегией
 .Nm zfs allow ,
-can access all projects' usage.
+может получить доступ к использованию всех проектов.
 .It Sy projectobjused Ns @ Ns Ar project
-The
+Проект
 .Sy projectobjused
-is similar to
+аналогичен
 .Sy projectused
-but instead it counts the number of objects consumed by project.
-When the property
+но вместо этого подсчитывает количество объектов, потребляемых проектом.
+Когда проект
 .Sy xattr Ns = Ns Sy on
-is set on a fileset, ZFS will create additional objects per-file to store
-extended attributes.
-These additional objects are reflected in the
+установлен для набора файлов, ZFS будет создавать дополнительные объекты для каждого файла для хранения
+расширенных атрибутов.
+Эти дополнительные объекты отражаются в файле
 .Sy projectobjused
-value and are counted against the project's
+и учитываются при подсчете квоты проекта
 .Sy projectobjquota .
-When a filesystem is configured to use
+Когда файловая система настроена на использование
 .Sy xattr Ns = Ns Sy sa
-no additional internal objects are required.
-See the
-.Sy userobjused Ns @ Ns Ar user
-property for more information.
+никаких дополнительных внутренних объектов не требуется.
+См.
+Свойство .Sy userobjused Ns @ Ns Ar user
+для получения дополнительной информации.
 .Pp
-The root user, or a user who has been granted the
+Пользователь root или пользователь, которому предоставлены права
 .Sy projectobjused
-privilege with
+привилегией
 .Nm zfs allow ,
-can access all projects' objects usage.
+может получить доступ к использованию всех объектов проектов.
 .It Sy snapshots_changed
-Provides a mechanism to quickly determine whether snapshot list has
-changed without having to mount a dataset or iterate the snapshot list.
-Specifies the time at which a snapshot for a dataset was last
-created or deleted.
+Предоставляет механизм для быстрого определения того, изменился ли список моментальных снимков.
+без необходимости монтирования набора данных или итерации списка снапшотов.
+Указывает время, когда моментальный снимок для набора данных был в последний раз
+создан или удален.
 .Pp
-This allows us to be more efficient how often we query snapshots.
-The property is persistent across mount and unmount operations only if the
+Это позволяет нам более эффективно использовать частоту запросов к моментальным снимкам.
+Свойство сохраняется во время операций монтирования и размонтирования только в том случае, если параметр
 .Sy extensible_dataset
-feature is enabled.
+включено.
 .It Sy volblocksize
-For volumes, specifies the block size of the volume.
-The
-.Sy blocksize
-cannot be changed once the volume has been written, so it should be set at
-volume creation time.
-The default
-.Sy blocksize
-for volumes is 16 Kbytes.
-Any power of 2 from 512 bytes to 128 Kbytes is valid.
+Для томов указывает размер блока тома.
+Значение
+.Sy размер блока 
+невозможно изменить после записи тома, поэтому его следует установить во
+время создания тома.
+По умолчанию
+.Sy размер блока
+для томов составляет 16 Кбайт.
+Допускается любое значение, равное 2, от 512 байт до 128 Кбайт.
 .Pp
-This property can also be referred to by its shortened column name,
+На это свойство можно также ссылаться по сокращенному имени столбца,
 .Sy volblock .
 .It Sy written
-The amount of space
-.Sy referenced
-by this dataset, that was written since the previous snapshot
-.Pq i.e. that is not referenced by the previous snapshot .
-.It Sy written Ns @ Ns Ar snapshot
-The amount of
-.Sy referenced
-space written to this dataset since the specified snapshot.
-This is the space that is referenced by this dataset but was not referenced by
-the specified snapshot.
+Объем пространства
+.Sy, на который ссылается
+на этот набор данных, который был записан с момента предыдущего моментального снимка.
+.Pq т.е. на который не ссылается предыдущий снимок.
+.It Sy записано Ns @ Ns Ar snapshot
+Количество
+.Sy ссылочного
+записанного в этот набор данных с указанного моментального снимка.
+Это пространство, на которое ссылается данный набор данных, но на которое не ссылался
+указанный моментальный снимок.
 .Pp
-The
-.Ar snapshot
-may be specified as a short snapshot name
-.Pq just the part after the Sy @ ,
-in which case it will be interpreted as a snapshot in the same filesystem as
-this dataset.
-The
-.Ar snapshot
-may be a full snapshot name
+.Ar снимок 
+может быть указан как короткое имя моментального снимка
+.Pq только часть после символа Sy @ ,
+в этом случае он будет интерпретироваться как снимок в той же файловой системе, что и
+данный набор данных.
+Снапшот
+.Ar снимок 
+может быть полным именем моментального снимка
 .Pq Ar filesystem Ns @ Ns Ar snapshot ,
-which for clones may be a snapshot in the origin's filesystem
-.Pq or the origin of the origin's filesystem, etc.
+который для клонов может быть снимком в исходной файловой системе
+.Pq или в файловой системе происхождения и т. д.
 .El
 .Pp
-The following native properties can be used to change the behavior of a ZFS
-dataset.
+Следующие собственные свойства можно использовать для изменения поведения набора данных ZFS
+набора данных.
 .Bl -tag -width ""
 .It Xo
 .Sy aclinherit Ns = Ns Sy discard Ns | Ns Sy noallow Ns | Ns
 .Sy restricted Ns | Ns Sy passthrough Ns | Ns Sy passthrough-x
 .Xc
-Controls how ACEs are inherited when files and directories are created.
+Управляет тем, как ACE наследуются при создании файлов и каталогов.
 .Bl -tag -compact -offset 4n -width "passthrough-x"
 .It Sy discard
-does not inherit any ACEs.
+не наследует никаких ACE.
 .It Sy noallow
-only inherits inheritable ACEs that specify
+наследует только наследуемые ACE, в которых указано
 .Qq deny
-permissions.
+разрешения.
 .It Sy restricted
-default, removes the
+по умолчанию, удаляет
 .Sy write_acl
-and
+и
 .Sy write_owner
-permissions when the ACE is inherited.
+разрешения, когда ACE наследуется.
 .It Sy passthrough
-inherits all inheritable ACEs without any modifications.
+наследует все наследуемые ACE без каких-либо изменений.
 .It Sy passthrough-x
-same meaning as
+то же значение, что и
 .Sy passthrough ,
-except that the
-.Sy owner@ , group@ , No and Sy everyone@
-ACEs inherit the execute permission only if the file creation mode also requests
-the execute bit.
+за исключением того, что
+.Sy owner@ , group@ , No и Sy everyone@
+ACE наследуют разрешение execute только в том случае, если режим создания файла также запрашивает
+бит execute.
 .El
 .Pp
-When the property value is set to
+Когда значение свойства установлено в
 .Sy passthrough ,
-files are created with a mode determined by the inheritable ACEs.
-If no inheritable ACEs exist that affect the mode, then the mode is set in
-accordance to the requested mode from the application.
+файлы создаются с режимом, определяемым наследуемыми ACE.
+Если не существует наследуемых ACE, влияющих на режим, то режим устанавливается в соответствии с режимом, запрошенным приложением.
 .Pp
-The
+Адрес
 .Sy aclinherit
-property does not apply to POSIX ACLs.
+не применяется к POSIX ACL.
 .It Xo
 .Sy aclmode Ns = Ns Sy discard Ns | Ns Sy groupmask Ns | Ns
 .Sy passthrough Ns | Ns Sy restricted Ns
 .Xc
-Controls how an ACL is modified during chmod(2) and how inherited ACEs
-are modified by the file creation mode:
+Управляет тем, как ACL изменяется во время chmod(2) и как наследуемые ACE
+изменяются в режиме создания файла:
 .Bl -tag -compact -offset 4n -width "passthrough"
 .It Sy discard
-default, deletes all
-.Sy ACEs
-except for those representing
-the mode of the file or directory requested by
+по умолчанию, удаляет все
+.Sy ACE'ксы
+кроме тех, которые представляют
+режим файла или каталога, запрошенный командой
 .Xr chmod 2 .
 .It Sy groupmask
-reduces permissions granted in all
+уменьшает количество разрешений, предоставляемых во всех
 .Sy ALLOW
-entries found in the
+найденных в
 .Sy ACL
-such that they are no greater than the group permissions specified by
+так, чтобы они не превышали групповых разрешений, указанных в
 .Xr chmod 2 .
 .It Sy passthrough
-indicates that no changes are made to the ACL other than creating or updating
-the necessary ACL entries to represent the new mode of the file or directory.
+указывает на то, что в ACL не вносится никаких изменений, кроме создания или обновления
+необходимых записей ACL для представления нового режима файла или каталога.
 .It Sy restricted
-will cause the
+приведет к тому, что
 .Xr chmod 2
-operation to return an error when used on any file or directory which has
-a non-trivial ACL whose entries can not be represented by a mode.
+вернет ошибку при использовании для любого файла или каталога, имеющего
+нетривиальный ACL, записи которого не могут быть представлены режимом.
 .Xr chmod 2
-is required to change the set user ID, set group ID, or sticky bits on a file
-or directory, as they do not have equivalent ACL entries.
-In order to use
+требуется для изменения установленного идентификатора пользователя, установленного идентификатора группы или липких битов в файле
+или каталоге, поскольку они не имеют эквивалентных ACL e
+Для того чтобы использовать
 .Xr chmod 2
-on a file or directory with a non-trivial ACL when
+для файла или каталога с нетривиальным ACL, когда
 .Sy aclmode
-is set to
+установлен в
 .Sy restricted ,
-you must first remove all ACL entries which do not represent the current mode.
+вы должны сначала удалить все записи ACL, которые не представляют текущий режим.
 .El
 .It Sy acltype Ns = Ns Sy off Ns | Ns Sy nfsv4 Ns | Ns Sy posix
-Controls whether ACLs are enabled and if so what type of ACL to use.
-When this property is set to a type of ACL not supported by the current
-platform, the behavior is the same as if it were set to
+Управляет тем, включены ли ACL, и если да, то какой тип ACL использовать.
+Если для этого свойства установлен тип ACL, не поддерживаемый текущей
+платформой, поведение будет таким же, как если бы было установлено значение
 .Sy off .
 .Bl -tag -compact -offset 4n -width "posixacl"
 .It Sy off
-default on Linux, when a file system has the
+по умолчанию в Linux, когда файловая система имеет тип
 .Sy acltype
-property set to off then ACLs are disabled.
+установлено значение off, то ACL отключены.
 .It Sy noacl
-an alias for
+псевдоним для
 .Sy off
 .It Sy nfsv4
-default on
+по умолчанию
 .Fx ,
-indicates that NFSv4-style ZFS ACLs should be used.
-These ACLs can be managed with the
+указывает, что должны использоваться ACL ZFS в стиле NFSv4.
+Этими ACL можно управлять с помощью команды
 .Xr getfacl 1
-and
+и
 .Xr setfacl 1 .
-The
+Адрес
 .Sy nfsv4
-ZFS ACL type is not yet supported on Linux.
+тип ZFS ACL пока не поддерживается в Linux.
 .It Sy posix
-indicates POSIX ACLs should be used.
-POSIX ACLs are specific to Linux and are not functional on other platforms.
-POSIX ACLs are stored as an extended
-attribute and therefore will not overwrite any existing NFSv4 ACLs which
-may be set.
+указывает на необходимость использования POSIX ACL.
+POSIX ACL специфичны для Linux и не работают на других платформах.
+POSIX ACL хранятся как расширенный
+атрибута и поэтому не перезаписывают существующие NFSv4 ACL, которые
+которые могут быть установлены.
 .It Sy posixacl
-an alias for
+псевдоним для
 .Sy posix
 .El
 .Pp
-To obtain the best performance when setting
+Для достижения наилучшей производительности при настройке
 .Sy posix
-users are strongly encouraged to set the
+пользователям настоятельно рекомендуется установить параметр
 .Sy xattr Ns = Ns Sy sa
-property.
-This will result in the POSIX ACL being stored more efficiently on disk.
-But as a consequence, all new extended attributes will only be
-accessible from OpenZFS implementations which support the
+свойство.
+Это приведет к тому, что POSIX ACL будет храниться на диске более эффективно.
+Но, как следствие, все новые расширенные атрибуты будут
+доступны только в реализации OpenZFS, которая поддерживает
 .Sy xattr Ns = Ns Sy sa
-property.
-See the
+свойство.
+См.
 .Sy xattr
-property for more details.
+для получения более подробной информации.
 .It Sy atime Ns = Ns Sy on Ns | Ns Sy off
-Controls whether the access time for files is updated when they are read.
-Turning this property off avoids producing write traffic when reading files and
-can result in significant performance gains, though it might confuse mailers
-and other similar utilities.
-The values
+Управляет тем, обновляется ли время доступа к файлам при их чтении.
+Отключение этого свойства позволяет избежать создания трафика записи при чтении файлов и
+может привести к значительному увеличению производительности, хотя это может запутать почтовые программы
+и другие подобные утилиты.
+Значения
 .Sy on
-and
+и
 .Sy off
-are equivalent to the
+эквивалентны значениям
 .Sy atime
-and
+и
 .Sy noatime
-mount options.
-The default value is
+параметрам монтирования.
+По умолчанию используется значение
 .Sy on .
-See also
+См. также
 .Sy relatime
-below.
+ниже.
 .It Sy canmount Ns = Ns Sy on Ns | Ns Sy off Ns | Ns Sy noauto
-If this property is set to
+Если для этого свойства установлено значение
 .Sy off ,
-the file system cannot be mounted, and is ignored by
+файловая система не может быть смонтирована и игнорируется командой
 .Nm zfs Cm mount Fl a .
-Setting this property to
+Установка этого свойства в значение
 .Sy off
-is similar to setting the
+аналогично установке
 .Sy mountpoint
-property to
+свойству
 .Sy none ,
-except that the dataset still has a normal
+за исключением того, что набор данных по-прежнему имеет обычную
 .Sy mountpoint
-property, which can be inherited.
-Setting this property to
+которое может быть унаследовано.
+Установка этого свойства в значение
 .Sy off
-allows datasets to be used solely as a mechanism to inherit properties.
-One example of setting
+позволяет использовать наборы данных исключительно в качестве механизма наследования свойств.
+Один из примеров установки
 .Sy canmount Ns = Ns Sy off
-is to have two datasets with the same
+является наличие двух наборов данных с одинаковыми
 .Sy mountpoint ,
-so that the children of both datasets appear in the same directory, but might
-have different inherited characteristics.
+так что дочерние наборы данных будут находиться в одном каталоге, но могут
+иметь разные наследуемые характеристики.
 .Pp
-When set to
+Если установлено значение
 .Sy noauto ,
-a dataset can only be mounted and unmounted explicitly.
-The dataset is not mounted automatically when the dataset is created or
-imported, nor is it mounted by the
+набор данных можно монтировать и размонтировать только явным образом.
+Набор данных не монтируется автоматически при его создании или
+импортировании, а также не монтируется командой
 .Nm zfs Cm mount Fl a
-command or unmounted by the
+или размонтирован командой
 .Nm zfs Cm unmount Fl a
-command.
 .Pp
-This property is not inherited.
+Это свойство не наследуется.
 .It Xo
-.Sy checksum Ns = Ns Sy on Ns | Ns Sy off Ns | Ns Sy fletcher2 Ns | Ns
+.Sy контрольная сумма Ns = Ns Sy on Ns | Ns Sy off Ns | Ns Sy fletcher2 Ns | Ns
 .Sy fletcher4 Ns | Ns Sy sha256 Ns | Ns Sy noparity Ns | Ns
 .Sy sha512 Ns | Ns Sy skein Ns | Ns Sy edonr Ns | Ns Sy blake3
 .Xc
-Controls the checksum used to verify data integrity.
-The default value is
+Управляет контрольной суммой, используемой для проверки целостности данных.
+По умолчанию используется значение
 .Sy on ,
-which automatically selects an appropriate algorithm
-.Po currently,
+который автоматически выбирает соответствующий алгоритм.
+.Po в настоящее время,
 .Sy fletcher4 ,
-but this may change in future releases
+но это может измениться в будущих версиях.
 .Pc .
-The value
+Значение
 .Sy off
-disables integrity checking on user data.
-The value
+отключает проверку целостности пользовательских данных.
+Значение
 .Sy noparity
-not only disables integrity but also disables maintaining parity for user data.
-This setting is used internally by a dump device residing on a RAID-Z pool and
-should not be used by any other dataset.
-Disabling checksums is
-.Em NOT
-a recommended practice.
+не только отключает проверку целостности, но и запрещает поддерживать четность для пользовательских данных.
+Эта настройка используется внутри устройства дампа, расположенного в пуле RAID-Z, и
+и не должна использоваться никакими другими наборами данных.
+Отключение контрольных сумм - это
+.Em НЕ
+рекомендуется.
 .Pp
-The
 .Sy sha512 ,
 .Sy skein ,
 .Sy edonr ,
-and
+и
 .Sy blake3
-checksum algorithms require enabling the appropriate features on the pool.
+Алгоритмы контрольных сумм требуют включения соответствующих функций в пуле.
 .Pp
-Please see
+См.
 .Xr zpool-features 7
-for more information on these algorithms.
+для получения дополнительной информации об этих алгоритмах.
 .Pp
-Changing this property affects only newly-written data.
+Изменение этого свойства влияет только на вновь записанные данные.
 .It Xo
-.Sy compression Ns = Ns Sy on Ns | Ns Sy off Ns | Ns Sy gzip Ns | Ns
+.Sy сжатие Ns = Ns Sy on Ns | Ns Sy off Ns | Ns Sy gzip Ns | Ns
 .Sy gzip- Ns Ar N Ns | Ns Sy lz4 Ns | Ns Sy lzjb Ns | Ns Sy zle Ns | Ns Sy zstd Ns | Ns
 .Sy zstd- Ns Ar N Ns | Ns Sy zstd-fast Ns | Ns Sy zstd-fast- Ns Ar N
 .Xc
-Controls the compression algorithm used for this dataset.
+Управляет алгоритмом сжатия, используемым для данного набора данных.
 .Pp
-When set to
+Если установлено значение
 .Sy on
-(the default), indicates that the current default compression algorithm should
-be used.
-The default balances compression and decompression speed, with compression ratio
-and is expected to work well on a wide variety of workloads.
-Unlike all other settings for this property,
+(по умолчанию), указывает, что должен использоваться текущий алгоритм сжатия по умолчанию.
+По умолчанию сбалансирована скорость сжатия и распаковки, а также степень сжатия
+и, как ожидается, оно будет хорошо работать при самых разных рабочих нагрузках.
+В отличие от всех других настроек этого свойства,
 .Sy on
-does not select a fixed compression type.
-As new compression algorithms are added to ZFS and enabled on a pool, the
-default compression algorithm may change.
-The current default compression algorithm is either
+не выбирает фиксированный тип сжатия.
+По мере добавления новых алгоритмов сжатия в ZFS и включения их в пуле, алгоритм сжатия по умолчанию может измениться.
+алгоритм сжатия по умолчанию может измениться.
+В настоящее время по умолчанию используется либо алгоритм сжатия
 .Sy lzjb
-or, if the
+либо, если в пуле включен
 .Sy lz4_compress
-feature is enabled,
+включена функция,
 .Sy lz4 .
 .Pp
-The
 .Sy lz4
-compression algorithm is a high-performance replacement for the
+является высокопроизводительной заменой алгоритма сжатия
 .Sy lzjb
-algorithm.
-It features significantly faster compression and decompression, as well as a
-moderately higher compression ratio than
+алгоритма.
+Он отличается значительно более быстрой компрессией и декомпрессией, а также
+несколько более высокой степенью сжатия, чем
 .Sy lzjb ,
-but can only be used on pools with the
+но может использоваться только на пулах с параметром
 .Sy lz4_compress
-feature set to
-.Sy enabled .
-See
+установленным на
+.Sy включен.
+См.
 .Xr zpool-features 7
-for details on ZFS feature flags and the
+подробную информацию о флагах функций ZFS и параметре
 .Sy lz4_compress
-feature.
+функция.
 .Pp
-The
 .Sy lzjb
-compression algorithm is optimized for performance while providing decent data
-compression.
+Алгоритм сжатия оптимизирован для повышения производительности и обеспечивает достойное сжатие данных.
 .Pp
-The
 .Sy gzip
-compression algorithm uses the same compression as the
+использует тот же алгоритм сжатия, что и
 .Xr gzip 1
-command.
-You can specify the
+Вы можете указать
 .Sy gzip
-level by using the value
+уровень, используя значение
 .Sy gzip- Ns Ar N ,
-where
+где
 .Ar N
-is an integer from 1
-.Pq fastest
-to 9
-.Pq best compression ratio .
-Currently,
+целое число от 1
+.Pq самый быстрый
+до 9
+.Pq - наилучший коэффициент сжатия.
+В настоящее время,
 .Sy gzip
-is equivalent to
+эквивалентен
 .Sy gzip-6
-.Po which is also the default for
+.Po, который также используется по умолчанию для
 .Xr gzip 1
 .Pc .
 .Pp
-The
 .Sy zstd
-compression algorithm provides both high compression ratios and good
-performance.
-You can specify the
+Алгоритм сжатия обеспечивает высокую степень сжатия и хорошую производительность.
+Вы можете указать
 .Sy zstd
-level by using the value
+с помощью значения
 .Sy zstd- Ns Ar N ,
-where
+где
 .Ar N
-is an integer from 1
-.Pq fastest
-to 19
-.Pq best compression ratio .
+целое число от 1
+.Pq самое быстрое
+до 19
+.Pq лучший коэффициент сжатия .
 .Sy zstd
-is equivalent to
+эквивалентен
 .Sy zstd-3 .
 .Pp
-Faster speeds at the cost of the compression ratio can be requested by
-setting a negative
+Более высокую скорость за счет снижения степени сжатия можно получить, задав отрицательное значение
 .Sy zstd
-level.
-This is done using
+Для этого используется
 .Sy zstd-fast- Ns Ar N ,
-where
+где
 .Ar N
-is an integer in
-.Bq Sy 1 Ns - Ns Sy 10 , 20 , 30 , No … , Sy 100 , 500 , 1000
-which maps to a negative
+целое число в
+.Bq Sy 1 Ns - Ns Sy 10 , 20 , 30 , Нет ... , Sy 100 , 500 , 1000
+что соответствует отрицательному значению
 .Sy zstd
-level.
-The lower the level the faster the compression \(em
+Чем ниже уровень, тем быстрее происходит сжатие \(em
 .Sy 1000
-provides the fastest compression and lowest compression ratio.
+обеспечивает самое быстрое сжатие и самый низкий коэффициент сжатия.
 .Sy zstd-fast
-is equivalent to
+эквивалентен
 .Sy zstd-fast- Ns Ar 1 .
 .Pp
-The
 .Sy zle
-compression algorithm compresses runs of zeros.
+алгоритм сжатия сжимает последовательности нулей.
 .Pp
-This property can also be referred to by its shortened column name
+На это свойство можно также ссылаться по сокращенному имени столбца
 .Sy compress .
-Changing this property affects only newly-written data.
+Изменение этого свойства влияет только на вновь записанные данные.
 .Pp
-When any setting except
+Когда любая настройка, кроме
 .Sy off
-is selected, compression will explicitly check for blocks consisting of only
-zeroes (the NUL byte).
-When a zero-filled block is detected, it is stored as
-a hole and not compressed using the indicated compression algorithm.
+выбрана, сжатие будет специально проверять блоки, состоящие только из
+нулей (байт NUL).
+При обнаружении блока, заполненного нулями, он сохраняется как
+дыра и не сжимается с помощью указанного алгоритма сжатия.
 .Pp
-Any block being compressed must be no larger than 7/8 of its original size
-after compression, otherwise the compression will not be considered worthwhile
-and the block saved uncompressed.
-Note that when the logical block is less than
-8 times the disk sector size this effectively reduces the necessary compression
-ratio; for example, 8 KiB blocks on disks with 4 KiB disk sectors must compress
-to 1/2
-or less of their original size.
+Любой сжимаемый блок должен быть не более 7/8 от своего исходного размера
+после сжатия, иначе сжатие не будет считаться целесообразным
+и блок будет сохранен в несжатом виде.
+Обратите внимание, что если размер логического блока
+в 8 раз меньше размера сектора диска, это значительно снижает необходимую степень сжатия
+Например, блоки размером 8 килобайт на дисках с дисковыми секторами размером 4 килобайта должны быть сжаты
+до 1/2
+или меньше от их исходного размера.
 .It Xo
 .Sy context Ns = Ns Sy none Ns | Ns
-.Ar SELinux-User : Ns Ar SELinux-Role : Ns Ar SELinux-Type : Ns Ar Sensitivity-Level
+.Ar SELinux-User : Ns Ar SELinux-Role : Ns Ar SELinux-Type : Ns Ar Уровень чувствительности
 .Xc
-This flag sets the SELinux context for all files in the file system under
-a mount point for that file system.
-See
+Этот флаг устанавливает контекст SELinux для всех файлов в файловой системе под
+точкой монтирования этой файловой системы.
+См.
 .Xr selinux 8
-for more information.
+для получения дополнительной информации.
 .It Xo
 .Sy fscontext Ns = Ns Sy none Ns | Ns
-.Ar SELinux-User : Ns Ar SELinux-Role : Ns Ar SELinux-Type : Ns Ar Sensitivity-Level
+.Ar SELinux-User : Ns Ar SELinux-Role : Ns Ar SELinux-Type : Ns Ar Уровень чувствительности
 .Xc
-This flag sets the SELinux context for the file system file system being
-mounted.
-See
+Этот флаг устанавливает контекст SELinux для монтируемой файловой системы.
+См.
 .Xr selinux 8
-for more information.
+для получения дополнительной информации.
 .It Xo
 .Sy defcontext Ns = Ns Sy none Ns | Ns
-.Ar SELinux-User : Ns Ar SELinux-Role : Ns Ar SELinux-Type : Ns Ar Sensitivity-Level
+.Ar SELinux-User : Ns Ar SELinux-Role : Ns Ar SELinux-Type : Ns Ar Уровень чувствительности
 .Xc
-This flag sets the SELinux default context for unlabeled files.
-See
+Этот флаг устанавливает контекст SELinux по умолчанию для немаркированных файлов.
+См.
 .Xr selinux 8
-for more information.
+для получения дополнительной информации.
 .It Xo
 .Sy rootcontext Ns = Ns Sy none Ns | Ns
-.Ar SELinux-User : Ns Ar SELinux-Role : Ns Ar SELinux-Type : Ns Ar Sensitivity-Level
+.Ar SELinux-User : Ns Ar SELinux-Role : Ns Ar SELinux-Type : Ns Ar Уровень чувствительности
 .Xc
-This flag sets the SELinux context for the root inode of the file system.
-See
+Этот флаг устанавливает контекст SELinux для корневого узла файловой системы.
+См.
 .Xr selinux 8
-for more information.
-.It Sy copies Ns = Ns Sy 1 Ns | Ns Sy 2 Ns | Ns Sy 3
-Controls the number of copies of data stored for this dataset.
-These copies are in addition to any redundancy provided by the pool, for
-example, mirroring or RAID-Z.
-The copies are stored on different disks, if possible.
-The space used by multiple copies is charged to the associated file and dataset,
-changing the
+для получения дополнительной информации.
+.It Sy копий Ns = Ns Sy 1 Ns | Ns Sy 2 Ns | Ns Sy 3
+Управляет количеством копий данных, хранящихся для этого набора данных.
+Эти копии дополняют любую избыточность, обеспечиваемую пулом, например, зеркалирование или RAID-Z.
+Копии хранятся на разных дисках, если это возможно.
+За место, используемое несколькими копиями, взимается плата с соответствующего файла и набора данных,
+изменяя
 .Sy used
-property and counting against quotas and reservations.
+и учитывается в квотах и резервировании.
 .Pp
-Changing this property only affects newly-written data.
-Therefore, set this property at file system creation time by using the
+Изменение этого свойства влияет только на вновь записанные данные.
+Поэтому задайте это свойство при создании файловой системы с помощью команды
 .Fl o Sy copies Ns = Ns Ar N
-option.
+опция.
 .Pp
-Remember that ZFS will not import a pool with a missing top-level vdev.
-Do
+Помните, что ZFS не будет импортировать пул с отсутствующим vdev верхнего уровня.
+Делайте
 .Em NOT
-create, for example a two-disk striped pool and set
-.Sy copies Ns = Ns Ar 2
-on some datasets thinking you have setup redundancy for them.
-When a disk fails you will not be able to import the pool
-and will have lost all of your data.
+создавать, например, двухдисковый пул с чередованием и задавать
+.Sy копии Ns = Ns Ar 2
+на некоторые наборы данных, полагая, что вы настроили для них избыточность.
+Если один из дисков выйдет из строя, вы не сможете импортировать пул
+и потеряете все свои данные.
 .Pp
-Encrypted datasets may not have
-.Sy copies Ns = Ns Ar 3
-since the implementation stores some encryption metadata where the third copy
-would normally be.
-.It Sy devices Ns = Ns Sy on Ns | Ns Sy off
-Controls whether device nodes can be opened on this file system.
-The default value is
+Зашифрованные наборы данных могут не иметь
+.Sy копий Ns = Ns Ar 3
+поскольку в процессе реализации некоторые метаданные шифрования хранятся там, где обычно находится третья копия.
+.It Sy устройства Ns = Ns Sy on Ns | Ns Sy off
+Управляет тем, можно ли открывать узлы устройств в этой файловой системе.
+По умолчанию используется значение
 .Sy on .
-The values
+Значения
 .Sy on
-and
+и
 .Sy off
-are equivalent to the
+эквивалентны значениям
 .Sy dev
-and
+и
 .Sy nodev
-mount options.
+опциям монтирования.
 .It Xo
 .Sy dedup Ns = Ns Sy off Ns | Ns Sy on Ns | Ns Sy verify Ns | Ns
 .Sy sha256 Ns Oo , Ns Sy verify Oc Ns | Ns Sy sha512 Ns Oo , Ns Sy verify Oc Ns | Ns Sy skein Ns Oo , Ns Sy verify Oc Ns | Ns
 .Sy edonr , Ns Sy verify Ns | Ns Sy blake3 Ns Oo , Ns Sy verify Oc Ns
 .Xc
-Configures deduplication for a dataset.
-The default value is
+Настраивает дедупликацию для набора данных.
+По умолчанию используется значение
 .Sy off .
-The default deduplication checksum is
+Контрольная сумма дедупликации по умолчанию
 .Sy sha256
-(this may change in the future).
-When
+(в будущем это значение может измениться).
+Когда
 .Sy dedup
-is enabled, the checksum defined here overrides the
-.Sy checksum
-property.
-Setting the value to
+включена, определенная здесь контрольная сумма переопределяет
+.Sy контрольная сумма
+Установка значения
 .Sy verify
-has the same effect as the setting
+имеет тот же эффект, что и установка
 .Sy sha256 , Ns Sy verify .
 .Pp
-If set to
+Если установлено значение
 .Sy verify ,
-ZFS will do a byte-to-byte comparison in case of two blocks having the same
-signature to make sure the block contents are identical.
-Specifying
+ZFS будет выполнять сравнение байт за байтом в случае, если два блока имеют одинаковую подпись,
+чтобы убедиться, что содержимое блока идентично.
+Указание
 .Sy verify
-is mandatory for the
+является обязательным для
 .Sy edonr
-algorithm.
+алгоритма.
 .Pp
-Unless necessary, deduplication should
-.Em not
-be enabled on a system.
-See the
-.Sx Deduplication
-section of
+Если нет необходимости, дедупликация не должна
+.Em не
+быть включено в систему.
+См.
+.Sx Дедупликация 
+раздел
 .Xr zfsconcepts 7 .
 .It Xo
 .Sy dnodesize Ns = Ns Sy legacy Ns | Ns Sy auto Ns | Ns Sy 1k Ns | Ns
 .Sy 2k Ns | Ns Sy 4k Ns | Ns Sy 8k Ns | Ns Sy 16k
 .Xc
-Specifies a compatibility mode or literal value for the size of dnodes in the
-file system.
-The default value is
+Указывает режим совместимости или буквальное значение для размера dnodes в
+файловой системе.
+По умолчанию используется значение
 .Sy legacy .
-Setting this property to a value other than
-.Sy legacy No requires the Sy large_dnode No pool feature to be enabled .
+Установка этого свойства в значение, отличное от
+.Sy legacy No, требуется включить функцию Sy large_dnode No pool .
 .Pp
-Consider setting
+Рассмотрите возможность установки
 .Sy dnodesize
-to
+на
 .Sy auto
-if the dataset uses the
+если в наборе данных используется
 .Sy xattr Ns = Ns Sy sa
-property setting and the workload makes heavy use of extended attributes.
-This
-may be applicable to SELinux-enabled systems, Lustre servers, and Samba
-servers, for example.
-Literal values are supported for cases where the optimal
-size is known in advance and for performance testing.
+и рабочая нагрузка активно использует расширенные атрибуты.
+Этот
+может быть применимо к системам с поддержкой SELinux, серверам Lustre и Samba.
+Буквальные значения поддерживаются в случаях, когда оптимальный
+размер известен заранее, а также при тестировании производительности.
 .Pp
-Leave
+Оставить
 .Sy dnodesize
-set to
+установленным на
 .Sy legacy
-if you need to receive a send stream of this dataset on a pool that doesn't
-enable the
+если вам нужно получить поток отправки этого набора данных на пуле, который не
+поддерживает
 .Sy large_dnode
-feature, or if you need to import this pool on a system that doesn't support the
-.Sy large_dnode No feature .
+или если необходимо импортировать этот пул в систему, которая не поддерживает функцию
+.Sy large_dnode Нет функции.
 .Pp
-This property can also be referred to by its shortened column name,
+На это свойство также можно ссылаться по сокращенному имени столбца,
 .Sy dnsize .
 .It Xo
 .Sy encryption Ns = Ns Sy off Ns | Ns Sy on Ns | Ns Sy aes-128-ccm Ns | Ns
 .Sy aes-192-ccm Ns | Ns Sy aes-256-ccm Ns | Ns Sy aes-128-gcm Ns | Ns
 .Sy aes-192-gcm Ns | Ns Sy aes-256-gcm
 .Xc
-Controls the encryption cipher suite (block cipher, key length, and mode) used
-for this dataset.
-Requires the
-.Sy encryption
-feature to be enabled on the pool.
-Requires a
-.Sy keyformat
-to be set at dataset creation time.
+Определяет набор шифров (блочный шифр, длина ключа и режим), используемый
+для этого набора данных.
+Требуется
+.Sy шифрование 
+функция, которая должна быть включена в пуле.
+Требуется
+.Sy формат ключа 
+она устанавливается при создании набора данных.
 .Pp
-Selecting
+Выбор
 .Sy encryption Ns = Ns Sy on
-when creating a dataset indicates that the default encryption suite will be
-selected, which is currently
+при создании набора данных означает, что будет выбран набор шифрования по умолчанию,
+который в настоящее время
 .Sy aes-256-gcm .
-In order to provide consistent data protection, encryption must be specified at
-dataset creation time and it cannot be changed afterwards.
+Чтобы обеспечить последовательную защиту данных, шифрование должно быть задано
+при создании набора данных и не может быть изменено впоследствии.
 .Pp
-For more details and caveats about encryption see the
-.Sx Encryption
-section of
+Дополнительные сведения и предостережения о шифровании см. в разделе
+.Sx Шифрование 
+раздел
 .Xr zfs-load-key 8 .
-.It Sy keyformat Ns = Ns Sy raw Ns | Ns Sy hex Ns | Ns Sy passphrase
-Controls what format the user's encryption key will be provided as.
-This property is only set when the dataset is encrypted.
+.It Sy Формат ключа Ns = Ns Sy raw Ns | Ns Sy hex Ns | Ns Sy passphrase
+Определяет, в каком формате будет предоставлен ключ шифрования пользователя.
+Это свойство устанавливается только при шифровании набора данных.
 .Pp
-Raw keys and hex keys must be 32 bytes long (regardless of the chosen
-encryption suite) and must be randomly generated.
-A raw key can be generated with the following command:
+Сырые ключи и шестнадцатеричные ключи должны иметь длину 32 байта (независимо от выбранного
+набора шифрования) и должны быть сгенерированы случайным образом.
+Необработанный ключ можно сгенерировать с помощью следующей команды:
 .Dl # Nm dd Sy if=/dev/urandom bs=32 count=1 Sy of= Ns Pa /path/to/output/key
 .Pp
-Passphrases must be between 8 and 512 bytes long and will be processed through
-PBKDF2 before being used (see the
+Пассфразы должны быть длиной от 8 до 512 байт и будут обработаны через
+PBKDF2 перед использованием (см.
 .Sy pbkdf2iters
-property).
-Even though the encryption suite cannot be changed after dataset creation,
-the keyformat can be with
+свойство).
+Несмотря на то что набор шифрования нельзя изменить после создания набора данных,
+формат ключа можно изменить с помощью
 .Nm zfs Cm change-key .
 .It Xo
 .Sy keylocation Ns = Ns Sy prompt Ns | Ns Sy file:// Ns Ar /absolute/file/path Ns | Ns Sy https:// Ns Ar address Ns | Ns Sy http:// Ns Ar address
 .Xc
-Controls where the user's encryption key will be loaded from by default for
-commands such as
+Определяет, откуда по умолчанию будет загружаться ключ шифрования пользователя для
+таких команд, как
 .Nm zfs Cm load-key
-and
+и
 .Nm zfs Cm mount Fl l .
-This property is only set for encrypted datasets which are encryption roots.
-If unspecified, the default is
+Это свойство устанавливается только для зашифрованных наборов данных, которые являются корнями шифрования.
+Если оно не указано, по умолчанию используется
 .Sy prompt .
 .Pp
-Even though the encryption suite cannot be changed after dataset creation, the
-keylocation can be with either
+Несмотря на то, что набор шифрования нельзя изменить после создания набора данных, расположение ключа может быть указано либо
 .Nm zfs Cm set
-or
+или
 .Nm zfs Cm change-key .
-If
+Если
 .Sy prompt
-is selected ZFS will ask for the key at the command prompt when it is required
-to access the encrypted data (see
+ZFS будет запрашивать ключ в командной строке, если потребуется
+для доступа к зашифрованным данным (см.
 .Nm zfs Cm load-key
-for details).
-This setting will also allow the key to be passed in via the standard input
-stream,
-but users should be careful not to place keys which should be kept secret on
-the command line.
-If a file URI is selected, the key will be loaded from the
-specified absolute file path.
-If an HTTPS or HTTP URL is selected, it will be GETted using
+для получения подробной информации).
+Эта настройка также позволит передавать ключ через стандартный поток ввода,
+но пользователи должны быть осторожны и не передавать ключи, которые должны храниться в секрете, через командную строку.
+Если выбран URI файла, ключ будет загружен из
+указанного абсолютного пути к файлу.
+Если выбран URL-адрес HTTPS или HTTP, он будет получен с помощью функции
 .Xr fetch 3 ,
-libcurl, or nothing, depending on compile-time configuration and run-time
-availability.
-The
+libcurl или ничего, в зависимости от конфигурации во время компиляции и
+доступности во время выполнения.
 .Sy SSL_CA_CERT_FILE
-environment variable can be set to set the location
-of the concatenated certificate store.
-The
+может быть задана переменная окружения, чтобы установить местоположение
+хранилища объединенных сертификатов.
+Переменная
 .Sy SSL_CA_CERT_PATH
-environment variable can be set to override the location
-of the directory containing the certificate authority bundle.
-The
+может быть установлена для того, чтобы переопределить расположение
+каталога, содержащего пакет центра сертификации.
+Переменная
 .Sy SSL_CLIENT_CERT_FILE
-and
+и
 .Sy SSL_CLIENT_KEY_FILE
-environment variables can be set to configure the path
-to the client certificate and its key.
+переменные окружения могут быть установлены для настройки пути
+к сертификату клиента и его ключу.
 .It Sy pbkdf2iters Ns = Ns Ar iterations
-Controls the number of PBKDF2 iterations that a
+Устанавливает количество итераций PBKDF2, в течение которых будет вычисляться
+.Sy ключевая фраза,
+она должна быть обработана в ключе шифрования.
+Это свойство определено только в том случае, если шифрование включено и формат ключа
 .Sy passphrase
-encryption key should be run through when processing it into an encryption key.
-This property is only defined when encryption is enabled and a keyformat of
-.Sy passphrase
-is selected.
-The goal of PBKDF2 is to significantly increase the
-computational difficulty needed to brute force a user's passphrase.
-This is accomplished by forcing the attacker to run each passphrase through a
-computationally expensive hashing function many times before they arrive at the
-resulting key.
-A user who actually knows the passphrase will only have to pay this cost once.
-As CPUs become better at processing, this number should be
-raised to ensure that a brute force attack is still not possible.
-The current default is
+выбран.
+Цель PBKDF2 - значительно увеличить
+вычислительную сложность, необходимую для перебора парольной фразы пользователя.
+Это достигается за счет того, что злоумышленник вынужден прогонять каждую ключевую фразу через
+хэширующую функцию много раз, прежде чем он получит
+ключ.
+Пользователю, который действительно знает ключевую фразу, придется заплатить за это только один раз.
+По мере того как процессоры будут совершенствоваться в обработке данных, это число следует
+увеличивать, чтобы гарантировать, что атака методом перебора по-прежнему невозможна.
+Текущее значение по умолчанию
 .Sy 350000
-and the minimum is
-.Sy 100000 .
-This property may be changed with
+а минимальное значение
+.Sy 100000.
+Это свойство можно изменить с помощью команды
 .Nm zfs Cm change-key .
 .It Sy exec Ns = Ns Sy on Ns | Ns Sy off
-Controls whether processes can be executed from within this file system.
-The default value is
+Контролирует возможность выполнения процессов из данной файловой системы.
+Значение по умолчанию
 .Sy on .
-The values
+Значения
 .Sy on
-and
+и
 .Sy off
-are equivalent to the
+эквивалентны
 .Sy exec
-and
+и
 .Sy noexec
-mount options.
+опции монтирования.
 .It Sy filesystem_limit Ns = Ns Ar count Ns | Ns Sy none
-Limits the number of filesystems and volumes that can exist under this point in
-the dataset tree.
-The limit is not enforced if the user is allowed to change the limit.
-Setting a
+Ограничивает количество файловых систем и томов, которые могут существовать в данной точке
+дереве набора данных.
+Ограничение не применяется, если пользователю разрешено его изменять.
+Установка
 .Sy filesystem_limit
-to
-.Sy on
-a descendent of a filesystem that already has a
+на
+.Sy на
+потомка файловой системы, у которой уже есть
 .Sy filesystem_limit
-does not override the ancestor's
+не отменяет ограничение предка
 .Sy filesystem_limit ,
-but rather imposes an additional limit.
-This feature must be enabled to be used
-.Po see
+а скорее накладывает дополнительное ограничение.
+Для использования эта функция должна быть включена
+.Po см.
 .Xr zpool-features 7
 .Pc .
 .It Sy special_small_blocks Ns = Ns Ar size
-This value represents the threshold block size for including small file
-blocks into the special allocation class.
-Blocks smaller than or equal to this
-value will be assigned to the special allocation class while greater blocks
-will be assigned to the regular class.
-Valid values are zero or a power of two from 512 up to 1048576 (1 MiB).
-The default size is 0 which means no small file blocks
-will be allocated in the special class.
+Это значение представляет собой пороговый размер блока для включения маленьких файловых
+блоков в специальный класс распределения.
+Блоки, размер которых меньше или равен этому,
+будут отнесены к специальному классу распределения, в то время как блоки большего размера
+будут отнесены к обычному классу.
+Допустимые значения - ноль или степень двойки от 512 до 1048576 (1 МБ).
+По умолчанию значение равно 0, что означает, что маленькие блоки файлов
+не будут выделяться в специальном классе.
 .Pp
-Before setting this property, a special class vdev must be added to the
-pool.
-See
+Перед установкой этого свойства необходимо добавить vdev специальный класс в пул.
+См.
 .Xr zpoolconcepts 7
-for more details on the special allocation class.
-.It Sy mountpoint Ns = Ns Pa path Ns | Ns Sy none Ns | Ns Sy legacy
-Controls the mount point used for this file system.
-See the
-.Sx Mount Points
-section of
+для получения подробной информации о специальном классе распределения.
+.It Sy точка монтирования Ns = Ns Pa путь Ns | Ns Sy нет Ns | Ns Sy наследие
+Управляет точкой монтирования, используемой для данной файловой системы.
+См.
+.Sx Точки монтирования 
+раздел
 .Xr zfsconcepts 7
-for more information on how this property is used.
+для получения дополнительной информации об использовании этого свойства.
 .Pp
-When the
-.Sy mountpoint
-property is changed for a file system, the file system and any children that
-inherit the mount point are unmounted.
-If the new value is
+При выборе точки монтирования
+.Sy точка монтирования
+свойство изменяется для файловой системы, файловая система и все дочерние элементы, которые
+наследуют эту точку монтирования, размонтируются.
+Если новое значение
 .Sy legacy ,
-then they remain unmounted.
-Otherwise, they are automatically remounted in the new location if the property
-was previously
+то они остаются немонтированными.
+В противном случае они автоматически монтируются в новом месте, если свойство
+ранее было
 .Sy legacy
-or
+или
 .Sy none .
-In addition, any shared file systems are unshared and shared in the new
-location.
+Кроме того, все разделяемые файловые системы снимаются с общего доступа и разделяются в новом
+местоположении.
 .Pp
-When the
-.Sy mountpoint
-property is set with
+Когда
+.Sy точка монтирования 
+установлено с помощью
 .Nm zfs Cm set Fl u
-, the
+, то
 .Sy mountpoint
-property is updated but dataset is not mounted or unmounted and remains
-as it was before.
+обновляется, но набор данных не монтируется и не размонтируется, а остается
+как и раньше.
 .It Sy nbmand Ns = Ns Sy on Ns | Ns Sy off
-Controls whether the file system should be mounted with
+Контролирует, следует ли монтировать файловую систему со свойством
 .Sy nbmand
-.Pq Non-blocking mandatory locks .
-Changes to this property only take effect when the file system is umounted and
-remounted.
-This was only supported by Linux prior to 5.15, and was buggy there,
-and is not supported by
+.Pq Неблокирующие обязательные блокировки .
+Изменения этого свойства вступают в силу только при размонтировании и
+повторном монтировании.
+Это свойство поддерживалось только в Linux до версии 5.15, и в нем были ошибки,
+и не используется в
 .Fx .
-On Solaris it's used for SMB clients.
+В Solaris это используется для клиентов SMB.
 .It Sy overlay Ns = Ns Sy on Ns | Ns Sy off
-Allow mounting on a busy directory or a directory which already contains
-files or directories.
-This is the default mount behavior for Linux and
+Разрешает монтирование в занятый каталог или каталог, в котором уже содержатся
+файлы или каталоги.
+Это поведение монтирования по умолчанию для Linux и
 .Fx
-file systems.
-On these platforms the property is
+файловых систем.
+На этих платформах свойство
 .Sy on
-by default.
-Set to
+по умолчанию.
+Установите значение
 .Sy off
-to disable overlay mounts for consistency with OpenZFS on other platforms.
+чтобы отключить оверлейное монтирование для согласованности с OpenZFS на других платформах.
 .It Sy primarycache Ns = Ns Sy all Ns | Ns Sy none Ns | Ns Sy metadata
-Controls what is cached in the primary cache
+Управляет тем, что будет кэшироваться в первичном кэше.
 .Pq ARC .
-If this property is set to
+Если для этого свойства установлено значение
 .Sy all ,
-then both user data and metadata is cached.
-If this property is set to
+то кэшируются как пользовательские данные, так и метаданные.
+Если для этого свойства установлено значение
 .Sy none ,
-then neither user data nor metadata is cached.
-If this property is set to
+то ни пользовательские данные, ни метаданные не кэшируются.
+Если для этого свойства установлено значение
 .Sy metadata ,
-then only metadata is cached.
-The default value is
-.Sy all .
+то кэшируются только метаданные.
+По умолчанию используется значение
+.Sy все .
 .It Sy quota Ns = Ns Ar size Ns | Ns Sy none
-Limits the amount of space a dataset and its descendents can consume.
-This property enforces a hard limit on the amount of space used.
-This includes all space consumed by descendents, including file systems and
-snapshots.
-Setting a quota on a descendent of a dataset that already has a quota does not
-override the ancestor's quota, but rather imposes an additional limit.
+Ограничивает объем пространства, который может занимать набор данных и его дочерние элементы.
+Это свойство устанавливает жесткое ограничение на объем используемого пространства.
+Сюда входит все пространство, занимаемое дочерними элементами, включая файловые системы и
+моментальные снимки.
+Установка лимита для дочернего набора данных, который уже имеет лимит, не
+отменяет лимит предка, а скорее накладывает дополнительный лимит.
 .Pp
-Quotas cannot be set on volumes, as the
+Лимиты не могут быть установлены на томах, так как для томов используется параметр
 .Sy volsize
-property acts as an implicit quota.
+который действует как неявный лимит.
 .It Sy snapshot_limit Ns = Ns Ar count Ns | Ns Sy none
-Limits the number of snapshots that can be created on a dataset and its
-descendents.
-Setting a
+Ограничивает количество моментальных снимков, которые могут быть созданы для набора данных и его
+дочерних эдементов.
+Установка
 .Sy snapshot_limit
-on a descendent of a dataset that already has a
+для дочернего набора данных, для которого уже установлено ограничение
 .Sy snapshot_limit
-does not override the ancestor's
+не отменяет значение
 .Sy snapshot_limit ,
-but rather imposes an additional limit.
-The limit is not enforced if the user is allowed to change the limit.
-For example, this means that recursive snapshots taken from the global zone are
-counted against each delegated dataset within a zone.
-This feature must be enabled to be used
-.Po see
+а скорее накладывает дополнительное ограничение.
+Ограничение не применяется, если пользователю разрешено его изменять.
+Например, это означает, что рекурсивные снимки, сделанные из глобальной зоны, будут
+учитываются для каждого делегированного набора данных в зоне.
+Для использования эта функция должна быть включена.
+.Po см.
 .Xr zpool-features 7
 .Pc .
 .It Sy userquota@ Ns Ar user Ns = Ns Ar size Ns | Ns Sy none
-Limits the amount of space consumed by the specified user.
-User space consumption is identified by the
+Ограничивает объем пространства, потребляемого указанным пользователем.
+Потребляемое пользователем пространство идентифицируется параметром
 .Sy userspace@ Ns Ar user
-property.
 .Pp
-Enforcement of user quotas may be delayed by several seconds.
-This delay means that a user might exceed their quota before the system notices
-that they are over quota and begins to refuse additional writes with the
+Применение лимитов для пользователей может быть отложено на несколько секунд.
+Эта задержка означает, что пользователь может превысить свой лимит до того, как система заметит
+что лимит превышен, и начнет отказывать в дополнительной записи с помощью команды
 .Er EDQUOT
-error message.
-See the
+сообщением об ошибке.
+См.
 .Nm zfs Cm userspace
-command for more information.
+для получения дополнительной информации.
 .Pp
-Unprivileged users can only access their own groups' space usage.
-The root user, or a user who has been granted the
+Непривилегированные пользователи могут получить доступ к использованию пространства только для своих групп.
+Пользователь root или пользователь, которому предоставлено право
 .Sy userquota
-privilege with
+привилегия с
 .Nm zfs Cm allow ,
-can get and set everyone's quota.
+может получать и устанавливать лимиты для всех пользователей.
 .Pp
-This property is not available on volumes, on file systems before version 4, or
-on pools before version 15.
-The
-.Sy userquota@ Ns Ar …
-properties are not displayed by
+Это свойство недоступно для томов, файловых систем до версии 4 или
+на пулах до версии 15.
+Адрес
+.Sy userquota@ Ns Ar ...
+не отображается с помощью
 .Nm zfs Cm get Sy all .
-The user's name must be appended after the
+Имя пользователя должно быть добавлено после
 .Sy @
-symbol, using one of the following forms:
+с использованием одной из следующих форм:
 .Bl -bullet -compact -offset 4n
 .It
-POSIX name
+POSIX-имя
 .Pq Qq joe
 .It
-POSIX numeric ID
+Цифровой идентификатор POSIX
 .Pq Qq 789
 .It
-SID name
+имя SID
 .Pq Qq joe.smith@mydomain
 .It
-SID numeric ID
+Цифровой идентификатор SID
 .Pq Qq S-1-123-456-789
 .El
 .Pp
-Files created on Linux always have POSIX owners.
+Файлы, созданные в Linux, всегда имеют владельцев POSIX.
 .It Sy userobjquota@ Ns Ar user Ns = Ns Ar size Ns | Ns Sy none
-The
+Адрес
 .Sy userobjquota
-is similar to
+аналогична
 .Sy userquota
-but it limits the number of objects a user can create.
-Please refer to
+но она ограничивает количество объектов, которые может создать пользователь.
+Пожалуйста, обратитесь к
 .Sy userobjused
-for more information about how objects are counted.
+для получения дополнительной информации о том, как подсчитываются объекты.
 .It Sy groupquota@ Ns Ar group Ns = Ns Ar size Ns | Ns Sy none
-Limits the amount of space consumed by the specified group.
-Group space consumption is identified by the
+Ограничивает объем пространства, занимаемого указанной группой.
+Потребляемое группой пространство идентифицируется параметром
 .Sy groupused@ Ns Ar group
-property.
 .Pp
-Unprivileged users can access only their own groups' space usage.
-The root user, or a user who has been granted the
+Непривилегированные пользователи могут получить доступ к использованию пространства только своих групп.
+Пользователь root или пользователь, которому предоставлено право
 .Sy groupquota
-privilege with
+с помощью
 .Nm zfs Cm allow ,
-can get and set all groups' quotas.
-.It Sy groupobjquota@ Ns Ar group Ns = Ns Ar size Ns | Ns Sy none
-The
+может получать и устанавливать лимиты для всех групп.
+.It Sy groupobjquota@ Ns Ar группа Ns = Ns Ar размер Ns | Ns Sy none
+Адрес
 .Sy groupobjquota
-is similar to
+аналогична
 .Sy groupquota
-but it limits number of objects a group can consume.
-Please refer to
+но она ограничивает количество объектов, которые может потреблять группа.
+Пожалуйста, обратитесь к
 .Sy userobjused
-for more information about how objects are counted.
+
+для получения дополнительной информации о том, как подсчитываются объекты.
 .It Sy projectquota@ Ns Ar project Ns = Ns Ar size Ns | Ns Sy none
-Limits the amount of space consumed by the specified project.
-Project space consumption is identified by the
+Ограничивает объем пространства, занимаемого указанным проектом.
+Потребляемое проектом пространство определяется параметром
 .Sy projectused@ Ns Ar project
-property.
-Please refer to
+См.
 .Sy projectused
-for more information about how project is identified and set/changed.
+для получения дополнительной информации о том, как определяется и устанавливается/изменяется проект.
 .Pp
-The root user, or a user who has been granted the
+Пользователь root или пользователь, которому предоставлена
 .Sy projectquota
-privilege with
+привилегия с помощью
 .Nm zfs allow ,
-can access all projects' quota.
+может получить доступ к лимитам всех проектов.
 .It Sy projectobjquota@ Ns Ar project Ns = Ns Ar size Ns | Ns Sy none
-The
 .Sy projectobjquota
-is similar to
+аналогичен
 .Sy projectquota
-but it limits number of objects a project can consume.
-Please refer to
+но ограничивает количество объектов, которые может потреблять проект.
+Пожалуйста, обратитесь к
 .Sy userobjused
-for more information about how objects are counted.
+для получения дополнительной информации о том, как подсчитываются объекты.
 .It Sy readonly Ns = Ns Sy on Ns | Ns Sy off
-Controls whether this dataset can be modified.
-The default value is
+Определяет, можно ли изменять этот набор данных.
+По умолчанию используется значение
 .Sy off .
-The values
+Значения
 .Sy on
-and
+и
 .Sy off
-are equivalent to the
+эквивалентны значениям
 .Sy ro
-and
+и
 .Sy rw
-mount options.
+опции монтирования.
 .Pp
-This property can also be referred to by its shortened column name,
+На это свойство также можно ссылаться по сокращенному имени столбца,
 .Sy rdonly .
 .It Sy recordsize Ns = Ns Ar size
-Specifies a suggested block size for files in the file system.
-This property is designed solely for use with database workloads that access
-files in fixed-size records.
-ZFS automatically tunes block sizes according to internal algorithms optimized
-for typical access patterns.
+Указывает предлагаемый размер блока для файлов в файловой системе.
+Это свойство предназначено исключительно для использования в рабочих нагрузках баз данных, которые обращаются к
+файлам в виде записей фиксированного размера.
+ZFS автоматически настраивает размеры блоков в соответствии с внутренними алгоритмами, оптимизированными
+для типичных моделей доступа.
 .Pp
-For databases that create very large files but access them in small random
-chunks, these algorithms may be suboptimal.
-Specifying a
-.Sy recordsize
-greater than or equal to the record size of the database can result in
-significant performance gains.
-Use of this property for general purpose file systems is strongly discouraged,
-and may adversely affect performance.
+Для баз данных, которые создают очень большие файлы, но обращаются к ним небольшими случайными
+эти алгоритмы могут быть неоптимальными.
+Указание размера записи
+.Sy,
+превышающего или равного размеру записи базы данных, может привести к
+значительному повышению производительности.
+Использовать это свойство для файловых систем общего назначения категорически не рекомендуется,
+поскольку это может негативно сказаться на производительности.
 .Pp
-The size specified must be a power of two greater than or equal to
+Указанный размер должен быть в степени два больше или равен
 .Ar 512 B
-and less than or equal to
+и меньше или равен
 .Ar 128 KiB .
-If the
+Если
 .Sy large_blocks
-feature is enabled on the pool, the size may be up to
+включена функция пула, размер может достигать
 .Ar 1 MiB .
-See
+См.
 .Xr zpool-features 7
-for details on ZFS feature flags.
+для получения подробной информации о флагах функций ZFS.
 .Pp
-Changing the file system's
+Изменение размера файловой системы
 .Sy recordsize
-affects only files created afterward; existing files are unaffected.
+влияет только на файлы, созданные после этого; существующие файлы не затрагиваются.
 .Pp
-This property can also be referred to by its shortened column name,
+На это свойство можно также ссылаться по сокращенному имени столбца,
 .Sy recsize .
 .It Sy redundant_metadata Ns = Ns Sy all Ns | Ns Sy most Ns | Ns Sy some Ns | Ns Sy none
-Controls what types of metadata are stored redundantly.
-ZFS stores an extra copy of metadata, so that if a single block is corrupted,
-the amount of user data lost is limited.
-This extra copy is in addition to any redundancy provided at the pool level
-.Pq e.g. by mirroring or RAID-Z ,
-and is in addition to an extra copy specified by the
-.Sy copies
-property
-.Pq up to a total of 3 copies .
-For example if the pool is mirrored,
-.Sy copies Ns = Ns 2 ,
-and
-.Sy redundant_metadata Ns = Ns Sy most ,
-then ZFS stores 6 copies of most metadata, and 4 copies of data and some
-metadata.
+Управляет тем, какие типы метаданных будут храниться с избытком.
+ZFS хранит дополнительную копию метаданных, так что если один блок поврежден,
+объем потерянных пользовательских данных был ограничен.
+Эта дополнительная копия дополняет избыточность, обеспечиваемую на уровне пула.
+.Pq, например, зеркалированием или RAID-Z,
+и является дополнением к резервной копии, заданной параметром
+.Sy копии
+.Pq до 3 копий в общей сложности.
+Например, если пул зеркалирован,
+.Sy копий Ns = Ns 2 ,
+и
+.Sy избыточные_метаданные Ns = Ns Sy большинство ,
+то ZFS хранит 6 копий большинства метаданных и 4 копии данных и некоторых метаданных.
 .Pp
-When set to
+Если установлено значение
 .Sy all ,
-ZFS stores an extra copy of all metadata.
-If a single on-disk block is corrupt, at worst a single block of user data
-.Po which is
-.Sy recordsize
-bytes long
-.Pc
-can be lost.
+ZFS хранит дополнительную копию всех метаданных.
+Если поврежден один блок на диске, то в худшем случае будет поврежден один блок пользовательских данных
+.Po, который равен
+.Sy размеру записи в
+байтах
 .Pp
-When set to
-.Sy most ,
-ZFS stores an extra copy of most types of metadata.
-This can improve performance of random writes, because less metadata must be
-written.
-In practice, at worst about 1000 blocks
-.Po of
-.Sy recordsize
-bytes each
-.Pc
-of user data can be lost if a single on-disk block is corrupt.
-The exact behavior of which metadata blocks are stored redundantly may change in
-future releases.
+Когда установлено значение
+.Sy большинство ,
+ZFS сохраняет дополнительную копию большинства типов метаданных.
+Это может повысить производительность случайной записи, так как необходимо записывать меньше метаданных.
+На практике в худшем случае около 1000 блоков
+.Po из
+.Sy размера записи
+пользовательских данных может быть потеряно при повреждении одного блока на диске.
+Точное поведение блоков метаданных, которые хранятся с избытком, может измениться в
+будущих версиях.
 .Pp
-When set to
-.Sy some ,
-ZFS stores an extra copy of only critical metadata.
-This can improve file create performance since less metadata
-needs to be written.
-If a single on-disk block is corrupt, at worst a single user file can be lost.
+Когда установлено значение
+.Sy некоторые ,
+ZFS хранит дополнительную копию только критических метаданных.
+Это может повысить производительность создания файлов, поскольку меньше метаданных
+необходимо записывать.
+Если один блок на диске поврежден, в худшем случае может быть потерян один пользовательский файл.
 .Pp
-When set to
-.Sy none ,
-ZFS does not store any copies of metadata redundantly.
-If a single on-disk block is corrupt, an entire dataset can be lost.
+Если установлено значение
+.Sy нет ,
+ZFS не хранит никаких копий метаданных с избыточностью.
+Если поврежден один блок на диске, может быть потерян весь набор данных.
 .Pp
-The default value is
-.Sy all .
+По умолчанию установлено значение
+.Sy все .
 .It Sy refquota Ns = Ns Ar size Ns | Ns Sy none
-Limits the amount of space a dataset can consume.
-This property enforces a hard limit on the amount of space used.
-This hard limit does not include space used by descendents, including file
-systems and snapshots.
+Ограничивает объем пространства, которое может занимать набор данных.
+Это свойство устанавливает жесткое ограничение на объем используемого пространства.
+Это жесткое ограничение не включает пространство, используемое дочерними элементами, включая файловые системы и снимки.
 .It Sy refreservation Ns = Ns Ar size Ns | Ns Sy none Ns | Ns Sy auto
-The minimum amount of space guaranteed to a dataset, not including its
-descendents.
-When the amount of space used is below this value, the dataset is treated as if
-it were taking up the amount of space specified by
+Минимальный объем пространства, гарантированный набору данных, не включая его
+дочерних элементов.
+Если объем используемого пространства меньше этого значения, набор данных рассматривается так, как будто
+он занимает объем пространства, указанный в
+он занимает объем пространства, указанный в
 .Sy refreservation .
-The
 .Sy refreservation
-reservation is accounted for in the parent datasets' space used, and counts
-against the parent datasets' quotas and reservations.
+резервирование учитывается в используемом пространстве родительских наборов данных и засчитывается
+в счет лимитов и резервирования родительских наборов данных.
 .Pp
-If
+Если
 .Sy refreservation
-is set, a snapshot is only allowed if there is enough free pool space outside of
-this reservation to accommodate the current number of
-.Qq referenced
-bytes in the dataset.
+установлен, снимок разрешается только в том случае, если за пределами этого резервирования достаточно свободного места в пуле для размещения текущего количества данных.
+за пределами этого резервирования, чтобы вместить текущее количество
+.Qq ссылающихся на 
+байт в наборе данных.
 .Pp
-If
+Если
 .Sy refreservation
-is set to
+установлено значение
 .Sy auto ,
-a volume is thick provisioned
-.Po or
-.Qq not sparse
+том имеет большую толщину резервирования
+.Po или
+.Qq не редкий
 .Pc .
-.Sy refreservation Ns = Ns Sy auto
-is only supported on volumes.
-See
+.Sy сохранение Ns = Ns Sy auto
+поддерживается только для томов.
+См.
 .Sy volsize
-in the
-.Sx Native Properties
-section for more information about sparse volumes.
+в разделе
+.Sx Нативные свойства 
+для получения дополнительной информации о разреженных томах.
 .Pp
-This property can also be referred to by its shortened column name,
+На это свойство также можно ссылаться по сокращенному имени столбца,
 .Sy refreserv .
 .It Sy relatime Ns = Ns Sy on Ns | Ns Sy off
-Controls the manner in which the access time is updated when
+Управляет способом обновления времени доступа, когда
 .Sy atime Ns = Ns Sy on
-is set.
-Turning this property on causes the access time to be updated relative
-to the modify or change time.
-Access time is only updated if the previous
-access time was earlier than the current modify or change time or if the
-existing access time hasn't been updated within the past 24 hours.
-The default value is
+установлено.
+При включении этого свойства время доступа обновляется 
+относительно времени модификации или изменения.
+Время доступа обновляется только в том случае, если предыдущее
+время доступа было раньше, чем текущее время изменения или модификации, или если
+существующее время доступа не обновлялось в течение последних 24 часов.
+Значение по умолчанию
 .Sy on .
-The values
+Значения
 .Sy on
-and
+и
 .Sy off
-are equivalent to the
+эквивалентны
 .Sy relatime
-and
+и
 .Sy norelatime
-mount options.
+опции монтирования.
 .It Sy reservation Ns = Ns Ar size Ns | Ns Sy none
-The minimum amount of space guaranteed to a dataset and its descendants.
-When the amount of space used is below this value, the dataset is treated as if
-it were taking up the amount of space specified by its reservation.
-Reservations are accounted for in the parent datasets' space used, and count
-against the parent datasets' quotas and reservations.
+Минимальный объем пространства, гарантированный набору данных и его потомкам.
+Если объем используемого пространства ниже этого значения, набор данных рассматривается так, как если бы
+он занимал место, указанное в его резервировании.
+Резервирование учитывается в используемом пространстве родительских наборов данных и засчитывается
+в счет лимитов и резервирования родительских наборов данных.
 .Pp
-This property can also be referred to by its shortened column name,
+На это свойство также можно ссылаться по сокращенному имени столбца,
 .Sy reserv .
 .It Sy secondarycache Ns = Ns Sy all Ns | Ns Sy none Ns | Ns Sy metadata
-Controls what is cached in the secondary cache
+Управляет тем, что кэшируется во вторичном кэше.
 .Pq L2ARC .
-If this property is set to
+Если для этого свойства установлено значение
 .Sy all ,
-then both user data and metadata is cached.
-If this property is set to
+то кэшируются как пользовательские данные, так и метаданные.
+Если для этого свойства установлено значение
 .Sy none ,
-then neither user data nor metadata is cached.
-If this property is set to
+то ни пользовательские данные, ни метаданные не кэшируются.
+Если для этого свойства установлено значение
 .Sy metadata ,
-then only metadata is cached.
-The default value is
+то кэшируются только метаданные.
+По умолчанию используется значение
 .Sy all .
 .It Sy setuid Ns = Ns Sy on Ns | Ns Sy off
-Controls whether the setuid bit is respected for the file system.
-The default value is
+Устанавливает, будет ли соблюдаться бит setuid для файловой системы.
+Значение по умолчанию
 .Sy on .
-The values
+Значения
 .Sy on
-and
+и
 .Sy off
-are equivalent to the
+эквивалентны значениям
 .Sy suid
-and
+и
 .Sy nosuid
-mount options.
+опции монтирования.
 .It Sy sharesmb Ns = Ns Sy on Ns | Ns Sy off Ns | Ns Ar opts
-Controls whether the file system is shared by using
+Управляет совместным использованием файловой системы с помощью
 .Sy Samba USERSHARES
-and what options are to be used.
-Otherwise, the file system is automatically shared and unshared with the
+и какие опции должны быть использованы.
+В противном случае файловая система автоматически разделяется и не разделяется с помощью параметра
 .Nm zfs Cm share
-and
+и
 .Nm zfs Cm unshare
-commands.
-If the property is set to on, the
+командами.
+Если свойство установлено в значение on, то в файловой системе
 .Xr net 8
-command is invoked to create a
+вызывается команда для создания
 .Sy USERSHARE .
 .Pp
-Because SMB shares requires a resource name, a unique resource name is
-constructed from the dataset name.
-The constructed name is a copy of the
-dataset name except that the characters in the dataset name, which would be
-invalid in the resource name, are replaced with underscore (_) characters.
-Linux does not currently support additional options which might be available
-on Solaris.
+Поскольку для общих ресурсов SMB требуется имя ресурса, уникальное имя ресурса
+создается из имени набора данных.
+Созданное имя является копией
+имени набора данных, за исключением того, что символы в имени набора данных, которые были бы
+недействительные в имени ресурса, заменяются символами подчеркивания (_).
+Linux в настоящее время не поддерживает дополнительные опции, которые могут быть доступны
+в Solaris.
 .Pp
-If the
+Если в файле
 .Sy sharesmb
-property is set to
+установлено значение
 .Sy off ,
-the file systems are unshared.
+файловые системы не разделяются.
 .Pp
-The share is created with the ACL (Access Control List) "Everyone:F" ("F"
-stands for "full permissions", i.e. read and write permissions) and no guest
-access (which means Samba must be able to authenticate a real user \(em
+Общий ресурс создается с ACL (список контроля доступа) "Everyone:F" ("F"
+означает "полные разрешения", т. е. разрешения на чтение и запись) и без гостевого
+доступа (это означает, что Samba должна быть способна аутентифицировать реального пользователя \(em
 .Xr passwd 5 Ns / Ns Xr shadow 5 Ns - ,
-LDAP- or
+LDAP- или
 .Xr smbpasswd 5 Ns -based )
-by default.
-This means that any additional access control
-(disallow specific user specific access etc) must be done on the underlying file
-system.
+по умолчанию.
+Это означает, что любой дополнительный контроль доступа
+(запрет доступа конкретного пользователя и т. д.) должен осуществляться на базовой файловой системе.
 .Pp
-When the
+Когда
 .Sy sharesmb
-property is updated with
+обновляется с помощью
 .Nm zfs Cm set Fl u
-, the property is set to desired value, but the operation to share, reshare
-or unshare the the dataset is not performed.
+свойство устанавливается в нужное значение, но операция совместного использования, повторного использования
+или отмены совместного доступа к набору данных не выполняется.
 .It Sy sharenfs Ns = Ns Sy on Ns | Ns Sy off Ns | Ns Ar opts
-Controls whether the file system is shared via NFS, and what options are to be
-used.
-A file system with a
+Определяет, будет ли файловая система совместно использоваться через NFS, и какие опции должны быть при этом использованы.
+Файловая система с опцией
 .Sy sharenfs
-property of
+и свойством
 .Sy off
-is managed with the
+обрабатывается с помощью
 .Xr exportfs 8
-command and entries in the
+и записями в файле
 .Pa /etc/exports
-file.
-Otherwise, the file system is automatically shared and unshared with the
+В противном случае файловая система автоматически разделяется с помощью команды
 .Nm zfs Cm share
-and
+и
 .Nm zfs Cm unshare
-commands.
-If the property is set to
+командами.
+Если для свойства установлено значение
 .Sy on ,
-the dataset is shared using the default options:
+набор данных разделяется с использованием параметров по умолчанию:
 .Dl sec=sys,rw,crossmnt,no_subtree_check
 .Pp
-Please note that the options are comma-separated, unlike those found in
+Обратите внимание, что опции разделены запятыми, в отличие от опций в
 .Xr exports 5 .
-This is done to negate the need for quoting, as well as to make parsing
-with scripts easier.
+Это сделано для того, чтобы исключить необходимость в кавычках, а также для того, чтобы облегчить разбор
+с помощью скриптов.
 .Pp
-See
+См.
 .Xr exports 5
-for the meaning of the default options.
-Otherwise, the
+о значении параметров по умолчанию.
+В противном случае следует использовать
 .Xr exportfs 8
-command is invoked with options equivalent to the contents of this property.
+вызывается команда с параметрами, эквивалентными содержимому этого свойства.
 .Pp
-When the
+При выполнении команды
 .Sy sharenfs
-property is changed for a dataset, the dataset and any children inheriting the
-property are re-shared with the new options, only if the property was previously
+при изменении свойства для набора данных, набор данных и все дочерние элементы, наследующие это
+свойство, повторно используются с новыми параметрами, только если это свойство было ранее изменено
 .Sy off ,
-or if they were shared before the property was changed.
-If the new property is
+или если они были совместно использованы до изменения свойства.
+Если новое свойство
 .Sy off ,
-the file systems are unshared.
+файловые системы не разделяются.
 .Pp
-When the
+При изменении свойства
 .Sy sharenfs
-property is updated with
+обновляется с помощью
 .Nm zfs Cm set Fl u
-, the property is set to desired value, but the operation to share, reshare
-or unshare the the dataset is not performed.
+свойство устанавливается в нужное значение, но операция совместного использования, повторного использования
+или отмены совместного доступа к набору данных не выполняется.
 .It Sy logbias Ns = Ns Sy latency Ns | Ns Sy throughput
-Provide a hint to ZFS about handling of synchronous requests in this dataset.
-If
+Предоставляет подсказку ZFS об обработке синхронных запросов в этом наборе данных.
+Если
 .Sy logbias
-is set to
+установлено значение
 .Sy latency
-.Pq the default ,
-ZFS will use pool log devices
-.Pq if configured
-to handle the requests at low latency.
-If
+.Pq по умолчанию,
+ZFS будет использовать устройства регистрации пула
+.Pq, если они настроены
+для обработки запросов с низкой задержкой.
+Если
 .Sy logbias
-is set to
+установлен на
 .Sy throughput ,
-ZFS will not use configured pool log devices.
-ZFS will instead optimize synchronous operations for global pool throughput and
-efficient use of resources.
+ZFS не будет использовать настроенные устройства журнала пула.
+Вместо этого ZFS будет оптимизировать синхронные операции для глобальной пропускной способности пула и
+эффективного использования ресурсов.
 .It Sy snapdev Ns = Ns Sy hidden Ns | Ns Sy visible
-Controls whether the volume snapshot devices under
+Контролирует, будут ли устройства моментальных снимков тома в каталоге
 .Pa /dev/zvol/ Ns Aq Ar pool
-are hidden or visible.
-The default value is
-.Sy hidden .
+скрыты или видимы.
+По умолчанию используется значение
+.Sy скрыто .
 .It Sy snapdir Ns = Ns Sy hidden Ns | Ns Sy visible
-Controls whether the
+Определяет, будет ли
 .Pa .zfs
-directory is hidden or visible in the root of the file system as discussed in
-the
-.Sx Snapshots
-section of
+скрыт или виден каталог в корне файловой системы, как обсуждалось в
+в разделе
+.Sx Снимки 
+в разделе
 .Xr zfsconcepts 7 .
-The default value is
-.Sy hidden .
+По умолчанию используется значение
+.Sy скрыто .
 .It Sy sync Ns = Ns Sy standard Ns | Ns Sy always Ns | Ns Sy disabled
-Controls the behavior of synchronous requests
-.Pq e.g. fsync, O_DSYNC .
+Управляет поведением синхронных запросов
+.Pq например, fsync, O_DSYNC .
 .Sy standard
-is the POSIX-specified behavior of ensuring all synchronous requests
-are written to stable storage and all devices are flushed to ensure
-data is not cached by device controllers
-.Pq this is the default .
-.Sy always
-causes every file system transaction to be written and flushed before its
-system call returns.
-This has a large performance penalty.
+это определенное POSIX поведение, обеспечивающее, чтобы все синхронные запросы
+записываются в стабильное хранилище, а все устройства промываются, чтобы гарантировать
+данные не кэшируются контроллерами устройств.
+.Pq - это значение по умолчанию .
+.Sy всегда
+приводит к тому, что каждая транзакция файловой системы записывается и сбрасывается перед возвращением ее
+системного вызова.
+Это приводит к большим потерям производительности.
 .Sy disabled
-disables synchronous requests.
-File system transactions are only committed to stable storage periodically.
-This option will give the highest performance.
-However, it is very dangerous as ZFS would be ignoring the synchronous
-transaction demands of applications such as databases or NFS.
-Administrators should only use this option when the risks are understood.
-.It Sy version Ns = Ns Ar N Ns | Ns Sy current
-The on-disk version of this file system, which is independent of the pool
-version.
-This property can only be set to later supported versions.
-See the
+отключает синхронные запросы.
+Транзакции файловой системы фиксируются в стабильном хранилище только периодически.
+Эта опция обеспечивает максимальную производительность.
+Однако это очень опасно, поскольку ZFS будет игнорировать синхронные
+транзакций таких приложений, как базы данных или NFS.
+Администраторы должны использовать эту опцию только в том случае, если понимают все риски.
+.It Sy версия Ns = Ns Ar N Ns | Ns Sy current
+Версия файловой системы на диске, которая не зависит от пула.
+Это свойство может быть установлено только на более поздние поддерживаемые версии.
+См.
 .Nm zfs Cm upgrade
-command.
+команда.
 .It Sy volsize Ns = Ns Ar size
-For volumes, specifies the logical size of the volume.
-By default, creating a volume establishes a reservation of equal size.
-For storage pools with a version number of 9 or higher, a
+Для томов задает логический размер тома.
+По умолчанию при создании тома создается резервирование равного размера.
+Для пулов хранения с номером версии 9 или выше используется значение
 .Sy refreservation
-is set instead.
-Any changes to
+устанавливается вместо этого.
+Любые изменения
 .Sy volsize
-are reflected in an equivalent change to the reservation
-.Pq or Sy refreservation .
-The
+отражаются в эквивалентном изменении резервирования
+.Pq или Sy refreservation.
+Адрес
 .Sy volsize
-can only be set to a multiple of
+может быть установлен только кратным
 .Sy volblocksize ,
-and cannot be zero.
+и не может быть нулевым.
 .Pp
-The reservation is kept equal to the volume's logical size to prevent unexpected
-behavior for consumers.
-Without the reservation, the volume could run out of space, resulting in
-undefined behavior or data corruption, depending on how the volume is used.
-These effects can also occur when the volume size is changed while it is in use
-.Pq particularly when shrinking the size .
-Extreme care should be used when adjusting the volume size.
+Резервирование поддерживается равным логическому размеру тома, чтобы предотвратить неожиданное
+неожиданного поведения потребителей.
+Без резервирования на томе может закончиться место, что приведет к
+неопределенному поведению или повреждению данных, в зависимости от того, как используется том.
+Такие эффекты могут также возникать при изменении размера тома во время его использования
+.Pq особенно при уменьшении размера.
+При изменении размера тома следует соблюдать особую осторожность.
 .Pp
-Though not recommended, a
-.Qq sparse volume
-.Po also known as
+Хотя это и не рекомендуется, но
+.Qq редкий том 
+.Po также известен как
 .Qq thin provisioned
 .Pc
-can be created by specifying the
+можно создать, указав параметр
 .Fl s
-option to the
+в опции
 .Nm zfs Cm create Fl V
-command, or by changing the value of the
+или изменив значение параметра
 .Sy refreservation
-property
-.Po or
-.Sy reservation
-property on pool version 8 or earlier
+свойства
+.Po или
+.Sy резервирование
+в пуле версии 8 или более ранней версии
 .Pc
-after the volume has been created.
+после создания тома.
 A
-.Qq sparse volume
-is a volume where the value of
+.Qq редкий том 
+это том, в котором значение
 .Sy refreservation
-is less than the size of the volume plus the space required to store its
-metadata.
-Consequently, writes to a sparse volume can fail with
+меньше, чем размер тома плюс пространство, необходимое для хранения его
+метаданных.
+Следовательно, запись в разреженный том может завершиться неудачей с ошибкой
 .Er ENOSPC
-when the pool is low on space.
-For a sparse volume, changes to
+когда в пуле не хватает места.
+Для редкого тома изменения
 .Sy volsize
-are not reflected in the
+не отражаются в
 .Sy refreservation .
-A volume that is not sparse is said to be
+Том, который не является редким, считается
 .Qq thick provisioned .
-A sparse volume can become thick provisioned by setting
+Редкий том может стать толстопрофильным, если установить
 .Sy refreservation
-to
-.Sy auto .
+на
+.Sy auto.
 .It Sy volmode Ns = Ns Sy default Ns | Ns Sy full Ns | Ns Sy geom Ns | Ns Sy dev Ns | Ns Sy none
-This property specifies how volumes should be exposed to the OS.
-Setting it to
+Это свойство определяет, как тома должны быть открыты для ОС.
+Установив значение
 .Sy full
-exposes volumes as fully fledged block devices, providing maximal
-functionality.
-The value
+открывает тома как полноценные блочные устройства, обеспечивая максимальную
+функциональность.
+Значение
 .Sy geom
-is just an alias for
+это просто псевдоним для
 .Sy full
-and is kept for compatibility.
-Setting it to
+и сохраняется для совместимости.
+Установка значения
 .Sy dev
-hides its partitions.
-Volumes with property set to
+скрывает его разделы.
+Тома, для которых установлено свойство
 .Sy none
-are not exposed outside ZFS, but can be snapshotted, cloned, replicated, etc,
-that can be suitable for backup purposes.
-Value
-.Sy default
-means that volumes exposition is controlled by system-wide tunable
+не открыты за пределами ZFS, но могут быть сфотографированы, клонированы, реплицированы и т. д,
+что может быть полезно для резервного копирования.
+Значение
+.Sy по умолчанию
+означает, что раскрытие томов контролируется общесистемным настраиваемым параметром
 .Sy zvol_volmode ,
-where
+где
 .Sy full ,
 .Sy dev
-and
+и
 .Sy none
-are encoded as 1, 2 and 3 respectively.
-The default value is
+кодируются как 1, 2 и 3 соответственно.
+По умолчанию используется значение
 .Sy full .
 .It Sy vscan Ns = Ns Sy on Ns | Ns Sy off
-Controls whether regular files should be scanned for viruses when a file is
-opened and closed.
-In addition to enabling this property, the virus scan service must also be
-enabled for virus scanning to occur.
-The default value is
+Устанавливает, следует ли проверять обычные файлы на наличие вирусов при
+открытии и закрытии файла.
+В дополнение к включению этого свойства, служба проверки на вирусы также должна быть включена
+чтобы служба проверки на вирусы была включена.
+Значение по умолчанию
 .Sy off .
-This property is not used by OpenZFS.
+Это свойство не используется OpenZFS.
 .It Sy xattr Ns = Ns Sy on Ns | Ns Sy off Ns | Ns Sy sa
-Controls whether extended attributes are enabled for this file system.
-Two styles of extended attributes are supported: either directory-based
-or system-attribute-based.
+Управляет тем, включены ли расширенные атрибуты для данной файловой системы.
+Поддерживаются два стиля расширенных атрибутов: на основе каталога
+либо на основе каталога, либо на основе системных атрибутов.
 .Pp
-The default value of
+Значение по умолчанию
 .Sy on
-enables directory-based extended attributes.
-This style of extended attribute imposes no practical limit
-on either the size or number of attributes which can be set on a file.
-Although under Linux the
+включает расширенные атрибуты на основе каталога.
+Этот стиль расширенных атрибутов не накладывает никаких практических ограничений
+ни на размер, ни на количество атрибутов, которые можно установить для файла.
+Хотя в Linux
 .Xr getxattr 2
-and
+и
 .Xr setxattr 2
-system calls limit the maximum size to
+системные вызовы ограничивают максимальный размер до
 .Sy 64K .
-This is the most compatible
-style of extended attribute and is supported by all ZFS implementations.
+Это наиболее совместимый
+стиль расширенного атрибута и поддерживается всеми реализациями ZFS.
 .Pp
-System-attribute-based xattrs can be enabled by setting the value to
+Системные атрибуты xattrs можно включить, установив значение
 .Sy sa .
-The key advantage of this type of xattr is improved performance.
-Storing extended attributes as system attributes
-significantly decreases the amount of disk I/O required.
-Up to
+Основным преимуществом этого типа xattr является повышенная производительность.
+Хранение расширенных атрибутов в качестве системных атрибутов
+значительно уменьшает объем требуемого дискового ввода-вывода.
+До
 .Sy 64K
-of data may be stored per-file in the space reserved for system attributes.
-If there is not enough space available for an extended attribute
-then it will be automatically written as a directory-based xattr.
-System-attribute-based extended attributes are not accessible
-on platforms which do not support the
+данных может храниться в каждом файле в пространстве, отведенном для системных атрибутов.
+Если для расширенного атрибута не хватает места
+то он будет автоматически записан как xattr, основанный на директории.
+Расширенные атрибуты, основанные на системных атрибутах, недоступны
+на платформах, которые не поддерживают
 .Sy xattr Ns = Ns Sy sa
-feature.
-OpenZFS supports
+функцию.
+OpenZFS поддерживает
 .Sy xattr Ns = Ns Sy sa
-on both
+на обоих
 .Fx
-and Linux.
+и в Linux.
 .Pp
-The use of system-attribute-based xattrs is strongly encouraged for users of
-SELinux or POSIX ACLs.
-Both of these features heavily rely on extended
-attributes and benefit significantly from the reduced access time.
+Использование xattrs, основанных на системных атрибутах, настоятельно рекомендуется для пользователей
+SELinux или POSIX ACLs.
+Обе эти функции в значительной степени опираются на расширенные
+атрибутов и значительно выигрывают от сокращения времени доступа.
 .Pp
-The values
-.Sy on
-and
+Значения
+.Sy на
+и
 .Sy off
-are equivalent to the
+эквивалентны
 .Sy xattr
-and
+и
 .Sy noxattr
-mount options.
+опции монтирования.
 .It Sy jailed Ns = Ns Sy off Ns | Ns Sy on
-Controls whether the dataset is managed from a jail.
-See
+Контролирует, будет ли набор данных управляться из тюрьмы.
+См.
 .Xr zfs-jail 8
-for more information.
-Jails are a
+для получения дополнительной информации.
+Тюрьмы представляют собой
 .Fx
-feature and this property is not available on other platforms.
+и это свойство недоступно на других платформах.
 .It Sy zoned Ns = Ns Sy off Ns | Ns Sy on
-Controls whether the dataset is managed from a non-global zone or namespace.
-See
+Контролирует, управляется ли набор данных из неглобальной зоны или пространства имен.
+См.
 .Xr zfs-zone 8
-for more information.
-Zoning is a
+для получения дополнительной информации.
+Зонирование - это
 Linux
-feature and this property is not available on other platforms.
+и это свойство недоступно на других платформах.
 .El
 .Pp
-The following three properties cannot be changed after the file system is
-created, and therefore, should be set when the file system is created.
-If the properties are not set with the
+Следующие три свойства не могут быть изменены после создания файловой системы
+и поэтому должны быть установлены при создании файловой системы.
+Если эти свойства не заданы с помощью команды
 .Nm zfs Cm create
-or
+или
 .Nm zpool Cm create
-commands, these properties are inherited from the parent dataset.
-If the parent dataset lacks these properties due to having been created prior to
-these features being supported, the new file system will have the default values
-for these properties.
+эти свойства наследуются от родительского набора данных.
+Если родительский набор данных не имеет этих свойств, поскольку был создан до того, как
+поддержки этих свойств, новая файловая система будет иметь значения по умолчанию
+для этих свойств.
 .Bl -tag -width ""
 .It Xo
-.Sy casesensitivity Ns = Ns Sy sensitive Ns | Ns
-.Sy insensitive Ns | Ns Sy mixed
+.Sy caseensensitivity Ns = Ns Sy sensitive Ns | Ns
+.Sy нечувствительный Ns | Ns Sy смешанный
 .Xc
-Indicates whether the file name matching algorithm used by the file system
-should be case-sensitive, case-insensitive, or allow a combination of both
-styles of matching.
-The default value for the
-.Sy casesensitivity
-property is
+Указывает, должен ли алгоритм сопоставления имен файлов, используемый файловой системой
+должен быть чувствительным к регистру, нечувствительным к регистру или допускать комбинацию обоих
+стилей сопоставления.
+Значение по умолчанию для параметра
+.Sy чувствительность к регистру
+является
 .Sy sensitive .
-Traditionally,
+Традиционно,
 .Ux
-and POSIX file systems have case-sensitive file names.
+и файловые системы POSIX имеют имена файлов, чувствительные к регистру.
 .Pp
-The
-.Sy mixed
-value for the
-.Sy casesensitivity
-property indicates that the file system can support requests for both
-case-sensitive and case-insensitive matching behavior.
-Currently, case-insensitive matching behavior on a file system that supports
-mixed behavior is limited to the SMB server product.
-For more information about the
-.Sy mixed
-value behavior, see the "ZFS Administration Guide".
+.Sy смешанный
+значение для 
+.Sy чувствительность к регистру
+указывает, что файловая система может поддерживать запросы как на
+чувствительного к регистру и нечувствительного к регистру поведения сопоставления.
+В настоящее время поведение сопоставления без учета регистра в файловой системе, поддерживающей
+смешанное поведение, ограничено продуктом SMB-сервера.
+Для получения дополнительной информации о
+смешанное
+см. в разделе "Администрирование ZFS".
 .It Xo
-.Sy normalization Ns = Ns Sy none Ns | Ns Sy formC Ns | Ns
+.Sy нормализация Ns = Ns Sy none Ns | Ns Sy formC Ns | Ns
 .Sy formD Ns | Ns Sy formKC Ns | Ns Sy formKD
 .Xc
-Indicates whether the file system should perform a
-.Sy unicode
-normalization of file names whenever two file names are compared, and which
-normalization algorithm should be used.
-File names are always stored unmodified, names are normalized as part of any
-comparison process.
-If this property is set to a legal value other than
+Указывает, должна ли файловая система выполнять
+.Sy юникод 
+нормализацию имен файлов при сравнении двух имен файлов, и какой
+алгоритм нормализации должен быть использован.
+Имена файлов всегда хранятся без изменений, имена нормализуются в рамках любого
+процесса сравнения.
+Если для этого свойства задано значение, отличное от
 .Sy none ,
-and the
+и
 .Sy utf8only
-property was left unspecified, the
+было оставлено неуказанным, то
 .Sy utf8only
-property is automatically set to
+автоматически устанавливается значение
 .Sy on .
-The default value of the
-.Sy normalization
-property is
+Значение по умолчанию
+.Sy нормализация 
+является
 .Sy none .
-This property cannot be changed after the file system is created.
+Это свойство не может быть изменено после создания файловой системы.
 .It Sy utf8only Ns = Ns Sy on Ns | Ns Sy off
-Indicates whether the file system should reject file names that include
-characters that are not present in the
+Указывает, должна ли файловая система отклонять имена файлов, включающие
+символы, которые отсутствуют в
 .Sy UTF-8
-character code set.
-If this property is explicitly set to
+кодовом наборе символов.
+Если для этого свойства явно задано значение
 .Sy off ,
-the normalization property must either not be explicitly set or be set to
+то свойство нормализации должно быть либо не задано, либо задано как
 .Sy none .
-The default value for the
+Значение по умолчанию для параметра
 .Sy utf8only
-property is
+является
 .Sy off .
-This property cannot be changed after the file system is created.
+Это свойство нельзя изменить после создания файловой системы.
 .El
 .Pp
-The
-.Sy casesensitivity ,
-.Sy normalization ,
-and
+Адрес
+.Sy чувствительность к случаям ,
+.Sy нормализация ,
+и
 .Sy utf8only
-properties are also new permissions that can be assigned to non-privileged users
-by using the ZFS delegated administration feature.
+также являются новыми разрешениями, которые могут быть назначены непривилегированным пользователям
+с помощью функции делегированного администрирования ZFS.
 .
-.Ss Temporary Mount Point Properties
-When a file system is mounted, either through
+.Ss Свойства  временной точки монтирования
+Когда файловая система монтируется либо через
 .Xr mount 8
-for legacy mounts or the
+для традиционного монтирования или
 .Nm zfs Cm mount
-command for normal file systems, its mount options are set according to its
-properties.
-The correlation between properties and mount options is as follows:
+команда для обычных файловых систем, параметры монтирования устанавливаются в соответствии с ее
+свойствами.
+Взаимосвязь между свойствами и параметрами монтирования выглядит следующим образом:
 .Bl -tag -compact -offset Ds -width "rootcontext="
 .It Sy atime
 atime/noatime
 .It Sy canmount
 auto/noauto
-.It Sy devices
+.It Sy устройства
 dev/nodev
 .It Sy exec
 exec/noexec
@@ -2059,9 +1995,9 @@ suid/nosuid
 .It Sy xattr
 xattr/noxattr
 .It Sy nbmand
-mand/nomand
+мандат/номанда
 .It Sy context Ns =
-context=
+контекст=
 .It Sy fscontext Ns =
 fscontext=
 .It Sy defcontext Ns =
@@ -2070,67 +2006,65 @@ defcontext=
 rootcontext=
 .El
 .Pp
-In addition, these options can be set on a per-mount basis using the
+Кроме того, эти параметры можно задать для каждого монтируемого объекта с помощью параметра
 .Fl o
-option, without affecting the property that is stored on disk.
-The values specified on the command line override the values stored in the
-dataset.
-The
+не влияя на свойства, хранящиеся на диске.
+Значения, указанные в командной строке, отменяют значения, хранящиеся в
+наборе данных.
+Опция
 .Sy nosuid
-option is an alias for
+является псевдонимом для
 .Sy nodevices , Ns Sy nosetuid .
-These properties are reported as
-.Qq temporary
-by the
+Эти свойства сообщаются как
+.Qq временный
+при
 .Nm zfs Cm get
-command.
-If the properties are changed while the dataset is mounted, the new setting
-overrides any temporary settings.
+Если свойства изменены во время монтирования набора данных, новые настройки
+отменяет все временные настройки.
 .
-.Ss User Properties
-In addition to the standard native properties, ZFS supports arbitrary user
-properties.
-User properties have no effect on ZFS behavior, but applications or
-administrators can use them to annotate datasets
-.Pq file systems, volumes, and snapshots .
+.Ss Пользовательские свойства 
+В дополнение к стандартным собственным свойствам ZFS поддерживает произвольные пользовательские
+свойства.
+Пользовательские свойства не влияют на поведение ZFS, но приложения или администраторы могут использовать их для аннотирования наборов данных.
+.Pq файловых систем, томов и моментальных снимков .
 .Pp
-User property names must contain a colon
+Имена пользовательских свойств должны содержать двоеточие
 .Pq Qq Sy \&:
-character to distinguish them from native properties.
-They may contain lowercase letters, numbers, and the following punctuation
-characters: colon
+чтобы отличать их от собственных свойств.
+Они могут содержать строчные буквы, цифры и следующие знаки препинания
+знаки: двоеточие
 .Pq Qq Sy \&: ,
-dash
+тире
 .Pq Qq Sy - ,
-period
+точка
 .Pq Qq Sy \&. ,
-and underscore
+и знак подчеркивания
 .Pq Qq Sy _ .
-The expected convention is that the property name is divided into two portions
-such as
-.Ar module : Ns Ar property ,
-but this namespace is not enforced by ZFS.
-User property names can be at most 256 characters, and cannot begin with a dash
+Предполагается, что имя свойства делится на две части
+например
+.Ar модуль : Ns Ar свойство ,
+но это пространство имен не поддерживается ZFS.
+Имена пользовательских свойств могут состоять не более чем из 256 символов и не могут начинаться с тире
 .Pq Qq Sy - .
 .Pp
-When making programmatic use of user properties, it is strongly suggested to use
-a reversed DNS domain name for the
-.Ar module
-component of property names to reduce the chance that two
-independently-developed packages use the same property name for different
-purposes.
+При программном использовании пользовательских свойств настоятельно рекомендуется использовать
+обратное доменное имя DNS для
+.Ar модуль 
+чтобы уменьшить вероятность того, что два
+независимо разработанные пакеты используют одно и то же имя свойства для разных
+целей.
 .Pp
-The values of user properties are arbitrary strings, are always inherited, and
-are never validated.
-All of the commands that operate on properties
+Значения пользовательских свойств представляют собой произвольные строки, всегда наследуются и
+никогда не проверяются.
+Все команды, работающие со свойствами
 .Po Nm zfs Cm list ,
 .Nm zfs Cm get ,
 .Nm zfs Cm set ,
-and so forth
+и т. д.
 .Pc
-can be used to manipulate both native properties and user properties.
-Use the
+можно использовать для работы как с собственными свойствами, так и со свойствами пользователя.
+Используйте
 .Nm zfs Cm inherit
-command to clear a user property.
-If the property is not defined in any parent dataset, it is removed entirely.
-Property values are limited to 8192 bytes.
+чтобы очистить пользовательское свойство.
+Если свойство не определено ни в одном из родительских наборов данных, оно удаляется полностью.
+Значения свойств ограничены 8192 байтами.
