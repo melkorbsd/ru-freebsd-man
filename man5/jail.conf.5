@@ -22,23 +22,23 @@
 .\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 .\" SUCH DAMAGE.
 .\"
-.Dd September 5, 2023
+.Dd 5 сентября, 2023
 .Dt JAIL.CONF 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm jail.conf
-.Nd configuration file for
+.Nd файл конфигурации для
 .Xr jail 8
-.Sh DESCRIPTION
-A
+.Sh ОПИСАНИЕ
+Файл конфигурации
 .Xr jail 8
-configuration file consists of one or more jail definitions statements,
-and parameter or variable statements within those jail definitions.
-A jail definition statement looks something like a C compound statement.
-A parameter statement looks like a C assignment,
-including a terminating semicolon.
+состоит из одного или более операторов определений jail,
+а также параметер или операторы переменных внутри этих определений jail.
+Оператор определения Jail выглядит примерно как составной оператор на языке C.
+Оператор параметра выглядит как присваивание на языке C, 
+включая точку с запятой.
 .Pp
-The general syntax of a jail definition is:
+Примерный синтаксис определения jail выглядит так:
 .Bd -literal -offset indent
 jailname {
 	parameter = "value";
@@ -47,39 +47,40 @@ jailname {
 }
 .Ed
 .Pp
-Each jail is required to have a
-.Va name
-at the front of its definition.
-This is used by
+Каждый jail должен иметь
+.Va название
+в начале его определения.
+Это используется 
 .Xr jail 8
-to specify a jail on the command line and report the jail status,
-and is also passed to the kernel when creating the jail.
-.Ss Parameters
-A jail is defined by a set of named parameters, specified inside the
-jail definition.
-.Em See
+чтобы обозначить jail на командной строке и сообщить 
+о ней статусу jail. Оно также передается ядру когда 
+создается новый jail.
+.Ss Параметры
+Jail задается несколько параметров, указанных внутри
+определения jail.
+.Em Смотрите
 .Xr jail 8
-.Em for a list of jail parameters
-passed to the kernel, as well as internal parameters used when creating and
-removing jails.
+.Em для полного списка параметров jail
+передаваемых ядру, а также внутренних параметров, используемых при создании и
+удалении jail.
 .Pp
-A typical parameter has a name and a value.
-Some parameters are boolean and may be specified with values of
+Обычно у параметра есть имя и значение.
+Некоторые параметры булевые и могут быть определены значениями
 .Dq true
-or
+или
 .Dq false ,
-or as valueless shortcuts, with a
+или как ярлыки без значений с префиксом
 .Dq no
-prefix indicating a false value.
-For example, these are equivalent:
+, обозначающим ложное значение.
+Например, оба этих параметра эквивалентны:
 .Bd -literal -offset indent
 allow.mount = "false";
 allow.nomount;
 .Ed
 .Pp
-Other parameters may have more than one value.
-A comma-separated list of values may be set in a single statement,
-or an existing parameter list may be appended to using
+Другие параметры могут иметь более чем одно значение.
+Список значений, разделенных запятыми, может быть задан одним оператором.
+К уже существующему списку можно добавить значение используя "+="
 .Dq += :
 .Bd -literal -offset indent
 ip4.addr = 10.1.1.1, 10.1.1.2, 10.1.1.3;
@@ -89,175 +90,172 @@ ip4.addr += 10.1.1.2;
 ip4.addr += 10.1.1.3;
 .Ed
 .Pp
-Note the
+Важно заметить, что параметр
 .Va name
-parameter is implicitly set to the name in the jail definition.
-.Ss String format
-Parameter values, including jail names, can be single tokens or quoted
-strings.
-A token is any sequence of characters that aren't considered special in
-the syntax of the configuration file (such as a semicolon or
-whitespace).
-If a value contains anything more than letters, numbers, dots, dashes
-and underscores, it is advisable to put quote marks around that value.
-Either single or double quotes may be used.
+неявно задан имени в определении jail.
+.Ss Строчный формат
+Значения параметров, включая имена jail, могут быть единичными токенами или строками
+в кавычках.
+Токеном является любая последовательность из символов, которые не считаяются специальными
+в синтаксисе файла конфигурации (например, пробел или 
+точка с запятой).
+Если значение содержит что-то кроме букв, цифр, точек, тире
+или подчеркиваний, то рекомендуется поставить кавычки вокруг данного значения.
+Можно использовать и двойные и единичные кавычки.
 .Pp
-Special characters may be quoted by preceding them with a backslash.
-Common C-style backslash character codes are also supported, including
-control characters and octal or hex ASCII codes.
-A backslash at the end of a line will ignore the subsequent newline and
-continue the string at the start of the next line.
-.Ss Variables
-A string may use shell-style variable substitution.
-A parameter or variable name preceded by a dollar sign, and possibly
-enclosed in braces, will be replaced with the value of that parameter or
-variable.
-For example, a jail's path may be defined in terms of its name or
-hostname:
+Специальные символы могут быть поставлены в кавычки с помощью обратного слэша.
+Обычные коды символов обратного слэша на подобии языка C также поддерживаются, включая
+управляющие символы и восьмеричные и шестнадцатеричные или коды ASCII.
+Обратный слэш в конце строки игнорирует разрыв строки и продолжает строку 
+в начале на следующей строке
+.Ss Переменные
+Строка может использовать замену переменных как в shell.
+Параметр или имя переменной, перед которыми написан знак доллара, а также вложенные в фигурные скобки
+будут заменены значением этого параметра или этой 
+переменной.
+Например, путь к jail может быть обозначен своим именем или именем своего
+хоста:
 .Bd -literal -offset indent
 path = "/var/jail/$name";
 
 path = "/var/jail/${host.hostname}";
 .Ed
 .Pp
-Variable substitution occurs in unquoted tokens or in double-quoted
-strings, but not in single-quote strings.
+Замена переменной происходит в токенах без кавычек или в строках с двойными кавычками,
+но не с единичными.
 .Pp
-A variable is defined in the same way a parameter is, except that the
-variable name is preceded with a dollar sign:
+Переменная обозначается так же, как и параметр, за исключением того, что
+перед именем переменной идет знак доллара:
 .Bd -literal -offset indent
 $parentdir = "/var/jail";
 path = "$parentdir/$name";
 .Ed
 .Pp
-The difference between parameters and variables is that variables are
-only used for substitution, while parameters are used both for
-substitution and for passing to the kernel.
-.Ss Wildcards
-A jail definition with a name of
+Разница между параметром и переменной в том, что переменные
+только используются для замены, когда параметры используются и
+для замены и для передачи ядру.
+.Ss Шаблоны поиска
+Определение jail с именем
 .Dq *
-is used to define wildcard parameters.
-Every defined jail will contain both the parameters from its own
-definition statement, as well as any parameters in a wildcard
-definition.
+используется для обозначения шаблонов поиска.
+Каждая определенная jail будет содержать и параметры из своего определения и параметры из определения
+шаблона поиска.
 .Pp
-Variable substitution is done on a per-jail basis, even when that
-substitution is for a parameter defined in a wildcard section.
-This is useful for wildcard parameters based on e.g. a jail's name.
+Замена переменных проводится для каждой jail, даже когда эта замена
+предназначена для параметра из секции шаблона поиска.
+Это полезно для параметров шаблона поиска, основанных на названии jail.
 .Pp
-Later definitions in the configuration file supersede earlier ones, so a
-wildcard section placed before (above) a jail definition defines
-parameters that could be changed on a per-jail basis.
-Or a wildcard section placed after (below) all jails would contain
-parameters that always apply to every jail.
-Multiple wildcard statements are allowed, and wildcard parameters may
-also be specified outside of a jail definition statement.
+Более поздние определения в файле конфигурации заменяют более ранние, 
+поэтому секция шаблона поиска ставится перед (над) определением jail.
+Или секция шаблона поиска может быть записана после (под) всеми jail и будет содержать все
+параметры, которые всегда применяются к каждой jail.
+Возможны несколько операторов, и параметры щаблонов могут быть
+обозначены вне определения jail.
 .Pp
-If hierarchical jails are defined, a partial-matching wildcard
-definition may be specified.
-For example, a definition with a name of
+Если существуют jail с иерархией, возможно частично-совпадающее 
+определение шаблона поиска.
+Например, определение с именем
 .Dq foo.*
-would apply to jails with names like
+будет применимо к jail с именами
 .Dq foo.bar
-and
+или
 .Dq foo.bar.baz .
-.Ss Includes
-A line of the form
+.Ss Включает
+Строка формы
 .Bd -literal -offset ident
 \&.include "filename";
 .Ed
 .Pp
-will include another file (or files) in the configuration.
-The filename should be either absolute, or relative to the
-configuration file's directory.  It cannot contain variable
-expansions, but may contain
-.Xr glob 3
-patterns.
+будет включать в себя другой файл в конфигурации.
+Имя файла должно быть абсолютным или относительным к
+директории файла конфигурации.  Оно не может содержать 
+увеличения переменных, но может содержать шаблон
+.Xr glob 3 .
 .Pp
-The included file must exist, though a filename glob may match zero or
-more files.  This allows inclusion of any/all files in a directory,
-such as
+Вложенный файл обязан существовать, хотя шаблон поиска файла может найти один или несколько файлов.  
+Это позволяет включение любого/всех файлов в директории,
+по типу
 .Dq /etc/jail.conf.d/*.conf ,
-or conditional inclusion of a single file, such as
+или условное включение единичного файла, например как
 .Dq jail.foo[.]conf .
-.Ss Comments
-The configuration file may contain comments in the common C, C++, and
-shell formats:
+.Ss Комментарии
+Файл конфигурации может содержать комментарии в форматах shell, языков 
+C и C++:
 .Bd -literal -offset indent
-/* This is a C style comment.
- * It may span multiple lines.
+/* Это комментарий в стиле C.
+ * Он может простираться на несколько строк.
  */
 
-// This is a C++ style comment.
+// Это комментарий в стиле C++.
 
-#  This is a shell style comment.
+#  Это комментарий в стиле shell.
 .Ed
 .Pp
-Comments are legal wherever whitespace is allowed, i.e. anywhere except
-in the middle of a string or a token.
-.Sh FILES
+Комментарии допустимы там, где допустимы пробелы, т.е.. везде кроме
+середины строки или токена.
+.Sh ФАЙЛЫ
 .Bl -tag -width "indent" -compact
 .It Pa /etc/jail.conf
 .It Pa /etc/jail.*.conf
 .It Pa /etc/jail.conf.d/*.conf
 .It Pa /usr/share/examples/jails/
 .El
-.Sh EXAMPLES
+.Sh ПРИМЕРЫ
 .Bd -literal
 # Typical static defaults:
-# Use the rc scripts to start and stop jails.  Mount jail's /dev.
+# Используйте rc скрипты чтобы запустить и остановить jail'ы.  Смонтируйте директорию /dev jail'а.
 exec.start = "/bin/sh /etc/rc";
 exec.stop = "/bin/sh /etc/rc.shutdown jail";
 exec.clean;
 mount.devfs;
 
-# Dynamic wildcard parameter:
-# Base the path off the jail name.
+# Динамичный параметр шаблона поиска:
+# Основывайте путь с названия jail.
 path = "/var/jail/$name";
 
-# A typical jail.
+# Обычная jail.
 foo {
 	host.hostname = "foo.com";
 	ip4.addr = 10.1.1.1, 10.1.1.2, 10.1.1.3;
 }
 
-# This jail overrides the defaults defined above.
+# Этот jail перезаписывает то, что было задано сверху.
 bar {
 	exec.start = '';
 	exec.stop = '';
 	path = /;
 	mount.nodevfs;
-	persist;	// Required because there are no processes
+	persist;	
 }
 
-# Include configurations from standard locations.
+# Включить конфигурации из страндартных путей.
 \[char46]include "/etc/jail.conf.d/*.conf";
 \[char46]include "/etc/jail.*.conf";
 \[char46]include "/usr/local/etc/jail[.]conf";
 \[char46]include "/usr/local/etc/jail.conf.d/*.conf";
 \[char46]include "/usr/local/etc/jail.*.conf";
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr jail_set 2 ,
 .Xr rc.conf 5 ,
 .Xr jail 8 ,
 .Xr jls 8
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Утилита
 .Xr jail 8
-utility appeared in
+появилась в
 .Fx 4.0 .
-The
+Файл
 .Nm
-file was added in
+был добавлен в
 .Fx 9.1 .
-.Sh AUTHORS
+.Sh АВТОРЫ
 .An -nosplit
-The jail feature was written by
+jail был написана
 .An Poul-Henning Kamp
-for R&D Associates
-who contributed it to
+для R&D Associates
+, кто отдал это
 .Fx .
 .Pp
 .An James Gritton
-added the extensible jail parameters and configuration file.
+добавил другие параметры jail и файл конфигурации.
