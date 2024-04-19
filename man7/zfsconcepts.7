@@ -34,212 +34,203 @@
 .Dt ZFSCONCEPTS 7
 .Os
 .
-.Sh NAME
+.Sh ИМЯ
 .Nm zfsconcepts
-.Nd overview of ZFS concepts
+.Nd обзор концепций ZFS
 .
-.Sh DESCRIPTION
-.Ss ZFS File System Hierarchy
-A ZFS storage pool is a logical collection of devices that provide space for
-datasets.
-A storage pool is also the root of the ZFS file system hierarchy.
+.Sh ОПИСАНИЕ
+.Ss Иерархия файловой системы ZFS
+Пул хранения ZFS - это логическая группа устройств, предоставляющих место для
+наборов данных.
+Пул хранения также является корнем иерархии файловой системы ZFS.
 .Pp
-The root of the pool can be accessed as a file system, such as mounting and
-unmounting, taking snapshots, and setting properties.
-The physical storage characteristics, however, are managed by the
+К корню пула можно обращаться как к файловой системе, например монтировать и размонтирование, создание моментальных снимков и установка свойств.
+Однако физическими характеристиками хранилища управляет
 .Xr zpool 8
-command.
+команда.
 .Pp
-See
+См.
 .Xr zpool 8
-for more information on creating and administering pools.
-.Ss Snapshots
-A snapshot is a read-only copy of a file system or volume.
-Snapshots can be created extremely quickly, and initially consume no additional
-space within the pool.
-As data within the active dataset changes, the snapshot consumes more data than
-would otherwise be shared with the active dataset.
+для получения дополнительной информации о создании и администрировании пулов.
+.Ss Снимки
+Снимок - это копия файловой системы или тома, доступная только для чтения.
+Снимки можно создавать очень быстро, и первоначально они не занимают дополнительного
+места в пуле.
+По мере изменения данных в активном наборе данных снимок потребляет больше данных,
+чем 
+в ином случае он был бы так же использован с активным набором данных.
 .Pp
-Snapshots can have arbitrary names.
-Snapshots of volumes can be cloned or rolled back, visibility is determined
-by the
+Снимки могут иметь произвольные имена.
+Снимки томов можно клонировать или откатывать, видимость определяется
+по
 .Sy snapdev
-property of the parent volume.
+свойства родительского тома.
 .Pp
-File system snapshots can be accessed under the
+Доступ к моментальным снимкам файловой системы можно получить по адресу
 .Pa .zfs/snapshot
-directory in the root of the file system.
-Snapshots are automatically mounted on demand and may be unmounted at regular
-intervals.
-The visibility of the
+в корневой директории файловой системы.
+Снимки автоматически монтируются по требованию и могут быть размонтированы через определенные
+промежутки времени.
+Видимость каталога
 .Pa .zfs
-directory can be controlled by the
+можно контролировать с помощью параметра
 .Sy snapdir
-property.
-.Ss Bookmarks
-A bookmark is like a snapshot, a read-only copy of a file system or volume.
-Bookmarks can be created extremely quickly, compared to snapshots, and they
-consume no additional space within the pool.
-Bookmarks can also have arbitrary names, much like snapshots.
+свойством.
+.Ss Закладки 
+Закладка - это как моментальный снимок, копия файловой системы или тома, доступная только для чтения.
+Закладки можно создавать очень быстро, в отличие от моментальных снимков, и они
+не занимают дополнительного места в пуле.
+Закладки также могут иметь произвольные имена, как и моментальные снимки.
 .Pp
-Unlike snapshots, bookmarks can not be accessed through the filesystem in any
-way.
-From a storage standpoint a bookmark just provides a way to reference
-when a snapshot was created as a distinct object.
-Bookmarks are initially tied to a snapshot, not the filesystem or volume,
-and they will survive if the snapshot itself is destroyed.
-Since they are very light weight there's little incentive to destroy them.
-.Ss Clones
-A clone is a writable volume or file system whose initial contents are the same
-as another dataset.
-As with snapshots, creating a clone is nearly instantaneous, and initially
-consumes no additional space.
+В отличие от моментальных снимков, к закладкам нельзя получить доступ через файловую систему каким-либо
+образом.
+С точки зрения хранения, закладка просто предоставляет возможность указать,
+когда моментальный снимок был создан как отдельный объект.
+Закладки изначально привязаны к моментальному снимку, а не к файловой системе или тому,
+и они сохранятся, если сам снимок будет уничтожен.
+Поскольку они имеют очень малый вес, нет особого смысла их уничтожать.
+.Ss Клоны 
+Клон - это доступный для записи том или файловая система, начальное содержимое которых совпадает с содержимым другого набора данных.
+Как и в случае моментальных снимков, создание клона происходит практически мгновенно, и первоначально
+не занимает дополнительного места.
 .Pp
-Clones can only be created from a snapshot.
-When a snapshot is cloned, it creates an implicit dependency between the parent
-and child.
-Even though the clone is created somewhere else in the dataset hierarchy, the
-original snapshot cannot be destroyed as long as a clone exists.
-The
+Клоны можно создавать только из моментальных снимков.
+При клонировании моментального снимка создается неявная зависимость между родительским
+и дочерним.
+Даже если клон создается в другом месте иерархии набора данных, исходный снимок не может быть уничтожен.
+оригинальный моментальный снимок не может быть уничтожен, пока существует его клон.
+Адрес
 .Sy origin
-property exposes this dependency, and the
+раскрывает эту зависимость, а свойство
 .Cm destroy
-command lists any such dependencies, if they exist.
+перечисляет все подобные зависимости, если они существуют.
 .Pp
-The clone parent-child dependency relationship can be reversed by using the
-.Cm promote
-subcommand.
-This causes the
+Отношения зависимости между родителями и детьми клонов можно изменить на противоположные с помощью команды
+.Cm продвигать
+подкоманды.
+Это приводит к тому, что
 .Qq origin
-file system to become a clone of the specified file system, which makes it
-possible to destroy the file system that the clone was created from.
-.Ss "Mount Points"
-Creating a ZFS file system is a simple operation, so the number of file systems
-per system is likely to be numerous.
-To cope with this, ZFS automatically manages mounting and unmounting file
-systems without the need to edit the
+файловая система становится клоном указанной файловой системы, что позволяет уничтожить файловую систему, на основе которой был создан клон.
+.Ss "Точки монтирования"
+Создание файловой системы ZFS - простая операция, поэтому количество точек монтирования может быть ограничено.
+На одну систему может приходиться множество файлов.
+Чтобы справиться с этой проблемой, ZFS автоматически управляет монтированием и размонтированием файловых
+систем без необходимости редактировать
 .Pa /etc/fstab
-file.
-All automatically managed file systems are mounted by ZFS at boot time.
+файл.
+Все автоматически управляемые файловые системы монтируются ZFS во время загрузки.
 .Pp
-By default, file systems are mounted under
+По умолчанию файловые системы монтируются в каталог
 .Pa /path ,
-where
-.Ar path
-is the name of the file system in the ZFS namespace.
-Directories are created and destroyed as needed.
+где
+.Ar путь
+это имя файловой системы в пространстве имен ZFS.
+Каталоги создаются и уничтожаются по мере необходимости.
 .Pp
-A file system can also have a mount point set in the
-.Sy mountpoint
-property.
-This directory is created as needed, and ZFS automatically mounts the file
-system when the
+Файловая система также может иметь точку монтирования, заданную в параметре
+.Sy точка монтирования
+Этот каталог создается по мере необходимости, и ZFS автоматически монтирует файловую систему, когда
 .Nm zfs Cm mount Fl a
-command is invoked
-.Po without editing
+команда
+.Po без редактирования
 .Pa /etc/fstab
 .Pc .
-The
-.Sy mountpoint
-property can be inherited, so if
+.Sy точка монтирования
+может быть унаследована, поэтому если
 .Em pool/home
-has a mount point of
+имеет точку монтирования
 .Pa /export/stuff ,
-then
+то
 .Em pool/home/user
-automatically inherits a mount point of
+автоматически наследует точку монтирования
 .Pa /export/stuff/user .
 .Pp
-A file system
-.Sy mountpoint
-property of
+Файловая система
+.Sy точка монтирования
+свойство
 .Sy none
-prevents the file system from being mounted.
+предотвращает монтирование файловой системы.
 .Pp
-If needed, ZFS file systems can also be managed with traditional tools
+При необходимости файловыми системами ZFS можно управлять и с помощью традиционных инструментов
 .Po
 .Nm mount ,
 .Nm umount ,
 .Pa /etc/fstab
 .Pc .
-If a file system's mount point is set to
+Если для точки монтирования файловой системы установлено значение
 .Sy legacy ,
-ZFS makes no attempt to manage the file system, and the administrator is
-responsible for mounting and unmounting the file system.
-Because pools must
-be imported before a legacy mount can succeed, administrators should ensure
-that legacy mounts are only attempted after the zpool import process
-finishes at boot time.
-For example, on machines using systemd, the mount option
+ZFS не пытается управлять файловой системой, и администратор несет ответственность за
+монтирование и размонтирование файловой системы.
+Поскольку пулы должны быть импортированы до успешного монтирования, администраторы должны убедиться, что что попытки устаревшего монтирования выполняются только после завершения процесса импорта zpool
+во время загрузки.
+Например, на машинах, использующих systemd, параметр mount
 .Pp
 .Nm x-systemd.requires=zfs-import.target
 .Pp
-will ensure that the zfs-import completes before systemd attempts mounting
-the filesystem.
-See
+обеспечит завершение zfs-импорта до того, как systemd попытается смонтировать
+файловой системы.
+См.
 .Xr systemd.mount 5
-for details.
-.Ss Deduplication
-Deduplication is the process for removing redundant data at the block level,
-reducing the total amount of data stored.
-If a file system has the
+для получения подробной информации.
+.Ss Дедупликация 
+Дедупликация - это процесс удаления избыточных данных на уровне блоков,
+уменьшая общий объем хранимых данных.
+Если файловая система имеет параметр
 .Sy dedup
-property enabled, duplicate data blocks are removed synchronously.
-The result
-is that only unique data is stored and common components are shared among files.
+включено свойство dedup, дубликаты блоков данных удаляются одновременно.
+В результате
+хранятся только уникальные данные, а общие компоненты разделяются между файлами.
 .Pp
-Deduplicating data is a very resource-intensive operation.
-It is generally recommended that you have at least 1.25 GiB of RAM
-per 1 TiB of storage when you enable deduplication.
-Calculating the exact requirement depends heavily
-on the type of data stored in the pool.
+Дедублирование данных - очень ресурсоемкая операция.
+Обычно рекомендуется иметь не менее 1,25 Гбайт оперативной памяти
+на 1 Тбайт хранилища при включенной дедупликации.
+Расчет точных требований в значительной степени зависит
+от типа данных, хранящихся в пуле.
 .Pp
-Enabling deduplication on an improperly-designed system can result in
-performance issues (slow I/O and administrative operations).
-It can potentially lead to problems importing a pool due to memory exhaustion.
-Deduplication can consume significant processing power (CPU) and memory as well
-as generate additional disk I/O.
+Включение дедупликации в неправильно спроектированной системе может привести к
+проблемам с производительностью (медленный ввод-вывод и административные операции).
+Это может привести к проблемам с импортом пула из-за исчерпания памяти.
+Дедупликация может потреблять значительную вычислительную мощность (ЦП) и память, а также генерировать дополнительные дисковые операции ввода-вывода.
 .Pp
-Before creating a pool with deduplication enabled, ensure that you have planned
-your hardware requirements appropriately and implemented appropriate recovery
-practices, such as regular backups.
-Consider using the
-.Sy compression
-property as a less resource-intensive alternative.
-.Ss Block cloning
-Block cloning is a facility that allows a file (or parts of a file) to be
-.Qq cloned ,
-that is, a shallow copy made where the existing data blocks are referenced
-rather than copied.
-Later modifications to the data will cause a copy of the data block to be taken
-and that copy modified.
-This facility is used to implement
-.Qq reflinks
-or
-.Qq file-level copy-on-write .
+Прежде чем создавать пул с включенной дедупликацией, убедитесь, что вы правильно спланировали
+требования к аппаратному обеспечению и внедрили соответствующие методы восстановления,
+например, регулярное резервное копирование.
+Рассмотрите возможность использования
+.Sy сжатие 
+в качестве менее ресурсоемкой альтернативы.
+.Ss Клонирование блоков 
+Блочное клонирование - это средство, позволяющее клонировать файл (или части файла)
+.Qq клонировать,
+то есть неглубокое копирование, при котором на существующие блоки данных ссылаются
+а не копируются.
+Последующие модификации данных приведут к созданию копии блока данных
+и модификации этой копии.
+Эта возможность используется для реализации
+.Qq перелинковки 
+или
+.Qq копирования на уровне файла при записи.
 .Pp
-Cloned blocks are tracked in a special on-disk structure called the Block
-Reference Table
+Клонированные блоки отслеживаются в специальной структуре на диске под названием Block
+справочная таблица
 .Po BRT
 .Pc .
-Unlike deduplication, this table has minimal overhead, so can be enabled at all
-times.
+В отличие от дедупликации, эта таблица имеет минимальные накладные расходы, поэтому может быть включена в любое время
+всегда.
 .Pp
-Also unlike deduplication, cloning must be requested by a user program.
-Many common file copying programs, including newer versions of
+Также в отличие от дедупликации, клонирование должно быть запрошено пользовательской программой.
+Многие распространенные программы копирования файлов, включая новые версии
 .Nm /bin/cp ,
-will try to create clones automatically.
-Look for
+будут пытаться создавать клоны автоматически.
+Ищите
 .Qq clone ,
 .Qq dedupe
-or
+или
 .Qq reflink
-in the documentation for more information.
+в документации для получения дополнительной информации.
 .Pp
-There are some limitations to block cloning.
-Only whole blocks can be cloned, and blocks can not be cloned if they are not
-yet written to disk, or if they are encrypted, or the source and destination
+Клонирование блоков имеет некоторые ограничения.
+Можно клонировать только целые блоки, и нельзя клонировать блоки, если они еще не записаны на диск, или если они зашифрованы, или если источник и место назначения
 .Sy recordsize
-properties differ.
-The OS may add additional restrictions;
-for example, most versions of Linux will not allow clones across datasets.
+отличаются.
+ОС может добавлять дополнительные ограничения;
+например, большинство версий Linux не разрешают клонировать наборы данных.
