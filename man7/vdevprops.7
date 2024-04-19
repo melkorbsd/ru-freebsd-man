@@ -24,163 +24,162 @@
 .Dt VDEVPROPS 7
 .Os
 .
-.Sh NAME
+.Sh ИМЯ
 .Nm vdevprops
-.Nd native and user-defined properties of ZFS vdevs
+.Nd собственные и определяемые пользователем свойства ZFS vdevs
 .
-.Sh DESCRIPTION
-Properties are divided into two types, native properties and user-defined
-.Pq or Qq user
-properties.
-Native properties either export internal statistics or control ZFS behavior.
-In addition, native properties are either editable or read-only.
-User properties have no effect on ZFS behavior, but you can use them to annotate
-vdevs in a way that is meaningful in your environment.
-For more information about user properties, see the
-.Sx User Properties
-section, below.
+.Sh ОПИСАНИЕ
+Свойства делятся на два типа: собственные и определяемые пользователем
+.Pq или Qq пользовательские
+свойства.
+Собственные свойства либо передают внутреннюю статистику, либо управляют поведением ZFS.
+Кроме того, родные свойства могут быть как редактируемыми, так и доступными только для чтения.
+Пользовательские свойства не влияют на поведение ZFS, но вы можете использовать их для аннотирования
+vdevs таким образом, чтобы это было полезно для вашей среды.
+Для получения дополнительной информации о пользовательских свойствах см.
+Пользовательские свойства .Sx
+ниже.
 .
-.Ss Native Properties
-Every vdev has a set of properties that export statistics about the vdev
-as well as control various behaviors.
-Properties are not inherited from top-level vdevs, with the exception of
-checksum_n, checksum_t, io_n, and io_t.
+.Ss Нативные свойства 
+Каждый vdev имеет набор свойств, которые экспортируют статистику о vdev
+а также управляют различным поведением.
+Свойства не наследуются от vdev верхнего уровня, за исключением
+checksum_n, checksum_t, io_n и io_t.
 .Pp
-The values of numeric properties can be specified using human-readable suffixes
-.Po for example,
+Значения числовых свойств могут быть указаны с помощью человекочитаемых суффиксов
+.Po, например,
 .Sy k , KB , M , Gb ,
-and so forth, up to
+и так далее, вплоть до
 .Sy Z
-for zettabyte
+для зеттабайта
 .Pc .
-The following are all valid
-.Pq and equal
-specifications:
+Следующие допустимы
+.Pq и аналогичные
+спецификации:
 .Li 1536M , 1.5g , 1.50GB .
 .Pp
-The values of non-numeric properties are case sensitive and must be lowercase.
+Значения нечисловых свойств учитывают регистр и должны быть строчными.
 .Pp
-The following native properties consist of read-only statistics about the
+Следующие собственные свойства содержат статистические данные о
 vdev.
-These properties can not be changed.
-.Bl -tag -width "fragmentation"
-.It Sy capacity
-Percentage of vdev space used
+Эти свойства не могут быть изменены.
+.Bl -tag -width "фрагментация"
+.It Sy емкость
+Процент используемого пространства vdev
 .It Sy state
-state of this vdev such as online, faulted, or offline
+состояние этого vdev, например онлайн, неисправен или автономно.
 .It Sy guid
-globally unique id of this vdev
+глобально уникальный идентификатор этого vdev
 .It Sy asize
-The allocable size of this vdev
+Выделяемый размер этого vde
 .It Sy psize
-The physical size of this vdev
+Физический размер этого vdev
 .It Sy ashift
-The physical sector size of this vdev expressed as the power of two
+Размер физического сектора этого vdev, выраженный как степень двойки
 .It Sy size
-The total size of this vdev
+Общий размер этого vdev
 .It Sy free
-The amount of remaining free space on this vdev
+Количество оставшегося свободного места на этом vdev
 .It Sy allocated
-The amount of allocated space on this vdev
+Количество выделенного пространства на этом vdev
 .It Sy expandsize
-How much this vdev can expand by
+На сколько может расшириться этот vdev
 .It Sy fragmentation
-Percent of fragmentation in this vdev
+Процент фрагментации на этом vdev
 .It Sy parity
-The level of parity for this vdev
+Уровень четности для этого vdev
 .It Sy devid
-The device id for this vdev
+Идентификатор устройства для этого vdev
 .It Sy physpath
-The physical path to the device
+Физический путь к устройству
 .It Sy encpath
-The enclosure path to the device
+Путь корпуса к устройству
 .It Sy fru
-Field Replacable Unit, usually a model number
+Полевая заменяемая единица, обычно номер модели
 .It Sy parent
-Parent of this vdev
+Родитель данного vdev
 .It Sy children
-Comma separated list of children of this vdev
+Список дочерних устройств этого vdev, разделенный запятыми
 .It Sy numchildren
-The number of children belonging to this vdev
+Количество дочерних устройств, принадлежащих этому vdev
 .It Sy read_errors , write_errors , checksum_errors , initialize_errors
-The number of errors of each type encountered by this vdev
+Количество ошибок каждого типа, с которыми столкнулся этот vdev
 .It Sy null_ops , read_ops , write_ops , free_ops , claim_ops , trim_ops
-The number of I/O operations of each type performed by this vdev
+Количество операций ввода-вывода каждого типа, выполненных этим vdev
 .It Xo
 .Sy null_bytes , read_bytes , write_bytes , free_bytes , claim_bytes ,
 .Sy trim_bytes
 .Xc
-The cumulative size of all operations of each type performed by this vdev
+Суммарный размер всех операций каждого типа, выполненных этим vdev
 .It Sy removing
-If this device is currently being removed from the pool
+Если это устройство в настоящее время удаляется из пула
 .El
 .Pp
-The following native properties can be used to change the behavior of a vdev.
+Следующие собственные свойства могут быть использованы для изменения поведения vdev.
 .Bl -tag -width "allocating"
 .It Sy checksum_n , checksum_t , io_n , io_t
-Tune the fault management daemon by specifying checksum/io thresholds of <N>
-errors in <T> seconds, respectively.
-These properties can be set on leaf and top-level vdevs.
-When the property is set on the leaf and top-level vdev, the value of the leaf
-vdev will be used.
-If the property is only set on the top-level vdev, this value will be used.
-The value of these properties do not persist across vdev replacement.
-For this reason, it is advisable to set the property on the top-level vdev -
-not on the leaf vdev itself.
-The default values are 10 errors in 600 seconds.
-.It Sy comment
-A text comment up to 8192 characters long
+Настройте службу управления сбоями, указав пороговые значения контрольной суммы/ввод-вывод <N>
+ошибок за <T> секунд, соответственно.
+Эти свойства могут быть установлены для vdev листового и верхнего уровня.
+Если свойство задано на листовом vdev и vdev верхнего уровня, будет использоваться значение листового vdev.
+Если свойство установлено только на vdev верхнего уровня, будет использоваться это значение.
+Значения этих свойств не сохраняются при замене vdev.
+По этой причине рекомендуется устанавливать свойство на vdev верхнего уровня -
+а не на самом листовом vdev.
+Значения по умолчанию - 10 ошибок за 600 секунд.
+.It Sy комментарий
+Текстовый комментарий длиной до 8192 символов.
 .It Sy bootsize
-The amount of space to reserve for the EFI system partition
+Объем пространства, который необходимо зарезервировать для системного раздела EFI
 .It Sy failfast
-If this device should propage BIO errors back to ZFS, used to disable
-failfast.
+Если это устройство должно передавать ошибки BIO обратно в ZFS, используется для отключения
+отказоустойчивости.
 .It Sy path
-The path to the device for this vdev
+Путь к устройству для данного vdev.
 .It Sy allocating
-If this device should perform new allocations, used to disable a device
-when it is scheduled for later removal.
-See
+Если это устройство должно выполнять новое распределение, используется для отключения устройства,
+когда оно запланировано для последующего удаления.
+См.
 .Xr zpool-remove 8 .
 .El
-.Ss User Properties
-In addition to the standard native properties, ZFS supports arbitrary user
-properties.
-User properties have no effect on ZFS behavior, but applications or
-administrators can use them to annotate vdevs.
+.Ss Пользовательские свойства
+В дополнение к стандартным собственным свойствам ZFS поддерживает произвольные пользовательские
+свойства.
+Пользовательские свойства не влияют на поведение ZFS, но приложения или администраторы могут использовать их для аннотирования vdev.
+администраторы могут использовать их для аннотирования vdevs.
 .Pp
-User property names must contain a colon
+Имена пользовательских свойств должны содержать двоеточие
 .Pq Qq Sy \&:
-character to distinguish them from native properties.
-They may contain lowercase letters, numbers, and the following punctuation
-characters: colon
+чтобы отличать их от собственных свойств.
+Они могут содержать строчные буквы, цифры и следующие знаки препинания
+символы: двоеточие
 .Pq Qq Sy \&: ,
-dash
+тире
 .Pq Qq Sy - ,
-period
+точка
 .Pq Qq Sy \&. ,
-and underscore
+и подчеркивание
 .Pq Qq Sy _ .
-The expected convention is that the property name is divided into two portions
-such as
-.Ar module : Ns Ar property ,
-but this namespace is not enforced by ZFS.
-User property names can be at most 256 characters, and cannot begin with a dash
+Предполагается, что имя свойства делится на две части
+например
+.Ar модуль : Ns Ar свойство ,
+но это пространство имен не поддерживается ZFS.
+Имена пользовательских свойств могут состоять не более чем из 256 символов и не могут начинаться с тире
 .Pq Qq Sy - .
 .Pp
-When making programmatic use of user properties, it is strongly suggested to use
-a reversed DNS domain name for the
-.Ar module
-component of property names to reduce the chance that two
-independently-developed packages use the same property name for different
-purposes.
+При программном использовании пользовательских свойств настоятельно рекомендуется использовать
+обратное доменное имя DNS для
+.Ar модуль 
+чтобы уменьшить вероятность того, что два
+независимо разработанные пакеты используют одно и то же имя свойства для разных
+целей.
 .Pp
-The values of user properties are arbitrary strings and
-are never validated.
-Use the
+Значения пользовательских свойств представляют собой произвольные строки и
+и никогда не проверяются.
+В качестве параметра можно использовать
 .Nm zpool Cm set
-command with a blank value to clear a user property.
-Property values are limited to 8192 bytes.
+с пустым значением, чтобы очистить пользовательское свойство.
+Значения свойств ограничены 8192 байтами.
 .Sh SEE ALSO
 .Xr zpoolprops 7 ,
 .Xr zpool-set 8
