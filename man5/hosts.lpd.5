@@ -28,29 +28,29 @@
 .Dd June 1, 1996
 .Dt HOSTS.LPD 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm hosts.lpd
 .Nd trusted hosts that may use local print services
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Файл
 .Nm
-file contains a list of hostnames or IP addresses
-that are allowed to use your local print services.
-List every hostname or IP address on a line itself.
+содержит список имен хостов или IP-адресов
+которым разрешено использовать ваши локальные службы печати.
+Список всех имён хостов или IP-адресов в отдельной строке.
 .Pp
-If you want to allow access for any and all host,
-you can usually use the NIS netgroups feature to
-do this by adding a line with a single
+Если вы хотите разрешить доступ для всех хостов,
+вы обычно можете использовать функцию NIS netgroups, чтобы
+добавив строку с одним символом
 .Ql +
-character.
-.Sh FILES
+символом.
+.Sh ФАЙЛЫ
 .Bl -tag -width /etc/hosts.lpdxxxxx -compact
 .It Pa /etc/hosts.lpd
-The
+Файл
 .Nm
-file resides in
+распологается в 
 .Pa /etc .
 .El
-.Sh SEE ALSO
+.Sh СМОТРЕТЬ ТАКЖЕ
 .Xr printcap 5 ,
 .Xr lpd 8

@@ -25,234 +25,234 @@
 .Dd September 8, 2019
 .Dt RESOLVCONF.CONF 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm resolvconf.conf
-.Nd resolvconf configuration file
-.Sh DESCRIPTION
+.Nd resolvconf файл конфигурации
+.Sh ОПИСАНИЕ
 .Nm
-is the configuration file for
+это конфигурационный файл для
 .Xr resolvconf 8 .
-The
+Файл
 .Nm
-file is a shell script that is sourced by
+представляет собой сценарий оболочки, исходящий из
 .Xr resolvconf 8 ,
-meaning that
+что означает, что
+файл .
 .Nm
-must contain valid shell commands.
-Listed below are the standard
+должен содержать допустимые команды оболочки.
+Ниже перечислены стандартные переменные 
 .Nm
-variables that may be set.
-If the values contain whitespace, wildcards or other special shell characters,
-ensure they are quoted and escaped correctly.
-See the
+которые могут быть установлены.
+Если значения содержат пробелы, подстановочные знаки или другие специальные символы оболочки,
+убедитесь, что они заключены в кавычки и экранированы правильно.
+Смотрите
 .Sy replace
-variable for an example on quoting.
+переменные для примера при цитировании.
+.\"?
 .Pp
-After updating this file, you may wish to run
+После обновления этого файла вы, возможно, захотите запустить
 .Nm resolvconf -u
-to apply the new configuration.
+чтобы применить новую конфигурацию.
 .Pp
-When a dynamically generated list is appended or prepended to, the whole
-is made unique where left-most wins.
-.Sh RESOLVCONF OPTIONS
+При добавлении динамически сгенерированного списка в качестве предисловия к нему весь
+список становится уникальным, где выигрывает тот, который остался крайним.
+.Sh ОПЦИИ RESOLVCONF
 .Bl -tag -width indent
 .It Sy resolvconf
-Set to NO to disable
+Установите значение NO, чтобы отключить
 .Nm resolvconf
-from running any subscribers.
-Defaults to YES.
+от запуска любых подписчиков.
+По умолчанию установлено значение "YES".
 .It Sy interface_order
-These interfaces will always be processed first.
-If unset, defaults to the following:-
+Эти интерфейсы всегда будут обрабатываться в первую очередь.
+Если параметр не установлен, по умолчанию используется следующее значение:-
 .Bd -compact -literal -offset indent
 lo lo[0-9]*
 .Ed
 .It Sy dynamic_order
-These interfaces will be processed next, unless they have a metric.
-If unset, defaults to the following:-
+Эти интерфейсы будут обработаны следующими, если только у них нет метрики.
+Если параметр не задан, по умолчанию используется следующее:-
 .Bd -compact -literal -offset indent
 tap[0-9]* tun[0-9]* ng[0-9]* vpn vpn[0-9]* ppp[0-9]* ippp[0-9]*
 .Ed
 .It Sy inclusive_interfaces
-Ignore any exclusive marking for these interfaces.
-This is handy when 3rd party integrations force the
+Игнорируйте любую эксклюзивную маркировку для этих интерфейсов.
+Это удобно, когда сторонние интеграции принудительно используют параметр
 .Nm resolvconf -x
-option and you want to disable it easily.
+и вы хотите легко отключить его..
 .It Sy local_nameservers
-If unset, defaults to the following:-
+Если параметр не установлен, по умолчанию используется следующее значение:-
 .Bd -compact -literal -offset indent
 127.* 0.0.0.0 255.255.255.255 ::1
 .Ed
 .It Sy search_domains
-Prepend search domains to the dynamically generated list.
+Предварительное добавление поисковых доменов в динамически генерируемый список.
 .It Sy search_domains_append
-Append search domains to the dynamically generated list.
+Добавление поисковых доменов в динамически генерируемый список.
 .It Sy domain_blacklist
-A list of domains to be removed from consideration.
-To remove a domain, you can use foo.*
-To remove a sub domain, you can use *.bar
+Список доменов, которые необходимо исключить из рассмотрения.
+Чтобы удалить домен, вы можете использовать команду foo.*
+Чтобы удалить поддомен, вы можете использовать *.bar
 .It Sy name_servers
-Prepend name servers to the dynamically generated list.
-You should set this to 127.0.0.1 if you use a local name server other than
-libc.
+Предварительное добавление серверов имен в динамически создаваемый список.
+Если вы используете локальный сервер имен, отличный от libc, вам следует установить значение 127.0.0.1
+.
 .It Sy name_servers_append
-Append name servers to the dynamically generated list.
+Добавьте серверы имен в динамически генерируемый список.
 .It Sy name_server_blacklist
-A list of name servers to be removed from consideration.
-The default is 0.0.0.0 as some faulty routers send it via DHCP.
-To remove a block, you can use 192.168.*
+Список серверов имен, которые необходимо исключить из рассмотрения.
+Значение по умолчанию равно 0.0.0.0, поскольку некоторые неисправные маршрутизаторы отправляют его через DHCP.
+Чтобы удалить блокировку, вы можете использовать 192.168.*
 .It Sy private_interfaces
-These interfaces name servers will only be queried for the domains listed
-in their resolv.conf.
-Useful for VPN domains.
-Setting
+Эти серверы имен интерфейсов будут запрашиваться только для доменов, перечисленных
+в их разрешении.conf.
+Полезно для доменов VPN.
+Установка
 .Sy private_interfaces Ns ="*"
-will stop the forwarding of the root zone and allows the local resolver to
-recursively query the root servers directly.
-Requires a local nameserver other than libc.
-This is equivalent to the
-.Nm resolvconf -p
-option.
+остановит переадресацию корневой зоны и позволит локальному распознавателю
+рекурсивно запрашивать корневые серверы напрямую.
+Требуется локальный сервер имен, отличный от libc.
+Это эквивалентно параметру
+.Nm resolvconf -p .
 .It Sy public_interfaces
-Force these interface to be public, overriding the private marking.
-This is handy when 3rd party integrations force the
+Сделайте эти интерфейсы общедоступными, переопределив приватную маркировку.
+Это удобно, когда сторонние интеграции принудительно используют параметр
 .Nm resolvconf -p
-option and you want to disable it easily.
+и вы хотите легко отключить его.
 .It Sy replace
-Is a space separated list of replacement keywords.
-The syntax is this:
+Представляет собой разделенный пробелом список ключевых слов-заменителей.
+Синтаксис такой:
 .Va $keyword Ns / Ns Va $match Ns / Ns Va $replacement
 .Pp
-Example, given this resolv.conf:
+Например, учитывая этот файл resolv.conf:
 .Bd -compact -literal -offset indent
 domain foo.org
 search foo.org dead.beef
 nameserver 1.2.3.4
 nameserver 2.3.4.5
 .Ed
-and this configuaration:
+и эту конфигурацию:
 .Bd -compact -literal -offset indent
 replace="search/foo*/bar.com"
 replace="$replace nameserver/1.2.3.4/5.6.7.8"
 replace="$replace nameserver/2.3.4.5/"
 .Ed
-you would get this resolv.conf instead:
+вместо этого вы бы получили этот файл resolv.conf:
 .Bd -compact -literal -offset indent
 domain foo.org
 search bar.com
 nameserver 5.6.7.8
 .Ed
 .It Sy replace_sub
-Works the same way as
+Работает так же, как и
 .Sy replace
-except it works on each space separated value rather than the whole line,
-so it's useful for the replacing a single domain within the search directive.
-Using the same example resolv.conf and changing
+за исключением того, что он работает с каждым значением, разделенным пробелом, а не со всей строкой, поэтому он полезен для замены одного домена в директиве поиска.
+Используя тот же пример resolv.conf и изменив
 .Sy replace
-to
+на 
 .Sy replace_sub ,
-you would get this resolv.conf instead:
+вместо этого вы бы получили этот файл resolv.conf:
 .Bd -compact -literal -offset indent
 domain foo.org
 search bar.com dead.beef
 nameserver 5.6.7.8
 .Ed
 .It Sy state_dir
-Override the default state directory of
+Переопределить каталог состояний по умолчанию для
 .Pa /var/run/resolvconf .
-This should not be changed once
+Это не должно изменяться после использования
 .Nm resolvconf
-is in use unless the old directory is copied to the new one.
+если только старый каталог не будет скопирован в новый.
 .El
 .Sh LIBC OPTIONS
-The following variables affect
+Следующие переменные напрямую влияют
+на:-
 .Xr resolv.conf 5
-directly:-
 .Bl -tag -width indent
 .It Sy resolv_conf
-Defaults to
+По умолчанию используется значение
 .Pa /etc/resolv.conf
-if not set.
+если такое не установлено.
 .It Sy resolv_conf_options
-A list of libc resolver options, as specified in
+Список параметров распознавателя libc, как указано в
 .Xr resolv.conf 5 .
 .It Sy resolv_conf_passthrough
-When set to YES the latest resolv.conf is written to
+При установке значения YES последний файл resolv.conf записывается в файл
 .Sy resolv_conf
-without any alteration.
-When set to /dev/null or NULL,
+без каких-либо изменений.
+Если установлено значение /dev/null или NULL,
 .Sy resolv_conf_local_only
-is defaulted to NO,
+по умолчанию принимается значение NO,
 .Sy local_nameservers
-is unset unless overridden and only the information set in
+не задается, если не переопределена, и только информация, заданная в
 .Nm
-is written to
+записывается в
 .Sy resolv_conf .
 .It Sy resolv_conf_sortlist
-A libc resolver sortlist, as specified in
+Сортировочный список libc-резольвера, как указано в файле
 .Xr resolv.conf 5 .
 .It Sy resolv_conf_local_only
-If a local name server is configured then the default is just to specify that
-and ignore all other entries as they will be configured for the local
-name server.
-Set this to NO to also list non-local nameservers.
-This will give you working DNS even if the local nameserver stops functioning
-at the expense of duplicated server queries.
+Если настроен локальный сервер имен, то по умолчанию нужно указать только его
+и игнорировать все остальные записи, поскольку они будут настроены для локального
+сервера имен.
+Установите значение NO, чтобы также перечислить нелокальные серверы имен.
+Это обеспечит работоспособность DNS, даже если локальный сервер имен перестанет функционировать
+за счет дублирования запросов к серверу.
 .It Sy append_nameservers
-Append name servers to the dynamically generated list.
+Добавляет серверы имен в динамически создаваемый список.
 .It Sy prepend_nameservers
-Prepend name servers to the dynamically generated list.
+Предварительно добавляет серверы имен в динамически формируемый список.
 .It Sy append_search
-Append search domains to the dynamically generated list.
+Добавляет поисковые домены в динамически формируемый список.
 .It Sy prepend_search
-Prepend search domains to the dynamically generated list.
+Добавляет поисковые домены в динамически формируемый список.
 .El
-.Sh SUBSCRIBER OPTIONS
-openresolv ships with subscribers for the name servers
+.Sh ОПЦИИ АБОНЕНТА
+openresolv поставляется с подписчиками для серверов имен
 .Xr dnsmasq 8 ,
 .Xr named 8 ,
 .Xr pdnsd 8 ,
 .Xr pdns_recursor 8 ,
-and
+и
 .Xr unbound 8 .
-Each subscriber can create configuration files which should be included in
-in the subscribers main configuration file.
+Каждый абонент может создавать конфигурационные файлы, которые должны быть включены в
+в основной конфигурационный файл абонента.
 .Pp
-To disable a subscriber, simply set it's name to NO.
-For example, to disable the libc subscriber you would set:
+Чтобы отключить абонента, просто установите для его имени значение NO.
+Например, чтобы отключить абонента libc, нужно установить:
 .Bd -compact -literal -offset indent
 libc=NO
 .Ed
 .Bl -tag -width indent
 .It Sy dnsmasq_conf
-This file tells dnsmasq which name servers to use for specific domains.
+Этот файл указывает dnsmasq, какие серверы имен использовать для определенных доменов.
 .It Sy dnsmasq_resolv
-This file tells dnsmasq which name servers to use for global lookups.
+Этот файл указывает dnsmasq, какие серверы имен использовать для глобального поиска.
 .Pp
-Example resolvconf.conf for dnsmasq:
+Пример resolvconf.conf для dnsmasq:
 .Bd -compact -literal -offset indent
 name_servers=127.0.0.1
 dnsmasq_conf=/etc/dnsmasq-conf.conf
 dnsmasq_resolv=/etc/dnsmasq-resolv.conf
 .Ed
 .Pp
-Example dnsmasq.conf:
+Пример dnsmasq.conf:
 .Bd -compact -literal -offset indent
 listen-address=127.0.0.1
-# If dnsmasq is compiled for DBus then we can take
-# advantage of not having to restart dnsmasq.
+# Если dnsmasq скомпилирован для DBus, то мы можем воспользоваться
+# реимуществом отсутствия необходимости перезапускать dnsmasq.
 enable-dbus
 conf-file=/etc/dnsmasq-conf.conf
 resolv-file=/etc/dnsmasq-resolv.conf
 .Ed
 .It Sy named_options
-Include this file in the named options block.
-This file tells named which name servers to use for global lookups.
+Включите этот файл в блок опций named.
+Этот файл указывает named, какие серверы имен использовать для глобального поиска.
 .It Sy named_zones
-Include this file in the named global scope, after the options block.
-This file tells named which name servers to use for specific domains.
+Включите этот файл в глобальную область видимости named после блока options.
+Этот файл указывает named, какие серверы имен использовать для определенных доменов.
 .Pp
-Example resolvconf.conf for named:
+Пример resolvconf.conf для named:
 .Bd -compact -literal -offset indent
 name_servers=127.0.0.1
 named_options=/etc/named-options.conf
@@ -269,25 +269,25 @@ options {
 include "/etc/named-zones.conf";
 .Ed
 .It Sy pdnsd_conf
-This is the main pdnsd configuration file which we modify to add our
-forward domains to.
-If this variable is not set then we rely on the pdnsd configuration file
-setup to read
+Это основной файл конфигурации pdnsd, который мы изменяем, чтобы добавить наши
+пересылаемые домены.
+Если эта переменная не установлена, то мы полагаемся на файл конфигурации pdnsd
+чтобы прочитать
 .Pa pdnsd_resolv
-as documented below.
+как указано ниже.
 .It Sy pdnsd_resolv
-This file tells pdnsd about global name servers.
-If this variable is not set then it's written to
+Этот файл сообщает pdnsd о глобальных серверах имен.
+Если эта переменная не установлена, то информация записывается в
 .Pa pdnsd_conf .
 .Pp
-Example resolvconf.conf for pdnsd:
+Пример resolvconf.conf для pdnsd:
 .Bd -compact -literal -offset indent
 name_servers=127.0.0.1
 pdnsd_conf=/etc/pdnsd.conf
 # pdnsd_resolv=/etc/pdnsd-resolv.conf
 .Ed
 .Pp
-Example pdnsd.conf:
+Пример pdnsd.conf:
 .Bd -compact -literal -offset indent
 global {
 	server_ip = 127.0.0.1;
@@ -301,84 +301,84 @@ server {
 }
 .Ed
 .It Sy pdns_zones
-This file tells pdns_recursor about specific and global name servers.
+Этот файл сообщает pdns_recursor о конкретных и глобальных серверах имен.
 .Pp
-Example resolvconf.conf for pdns_recursor:
+Пример resolvconf.conf для pdns_recursor:
 .Bd -compact -literal -offset indent
 name_servers=127.0.0.1
 pdns_zones=/etc/pdns/recursor-zones.conf
 .Ed
 .Pp
-Example recursor.conf:
+Пример recursor.conf:
 .Bd -compact -literal -offset indent
 allow-from=127.0.0.0/8, ::1/128
 forward-zones-file=/etc/pdns/recursor-zones.conf
 .Ed
 .It Sy unbound_conf
-This file tells unbound about specific and global name servers.
+Этот файл сообщает unbound о специфических и глобальных серверах имен.
 .It Sy unbound_insecure
-When set to YES, unbound marks the domains as insecure, thus ignoring DNSSEC.
+Если установлено значение YES, unbound помечает домены как небезопасные, игнорируя DNSSEC.
 .Pp
-Example resolvconf.conf for unbound:
+Пример resolvconf.conf для unbound:
 .Bd -compact -literal -offset indent
 name_servers=127.0.0.1
 unbound_conf=/etc/unbound-resolvconf.conf
 .Ed
 .Pp
-Example unbound.conf:
+Пример unbound.conf:
 .Bd -compact -literal -offset indent
 include: /etc/unbound-resolvconf.conf
 .Ed
 .El
-.Sh SUBSCRIBER INTEGRATION
-Not all distributions store the files the subscribers need in the same
-locations.
-For example, named service scripts have been called named, bind and rc.bind
-and they could be located in a directory called /etc/rc.d, /etc/init.d or
-similar.
-Each subscriber attempts to automatically configure itself, but not every
-distribution has been catered for.
-Also, users could equally want to use a different version from the one
-installed by default, such as bind8 and bind9.
-To accommodate this, the subscribers have these files in configurable
-variables, documented below.
+.Sh ИНТЕГРАЦИЯ АБОНЕНТОВ
+Не все дистрибутивы хранят нужные подписчикам файлы в одних и тех же
+местах.
+Например, сценарии именованных служб называются named, bind и rc.bind
+и они могут находиться в каталоге /etc/rc.d, /etc/init.d или
+аналогичном.
+Каждый подписчик пытается автоматически настроить себя, но не каждый
+но не каждый дистрибутив имеет такую возможность.
+Кроме того, пользователи могут захотеть использовать версию, отличную от той.
+установленной по умолчанию, например bind8 и bind9.
+Чтобы учесть это, подписчики содержат эти файлы в настраиваемых
+переменные, которые описаны ниже.
 .Bl -tag -width indent
 .It Sy dnsmasq_service
-Name of the dnsmasq service.
+Имя службы dnsmasq.
 .It Sy dnsmasq_restart
-Command to restart the dnsmasq service.
+Команда для перезапуска службы dnsmasq.
 .It Sy dnsmasq_pid
-Location of the dnsmasq pidfile.
+Расположение файла dnsmasq pid.
 .It Sy libc_service
-Name of the libc service.
+Имя службы libc.
 .It Sy libc_restart
-Command to restart the libc service.
+Команда для перезапуска службы libc.
 .It Sy named_service
-Name of the named service.
+Имя именованной службы.
 .It Sy named_restart
-Command to restart the named service.
+Команда для перезапуска названной службы.
 .It Sy pdnsd_restart
-Command to restart the pdnsd service.
+Команда для перезапуска службы pdnsd.
 .It Sy pdns_service
-Command to restart the pdns_recursor service.
+Команда для перезапуска службы pdns_recursor.
 .It Sy pdns_restart
-Command to restart the pdns_recursor service.
+Команда для перезапуска службы pdns_recursor.
 .It Sy unbound_service
-Name of the unbound service.
+Имя несвязанной службы..
 .It Sy unbound_restart
-Command to restart the unbound service.
+Команда для перезапуска несвязанной службы.
 .It Sy unbound_pid
-Location of the unbound pidfile.
+Расположение несвязанного pid-файла.
 .El
-.Sh SEE ALSO
+.Sh СМОТРЕТЬ ТАКЖЕ
 .Xr sh 1 ,
 .Xr resolv.conf 5 ,
 .Xr resolvconf 8
-.Sh AUTHORS
+.Sh АВТОРЫ
 .An Roy Marples Aq Mt roy@marples.name
-.Sh BUGS
-Each distribution is a special snowflake and likes to name the same thing
-differently, namely the named service script.
+.Sh ОШИБКИ
+Каждый дистрибутив - особая снежинка и любит называть одну и ту же вещь
+по-разному, а именно именованный служебный скрипт.
 .Pp
-Please report them to
+Пожалуйста, сообщите о них по адресу
 .Lk http://roy.marples.name/projects/openresolv

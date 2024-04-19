@@ -1,42 +1,42 @@
 .TH HOSTS_OPTIONS 5
-.SH NAME
-hosts_options \- host access control language extensions
-.SH DESCRIPTION
-This document describes optional extensions to the language described
-in the hosts_access(5) document. The extensions are enabled at program
-build time. For example, by editing the Makefile and turning on the 
-PROCESS_OPTIONS compile-time option.
+.SH ИМЯ
+hosts_options \- расширения языка управления доступом к хостам
+.SH ОПИСАНИЕ
+Этот документ описывает необязательные расширения языка, описанного
+в документе hosts_access(5). Расширения включаются во время
+во время сборки программы. Например, путем редактирования Makefile и включения опции 
+PROCESS_OPTIONS во время компиляции..
 .PP
-The extensible language uses the following format:
+Расширяемый язык использует следующий формат:
 .sp
 .ti +3
 daemon_list : client_list : option : option ...
 .PP
-The first two fields are described in the hosts_access(5) manual page.
-The remainder of the rules is a list of zero or more options.  Any ":"
-characters within options should be protected with a backslash.
+Первые два поля описаны на странице руководства hosts_access(5).
+Остальная часть правил представляет собой список из нуля или более опций.  Любые ":"
+в опциях должны быть защищены обратной косой чертой.
 .PP
-An option is of the form "keyword" or "keyword value". Options are
-processed in the specified order. Some options are subjected to
-%<letter> substitutions. For the sake of backwards compatibility with
-earlier versions, an "=" is permitted between keyword and value.
-.SH LOGGING
+Опция имеет вид "ключевое слово" или "значение ключевого слова". Опции
+обрабатываются в указанном порядке. Некоторые опции подвергаются
+%<буква>. Для обеспечения обратной совместимости с
+предыдущими версиями, между ключевым словом и значением допускается символ "=".
+.SH ВХОД
 .IP "severity mail.info"
 .IP "severity notice"
-Change the severity level at which the event will be logged. Facility
-names (such as mail) are optional, and are not supported on systems
-with older syslog implementations. The severity option can be used
-to emphasize or to ignore specific events.
-.SH ACCESS CONTROL
+Измените уровень серьезности, на котором будет регистрироваться событие. Объект
+имена (например, mail) являются необязательными и не поддерживаются в системах
+со старыми версиями syslog. Параметр серьезности можно использовать
+чтобы подчеркнуть или проигнорировать определенные события.
+.SH КОНТРОЛЬ ДОСТУПА
 .IP "allow"
 .IP "deny"
-Grant (deny) service. These options must appear at the end of a rule.
+Разрешить (запретить) обслуживание. Эти параметры должны находиться в конце правила
 .PP
-The \fIallow\fR and \fIdeny\fR keywords make it possible to keep all
-access control rules within a single file, for example in the
-\fIhosts.allow\fR file.
+Ключевые слова \fIallow\fR и \fIdeny\fR позволяют хранить все
+правила управления доступом в одном файле, например, в файле
+\fIhosts.allow\fR.
 .sp
-To permit access from specific hosts only:
+Чтобы разрешить доступ только с определенных хостов:
 .sp
 .ne 2
 .ti +3
@@ -44,7 +44,7 @@ ALL: .friendly.domain: ALLOW
 .ti +3
 ALL: ALL: DENY
 .sp
-To permit access from all hosts except a few trouble makers:
+Разрешить доступ со всех узлов, кроме нескольких проблемных:
 .sp
 .ne 2
 .ti +3
@@ -52,116 +52,116 @@ ALL: .bad.domain: DENY
 .ti +3
 ALL: ALL: ALLOW
 .sp
-Notice the leading dot on the domain name patterns.
-.SH RUNNING OTHER COMMANDS
+Обратите внимание на ведущую точку в шаблонах доменных имен.
+.SH ВЫПОЛНЕНИЕ ДРУГИХ КОМАНД
 .IP "spawn shell_command"
-Execute, in a child process, the specified shell command, after
-performing the %<letter> expansions described in the hosts_access(5)
-manual page.  The command is executed with stdin, stdout and stderr
-connected to the null device, so that it won\'t mess up the
-conversation with the client host. Example:
+Выполнение в дочернем процессе указанной команды оболочки после
+выполнения расширений %<букв>, описанных на странице руководства hosts_access(5)
+странице руководства.  Команда выполняется с stdin, stdout и stderr
+подключенными к нулевому устройству, чтобы не испортить
+чтобы не испортить разговор с клиентским хостом. Пример:
 .sp
 .nf
 .ti +3
 spawn (/some/where/safe_finger -l @%h | /usr/ucb/mail root) &
 .fi
 .sp
-executes, in a background child process, the shell command "safe_finger
--l @%h | mail root" after replacing %h by the name or address of the
-remote host.
+выполняет в фоновом дочернем процессе команду оболочки "safe_finger
+-l @%h | mail root", заменив %h на имя или адрес
+удаленного хоста.
 .sp
-The example uses the "safe_finger" command instead of the regular
-"finger" command, to limit possible damage from data sent by the finger
-server. The "safe_finger" command is part of the daemon wrapper
-package; it is a wrapper around the regular finger command that filters
-the data sent by the remote host.
+В примере используется команда "safe_finger" вместо обычной команды
+"finger", чтобы ограничить возможный ущерб от данных, отправленных сервером finger
+сервером. Команда "safe_finger" является частью пакета обёртки daemon
+пакета; это обертка вокруг обычной команды finger, которая фильтрует
+данные, отправляемые удаленным хостом.
 .IP "twist shell_command"
-Replace the current process by an instance of the specified shell
-command, after performing the %<letter> expansions described in the
-hosts_access(5) manual page.  Stdin, stdout and stderr are connected to
-the client process. This option must appear at the end of a rule.
+Заменить текущий процесс экземпляром указанной команды оболочки
+после выполнения расширений %<букв>, описанных на странице руководства
+странице руководства hosts_access(5).  Stdin, stdout и stderr подключаются к
+клиентскому процессу. Этот параметр должен находиться в конце правила.
 .sp
-To send a customized bounce message to the client instead of
-running the real ftp daemon:
+Чтобы отправить клиенту настроенное сообщение об отказе, вместо того чтобы
+запуска настоящего ftp-daemon:
 .sp
 .nf
 .ti +3
 in.ftpd : ... : twist /bin/echo 421 Some bounce message
 .fi
 .sp
-For an alternative way to talk to client processes, see the
-\fIbanners\fR option below.
+Альтернативный способ общения с клиентскими процессами см.
+\fIbanners\fR ниже.
 .sp
-To run /some/other/in.telnetd without polluting its command-line
-array or its process environment:
+Чтобы запустить /some/other/in.telnetd, не загрязняя его командную строку
+массив командной строки или окружение процесса:
 .sp
 .nf
 .ti +3
 in.telnetd : ... : twist PATH=/some/other; exec in.telnetd
 .fi
 .sp
-Warning:  in case of UDP services, do not twist to commands that use
-the standard I/O or the read(2)/write(2) routines to communicate with
-the client process; UDP requires other I/O primitives.
-.SH NETWORK OPTIONS
+Внимание: в случае UDP-сервисов не следует выполнять команды, использующие
+стандартный ввод-вывод или процедуры чтения(2)/записи(2) для взаимодействия с
+клиентским процессом; UDP требует других примитивов ввода/вывода.
+.SH ОПЦИИ СЕТИ
 .IP "keepalive"
-Causes the server to periodically send a message to the client.  The
-connection is considered broken when the client does not respond. The
-keepalive option can be useful when users turn off their machine while
-it is still connected to a server.  The keepalive option is not useful
-for datagram (UDP) services.
+Заставляет сервер периодически отправлять сообщение клиенту.  Соединение
+соединение считается разорванным, если клиент не отвечает. Опция
+keepalive может быть полезен, когда пользователь выключает машину, а она
+пока он все еще подключен к серверу.  Опция keepalive не полезна
+для служб дейтаграмм (UDP).
 .IP "linger number_of_seconds"
-Specifies how long the kernel will try to deliver not-yet delivered
-data after the server process closes a connection. 
-.SH USERNAME LOOKUP
+Указывает, как долго ядро будет пытаться доставить еще не доставленные
+данные после того, как серверный процесс закроет соединение. 
+.SH ПОИСК ИМЕНИ ПОЛЬЗОВАТЕЛЯ
 .IP "rfc931 [ timeout_in_seconds ]"
-Look up the client user name with the RFC 931 (TAP, IDENT, RFC 1413)
-protocol.  This option is silently ignored in case of services based on
-transports other than TCP.  It requires that the client system runs an
-RFC 931 (IDENT, etc.) -compliant daemon, and may cause noticeable
-delays with connections from non-UNIX clients.  The timeout period is
-optional. If no timeout is specified a compile-time defined default
-value is taken.
-.SH MISCELLANEOUS
+Поиск имени пользователя клиента с помощью протокола RFC 931 (TAP, IDENT, RFC 1413)
+протоколом.  Этот параметр молча игнорируется в случае служб, основанных на
+транспортах, отличных от TCP.  Она требует, чтобы в клиентской системе был запущен
+RFC 931 (IDENT и т. д.) - совместимый daemon, и может вызвать заметные
+задержек при соединениях с не-UNIX клиентами.  Период таймаута является
+необязательным. Если тайм-аут не указан, используется значение по умолчанию, определенное при компиляции
+принимается значение по умолчанию, определенное во время компиляции.
+.SH ДОПОЛНИТЕЛЬНО
 .IP "banners /some/directory"
-Look for a file in `/some/directory' with the same name as the daemon
-process (for example in.telnetd for the telnet service), and copy its
-contents to the client. Newline characters are replaced by
-carriage-return newline, and %<letter> sequences are expanded (see
-the hosts_access(5) manual page).
+Найдите в `/some/directory' файл с тем же именем, что и у процесса daemon
+процесса (например, in.telnetd для службы telnet), и скопируйте его
+содержимое на клиент. Символы новой строки заменяются на
+каретка-возврат новой строки, а последовательности %<букв> расширяются (см.
+страницу руководства hosts_access(5)).
 .sp
-The tcp wrappers source code distribution provides a sample makefile
-(Banners.Makefile) for convenient banner maintenance.
+В дистрибутив исходного кода tcp wrappers входит пример makefile
+(Banners.Makefile) для удобного обслуживания баннеров.
 .sp
-Warning: banners are supported for connection-oriented (TCP) network
-services only.
+Внимание: баннеры поддерживаются только для сетевых служб, ориентированных на соединение (TCP).
+только для сетевых служб, ориентированных на соединение (TCP).
 .IP "nice [ number ]"
-Change the nice value of the process (default 10).  Specify a positive
-value to spend more CPU resources on other processes. 
+Измените значение приятности процесса (по умолчанию 10).  Укажите положительное
+чтобы тратить больше ресурсов процессора на другие процессы. . 
 .IP "setenv name value"
-Place a (name, value) pair into the process environment. The value is
-subjected to %<letter> expansions and may contain whitespace (but
-leading and trailing blanks are stripped off).
+Поместите пару (имя, значение) в среду процесса. Значение
+подвергается расширению %<букв> и может содержать пробелы (но
+ведущие и последующие пробелы удаляются).
 .sp
-Warning: many network daemons reset their environment before spawning a
-login or shell process.
+Внимание: многие сетевые daemon сбрасывают свое окружение перед тем, как породить
+логина или процесса оболочки.
 .IP "umask 022"
-Like the umask command that is built into the shell. An umask of 022
-prevents the creation of files with group and world write permission.
-The umask argument should be an octal number.
+Например, команда umask, встроенная в оболочку. Значение umask, равное 022
+предотвращает создание файлов с групповым и мировым правом записи.
+Аргумент umask должен быть восьмеричным числом.
 .IP "user nobody"
 .IP "user nobody.kmem"
-Assume the privileges of the "nobody" userid (or user "nobody", group
-"kmem"). The first form is useful with inetd implementations that run
-all services with root privilege. The second form is useful for
-services that need special group privileges only.
-.SH DIAGNOSTICS
-When a syntax error is found in an access control rule, the error
-is reported to the syslog daemon; further options will be ignored,
-and service is denied.
-.SH SEE ALSO
-hosts_access(5), the default access control language
-.SH AUTHOR
+Примите привилегии идентификатора пользователя "nobody" (или пользователя "nobody", группы
+"kmem"). Первая форма полезна для реализаций inetd, которые запускают
+все службы с привилегиями root. Вторая форма полезна для
+служб, которым нужны только привилегии специальных групп.
+.SH ДИАГНОСТИКА
+Если в правиле управления доступом обнаружена синтаксическая ошибка, она
+будет сообщено daemon syslog; дальнейшие опции будут проигнорированы,
+и в обслуживании будет отказано.
+.SH СМОТРЕТЬ ТАКЖЕ
+hosts_access(5), язык управления доступом по умолчанию
+.SH АВТОРЫ
 .na
 .nf
 Wietse Venema (wietse@wzv.win.tue.nl)

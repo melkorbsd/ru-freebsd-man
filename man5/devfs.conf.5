@@ -25,94 +25,94 @@
 .Dd May 25, 2019
 .Dt DEVFS.CONF 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm devfs.conf
 .Nd boot-time devfs configuration information
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Файл
 .Nm
-file provides an easy way to set ownership and permissions, or create
-links for devices available at boot.
+file предоставляет простой способ установить права собственности и разрешения, а также создать
+ссылки для устройств, доступных при загрузке.
 .Pp
-It does not work for devices plugged in and out after the system is up
-and running, e.g.\& USB devices.
-See
+Он не работает для устройств, подключенных и отключенных после запуска системы
+например, \& USB-устройства.
+См.
 .Xr devfs.rules 5
-for setting ownership and permissions for all device nodes, and
+для установки прав собственности и разрешений для всех узлов устройства, и
 .Xr devd.conf 5
-for actions to be taken when devices are attached or detached.
+для действий, которые будут выполняться при подключении или отсоединении устройств.
 .Pp
-Lines starting with a hash sign
+Строки, начинающиеся с хэш-знака
 .Pq Ql #
-and empty lines are ignored.
-The lines that specify
+и пустые строки игнорируются.
+Строки, в которых указаны
 .Nm
-rules consist of three parameters separated by whitespace:
+состоят из трех параметров, разделенных пробелами:
 .Bl -tag -width indent
 .It Ar action
-The action to take for the device.
-The action names are only significant to the first unique character.
+Действие, которое необходимо предпринять для устройства.
+Имена действий имеют значение только до первого уникального символа.
 .It Ar devname
-The name of the device created by
+Имя устройства, созданного
 .Xr devfs 5 .
 .It Ar arg
-The argument of the
+Аргумент действия
 .Ar action .
 .El
 .Pp
-The actions currently supported are:
+В настоящее время поддерживаются следующие действия:
 .Bl -tag -width indent
 .It Ic link
-This action creates a symbolic link named
+Это действие создает символическую ссылку с именем
 .Ar arg
-that points to
+которая указывает на
 .Ar devname ,
-the name of the device created by
+имя устройства, созданного
 .Xr devfs 5 .
 .It Ic own
-This action changes the ownership of
+Это действие изменяет право собственности на
 .Ar devname .
-The
+Параметр
 .Ar arg
-parameter must be in the form of an
+должен быть представлен в виде
 .Ar owner Ns : Ns Ar group
-pair, in the same format used by
+в том же виде, что и 
 .Xr chown 8 .
 .It Ic perm
-This action changes the permissions of
+Это действие изменяет права доступа к
 .Ar devname .
-The
+Параметр
 .Ar arg
-parameter must be a
+должен быть 
 .Ar mode
-as explained in
+как объясняется в
 .Xr chmod 1 .
 .El
-.Sh FILES
+.Sh ФАЙЛЫ
 .Bl -tag -compact -width Pa
 .It Pa /etc/devfs.conf
 .It Pa /usr/share/examples/etc/devfs.conf
 .El
-.Sh EXAMPLES
-To create a
+.Sh ПРИМЕРЫ
+Чтобы создать
 .Pa /dev/cdrom
-link that points to the first CD-ROM,
-the following may be added to
+ссылку, указывающую на первый CD-ROM,
+можно добавить следующе
 .Nm :
 .Bd -literal -offset indent
 link	cd0	cdrom
 .Ed
 .Pp
-To set the owner of a device, the
+Чтобы задать владельца устройства,
 .Ic own
-action may be specified:
+может быть указано:
 .Bd -literal -offset indent
 own	cd0	root:cdrom
 .Ed
 .Pp
-To set the permissions of a device, a
+Чтобы установить разрешения для устройства,
 .Ic perm
-action should be used:
+следует использовать действие разрешения:
 .Bd -literal -offset indent
 perm	cd0	0660
 .Ed
@@ -122,6 +122,6 @@ perm	cd0	0660
 .Xr devfs 5 ,
 .Xr devfs.rules 5 ,
 .Xr chown 8
-.Sh AUTHORS
-This manual page was written by
+.Sh АВТОРЫ
+Эта страница руководства была написана
 .An Roland Smith Aq Mt rsmith@xs4all.nl .

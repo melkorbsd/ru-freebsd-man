@@ -1,296 +1,295 @@
 .TH HOSTS_ACCESS 5
-.SH NAME
-hosts_access \- format of host access control files
-.SH DESCRIPTION
-This manual page describes a simple access control language that is
-based on client (host name/address, user name), and server (process
-name, host name/address) patterns.  Examples are given at the end. The
-impatient reader is encouraged to skip to the EXAMPLES section for a
-quick introduction.
+.SH ИМЯ
+hosts_access \- формат файлов управления доступом к хосту
+.SH ОПИСАНИЕ
+На этой странице руководства описывается простой язык управления доступом,
+основанный на шаблонах клиента (имя/адрес хоста, имя пользователя) и сервера (имя процесса
+, имя/адрес хоста).  Примеры приведены в конце. 
+Нетерпеливому читателю рекомендуется перейти к разделу ПРИМЕРОВ для
+краткого ознакомления.
 .PP
-An extended version of the access control language is described in the
-\fIhosts_options\fR(5) document. The extensions are turned on at
-program build time by building with -DPROCESS_OPTIONS.
+Расширенная версия языка управления доступом описана в
+документе \fIhosts_options\fR(5). Расширения включаются во
+время сборки программы с помощью команды -DPROCESS_OPTIONS.
 .PP
-In the following text, \fIdaemon\fR is the the process name of a
-network daemon process, and \fIclient\fR is the name and/or address of
-a host requesting service. Network daemon process names are specified
-in the inetd configuration file.
-.SH ACCESS CONTROL FILES
-The access control software consults two files. The search stops
-at the first match:
+В следующем тексте \fIdaemon\fR - это имя процесса
+daemon, а \fIclient\fR - это имя и/или адрес
+хоста, запрашивающего услугу. Имена процессов сетевого daemon указаны
+в файле конфигурации inetd.
+.SH ФАЙЛЫ УПРАВЛЕНИЯ ДОСТУПОМ
+Программа управления доступом просматривает два файла. Поиск прекращается
+при первом совпадении:
 .IP \(bu
-Access will be granted when a (daemon,client) pair matches an entry in
-the \fI/etc/hosts.allow\fR file.
+Доступ будет предоставлен, когда пара (daemon,клиент) совпадет с записью в
+файле \fI/etc/hosts.allow\fR.
 .IP \(bu
-Otherwise, access will be denied when a (daemon,client) pair matches an
-entry in the \fI/etc/hosts.deny\fR file.
+В противном случае доступ будет запрещен, если пара (daemon,клиент) совпадет с
+записью в файле \fI/etc/hosts.deny\fR.
 .IP \(bu
-Otherwise, access will be granted.
+В противном случае доступ будет предоставлен.
 .PP
-A non-existing access control file is treated as if it were an empty
-file. Thus, access control can be turned off by providing no access
-control files.
-.SH ACCESS CONTROL RULES
-Each access control file consists of zero or more lines of text.  These
-lines are processed in order of appearance. The search terminates when a
-match is found.
+Несуществующий файл управления доступом рассматривается как пустой
+файл. Таким образом, управление доступом можно отключить, не предоставляя никаких
+файлов управления доступом.
+ПРАВИЛА УПРАВЛЕНИЯ ДОСТУПОМ .SH
+Каждый файл управления доступом состоит из нуля или более строк текста.  Эти
+строки обрабатываются в порядке их появления. Поиск завершается, когда
+найдено совпадение.
 .IP \(bu
-A newline character is ignored when it is preceded by a backslash
-character. This permits you to break up long lines so that they are
-easier to edit.
+Символ новой строки игнорируется, если перед ним стоит обратная косая
+черта. Это позволяет разделять длинные строки, чтобы их было
+легче редактировать.
 .IP \(bu
-Blank lines or lines that begin with a `#\' character are ignored.
-This permits you to insert comments and whitespace so that the tables
-are easier to read.
+Пустые строки или строки, начинающиеся с символа "#", игнорируются.
+Это позволяет вставлять комментарии и пробелы, чтобы
+упростить чтение таблиц.
 .IP \(bu
-All other lines should satisfy the following format, things between []
-being optional:
+Все остальные строки должны соответствовать следующему формату, при этом значения между []
+необязательны:
 .sp
 .ti +3
 daemon_list : client_list [ : shell_command ]
 .PP
-\fIdaemon_list\fR is a list of one or more daemon process names
-(argv[0] values) or wildcards (see below).  
+\fIdaemon_list\fR - это список имен одного или нескольких процессов daemon
+(значения argv[0]) или групповых символов (см. ниже).
 .PP
-\fIclient_list\fR is a list
-of one or more host names, host addresses, patterns or wildcards (see
-below) that will be matched against the client host name or address.
+\fIclient_list\fR - это список
+из одного или нескольких имен хостов, адресов хостов, шаблонов или групповых символов (см.
+ниже), которые будут сопоставлены с именем или адресом клиентского хоста.
 .PP
-The more complex forms \fIdaemon@host\fR and \fIuser@host\fR are
-explained in the sections on server endpoint patterns and on client
-username lookups, respectively.
+Более сложные формы \fIdaemon@host\fR и \fIuser@host\fR
+описаны в разделах, посвященных шаблонам конечных точек сервера и
+поиску имени пользователя клиента, соответственно.
 .PP
-List elements should be separated by blanks and/or commas.  
+Элементы списка должны быть разделены пробелами и/или запятыми.
 .PP
-With the exception of NIS (YP) netgroup lookups, all access control
-checks are case insensitive.
+За исключением поиска в сетевой группе NIS (YP), все
+проверки контроля доступа не чувствительны к регистру.
 .ne 4
-.SH PATTERNS
-The access control language implements the following patterns:
+.SH ШАБЛОНЫ
+Язык управления доступом реализует следующие шаблоны:
 .IP \(bu
-A string that begins with a `.\' character. A host name is matched if
-the last components of its name match the specified pattern.  For
-example, the pattern `.tue.nl\' matches the host name
-`wzv.win.tue.nl\'.
+Строка, начинающаяся с символа ".\". Имя хоста считается соответствующим, если
+последние компоненты его имени соответствуют указанному шаблону.  
+Например, шаблон ".tue.nl\" соответствует имени хоста
+`wzv.win.tue.nl\".
 .IP \(bu
-A string that ends with a `.\' character. A host address is matched if
-its first numeric fields match the given string.  For example, the
-pattern `131.155.\' matches the address of (almost) every host on the
-Eind\%hoven University network (131.155.x.x).
+Строка, заканчивающаяся символом `.\'. Адрес хоста считается соответствующим, если
+его первые числовые поля соответствуют заданной строке. Например,
+шаблон `131.155.' соответствует адресу (почти) каждого хоста в
+университетской сети Эйндховена (131.155.x.x).
 .IP \(bu
-A string that begins with an `@\' character is treated as an NIS
-(formerly YP) netgroup name. A host name is matched if it is a host
-member of the specified netgroup. Netgroup matches are not supported
-for daemon process names or for client user names.
+Строка, начинающаяся с символа "@", рассматривается как
+имя сетевой группы NIS (ранее YP). Имя хоста совпадает, если он является
+членом указанной сетевой группы. Сопоставление сетевых групп не поддерживается
+для имен deamon процессов или имен пользователей-клиентов.
 .IP \(bu
-An expression of the form `n.n.n.n/m.m.m.m\' is interpreted as a
-`net/mask\' pair. A host address is matched if `net\' is equal to the
-bitwise AND of the address and the `mask\'. For example, the net/mask
-pattern `131.155.72.0/255.255.254.0\' matches every address in the
-range `131.155.72.0\' through `131.155.73.255\'.
+Выражение вида "n.n.n.n/m.m.m.m" интерпретируется как пара
+"сетка/маска". Адрес хоста совпадает, если значение "net" равно
+побитовому значению "AND" адреса и "маски". Например, шаблон сети/маски
+"131.155.72.0/255.255.254.0" соответствует каждому адресу в
+диапазоне от "131.155.72.0" до `131.155.73.255"
 .IP \(bu
-An expression of the form `[n:n:n:n:n:n:n:n]/m\' is interpreted as a
-`[net]/prefixlen\' pair. A IPv6 host address is matched if
-`prefixlen\' bits of `net\' is equal to the `prefixlen\' bits of the
-address. For example, the [net]/prefixlen pattern
-`[3ffe:505:2:1::]/64\' matches every address in the range
-`3ffe:505:2:1::\' through `3ffe:505:2:1:ffff:ffff:ffff:ffff\'.
+Выражение вида `[n:n:n:n:n:n:n:n:n]/m' интерпретируется как пара
+`[net]/prefixlen'. Адрес хоста IPv6 совпадает, если
+биты "prefixlen" в "net" равны битам "
+prefixlen" в адресе. Например, шаблон [net]/prefixlen соответствует
+`[3ffe:505:2:1::]/64\' соответствует каждому адресу в диапазоне
+`3ffe:505:2:1::\' через `3ffe:505:2:1:ffff:ffff:ffff:ffff".
 .IP \(bu
-A string that begins with a `/\' character is treated as a file
-name. A host name or address is matched if it matches any host name
-or address pattern listed in the named file. The file format is
-zero or more lines with zero or more host name or address patterns
-separated by whitespace.  A file name pattern can be used anywhere
-a host name or address pattern can be used.
-.SH WILDCARDS
-The access control language supports explicit wildcards:
+Строка, начинающаяся с символа "/\", рассматривается как
+имя файла. Имя хоста или адрес сопоставляются, если они совпадают с любым именем хоста
+или шаблоном адресов, указанным в именованном файле. Формат файла -
+ноль или более строк с нулем или более шаблонов имен хостов или адресов
+, разделенных пробелами. Шаблон имени файла можно использовать везде, где можно использовать шаблон
+имени хоста или адреса.
+.SH ПОДСТАНОВОЧНЫЕ ЗНАКИ
+Язык управления доступом поддерживает явные подстановочные знаки:
 .IP ALL
-The universal wildcard, always matches.
+Универсальный подстановочный знак, всегда совпадает.
 .IP LOCAL
-Matches any host whose name does not contain a dot character.
+Соответствует любому хосту, имя которого не содержит символа точки.
 .IP UNKNOWN
-Matches any user whose name is unknown, and matches any host whose name
-\fIor\fR address are unknown.  This pattern should be used with care:
-host names may be unavailable due to temporary name server problems. A
-network address will be unavailable when the software cannot figure out
-what type of network it is talking to.
+Соответствует любому пользователю, имя которого неизвестно, и любому хосту, имя которого
+\fIor\fR адреса неизвестны.  Этот шаблон следует использовать с осторожностью:
+имена хостов могут быть недоступны из-за временных проблем с сервером имен. 
+Сетевой адрес будет недоступен, если программное обеспечение не сможет определить,
+к какому типу сети оно подключено.
 .IP KNOWN
-Matches any user whose name is known, and matches any host whose name
-\fIand\fR address are known. This pattern should be used with care:
-host names may be unavailable due to temporary name server problems.  A
-network address will be unavailable when the software cannot figure out
-what type of network it is talking to.
+Соответствует любому пользователю, чье имя известно, и любому хосту, чье имя
+\fiи адрес \fR известны. Этот шаблон следует использовать с осторожностью:
+имена хостов могут быть недоступны из-за временных проблем с сервером имен.  
+Сетевой адрес будет недоступен, если программное обеспечение не сможет определить,
+к какому типу сети оно подключено.
 .IP PARANOID
-Matches any host whose name does not match its address.  When tcpd is
-built with -DPARANOID (default mode), it drops requests from such
-clients even before looking at the access control tables.  Build
-without -DPARANOID when you want more control over such requests.
+Соответствует любому хосту, имя которого не совпадает с его адресом.  Когда tcpd
+создается с помощью -PARANOID (режим по умолчанию), он отбрасывает запросы от таких
+клиентов даже до просмотра таблиц контроля доступа.  
+Если вы хотите получить больший контроль над такими запросами, создайте без -DPARANOID.
 .ne 6
-.SH OPERATORS
+.SH ОПЕРАТОРЫ
 .IP EXCEPT
-Intended use is of the form: `list_1 EXCEPT list_2\'; this construct
-matches anything that matches \fIlist_1\fR unless it matches
-\fIlist_2\fR.  The EXCEPT operator can be used in daemon_lists and in
-client_lists. The EXCEPT operator can be nested: if the control
-language would permit the use of parentheses, `a EXCEPT b EXCEPT c\'
-would parse as `(a EXCEPT (b EXCEPT c))\'.
+Предполагаемое использование имеет вид: `list_1 EXCEPT list_2\'; эта конструкция
+соответствует всему, что соответствует \fIlist_1\fR, если только оно не соответствует
+\fIlist_2\fR.  Оператор EXCEPT может использоваться как в daemon_lists, так и в
+client_lists. Оператор EXCEPT может быть вложенным: если
+язык управления допускает использование круглых скобок, `a EXCEPT b EXCEPT c\'
+будет обрабатываться как  `(a EXCEPT (b EXCEPT c))\'.
 .br
 .ne 6
-.SH SHELL COMMANDS
-If the first-matched access control rule contains a shell command, that
-command is subjected to %<letter> substitutions (see next section).
-The result is executed by a \fI/bin/sh\fR child process with standard
-input, output and error connected to \fI/dev/null\fR.  Specify an `&\'
-at the end of the command if you do not want to wait until it has
-completed.
+.SH КОМАНДЫ ОБОЛОЧКИ
+Если первое совпадающее правило управления доступом содержит команду оболочки, эта
+команда подвергается замене %<буква> (см. следующий раздел).
+Результат выполняется дочерним процессом \fI/bin/sh\fR со стандартным
+вводом, выводом и ошибкой, подключенным к \fI/dev/null\fR. Укажите `&\'
+в конце команды, если вы не хотите ждать ее
+завершения.
 .PP
-Shell commands should not rely on the PATH setting of the inetd.
-Instead, they should use absolute path names, or they should begin with
-an explicit PATH=whatever statement.
+Команды оболочки не должны полагаться на параметр PATH в inetd.
+Вместо этого они должны использовать абсолютные имена путей или начинаться с
+явного указания PATH=whatever.
 .PP
-The \fIhosts_options\fR(5) document describes an alternative language
-that uses the shell command field in a different and incompatible way.
-.SH % EXPANSIONS
-The following expansions are available within shell commands:
+В документе \fIhosts_options\fR(5) описывается альтернативный язык
+, который использует поле команд оболочки другим и несовместимым способом.
+.SH % РАСШИРЕНИЯ
+В командах оболочки доступны следующие расширения:
 .IP "%a (%A)"
-The client (server) host address.
+Адрес хоста клиента (сервера).
 .IP %c
-Client information: user@host, user@address, a host name, or just an
-address, depending on how much information is available.
+Информация о клиенте: пользователь@хост, пользователь@адрес, имя хоста или просто
+адрес, в зависимости от объема доступной информации.
 .IP %d
-The daemon process name (argv[0] value).
+Имя daemon процесса (значение argv[0]).
 .IP "%h (%H)"
-The client (server) host name or address, if the host name is
-unavailable.
+Имя или адрес хоста клиента (сервера), если имя хоста
+недоступно.
 .IP "%n (%N)"
-The client (server) host name (or "unknown" or "paranoid").
+Имя хоста клиента (сервера) (или "unknown", или "paranoid").
 .IP %p
-The daemon process id.
+Идентификатор daemon процесса.
 .IP %s
-Server information: daemon@host, daemon@address, or just a daemon name,
-depending on how much information is available.
+Информация о сервере: daemon@host, daemon@address или просто имя daemon,
+в зависимости от объема доступной информации.
 .IP %u
-The client user name (or "unknown").
+Имя пользователя клиента (или "неизвестно").
 .IP %%
-Expands to a single `%\' character.
+Расширяется до одного символа "%\".
 .PP
-Characters in % expansions that may confuse the shell are replaced by
-underscores.
-.SH SERVER ENDPOINT PATTERNS
-In order to distinguish clients by the network address that they
-connect to, use patterns of the form:
+Символы в расширениях %, которые могут сбить с толку оболочку, заменяются
+символами подчеркивания.
+.SH ШАБЛОНЫ КОНЕЧНЫХ ТОЧЕК СЕРВЕРА
+Чтобы различать клиентов по сетевому адресу, к которому они
+подключаются, используйте шаблоны вида:
 .sp
 .ti +3
 process_name@host_pattern : client_list ...
 .sp
-Patterns like these can be used when the machine has different internet
-addresses with different internet hostnames.  Service providers can use
-this facility to offer FTP, GOPHER or WWW archives with internet names
-that may even belong to different organizations. See also the `twist'
-option in the hosts_options(5) document. Some systems (Solaris,
-FreeBSD) can have more than one internet address on one physical
-interface; with other systems you may have to resort to SLIP or PPP
-pseudo interfaces that live in a dedicated network address space.
+Подобные шаблоны можно использовать, когда у компьютера разные интернет-
+адреса с разными именами хостов.  Поставщики услуг могут использовать
+эту возможность для предоставления архивов FTP, GOPHER или WWW с интернет-именами
+, которые могут принадлежать даже разным организациям. Смотрите также опцию 'twist'
+в документе hosts_options(5). Некоторые системы (Solaris,
+FreeBSD) могут иметь более одного интернет-адреса на одном физическом
+интерфейсе; в других системах вам, возможно, придется прибегнуть к
+псевдоинтерфейсам SLIP или PPP, которые находятся в выделенном сетевом адресном пространстве.
 .sp
-The host_pattern obeys the same syntax rules as host names and
-addresses in client_list context. Usually, server endpoint information
-is available only with connection-oriented services.
-.SH CLIENT USERNAME LOOKUP
-When the client host supports the RFC 931 protocol or one of its
-descendants (TAP, IDENT, RFC 1413) the wrapper programs can retrieve
-additional information about the owner of a connection. Client username
-information, when available, is logged together with the client host
-name, and can be used to match patterns like:
+Параметр host_pattern подчиняется тем же правилам синтаксиса, что и имена хостов и
+адреса в контексте client_list. Обычно информация о конечной точке сервера
+доступна только в сервисах, ориентированных на подключение.
+.SH ПОИСК ИМЕНИ ПОЛЬЗОВАТЕЛЯ КЛИЕНТА
+Если клиентский хост поддерживает протокол RFC 931 или один из его
+потомков (TAP, IDENT, RFC 1413), программы-оболочки могут получать
+дополнительную информацию о владельце соединения.
+Информация об имени пользователя клиента, если она доступна, регистрируется вместе с именем клиентского хоста
+и может использоваться для сопоставления таких шаблонов, как:
 .PP
 .ti +3
 daemon_list : ... user_pattern@host_pattern ...
 .PP
-The daemon wrappers can be configured at compile time to perform
-rule-driven username lookups (default) or to always interrogate the
-client host.  In the case of rule-driven username lookups, the above
-rule would cause username lookup only when both the \fIdaemon_list\fR
-and the \fIhost_pattern\fR match. 
+Daemon оболочки могут быть сконфигурированы во время компиляции для выполнения
+поиска имени пользователя на основе правил (по умолчанию) или для постоянного
+запроса клиентского хоста. В случае поиска имени пользователя, управляемого правилами, приведенное выше
+правило вызовет поиск имени пользователя только в том случае, если совпадают как \fIdaemon_list\from
+, так и \fIhost_pattern\fR.
 .PP
-A user pattern has the same syntax as a daemon process pattern, so the
-same wildcards apply (netgroup membership is not supported).  One
-should not get carried away with username lookups, though.
+Шаблон пользователя имеет тот же синтаксис, что и шаблон daemon процесса, поэтому применяются те
+же подстановочные знаки (членство в сетевой группе не поддерживается).  
+Однако не следует увлекаться поиском имени пользователя.
 .IP \(bu
-The client username information cannot be trusted when it is needed
-most, i.e. when the client system has been compromised.  In general,
-ALL and (UN)KNOWN are the only user name patterns that make sense.
+Информации об имени пользователя клиента нельзя доверять, когда она
+наиболее необходима, т.е. когда клиентская система была взломана. В общем,
+ВСЕ и (НЕ)ИЗВЕСТНЫЕ - это единственные шаблоны имен пользователей, которые имеют смысл.
 .IP \(bu
-Username lookups are possible only with TCP-based services, and only
-when the client host runs a suitable daemon; in all other cases the
-result is "unknown".
+Поиск имени пользователя возможен только с помощью служб, основанных на протоколе TCP, и только
+тогда, когда на клиентском хосте запущен подходящий daemon; во всех остальных случаях
+результат "неизвестен".
 .IP \(bu
-A well-known UNIX kernel bug may cause loss of service when username
-lookups are blocked by a firewall. The wrapper README document
-describes a procedure to find out if your kernel has this bug.
+Хорошо известная ошибка в ядре UNIX может привести к потере обслуживания, когда имя пользователя
+поисковые запросы блокируются брандмауэром. Документ README
+описывает процедуру, позволяющую выяснить, есть ли в вашем ядре эта ошибка.
 .IP \(bu
-Username lookups may cause noticeable delays for non-UNIX users.  The
-default timeout for username lookups is 10 seconds: too short to cope
-with slow networks, but long enough to irritate PC users.
+Поиск имени пользователя может привести к заметным задержкам для пользователей, не использующих UNIX.  
+Время ожидания по умолчанию для поиска имени пользователя составляет 10 секунд: слишком мало для работы
+в медленных сетях, но достаточно долго, чтобы раздражать пользователей ПК.
 .PP
-Selective username lookups can alleviate the last problem. For example,
-a rule like:
+Выборочный поиск имени пользователя может устранить последнюю проблему. Например,
+такое правило, как:
 .PP
 .ti +3
 daemon_list : @pcnetgroup ALL@ALL
 .PP
-would match members of the pc netgroup without doing username lookups,
-but would perform username lookups with all other systems.
-.SH DETECTING ADDRESS SPOOFING ATTACKS
-A flaw in the sequence number generator of many TCP/IP implementations
-allows intruders to easily impersonate trusted hosts and to break in
-via, for example, the remote shell service.  The IDENT (RFC931 etc.)
-service can be used to detect such and other host address spoofing
-attacks.
+будет сопоставляться с членами сетевой группы ПК без поиска имени пользователя,
+но будет выполнять поиск имени пользователя во всех других системах.
+.SH ОБНАРУЖЕНИЕ АТАК С ПОДМЕНОЙ АДРЕСА
+Недостаток в генераторе порядковых номеров многих реализаций TCP/IP
+позволяет злоумышленникам легко выдавать себя за доверенные хосты и проникать в
+систему, например, через службу удаленной оболочки.  Служба идентификации (RFC931 и т.д.)
+может использоваться для обнаружения таких и других
+атак на подмену адреса хоста.
 .PP
-Before accepting a client request, the wrappers can use the IDENT
-service to find out that the client did not send the request at all.
-When the client host provides IDENT service, a negative IDENT lookup
-result (the client matches `UNKNOWN@host') is strong evidence of a host
-spoofing attack.
+Прежде чем принять запрос клиента, разработчики могут воспользоваться службой идентификации, чтобы выяснить, что клиент вообще не отправлял запрос.
+Когда клиентский хост предоставляет услугу идентификации, отрицательный
+результат поиска идентификатора (клиент соответствует `UNKNOWN@host') является убедительным доказательством
+атаки подмены хоста.
 .PP
-A positive IDENT lookup result (the client matches `KNOWN@host') is
-less trustworthy. It is possible for an intruder to spoof both the
-client connection and the IDENT lookup, although doing so is much
-harder than spoofing just a client connection. It may also be that
-the client\'s IDENT server is lying.
+Положительный результат поиска идентификатора (клиент соответствует "ИЗВЕСТНОМУ хосту") вызывает
+меньше доверия. Злоумышленник может подделать как
+клиентское соединение, так и идентификатор, хотя сделать это намного
+сложнее, чем подделать только клиентское соединение. Также может случиться так, что
+сервер идентификации клиента лжет.
 .PP
-Note: IDENT lookups don\'t work with UDP services. 
-.SH EXAMPLES
-The language is flexible enough that different types of access control
-policy can be expressed with a minimum of fuss. Although the language
-uses two access control tables, the most common policies can be
-implemented with one of the tables being trivial or even empty.
+Примечание: Поиск идентификаторов не работает со службами UDP.
+.SH ПРИМЕРЫ
+Язык достаточно гибкий, поэтому различные типы
+политик контроля доступа могут быть сформулированы с минимальными усилиями. Хотя в языке
+используются две таблицы контроля доступа, наиболее распространенные политики могут быть
+реализованы с использованием тривиальной или даже пустой таблицы.
 .PP
-When reading the examples below it is important to realize that the
-allow table is scanned before the deny table, that the search
-terminates when a match is found, and that access is granted when no
-match is found at all.
+При чтении приведенных ниже примеров важно понимать, что таблица
+разрешений проверяется перед таблицей запрещений, что поиск
+завершается при обнаружении совпадения и что доступ предоставляется, когда
+совпадения не найдены вообще.
 .PP
-The examples use host and domain names. They can be improved by
-including address and/or network/netmask information, to reduce the
-impact of temporary name server lookup failures.
-.SH MOSTLY CLOSED
-In this case, access is denied by default. Only explicitly authorized
-hosts are permitted access. 
+В примерах используются имена хостов и доменов. Их можно улучшить,
+включив информацию об адресе и/или сети/сетевой маске, чтобы уменьшить
+влияние временных сбоев поиска на сервере имен.
+.SH В ОСНОВНОМ ЗАКРЫТЫЕ
+В этом случае доступ по умолчанию запрещен. Доступ разрешен только явно авторизованным
+хостам.
 .PP
-The default policy (no access) is implemented with a trivial deny
-file:
+Политика по умолчанию (отсутствие доступа) реализуется с помощью тривиального
+файла запрета:
 .PP
 .ne 2
 /etc/hosts.deny: 
 .in +3
 ALL: ALL
 .PP
-This denies all service to all hosts, unless they are permitted access
-by entries in the allow file.
+Это полностью отключает обслуживание всех хостов, если только им не разрешен доступ
+с помощью записей в файле allow.
 .PP
-The explicitly authorized hosts are listed in the allow file.
-For example:
+Явно авторизованные хосты перечислены в файле разрешений.
+Например:
 .PP
 .ne 2
 /etc/hosts.allow: 
@@ -299,18 +298,18 @@ ALL: LOCAL @some_netgroup
 .br
 ALL: .foobar.edu EXCEPT terminalserver.foobar.edu
 .PP
-The first rule permits access from hosts in the local domain (no `.\'
-in the host name) and from members of the \fIsome_netgroup\fP
-netgroup.  The second rule permits access from all hosts in the
-\fIfoobar.edu\fP domain (notice the leading dot), with the exception of
-\fIterminalserver.foobar.edu\fP.
-.SH MOSTLY OPEN
-Here, access is granted by default; only explicitly specified hosts are
-refused service. 
+Первое правило разрешает доступ с хостов в локальном домене (без "."
+в имени хоста) и от членов сетевой группы \fIsome_netgroup\fP
+.  Второе правило разрешает доступ со всех хостов в
+домене \\fI foobar.edu\fP (обратите внимание на начальную точку), за исключением
+\\fI terminal server.foobar.edu\fP.
+.SH В ОСНОВНОМ ОТКРЫТЕ
+Здесь доступ предоставляется по умолчанию; только явно указанным хостам
+отказано в обслуживании.
 .PP
-The default policy (access granted) makes the allow file redundant so
-that it can be omitted.  The explicitly non-authorized hosts are listed
-in the deny file. For example:
+Политика по умолчанию (доступ предоставлен) делает файл "разрешить" избыточным
+, поэтому его можно опустить.  Явно неавторизованные хосты перечислены
+в файле "Запретить". Например:
 .PP
 /etc/hosts.deny:
 .in +3
@@ -318,13 +317,13 @@ ALL: some.host.name, .some.domain
 .br
 ALL EXCEPT in.fingerd: other.host.name, .other.domain
 .PP
-The first rule denies some hosts and domains all services; the second
-rule still permits finger requests from other hosts and domains.
-.SH BOOBY TRAPS
-The next example permits tftp requests from hosts in the local domain
-(notice the leading dot).  Requests from any other hosts are denied.
-Instead of the requested file, a finger probe is sent to the offending
-host. The result is mailed to the superuser.
+Первое правило запрещает некоторым хостам и доменам пользоваться всеми услугами; второе
+правило по-прежнему разрешает запросы finger от других хостов и доменов.
+ЛОВУШКИ .SH
+В следующем примере разрешены запросы tftp от хостов в локальном домене
+(обратите внимание на начальную точку). Запросы с любых других хостов отклоняются.
+Вместо запрошенного файла
+на хост-нарушитель отправляется тестовый запрос. Результат отправляется суперпользователю по почте.
 .PP
 .ne 2
 /etc/hosts.allow:
@@ -340,54 +339,54 @@ in.tftpd: ALL: (/some/where/safe_finger -l @%h | \\
 	/usr/ucb/mail -s %d-%h root) &
 .fi
 .PP
-The safe_finger command is intended for use in back-fingering and should be
-installed in a suitable place. It limits possible damage from data sent
-by the remote finger server.  It gives better protection than the
-standard finger command.
+Команда safe_finger предназначена для использования в режиме обратной аппликатуры и должна быть
+установлена в подходящем месте. Она ограничивает возможный ущерб от данных, отправляемых
+удаленным сервером finger. Она обеспечивает лучшую защиту, чем
+стандартная команда finger.
 .PP
-The expansion of the %h (client host) and %d (service name) sequences
-is described in the section on shell commands.
+Расширение последовательностей %h (клиентский хост) и %d (имя службы)
+описано в разделе, посвященном командам оболочки.
 .PP
-Warning: do not booby-trap your finger daemon, unless you are prepared
-for infinite finger loops.
+Предупреждение: не ставьте ловушку в свой finger daemon, если только вы не готовы
+к бесконечным петлям пальцами.
 .PP
-On network firewall systems this trick can be carried even further.
-The typical network firewall only provides a limited set of services to
-the outer world. All other services can be "bugged" just like the above
-tftp example. The result is an excellent early-warning system.
+В системах сетевого брандмауэра этот трюк может быть применен еще шире.
+Обычный сетевой брандмауэр предоставляет только ограниченный набор услуг для
+внешнего мира. Все остальные службы могут быть "прослушаны", как в приведенном выше
+примере tftp. В результате получается отличная система раннего предупреждения.
 .br
 .ne 4
-.SH DIAGNOSTICS
-An error is reported when a syntax error is found in a host access
-control rule; when the length of an access control rule exceeds the
-capacity of an internal buffer; when an access control rule is not
-terminated by a newline character; when the result of %<letter>
-expansion would overflow an internal buffer; when a system call fails
-that shouldn\'t.  All problems are reported via the syslog daemon.
-.SH IMPLEMENTATION NOTES
-Some operating systems are distributed with TCP Wrappers as part of the
-base system. It is common for such systems to build wrapping functionality
-into networking utilities. Notably, some systems offer an \fIinetd\fR(8)
-which does not require the use of the \fItcpd\fR(8). Check your system's
-documentation for details.
-.SH FILES
+.SH ДИАГНОСТИКА
+Сообщение об ошибке появляется, когда в правиле управления доступом к хосту обнаружена синтаксическая ошибка
+; когда длина правила управления доступом превышает
+емкость внутреннего буфера; когда правило управления доступом не
+завершается символом новой строки; когда результат %<буква>
+расширение приведет к переполнению внутреннего буфера; при сбое системного вызова
+этого быть не должно.  Обо всех проблемах сообщается через daemon системного журнала.
+.SH ПРИМЕЧАНИЯ ПО ВНЕДРЕНИЮ
+Некоторые операционные системы распространяются с TCP-оболочками как частью
+базовой системы. Для таких систем характерно встраивание функций обертывания
+в сетевые утилиты. Примечательно, что некоторые системы предлагают \fIinetd\fR(8)
+для этого не требуется использовать \fItcpd\fR(8). Подробности см.
+в документации к вашей системе.
+.SH ФАЙЛЫ
 .na
 .nf
 /etc/hosts.allow, (daemon,client) pairs that are granted access.
 /etc/hosts.deny, (daemon,client) pairs that are denied access.
 .ad
 .fi
-.SH SEE ALSO
+.SH СМОТРЕТЬ ТАКЖЕ
 .nf
 tcpd(8) tcp/ip daemon wrapper program.
 tcpdchk(8), tcpdmatch(8), test programs.
-.SH BUGS
-If a name server lookup times out, the host name will not be available
-to the access control software, even though the host is registered.
+.SH ОШИБКИ
+Если время поиска по серверу имен истечет, имя хоста будет недоступно
+программному обеспечению контроля доступа, даже если хост зарегистрирован.
 .PP
-Domain name server lookups are case insensitive; NIS (formerly YP)
-netgroup lookups are case sensitive.
-.SH AUTHOR
+Поиск по доменным именам на сервере не чувствителен к регистру; поиск по сетевым группам NIS (ранее YP)
+чувствителен к регистру.
+.SH АВТОР
 .na
 .nf
 Wietse Venema (wietse@wzv.win.tue.nl)

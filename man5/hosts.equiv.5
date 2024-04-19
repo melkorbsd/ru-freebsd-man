@@ -28,19 +28,16 @@
 .Dd December 25, 2013
 .Dt HOSTS.EQUIV 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm hosts.equiv ,
 .Nm .rhosts
-.Nd trusted remote host and user name data base
-.Sh DESCRIPTION
-The
+.Nd база данных доверенных удаленных хостов и имен пользователей
+.Sh ОПИСАНИЕ
 .Nm
-and
+и
 .Nm .rhosts
-files contain information regarding
-trusted hosts and users on the network.
-For each host a single line should be present
-with the following information:
+содержат информацию о
+доверенных узлов и пользователей в сети.
 .Pp
 simple
 .Bd -unfilled -offset indent
@@ -52,76 +49,74 @@ or the more verbose
 [+-][hostname|@netgroup] [[+-][username|@netgroup]]
 .Ed
 .Pp
-A
 .Dq @
-indicates a host by netgroup or user by netgroup.
-A single
+указывает на хост по сетевой группе или пользователя по сетевой группе.
+Одиночный
 .Dq +
-matches all hosts or users.
-A host name with a leading
+соответствует всем хостам или пользователям.
+Имя хоста с ведущим
 .Dq -
-will reject
-all matching hosts and all their users.
-A user name with leading
+отклонит
+все совпадающие хосты и всех их пользователей.
+Имя пользователя с ведущим
 .Dq -
-will reject all matching users from matching hosts.
+отклонит всех подходящих пользователей с подходящих хостов.
 .Pp
-Items are separated by any number of blanks and/or
-tab characters.
-A
+Элементы разделяются любым количеством пробелов и/или
+символами табуляции.
 .Dq #
-indicates the beginning of
-a comment; characters up to the end of the line are
-not interpreted by routines which search the file.
+указывает на начало
+комментария; cсимволы до конца строки
+не интерпретируются программами, выполняющими поиск в файле.
 .Pp
-Host names are specified in the conventional Internet DNS
-dotted-domains
+Имена хостов указываются в традиционной интернет-системе DNS
+домены с точками
 .Dq .\&
-(dot) notation using the
+(точка), используя нотацию
 .Xr inet_addr 3
-routine
-from the Internet address manipulation library,
+процедура
+из библиотеки манипулирования интернет-адресами,
 .Xr inet 3 .
-Host names may contain any printable
-character other than a field delimiter, newline,
-or comment character.
+Имена хостов могут содержать любой печатаемый
+символ, кроме разделителя полей, новой строки,
+или символа комментария.
 .Pp
-For security reasons, a user's
+В целях безопасности пользовательские
 .Nm .rhosts
-file will be ignored if it is not a regular file, or if it
-is not owned by the user, or
-if it is writable by anyone other than the user.
-.Sh FILES
+будет проигнорирован, если он не является обычным файлом, или если он
+не принадлежит пользователю, или
+если он доступен для записи кому-либо, кроме пользователя.
+.Sh ФАЙЛЫ
 .Bl -tag -width /etc/hosts.equivxxx -compact
 .It Pa /etc/hosts.equiv
-The
+Файл
 .Nm
-file resides in
+находится в
 .Pa /etc .
 .It Pa $HOME/.rhosts
 .Nm .rhosts
-file resides in
+файл находится в
 .Pa $HOME .
 .El
-.Sh EXAMPLES
+.Sh ПРИМЕРЫ
 .Dl bar.com foo
 .Pp
-Trust user
+Доверять пользователю
 .Dq foo
-from host
+от хоста
 .Dq bar.com .
 .Pp
 .Dl +@allclient
 .Pp
-Trust all hosts from netgroup
+Доверять всем хостам из группы
 .Dq allclient .
 .Pp
 .Dl +@allclient -@dau
 .Pp
-Trust all hosts from netgroup
+Доверять всем хостам из группы
 .Dq allclient
-and their users
-except users from netgroup
+и их пользователям,
+кроме пользователей из группы
 .Dq dau .
 .Sh SEE ALSO
 .Xr rcp 1 ,
@@ -132,9 +127,9 @@ except users from netgroup
 .Xr netgroup 5 ,
 .Xr ifconfig 8 ,
 .Xr yp 8
-.Sh BUGS
-This manual page is incomplete.
-For more information read
-the source in
+.Sh ОШИБКИ
+Эта страница руководства неполная.
+Для получения дополнительной информации читайте
+исходный текст в
 .Pa src/lib/libc/net/rcmd.c
-or the SunOS manual page.
+или на странице руководства по SunOS.

@@ -35,90 +35,90 @@
 .Dd June 30, 2022
 .Dt DEVFS 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm devfs
 .Nd device file system
-.Sh SYNOPSIS
+.Sh КРАТКИЙ ОБЗОР
 .Bd -literal
 devfs	/dev	devfs rw 0 0
 .Ed
-.Sh DESCRIPTION
-The device file system, or
+.Sh ОПИСАНИЕ
+Файловая система устройства, или
 .Nm ,
 provides access to kernel's device
 namespace in the global file system namespace.
 The conventional mount point is
 .Pa /dev .
 .Pp
-The file system includes several directories, links, symbolic links
-and devices, some of which can also be written.
-In a chroot'ed
-environment,
+обеспечивает доступ к устройствам ядра
+в глобальном пространстве имен файловой системы.
+В среде chroot
+окружение,
 .Xr devfs 8
-can be used to create a new
+можно использовать для создания новой
 .Pa /dev
-mount point.
+точки монтирования.
 .Pp
-The
+Инструмент
 .Xr mknod 8
-tool can be used to recover deleted device entries under
+ можно использовать для восстановления удаленных записей устройства в файле
 .Nm .
 .Pp
-The
+Файловая система
 .Xr fdescfs 5
-filesystem is an alternate means for populating
+вляется альтернативным средством для заполнения
 .Pa /dev/fd .
-The character devices that both
+Символьные устройства, которые оба
 .Nm
-and
+и
 .Xr fdescfs 5
-present in
+присутствуют в
 .Pa /dev/fd
-correspond to the open file descriptors of the process
-accessing the directory.
+соответствуют открытым дескрипторам файлов процесса
+обращающегося к каталогу.
 .Nm
-only creates files for the standard file descriptors
+создаёт файлы только для стандартных файловых дескрипторов
 .Pa 0 ,
 .Pa 1
-and
+и
 .Pa 2 .
 .Xr fdescfs 5
-creates files for all open descriptors.
+создает файлы для всех открытых дескрипторов..
 .Pp
-The options are as follows:
+Возможны следующие варианты:
 .Bl -tag -width indent
 .It Fl o Ar options
-Use the specified mount
+Используйте указанные параметры mount
 .Ar options ,
-as described in
+как описано в
 .Xr mount 8 .
-The following devfs file system-specific options are available:
+Доступны следующие опции, специфичные для файловой системы devfs:
 .Bl -tag -width indent
 .It Cm ruleset Ns No = Ns Ar ruleset
-Set ruleset number
+Установить номер набора правил
 .Ar ruleset
-as the current ruleset for the mount-point and apply all its rules.
-If the ruleset number
+в качестве текущего набора правил для точки монтирования и применить все его правила.
+Если номер набора правил
 .Ar ruleset
-does not exist, an empty ruleset with the number
+не существует, будет создан пустой набор правил с номером
 .Ar ruleset
-is created.
-See
+будет создан.
+См.
 .Xr devfs 8
-for more information on working with devfs rulesets.
+для получения дополнительной информации о работе с наборами правил devfs.
 .El
 .El
-.Sh FILES
+.Sh ФАЙЛЫ
 .Bl -tag -width /dev/XXXX -compact
 .It Pa /dev
-The normal
+Нормальная
 .Nm
-mount point.
+точка установки.
 .El
-.Sh EXAMPLES
-To mount a
+.Sh ПРИМЕРЫ
+Для установки
 .Nm
-volume located on
+тома, расположенного на
 .Pa /mychroot/dev :
 .Pp
 .Dl "mount -t devfs devfs /mychroot/dev"
@@ -127,21 +127,21 @@ volume located on
 .Xr devfs 8 ,
 .Xr mount 8 ,
 .Xr make_dev 9
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Файловая система
 .Nm
-file system first appeared in
+впервые появилась в
 .Fx 2.0 .
-It became the preferred method for accessing devices in
+Она стала предпочтительным методом доступа к устройствам в
 .Fx 5.0
-and the only method in
+и единственным методом в
 .Fx 6.0 .
-The
+Страница руководства
 .Nm
-manual page first appeared in
+впервые появилась в
 .Fx 2.2 .
-.Sh AUTHORS
-The
+.Sh АВТОРЫ
+Страница руководства
 .Nm
-manual page was written by
+была написана
 .An Mike Pritchard Aq Mt mpp@FreeBSD.org .
