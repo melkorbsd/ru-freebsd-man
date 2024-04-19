@@ -30,64 +30,64 @@
 .Dd September 15, 2022
 .Dt HOSTS 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm hosts
 .Nd host name data base
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Файл
 .Nm
-file contains information regarding
-the known hosts on the network.
-It can be used in conjunction with DNS, and the NIS
-maps `hosts.byaddr' and `hosts.byname', as controlled by
+файл содержит информацию об
+известных хостов в сети.
+Она может использоваться совместно с DNS и картами NIS
+картами `hosts.byaddr' и `hosts.byname', как это контролируется в
 .Xr nsswitch.conf 5 .
-For each host a single line should be present
-with the following information:
+Для каждого хоста должна присутствовать одна строка
+со следующей информацией:
 .Bd -unfilled -offset indent
-Internet address
-official host name
-aliases
+Интернет-адрес
+официальное имя хоста
+псевдонимы
 .Ed
 .Pp
-Items are separated by any number of blanks and/or
-tab characters.
-A ``#'' indicates the beginning of
-a comment; characters up to the end of the line are
-not interpreted by routines which search the file.
+Элементы разделяются любым количеством пробелов и/или
+символами табуляции.
+Символ ``#'' указывает на начало
+комментарий; символы до конца строки
+не интерпретируются программами, выполняющими поиск в файле.
 .Pp
-This file provides a backup used when the name server
-is not running.
-For the name server, it is suggested that only a few addresses
-be included in this file.
-These include addresses for the local interfaces that
+Этот файл представляет собой резервную копию, используемую, когда сервер имен
+не работает.
+Для сервера имен рекомендуется включать в этот файл только несколько адресов
+включать в этот файл.
+К ним относятся адреса для локальных интерфейсов, которые
 .Xr ifconfig 8
-needs at boot time and a few machines on the local network.
+во время загрузки и нескольких машин в локальной сети.
 .Pp
-Network addresses are specified in either the conventional
-``.'' (dot) notation for IPv4 or colon hexadecimal notation for IPv6,
-as understood by the
+Сетевые адреса указываются либо в обычной форме
+``.'' (точка) для IPv4 или в шестнадцатеричной нотации двоеточия для IPv6,
+в соответствии с пониманием
 .Xr inet_pton 3
-routine
-from the Internet address manipulation library,
+рутина
+из библиотеки манипулирования интернет-адресами,
 .Xr inet 3 .
-Host names may contain any printable
-character other than a field delimiter, newline,
-or comment character.
-.Sh FILES
+Имена хостов могут содержать любой печатаемый
+символ, кроме разделителя полей, новой строки,
+или символа комментария.
+.Sh ФАЙЛЫ
 .Bl -tag -width /etc/hosts -compact
 .It Pa /etc/hosts
-The
+Файл
 .Nm
-file resides in
+распологается в
 .Pa /etc .
 .El
-.Sh SEE ALSO
+.Sh СМОТРЕТЬ ТАКЖЕ
 .Xr gethostbyname 3 ,
 .Xr inet 3 ,
 .Xr nsswitch.conf 5 ,
 .Xr ifconfig 8
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Формат
 .Nm
-file format appeared in
+файла появился в
 .Bx 4.1c .
