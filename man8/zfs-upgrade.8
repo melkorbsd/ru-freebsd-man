@@ -33,10 +33,10 @@
 .Dt ZFS-UPGRADE 8
 .Os
 .
-.Sh NAME
+.Sh BVZ
 .Nm zfs-upgrade
-.Nd manage on-disk version of ZFS filesystems
-.Sh SYNOPSIS
+.Nd управление дисковой версией файловых систем ZFS
+.Sh КРАТКИЙ ОБЗОР
 .Nm zfs
 .Cm upgrade
 .Nm zfs
@@ -48,19 +48,19 @@
 .Op Fl V Ar version
 .Fl a Ns | Ns Ar filesystem
 .
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 .Bl -tag -width ""
 .It Xo
 .Nm zfs
 .Cm upgrade
 .Xc
-Displays a list of file systems that are not the most recent version.
+Отображает список файловых систем, которые не являются самыми последними версиями.
 .It Xo
 .Nm zfs
 .Cm upgrade
 .Fl v
 .Xc
-Displays a list of currently supported file system versions.
+Отображает список поддерживаемых в данный момент версий файловой системы.
 .It Xo
 .Nm zfs
 .Cm upgrade
@@ -68,36 +68,35 @@ Displays a list of currently supported file system versions.
 .Op Fl V Ar version
 .Fl a Ns | Ns Ar filesystem
 .Xc
-Upgrades file systems to a new on-disk version.
-Once this is done, the file systems will no longer be accessible on systems
-running older versions of ZFS.
+Обновляет файловые системы до новой версии на диске.
+Как только это будет сделано, файловые системы больше не будут доступны в системах, работающих под управлением более старых версий ZFS.
 .Nm zfs Cm send
-streams generated from new snapshots of these file systems cannot be accessed on
-systems running older versions of ZFS.
+потоки, сгенерированные из новых снапшотов этих файловых систем, недоступны в
+системах, работающих под управлением более старых версий ZFS.
 .Pp
-In general, the file system version is independent of the pool version.
-See
+Как правило, версия файловой системы не зависит от версии пула.
+Смотрите
 .Xr zpool-features 7
-for information on features of ZFS storage pools.
+для получения информации о функциях пулов хранения ZFS.
 .Pp
-In some cases, the file system version and the pool version are interrelated and
-the pool version must be upgraded before the file system version can be
-upgraded.
+В некоторых случаях версия файловой системы и версия пула взаимосвязаны, и
+версия пула должна быть обновлена до того, как можно будет
+обновить версию файловой системы.
 .Bl -tag -width "filesystem"
 .It Fl V Ar version
-Upgrade to
-.Ar version .
-If not specified, upgrade to the most recent version.
-This
-option can only be used to increase the version number, and only up to the most
-recent version supported by this version of ZFS.
+Обновление
+.Ar версии .
+Если не указано, обновите до самой последней версии.
+Этот
+параметр можно использовать только для увеличения номера версии и только до самой
+последней версии, поддерживаемой данной версией ZFS.
 .It Fl a
-Upgrade all file systems on all imported pools.
+Обновите все файловые системы во всех импортированных пулах.
 .It Ar filesystem
-Upgrade the specified file system.
+Обновите указанную файловую систему.
 .It Fl r
-Upgrade the specified file system and all descendent file systems.
+Обновите указанную файловую систему и все последующие файловые системы.
 .El
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr zpool-upgrade 8

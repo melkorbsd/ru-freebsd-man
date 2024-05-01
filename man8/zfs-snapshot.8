@@ -33,66 +33,66 @@
 .Dt ZFS-SNAPSHOT 8
 .Os
 .
-.Sh NAME
+.Sh ИМЯ
 .Nm zfs-snapshot
-.Nd create snapshots of ZFS datasets
-.Sh SYNOPSIS
+.Nd создание снапшотов наборов данных ZFS
+.Sh КРАТКИЙ ОБЗОР
 .Nm zfs
 .Cm snapshot
 .Op Fl r
 .Oo Fl o Ar property Ns = Ns Ar value Oc Ns …
 .Ar dataset Ns @ Ns Ar snapname Ns …
 .
-.Sh DESCRIPTION
-All previous modifications by successful system calls to the file system are
-part of the snapshots.
-Snapshots are taken atomically, so that all snapshots correspond to the same
-moment in time.
+.Sh ОПИСАНИЕ
+Все предыдущие изменения, произведенные в результате успешных системных вызовов файловой системы, являются
+частью снапшотов.
+Снапшоты делаются атомарно, так что все снапшоты соответствуют одному и тому же
+моменту времени.
 .Nm zfs Cm snap
-can be used as an alias for
+может использоваться в качестве псевдонима для
 .Nm zfs Cm snapshot .
-See the
+Смотрите раздел
 .Sx Snapshots
-section of
+в
 .Xr zfsconcepts 7
-for details.
+для получения подробной информации.
 .Bl -tag -width "-o"
 .It Fl o Ar property Ns = Ns Ar value
-Set the specified property; see
+Устанавливает указанное свойство; смотрите
 .Nm zfs Cm create
-for details.
+для получения подробной информации.
 .It Fl r
-Recursively create snapshots of all descendent datasets
+Рекурсивно создаёт снапшоты всех дочерних наборов данных
 .El
 .
-.Sh EXAMPLES
+.Sh ПРИМЕРЫ
 .\" These are, respectively, examples 2, 3, 10, 15 from zfs.8
 .\" Make sure to update them bidirectionally
-.Ss Example 1 : No Creating a ZFS Snapshot
-The following command creates a snapshot named
+.Ss Пример 1 : No Создание снапшота ZFS
+Следующая команда создает снапшот с именем
 .Ar yesterday .
-This snapshot is mounted on demand in the
+Этот снапшот монтируется по требованию в каталог
 .Pa .zfs/snapshot
-directory at the root of the
-.Ar pool/home/bob
-file system.
+в корне файловой системы
+.Ar pool/home/bob .
 .Dl # Nm zfs Cm snapshot Ar pool/home/bob Ns @ Ns Ar yesterday
 .
-.Ss Example 2 : No Creating and Destroying Multiple Snapshots
-The following command creates snapshots named
-.Ar yesterday No of Ar pool/home
-and all of its descendent file systems.
-Each snapshot is mounted on demand in the
+.Ss Пример 2 : No Создание и уничтожение нескольких снапшотов
+Следующая команда создает моментальные снимки с именем
+.Ar yesterday No для Ar pool/home
+и всех его дочерних файловых систем.
+Каждый снапшот монтируется по требованию в
+каталоге 
 .Pa .zfs/snapshot
-directory at the root of its file system.
-The second command destroys the newly created snapshots.
+в корне файловой системы.
+Вторая команда уничтожает вновь созданные снапшоты.
 .Dl # Nm zfs Cm snapshot Fl r Ar pool/home Ns @ Ns Ar yesterday
 .Dl # Nm zfs Cm destroy Fl r Ar pool/home Ns @ Ns Ar yesterday
 .
-.Ss Example 3 : No Promoting a ZFS Clone
-The following commands illustrate how to test out changes to a file system, and
-then replace the original file system with the changed one, using clones, clone
-promotion, and renaming:
+.Ss Пример 3 : No Продвижение клона ZFS
+Следующие команды иллюстрируют, как протестировать изменения в файловой системе, а
+затем заменить исходную файловую систему на измененную, используя клоны,
+продвижение клонов и переименование:
 .Bd -literal -compact -offset Ds
 .No # Nm zfs Cm create Ar pool/project/production
   populate /pool/project/production with data
@@ -106,11 +106,11 @@ promotion, and renaming:
 .No # Nm zfs Cm destroy Ar pool/project/legacy
 .Ed
 .
-.Ss Example 4 : No Performing a Rolling Snapshot
-The following example shows how to maintain a history of snapshots with a
-consistent naming scheme.
-To keep a week's worth of snapshots, the user destroys the oldest snapshot,
-renames the remaining snapshots, and then creates a new snapshot, as follows:
+.Ss Пример 4 : No Выполнение движущегося снапшота
+В следующем примере показано, как вести журнал снапшотов с
+использованием согласованной схемы именования.
+Чтобы сохранить снапшоты на неделю, пользователь удаляет самый старый снапшот,
+переименовывает оставшиеся снапшоты и затем создает новый снапшот следующим образом:
 .Bd -literal -compact -offset Ds
 .No # Nm zfs Cm destroy Fl r Ar pool/users@7daysago
 .No # Nm zfs Cm rename Fl r Ar pool/users@6daysago No @ Ns Ar 7daysago
@@ -123,7 +123,7 @@ renames the remaining snapshots, and then creates a new snapshot, as follows:
 .No # Nm zfs Cm snapshot Fl r Ar pool/users Ns @ Ns Ar today
 .Ed
 .
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr zfs-bookmark 8 ,
 .Xr zfs-clone 8 ,
 .Xr zfs-destroy 8 ,

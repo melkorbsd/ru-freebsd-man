@@ -29,14 +29,14 @@
 .\" Copyright 2018 Nexenta Systems, Inc.
 .\" Copyright 2019 Joyent, Inc.
 .\"
-.Dd March 16, 2022
+.Dd Март 16, 2022
 .Dt ZFS-RENAME 8
 .Os
 .
-.Sh NAME
+.Sh ИМЯ
 .Nm zfs-rename
-.Nd rename ZFS dataset
-.Sh SYNOPSIS
+.Nd переименовать набор данных ZFS
+.Sh КРАТКИЙ ОБЗОР
 .Nm zfs
 .Cm rename
 .Op Fl f
@@ -58,7 +58,7 @@
 .Fl r
 .Ar snapshot Ar snapshot
 .
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 .Bl -tag -width ""
 .It Xo
 .Nm zfs
@@ -83,34 +83,33 @@
 .Ar filesystem
 .Ar filesystem
 .Xc
-Renames the given dataset.
-The new target can be located anywhere in the ZFS hierarchy, with the exception
-of snapshots.
-Snapshots can only be renamed within the parent file system or volume.
-When renaming a snapshot, the parent file system of the snapshot does not need
-to be specified as part of the second argument.
-Renamed file systems can inherit new mount points, in which case they are
-unmounted and remounted at the new mount point.
+Переименовывает данный набор данных.
+Новый целевой объект может быть расположен в любом месте иерархии ZFS, за исключением
+снапшотов.
+Снапшоты могут быть переименованы только в родительской файловой системе или томе.
+При переименовании снапшота во втором аргументе необязательно указывать родительскую файловую систему моментального снапшота.
+Переименованные файловые системы могут наследовать новые точки монтирования, и в этом случае они
+размонтируются и повторно подключаются в новой точке монтирования.
 .Bl -tag -width "-a"
 .It Fl f
-Force unmount any file systems that need to be unmounted in the process.
-This flag has no effect if used together with the
+Принудительно размонтируйте все файловые системы, которые необходимо размонтировать в процессе.
+Этот флажок не действует, если используется вместе с
 .Fl u
-flag.
+флагом.
 .It Fl p
-Creates all the nonexistent parent datasets.
-Datasets created in this manner are automatically mounted according to the
+Создает все несуществующие родительские наборы данных.
+Наборы данных, созданные таким образом, автоматически монтируются в соответствии с
 .Sy mountpoint
-property inherited from their parent.
+свойства, унаследованная от их родителя.
 .It Fl u
-Do not remount file systems during rename.
-If a file system's
+Не перемонтируйте файловые системы во время переименования.
+Если файловая система
 .Sy mountpoint
-property is set to
+свойство настроено на
 .Sy legacy
-or
+или
 .Sy none ,
-the file system is not unmounted even if this option is not given.
+файловая система не размонтируется, даже если эта опция не указана.
 .El
 .It Xo
 .Nm zfs
@@ -118,17 +117,17 @@ the file system is not unmounted even if this option is not given.
 .Fl r
 .Ar snapshot Ar snapshot
 .Xc
-Recursively rename the snapshots of all descendent datasets.
-Snapshots are the only dataset that can be renamed recursively.
+Рекурсивно переименуйте снапшоты всех дочерних наборов данных.
+Снапшоты - это единственный набор данных, который можно рекурсивно переименовать.
 .El
 .
-.Sh EXAMPLES
+.Sh ПРИМЕРЫ
 .\" These are, respectively, examples 10, 15 from zfs.8
 .\" Make sure to update them bidirectionally
-.Ss Example 1 : No Promoting a ZFS Clone
-The following commands illustrate how to test out changes to a file system, and
-then replace the original file system with the changed one, using clones, clone
-promotion, and renaming:
+.Ss Пример 1 : Никакого продвижения клона ZFS
+Следующие команды иллюстрируют, как протестировать изменения в файловой системе, а
+затем заменить исходную файловую систему на измененную, используя клоны,
+продвижение клонов и переименование:
 .Bd -literal -compact -offset Ds
 .No # Nm zfs Cm create Ar pool/project/production
   populate /pool/project/production with data
@@ -142,11 +141,11 @@ promotion, and renaming:
 .No # Nm zfs Cm destroy Ar pool/project/legacy
 .Ed
 .
-.Ss Example 2 : No Performing a Rolling Snapshot
-The following example shows how to maintain a history of snapshots with a
-consistent naming scheme.
-To keep a week's worth of snapshots, the user destroys the oldest snapshot,
-renames the remaining snapshots, and then creates a new snapshot, as follows:
+.Ss Пример 2 : Нет необходимости выполнять переходящий снапшот
+В следующем примере показано, как вести журнал снапшотов с
+использованием согласованной схемы именования.
+Чтобы сохранить снапшот на неделю, пользователь удаляет самый старый снапшот,
+переименовывает оставшиеся снапшоты и затем создает новый снапшот следующим образом:
 .Bd -literal -compact -offset Ds
 .No # Nm zfs Cm destroy Fl r Ar pool/users@7daysago
 .No # Nm zfs Cm rename Fl r Ar pool/users@6daysago No @ Ns Ar 7daysago

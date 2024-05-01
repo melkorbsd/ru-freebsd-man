@@ -33,10 +33,10 @@
 .Dt ZFS-SHARE 8
 .Os
 .
-.Sh NAME
+.Sh ИМЯ
 .Nm zfs-share
-.Nd share and unshare ZFS filesystems
-.Sh SYNOPSIS
+.Nd совместное использование и отмена совместного использования файловых систем ZFS
+.Sh КРАТКИЙ ОБЗОР
 .Nm zfs
 .Cm share
 .Op Fl l
@@ -45,7 +45,7 @@
 .Cm unshare
 .Fl a Ns | Ns Ar filesystem Ns | Ns Ar mountpoint
 .
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 .Bl -tag -width ""
 .It Xo
 .Nm zfs
@@ -53,48 +53,48 @@
 .Op Fl l
 .Fl a Ns | Ns Ar filesystem
 .Xc
-Shares available ZFS file systems.
+Совместно использует доступные файловые системы ZFS.
 .Bl -tag -width "-a"
 .It Fl l
-Load keys for encrypted filesystems as they are being mounted.
-This is equivalent to executing
+Загружает ключи для зашифрованных файловых систем по мере их монтирования.
+Это эквивалентно выполнению
 .Nm zfs Cm load-key
-on each encryption root before mounting it.
-Note that if a filesystem has
+в каждом корневом каталоге шифрования перед его установкой.
+Обратите внимание, что если файловая система имеет
 .Sy keylocation Ns = Ns Sy prompt ,
-this will cause the terminal to interactively block after asking for the key.
+это приведет к интерактивной блокировке терминала после запроса ключа.
 .It Fl a
-Share all available ZFS file systems.
-Invoked automatically as part of the boot process.
+Предоставляет общий доступ ко всем доступным файловым системам ZFS.
+Запускается автоматически в процессе загрузки.
 .It Ar filesystem
-Share the specified filesystem according to the
+Предоставляет общий доступ к указанной файловой системе в соответствии с
 .Sy sharenfs
-and
+и
 .Sy sharesmb
-properties.
-File systems are shared when the
+свойствами.
+Файловые системы являются общими, когда
 .Sy sharenfs
-or
+или
 .Sy sharesmb
-property is set.
+свойство установлено.
 .El
 .It Xo
 .Nm zfs
 .Cm unshare
 .Fl a Ns | Ns Ar filesystem Ns | Ns Ar mountpoint
 .Xc
-Unshares currently shared ZFS file systems.
+Отменяет совместное использование файловых систем ZFS, которые в настоящее время являются общими.
 .Bl -tag -width "-a"
 .It Fl a
-Unshare all available ZFS file systems.
-Invoked automatically as part of the shutdown process.
+Отключает общий доступ ко всем доступным файловым системам ZFS.
+Вызывается автоматически как часть процесса завершения работы.
 .It Ar filesystem Ns | Ns Ar mountpoint
-Unshare the specified filesystem.
-The command can also be given a path to a ZFS file system shared on the system.
+Отменяет общий доступ к указанной файловой системе.
+Команде также может быть задан путь к файловой системе ZFS, совместно используемой в системе.
 .El
 .El
 .
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr exports 5 ,
 .Xr smb.conf 5 ,
 .Xr zfsprops 7

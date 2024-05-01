@@ -1,0 +1,305 @@
+.\"
+.\" Copyright (C) 2022 Jan Schaumann <jschauma@netmeister.org>.
+.\"
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
+.\"
+.\" THIS SOFTWARE IS PROVIDED BY AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\" ARE DISCLAIMED.  IN NO EVENT SHALL AUTHOR OR CONTRIBUTORS BE LIABLE
+.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+.\" SUCH DAMAGE.
+.\"
+.Dd Декабрь 12, 2022
+.Dt sizeof 7
+.Os
+.Sh ИМЯ
+.Nm sizeof
+operator
+.Nd возвращает размер хранилища для данного операнда
+.Sh СИНТАКСИС
+.Nm Vt ( type )
+.br
+.Nm Vt expression
+.Sh ОПИСАНИЕ
+.Nm
+оператор возвращает размер своего операнда.
+.Nm
+оператор не может быть применен к неполным типам и выражениям
+с неполными типами (например,
+.Vt void ,
+или заранее определенный
+.Vt struct foo ),
+и типами функций.
+.Pp
+Размер примитивных (непроизводных) типов данных в C может отличаться
+в зависимости от аппаратных платформ и реализаций.
+Они определяются соответствующим двоичным интерфейсом приложения (ABI)
+спецификации, смотрите в разделе
+.Xr arch 7
+для получения подробной информации об ABI, используемом
+.Fx .
+Для программы может оказаться необходимым или полезным иметь возможность
+определять размер хранилища для типа данных или объекта
+с учетом специфики платформы.
+.Pp
+Унарный оператор
+.Nm
+возвращает размер хранилища выражения или
+типа данных в
+.Em char sized units
+(Байты на языке Си).
+В результате,
+.Ql sizeof(char)
+всегда гарантированно равно 1.
+(Количество битов в
+.Vt char
+задается с помощью
+.Dv CHAR_BIT
+определения в заголовке
+.In limits.h ;
+многие системы также предоставляют определение "количества битов
+в байте" в виде
+.Dv NBBY
+в
+.In sys/param.h
+заголовке.)
+.Sh ПРИМЕРЫ
+Разные платформы могут использовать разные модели данных.
+Например, системы, в которых целые числа, длинные строки и
+указатели используют 32 бита (например, i386),
+называются использующими модель данных "ILP32", системы, использующие
+64-битные длинные строки и указатели (например, amd64 / x86_64)
+в качестве модели данных "LP64".
+.Pp
+Следующие примеры иллюстрируют возможные результаты
+вызова
+.Nm
+в системе ILP32 по сравнению с системой LP64:
+.Pp
+При применении к простой переменной или типу данных,
+.Nm
+возвращает размер хранилища для типа данных объекта:
+.Bl -column -offset indent \
+    ".Li sizeof(struct flex)" ".Sy Result (ILP32)" ".Sy Result (LP64)"
+.It Sy Object or type \
+ Ta Sy Result (ILP32) \
+ Ta Sy Result (LP64)
+.It Li sizeof(char) \
+ Ta 1 \
+ Ta 1
+.It Li sizeof(int) \
+ Ta 4 \
+ Ta 4
+.It Li sizeof(long) \
+ Ta 4 \
+ Ta 8
+.It Li sizeof(float) \
+ Ta 4 \
+ Ta 4
+.It Li sizeof(double) \
+ Ta 8 \
+ Ta 8
+.It Li sizeof(char *) \
+ Ta 4 \
+ Ta 8
+.El
+.Pp
+Для инициализированных данных или неинициализированных массивов
+фиксированного размера, известного во время компиляции,
+.Nm
+вернет правильный размер хранилища:
+.Bd -literal -offset indent
+#define DATA "1234567890"
+char buf1[] = "abc";
+char buf2[1024];
+char buf3[1024] = { 'a', 'b', 'c' };
+.Ed
+.Bl -column -offset indent \
+    ".Li sizeof(struct flex)" ".Sy Result"
+.It Sy Object or type \
+ Ta Sy Result
+.It Li sizeof(DATA) \
+ Ta 11
+.It Li sizeof(buf1) \
+ Ta 4
+.It Li sizeof(buf2) \
+ Ta 1024
+.It Li sizeof(buf3) \
+ Ta 1024
+.El
+.Pp
+Приведенные выше примеры одинаковы для платформ ILP32 и LP64,
+поскольку они основаны на символьных единицах измерения.
+.Pp
+При применении к структуре или объединению,
+.Nm
+Возвращает общее количество байт в объекте,
+включая любые внутренние или конечные отступы, используемые для
+выравнивания объекта в памяти.
+Таким образом, этот результат может быть больше, чем если
+бы размер хранилища каждого отдельного элемента был добавлен:
+.Bd -literal -offset indent
+struct s1 {
+        char c;
+};
+
+struct s2 {
+        char *s;
+        int i;
+};
+
+struct s3 {
+        char *s;
+        int i;
+        int j;
+};
+
+struct s4 {
+	int i;
+	uint64_t i64;
+};
+
+struct s5 {
+        struct s1 a;
+        struct s2 b;
+        struct s3 c;
+        struct s4 d;
+};
+.Ed
+.Bl -column -offset indent \
+    ".Li sizeof(struct flex)" ".Sy Result (ILP32)  " ".Sy Result (LP64)"
+.It Sy Object or type \
+ Ta Sy Result (ILP32) \
+ Ta Sy Result (LP64)
+.It Li sizeof(struct s1) \
+ Ta 1 \
+ Ta 1
+.It Li sizeof(struct s2) \
+ Ta 8 \
+ Ta 16
+.It Li sizeof(struct s3) \
+ Ta 12 \
+ Ta 16
+.It Li sizeof(struct s4) \
+ Ta 12 \
+ Ta 16
+.It Li sizeof(struct s5) \
+ Ta 36  \
+ Ta 56
+.El
+.Pp
+При применении к структуре, содержащей
+элемент гибкого массива,
+.Nm
+возвращает размер структуры
+.Em без
+массивf, хотя, опять же, возможно, включает любое
+дополнение, которое компилятор сочтет подходящим:
+.Bd -literal -offset indent
+struct flex {
+        char c;
+        long b;
+        char array[];
+}
+.Ed
+.Bl -column -offset indent \
+    ".Li sizeof(struct flex)" ".Sy Result (ILP32)  " ".Sy Result (LP64)"
+.It Sy Object or type \
+ Ta Sy Result (ILP32) \
+ Ta Sy Result (LP64)
+.It Li sizeof(struct flex) \
+ Ta 8 \
+ Ta 16
+.El
+.Pp
+Одно из наиболее распространенных применений
+.Nm
+оператора определение правильного объема выделяемой памяти:
+.Bd -literal -offset indent
+int *nums = calloc(512, sizeof(int));
+.Ed
+.Pp
+То
+.Nm
+оператор может быть использован для вычисления количества
+элементов в массиве путем деления размера массива
+на размер одного из его элементов:
+.Bd -literal -offset indent
+int nums[] = { 1, 2, 3, 4, 5 };
+const int howmany = sizeof(nums) / sizeof(nums[0]);
+.Ed
+.Pp
+Многие системы предоставляют этот ярлык в качестве макроса
+.Dv ntimes()
+через
+.In sys/param.h
+заголовочный файл.
+.Sh РЕЗУЛЬТАТ
+Результат 
+.Nm
+оператора это целочисленный тип без знака, определенный в
+.Dv stddef.h
+заголовке как
+.Vt size_t .
+.Sh ЗАПИСИ
+Это распространенная ошибка - применять
+.Nm
+к динамически выделяемому массиву:
+.Bd -literal -offset indent
+char *buf;
+if ((buf = malloc(BUFSIZ)) == NULL) {
+        perror("malloc");
+}
+/* Warning: wrong! */
+(void)strncat(buf, input, sizeof(buf) - 1);
+.Ed
+.Pp
+В этом случае оператор вернет
+размер указателя для хранения (
+.Ql sizeof(char *)
+), а не
+выделенную память.
+.Pp
+.Nm
+определяет
+.Ev размер
+результата приведенного выражения, но
+.Em не
+вычисляет выражение:
+.Bd -literal -offset indent
+int a = 42;
+printf("%ld - %d\\n", sizeof(a = 10), a); /* Result: "4 - 42" */
+.Ed
+.Pp
+Поскольку он вычисляется компилятором, а не
+препроцессором, то
+.Nm
+оператор не может быть использован в выражении препроцессора.
+.Sh СМОТРИТЕ ТАКЖЕ
+.Xr arch 7 ,
+.Xr operator 7
+.Sh СТАНДАРТЫ
+То
+.Nm
+оператор соблюдает следующие требования
+.St -ansiC .
+.Pp
+Обработка гибких элементов массива в структурах
+соответствует
+.St -isoC-99 .
+.Sh АВТОРЫ
+Эта страница руководства была написана
+.An Ян Шауманн Aq Mt jschauma@netmeister.org .

@@ -33,80 +33,79 @@
 .Dt ZFS-DIFF 8
 .Os
 .
-.Sh NAME
+.Sh ИМЯ
 .Nm zfs-diff
-.Nd show difference between ZFS snapshots
-.Sh SYNOPSIS
+.Nd показывает разницу между снапшотами ZFS
+.Sh КРАТКИЙ ОБЗОР
 .Nm zfs
 .Cm diff
 .Op Fl FHth
 .Ar snapshot Ar snapshot Ns | Ns Ar filesystem
 .
-.Sh DESCRIPTION
-Display the difference between a snapshot of a given filesystem and another
-snapshot of that filesystem from a later time or the current contents of the
-filesystem.
-The first column is a character indicating the type of change, the other columns
-indicate pathname, new pathname
-.Pq in case of rename ,
-change in link count, and optionally file type and/or change time.
-The types of change are:
+.Sh ОПИСАНИЕ
+Отображает разницу между снапшотом данной файловой системы и другим
+снапшотом этой файловой системы, сделанным позже, или текущим содержимым
+файловой системы.
+Первый столбец - это символ, указывающий тип изменения, остальные столбцы
+указывают путь, новое имя пути
+.Pq в случае переименования ,
+изменяет количество ссылок и, при необходимости, тип файла и/или время изменения.
+Существуют следующие типы изменений:
 .Bl -tag -compact -offset Ds -width "M"
 .It Sy -
-The path has been removed
+Путь был удален
 .It Sy +
-The path has been created
+Путь был создан
 .It Sy M
-The path has been modified
+Путь был изменен
 .It Sy R
-The path has been renamed
+Путь был переименован
 .El
 .Bl -tag -width "-F"
 .It Fl F
-Display an indication of the type of file, in a manner similar to the
+Отображает указанный тип файла, аналогично тому, как
 .Fl F
-option of
+параметр в
 .Xr ls 1 .
 .Bl -tag -compact -offset 2n -width "B"
 .It Sy B
-Block device
+Блочное устройство
 .It Sy C
-Character device
+Символьное устройство
 .It Sy /
-Directory
+Каталог
 .It Sy >
-Door
+Дверь
 .It Sy |\&
-Named pipe
+Именованный канал
 .It Sy @
-Symbolic link
+Символическая ссылка
 .It Sy P
-Event port
+Порт события
 .It Sy =
-Socket
+Сокет
 .It Sy F
-Regular file
+Обычный файл
 .El
 .It Fl H
-Give more parsable tab-separated output, without header lines and without
-arrows.
+Обеспечивает более понятный для анализа вывод с разделением табуляцией, без строк заголовка и
+стрелок.
 .It Fl t
-Display the path's inode change time as the first column of output.
+Отображает время изменения индексного пути в качестве первого столбца выходных данных.
 .It Fl h
-Do not
-.Sy \e0 Ns Ar ooo Ns -escape
-non-ASCII paths.
+Не
+.Sy \e0 Ns Ar ooo Ns -избегать
+пути, отличные от ASCII.
 .El
 .
-.Sh EXAMPLES
+.Sh ПРИМЕРЫ
 .\" These are, respectively, examples 22 from zfs.8
 .\" Make sure to update them bidirectionally
-.Ss Example 1 : No Showing the differences between a snapshot and a ZFS Dataset
-The following example shows how to see what has changed between a prior
-snapshot of a ZFS dataset and its current state.
-The
+.Ss Пример 1 : No Отображение различий между снапшотом и набором данных ZFS
+В следующем примере показано, как увидеть, что изменилось между предыдущим
+снапшотом набора данных ZFS и его текущим состоянием.
 .Fl F
-option is used to indicate type information for the files affected.
+параметр используется для указания информации о типе затронутых файлов.
 .Bd -literal -compact -offset Ds
 .No # Nm zfs Cm diff Fl F Ar tank/test@before tank/test
 M       /       /tank/test/
@@ -117,5 +116,5 @@ R       F       /tank/test/oldname -> /tank/test/newname
 M       F       /tank/test/modified
 .Ed
 .
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr zfs-snapshot 8

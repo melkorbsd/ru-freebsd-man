@@ -33,10 +33,10 @@
 .Dt ZFS-SEND 8
 .Os
 .
-.Sh NAME
+.Sh ИМЯ
 .Nm zfs-send
-.Nd generate backup stream of ZFS dataset
-.Sh SYNOPSIS
+.Nd генерирует поток резервных копий набора данных ZFS
+.Sh КРАТКИЙ ОБЗОР
 .Nm zfs
 .Cm send
 .Op Fl DLPVbcehnpsvw
@@ -68,7 +68,7 @@
 .Ar snapshot redaction_bookmark
 .Ar redaction_snapshot Ns …
 .
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 .Bl -tag -width ""
 .It Xo
 .Nm zfs
@@ -78,234 +78,221 @@
 .Op Oo Fl I Ns | Ns Fl i Oc Ar snapshot
 .Ar snapshot
 .Xc
-Creates a stream representation of the second
-.Ar snapshot ,
-which is written to standard output.
-The output can be redirected to a file or to a different system
-.Po for example, using
+Создает потоковое представление второго
+.Ar снапшот ,
+который записывается в стандартный вывод.
+Вывод может быть перенаправлен в файл или в другую систему
+.Po например, используя
 .Xr ssh 1
 .Pc .
-By default, a full stream is generated.
+По умолчанию генерируется полный поток.
 .Bl -tag -width "-D"
 .It Fl D , -dedup
-Deduplicated send is no longer supported.
-This flag is accepted for backwards compatibility, but a regular,
-non-deduplicated stream will be generated.
+Дедуплицированная отправка больше не поддерживается.
+Этот флаг используется для обеспечения обратной совместимости, но будет создан обычный,
+не дедуплицированный поток.
 .It Fl I Ar snapshot
-Generate a stream package that sends all intermediary snapshots from the first
-snapshot to the second snapshot.
-For example,
+Создаёт потоковый пакет, который отправляет все промежуточные снимки из первого снапшота во второй.
+Например,
 .Fl I Em @a Em fs@d
-is similar to
+похож на
 .Fl i Em @a Em fs@b Ns \&; Fl i Em @b Em fs@c Ns \&; Fl i Em @c Em fs@d .
-The incremental source may be specified as with the
-.Fl i
-option.
+Добавочный источник может быть указан с помощью параметра
+.Fl i .
 .It Fl L , -large-block
-Generate a stream which may contain blocks larger than 128 KiB.
-This flag has no effect if the
+Генерирует поток, который может содержать блоки размером более 128 КБ.
+Этот флаг не действует, если функция пула
 .Sy large_blocks
-pool feature is disabled, or if the
+отключена, или если свойство
 .Sy recordsize
-property of this filesystem has never been set above 128 KiB.
-The receiving system must have the
-.Sy large_blocks
-pool feature enabled as well.
-See
+этой файловой системы никогда не превышал 128 КБ.
+Принимающая система должна также имень включенную функцию пула 
+.Sy large_blocks .
+Смотрите
 .Xr zpool-features 7
-for details on ZFS feature flags and the
-.Sy large_blocks
-feature.
+для получения подробной информации о флагах функций ZFS и функции
+.Sy large_blocks .
 .It Fl P , -parsable
-Print machine-parsable verbose information about the stream package generated.
+Выводит поддающуюся машинному анализу подробную информацию о сгенерированном потоковом пакете.
 .It Fl R , -replicate
-Generate a replication stream package, which will replicate the specified
-file system, and all descendent file systems, up to the named snapshot.
-When received, all properties, snapshots, descendent file systems, and clones
-are preserved.
+Генерирует потоковый пакет репликации, который будет реплицировать указанную
+файловую систему и все дочерние файловые системы вплоть до именованного снапшота.
+При получении все свойства, снапшоты, дочерние файловые системы и клоны
+сохраняются.
 .Pp
-If the
+Если
 .Fl i
-or
+или
 .Fl I
-flags are used in conjunction with the
+флаги используются в сочетании с
 .Fl R
-flag, an incremental replication stream is generated.
-The current values of properties, and current snapshot and file system names are
-set when the stream is received.
-If the
+флагом, генерируется поток добавочной репликации.
+При получении потока устанавливаются текущие значения свойств, а также имена текущего моментального снимка и файловой системы.
+Если
 .Fl F
-flag is specified when this stream is received, snapshots and file systems that
-do not exist on the sending side are destroyed.
-If the
+флаг указан при получении этого потока, снапшоты и файловые системы, которые
+не существуют на стороне отправителя, уничтожаются.
+Если
 .Fl R
-flag is used to send encrypted datasets, then
+флаг используется для отправки зашифрованных наборов данных, затем
 .Fl w
-must also be specified.
+также должен быть указан.
 .It Fl V , -proctitle
-Set the process title to a per-second report of how much data has been sent.
+Устанавливает для заголовка процесса значение ежесекундный отчет о том, сколько данных было отправлено.
 .It Fl X , -exclude Ar dataset Ns Oo , Ns Ar dataset Oc Ns …
-With
+С
 .Fl R ,
 .Fl X
-specifies a set of datasets (and, hence, their descendants),
-to be excluded from the send stream.
-The root dataset may not be excluded.
+определяет набор наборов данных (и, следовательно, их потомки),
+который будет исключен из потока отправки.
+Корневой набор данных может быть не исключен.
 .Fl X Ar a Fl X Ar b
-is equivalent to
+эквивалентно
 .Fl X Ar a , Ns Ar b .
 .It Fl e , -embed
-Generate a more compact stream by using
+Создаёт более компактный поток, используя
 .Sy WRITE_EMBEDDED
-records for blocks which are stored more compactly on disk by the
+записи для блоков, которые хранятся на диске в более компактном виде с помощью функции пула
+.Sy embedded_data .
+Этот флаг не действует, если функция
 .Sy embedded_data
-pool feature.
-This flag has no effect if the
-.Sy embedded_data
-feature is disabled.
-The receiving system must have the
-.Sy embedded_data
-feature enabled.
-If the
+отключена.
+Принимающая система должна иметь включенную функцию
+.Sy embedded_data .
+Если
 .Sy lz4_compress
-feature is active on the sending system, then the receiving system must have
-that feature enabled as well.
-Datasets that are sent with this flag may not be
-received as an encrypted dataset, since encrypted datasets cannot use the
-.Sy embedded_data
-feature.
-See
+функция активна в отправляющей системе, то в принимающей системе также должна быть
+включена эта функция.
+Наборы данных, отправленные с этим флагом, могут не быть
+получены в зашифрованном виде, поскольку в зашифрованных наборах данных нельзя использовать функцию
+.Sy embedded_data .
+Смотрите
 .Xr zpool-features 7
-for details on ZFS feature flags and the
-.Sy embedded_data
-feature.
+для получения подробной информации о флагах функций ZFS и функции
+.Sy embedded_data .
 .It Fl b , -backup
-Sends only received property values whether or not they are overridden by local
-settings, but only if the dataset has ever been received.
-Use this option when you want
+Отправляет только полученные значения свойств, будь переопределены они локальными
+настройками или нет, но только если набор данных когда-либо был получен.
+Используйте этот параметр, когда захотите, чтобы
 .Nm zfs Cm receive
-to restore received properties backed up on the sent dataset and to avoid
-sending local settings that may have nothing to do with the source dataset,
-but only with how the data is backed up.
+восстановил полученные свойства, скопированные из отправленного набора данных, и избежать
+отправки локальных настроек, которые могут не иметь ничего общего с исходным набором данных,
+а только с тем, как выполняется резервное копирование данных.
 .It Fl c , -compressed
-Generate a more compact stream by using compressed WRITE records for blocks
-which are compressed on disk and in memory
-.Po see the
+Созд`n` более компактный поток, используя сжатые записи WRITE для блоков
+, которые сжимаются на диске и в памяти
+.Po смотрите свойство
 .Sy compression
-property for details
+для получения более подробной информации
 .Pc .
-If the
+Если функция
 .Sy lz4_compress
-feature is active on the sending system, then the receiving system must have
-that feature enabled as well.
-If the
+активна в отправляющей системе, то в принимающей системе также должна быть
+включена эта функция.
+Если функция
 .Sy large_blocks
-feature is enabled on the sending system but the
+включена в отправляющей системе, но параметр
 .Fl L
-option is not supplied in conjunction with
+не поставляется в комплекте с
 .Fl c ,
-then the data will be decompressed before sending so it can be split into
-smaller block sizes.
-Streams sent with
+тогда данные будут распакованы перед отправкой, чтобы их можно было разделить на
+блоки меньшего размера.
+Потоки, отправленные с
 .Fl c
-will not have their data recompressed on the receiver side using
+не будут повторно сжиматься их данные на стороне получателя с помощью
 .Fl o Sy compress Ns = Ar value .
-The data will stay compressed as it was from the sender.
-The new compression property will be set for future data.
-Note that uncompressed data from the sender will still attempt to
-compress on the receiver, unless you specify
+Данные останутся сжатыми в том виде, в каком они были получены от отправителя.
+Для будущих данных будет установлено новое свойство сжатия.
+Обратите внимание, что несжатые данные от отправителя по-прежнему будут пытаться
+сжать в получателе, если вы не укажете
 .Fl o Sy compress Ns = Em off .
 .It Fl w , -raw
-For encrypted datasets, send data exactly as it exists on disk.
-This allows backups to be taken even if encryption keys are not currently
-loaded.
-The backup may then be received on an untrusted machine since that machine will
-not have the encryption keys to read the protected data or alter it without
-being detected.
-Upon being received, the dataset will have the same encryption
-keys as it did on the send side, although the
+Для зашифрованных наборов данных отправляйте данные в том виде, в каком они есть на диске.
+Это позволяет создавать резервные копии, даже если ключи шифрования в данный момент не
+загружены.
+В этом случае резервная копия может быть получена на ненадежном компьютере, поскольку у этого компьютера
+не будет ключей шифрования для чтения защищенных данных или их изменения без
+обнаружения.
+После получения набор данных будет иметь те же
+ключи шифрования, что и при отправке, хотя значение свойства
 .Sy keylocation
-property will be defaulted to
-.Sy prompt
-if not otherwise provided.
-For unencrypted datasets, this flag will be equivalent to
+по умолчанию будет
+.Sy prompt ,
+если не предусмотрено иное.
+Для незашифрованных наборов данных этот флаг будет эквивалентен
 .Fl Lec .
-Note that if you do not use this flag for sending encrypted datasets, data will
-be sent unencrypted and may be re-encrypted with a different encryption key on
-the receiving system, which will disable the ability to do a raw send to that
-system for incrementals.
+Обратите внимание, что если вы не используете этот флажок для отправки зашифрованных наборов данных, данные будут
+отправляться в незашифрованном виде и могут быть повторно зашифрованы с помощью другого ключа шифрования в
+принимающей системе, что отключит возможность отправки необработанных данных в эту
+систему для увеличения.
 .It Fl h , -holds
-Generate a stream package that includes any snapshot holds (created with the
+Генерирует потоковый пакет, который включает в себя все хранилища снапшотов (созданные с помощью команды
 .Nm zfs Cm hold
-command), and indicating to
-.Nm zfs Cm receive
-that the holds be applied to the dataset on the receiving system.
+), и указывающий на
+.Nm zfs Cm receive ,
+чтобы удержания были применены к набору данных в принимающей системе.
 .It Fl i Ar snapshot
-Generate an incremental stream from the first
-.Ar snapshot
-.Pq the incremental source
-to the second
-.Ar snapshot
-.Pq the incremental target .
-The incremental source can be specified as the last component of the snapshot
-name
-.Po the
+Генерирует добавочный поток с первого
+.Ar спаншота
+.Pq дополнительный источник
+ко второму
+.Ar снапшоту
+.Pq инкрементальный целевой объект .
+Добавочный источник может быть указан в качестве последнего компонента имени снапшота
+.Po символ
 .Sy @
-character and following
+и следующие за ним
 .Pc
-and it is assumed to be from the same file system as the incremental target.
+и предполагается, что он находится в той же файловой системе, что и инкрементальный целевой объект.
 .Pp
-If the destination is a clone, the source may be the origin snapshot, which must
-be fully specified
-.Po for example,
+Если конечным объектом является клон, источником может быть исходный снапшот, который должен
+быть указан полностью
+.Po например,
 .Em pool/fs@origin ,
-not just
+не просто
 .Em @origin
 .Pc .
 .It Fl n , -dryrun
-Do a dry-run
-.Pq Qq No-op
-send.
-Do not generate any actual send data.
-This is useful in conjunction with the
+Выполняет пробную отправку
+.Pq Qq No-op .
+Не генерирует никаких фактических данных для отправки.
+Это полезно в сочетании с
 .Fl v
-or
+или
 .Fl P
-flags to determine what data will be sent.
-In this case, the verbose output will be written to standard output
-.Po contrast with a non-dry-run, where the stream is written to standard output
-and the verbose output goes to standard error
+флаги, определяющие, какие данные будут отправлены.
+В этом случае подробный вывод будет записан в стандартный вывод
+.Po в отличие от простого запуска, когда поток записывается в стандартный вывод, подробный вывод преобразуется в стандартную ошибку
 .Pc .
 .It Fl p , -props
-Include the dataset's properties in the stream.
-This flag is implicit when
+Включает свойства набора данных в поток.
+Этот флаг неявно используется, когда
 .Fl R
-is specified.
-The receiving system must also support this feature.
-Sends of encrypted datasets must use
+указан.
+Принимающая система также должна поддерживать эту функцию.
+При отправке зашифрованных наборов данных необходимо использовать
 .Fl w
-when using this flag.
+при использовании этого флага.
 .It Fl s , -skip-missing
-Allows sending a replication stream even when there are snapshots missing in the
-hierarchy.
-When a snapshot is missing, instead of throwing an error and aborting the send,
-a warning is printed to the standard error stream and the dataset to which it
-belongs
-and its descendents are skipped.
-This flag can only be used in conjunction with
+Позволяет отправлять поток репликации даже в том случае, если в иерархии отсутствуют снапшоты.
+Когда снапшот отсутствует, вместо выдачи сообщения об ошибке и прерывания отправки
+в стандартный поток ошибок выводится предупреждение, а набор данных, к которому он
+относится
+, и его потомки пропускаются.
+Этот флаг можно использовать только в сочетании с
 .Fl R .
 .It Fl v , -verbose
-Print verbose information about the stream package generated.
-This information includes a per-second report of how much data has been sent.
-The same report can be requested by sending
+Выводит подробную информацию о сгенерированном потоковом пакете.
+Эта информация включает в себя ежесекундный отчет о том, сколько данных было отправлено.
+Такой же отчет можно запросить, отправив
 .Dv SIGINFO
-or
+или
 .Dv SIGUSR1 ,
-regardless of
+независимо от
 .Fl v .
 .Pp
-The format of the stream is committed.
-You will be able to receive your streams on future versions of ZFS.
+Формат потока определен.
+Вы сможете получать свои потоки в будущих версиях ZFS.
 .El
 .It Xo
 .Nm zfs
@@ -314,136 +301,125 @@ You will be able to receive your streams on future versions of ZFS.
 .Op Fl i Ar snapshot Ns | Ns Ar bookmark
 .Ar filesystem Ns | Ns Ar volume Ns | Ns Ar snapshot
 .Xc
-Generate a send stream, which may be of a filesystem, and may be incremental
-from a bookmark.
-If the destination is a filesystem or volume, the pool must be read-only, or the
-filesystem must not be mounted.
-When the stream generated from a filesystem or volume is received, the default
-snapshot name will be
+Генерирует поток отправки, который может относиться к файловой системе и может быть добавочным
+из закладки.
+Если адресатом является файловая система или том, пул должен быть доступен только для чтения, или
+файловая система не должна быть подключена.
+При получении потока, сгенерированного из файловой системы или тома, имя снапшота по умолчанию будет
 .Qq --head-- .
 .Bl -tag -width "-D"
 .It Fl D , -dedup
-Deduplicated send is no longer supported.
-This flag is accepted for backwards compatibility, but a regular,
-non-deduplicated stream will be generated.
+Дедуплицированная отправка больше не поддерживается.
+Этот флаг используется для обеспечения обратной совместимости, но будет создан обычный,
+не дедуплицированный поток.
 .It Fl L , -large-block
-Generate a stream which may contain blocks larger than 128 KiB.
-This flag has no effect if the
+Генерирует поток, который может содержать блоки размером более 128 КБ.
+Этот флажок не действует, если функция пула
 .Sy large_blocks
-pool feature is disabled, or if the
+отключена, или если
 .Sy recordsize
-property of this filesystem has never been set above 128 KiB.
-The receiving system must have the
-.Sy large_blocks
-pool feature enabled as well.
-See
+размер этой файловой системы никогда не превышал 128 КБ.
+Принимающая система должна также иметь включенную функцию пула
+.Sy large_blocks .
+Смотрите
 .Xr zpool-features 7
-for details on ZFS feature flags and the
-.Sy large_blocks
-feature.
+для получения подробной информации о флагах функций ZFS и финкции
+.Sy large_blocks .
 .It Fl P , -parsable
-Print machine-parsable verbose information about the stream package generated.
+Выдает подробную информацию о сгенерированном потоковом пакете, поддающуюся машинному анализу.
 .It Fl c , -compressed
-Generate a more compact stream by using compressed WRITE records for blocks
-which are compressed on disk and in memory
-.Po see the
+Создайте более компактный поток, используя сжатые записи WRITE для блоков
+, которые сжимаются на диске и в памяти
+.Po смотрите свойство
 .Sy compression
-property for details
+для получения подробной информации
 .Pc .
-If the
+Если функция
 .Sy lz4_compress
-feature is active on the sending system, then the receiving system must have
-that feature enabled as well.
-If the
+активна в отправляющей системе, то в принимающей системе также должна быть
+включена эта функция.
+Если функция
 .Sy large_blocks
-feature is enabled on the sending system but the
+включена в отправляющей системе, но параметр
 .Fl L
-option is not supplied in conjunction with
+не поставляется в комплекте с
 .Fl c ,
-then the data will be decompressed before sending so it can be split into
-smaller block sizes.
+тогда данные будут распакованы перед отправкой, чтобы их можно было разделить на
+блоки меньшего размера.
 .It Fl w , -raw
-For encrypted datasets, send data exactly as it exists on disk.
-This allows backups to be taken even if encryption keys are not currently
-loaded.
-The backup may then be received on an untrusted machine since that machine will
-not have the encryption keys to read the protected data or alter it without
-being detected.
-Upon being received, the dataset will have the same encryption
-keys as it did on the send side, although the
+Для зашифрованных наборов данных отправляйте данные в том виде, в каком они есть на диске.
+Это позволяет создавать резервные копии, даже если ключи шифрования в данный момент не
+загружены.
+В этом случае резервная копия может быть получена на ненадежном компьютере, поскольку у этого компьютера
+не будет ключей шифрования для чтения защищенных данных или их изменения без
+обнаружения.
+После получения набор данных будет иметь те же
+ключи шифрования, что и при отправке, хотя значение свойства
 .Sy keylocation
-property will be defaulted to
-.Sy prompt
-if not otherwise provided.
-For unencrypted datasets, this flag will be equivalent to
+по умолчанию будет
+.Sy prompt ,
+если не предусмотрено иное.
+Для незашифрованных наборов данных этот флаг будет эквивалентен
 .Fl Lec .
-Note that if you do not use this flag for sending encrypted datasets, data will
-be sent unencrypted and may be re-encrypted with a different encryption key on
-the receiving system, which will disable the ability to do a raw send to that
-system for incrementals.
+Обратите внимание, что если вы не используете этот флажок для отправки зашифрованных наборов данных, данные будут
+отправляться в незашифрованном виде и могут быть повторно зашифрованы с помощью другого ключа шифрования в
+принимающей системе, что отключит возможность отправки необработанных данных в эту
+систему для увеличения.
 .It Fl e , -embed
-Generate a more compact stream by using
+Создёт более компактный поток используя записи
 .Sy WRITE_EMBEDDED
-records for blocks which are stored more compactly on disk by the
+для блоков, которые более компактно хранятся на диске с помощью функции пула
+.Sy embedded_data .
+Этот флаг не действует, если функция
 .Sy embedded_data
-pool feature.
-This flag has no effect if the
-.Sy embedded_data
-feature is disabled.
-The receiving system must have the
-.Sy embedded_data
-feature enabled.
-If the
+отключена.
+Принимающая система должна иметь включенную функцию
+.Sy embedded_data .
+Если функция
 .Sy lz4_compress
-feature is active on the sending system, then the receiving system must have
-that feature enabled as well.
-Datasets that are sent with this flag may not be received as an encrypted
-dataset,
-since encrypted datasets cannot use the
-.Sy embedded_data
-feature.
-See
+активна в отправляющей системе, тогда в принимающей системе также должна быть
+включена эта функция.
+Наборы данных, отправленные с этим флагом, могут быть получены не в зашифрованном виде, поскольку зашифрованные наборы данных не могут использовать функцию
+.Sy embedded_data .
+Смотрите
 .Xr zpool-features 7
-for details on ZFS feature flags and the
-.Sy embedded_data
-feature.
+для получения подробной информации о флагах функций ZFS и функции
+.Sy embedded_data .
 .It Fl i Ar snapshot Ns | Ns Ar bookmark
-Generate an incremental send stream.
-The incremental source must be an earlier snapshot in the destination's history.
-It will commonly be an earlier snapshot in the destination's file system, in
-which case it can be specified as the last component of the name
-.Po the
+Генерирует инкрементный поток отправки.
+Источником инкремента должен быть более ранний снапшот в истории получателя.
+Обычно это будет более ранний снапшот в файловой системе получателя, и в
+этом случае он может быть указан как последний компонент имени
+.Po символ
 .Sy #
-or
+или
 .Sy @
-character and following
+и следующие
 .Pc .
 .Pp
-If the incremental target is a clone, the incremental source can be the origin
-snapshot, or an earlier snapshot in the origin's filesystem, or the origin's
-origin, etc.
+Если инкрементным целевым объектом является клон, то инкрементным источником может быть исходный
+снапшот, или более ранний снапшот в файловой системе источника, или
+исходный файл источника и т.д.
 .It Fl n , -dryrun
-Do a dry-run
-.Pq Qq No-op
-send.
-Do not generate any actual send data.
-This is useful in conjunction with the
+Выполняет пробную отправку
+.Pq Qq No-op .
+Не генерирует никаких фактических данных для отправки.
+Это полезно в сочетании с
 .Fl v
-or
+или
 .Fl P
-flags to determine what data will be sent.
-In this case, the verbose output will be written to standard output
-.Po contrast with a non-dry-run, where the stream is written to standard output
-and the verbose output goes to standard error
+флаги, определяющие, какие данные будут отправлены.
+В этом случае подробный вывод будет записан в стандартный вывод
+.Po в отличие от простого запуска, когда поток записывается в стандартный вывод, подробный вывод преобразуется в стандартную ошибку
 .Pc .
 .It Fl v , -verbose
-Print verbose information about the stream package generated.
-This information includes a per-second report of how much data has been sent.
-The same report can be requested by sending
+Выводит подробную информацию о сгенерированном потоковом пакете.
+Эта информация включает в себя ежесекундный отчет о том, сколько данных было отправлено.
+Такой же отчет можно запросить, отправив
 .Dv SIGINFO
-or
+или
 .Dv SIGUSR1 ,
-regardless of
+независимо от
 .Fl v .
 .El
 .It Xo
@@ -454,93 +430,88 @@ regardless of
 .Op Fl i Ar snapshot Ns | Ns Ar bookmark
 .Ar snapshot
 .Xc
-Generate a redacted send stream.
-This send stream contains all blocks from the snapshot being sent that aren't
-included in the redaction list contained in the bookmark specified by the
+Генерирует отредактированный поток отправки.
+Этот поток отправки содержит все блоки из отправляемого снапшота, которые не
+включены в список редактирования, содержащийся в закладке, указанной флагом
 .Fl -redact
-(or
-.Fl d )
-flag.
-The resulting send stream is said to be redacted with respect to the snapshots
-the bookmark specified by the
-.Fl -redact No flag was created with .
-The bookmark must have been created by running
+(или
+.Fl d ).
+Считается, что результирующий поток отправки отредактирован в отношении снимков, с помощью которых была создана закладка, указанная флагом
+.Fl -redact No .
+Закладка должна быть создана с помощью запуска
 .Nm zfs Cm redact
-on the snapshot being sent.
+на отправляемом снапшоте.
 .Pp
-This feature can be used to allow clones of a filesystem to be made available on
-a remote system, in the case where their parent need not (or needs to not) be
-usable.
-For example, if a filesystem contains sensitive data, and it has clones where
-that sensitive data has been secured or replaced with dummy data, redacted sends
-can be used to replicate the secured data without replicating the original
-sensitive data, while still sharing all possible blocks.
-A snapshot that has been redacted with respect to a set of snapshots will
-contain all blocks referenced by at least one snapshot in the set, but will
-contain none of the blocks referenced by none of the snapshots in the set.
-In other words, if all snapshots in the set have modified a given block in the
-parent, that block will not be sent; but if one or more snapshots have not
-modified a block in the parent, they will still reference the parent's block, so
-that block will be sent.
-Note that only user data will be redacted.
+Эта функция может быть использована для того, чтобы сделать доступными клоны файловой системы на
+удаленной системе в случае, когда их родительская система не нужна (или не нуждается в том, чтобы ее можно было
+использовать).
+Например, если файловая система содержит конфиденциальные данные и у нее есть клоны, в которых
+эти конфиденциальные данные были защищены или заменены фиктивными данными,
+можно использовать отредактированные сообщения для репликации защищенных данных без репликации исходных
+конфиденциальных данных, при этом все возможные блоки будут разделены.
+Моментальный снимок, который был отредактирован относительно набора моментальных снимков, будет
+содержать все блоки, на которые ссылается хотя бы один моментальный снимок в наборе, но не будет
+содержать ни одного из блоков, на которые не ссылается ни один из моментальных снимков в наборе.
+Другими словами, если все снимки в наборе изменили данный блок в
+родительском файле, этот блок не будет отправлен; но если один или несколько снимков не
+изменили блок в родительском файле, они все равно будут ссылаться на родительский блок, так
+что этот блок будет отправлен.
+Обратите внимание, что будут отредактированы только пользовательские данные.
 .Pp
-When the redacted send stream is received, we will generate a redacted
-snapshot.
-Due to the nature of redaction, a redacted dataset can only be used in the
-following ways:
+Когда отредактированный поток отправки будет получен, мы создадим отредактированный
+снапшот.
+Из-за особенностей редактирования отредактированный набор данных можно использовать только
+следующими способами:
 .Bl -enum -width "a."
 .It
-To receive, as a clone, an incremental send from the original snapshot to one
-of the snapshots it was redacted with respect to.
-In this case, the stream will produce a valid dataset when received because all
-blocks that were redacted in the parent are guaranteed to be present in the
-child's send stream.
-This use case will produce a normal snapshot, which can be used just like other
-snapshots.
+Чтобы получить в качестве клона добавочную отправку из исходного снапшота в один
+из тех снимков, в отношении которых он был отредактирован.
+В этом случае поток при получении выдаст корректный набор данных, поскольку все
+блоки, которые были отредактированы в родительском файле, гарантированно будут присутствовать в
+потоке отправки дочернего файла.
+В этом случае будет создан обычный снапшот, который можно использовать так же, как и другие снапшоты.
 .
 .It
-To receive an incremental send from the original snapshot to something
-redacted with respect to a subset of the set of snapshots the initial snapshot
-was redacted with respect to.
-In this case, each block that was redacted in the original is still redacted
-(redacting with respect to additional snapshots causes less data to be redacted
-(because the snapshots define what is permitted, and everything else is
-redacted)).
-This use case will produce a new redacted snapshot.
+Чтобы получить добавочную отправку от исходного снапшота к чему-либо,
+отредактированному по отношению к подмножеству набора снапшотов, по отношению к которым был отредактирован исходный снапшот.
+В этом случае каждый блок, который был отредактирован в оригинале, по-прежнему отредактирован
+(редактирование дополнительных снапшотов приводит к тому, что редактируется меньше данных
+(поскольку снапшоты определяют, что разрешено, а все остальное
+редактируется)).
+В этом случае будет создан новый отредактированный снапшот.
 .It
-To receive an incremental send from a redaction bookmark of the original
-snapshot that was created when redacting with respect to a subset of the set of
-snapshots the initial snapshot was created with respect to
-anything else.
-A send stream from such a redaction bookmark will contain all of the blocks
-necessary to fill in any redacted data, should it be needed, because the sending
-system is aware of what blocks were originally redacted.
-This will either produce a normal snapshot or a redacted one, depending on
-whether the new send stream is redacted.
+Чтобы получить добавочную отправку из закладки редактирования исходного
+снапшота, который был создан при редактировании по отношению к подмножеству набора
+снапшотов, исходный снапшот был создан по отношению ко
+всему остальному.
+Поток отправки из такой закладки редактирования будет содержать все блоки
+, необходимые для заполнения любых отредактированных данных, если это потребуется, поскольку отправляющая
+система знает, какие блоки были первоначально отредактированы.
+Это приведет либо к созданию обычного снапшота, либо к его редактированию, в зависимости от
+того, будет ли отредактирован новый поток отправки.
 .It
-To receive an incremental send from a redacted version of the initial
-snapshot that is redacted with respect to a subject of the set of snapshots the
-initial snapshot was created with respect to.
-A send stream from a compatible redacted dataset will contain all of the blocks
-necessary to fill in any redacted data.
-This will either produce a normal snapshot or a redacted one, depending on
-whether the new send stream is redacted.
+Чтобы получить добавочную отправку из отредактированной версии исходного
+снапшота, которая отредактирована в отношении объекта из набора снапшотов, для которого был создан исходный снапшот.
+Поток отправки из совместимого отредактированного набора данных будет содержать все блоки
+, необходимые для заполнения любых отредактированных данных.
+В результате будет создан либо обычный снапшот, либо отредактированный, в зависимости от
+того, был ли отредактирован новый поток отправки.
 .It
-To receive a full send as a clone of the redacted snapshot.
-Since the stream is a full send, it definitionally contains all the data needed
-to create a new dataset.
-This use case will either produce a normal snapshot or a redacted one, depending
-on whether the full send stream was redacted.
+Чтобы получить полную отправку в виде клона отредактированного снапшота.
+Поскольку поток является полной отправкой, он по определению содержит все данные, необходимые
+для создания нового набора данных.
+В этом случае будет создан либо обычный снапшот, либо отредактированный, в зависимости
+от того, был ли отредактирован полный поток отправки.
 .El
 .Pp
-These restrictions are detected and enforced by
+Эти ограничения обнаруживаются и применяются с помощью
 .Nm zfs Cm receive ;
-a redacted send stream will contain the list of snapshots that the stream is
-redacted with respect to.
-These are stored with the redacted snapshot, and are used to detect and
-correctly handle the cases above.
-Note that for technical reasons,
-raw sends and redacted sends cannot be combined at this time.
+отредактированный поток отправки будет содержать список снапшотов, в отношении которых поток был
+отредактирован.
+Они сохраняются вместе с отредактированным снапшотом и используются для обнаружения и
+корректной обработки описанных выше случаев.
+Обратите внимание, что по техническим причинам
+необработанные и отредактированные отправки в данный момент не могут быть объединены.
 .It Xo
 .Nm zfs
 .Cm send
@@ -548,14 +519,13 @@ raw sends and redacted sends cannot be combined at this time.
 .Fl t
 .Ar receive_resume_token
 .Xc
-Creates a send stream which resumes an interrupted receive.
-The
+Создает поток отправки, который возобновляет прерванный прием.
 .Ar receive_resume_token
-is the value of this property on the filesystem or volume that was being
-received into.
-See the documentation for
+это значение этого свойства для файловой системы или тома, в который был
+получен файл.
+Смотрите документацию по
 .Nm zfs Cm receive Fl s
-for more details.
+для получения болеее подробной информации.
 .It Xo
 .Nm zfs
 .Cm send
@@ -564,15 +534,14 @@ for more details.
 .Fl S
 .Ar filesystem
 .Xc
-Generate a send stream from a dataset that has been partially received.
+Генерирует поток отправки из набора данных, который был получен частично.
 .Bl -tag -width "-L"
 .It Fl S , -saved
-This flag requires that the specified filesystem previously received a resumable
-send that did not finish and was interrupted.
-In such scenarios this flag
-enables the user to send this partially received state.
-Using this flag will always use the last fully received snapshot
-as the incremental source if it exists.
+Этот флаг требует, чтобы указанная файловая система ранее получала
+отправку с возможностью возобновления, которая не завершилась и была прервана.
+В таких случаях этот флаг
+позволяет пользователю отправлять это частично полученное состояние.
+Использование этого флага всегда приведет к использованию последнего полностью полученного снапшота в качестве добавочного источника, если он существует.
 .El
 .It Xo
 .Nm zfs
@@ -580,125 +549,122 @@ as the incremental source if it exists.
 .Ar snapshot redaction_bookmark
 .Ar redaction_snapshot Ns …
 .Xc
-Generate a new redaction bookmark.
-In addition to the typical bookmark information, a redaction bookmark contains
-the list of redacted blocks and the list of redaction snapshots specified.
-The redacted blocks are blocks in the snapshot which are not referenced by any
-of the redaction snapshots.
-These blocks are found by iterating over the metadata in each redaction snapshot
-to determine what has been changed since the target snapshot.
-Redaction is designed to support redacted zfs sends; see the entry for
+Создайте новую закладку редактирования.
+В дополнение к обычной информации о закладках, закладка редактирования содержит
+список отредактированных блоков и список указанных снапшотов редактирования.
+Отредактированные блоки - это блоки в снапшоте, на которые не ссылается ни
+один из снапшотов редактирования.
+Эти блоки обнаруживаются путем перебора метаданных в каждом снапшоте редактирования
+, чтобы определить, что изменилось с момента создания целевого снапшота.
+Редакция предназначена для поддержки отредактированных отправлений zfs; смотрите запись 
 .Nm zfs Cm send
-for more information on the purpose of this operation.
-If a redact operation fails partway through (due to an error or a system
-failure), the redaction can be resumed by rerunning the same command.
+для получения дополнительной информации о цели этой операции.
+Если операция редактирования завершается неудачей на полпути (из-за ошибки или системного
+сбоя), редактирование можно возобновить, повторно выполнив ту же команду.
 .El
-.Ss Redaction
-ZFS has support for a limited version of data subsetting, in the form of
-redaction.
-Using the
-.Nm zfs Cm redact
-command, a
+.Ss Редакция
+ZFS поддерживает ограниченную версию поднабора данных в виде
+редактирования.
+Используя команду
+.Nm zfs Cm redact ,
 .Sy redaction bookmark
-can be created that stores a list of blocks containing sensitive information.
-When provided to
+может быть создан список блоков, содержащих конфиденциальную информацию.
+При предоставлении
 .Nm zfs Cm send ,
-this causes a
-.Sy redacted send
-to occur.
-Redacted sends omit the blocks containing sensitive information,
-replacing them with REDACT records.
-When these send streams are received, a
-.Sy redacted dataset
-is created.
-A redacted dataset cannot be mounted by default, since it is incomplete.
-It can be used to receive other send streams.
-In this way datasets can be used for data backup and replication,
-with all the benefits that zfs send and receive have to offer,
-while protecting sensitive information from being
-stored on less-trusted machines or services.
+это приводит к происхождению
+.Sy redacted send .
+В отредактированных отправлениях отсутствуют блоки, содержащие конфиденциальную информацию,
+заменяя их отредактированными записями.
+Когда эти потоки отправки получены, создается
+.Sy redacted dataset .
+Отредактированный набор данных по умолчанию не может быть подключен, поскольку он является неполным.
+Его можно использовать для получения других потоков отправки.
+Таким образом, наборы данных можно использовать для резервного копирования и репликации данных
+со всеми преимуществами, которые может предложить система отправки и получения данных zfs,
+защищая при этом конфиденциальную информацию от
+хранения на компьютерах или службах, которым не доверяют.
 .Pp
-For the purposes of redaction, there are two steps to the process.
-A redact step, and a send/receive step.
-First, a redaction bookmark is created.
-This is done by providing the
+FПроцесс редактирования состоит из двух этапов.
+Этап редактирования и этап отправки/получения.
+Сначала создается закладка для редактирования.
+Это делается путем предоставления команде
 .Nm zfs Cm redact
-command with a parent snapshot, a bookmark to be created, and a number of
-redaction snapshots.
-These redaction snapshots must be descendants of the parent snapshot,
-and they should modify data that is considered sensitive in some way.
-Any blocks of data modified by all of the redaction snapshots will
-be listed in the redaction bookmark, because it represents the truly sensitive
-information.
-When it comes to the send step, the send process will not send
-the blocks listed in the redaction bookmark, instead replacing them with
-REDACT records.
-When received on the target system, this will create a
-redacted dataset, missing the data that corresponds to the blocks in the
-redaction bookmark on the sending system.
-The incremental send streams from
-the original parent to the redaction snapshots can then also be received on
-the target system, and this will produce a complete snapshot that can be used
-normally.
-Incrementals from one snapshot on the parent filesystem and another
-can also be done by sending from the redaction bookmark, rather than the
-snapshots themselves.
+родительского снапшота, создать закладка и несколько
+снапшотов редактирования.
+Эти снапшоты редактирования должны быть потомками родительского снапшота,
+и они должны каким-либо образом изменять данные, которые считаются конфиденциальными.
+Любые блоки данных, измененные всеми снапшотами редактирования, будут
+перечислены в закладке редактирования, поскольку они представляют действительно конфиденциальную
+информацию.
+Когда дело доходит до шага отправки, процесс отправки не будет отправлять
+блоки, перечисленные в закладке редактирования, вместо этого они будут заменены на
+REDUCT записи.
+При получении в целевой системе это приведет к созданию
+отредактированного набора данных, в котором будут отсутствовать данные, соответствующие блокам в закладке
+редактирования в отправляющей системе.
+Добавочные потоки отправки от
+исходного родительского устройства к снапшотам редактирования затем также могут быть получены в
+целевой системе, и это приведет к созданию полного снапшота, который можно использовать
+в обычном режиме.
+Инкрементальные изменения из одного снапшота в родительской файловой системе и из другого
+также могут быть выполнены путем отправки из закладки редактирования, а не
+из самих снапшотов.
 .Pp
-In order to make the purpose of the feature more clear, an example is provided.
-Consider a zfs filesystem containing four files.
-These files represent information for an online shopping service.
-One file contains a list of usernames and passwords, another contains purchase
-histories,
-a third contains click tracking data, and a fourth contains user preferences.
-The owner of this data wants to make it available for their development teams to
-test against, and their market research teams to do analysis on.
-The development teams need information about user preferences and the click
-tracking data, while the market research teams need information about purchase
-histories and user preferences.
-Neither needs access to the usernames and passwords.
-However, because all of this data is stored in one ZFS filesystem,
-it must all be sent and received together.
-In addition, the owner of the data
-wants to take advantage of features like compression, checksumming, and
-snapshots, so they do want to continue to use ZFS to store and transmit their
-data.
-Redaction can help them do so.
-First, they would make two clones of a snapshot of the data on the source.
-In one clone, they create the setup they want their market research team to see;
-they delete the usernames and passwords file,
-and overwrite the click tracking data with dummy information.
-In another, they create the setup they want the development teams
-to see, by replacing the passwords with fake information and replacing the
-purchase histories with randomly generated ones.
-They would then create a redaction bookmark on the parent snapshot,
-using snapshots on the two clones as redaction snapshots.
-The parent can then be sent, redacted, to the target
-server where the research and development teams have access.
-Finally, incremental sends from the parent snapshot to each of the clones can be
-sent
-to and received on the target server; these snapshots are identical to the
-ones on the source, and are ready to be used, while the parent snapshot on the
-target contains none of the username and password data present on the source,
-because it was removed by the redacted send operation.
+Чтобы было более понятно назначение этой функции, приведен пример.
+Рассмотрим файловую систему zfs, содержащую четыре файла.
+Эти файлы представляют собой информацию для службы онлайн-покупок.
+Один файл содержит список имен пользователей и паролей, другой -
+историю покупок,
+третий - данные отслеживания кликов, а четвертый - настройки пользователя.
+Владелец этих данных хочет предоставить их своим командам разработчиков для
+тестирования, а группам маркетинговых исследований - для анализа.
+Командам разработчиков нужна информация о предпочтениях пользователей и
+данные отслеживания кликов, в то время как группам маркетинговых исследований нужна информация об
+истории покупок и предпочтениях пользователей.
+Ни одному из них не требуется доступ к именам пользователей и паролям.
+Однако, поскольку все эти данные хранятся в одной файловой системе ZFS,
+их необходимо отправлять и получать вместе.
+Кроме того, владелец данных
+хочет воспользоваться преимуществами таких функций, как сжатие, контрольная сумма и
+снапшоты, поэтому он хочет продолжать использовать ZFS для хранения и передачи своих
+данных.
+Редакция может помочь ему в этом.
+Сначала они создают два клона снапшота данных из источника.
+В одном клоне они создают настройки, которые хотят, чтобы их команда по исследованию рынка увидела;
+они удаляют файл с именами пользователей и паролями
+и заменяют данные отслеживания кликов фиктивной информацией.
+В другом случае они создают настройки, которые, по их
+мнению, должны увидеть команды разработчиков, заменяя пароли поддельной информацией и заменяя истории
+покупок случайно сгенерированными.
+Затем они создадут закладку редактирования на родительском снапшоте,
+используя снапшоты двух клонов в качестве снапшотов редактирования.
+Затем родительский файл, отредактированный, может быть отправлен на целевой
+сервер, к которому имеют доступ команды исследователей и разработчиков.
+Наконец, инкрементные посылки из родительского снапшота каждому из клонов могут быть
+отправлены
+на целевой сервер и получены им; эти снапшоты идентичны тем
+, что были на исходном сервере, и готовы к использованию, в то время как родительский снапшот на
+целевом сервере не содержит данных имени пользователя и пароля, присутствующих в источнике,
+поскольку он был удален в результате отредактированной операции отправки.
 .
-.Sh SIGNALS
-See
+.Sh СИГНАЛЫ
+Смотрите
 .Fl v .
 .
-.Sh EXAMPLES
+.Sh ПРИМЕРЫ
 .\" These are, respectively, examples 12, 13 from zfs.8
 .\" Make sure to update them bidirectionally
-.Ss Example 1 : No Remotely Replicating ZFS Data
-The following commands send a full stream and then an incremental stream to a
-remote machine, restoring them into
+.Ss Пример 1 : No Удаленная репликация данных ZFS
+Следующие команды отправляют полный поток, а затем добавочный поток на
+удаленный компьютер, восстанавливая их в
 .Em poolB/received/fs@a
-and
+и
 .Em poolB/received/fs@b ,
-respectively.
+соответственно.
 .Em poolB
-must contain the file system
+должен содержать файловую систему
 .Em poolB/received ,
-and must not initially contain
+и изначально не должен содержать
 .Em poolB/received/fs .
 .Bd -literal -compact -offset Ds
 .No # Nm zfs Cm send Ar pool/fs@a |
@@ -707,27 +673,27 @@ and must not initially contain
 .No "   " Nm ssh Ar host Nm zfs Cm receive Ar poolB/received/fs
 .Ed
 .
-.Ss Example 2 : No Using the Nm zfs Cm receive Fl d No Option
-The following command sends a full stream of
+.Ss Пример 2 : No Использование параметра Nm zfs Cm receive Fl d No
+Следующая команда 
 .Ar poolA/fsA/fsB@snap
-to a remote machine, receiving it into
+отправляет полный поток на удаленный компьютер, получая его в
 .Ar poolB/received/fsA/fsB@snap .
-The
+Часть имени полученного снимка, содержащая 
 .Ar fsA/fsB@snap
-portion of the received snapshot's name is determined from the name of the sent
-snapshot.
+, определяется на основе имени отправленного
+снапшота.
 .Ar poolB
-must contain the file system
+должен содержать файловую систему
 .Ar poolB/received .
-If
+Если
 .Ar poolB/received/fsA
-does not exist, it is created as an empty file system.
+не существует, она создается как пустая файловая система.
 .Bd -literal -compact -offset Ds
 .No # Nm zfs Cm send Ar poolA/fsA/fsB@snap |
 .No "   " Nm ssh Ar host Nm zfs Cm receive Fl d Ar poolB/received
 .Ed
 .
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr zfs-bookmark 8 ,
 .Xr zfs-receive 8 ,
 .Xr zfs-redact 8 ,
