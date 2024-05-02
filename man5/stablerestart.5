@@ -25,70 +25,69 @@
 .Dd April 10, 2011
 .Dt STABLERESTART 5
 .Os
-.Sh NAME
-.Nm nfs-stablerestart
-.Nd restart information for the
+.Sh ИМЯ
+.Nm nfs-стабильный старт
+.Nd информация о перезапуске для
 .Tn NFSv4
-server
-.Sh SYNOPSIS
-.Nm nfs-stablerestart
-.Sh DESCRIPTION
-The
+сервер
+.Sh КРАТКИЙ ОБЗОР
+.Nm nfs-стабильный старт
+.Sh ОПИСАНИЕ
 .Nm
-file holds information that allows the
+файл содержит информацию, которая позволяет
 .Tn NFSv4
-server to restart without always returning the NFSERR_NOGRACE error, as described in the
+серверу перезапуститься, не возвращая всегда ошибку NFSERR_NOGRACE, как описано в 
 .Tn NFSv4
-server specification; see
+спецификации сервера;
 .%T "Network File System (NFS) Version 4 Protocol RFC 3530, Section 8.6.3" .
 .Pp
-The first record in the file, as defined by struct nfsf_rec in
-/usr/include/fs/nfs/nfsrvstate.h, holds the lease duration of the
-last incarnation of the server and the number of boot times that follows.
-Following this are the number of previous boot times listed in the
-first record.
-The lease duration is used to set the grace period.
-The boot times
-are used to avoid the unlikely occurrence of a boot time being reused,
-due to a TOD clock going backwards.
-This record and the previous boot times with this boot time
-added is re-written at the end of the grace period.
+Первая запись в файле, определенная структурой nfsf_rec в
+/usr/include/fs/nfs/nfsrvstate.h содержит продолжительность аренды
+последняя версия сервера и количество последующих загрузок.
+После этого указывается количество предыдущих загрузок, перечисленных в
+первая запись.
+Продолжительность аренды используется для установки льготного периода.
+Время загрузки
+используется, чтобы избежать маловероятного повторного использования времени загрузки,
+из-за того, что часы TOD идут в обратном направлении.
+Эта запись и предыдущее время загрузки с этим временем загрузки
+добавленный перезаписывается в конце льготного периода.
 .Pp
-The rest of the file are appended records, as defined by
-struct nfst_rec in /usr/include/fs/nfs/nfsrvstate.h and are used represent one of two things.
-There are records which indicate that a
-client successfully acquired state and records that indicate a client's state was revoked.
-State revoke records indicate that state information
-for a client was discarded, due to lease expiry and an otherwise
-conflicting open or lock request being made by a different client.
-These records can be used to determine if clients might have done either of the
-edge conditions.
+Остальная часть файла представляет собой добавленные записи, как определено
+struct nfst_rec в /usr/include/fs/nfs/nfsrvstate.h и используются для обозначения одной из двух вещей.
+Имеются записи, свидетельствующие о том, что
+клиент успешно получил состояние и записи, указывающие на то, что состояние клиента было аннулировано.
+Записи об отзыве штата указывают на то, что информация о состоянии
+поскольку клиент был исключен из-за истечения срока аренды или иных причин
+конфликтующий запрос на открытие или блокировку, сделанный другим клиентом.
+Эти записи можно использовать для определения того, могли ли клиенты совершить какое-либо из
+краевые условия.
 .Pp
-If a client might have done either edge condition or this file is
-empty or corrupted, the server returns NFSERR_NOGRACE for any reclaim
-request from the client.
+Если клиент мог выполнить либо краевое условие, либо этот файл
+пуст или поврежден, сервер возвращает NFSERR_NOGRACE при любом возврате
+запрос от клиента.
 .Pp
-For correct operation of the server, it must be ensured that the file
-is written to stable storage by the time a write op with IO_SYNC specified has returned.
-This might require hardware level caching to be disabled for
-a local disk drive that holds the file, or similar.
-.Sh FILES
+Для корректной работы сервера необходимо убедиться, что файл
+записывается в стабильное хранилище к моменту возврата операции записи с указанным IO_SYNC.
+Для этого может потребоваться отключить кэширование на аппаратном уровне.
+локальный диск, на котором хранится файл, или что-то подобное.
+.Sh файлы
 .Bl -tag -width /var/db/nfs-stablerestart.bak -compact
 .It Pa /var/db/nfs-stablerestart
-NFSv4 stable restart file
+NFSv4 стабильный файл перезапуска
 .It Pa /var/db/nfs-stablerestart.bak
-backup copy of the file
+резервная копия файла
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr nfsv4 4 ,
 .Xr nfsd 8
-.Sh BUGS
-If the file is empty, the NFSv4 server has no choice but to return
-NFSERR_NOGRACE for all reclaim requests.
-Although correct, this is a highly undesirable occurrence, so the file should not be lost if
-at all possible.
-The backup copy of the file is maintained and used by the
+.Sh ОШИБКИ
+Если файл пуст, серверу NFSv4 не остается иного выбора, кроме как вернуть
+NFSERR_NOGRACE для всех запросов на возврат.
+Хоть это и правильно, но это крайне нежелательное явление, поэтому файл не должен потеряться, если
+вообще возможно.
+Резервная копия файла сохраняется и используется
 .Xr nfsd 8
-to minimize the risk of this occurring.
-To move the file, you must edit the nfsd sources and recompile it.
-This was done to discourage accidental relocation of the file.
+для минимизации риска возникновения подобных ситуаций.
+Чтобы переместить файл, необходимо отредактировать исходники nfsd и перекомпилировать его.
+Это было сделано для предотвращения случайного перемещения файла.
