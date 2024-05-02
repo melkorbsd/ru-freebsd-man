@@ -1,316 +1,317 @@
-.\" Copyright (C) 1996
-.\" David L. Nugent.  All rights reserved.
+.\" Авторское право (C) 1996
+.\" Дэвид Л. Ньюджент.  Все права защищены.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
+.\" Распространение и использование в исходных и двоичных формах, с или без
+.\" модификацией, разрешается при соблюдении следующих условий
+.\" соблюдены:
+.\" 1. Перераспределение исходного кода должно сохранять вышеуказанное уведомление об авторских правах
+.\" уведомление об авторских правах, этот список условий и следующий отказ от ответственности.
+.\" 2. Перераспределение в двоичной форме должно воспроизводить вышеуказанное уведомление об авторских правах
+.\" уведомление об авторских правах, этот список условий и следующий отказ от ответственности в
+.\" документации и/или других материалах, поставляемых вместе с дистрибутивом.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY DAVID L. NUGENT AND CONTRIBUTORS ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL DAVID L. NUGENT OR CONTRIBUTORS BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ ДЭВИДОМ Л. НЮГЕНТОМ И СОАВТОРАМИ ``КАК ЕСТЬ`` И
+.\" ЛЮБЫЕ ЯВНЫЕ ИЛИ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ
+.\" ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ТОВАРНОГО СОСТОЯНИЯ И ПРИГОДНОСТИ ДЛЯ КОНКРЕТНОЙ ЦЕЛИ
+.\" НЕ ПРИНИМАЮТСЯ.  НИ ПРИ КАКИХ ОБСТОЯТЕЛЬСТВАХ ДЭВИД Л. НУДЖЕНТ ИЛИ СПОНСОРЫ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ
+.\" ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, СПЕЦИАЛЬНЫЕ, ОБРАЗЦОВЫЕ ИЛИ КОСВЕННЫЕ УБЫТКИ.
+.\" УЩЕРБ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПРИОБРЕТЕНИЕ ТОВАРОВ-ЗАМЕНИТЕЛЕЙ
+.\" ИЛИ УСЛУГИ; ПОТЕРЮ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПЕРЕРЫВ В РАБОТЕ)
+.\" НЕЗАВИСИМО ОТ ПРИЧИН И ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО КОНТРАКТ, СТРОГИЙ
+.\" ОТВЕТСТВЕННОСТИ, ИЛИ ДЕЛИКТА (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНОЕ), ВОЗНИКАЮЩИХ КАКИМ-ЛИБО ОБРАЗОМ
+.\" В СВЯЗИ С ИСПОЛЬЗОВАНИЕМ ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ ВЫ БЫЛИ ПРЕДУПРЕЖДЕНЫ О ВОЗМОЖНОСТИ
+.\" ТАКОГО УЩЕРБА.
 .\"
-.Dd March 30, 2007
+.Dd 30 марта 2007 г.
 .Dt PW.CONF 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm pw.conf
-.Nd format of the pw.conf configuration file
-.Sh DESCRIPTION
-The file
+.Nd формат файла конфигурации pw.conf
+.Sh ОПИСАНИЕ
+Файл
 .Pa /etc/pw.conf
-contains configuration data for the
+содержит данные конфигурации для
 .Xr pw 8
-utility.
-The
+утилиты.
+Файл
 .Xr pw 8
-utility is used for maintenance of the system password and group
-files, allowing users and groups to be added, deleted and changed.
-This file may be modified via the
+используется для обслуживания системных файлов паролей и групп
+позволяющих добавлять, удалять и изменять пользователей и группы.
+Этот файл можно изменить с помощью утилиты
 .Xr pw 8
-command using the
+с помощью команды
 .Ar useradd
-command and the
+и
 .Fl D
-option, or by editing it directly with a text editor.
+или отредактировав ее непосредственно в текстовом редакторе.
 .Pp
-Each line in
+Каждая строка в
 .Pa /etc/pw.conf
-is treated either a comment or as configuration data;
-blank lines and lines commencing with a
+рассматривается либо как комментарий, либо как данные конфигурации;
+Пустые строки и строки, начинающиеся со знака
 .Ql \&#
-character are considered comments, and any remaining lines are
-examined for a leading keyword, followed by corresponding data.
+считаются комментариями, а все оставшиеся строки
+проверяются на наличие ведущего ключевого слова, за которым следуют соответствующие данные.
 .Pp
-Keywords recognized by
+Ключевые слова, распознаваемые
 .Xr pw 8
-are:
+являются:
 .Bl -tag -width password_days -offset indent -compact
 .It defaultpasswd
-affect passwords generated for new users
+влияет на пароли, генерируемые для новых пользователей
 .It reuseuids
-reuse gaps in uid sequences
+повторно использовать пробелы в последовательности uid
 .It reusegids
-reuse gaps in gid sequences
+повторное использование пробелов в последовательностях gid
 .It nispasswd
-path to the
+путь к
 .Tn NIS
-passwd database
+базе данных passwd
 .It skeleton
-where to obtain default home contents
+место получения домашнего содержимого по умолчанию
 .It newmail
-mail to send to new users
+почта для отправки новым пользователям
 .It logfile
-log user/group modifications to this file
+записывать изменения пользователей/групп в этот файл
 .It home
-root directory for home directories
+корневой каталог для домашних директорий
 .It homemode
-permissions for home directory
+разрешения для домашнего каталога
 .It shellpath
-paths in which to locate shell programs
+пути, в которых должны располагаться программы оболочки
 .It shells
-list of valid shells (without path)
+список допустимых оболочек (без указания пути)
 .It defaultshell
-default shell (without path)
+оболочка по умолчанию (без пути)
 .It defaultgroup
-default group
+группа по умолчанию
 .It extragroups
-add new users to this groups
+добавлять новых пользователей в эти группы
 .It defaultclass
-place new users in this login class
+поместить новых пользователей в этот класс логина
 .It minuid
 .It maxuid
-range of valid default user ids
+диапазон допустимых идентификаторов пользователей по умолчанию
 .It mingid
 .It maxgid
-range of valid default group ids
+диапазон действительных идентификаторов групп по умолчанию
 .It expire_days
-days after which account expires
+дни, после которых истекает срок действия учетной записи
 .It password_days
-days after which password expires
+дни, через которые истекает срок действия пароля
 .El
 .Pp
-Valid values for
+Допустимые значения для
 .Ar defaultpasswd
-are:
+являются:
 .Bl -tag -width password_days -offset indent -compact
 .It no
-disable login on newly created accounts
+отключить вход во вновь созданные учетные записи
 .It yes
-force the password to be the account name
+заставить пароль быть именем учетной записи
 .It none
-force a blank password
+принудительно вводить пустой пароль
 .It random
-generate a random password
+генерировать случайный пароль
 .El
 .Pp
-The second and third options are insecure and should be avoided if
-possible on a publicly accessible system.
-The first option requires that the superuser run
+Второй и третий варианты небезопасны, и их следует избегать, если
+если это возможно в общедоступной системе.
+Первый вариант требует, чтобы суперпользователь выполнил команду
 .Xr passwd 1
-to set a password before the account may be used.
-This may also be useful for creating administrative accounts.
-The final option causes
+для установки пароля перед использованием учетной записи.
+Это также может быть полезно для создания административных учетных записей.
+Последний вариант заставляет
 .Xr pw 8
-to respond by printing a randomly generated password on stdout.
-This is the preferred and most secure option.
-The
+печатать случайно сгенерированный пароль в stdout.
+Это наиболее предпочтительный и безопасный вариант.
+Сайт
 .Xr pw 8
-utility also provides a method of setting a specific password for the new
-user via a filehandle (command lines are not secure).
+также предоставляет возможность задать определенный пароль для нового
+пользователя через файловый манипулятор (командные строки небезопасны).
 .Pp
-Both
+Оба
 .Ar reuseuids
-and
+и
 .Ar reusegids
-determine the method by which new user and group id numbers are
-generated.
+определяют метод, с помощью которого генерируются новые идентификационные номера пользователей и групп
+генерируются новые идентификационные номера пользователей и групп.
 A
-.Ql \&yes
-in this field will cause
+.Ql \&да
+в этом поле приведет к тому, что
 .Xr pw 8
-to search for the first unused user or group id within the allowed
-range, whereas a
+искать первый неиспользованный идентификатор пользователя или группы в пределах допустимого
+диапазоне, в то время как
 .Ql \&no
-will ensure that no other existing user or group id within the range
-is numerically lower than the new one generated, and therefore avoids
-reusing gaps in the user or group id sequence that are caused by
-previous user or group deletions.
-Note that if the default group is not specified using the
+гарантирует, что ни один из существующих идентификаторов пользователя или группы в пределах диапазона
+численно ниже, чем новый, и, следовательно, позволяет избежать
+повторного использования пробелов в последовательности идентификаторов пользователей или групп, вызванных
+предыдущими удалениями пользователей или групп.
+Обратите внимание, что если группа по умолчанию не указана с помощью параметра
 .Ar defaultgroup
-keyword,
+ключевое слово,
 .Xr pw 8
-will create a new group for the user and attempt to keep the new
-user's uid and gid the same.
-If the new user's uid is currently in use as a group id, then the next
-available group id is chosen instead.
+создаст новую группу для пользователя и попытается сохранить для нее
+uid и gid нового пользователя.
+Если uid нового пользователя в настоящее время используется в качестве идентификатора группы, то вместо него выбирается следующий
+вместо него будет выбран следующий доступный идентификатор группы.
 .Pp
-On
+На
 .Tn NIS
-servers which maintain a separate passwd database to
+серверах, которые содержат отдельную базу данных passwd в
 .Pa /etc/master.passwd ,
-this option allows the additional file to be concurrently updated
-as user records are added, modified or removed.
-If blank or set to 'no', no additional database is updated.
-An absolute pathname must be used.
+эта опция позволяет одновременно обновлять дополнительный файл
+при добавлении, изменении или удалении записей пользователей.
+Если параметр пуст или имеет значение 'no', дополнительная база данных не будет обновляться.
+Необходимо использовать абсолютное имя пути.
 .Pp
-The
-.Ar skeleton
-keyword nominates a directory from which the contents of a user's
-new home directory is constructed.
-This is
+Файл
+скелет .Ar
+назначает каталог, из которого строится содержимое
+нового домашнего каталога пользователя.
+Это
 .Pa /usr/share/skel
-by default.
-The
+по умолчанию.
+Ключ
 .Xr pw 8 Ns 's
 .Fl m
-option causes the user's home directory to be created and populated
-using the files contained in the
-.Ar skeleton
-directory.
+заставляет домашний каталог пользователя быть созданным и заполненным
+используя файлы, содержащиеся в
+скелет .Ar
+директории.
 .Pp
-To send an initial email to new users, the
+Для отправки первоначального письма новым пользователям используется опция
 .Ar newmail
-keyword may be used to specify a path name to a file containing
-the message body of the message to be sent.
-To avoid sending mail when accounts are created, leave this entry
-blank or specify
+можно использовать ключевое слово, чтобы указать путь к файлу, содержащему
+тело отправляемого сообщения.
+Чтобы не отправлять почту при создании учетных записей, оставьте этот элемент
+пустой или укажите
 .Ql \&no .
 .Pp
-The
+Файл журнала
 .Ar logfile
-option allows logging of password file modifications into the
-nominated log file.
-To avoid creating or adding to such a logfile, then leave this
-field blank or specify
+позволяет регистрировать изменения файла паролей в
+назначенный файл журнала.
+Чтобы не создавать и не добавлять такой файл, оставьте это поле
+поле пустым или укажите
 .Ql \&no .
 .Pp
-The
+Сайт
 .Ar home
-keyword is mandatory.
-This specifies the location of the directory in which all new user
-home directories are created.
+является обязательным.
+Оно задает расположение каталога, в котором создаются все новые пользовательские
+создаются все новые домашние каталоги пользователей.
 .Pp
-The
-.Ar homemode
-keyword is optional.
-It specifies the creation mask of the user's home directory and is modified by
+Адрес
+.Ar homeemode
+является необязательным.
+Оно задает маску создания домашнего каталога пользователя и изменяется командой
 .Xr umask 2 .
 .Pp
-The
+Ключ
 .Ar shellpath
-keyword specifies a list of directories - separated by colons
+задает список каталогов, разделенных двоеточиями.
 .Ql \&:
-- which contain the programs used by the login shells.
+- которые содержат программы, используемые оболочками для входа в систему.
 .Pp
-The
+Оболочка
 .Ar shells
-keyword specifies a list of programs available for use as login
-shells.
-This list is a comma-separated list of shell names which should
-not contain a path.
-These shells must exist in one of the directories nominated by
+задает список программ, доступных для использования в качестве оболочек входа в систему
+оболочек.
+Этот список представляет собой разделенный запятыми список имен оболочек, которые не должны
+не содержать путь.
+Эти оболочки должны существовать в одном из каталогов, обозначенных
 .Ar shellpath .
 .Pp
-The
+Сайт
 .Ar defaultshell
-keyword nominates which shell program to use for new users when
-none is specified on the
+определяет, какую программу-оболочку использовать для новых пользователей, если
+ни одна из них не указана в параметре
 .Xr pw 8
-command line.
+командной строке.
 .Pp
-The
+Адрес
 .Ar defaultgroup
-keyword defines the primary group (the group id number in the
-password file) used for new accounts.
-If left blank, or the word
+определяет основную группу (номер идентификатора группы в
+файле паролей), используемую для новых учетных записей.
+Если оставить это значение пустым или использовать слово
 .Ql \&no
-is used, then each new user will have a corresponding group of
-their own created automatically.
-This is the recommended procedure for new users as it best secures each
-user's files against interference by other users of the system
-irrespective of the
+то для каждого нового пользователя будет автоматически создана соответствующая группа
+будет создана автоматически.
+Это рекомендуемая процедура для новых пользователей, так как она наилучшим образом защищает файлы каждого пользователя от
+файлы каждого пользователя от вмешательства других пользователей системы
+независимо от
 .Em umask
-normally used by the user.
+обычно используемой пользователем.
 .Pp
-The
+Сайт
 .Ar extragroups
-keyword provides an automatic means of placing new users into groups within
-the
+предоставляет автоматическое средство для помещения новых пользователей в группы внутри
+в
 .Pa /etc/groups
-file.
-This is useful where all users share some resources, and is preferable
-to placing users into the same primary group.
-The effect of this keyword can be overridden using the
+файла.
+Это полезно в тех случаях, когда все пользователи совместно используют некоторые ресурсы, и предпочтительнее
+чем размещение пользователей в одной основной группе.
+Действие этого ключевого слова можно отменить с помощью параметра
 .Fl G
-option on the
+в файле
 .Xr pw 8
-command line.
+командной строки.
 .Pp
-The
+Опция
 .Ar defaultclass
-field determines the login class (See
+определяет класс входа в систему (см.
 .Xr login.conf 5 )
-that new users will be allocated unless overwritten by
+который будет присвоен новым пользователям, если он не будет перезаписан в поле
 .Xr pw 8 .
 .Pp
-The
+Поле
 .Ar minuid ,
 .Ar maxuid ,
 .Ar mingid ,
 .Ar maxgid
-keywords determine the allowed ranges of automatically allocated user
-and group id numbers.
-The default values for both user and group ids are 1000 and 32000 as
-minimum and maximum respectively.
-The user and group id's actually used when creating an account with
+ключевые слова определяют допустимые диапазоны автоматически назначаемых идентификаторов пользователей
+и идентификаторов групп.
+Значения по умолчанию для идентификаторов пользователей и групп составляют 1000 и 32000 как
+минимум и максимум соответственно.
+Идентификаторы пользователя и группы фактически используются при создании учетной записи с помощью
 .Xr pw 8
-may be overridden using the
+могут быть переопределены с помощью параметра
 .Fl u
-and
+и
 .Fl g
-command line options.
+опции командной строки.
 .Pp
-The
+Сайт
 .Ar expire_days
-and
+и
 .Ar password_days
-are used to automatically calculate the number of days from the date
-on which an account is created when the account will expire or the
-user will be forced to change the account's password.
-A value of
+используются для автоматического расчета количества дней с даты
+создания учетной записи, когда срок действия учетной записи истечет или
+пользователь будет вынужден изменить пароль учетной записи.
+Значение
 .Ql \&0
-in either field will disable the corresponding (account or password)
-expiration date.
-.Sh LIMITS
-The maximum line length of
+в любом из полей отключит соответствующую (учетную запись или пароль)
+срок действия.
+.Sh ОГРАНИЧЕНИЯ
+Максимальная длина строки в файле
 .Pa /etc/pw.conf
-is 1024 characters.
-Longer lines will be skipped and treated
-as comments.
-.Sh FILES
+составляет 1024 символа.
+Более длинные строки будут пропускаться и рассматриваться
+как комментарии.
+.Sh ФАЙЛЫ
 .Bl -tag -width /etc/master.passwd -compact
 .It Pa /etc/pw.conf
 .It Pa /etc/passwd
 .It Pa /etc/master.passwd
 .It Pa /etc/group
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ 
 .Xr passwd 1 ,
 .Xr umask 2 ,
 .Xr group 5 ,
 .Xr login.conf 5 ,
 .Xr passwd 5 ,
 .Xr pw 8
+
