@@ -24,100 +24,100 @@
 .Dd October 30, 2007
 .Dt QUOTA.USER 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm quota.user , quota.group
-.Nd per file system quota database
-.Sh DESCRIPTION
-Each file system with active quotas should contain a
+.Nd для каждой базы данных квот файловой системы
+.Sh ОПИСАНИЕ
+Каждая файловая система с активными квотами должна содержать
 .Pa quota.user
-and
+и
 .Pa quota.group
-file in the file system root.
-These files are created by
+файл в корневом каталоге файловой системы.
+Эти файлы создаются
 .Xr quotacheck 8 ,
-and should be edited with
-.Xr edquota 8 .
-It is possible to specify a different location and file name with the
+и должены быть отредактирован с помощью
+.Xr изд . 8 .
+Можно указать другое местоположение и имя файла с помощью
 .Dq Li userquota
-and
+и
 .Dq Li groupquota
-options in the
+варианты в
 .Xr fstab 5
-file.
+файл.
 .Pp
-The data files contain the following information:
+Файлы данных содержат следующую информацию:
 .Pp
 .Bl -bullet -offset indent -compact
 .It
-Current block usage
+Текущее использование блока
 .It
-Current number of files
+Текущее количество файлов
 .It
-Soft block limit
+Ограничение мягкого блока
 .It
-Soft file limit
+Ограничение по мягкому файлу
 .It
-Hard block limit
+Жесткий предел блокировки
 .It
-Hard file limit
+Жесткий лимит файлов
 .It
-Block grace time remaining if over the soft limit
+Заблокируйте оставшееся льготное время, если оно превышает установленный лимит
 .It
-File grace time remaining if over the soft limit
+Оставшееся время отсрочки подачи документов при превышении установленного лимита
 .El
 .Pp
-See
+Смотрите 
 .Xr edquota 8
-for an explanation on the various limits and grace periods.
+более подробную информацию о различных ограничениях и льготных периодах.
 .Pp
-During normal quota operations the
+Во время обычных операций с квотами
 .Xr quotactl 2
-interface is used to query or set quota information and the kernel
-will maintain the data files as needed.
-If quotas are disabled on
-a file system, but marked as having quotas enabled in
+интерфейс используется для запроса или установки информации о квотах, 
+и ядро будет поддерживать файлы данных по мере необходимости.
+Если квоты отключены в файловой системе, 
+но помечены как включенные в
 .Xr fstab 5 ,
-then the quota data files will be used directly.
+тогда файлы данных о квотах будут использоваться напрямую.
 .Pp
-The data files are stored as an array of
+Файлы данных хранятся в виде массива
 .Dq Li struct dqblk
-structures, as defined in
+структуры, как определено в
 .In ufs/ufs/quota.h ,
-and indexed by UID or GID.
-The data files will be written as a sparse file if possible.
-Data is only maintained for ids that have either non-zero usage or
-non-zero quota limits.
-If an attempt is made to access data for an id that would exist past the
-end of the current data file, a quota structure with all values set
-to zero will be created, and the data file extended as needed.
-The
+и индексируются по UID или GID.
+По возможности файлы данных будут записаны в виде разреженного файла.
+Данные сохраняются только для идентификаторов, которые имеют ненулевое использование или ненулевые ограничения
+по квоте.
+Если будет предпринята попытка получить доступ к данным по идентификатору, который существовал бы после
+окончания текущего файла данных, будет создана структура квот со всеми значениями, равными
+нулю, и файл данных будет расширен по мере необходимости.
+
 .Xr quotacheck 8
-utility will truncate the data files to the minimum size needed
-to store the highest id with either non-zero file usage or
-non-zero quota limits.
+утилита сократит файлы данных до минимального размера, необходимого
+для хранения максимального идентификатора, либо при ненулевом использовании файла, либо
+при ненулевых ограничениях квоты.
 .Pp
-The data record for id 0 has special meaning.
-If the
+Запись данных с идентификатором 0 имеет особое значение.
+Если
 .Dq Dv dqb_btime
-or
+или
 .Dq Dv dbq_itime
-fields are non-zero, they are used to indicate the grace period on
-that file system for users who have exceeded their soft limit.
-These times can be set by
+поля не равны нулю, они используются для указания льготного периода в
+данной файловой системе для пользователей, которые превысили установленный лимит.
+Это время можно задать с помощью
 .Xr edquota 8
-with the
+с
 .Fl t
-flag.
-If no explicit grace period has been set with
+символ.
+Если не был установлен явный льготный период с
 .Xr edquota 8 ,
-then the default value of 7 days will be used.
-The default values are defined by
+тогда будет использоваться значение по умолчанию, равное 7 дням.
+Значения по умолчанию определяются
 .Dv MAX_DQ_TIME
-and
+и
 .Dv MAX_IQ_TIME
-in
+в
 .In ufs/ufs/quota.h .
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr quota 1 ,
 .Xr quotactl 2 ,
 .Xr fstab 5 ,
