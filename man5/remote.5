@@ -30,180 +30,179 @@
 .Dd October 20, 2003
 .Dt REMOTE 5
 .Os
-.Sh NAME
-.Nm remote
-.Nd remote host description file
-.Sh DESCRIPTION
-The systems known by
+.Sh ИМЯ
+.Nm удаленный
+.Nd файл описания удаленного хоста
+.Sh ОПИСАНИЕ
+Системы, известные по
 .Xr tip 1
-and their attributes are stored in an
+и их атрибуты хранятся в
 .Tn ASCII
-file which
-is structured somewhat like the
-.Xr termcap 5
-file.
-Each line in the file provides a description for a single
-.Em system .
-Fields are separated by a colon (``:'').
-Lines ending in a \e character with an immediately following newline are
-continued on the next line.
+файл, 
+структура которого чем-то напоминает структуру
+.Xr 5
+файла.
+Каждая строка в файле содержит описание одной
+.Em системы .
+Поля разделяются двоеточием (``:'').
+Строки, заканчивающиеся символом \e и следующей за ним новой строкой, 
+продолжаются на следующей строке.
 .Pp
-The first entry is the name(s) of the host system.
-If there is more
-than one name for a system, the names are separated by vertical bars.
-After the name of the system comes the fields of the description.
-A field name followed by an `=' sign indicates a string value.
-A field name followed by a `#' sign indicates a numeric value.
+Первая запись - это имя хост-системы. Если для системы существует более одного имени, 
+имена разделяются вертикальными 
+полосами.
+После названия системы идут поля описания.
+Имя поля, за которым следует знак`=' указывает на строковое значение.
+Имя поля, за которым следует знак `#'  указывает на числовое значение.
 .Pp
-Entries named ``tip*'' and ``cu*'' are used as default entries by
+Записи с именами  ``tip*'' and ``cu*'' используются в качестве записей по умолчанию
 .Xr tip 1 ,
-and the
+и
 .Xr cu 1
-interface to
-.Nm tip ,
-as follows.
-When
-.Nm tip
-is invoked with only a phone number, it looks for an entry
-of the form ``tip300'', where 300 is the data rate with
-which the connection is to be made.
-When the
+интерфейс к
+.Nm совет ,
+следующим образом.
+Когда
+.Nm совет
+вызывается только с помощью номера телефона, он ищет запись
+в форме ``tip300'', где 300 - это скорость передачи данных, с
+которой должно быть установлено соединение.
+Когда
 .Nm cu
-interface is used, entries of the form ``cu300'' are used.
-.Sh CAPABILITIES
-Capabilities are either strings (str), numbers (num), or boolean
-flags (bool).
-A string capability is specified by
-.Em capability Ns Ar = Ns Em value ;
-for example, ``dv=/dev/harris''.
-A numeric capability is specified by
-.Em capability Ns Ar # Ns Em value ;
-for example, ``xa#99''.
-A boolean capability is specified by simply listing the capability.
+используется интерфейс, используются записи формы ``cu300'' 
+.Sh возможности
+Возможностями являются либо строки, либо числа, либо логические
+флаги.
+Строковая возможность задается с помощью
+.Em возможность Ns Ar = Ns Em value ;
+например, ``dv=/dev/harris''.
+Числовая возможность задается с помощью
+.Em возможность Ns Ar # Ns Em value ;
+например, ``xa#99''.
+Логическая возможность задается простым перечислением этой возможности.
 .Bl -tag -width indent
 .It Cm \&at
-(str)
-Auto call unit type.
+(строка)
+Тип устройства автоматического вызова.
 .It Cm \&br
-(num)
-The data rate (bits per second) used for communications on the
-serial port.
-When a modem is used, the data rate used to communicate
-with the remote modem may be different than this rate.
-This is a decimal number.
-The default rate is 115200 bits per second.
+(число)
+Скорость передачи данных (бит в секунду), 
+используемая для передачи данных по последовательному порту.
+При использовании модема скорость передачи данных, используемая для связи с удаленным модемом, 
+может отличаться от этой скорости.
+Это десятичное число.
+Скорость передачи данных по умолчанию составляет 115200 бит в секунду.
 .It Cm \&cm
-(str)
-An initial connection message to be sent to the remote host.
-For example, if a host is reached through a port selector, this
-might be set to the appropriate sequence required to switch to the host.
+(строка)
+Первоначальное сообщение о подключении, которое должно быть отправлено на удаленный хост.
+Например, если доступ к хосту осуществляется через селектор портов, 
+для этого может быть установлена соответствующая последовательность, необходимая для переключения на хост.
 .It Cm \&cu
-(str)
-Call unit if making a phone call.
-Default is the same as the `dv' field.
+(строка)
+Вызывная единица при выполнении телефонного звонка.
+Значение по умолчанию такое же, как и в поле `dv".
 .It Cm \&di
-(str)
-Disconnect message sent to the host when a disconnect is requested by
-the user.
+(строка)
+Сообщение об отключении, отправляемое на хост, когда пользователь 
+запрашивает отключение.
 .It Cm \&du
-(bool)
-This host is on a dial-up line.
+(флаг )
+Этот хост находится на коммутируемой линии.
 .It Cm \&dv
-(str)
+(строка)
 .Ux
-device(s) to open to establish a connection.
-If this file refers to a terminal line,
+устройство необходимо открыть для установления соединения.
+Если этот файл ссылается на конечную строку,
 .Xr tip 1
-attempts to perform an exclusive open on the device to ensure only
-one user at a time has access to the port.
+пытается выполнить эксклюзивное открытие устройства, чтобы гарантировать, 
+что только один пользователь одновременно имеет доступ к порту.
 .It Cm \&el
-(str)
-Characters marking an end-of-line.
-The default is
-.Dv NULL .
-`~' escapes are only
-recognized by
+(строка)
+символы, обозначающие конец строки.
+Значение по умолчанию равно
+.Dv НУЛЮ .
+`~' побеги 
+распознаются только
 .Nm tip
-after one of the characters in `el', or after a carriage-return.
+после одного из символов `el', или после возврата каретки.
 .It Cm \&fs
-(str)
-Frame size for transfers.
-The default frame size is equal to
+(строка)
+Размер кадра для передачи данных.
+Размер кадра по умолчанию равен
 .Dv BUFSIZ .
 .It Cm \&hd
-(bool)
-The host uses half-duplex communication, local echo should be performed.
+(флаг)
+Хост использует полудуплексную связь, должно быть выполнено локальное эхо-сообщение.
 .It Cm \&ie
-(str)
-Input end-of-file marks.
-The default is
-.Dv NULL .
+(строка)
+Введите метки конца файла.
+Значение по умолчанию равно
+.Dv НУЛЮ .
 .It Cm \&oe
-(str)
-Output end-of-file string.
-The default is
-.Dv NULL .
-When
-.Nm tip
-is transferring a file, this
-string is sent at end-of-file.
+(строка)
+Выведите строку конца файла.
+Значение по умолчанию равно
+.Dv НУЛЮ .
+Когда
+.Nm совет
+заключается в передаче файла, эта 
+строка отправляется в конце файла.
 .It Cm \&pa
-(str)
-The type of parity to use when sending data
-to the host.
-This may be one of ``even'',
-``odd'', ``none'', ``zero'' (always set bit 8 to zero),
-``one'' (always set bit 8 to 1).
-The default is even parity.
+(строка)
+Тип контроля четности, используемый 
+при отправке данных на хост.
+Это может быть одним из ``even'',
+``odd'', ``none'', ``zero'' (всегда устанавливайте бит 8 равным нулю),
+``one'' (всегда устанавливайте значение бита с 8 на 1).
+По умолчанию используется четный паритет.
 .It Cm \&pn
-(str)
-Telephone number(s) for this host.
-If the telephone number field contains an @ sign,
-.Nm tip
-searches the file
-.Pa /etc/phones
-file for a list of telephone numbers (see
-.Xr phones 5 ) .
+(строка)
+Телефонный номер этого хоста.
+Если поле номера телефона содержит @ знак,
+.Nm подсказка
+выполняет поиск по файлу
+.Pa /и т.д./телефоны
+файл со списком телефонных номеров (см.
+.Xr раздел телефоны 5 ).
 .It Cm \&tc
-(str)
-Indicates that the list of capabilities is continued in the named
-description.
-This is used primarily to share common capability information.
+(строка)
+Указывает, что список возможностей продолжается в именованном
+описании.
+Это используется в первую очередь для обмена информацией об общих возможностях.
 .El
-.Sh FILES
+.Sh ФАЙЛЫ
 .Bl -tag -width /etc/remote -compact
 .It Pa /etc/remote
-The
+
 .Nm
-host description file resides in
+файл описания хоста находится в
 .Pa /etc .
 .El
-.Sh EXAMPLES
-Here is a short example showing the use of the capability continuation
-feature.
-It defines a 56k modem connection on the first serial port at 115200
-bits per second, no parity using the Hayes command set with standard
-line editing and end of file characters.
-The arpavax entry includes everything in the UNIX-57600 entry plus
-the phone number for arpavax (in this case an @ character so that it
-is retrieved from the environment).
+.Sh ПРИМЕРЫ
+Вот краткий пример, демонстрирующий использование функции продолжения работы.
+Он определяет модемное соединение 56000 на первом последовательном порту в 115200
+бит в секунду, без четности, используя набор команд Hayes со стандартным
+редактированием строк и символами конца файла.
+Запись arpavax включает в себя все, что содержится в записи UNIX-57600, а также
+номер телефона для arpavax (в данном случае символ @, чтобы он
+был получен из среды).
 .Bd -literal
 UNIX-57600:\e
 :dv=/dev/cuau0:el=^D^U^C^S^Q^O@:oe=^D:du:at=hayes:br#115200:pa=none:
 arpavax|ax:\e
 :pn=\e@:tc=UNIX-57600
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr cu 1 ,
 .Xr tip 1 ,
 .Xr phones 5
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+
 .Nm
-file format appeared in
+формат файла появился в
 .Bx 4.2 .
-.Sh BUGS
-The
+.Sh ОШИБКИ
+
 .Xr tip 1
-utility uses its own notion of the serial ports data rate rather than the
-system default for a serial port.
+утилита использует свое собственное представление о скорости передачи данных по последовательным портам, а не
+системное значение по умолчанию для последовательного порта.
