@@ -30,46 +30,46 @@
 .Dd June 10, 2010
 .Dt STAB 5
 .Os
-.Sh NAME
-.Nm stab
-.Nd symbol table types
-.Sh SYNOPSIS
+.Sh имя
+.Nm распределённые вычисления
+.Nd типы таблиц символов
+.Sh КРАТКИЙ ОБЗОР
 .In stab.h
-.Sh DESCRIPTION
-The file
+.Sh ОПИСАНИЕ
+На вкладке "Файлы"
 .In stab.h
-defines some of the symbol table
+определены некоторые элементы таблицы символов
 .Fa n_type
-field values for a.out files.
-These are the types for permanent symbols (i.e., not local labels, etc.\&)
-used by the old debugger
+ для файлов a.out.
+Это типы постоянных символов (т.е. не локальных меток и т.д.)
+используемых старым отладчиком
 .Em sdb
-and the Berkeley Pascal compiler
+и компилятор Berkeley Pascal
 .Xr pc 1 .
-Symbol table entries can be produced by the
+Записи в таблице символов могут быть созданы с помощью
 .Pa .stabs
-assembler directive.
-This allows one to specify a double-quote delimited name, a symbol type,
-one char and one short of information about the symbol, and an unsigned
-long (usually an address).
-To avoid having to produce an explicit label for the address field,
-the
+директива ассемблера.
+Это позволяет указать имя, заключенное в двойные кавычки, тип символа, 
+один символ char и один короткий текст с информацией о символе, 
+а также длинный текст без знака (обычно это адрес).
+Чтобы избежать необходимости создавать явную метку для поля адреса,
+директива
 .Pa .stabd
-directive can be used to implicitly address the current location.
-If no name is needed, symbol table entries can be generated using the
+может использоваться для неявного указания текущего местоположения.
+Если имя не требуется, записи таблицы символов могут быть сгенерированы с помощью
 .Pa .stabn
-directive.
-The loader promises to preserve the order of symbol table entries produced
-by
+директивы.
+Загрузчик обещает сохранить порядок записей в таблице символов, 
+создаваемых
 .Pa .stab
-directives.
-As described in
+директивы.
+Как описано в
 .Xr a.out 5 ,
-an element of the symbol table
-consists of the following structure:
+элемент таблицы символов
+состоит из следующей структуры:
 .Bd -literal
 /*
-* Format of a symbol table entry.
+* Формат записи в таблице символов.
 */
 
 struct nlist {
@@ -84,14 +84,14 @@ struct nlist {
 };
 .Ed
 .Pp
-The low bits of the
+Самые низкие биты в
 .Fa n_type
-field are used to place a symbol into
-at most one segment, according to
-the following masks, defined in
+поля используются для размещения символа
+не более чем в одном сегменте в соответствии со
+следующими масками, определенными в
 .In a.out.h .
-A symbol can be in none of these segments by having none of these segment
-bits set.
+Символ не может находиться ни в одном из этих сегментов, если не задан ни один из
+битов этого сегмента.
 .Bd -literal
 /*
 * Simple values for n_type.
@@ -106,32 +106,32 @@ bits set.
 #define	N_EXT	01	/* external bit, or'ed in */
 .Ed
 .Pp
-The
+
 .Fa n_value
-field of a symbol is relocated by the linker,
+Поле символа перемещается компоновщиком,
 .Xr ld 1
-as an address within the appropriate segment.
+как адрес в соответствующем сегменте.
 .Fa N_value
-fields of symbols not in any segment are unchanged by the linker.
-In addition, the linker will discard certain symbols, according to rules
-of its own, unless the
+поля символов, которых нет ни в одном сегменте, остаются неизменными компоновщиком.
+Кроме того, компоновщик будет отбрасывать определенные символы в соответствии со
+своими собственными правилами, если только
 .Fa n_type
-field has one of the following bits set:
+в поле установлен один из следующих битов:
 .Bd -literal
 /*
-* Other permanent symbol table entries have some of the N_STAB bits set.
-* These are given in <stab.h>
+* Для других записей таблицы постоянных символов установлены некоторые биты N_STAB.
+* Они приведены в <stab.h>
 */
 
 #define	N_STAB	0xe0	/* if any of these bits set, don't discard */
 .Ed
 .Pp
-This allows up to 112 (7 \(** 16) symbol types, split between the various
-segments.
-Some of these have already been claimed.
-The old symbolic debugger,
+Это позволяет использовать до 112 (7 \(** 16) типов символов, разделенных между различными
+сегментами.
+Некоторые из них уже использовались.
+Старый символьный отладчик,
 .Em sdb ,
-uses the following n_type values:
+использует следующие значения n_type:
 .Bd -literal
 #define	N_GSYM	0x20	/* global symbol: name,,0,type,0 */
 #define	N_FNAME	0x22	/* procedure name (f77 kludge): name,,0 */
@@ -154,63 +154,63 @@ uses the following n_type values:
 #define	N_LENG	0xfe	/* second stab entry with length information */
 .Ed
 .Pp
-where the comments give
+где комментарии дают
 .Em sdb
-conventional use for
+обычное использование для
 .Pa .stab
 .Fa s
-and the
+и
 .Fa n_name ,
 .Fa n_other ,
 .Fa n_desc ,
-and
+и
 .Fa n_value
-fields
-of the given
+поля
+из данного
 .Fa n_type .
 .Em Sdb
-uses the
+использует
 .Fa n_desc
-field to hold a type specifier in the form used
-by the Portable C Compiler,
+поле для хранения типа, указанного в форме, используемой
+переносимым компилятором C,
 .Xr cc 1 ;
-see the header file
+смотрите файл заголовка
 .Pa pcc.h
-for details on the format of these type values.
+для получения подробной информации о формате значений этого типа.
 .Pp
-The Berkeley Pascal compiler,
+Компилятор Berkeley Pascal,
 .Xr pc 1 ,
-uses the following
+использует следующую
 .Fa n_type
-value:
+ценность:
 .Bd -literal
 #define	N_PC	0x30	/* global pascal symbol: name,,0,subtype,line */
 .Ed
 .Pp
-and uses the following subtypes to do type checking across separately
-compiled files:
+и использует следующие подтипы для проверки типов в отдельно
+скомпилированных файлах:
 .Bd -unfilled -offset indent
-1	source file name
-2	included file name
-3	global label
-4	global constant
-5	global type
-6	global variable
-7	global function
-8	global procedure
-9	external function
-10	external procedure
-11	library variable
-12	library routine
+1	имя исходного файла
+2	включенное имя файла
+3	глобальный лейбл
+4	глобальная константа
+5	глобальный тип
+6	глобальная переменная
+7	глобальная функция
+8	глобальная процедура
+9	внешняя функция
+10	внешняя процедура
+11	библиотечная переменная
+12	библиотечная рутина
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr as 1 ,
 .Xr ld 1 ,
 .Xr a.out 5
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+
 .Nm
-file appeared in
+файл появился в
 .Bx 4.0 .
-.Sh BUGS
-More basic types are needed.
+.Sh ОШИБКИ
+Необходимы более простые типы.
