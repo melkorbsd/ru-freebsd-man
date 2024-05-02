@@ -1,153 +1,156 @@
-.\" Copyright (c) 2005 Michael Bushkov <bushman@rsu.ru>
-.\" All rights reserved.
+.\" Copyright (c) 2005 Михаил Бушков <bushman@rsu.ru>
+.\" Все права защищены.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
+.\" Распространение и использование в исходных и двоичных формах, с модификацией или без
+.\" модификацией, разрешены при соблюдении следующих условий
+.\" соблюдены:
+.\" 1. Перераспределение исходного кода должно сохранять вышеуказанное уведомление об авторских правах
+.\" уведомление об авторских правах, этот список условий и следующий отказ от ответственности.
+.\" 2. Перераспределение в двоичной форме должно воспроизводить вышеуказанное уведомление об авторских правах
+.\" уведомление об авторских правах, этот список условий и следующий отказ от ответственности в
+.\" документации и/или других материалах, поставляемых вместе с дистрибутивом.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ АВТОРОМ И РАЗРАБОТЧИКАМИ "КАК ЕСТЬ" И
+.\" ЛЮБЫЕ ЯВНЫЕ ИЛИ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ
+.\" ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ТОВАРНОГО СОСТОЯНИЯ И ПРИГОДНОСТИ ДЛЯ КОНКРЕТНОЙ ЦЕЛИ
+.\" НЕ ПРИНИМАЮТСЯ.  НИ ПРИ КАКИХ ОБСТОЯТЕЛЬСТВАХ АВТОР ИЛИ СОАВТОРЫ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ
+.\" ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, СПЕЦИАЛЬНЫЕ, ПРИМЕРНЫЕ ИЛИ КОСВЕННЫЕ УБЫТКИ.
+.\" УЩЕРБ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПРИОБРЕТЕНИЕ ТОВАРОВ-ЗАМЕНИТЕЛЕЙ
+.\" ИЛИ УСЛУГИ; ПОТЕРЮ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПЕРЕРЫВ В РАБОТЕ)
+.\" НЕЗАВИСИМО ОТ ПРИЧИН И ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО КОНТРАКТ, СТРОГИЙ
+.\" ОТВЕТСТВЕННОСТИ, ИЛИ ДЕЛИКТА (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНОЕ), ВОЗНИКАЮЩИХ КАКИМ-ЛИБО ОБРАЗОМ
+.\" В СВЯЗИ С ИСПОЛЬЗОВАНИЕМ ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ ВЫ БЫЛИ ПРЕДУПРЕЖДЕНЫ О ВОЗМОЖНОСТИ
+.\" ТАКОГО УЩЕРБА.
 .\"
-.Dd October 6, 2018
+.Dd 6 октября 2018 г.
 .Dt NSCD.CONF 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm nscd.conf
-.Nd "nscd configuration file"
-.Sh DESCRIPTION
+.Nd "файл конфигурации nscd"
+.Sh ОПИСАНИЕ
 The
 .Nm
-file
-is used by the
+файл
+используется 
 .Xr nscd 8
-daemon and is read on its startup.
-Its syntax is mostly similar to the
+и считывается при запуске службы.
+Его синтаксис в основном похож на 
 .Pa nscd.conf
-syntax in
+синтаксис в
 .Tn Linux
-and
-.Tn Solaris .
-It has some differences, though \[em] see them below.
+и
+.Tn Solaris.
+Он имеет некоторые отличия, хотя \[em] см. их ниже.
 .Pp
-Each line specifies either an attribute and a
-.Ar value ,
-or an attribute, a
+В каждой строке указывается либо атрибут и
+.Ar значение,
+либо атрибут, значение
 .Ar cachename
-and a
-.Ar value .
-Usual cachenames are
+и
+.Ar . значение
+Обычно используются следующие кэш-имена
 .Dq Li passwd ,
 .Dq Li group ,
 .Dq Li hosts ,
-.Dq Li services ,
-.Dq Li protocols
-and
+.Dq Li сервисы ,
+.Dq Li протоколы
+и
 .Dq Li rpc .
-You can also use any other
+Вы также можете использовать любое другое
 .Ar cachename
-(for example, if some third-party
-application uses nsswitch).
+(например, если стороннее
+приложение использует nsswitch).
 .Bl -tag -width indent
 .It Va threads Op Ar value
-Number of threads, which would listen for connections and process requests.
-The minimum is 1.
-The default value is 8.
+Количество потоков, которые будут прослушивать соединения и обрабатывать запросы.
+Минимальное значение 1.
+Значение по умолчанию  8.
 .It Va enable-cache Oo Ar cachename Oc Op Cm yes | no
-Enables or disables the cache for specified
+Включает или выключает кэш для указанного
 .Ar cachename .
-.It Va positive-time-to-live Oo Ar cachename Oc Op Ar value
-Sets the TTL (time-to-live) for the specified cache in seconds.
-Larger values can increase system's performance, but they also can affect
-the cache coherence.
-The default value is 3600.
+.It Va positive-time-to-live Oo Ar cachename Oc Op Ar значение
+Устанавливает TTL (время жизни) для указанного кэша в секундах.
+Большие значения могут увеличить производительность системы, но они также могут повлиять на
+согласованность кэша.
+Значение по умолчанию - 3600.
 .It Va positive-policy Oo Ar cachename Oc Op Cm fifo | lru | lfu
-The policy that is applied to erase some of the cache elements, when the
-size limit of the given
+Политика, которая применяется для стирания некоторых элементов кэша, когда
+предельный размер данного
 .Ar cachename
-is exceeded.
-Possible policies are:
+превышается.
+Возможные политики:
 .Cm fifo
-(first-in-first-out),
+(первым пришел - первым ушел),
 .Cm lru
-(least-recently-used), and
+(наименее часто используемый), и
 .Cm lfu
-(least-frequently-used).
-The default policy is
+(наименее часто используемый).
+По умолчанию используется политика
 .Cm lru .
 .It Va negative-time-to-live Oo Ar cachename Oc Op Ar value
-The TTL of the negative cached elements in seconds.
-The larger values can significantly increase system performance in some
-environments (when dealing with files with UIDs, which are not in system
-databases, for example).
-This number should be kept low to avoid the cache coherence problems.
-The default value is 60.
+TTL отрицательных элементов кэша в секундах.
+Большие значения могут значительно увеличить производительность системы в некоторых
+средах (при работе с файлами с UID, которых нет в системных
+базах данных, например).
+Чтобы избежать проблем с когерентностью кэша, это число следует поддерживать на низком уровне.
+Значение по умолчанию - 60.
 .It Va negative-policy Oo Ar cachename Oc Op Cm fifo | lru | lfu
-The same as the positive-policy, but this one is applied to the negative
-elements of the given
+То же самое, что и positive-policy, но применяется к отрицательным
+элементам данного
 .Ar cachename .
-The default policy is fifo.
+По умолчанию используется политика fifo.
 .It Va negative-confidence-threshold Oo Ar cachename Oc Op Ar value
-The number of times a query must have failed before the cache accepts
-that the element can not be found.
-At the default value of 1 each negative query result is cached and
-immediately returned from the cache on further queries.
-Higher numbers cause queries to be retried at the configured data
-sources the given number of times, before the negative result is
-returned from the cache on further queries.
-This allows to probe for the existence of an entry, and then to create
-it if it did not exist, without the negative probe result preventing
-access to the new entry for the duration of the negative TTL.
+Количество раз, когда запрос должен потерпеть неудачу, прежде чем кэш признает
+что элемент не может быть найден.
+При значении по умолчанию 1 каждый отрицательный результат запроса кэшируется и
+немедленно возвращается из кэша при последующих запросах.
+При более высоких значениях запросы будут повторно опробованы на сконфигурированных источниках данных
+источниках данных заданное количество раз, прежде чем отрицательный результат будет
+прежде чем отрицательный результат будет возвращен из кэша при последующих запросах.
+Это позволяет проверить существование записи, а затем создать ее
+ее, если она не существует, без того, чтобы отрицательный результат зондирования препятствовал
+доступ к новой записи на время отрицательного TTL.
 .It Va suggested-size Oo Ar cachename Oc Op Ar value
-This is the internal hash table size.
-The value should be a prime number for optimum performance.
-You should only change this value when the number of cached elements is
-significantly (5-10 times) greater than the default hash table size (257).
+Это внутренний размер хэш-таблицы.
+Для оптимальной производительности значение должно быть простым числом.
+Это значение следует изменять только в том случае, если количество кэшируемых элементов
+значительно (в 5-10 раз) больше, чем размер хэш-таблицы по умолчанию (257).
 .It Va keep-hot-count Oo Ar cachename Oc Op Ar value
-The size limit of the cache with the given
+Ограничение размера кэша с заданным
 .Ar cachename .
-When it is exceeded, the policy will be applied.
-The default value is 2048.
+При его превышении будет применена политика.
+Значение по умолчанию - 2048.
 .It Va perform-actual-lookups Oo Ar cachename Oc Op Cm yes | no
-If enabled, the
+Если включено, то
 .Xr nscd 8
-does not simply receive and cache the NSS-requests results, but performs
-all the lookups by itself and only returns the responses.
-If this feature is enabled, then for the given
+не просто получает и кэширует результаты NSS-запросов, а выполняет
+все поиски самостоятельно и возвращает только ответы.
+Если эта функция включена, то для заданного
 .Ar cachename
 .Xr nscd 8
-will act similarly to the NSCD.
+будет действовать аналогично NSCD.
 .Pp
-.Sy NOTE :
-this feature is currently experimental \[em] it supports only
+.Sy ПРИМЕЧАНИЕ :
+эта функция в настоящее время является экспериментальной \[em] она поддерживает только
 .Dq Li passwd ,
 .Dq Li group
-and
+и
 .Dq Li services
 cachenames.
 .El
-.Sh NOTES
-You can use the
+.Sh ПРИМЕЧАНИЯ
+Вы можете использовать
 .Ql #
-symbol at the beginning of the line for comments.
-.Sh FILES
+в начале строки для комментариев.
+.Sh ФАЙЛЫ
 .Bl -tag -width ".Pa /etc/nscd.conf" -compact
 .It Pa /etc/nscd.conf
 .El
-.Sh SEE ALSO
+.Sh смотрите также
 .Xr nscd 8
-.Sh AUTHORS
-.An Michael Bushkov Aq Mt bushman@FreeBSD.org
+.Sh АВТОРЫ
+.An Михаил Бушков Aq Mt bushman@FreeBSD.org
+
+
+
