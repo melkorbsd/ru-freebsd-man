@@ -26,47 +26,46 @@
 .Dd April 14, 2011
 .Dt RCTL.CONF 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm rctl.conf
-.Nd resource limits database defaults
-.Sh DESCRIPTION
-The
+.Nd ограничения ресурсов базы данных по умолчанию
+.Sh ОПИСАНИЕ
+
 .Pa /etc/rctl.conf
-file is read in when the system goes into multi-user mode to set default
-contents of the RCTL database.
-The
+файл считывается, когда система переходит в многопользовательский режим, 
+чтобы установить содержимое базы данных RCTL по умолчанию.
 .Pa /etc/rctl.conf
-is in the format of the
+находится в формате
 .Xr rctl 8
-command, i.e.\&
+команды, т.е.\&
 .Bd -literal -offset indent
-subject:subject-id:resource:action=amount/per
+тема:идентификатор темы:ресурс:действие=сумма/за
 .Ed
 .Pp
-Comments are denoted by a
+Комментарии обозначаются символом
 .Dq #
-at the beginning of a line.
-Comments can also exist at the end of a line,
-as seen in the
-.Sx EXAMPLES
-section, below.
+в начале строки.
+Комментарии также могут располагаться в конце строки, 
+как показано на рисунке
+.Sx ПРИМЕРЫ
+раздел, приведенный ниже.
 .Sh FILES
 .Bl -tag -width /etc/rctl.conf -compact
 .It Pa /etc/rctl.conf
-Initial settings for
+Начальные настройки для
 .Xr rctl 8 .
 .El
-.Sh EXAMPLES
-To limit the number of processes for users in login class "testing",
-use a rule like
+.Sh ПРИМЕРЫ
+Чтобы ограничить количество процессов для пользователей в классе входа в систему "тестирование", 
+используйте правило типа
 .Bd -literal -offset indent
 # Resource limits for the "testing" class.
-loginclass:testing:nproc:deny=100/user # At most 100 processes per user
+класс входа:тестирование:nproc:запретить=100/пользователь # At most 100 processes per user
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr rctl 8
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+
 .Nm
-file appeared in
+файл появился в
 .Fx 9.0 .
