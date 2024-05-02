@@ -28,39 +28,39 @@
 .Dd July 17, 2023
 .Dt STYLE.MAKEFILE 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm style.Makefile
 .Nd
 .Fx
-.Pa Makefile
-file style guide
-.Sh DESCRIPTION
-This file specifies the preferred style for makefiles in the
+.Pa Makefile - файл Makefile
+руководство по стилю файла
+.Sh ОПИСАНИЕ
+Этот файл определяет предпочтительный стиль для make-файлов в
 .Fx
-source tree.
+исходное дерево.
 .Bl -bullet
 .It
 .Cm .PATH :
-comes first if needed, and is spelled
+При необходимости идет первым и пишется
 .Dq Li ".PATH: " ,
-with a single
+с одним
 .Tn ASCII
-space after a colon.
-Do not use the
+пробелом после двоеточия.
+Не используйте 
 .Va VPATH
-variable.
+переменную.
 .It
-Special variables (i.e.,
+Специальные переменные (т. е.
 .Va LIB , SRCS , MLINKS ,
-etc.) are listed in order of
+и т. д.) перечислены в
 .Dq product ,
-then building and installing a binary.
-Special variables may also be listed in
+порядке сборки и установки двоичного файла.
+Специальные переменные также могут быть перечислены по
 .Dq build
-order: i.e., ones for the primary program (or library) first.
-The general
+порядку: т. е. сначала переменные для основной программы (или библиотеки).
+Общий порялок
 .Dq product
-order is:
+таков:
 .Va PROG Ns / Ns Oo Va SH Oc Ns Va LIB Ns / Ns Va SCRIPTS
 .Va FILES
 .Va LINKS
@@ -73,9 +73,9 @@ order is:
 .Va CFLAGS
 .Va DPADD
 .Va LDADD .
-The general
+Общий порядок
 .Dq build
-order is:
+таков:
 .Va PROG Ns / Ns Oo Va SH Oc Ns Va LIB Ns / Ns Va SCRIPTS
 .Va SRCS
 .Va WARNS
@@ -89,166 +89,164 @@ order is:
 .Va MAN
 .Va MLINKS .
 .It
-Omit
-.Va SRCS
-when using
+Опустить
+.Va Управляющие компании
+когда используем
 .In bsd.prog.mk
-and there is a single source file named the same as the
-.Va PROG .
+и есть один исходный файл с таким же именем, как и у
+.Va программы .
 .It
-Omit
+Опустить
 .Va MAN
-when using
+когда используем
 .In bsd.prog.mk
-and the manual page is named the same as the
+и страница руководства называется так же, как и страница
 .Va PROG ,
-and is in section 1.
+и находится в разделе 1.
 .It
-All variable assignments are spelled
+Все назначения переменных пишутся
 .Dq Va VAR Ns Ic = ,
-i.e., no space between the variable name and the
+т. е. между именем переменной и ее значением нет пробела.
 .Ic = .
-Keep values sorted alphabetically, if possible.
+По возможности сохраняйте значения в алфавитном порядке.
 .It
-Variables are expanded with
+Переменные расширяются с помощью
 .Sy {} ,
-not
+нет
 .Sy () .
-Such as
+Такой как
 .Va ${VARIABLE} .
 .It
-Do not use
+Не используйте 
 .Ic +=
-to set variables that are only set once
-(or to set variables for the first time).
+для установки переменных, которые устанавливаются только один раз
+(или установить переменные впервые).
 .It
-Do not use vertical whitespace in simple makefiles,
-but do use it to group locally related things in more complex/longer ones.
+Не используйте вертикальные пробелы в простых make-файлах.
+но используйте его для группировки локально связанных вещей в более сложные/длинные.
 .It
 .Va WARNS
-comes before
+приходит раньше
 .Va CFLAGS ,
-as it is basically a
+поскольку это, по сути,
 .Va CFLAGS
-modifier.
-It comes before
+модификатор.
+Это происходит до
 .Va CFLAGS
-rather than after
+а не после
 .Va CFLAGS
-so it does not get lost in a sea of
+чтобы не затеряться в море
 .Va CFLAGS
-statements as
+утверждений
 .Va WARNS
-is an important thing.
-The usage of
+это очень важно.
+Использование 
 .Va WARNS
-is spelled
+написано так
 .Dq Li "WARNS?= " ,
-so that it may be overridden on the command line or in
+что его можно переопределить в командной строке или 
 .Xr make.conf 5 .
 .It
 .Dq Li "MK_WERROR=no"
-should not be used,
-it defeats the purpose of
+не следует использовать,
+это противоречит цели
 .Va WARNS .
-It should only be used on the command line and in special circumstances.
+Его следует использовать только в командной строке и в особых случаях.
 .It
 .Va CFLAGS
-is spelled
+пишется
 .Dq Li "CFLAGS+= " .
 .It
-Listing
+Листинг
 .Fl D Ns 's
-before
+раньше
 .Fl I Ns 's
-in
+в
 .Va CFLAGS
-is preferred for alphabetical ordering and to make
+предпочтительнее для алфавитного порядка и 
 .Fl D Ns 's
-easier to see.
-The
+облегчения просмотра.
 .Fl D Ns 's
-often affect conditional compilation,
-and
+часто влияют на условную компиляцию,
+и
 .Fl I Ns 's
-tend to be quite long.
-Split long
+имеют тенденцию быть довольно длинными.
+Разделить длинные
 .Va CFLAGS
-settings between the
+настройки между
 .Fl D Ns 's
-and
+и
 .Fl I Ns 's.
 .It
-Do not use GCCisms (such as
+Не используйте GCCизмы (например,
 .Fl g
-and
+и
 .Fl Wall )
-in
+в
 .Va CFLAGS .
 .It
-Typically, there is one
+обычно,
 .Tn ASCII
-tab between
+между
 .Va VAR Ns Ic =
-and the value in order to start the value in column 9.
-An
+и значением, чтобы начать значение в столбце 9.
 .Tn ASCII
-space is allowed for variable names that extend beyond column 9.
-A lack of whitespace is also allowed for very long variable names.
+Пробел допускается для имен переменных, выходящих за пределы столбца 9.
+Отсутствие пробелов также допускается для очень длинных имен переменных
 .It
 .Ic .include In bsd.*.mk
-goes last.
+идет последним..
 .It
-Do not use anachronisms like
+Не используйте анахронизмы типа
 .Va $<
-and
+и
 .Va $@ .
-Instead use
+Вместо этого используйте
 .Va ${.IMPSRC}
-or
+или
 .Va ${.ALLSRC}
-and
+и
 .Va ${.TARGET} .
 .It
-To not build the
+Чтобы не строить
 .Dq foo
-part of the base system,
-use
+часть базовой системы,
+используйте
 .Va NO_FOO ,
-not
+не
 .Va NOFOO .
 .It
-To optionally build something in the base system,
-spell the knob
+Чтобы при необходимости построить что-то в базовой системе,
+написать ручку
 .Va WITH_FOO
-not
+не
 .Va WANT_FOO
-or
+или
 .Va USE_FOO .
-The latter are reserved for the
+Последние зарезервированы для
 .Fx
-Ports Collection.
+коллекции портов.
 .It
-For variables that are only checked with
+Для переменных, которые проверяются только с помощью
 .Fn defined ,
-do not provide any fake value.
+не указывайте ложное значение.
 .El
 .Pp
-The desire to express a logical grouping often means not obeying some of the
-above.
+Желание выразить логическую группировку часто означает неподчинение некоторым из
+выше.
 .Sh EXAMPLES
-The simplest program
+Самая простая программа
 .Pa Makefile
-is:
+является:
 .Bd -literal -offset indent
 PROG=	foo
 
 \&.include <bsd.prog.mk>
 .Ed
 .Pp
-The simplest library
+Самая простая библиотека
 .Pa Makefile
-is:
+является:
 .Bd -literal -offset indent
 LIB=	foo
 SHLIB_MAJOR= 1
@@ -257,16 +255,16 @@ SRCS=	foo.c
 
 \&.include <bsd.lib.mk>
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr make 1 ,
 .Xr make.conf 5 ,
 .Xr style 9
-.Sh HISTORY
-This manual page is inspired from the same source as
+.Sh ИСТОРИЯ
+Эта страница руководства основана на том же источнике, что и
 .Xr style 9
-manual page in
+страница руководства в
 .Fx .
-.Sh BUGS
-There are few hard and fast style rules here.
-The style of many things is too dependent on the context of the whole makefile,
-or the lines surrounding it.
+.Sh ОШИБКИ
+Здесь есть несколько жестких правил стиля.
+Стиль многих вещей слишком зависит от контекста всего make-файла,
+или линии, окружающие его.
