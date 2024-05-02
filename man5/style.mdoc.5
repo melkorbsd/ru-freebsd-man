@@ -24,270 +24,267 @@
 .\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 .\" SUCH DAMAGE.
 .\"
-.Dd January 29, 2022
+.Dd 29 января 2022 г.
 .Dt STYLE.MDOC 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm style.mdoc
 .Nd
 .Fx
 .Xr mdoc 7
-file style guide
-.Sh DESCRIPTION
-This file specifies the preferred style for manual pages in the
+руководство по стилю файла
+.Sh ОПИСАНИЕ
+Этот файл определяет предпочтительный стиль страниц руководства в
 .Fx
-source tree.
-.Ss Code Examples
+исходное дерево.
+.Ss Примеры кода
 .Bl -dash -width ""
 .It
-Use literal formatting for examples and literal shell commands, e.g.:
+Используйте буквальное форматирование для примеров и буквальных команд оболочки, например:
 .Bd -literal -offset indent
-Then run
-\&.Ql make install clean .
+Затем запустите
+\&.Ql чистую устаноку .
 .Ed
 .Pp
-which renders as:
+которая отображается как:
 .Bd -filled -offset indent
-Then run
-.Ql make install clean .
+Затем 
+.Ql сделайте установку чистой .
 .Ed
 .Pp
-The incorrect way would be to use macros like
+Неправильным способом было бы использовать макросы типа
 .Sy \&Nm
-to stylize the command invocation:
+чтобы стилизовать вызов команды:
 .Bd -literal -offset indent
-Then run
+Затем запустите
 \&.Ql Nm make Cm install Cm clean .
 .Ed
 .Pp
-which renders as:
+который отображается как:
 .Bd -filled -offset indent
-Then run
+Затем запустите
 .Ql Nm make Cm install Cm clean .
 .Ed
 .It
-The
 .Sy \&Ql
-macro is the preferred macro for formatting literal inline fragments.
-Historically,
+Макрос является предпочтительным макросом для форматирования литеральных встроенных фрагментов.
+Исторически,
 .Sy \&Dq \&Li
-was the preferred way before the deprecation of
+был предпочтительным способом до прекращения поддержки
 .Sy \&Li .
 .El
-.Ss EXAMPLES Section
+.Ss Раздел ПРИМЕРОВ
 .Bl -dash -width ""
 .It
-Format the
-.Sx EXAMPLES
-section in the following way:
+Отформатируйте
+.Sx ПРИМЕРЫ
+раздел следующим образом:
 .Bd -literal -offset indent
 \&.Bl -tag -width 0n
 \&.It Sy Example 1\\&: No Doing Something
 \&.Pp
-The following command does something.
+Следующая команда что-то делает.
 \&.Bd -literal -offset 2n
 \&.Li # Ic make -VLEGAL
 \&.Ed
 \&.It Sy Example 2\\&: No Doing Something Different
 \&.Pp
-The following command does something different.
+Следующая команда делает что-то другое.
 \&.Bd -literal -offset 2n
 \&.Li # Ic bectl list
 \&.Ed
 \&.Pp
-It is good to know this command.
+Полезно знать эту команду.
 \&.El
 .Ed
 .Pp
-which renders as:
+который отображается как:
 .Bd -filled -offset indent
 .Bl -tag -width 0n
 .It Sy Example 1\&: No Doing Something
 .Pp
-The following command does something.
+Следующая команда что-то делает.
 .Bd -literal -offset 2n
 .Li # Ic make -VLEGAL
 .Ed
 .It Sy Example 2\&: No Doing Something Different
 .Pp
-The following command does something different.
+Следующая команда делает что-то другое.
 .Bd -literal -offset 2n
 .Li # Ic bectl list
 .Ed
 .Pp
-It is good to know this command.
+Полезно знать эту команду.
 .El
 .Ed
 .El
 .Ss Lists
 .Bl -dash -width ""
 .It
-The
 .Fl width
-argument to the
+аргумент в пользу
 .Sy \&.Bl
-macro should match the length of the longest item in the list, e.g.:
+Макрос должен соответствовать длине самого длинного элемента в списке, например:
 .Bd -literal -offset indent
 \&.Bl -tag -width "-a address"
 \&.It Fl a Ar address
-Set the address.
+Установите адрес.
 \&.It Fl v
-Print the version.
+Распечатайте версию.
 \&.El
 .Ed
 .Pp
-In case the longest item is too long and hurts readability,
-the recommendation is to set
-the
+Если самый длинный элемент слишком длинный и ухудшает читабельность,
+рекомендуется установить
 .Fl width
-argument
-to
+аргумент
+к
 .Ql indent ,
-e.g.:
+например.:
 .Bd -literal -offset indent
 \&.Bl -tag -width "indent"
 \&.It Cm build
-Build the port.
+Постройте порт.
 \&.It Cm install
-Install the port.
+Установите порт.
 \&.It Fl install-missing-packages
-Install the missing packages.
+Установите недостающие пакеты.
 \&.El
 .Ed
 .El
 .Ss Synopsis Formatting
 .Bl -dash -width ""
 .It
-Do not put whitespace between alternative parameters separated with a pipe
+Не помещайте пробелы между альтернативными параметрами, разделенными вертикальной чертой.
 .Pq Dq | ,
-e.g.:
+например.:
 .Bd -literal -offset indent
 \&.Cm compression Cm on Ns | Ns Cm off
 \&.Cm install Fl -all Ns | Ns Ar portname Ar ...
 .Ed
 .Pp
-which in the SYNOPSIS section is rendered as:
+который в разделе СИНТАКСИС отображается как:
 .Bd -unfilled -offset indent
 .Cm compression Cm on Ns | Ns Cm off
 .Cm install Fl -all Ns | Ns Ar portname Ar ...
 .Ed
 .It
-Use
+Используйте
 .Sy \&Cm
-to stylize characters that are command modifiers
+для стилизации символов, которые являются модификаторами команд
 .Po e.g.,
 .Dq \&, ,
 .Dq @
-or
+или
 .Dq "="
 .Pc .
-For example:
+Например:
 .Bd -literal -offset indent
 \&.Sm off
 \&.Fl -meet Cm = Ar who Oo Cm \&, Ar who " " Ar "..." Oc Cm @ Ar where
 \&.Sm on
 .Ed
 .Pp
-which renders as:
+который отображается как:
 .Bd -filled -offset indent
 .Sm off
 .Fl -meet Cm = Ar who Oo Cm \&, Ar who " " Ar "..." Oc Cm @ Ar where
 .Sm on
 .Ed
 .Pp
-instead of:
+вместо:
 .Bd -literal -offset indent
 \&.Sm off
 \&.Fl -meet No = Ar who Oo , Ar who " " Ar "..." Oc @ Ar where
 \&.Sm on
 .Ed
 .Pp
-which would render as:
+который будет отображаться как:
 .Bd -filled -offset indent
 .Sm off
 .Fl -meet No = Ar who Oo , Ar who " " Ar "..." Oc @ Ar where
 .Sm on
 .Ed
 .Pp
-It is important to realize that in the correct example,
+Важно понимать, что в правильном примере
 .Dq \&, ,
 .Dq @
-and
+и
 .Dq =
-are stylized with
+стилизованные под
 .Sy \&Cm .
-At the same time, the square brackets
+При этом квадратные скобки
 .Pq Dq "[]"
-are not stylized as they do not belong to the syntax of the
+не стилизованы, поскольку не принадлежат к синтаксису
 .Fl -meet
-flag.
+флага.
 .El
 .Ss Quoting
 .Bl -dash -width ""
 .It
-Use the
+Используйте
 .Sy \&Dq
 .Pq Do Dc
-macro
+макрос
 for quoting.
-Use the
+Используйте
 .Sy \&Sq
 .Pq So Sc
-macro for quoting inside quotes.
-The use of the
+макрос для цитирования внутри кавычек.
+Использование
 .Sy \&Qq
 .Pq Qo Qc
-macro is usually not necessary.
+макроса обычно не нужно.
 .El
 .Ss Variables
 .Bl -dash -width ""
 .It
-Use
+Используйте
 .Sy \&Va
-instead of
+вместо
 .Sy \&Dv
-for
+для
 .Xr sysctl 8
-variables like
+переменные, такие как
 .Va kdb.enter.panic .
 .It
-Use the angle brackets
+Используйте угловые скобки
 .Sy \&Aq
 .Pq Dq "<>"
-macro
-for arguments
+макрос
+для аргументов
 .Pq Sy \&Ar
-when they are mixed with similarly stylized macros like
+когда они смешаны с аналогичными стилизованными макросами, такими как
 .Sy \&Pa
-or
+или
 .Sy \&Va ,
-e.g.:
+например.:
 .Bd -literal -offset indent
 \&.Va critical_filesystems_ Ns Aq Ar type
 .Ed
 .Pp
-which renders as:
+который отображается как:
 .Bd -filled -offset indent
 .Va critical_filesystems_ Ns Aq Ar type
 .Ed
 .Pp
-instead of:
+вместо:
 .Bd -literal -offset indent
 \&.Va critical_filesystems_ Ns Ar type
 .Ed
 .Pp
-that would be rendered as:
+это будет отображаться как:
 .Bd -filled -offset indent
 .Va critical_filesystems_ Ns Ar type
 .Ed
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr man 1 ,
 .Xr mandoc 1 ,
 .Xr mdoc 7 ,
 .Xr style 9
-.Sh HISTORY
-This manual page first appeared in
+.Sh ИСТОРИЯ
+Эта страница руководства впервые появилась в
 .Fx 13.0 .
-.Sh AUTHORS
+.Sh АВТОРЫ
 .An Mateusz Piotrowski Aq Mt 0mp@FreeBSD.org
