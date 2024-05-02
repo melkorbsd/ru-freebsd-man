@@ -30,73 +30,70 @@
 .Dd April 4, 2010
 .Dt SERVICES 5
 .Os
-.Sh NAME
-.Nm services
-.Nd service name data base
-.Sh DESCRIPTION
-The
+.Sh ИМЯ
+.Nm служба
+.Nd база данных о названиях служб
+.Sh ОПИСАНИЕ
 .Nm
-file contains information regarding
-the known services available in the
-Internet.
-For each service a single line should be present
-with the following information:
+Файл содержит информацию о
+известные услуги, доступные в
+Интернете.
+Для каждой услуги должна присутствовать одна строка
+со следующей информацией:
 .Bd -unfilled -offset indent
-official service name
-port number
-protocol name
-aliases
+официальное название службы
+номер порта
+имя протокола
+псевдонимы
 .Ed
 .Pp
-Items are separated by any number of blanks and/or tab characters.
-The port number and protocol name are considered a single
+Элементы разделяются любым количеством пробелов и/или символов табуляции.
+Номер порта и имя протокола считаются одним
 .Em item ;
-a ``/'' is used to
-separate the port and protocol (e.g.\& ``512/tcp'').
-A ``#'' indicates the beginning of
-a comment; subsequent characters up to the end of the line are
-not interpreted by the routines which search the file.
+``/'' используется для
+разделите порт и протокол (например,\& ``512/tcp'').
+``#'' указывает на начало
+комментарий; последующие символы до конца строки
+не интерпретируется процедурами, выполняющими поиск в файле.
 .Pp
-Service names may contain any printable
-character other than a field delimiter, newline,
-or comment character.
+Названия служб могут содержать любые печатные
+символ, отличный от разделителя полей, новой строки,
+или символ комментария.
 .Pp
-If
+Если
 .Dq db
-is specified as source in the
+указывается в качестве источника в
 .Xr nsswitch.conf 5 ,
 .Pa /var/db/services.db
-is searched.
-The database in
+поиске.
+Базу данных в
 .Pa /var/db/services.db
-needs to be updated with
+необходимо обновить с помощью
 .Xr services_mkdb 8
-after changes to the services file have been applied.
-.Sh NIS INTERACTION
-Access to the NIS
+после применения изменений в файле служб.
+.Sh ВЗАИМОДЕЙСТВИИ
+Доступ к NIS
 .Pa services.byname
-map can be enabled by adding a single ``+'' on a line by itself
-in the
+карту можно включить, добавив одиночный ``+'' в отдельную строку
+в
 .Pa /etc/services
-file.
-This causes the contents of the NIS services map to be inserted
-at the location where the ``+'' appears.
+файл
+Это приведет к вставке содержимого карты служб NIS.
+в том месте, где появляется «+».
 .Sh FILES
 .Bl -tag -width /etc/services -compact
 .It Pa /etc/services
-The
 .Nm
-file resides in
+файл находится в
 .Pa /etc .
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr getservent 3 ,
 .Xr nsswitch.conf 5 ,
 .Xr services_mkdb 8
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
 .Nm
-file format appeared in
+формат файла появился в
 .Bx 4.2 .
-.Sh BUGS
-A name server should be used instead of a static file.
+.Sh ОШИБКИ
+Вместо статического файла следует использовать сервер имен.
