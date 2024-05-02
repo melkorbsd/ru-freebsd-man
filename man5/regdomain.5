@@ -24,23 +24,23 @@
 .Dd April 13, 2008
 .Dt REGDOMAIN 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm regdomain.xml
-.Nd "802.11 wireless regulatory definitions"
-.Sh DESCRIPTION
-The
+.Nd "Нормативные определения беспроводной связи стандарта 802.11"
+.Sh ОПИСАНИЕ
+
 .Nm
-file describes regulations for the operation of IEEE 802.11 wireless radios.
+в файле описываются правила эксплуатации беспроводных радиостанций стандарта IEEE 802.11.
 .Pp
-This information is used by the
+Эта информация используется компанией
 .Xr ifconfig 8
-program to construct regulatory state for download to the system.
-This file should be changed only to reflect changes in regulations.
-.Sh FILES
+программа для построения нормативного состояния для загрузки в систему.
+Этот файл следует изменять только для отражения изменений в нормативных актах.
+.Sh файлы
 .Bl -tag -width /etc/regdomain.xml -compact
 .It Pa /etc/regdomain.xml
-XML database of 802.11 regulatory constraints
+XML-база данных нормативных ограничений стандарта 802.11
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr wlan 4 ,
 .Xr ifconfig 8
