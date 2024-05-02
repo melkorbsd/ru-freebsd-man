@@ -1,41 +1,43 @@
-.\" @(#)publickey.5	2.1 88/08/07 4.0 RPCSRC; from 1.6 88/02/29 SMI;
-.Dd October 19, 1987
+.\" @(#)publickey.5 2.1 88/08/07 4.0 RPCSRC; с 1.6 88/02/29 SMI;
+.Dd 19 октября 1987 г.
 .Dt PUBLICKEY 5
 .Os
-.Sh NAME
-.Nm publickey
-.Nd "public key database"
+.Sh ИМЯ
+.Nm открытый ключ
+.Nd "база данных открытых ключей"
 .Sh SYNOPSIS
 .Pa /etc/publickey
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 .Pa /etc/publickey
-is the public key database used for secure
-RPC (Remote Procedure Calls).
-Each entry in
-the database consists of a network user
-name (which may either refer to
-a user or a hostname), followed by the user's
-public key (in hex
-notation), a colon, and then the user's
-secret key encrypted with
-its login password (also in hex notation).
+это база данных открытых ключей, используемая для безопасности 
+RPC (удаленных вызовов процедур).
+Каждая запись в
+базе данных состоит из сетевого пользователя
+имени (которое может относиться как к
+пользователя или имя хоста), за которым следует открытый ключ пользователя
+открытый ключ пользователя (в шестнадцатеричной
+нотации), двоеточие, а затем секретный ключ пользователя
+секретный ключ, зашифрованный с помощью
+секретный ключ пользователя, зашифрованный его паролем для входа в систему (также в шестнадцатеричной системе счисления).
 .Pp
-This file is altered either by the user through the
+Этот файл изменяется либо самим пользователем с помощью команды
 .Xr chkey 1
-command or by the system administrator through the
+либо системным администратором с помощью команды
 .Xr newkey 8
-command.
-The file
+командой.
+Файл
 .Pa /etc/publickey
-should only contain data on the
+должен содержать только данные о
 .Tn NIS
-master machine, where it
-is converted into the
+главной машины, где он
+преобразуется в
 .Tn NIS
-database
+базу данных
 .Pa publickey.byname .
-.Sh SEE ALSO
-.Xr chkey 1 ,
+.Sh СМОТРИТЕ ТАКЖЕ 
+.Xr chkey  1 ,
 .Xr publickey 3 ,
 .Xr newkey 8 ,
 .Xr ypupdated 8
+
+
