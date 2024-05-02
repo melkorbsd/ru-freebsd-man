@@ -30,74 +30,74 @@
 .Dd November 5, 1998
 .Dt RRENUMD.CONF 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .\"
 .Nm rrenumd.conf
-.Nd configuration file for router renumbering daemon
+.Nd файл конфигурации для демона перенумерации маршрутизатора
 .\"
-.Sh DESCRIPTION
-The rrenumd config file describes how the router renumbering packet
-must be constructed and to which destinations it should be sent.
-This file consists of a sequence of statements terminated by a semi-colon (`;').
-Statements are composed of tokens
-separated by white space, which can be any combination of blanks, tabs
-and newlines.
-This structure simplifies identification of
-the parts of the configuration associated with each other.
-Lines beginning with
+.Sh ОПИСАНИЕ
+Конфигурационный файл rrenumd описывает, как пакет перенумерации маршрутизатора
+должен быть построен и в какие пункты назначения его следует отправить.
+Этот файл состоит из последовательности операторов, заканчивающейся точкой с запятой («;»).
+Заявления состоят из токенов
+разделены пробелом, который может представлять собой любую комбинацию пробелов и табуляции
+и новые строки.
+Такая структура упрощает идентификацию
+части конфигурации, связанные друг с другом.
+Строки, начинающиеся с
 .Ql #
-are comments.
+являются комментариями.
 .\"
-.Sh Meta Syntax
-Keywords and special characters that the parser expects exactly are
-displayed using the
-.Ic bold
-font.
-Parameters are specifying with
-.Ar underline .
-Parameters shown in
-square brackets (`[' and `]') are used to show optional
-keywords and parameters.
-The vertical bar (`|') is used to indicate
-between a choice of optional parameters.
-Curly braces (`{' and
-`}') are used to group keywords and parameters when necessary.
+.Sh Ключевые слова
+Ключевые слова и специальные символы, которые точно ожидает синтаксический анализатор,
+отображается с помощью
+.Ic жирного
+шрифта.
+Параметры указываются с
+.Ar подчеркиванием .
+Параметры, показанные в
+квадратные скобки (`[' и `]') используются для отображения необязательных
+ключевые слова и параметры.
+Вертикальная черта (`|') используется для обозначения
+между выбором необязательных параметров.
+Фигурные скобки (`{' и
+`}') используются для группировки ключевых слов и параметров, когда это необходимо.
 .\"
-.Sh Interface specification
-There are some statements that may or have to specify interface.
-Interfaces are specified in the form of "name unit", such as
+.Sh Спецификация интерфейса
+Есть некоторые операторы, которые могут или должны указывать интерфейс.
+Интерфейсы указываются в форме «единицы имени», например
 .Ar lo0
-and
+и
 .Ar ep1 .
 .\"
-.Sh Configuration Statements
+.Sh Заявления о конфигурации
 .Bl -tag -width Ds
 .\"
-.It Ic debug on|off ;
-Enables configuration file parser debugging.
-If
-.Ic on
-is specified,
-then debugging is enabled,
-If
-.Ic off
-is specified,
-then debugging is disabled.
-It is disabled by default.
+.It Ic включение|выключение отладки ;
+Включает отладку анализатора файла конфигурации.
+Если
+.Ic знак
+указан,
+тогда отладка включена,
+Если установлен флажок 
+.Ic выкл.
+отладка 
+отключена.
+По умолчанию он отключен.
 .\"
 .It Ic dest Ar dest-list Op Ar retrycmd ;
-Specifies destinations to which router renumbering messages should be
-sent.
-.Ar dest-list
-can be any combination of single or multiple numerical IPv6 addrs,
-or Full Qualified Domain Names.
-.Ar retrycmd
-has following syntax.
+Указывает места назначения, по которым должны отправляться сообщения о перенумерации маршрутизатора.
+отправил.
+.Ar список назначений
+может быть любой комбинацией одного или нескольких числовых адресов IPv6,
+или полные квалифицированные доменные имена.
+.Ar повторный запуск
+имеет следующий синтаксис.
 .\"
 .Bl -tag -width Ds
-.It Ic retry Ar retry-num
-.Ar retry-num
-specifies how many router renumbering messages are sent repeatedly.
+.It Ic повторите попытку 
+.Ar повтора-кол-во повторов-число
+указывает, сколько сообщений о перенумерации маршрутизатора отправляется повторно.
 .El
 .It Op Ic add|change|setglobal
 .Cm match-prefix Ar match-prefix-val
@@ -123,14 +123,14 @@ specifies how many router renumbering messages are sent repeatedly.
 .Op Ar use-prefix-values ;
 .Ek
 .Pp
-Specifies contents of sending router renumbering message with seqnum 0.
-If
+Указывает содержимое отправляемого сообщения о перенумерации маршрутизатора с порядковым номером 0.
+Если
 .Cm add|change|setglobal
-is not specified, then
-.Cm add
-is assumed.
+не указано, то
+.Cm вот так 
+предполагается.
 .Ar use-prefix-values
-has following syntax.
+имеет следующий синтаксис.
 .Pp
 {
 .Op Cm vltime Ar vltime-val
@@ -151,133 +151,132 @@ has following syntax.
 .Ek
 }
 .Pp
-Each value has following meaning.
+Каждое значение имеет следующее значение.
 .Pp
 .Bl -tag -width Ds -compact
 .It Cm match-prefix Ar match-prefix-val Op /match-prefix-len
-Specify
+Укажите
 .Ar match-prefix-val
-that is used for matching with preassigned prefixes to which
+который используется для сопоставления с заранее назначенными префиксами, к которым
 .Cm add|change|setglobal
-command should be applied.
+должна быть применена команда.
 .Ar /match-prefix-len
-Specify the starting part of
+Укажите начальную часть
 .Ar match-prefix-val
-to be used for matching with preassigned prefixes, as decimal bit number.
+будет использоваться для сопоставления с заранее назначенными префиксами в виде десятичного битового номера.
 .It Cm maxlen Ar maxlen-val
-Specify the maximum length of prefixes which is allowed to be
-matched to
+Укажите максимальную длину префиксов, которую разрешено использовать,
+соответствующую 
 .Ar match-prefix-val ,
-as decimal bit number.
+как десятичное битовое число.
 .It Cm minlen Ar minlen-val
-Specify the minimum length of prefixes which is allowed to be matched to
+Укажите минимальную длину префиксов, которая может соответствовать
 .Ar match-prefix-val ,
-as decimal bit number.
+десятичному битовому числу.
 .It Cm use-prefix Ar use-prefix-val Op /usr-prefix-len
-Specify
+Укажите
 .Ar use-prefix-val
-that is used for prefixes to be added on
+который используется для добавления префиксов
 .Cm add|change|setglobal
-command.
+по команде.
 .Ar /use-prefix-len
-Specify the starting part of
+Укажите начальную часть 
 .Ar use-prefix-val
-copied to the starting part of prefixes to be added on
+скопированных в начальную часть префиксов, добавляемых по
 .Cm add|change|setglobal
-command, as decimal bit number.
+команде, в виде десятичного битового номера..
 .It Cm keeplen Ar keeplen-val
-Specify the medium part of
+Укажите среднюю часть
 .Ar use-prefix-val
-just next to the starting part specified by
+рядом с начальной частью, указанной в виде 
 .Ar use-prefix-len ,
-as decimal bit number.
-Contiguous bits part in the same bit position of an existent prefix
-matched with
+десятичного битового номера.
+Непрерывные биты располагаются в одной битовой позиции существующего префикса.
+сочетается с
 .Ar match-prefix-val
-is copied to the same bit position of prefixes to be added.
+Сопоставленный с копируется в ту же битовую позицию добавляемых префиксов копируется в ту же битовую позицию добавляемых префиксов.
 .It Cm vltime Ar vmtime-val
-Assign an
-.Ar time
-as prefix valid life time for a prefix to be added.
-Valid value for
-.Ar time
-is decimal seconds number or special format as "d00h00m00s00",
-where 00 can take any decimal number, and "d" means days, "h" means hours,
-"m" means minutes, "s" means seconds.
-And alternatively, special keyword
-"infinity" can be also be specified.
+Назначьте 
+.Ar время
+в качестве префикса допустимое время жизни добавляемого префикса.
+Допустимое значение для
+.Ar времени
+десятичное число секунд или специальный формат, например «d00h00m00s00»,
+где 00 может принимать любое десятичное число, а «d» означает дни, «h» означает часы,
+«м» означает минуты, «с» означает секунды.
+И альтернативно, специальное ключевое слово
+Также можно указать «бесконечность».
 .It Cm pltime Ar pltime-val
-Assign an
-.Ar time
-as prefix preferred life time for a prefix to be added.
-Valid value for
-.Ar time
-is same as for
+Назначьте 
+.Ar время
+в качестве префикса предпочтительное время жизни добавляемого префикса.
+Допустимое значение для
+.Ar времени
+то же самое, что и для
 .Ar vltime-val .
 .It Cm raf_onlink Cm on|off
-Let the prefix to be added to have on-link or off-link nature
-for the assigned interface.
-If
+Пусть добавляемый префикс будет иметь характер on-link или off-link.
+для назначенного интерфейса.
+Если указано значение
 .Cm on
-is specified, the prefix have on-link nature
-(e.g.\& the prefix
-belong to the link).
-If
+, то префикс имеет внутриканальный характер
+(например, \& префикс
+принадлежат ссылке).
+Если указано значение
 .Cm off
-is specified, the prefix have off-link nature
-(e.g.\& the
-prefix does not belong to the link).
+, то префикс имеет внеканальную природу
+(например,\&
+префикс не принадлежит ссылке).
 .It Cm raf_auto Cm on|off
-Enable or disable the autonomous address auto configuration
-for the prefix to be added.
-If
+Включить или отключить автоконфигурацию автономного адреса.
+для добавления префикса.
+Если указано значение
 .Cm on
-is specified, autonomous address auto configuration is
-enabled.
-If
+, то автоконфигурация автономного адреса включена
+включено.
+Если указано значение
 .Cm off
-is specified, it is disabled.
+, то он отключен.
 .It Cm rrf_decrprefd Cm on|off
-Enable or disable the decrementation of the pltime.
-If
+Включите или отключите уменьшение pltime.
+Если указано значение
 .Cm on
-is specified, decrementation of the pltime is enabled.
-If
+, то уменьшение pltime включено.
+Если указано значение
 .Cm off
-is specified, decrementation of the pltime is disabled.
+, то уменьшение pltime отключено.
 .It Cm rrf_decrvalid Cm on|off
-Enable or disable the decrementation of the vltime.
-If
+Включите или отключите уменьшение vltime.
+Если указано значение
 .Cm on
-is specified, decrementation of the vltime is enabled.
-If
+, то уменьшение vltime включено.
+Если указано значение
 .Cm off
-is specified, decrementation of the vltime is disabled.
+, то уменьшение vltime отключено.
 .El
 .\"
 .It seqnum Ar seqnum-val { Ar rrenum-cmd } ;
-Specifies contents of sending router renumbering message with some
-specific seqnum.
-Multiple of this statement can be specified if they
-have different
+Указывает содержимое отправляемого сообщения о перенумерации маршрутизатора с некоторыми
+конкретный порядковый номер.
+Можно указать несколько таких операторов, если они
 .Ar seqnum-val
-each other.
+отличаются друг от друга.
 .Ar rrenum-cmd
-has just same syntax with above add|change|setglobal statement.
+имеет тот же синтаксис, что и приведенный выше оператор add|change|setglobal.
 .El
 .\"
-.Sh EXAMPLES
-For each configuration file example shown below, we suppose
-every IPv6 subnet has its own prefix beginning with
-fec0:0:0::/48 and with its own subnet number
-(in this case,
-subnet number is 7th and 8th octet value of the prefix).
+.Sh ПРИМЕРЫ
+Для каждого примера файла конфигурации, показанного ниже, мы предполагаем, что
+каждая подсеть IPv6 имеет свой префикс, начинающийся с
+fec0:0:0::/48 и со своим номером подсети.
+(в этом случае,
+номер подсети — это значение 7-го и 8-го октета префикса).
 .Pp
-If you want to assign prefixes beginning with 3ffe:501:ffff::/48
-to each subnet, then following configuration will be enough,
-if each of your routers supports IPv6 multicast forwarding.
-The subnet number of the existing fec0:0:0::/48 prefix and the
-newly assigned 3ffe:501:ffff::/48 prefix will be same.
+Если вы хотите назначить префиксы, начинающиеся с 3ffe:501:ffff::/48
+в каждую подсеть, то следующей конфигурации будет достаточно:
+если каждый из ваших маршрутизаторов поддерживает многоадресную пересылку IPv6.
+Номер подсети существующего префикса fec0:0:0::/48 и
+вновь назначенный префикс 3ffe:501:ffff::/48 будет таким же.
 .\"
 .Bd -literal -offset indent
 dest ff05::2;
@@ -286,10 +285,10 @@ add match-prefix fec0:0:0:: /48 use-prefix 3ffe:501:ffff:: /48 keeplen 16;
 .Ed
 .Pp
 .\"
-If your routers do not support IPv6 multicast forwarding,
-you will need to specify each destination at
+Если ваши маршрутизаторы не поддерживают многоадресную пересылку IPv6,
+вам нужно будет указать каждый пункт назначения в
 .Cm dest
-command.
+по команде.
 .\"
 .Bd -literal -offset indent
 dest fec0:0:0:1:260:8ff:fe24:fb3a fec0:0:0:2:200:eff:fe2e:dfe1 fec0:0:0:3:5254:ff:fedc:5217;
@@ -301,24 +300,24 @@ add match-prefix fec0:0:0:: /48 use-prefix 3ffe:501:ffff:: /48 keeplen 16;
 If you are going to do renumbering, then following procedure will be natural.
 .Bl -enum -offset indent
 .It
-Assign a new prefix.
+Назначьте новый префикс.
 .It
-Set old prefix lifetimes to some appropriate transition
-period.
-In the following example we use 1 week for valid
-lifetime, and 0 for preferred lifetime.
-Also, enable old prefix lifetime expiration
-(By default, it is static and does not expire).
+Установите время жизни старых префиксов для какого-либо подходящего перехода
+период.
+В следующем примере мы используем 1 неделю для действительных
+время жизни и 0 для предпочтительного времени жизни.
+Также включите истечение срока действия старого префикса.
+(По умолчанию он статический и не имеет срока действия).
 .It
-After the transition period, old prefixes should become
-invalid, and may have been deleted.
-To make sure that they are deleted, send new router
-renumbering message, which specifies old prefixes as match
-prefix, and no use prefix.
+После переходного периода старые префиксы должны стать
+недействителен и, возможно, был удален.
+Чтобы убедиться, что они удалены, отправьте новый маршрутизатор
+сообщение о перенумерации, в котором старые префиксы указаны как соответствующие
+префикс и неиспользуемый префикс.
 .El
 .Pp
 .\"
-The following configuration file will do 1 and 2.
+Следующий файл конфигурации будет выполнять действия 1 и 2.
 .\"
 .Bd -literal -offset indent
 dest ff05::2;
@@ -333,10 +332,10 @@ seqnum 1 {
 .Ed
 .Pp
 .\"
-And the following configuration file will do 3
-(should be
-used for the router renumbering message to be sent 1 week
-afterward).
+И следующий файл конфигурации сделает 3
+(должно быть
+используется для отправки сообщения о перенумерации маршрутизатора через 1 неделю
+позже).
 .\"
 .Bd -literal -offset indent
 dest ff05::2;
@@ -345,23 +344,23 @@ change match-prefix 3ffe:501:ffff:: /48;
 .Ed
 .Pp
 .\"
-In the above example, only
+В приведенном выше примере
+добавьте только
 .Cm add
-and
+и
 .Cm change
-commands are used, and there is no example for
+используются команды, и нет примера для
 .Cm setglobal
-command.
+команды.
 .Cm setglobal
-command is almost same with
-.Cm change
-command except that it deletes all pre-defined IPv6 global address.
-.Sh SEE ALSO
+команда почти такая же, как и
+.Cm измените
+команду, за исключением того, что она удаляет все предварительно определенные глобальные адреса IPv6.
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr prefix 8 ,
 .Xr rrenumd 8
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
 .Nm
-configuration file was first appeared in KAME IPv6 protocol stack kit.
-.\" .Sh BUGS
+Файл конфигурации впервые появился в комплекте стека протоколов KAME IPv6.
+.\" .Sh ОШИБКИ
 .\" (to be written)
