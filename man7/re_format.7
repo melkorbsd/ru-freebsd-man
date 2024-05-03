@@ -38,242 +38,237 @@
 .Dd June 30, 2014
 .Dt RE_FORMAT 7
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm re_format
-.Nd POSIX 1003.2 regular expressions
-.Sh DESCRIPTION
-Regular expressions
+.Nd регулярные выражения POSIX 1003.2
+.Sh ОПИСАНИЕ
+Регулярные выражения
 .Pq Dq RE Ns s ,
-as defined in
+как определено в
 .St -p1003.2 ,
-come in two forms:
-modern REs (roughly those of
+бывают двух видов:
+современные разрешения (примерно такие же, как
 .Xr egrep 1 ;
-1003.2 calls these
-.Dq extended
-REs)
-and obsolete REs (roughly those of
+1003.2 вызывает эти
+.Dq расширенные
+разрешения)
+и устаревшие разрешения (примерно те же, что и
 .Xr ed 1 ;
 1003.2
-.Dq basic
-REs).
-Obsolete REs mostly exist for backward compatibility in some old programs;
-they will be discussed at the end.
+.Dq основные
+разрешения).
+Устаревшие разрешения в основном существуют для обеспечения обратной совместимости в некоторых старых программах;
+они будут рассмотрены в конце.
 .St -p1003.2
-leaves some aspects of RE syntax and semantics open;
-`\(dd' marks decisions on these aspects that
-may not be fully portable to other
+оставляет открытыми некоторые аспекты синтаксиса и семантики разрешения;
+`\(dd' отмечает решения по этим аспектам, которые
+могут быть не полностью перенесены в другие
 .St -p1003.2
-implementations.
+реализации.
 .Pp
-A (modern) RE is one\(dd or more non-empty\(dd
-.Em branches ,
-separated by
+(современное) разрешение - это один\(dd или более непустых\(dd
+.Em ветвей ,
+разделенных
 .Ql \&| .
-It matches anything that matches one of the branches.
+Он соответствует всему, что соответствует одной из ветвей.
 .Pp
-A branch is one\(dd or more
-.Em pieces ,
-concatenated.
-It matches a match for the first, followed by a match for the second, etc.
+Ветвь - это один\(dd или более объединенных
+.Em фрагментов .
+Это соответствует совпадению для первого, за которым следует совпадение для второго и т.д.
 .Pp
-A piece is an
-.Em atom
-possibly followed
-by a single\(dd
+Фрагмент - это 
+.Em атом ,
+за которым, возможно, следует
+с помощью одного\(dd
 .Ql \&* ,
 .Ql \&+ ,
 .Ql \&? ,
-or
-.Em bound .
-An atom followed by
+или
+.Em граница .
+Атом, за которым следует
 .Ql \&*
-matches a sequence of 0 or more matches of the atom.
-An atom followed by
+соответствует последовательности из 0 или более совпадений атома.
+Атом, за которым следует
 .Ql \&+
-matches a sequence of 1 or more matches of the atom.
-An atom followed by
+соответствует последовательности из 1 или более совпадений атома.
+Атом, за которым следует
 .Ql ?\&
-matches a sequence of 0 or 1 matches of the atom.
+соответствует последовательности из 0 или 1 совпадений атома.
 .Pp
-A
-.Em bound
-is
+.Em Граница
+это
 .Ql \&{
-followed by an unsigned decimal integer,
-possibly followed by
+за ней следует десятичное целое число без знака, за которым,
+возможно, следует
 .Ql \&,
-possibly followed by another unsigned decimal integer,
-always followed by
+возможно, за ним следует другое десятичное целое число без знака,
+за которым всегда следует
 .Ql \&} .
-The integers must lie between 0 and
+Целые числа должны находиться в диапазоне от 0 до
 .Dv RE_DUP_MAX
-(255\(dd) inclusive,
-and if there are two of them, the first may not exceed the second.
-An atom followed by a bound containing one integer
+(255\(dd) включительно,
+и если их два, то первое не может превышать второго.
+Атом, за которым следует граница, содержащая одно целое число
 .Em i
-and no comma matches
-a sequence of exactly
+и ни одна запятая не соответствует
+последовательности точных
 .Em i
-matches of the atom.
-An atom followed by a bound
-containing one integer
+совпадений атома.
+Атом, за которым следует граница
+, содержащая одно целое число
 .Em i
-and a comma matches
-a sequence of
+и запятая соответствует
+последовательности
 .Em i
-or more matches of the atom.
-An atom followed by a bound
-containing two integers
+или больше совпадений с атомом.
+Атом, за которым следует граница
+, содержащая два целых числа
 .Em i
-and
+и
 .Em j
-matches
-a sequence of
+соответствует
+последовательности
 .Em i
-through
+через
 .Em j
-(inclusive) matches of the atom.
+(включительно) совпадений атома.
 .Pp
-An atom is a regular expression enclosed in
+Атом - это регулярное выражение, заключенное в
 .Ql ()
-(matching a match for the
-regular expression),
-an empty set of
+(сопоставление совпадения с
+регулярным выражением),
+пустой набор
 .Ql ()
-(matching the null string)\(dd,
-a
-.Em bracket expression
-(see below),
+(соответствует нулевой строке)\(dd,
+.Em выражение в скобках
+(смотрите ниже),
 .Ql .\&
-(matching any single character),
+(соответствует любому отдельному символу),
 .Ql \&^
-(matching the null string at the beginning of a line),
+(соответствует нулевой строке в начале строки),
 .Ql \&$
-(matching the null string at the end of a line), a
+(сопоставление с пустой строкой в конце строки), за
 .Ql \e
-followed by one of the characters
+следует один из символов
 .Ql ^.[$()|*+?{\e
-(matching that character taken as an ordinary character),
-a
+(соответствующий этому символу, принятому за обычный символ),
+за
 .Ql \e
-followed by any other character\(dd
-(matching that character taken as an ordinary character,
-as if the
+следует любой другой символ\(dd
+(соответствует этому символу, принятому за обычный символ,
+как если бы
 .Ql \e
-had not been present\(dd),
-or a single character with no other significance (matching that character).
-A
+не присутствовал при этом\(dd),
+или один символ, не имеющий другого значения (соответствующий этому символу).
 .Ql \&{
-followed by a character other than a digit is an ordinary
-character, not the beginning of a bound\(dd.
-It is illegal to end an RE with
+за символом, отличным от цифры, следует обычный
+символ, а не начало границы\(dd.
+Запрещено завершать разрешение с помощью
 .Ql \e .
 .Pp
-A
-.Em bracket expression
-is a list of characters enclosed in
+.Em Выражение в скобках
+представляет собой список символов, заключенных в
 .Ql [] .
-It normally matches any single character from the list (but see below).
-If the list begins with
+Обычно он соответствует любому отдельному символу из списка (но смотрите ниже).
+Если список начинается с
 .Ql \&^ ,
-it matches any single character
-(but see below)
-.Em not
-from the rest of the list.
-If two characters in the list are separated by
+он соответствует любому отдельному символу
+(но смотрите ниже)
+.Em не
+из остального списка.
+Если два символа в списке разделены символом
 .Ql \&- ,
-this is shorthand
-for the full
-.Em range
-of characters between those two (inclusive) in the
-collating sequence,
+это сокращение
+от полного
+.Em диапазона
+символов между этими двумя (включительно) в последовательности
+сопоставления,
 .No e.g. Ql [0-9]
-in ASCII matches any decimal digit.
-It is illegal\(dd for two ranges to share an
-endpoint,
+в ASCII соответствует любой десятичной цифре.
+Запрещено\(dd для двух диапазонов совместно
+использовать конечную точку,
 .No e.g. Ql a-c-e .
-Ranges are very collating-sequence-dependent,
-and portable programs should avoid relying on them.
+Диапазоны сильно зависят от последовательности сопоставления,
+и переносимым программам не следует полагаться на них.
 .Pp
-To include a literal
+Чтобы буквально включить
 .Ql \&]
-in the list, make it the first character
-(following a possible
+в списке сделайте его первым символом
+(следуя возможному
 .Ql \&^ ) .
-To include a literal
+Чтобы буквально включить
 .Ql \&- ,
-make it the first or last character,
-or the second endpoint of a range.
-To use a literal
+сделайте его первым или последним символом,
+или второй конечной точкой диапазона.
+Чтобы буквально включить
 .Ql \&-
-as the first endpoint of a range,
-enclose it in
+как первую конечную точку диапазона,
+заключите ее в
 .Ql [.\&
-and
-.Ql .]\&
-to make it a collating element (see below).
-With the exception of these and some combinations using
+и
+.Ql .]\& ,
+чтобы сделать его элементом сопоставления (смотрите ниже).
+За исключением этих и некоторых комбинаций, использующих
 .Ql \&[
-(see next paragraphs), all other special characters, including
+(смотрите следующие параграфы), все остальные специальные символы, включая
 .Ql \e ,
-lose their special significance within a bracket expression.
+теряют свое особое значение в выражении, заключенном в квадратные скобки.
 .Pp
-Within a bracket expression, a collating element (a character,
-a multi-character sequence that collates as if it were a single character,
-or a collating-sequence name for either)
-enclosed in
+В выражении, заключенном в квадратные скобки, элемент сопоставления (символ,
+последовательность из нескольких символов, которая сопоставляется так, как если бы это был один символ,
+или имя последовательности сопоставления для любого из них),
+заключенный в
 .Ql [.\&
-and
+и
 .Ql .]\&
-stands for the
-sequence of characters of that collating element.
-The sequence is a single element of the bracket expression's list.
-A bracket expression containing a multi-character collating element
-can thus match more than one character,
-e.g.\& if the collating sequence includes a
+обозначает
+последовательность символов этого сопоставляющего элемента.
+Последовательность является отдельным элементом списка выражений в квадратных скобках.
+Выражение в квадратных скобках, содержащее многосимвольный сопоставляющий элемент
+, может, таким образом, соответствовать более чем одному символу,
+например,\& , если сопоставляющая последовательность содержит
 .Ql ch
-collating element,
-then the RE
+сопоставляющий элемент,
+тогда разрешение
 .Ql [[.ch.]]*c
-matches the first five characters
-of
+соответствует первым пяти символам
+из
 .Ql chchcc .
 .Pp
-Within a bracket expression, a collating element enclosed in
+Внутри выражения, заключенного в квадратные скобки, элемент сопоставления, заключенный в
 .Ql [=
-and
+и
 .Ql =]
-is an equivalence class, standing for the sequences of characters
-of all collating elements equivalent to that one, including itself.
-(If there are no other equivalent collating elements,
-the treatment is as if the enclosing delimiters were
+это класс эквивалентности, обозначающий последовательности символов
+всех сопоставляемых элементов, эквивалентных этому классу, включая его самого.
+(Если нет других эквивалентных сопоставляющих элементов,
+то обработка выполняется так, как если бы окружающие разделители были
 .Ql [.\&
-and
+и
 .Ql .] . )
-For example, if
+Например, если
 .Ql x
-and
+и
 .Ql y
-are the members of an equivalence class,
-then
+являются членами класса эквивалентности,
+тогда
 .Ql [[=x=]] ,
 .Ql [[=y=]] ,
-and
+и
 .Ql [xy]
-are all synonymous.
-An equivalence class may not\(dd be an endpoint
-of a range.
+все синонимы.
+Класс эквивалентности не может \(dd быть конечной
+точкой диапазона.
 .Pp
-Within a bracket expression, the name of a
-.Em character class
-enclosed in
+В выражении, заключенном в квадратные скобки, указывается имя
+.Em символьного класса ,
+заключенного в
 .Ql [:
-and
+и
 .Ql :]
-stands for the list of all characters belonging to that
-class.
-Standard character class names are:
+обозначает список всех символов, принадлежащих к этому
+классу.
+Стандартными именами классов символов являются:
 .Bl -column "alnum" "digit" "xdigit" -offset indent
 .It Em "alnum	digit	punct"
 .It Em "alpha	graph	space"
@@ -281,176 +276,175 @@ Standard character class names are:
 .It Em "cntrl	print	xdigit"
 .El
 .Pp
-These stand for the character classes defined in
+Они обозначают классы символов, определенные в
 .Xr ctype 3 .
-A locale may provide others.
-A character class may not be used as an endpoint of a range.
+Языковой стандарт может предоставлять другие.
+Класс символов не может использоваться в качестве конечной точки диапазона.
 .Pp
-A bracketed expression like
+Заключенное в квадратные скобки выражение, подобное
 .Ql [[:class:]]
-can be used to match a single character that belongs to a character
-class.
-The reverse, matching any character that does not belong to a specific
-class, the negation operator of bracket expressions may be used:
+может использоваться для сопоставления с одним символом, принадлежащим к
+классу символов.
+И наоборот, для сопоставления любого символа, не принадлежащего к определенному
+классу, может использоваться оператор отрицания выражений в квадратных скобках:
 .Ql [^[:class:]] .
 .Pp
-There are two special cases\(dd of bracket expressions:
-the bracket expressions
+Существует два особых случая\(dd выражений в квадратных скобках:
+выражения в квадратных скобках
 .Ql [[:<:]]
-and
+и
 .Ql [[:>:]]
-match the null string at the beginning and end of a word respectively.
-A word is defined as a sequence of word characters
-which is neither preceded nor followed by
-word characters.
-A word character is an
+сопоставляет пустую строку в начале и конце слова соответственно.
+Слово определяется как последовательность словесных символов,
+которой не предшествуют и не следуют
+словесные символы.
+Символ слова - это
 .Em alnum
-character (as defined by
+символ (как определено в
 .Xr ctype 3 )
-or an underscore.
-This is an extension,
-compatible with but not specified by
+или знак подчеркивания.
+Это расширение,
+совместимое, но не указанное в
 .St -p1003.2 ,
-and should be used with
-caution in software intended to be portable to other systems.
-The additional word delimiters
+и должен с
+осторожностью использоваться в программном обеспечении, предназначенном для переноса на другие системы.
+Дополнительные разделители слов
 .Ql \e<
-and
+и
 .Ql \e>
-are provided to ease compatibility with traditional
+предусмотрены для облегчения совместимости с традиционными
 SVR4
-systems but are not portable and should be avoided.
+системами, но они не являются портативными, и их следует избегать.
 .Pp
-In the event that an RE could match more than one substring of a given
-string,
-the RE matches the one starting earliest in the string.
-If the RE could match more than one substring starting at that point,
-it matches the longest.
-Subexpressions also match the longest possible substrings, subject to
-the constraint that the whole match be as long as possible,
-with subexpressions starting earlier in the RE taking priority over
-ones starting later.
-Note that higher-level subexpressions thus take priority over
-their lower-level component subexpressions.
+В случае, если разрешение может соответствовать более чем одной подстроке в данной
+строке,
+разрешение соответствует той, которая начинается с самой ранней строки.
+Если разрешение может соответствовать более чем одной подстроке, начинающейся с этой точки,
+то она соответствует самой длинной.
+Подвыражения также соответствуют максимально длинным подстрокам, при
+условии, что все совпадение должно быть как можно длиннее,
+при этом подвыражения, начинающиеся раньше, имеют приоритет перед
+теми, которые начинаются позже.
+Обратите внимание, что подвыражения более высокого уровня, таким образом, имеют приоритет над
+подвыражениями компонентов более низкого уровня.
 .Pp
-Match lengths are measured in characters, not collating elements.
-A null string is considered longer than no match at all.
-For example,
+Длина совпадений измеряется в символах, а не в сопоставляемых элементах.
+Пустая строка считается длиннее, чем вообще не совпадающая.
+Например,
 .Ql bb*
-matches the three middle characters of
+соответствует трем средним символам
 .Ql abbbc ,
 .Ql (wee|week)(knights|nights)
-matches all ten characters of
+соответствует всем десяти символам
 .Ql weeknights ,
-when
+когда
 .Ql (.*).*\&
-is matched against
+сопоставляется с
 .Ql abc
-the parenthesized subexpression
-matches all three characters, and
-when
+заключенное в круглые скобки подвыражение
+соответствует всем трем символам, и
+когда
 .Ql (a*)*
-is matched against
+сопоставляется с
 .Ql bc
-both the whole RE and the parenthesized
-subexpression match the null string.
+как все разрешение, так и заключенное в круглые скобки
+подвыражение соответствуют пустой строке.
 .Pp
-If case-independent matching is specified,
-the effect is much as if all case distinctions had vanished from the
-alphabet.
-When an alphabetic that exists in multiple cases appears as an
-ordinary character outside a bracket expression, it is effectively
-transformed into a bracket expression containing both cases,
-.No e.g. Ql x
-becomes
+Если указано соответствие, не зависящее от регистра,
+то эффект будет таким же, как если бы в алфавите исчезли все различия по регистру.
+Когда буквенный знак, существующий в нескольких регистрах, отображается как
+обычный символ вне выражения, заключенного в квадратные скобки, он фактически
+преобразуется в выражение, содержащее оба регистра,
+.No например Ql x
+становится
 .Ql [xX] .
-When it appears inside a bracket expression, all case counterparts
-of it are added to the bracket expression, so that (e.g.)
+Когда оно появляется внутри выражения в квадратных скобках, все его аналоги по регистру
+добавляются к выражению в квадратных скобках, так что (например)
 .Ql [x]
-becomes
+становится
 .Ql [xX]
-and
+и
 .Ql [^x]
-becomes
+становится
 .Ql [^xX] .
 .Pp
-No particular limit is imposed on the length of REs\(dd.
-Programs intended to be portable should not employ REs longer
-than 256 bytes,
-as an implementation can refuse to accept such REs and remain
-POSIX-compliant.
+Никаких особых ограничений на продолжительность разрешений не налагается\(dd.
+В переносимых программах не следует использовать разрешения длиной
+более 256 байт,
+поскольку реализация может отказаться принимать такие разрешения и остаться
+совместимой с POSIX.
 .Pp
-Obsolete
-.Pq Dq basic
-regular expressions differ in several respects.
+Устаревшие
+.Pq Dq основные
+регулярные выражения отличаются друг от друга в нескольких отношениях.
 .Ql \&|
-is an ordinary character and there is no equivalent
-for its functionality.
+это обычный символ, и
+по своей функциональности он не имеет аналога.
 .Ql \&+
-and
+и
 .Ql ?\&
-are ordinary characters, and their functionality
-can be expressed using bounds
+это обычные символы, и их функциональность
+может быть выражена с помощью границ
 .Po
 .Ql {1,}
-or
+или
 .Ql {0,1}
-respectively
+соответственно
 .Pc .
-Also note that
+Также обратите внимание, что
 .Ql x+
-in modern REs is equivalent to
+в современных разрешениях это эквивалентно
 .Ql xx* .
-The delimiters for bounds are
+Разделителями для границ являются
 .Ql \e{
-and
+и
 .Ql \e} ,
-with
+с
 .Ql \&{
-and
+и
 .Ql \&}
-by themselves ordinary characters.
-The parentheses for nested subexpressions are
+сами по себе обычные символы.
+Круглые скобки для вложенных подвыражений являются
 .Ql \e(
-and
+и
 .Ql \e) ,
-with
+с
 .Ql \&(
-and
+и
 .Ql \&)
-by themselves ordinary characters.
+сами по себе обычные символы.
 .Ql \&^
-is an ordinary character except at the beginning of the
-RE or\(dd the beginning of a parenthesized subexpression,
+является обычным символом, за исключением того, что находится в начале
+разрешения или\(dd начале подвыражения, заключенного в круглые скобки,
 .Ql \&$
-is an ordinary character except at the end of the
-RE or\(dd the end of a parenthesized subexpression,
-and
+является обычным символом, за исключением того, что находится в конце
+разрешения или\(dd конце подвыражения, заключенного в круглые скобки,
+и
 .Ql \&*
-is an ordinary character if it appears at the beginning of the
-RE or the beginning of a parenthesized subexpression
-(after a possible leading
+является обычным символом, если он появляется в начале
+разрешения или в начале подвыражения, заключенного в круглые скобки
+(после возможного начального
 .Ql \&^ ) .
-Finally, there is one new type of atom, a
-.Em back reference :
+Наконец, существует еще один новый тип атомов -
+.Em обратная ссылка :
 .Ql \e
-followed by a non-zero decimal digit
+за ним следует ненулевая десятичная цифра
 .Em d
-matches the same sequence of characters
-matched by the
+соответствует той же последовательности символов
+, которая соответствует
 .Em d Ns th
-parenthesized subexpression
-(numbering subexpressions by the positions of their opening parentheses,
-left to right),
-so that (e.g.)
+заключенного в круглые скобки подвыражения
+(нумерация подвыражений по позициям их открывающих круглых скобок,
+слева направо),
+так что (например)
 .Ql \e([bc]\e)\e1
-matches
+соответствует
 .Ql bb
-or
-.Ql cc
-but not
+или
+.Ql cc ,
+но не
 .Ql bc .
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr regex 3
 .Rs
 .%T Regular Expression Notation
@@ -458,34 +452,33 @@ but not
 .%N 1003.2
 .%P section 2.8
 .Re
-.Sh BUGS
-Having two kinds of REs is a botch.
+.Sh НЕИСПРАВНОСТИ
+Наличие двух видов разрешений - это провал.
 .Pp
-The current
+В текущей спецификации
 .St -p1003.2
-spec says that
+говорится, что
 .Ql \&)
-is an ordinary character in
-the absence of an unmatched
+является обычным символов в
+отсутствие непревзойденного
 .Ql \&( ;
-this was an unintentional result of a wording error,
-and change is likely.
-Avoid relying on it.
+это произошло непреднамеренно из-за ошибки в формулировке,
+и, скорее всего, будут внесены изменения.
+Не полагайтесь на это.
 .Pp
-Back references are a dreadful botch,
-posing major problems for efficient implementations.
-They are also somewhat vaguely defined
-(does
+Обратные ссылки - это ужасная ошибка,
+создающая серьезные проблемы для эффективной реализации.
+Они также несколько расплывчато определены
+(
 .Ql a\e(\e(b\e)*\e2\e)*d
-match
+соответствует
 .Ql abbbd ? ) .
-Avoid using them.
+Избегайте их использования.
 .Pp
 .St -p1003.2
-specification of case-independent matching is vague.
-The
-.Dq one case implies all cases
-definition given above
-is current consensus among implementors as to the right interpretation.
+спецификация независимого от регистра сопоставления является расплывчатой.
+.Dq Один случай подразумевает все случаи
+приведенное выше определение
+является текущим консенсусом между разработчиками относительно правильной интерпретации.
 .Pp
-The syntax for word boundaries is incredibly ugly.
+Синтаксис для обозначения границ слов невероятно уродлив.
