@@ -31,42 +31,41 @@
 .Dd February 11, 1996
 .Dt LOCATE.UPDATEDB 8
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm locate.updatedb
-.Nd update locate database
-.Sh SYNOPSIS
+.Nd обновляет базу данных поиска
+.Sh КРАТКОЕ ОПИСАНИЕ
 .Nm /usr/libexec/locate.updatedb
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
 .Nm
-utility updates the database used by
+утилита обновляет базу данных, используемую
 .Xr locate 1 .
-It is typically run once a week by the
+Обычно он проводится раз в неделю
 .Pa /etc/periodic/weekly/310.locate
-script.
+скриптом.
 .Pp
-The contents of the newly built database can be controlled by the
+Содержимым вновь созданной базы данных можно управлять с помощью
 .Pa /etc/locate.rc
-file.
-.Sh ENVIRONMENT
+файла.
+.Sh ОКРУЖЕНИЕ
 .Bl -tag -width /var/db/locate.database -compact
 .It Pa LOCATE_CONFIG
-path to the configuration file
+путь к файлу конфигурации
 .El
-.Sh FILES
+.Sh ФАЙЛЫ
 .Bl -tag -width /var/db/locate.database -compact
 .It Pa /var/db/locate.database
-the default database
+база данных по умолчанию
 .It Pa /etc/locate.rc
-the configuration file
+файл конфигурации
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr locate 1 ,
 .Xr periodic 8
 .Rs
-.%A Woods, James A.
+.%A Вудс, Джеймс А.
 .%D 1983
-.%T "Finding Files Fast"
+.%T "Быстрый поиск файлов"
 .%J ";login"
 .%V 8:1
 .%P pp. 8-10

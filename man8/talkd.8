@@ -30,46 +30,44 @@
 .Dd December 11, 1993
 .Dt TALKD 8
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm talkd
-.Nd remote user communication server
-.Sh SYNOPSIS
+.Nd сервер удаленной связи с пользователями
+.Sh КРАТКИЙ ОБЗОР
 .Nm
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
 .Nm
-utility
-is the server that notifies a user that someone else wants to
-initiate a conversation.
-It acts as a repository of invitations, responding to requests
-by clients wishing to rendezvous to hold a conversation.
-In normal operation, a client, the caller,
-initiates a rendezvous by sending a
+утилита
+- это сервер, который уведомляет пользователя о том, что кто-то еще хочет
+начать разговор.
+Он действует как хранилище приглашений, отвечая на запросы
+клиентов, желающих встретиться для проведения беседы.
+При нормальной работе клиент, вызывающий абонент,
+инициирует встречу, отправляя сообщение
 .Tn CTL_MSG
-to the server of
-type
+на сервер
+типа
 .Tn LOOK_UP
-(see
+(смотрите
 .In protocols/talkd.h ) .
-This causes the server to search its invitation
-tables to check if an invitation currently exists for the caller
-(to speak to the callee specified in the message).
+Это заставляет сервер выполнять поиск в своих
+таблицах приглашений, чтобы проверить, существует ли в данный момент приглашение для вызывающего абонента
+(для разговора с вызываемым абонентом, указанным в сообщении).
 .Pp
-If the lookup fails,
-the caller then sends an
+Если поиск завершается неудачей,
+вызывающий абонент отправляет
 .Tn ANNOUNCE
-message causing the server to
-broadcast an announcement on the callee's login ports requesting contact.
+сообщение, заставляющее сервер
+транслировать объявление на порты входа вызываемого абонента с запросом контакта.
 .Pp
-When the callee responds, the local server uses the
-recorded invitation to respond with the appropriate rendezvous
-address and the caller and callee client programs establish a
-stream connection through which the conversation takes place.
-.Sh SEE ALSO
+Когда вызываемый абонент отвечает, локальный сервер использует
+записанное приглашение для отправки соответствующего
+адреса встречи, и клиентские программы вызывающего абонента и вызываемого абонента устанавливают
+потоковое соединение, через которое происходит разговор.
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr talk 1 ,
 .Xr write 1
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
 .Nm
-utility appeared in
+утилита появилась в
 .Bx 4.3 .

@@ -30,10 +30,10 @@
 .Dd June 19, 2020
 .Dt UMOUNT 8
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm umount
-.Nd unmount file systems
-.Sh SYNOPSIS
+.Nd размонтирует файловые системы
+.Sh КРАТКИЙ ОБЗОР
 .Nm
 .Op Fl fNnv
 .Ar special ... | node ... | fsid ...
@@ -43,150 +43,145 @@
 .Op Fl fnv
 .Op Fl h Ar host
 .Op Fl t Ar type
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
 .Nm
-utility calls the
+утилита вызывает
 .Xr unmount 2
-system call to remove a file system from the file system tree.
-The file system can be specified by its
-.Ar special
-device or remote node
+системный вызов для удаления файловой системы из дерева файловой системы.
+Файловая система может быть задана ее
+.Ar особым
+устройством или удаленным узлом
 .Pq Ar rhost Ns Cm \& : Ns Ar path ,
 the path to the mount point
-.Ar node
-or by the file system ID
-.Ar fsid
-as reported by
+.Ar узла
+или по идентификатору файловой системы
+.Ar fsid , 
+как сообщает
 .Dq mount -v
-when run by root.
+при запуске от имени root.
 .Pp
-The options are as follows:
+Возможны следующие параметры:
 .Bl -tag -width "-F fstab"
 .It Fl a
-All the file systems described in
+Все файловые системы, описанные в
 .Xr fstab 5
-are unmounted.
+размонтированы.
 .It Fl A
-All the currently mounted file systems are unmounted,
-except for those mounted at
+Все подключенные в данный момент файловые системы размонтированы,
+за исключением тех, которые смонтированы в
 .Pa /
-or
+или
 .Pa /dev .
 .It Fl F Ar fstab
-Specify the
+Указывает
 .Pa fstab
-file to use.
+файл для использования.
 .It Fl f
-The file system is forcibly unmounted.
-Active special devices continue to work,
-but all other files return errors if further accesses are attempted.
-The root file system cannot be forcibly unmounted.
-For NFS, a forced dismount can take up to 1 minute or more to
-complete against an unresponsive server and may throw away
-data not yet written to the server for this case.
-If a process, such as
+Файловая система принудительно размонтирована.
+Активные специальные устройства продолжают работать,
+но все остальные файлы возвращают ошибки при попытке дальнейшего доступа.
+Корневая файловая система не может быть принудительно размонтирована.
+В случае NFS принудительное отключение может занять до 1 минуты или более
+на не отвечающем сервере и может привести к удалению
+данных, которые еще не были записаны на сервер для этого случая.
+Если какой-либо процесс, например
 .Nm
-without the
+без
 .Fl f
-flag is hung on an
+флага, завис в
 .Tn NFS
-mount point, use the
+точке монтирования, используйте
 .Fl N
-flag instead.
-Also, doing a forced dismount of an NFSv3 mount when
+флаг вместо этого.
+Кроме того, выполнение принудительного отключения монтирования NFSv3 при
 .Xr rpc.lockd 8
-is running is unsafe and can result in a crash.
+выполняется небезопасно и может привести к сбою.
 .It Fl h Ar host
-Only file systems mounted from the specified host will be
-unmounted.
-This option implies the
+Будут размонтированы только файловые системы, смонтированные с указанного хоста.
+Этот параметр подразумевает
 .Fl A
-option and, unless otherwise specified with the
+параметр и, если иное не указано в
 .Fl t
-option, will only unmount
+параметре, будут размонтированы только
 .Tn NFS
-file systems.
+файловые системы.
 .It Fl N
-Do a forced dismount of an
+Выполняет принудительный демонтаж
 .Tn NFS
-mount point without checking the mount path.
-This option can only be used with the path to the mount point
-.Ar node
-and the path must be specified exactly as it was at mount time.
-This option is useful when a process is hung waiting for an unresponsive
+точка монтирования без проверки пути монтирования.
+Этот параметр можно использовать только с путем к  точке монтирования
+.Ar узла ,
+и путь должен быть указан точно таким, каким он был во время монтирования.
+Этот параметр полезен, когда процесс зависает в ожидании ответа
 .Tn NFS
-server while holding a vnode lock on the mounted-on vnode, such that
+сервера, удерживая блокировку vnode на подключенном vnode, так что
 .Nm
-with the
+с
 .Fl f
-flag can't complete.
-Using this option can result in a loss of file updates that have not been
-flushed to the
+флагом не может быть завершен.
+Использование этого параметра может привести к потере обновлений файлов, которые не были
+сброшены на
 .Tn NFS
-server.
+сервер.
 .It Fl n
-Unless the
+Если
 .Fl f
-is used, the
+используется, то
 .Nm
-will not unmount an active file system.
-It will, however, perform a flush.
-This flag disables this behaviour, preventing the flush
-if there are any files open.
+не размонтирует активную файловую систему.
+Однако при этом будет выполнена очистка.
+Этот флаг отключает такое поведение, предотвращая очистку, 
+если какие-либо файлы открыты.
 .It Fl t Ar type
-Is used to indicate the actions should only be taken on
-file systems of the specified type.
-More than one type may be specified in a comma separated list.
-The list of file system types can be prefixed with
-.Dq no
-to specify the file system types for which action should
-.Em not
-be taken.
-For example, the
+Используется для указания действий, которые следует выполнять только с
+файловыми системами указанного типа.
+В списке, разделенном запятыми, может быть указано более одного типа.
+Список типов файловых систем может быть дополнен префиксом
+.Dq не
+чтобы указать типы файловых систем, для которых необходимо 
+.Em не
+быть захваченными.
+Например,
 .Nm
-command:
+команда:
 .Bd -literal -offset indent
 umount -a -t nfs,nullfs
 .Ed
 .Pp
-unmounts all file systems of the type
+размонтирует все файловые системы данного типа
 .Tn NFS
-and
-.Tn NULLFS
-that are listed in the
+и
+.Tn NULLFS ,
+которые перечислены в
 .Xr fstab 5
-file.
+файле.
 .It Fl v
-Verbose, additional information is printed out as each file system
-is unmounted.
+Подробная дополнительная информация выводится на печать по мере размонтирования каждой файловой системы.
 .El
-.Sh ENVIRONMENT
+.Sh ОКРУЖЕНИЕ
 .Bl -tag -width ".Ev PATH_FSTAB"
 .It Ev PATH_FSTAB
-If the environment variable
+Если переменная окружения
 .Ev PATH_FSTAB
-is set, all operations are performed against the specified file.
+установлена, все операции выполняются с указанным файлом.
 .Ev PATH_FSTAB
-will not be honored if the process environment or memory address space is
-considered
-.Dq tainted .
-(See
+не будет учитываться, если учитывать среду процесса или если адресное пространство памяти
+.Dq испорчено .
+(Смотрите
 .Xr issetugid 2
-for more information.)
+для получения дополнительной информации.)
 .El
-.Sh FILES
+.Sh ФАЙЛЫ
 .Bl -tag -width /etc/fstab -compact
 .It Pa /etc/fstab
-file system table
+таблица файловой системы
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr unmount 2 ,
 .Xr fstab 5 ,
 .Xr autounmountd 8 ,
 .Xr mount 8
-.Sh HISTORY
-A
+.Sh ИСТОРИЯ
 .Nm
-utility appeared in
+утилита появилась в
 .At v1 .

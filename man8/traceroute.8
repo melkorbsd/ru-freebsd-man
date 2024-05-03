@@ -19,10 +19,10 @@
 .Dd November 25, 2020
 .Dt TRACEROUTE 8
 .Os
-.Sh NAME
+.Sh имя
 .Nm traceroute
-.Nd "print the route packets take to network host"
-.Sh SYNOPSIS
+.Nd "печатает маршрут передачи пакетов на сетевой узел"
+.Sh КРАТКИЙ ОБЗОР
 .Nm
 .Bk -words
 .Op Fl adDeFISnrvx
@@ -41,189 +41,188 @@
 .Ar host
 .Op Ar packetlen
 .Ek
-.Sh DESCRIPTION
-The Internet is a large and complex aggregation of
-network hardware, connected together by gateways.
-Tracking the route one's packets follow (or finding the miscreant
-gateway that's discarding your packets) can be difficult.
+.Sh ОПИСАНИЕ
+Интернет представляет собой большое и сложное объединение
+сетевого оборудования, соединенных между собой шлюзами.
+Отследить маршрут, по которому проходят пакеты (или найти
+шлюз-нарушитель, который отбрасывает ваши пакеты), может быть непросто.
 .Nm
-utilizes the IP protocol `time to live' field and attempts to elicit an
-ICMP TIME_EXCEEDED response from each gateway along the path to some
-host.
+использует поле "время жизни" IP-протокола и пытается получить
+ICMP TIME_EXCEEDED получил ответ от каждого шлюза на пути к некоторому
+хосту.
 .Pp
-The only mandatory parameter is the destination host name or IP number.
-The default probe datagram length is 40 bytes, but this may be increased
-by specifying a packet length (in bytes) after the destination host
-name.
+Единственным обязательным параметром является имя узла назначения или IP-адрес.
+Длина датаграммы проверки по умолчанию составляет 40 байт, но ее можно увеличить
+, указав длину пакета (в байтах) после
+имени узла назначения.
 .Pp
-Other options are:
+Другими параметрами являются:
 .Bl -tag -width Ds
 .It Fl a
-Turn on AS# lookups for each hop encountered.
+Включает поиск AS# для каждого встреченного перехода.
 .It Fl A Ar as_server
-Turn  on  AS#  lookups  and  use the given server instead of the
-default.
+Включает AS# lookups и использует указанный сервер вместо сервера по
+умолчанию.
 .It Fl e
-Firewall evasion mode.
-Use fixed destination ports for UDP, UDP-Lite, TCP and SCTP probes.
-The destination port does NOT increment with each packet sent.
+Режим обхода брандмауэра.
+Использует фиксированные порты назначения для запросов UDP, UDP-Lite, TCP и SCTP.
+Порт назначения не увеличивается с каждым отправленным пакетом.
 .It Fl f Ar first_ttl
-Set the initial time-to-live used in the first outgoing probe packet.
+Устанавливает начальное время работы, используемое в первом исходящем контрольном пакете.
 .It Fl F
-Set the "don't fragment" bit.
+Устанавливает бит "не фрагментировать".
 .It Fl d
-Enable socket level debugging.
+Включает отладку на уровне сокета.
 .It Fl D
-When an ICMP response to our probe datagram is received,
-print the differences between the transmitted packet and
-the packet quoted by the ICMP response.
-A key showing the location of fields within the transmitted packet is printed,
-followed by the original packet in hex,
-followed by the quoted packet in hex.
-Bytes that are unchanged in the quoted packet are shown as underscores.
-Note,
-the IP checksum and the TTL of the quoted packet are not expected to match.
-By default, only one probe per hop is sent with this option.
+Когда будет получен ICMP-ответ на нашу пробную дейтаграмму,
+выведет различия между переданным пакетом и
+пакетом, указанным в ICMP-ответе.
+Печатается ключ, показывающий расположение полей в передаваемом пакете,
+за которым следует исходный пакет в шестнадцатеричном формате, а
+затем пакет, заключенный в кавычки, в шестнадцатеричном формате.
+Байты, которые не изменились в пакете, заключенном в кавычки, отображаются в виде подчеркиваний.
+Обратите внимание,
+что контрольная сумма IP и TTL указанного пакета не должны совпадать.
+По умолчанию при использовании этой опции отправляется только один запрос за переход.
 .It Fl g Ar gateway
-Specify a loose source route gateway (8 maximum).
+Указывает свободный исходный шлюз маршрута (максимум 8).
 .It Fl i Ar iface
-Specify a network interface to obtain the source IP address for
-outgoing probe packets. This is normally only useful on a multi-homed
-host. (See the
+Указывает сетевой интерфейс, чтобы получить исходный IP-адрес для
+исходящих пробных пакетов. Обычно это полезно только для хостинга с несколькими домами.
+(Смотрите
 .Fl s
-flag for another way to do this.)
+флаг для другого способа сделать это.)
 .It Fl I
-Use ICMP ECHO instead of UDP datagrams.  (A synonym for "-P icmp").
+Использует ICMP ECHO вместо UDP-дейтаграмм. (Синоним "-P icmp").
 .It Fl M Ar first_ttl
-Set the initial time-to-live value used in outgoing probe packets.
-The default is 1, i.e., start with the first hop.
+Устанавливает начальное значение времени ожидания, используемое в исходящих пробных пакетах.
+Значение по умолчанию равно 1, т.е. начинается с первого перехода.
 .It Fl m Ar max_ttl
-Set the max time-to-live (max number of hops) used in outgoing probe
-packets.  The default is the value of the
+Устанавливается максимальное время ожидания (максимальное количество переходов), используемое в исходящих пробных
+пакетах. По умолчанию используется значение
 .Va net.inet.ip.ttl
 .Xr sysctl 8
-(the same default used for TCP
-connections).
+(то же значение по умолчанию, что и для TCP
+-соединений).
 .It Fl n
-Print hop addresses numerically rather than symbolically and numerically
-(saves a nameserver address-to-name lookup for each gateway found on the
-path).
+Печатает адреса переходов в виде чисел, а не символов и цифр
+(сохраняет поиск адреса сервера имен по имени для каждого шлюза, найденного на
+пути).
 .It Fl P Ar proto
-Send packets of specified IP protocol. The currently supported protocols
-are: UDP, UDP-Lite, TCP, SCTP, GRE and ICMP. Other protocols may also be
-specified (either by name or by number), though
+Отправляетпакеты по указанному IP-протоколу. В настоящее время поддерживаются следующие протоколы
+: UDP, UDP-Lite, TCP, SCTP, GRE и ICMP. Также могут быть
+указаны другие протоколы (либо по имени, либо по номеру), хотя
 .Nm
-does not implement any special knowledge of their packet formats. This
-option is useful for determining which router along a path may be
-blocking packets based on IP protocol number. But see BUGS below.
+не реализует никаких специальных знаний о форматах пакетов. Эта
+опция полезна для определения того, какой маршрутизатор на пути может
+блокировать пакеты на основе номера IP-протокола. Но об ошибках смотрите ниже. Но смотрите НЕИСПРАВНОСТИ ниже.
 .It Fl p Ar port
-Protocol specific. For UDP, UDP-Lite, TCP and SCTP, sets
-the base
-.Ar port
-number used in probes (default is 33434).
-Traceroute hopes that nothing is listening on UDP ports (or UDP-Lite ports
-if used by
+Зависит от конкретного протокола. Для UDP, UDP-Lite, TCP и SCTP задает
+базовый номер
+.Ar порта ,
+используемый в тестах (по умолчанию - 33434).
+Traceroute ожидает, что UDP-порты не прослушиваются(или порты UDP-Lite,
+если они используются
 .Nm
-and supported by the peer)
+и поддерживаются сверстником)
 .Em port + 1
-to
+в
 .Em port + (max_ttl - first_ttl + 1) * nprobes
-at the destination host (so an ICMP PORT_UNREACHABLE message will
-be returned to terminate the route tracing).  If something is
-listening on a port in the default range, this option can be used
-to pick an unused port range.
+на узле назначения (таким
+образом, будет возвращено сообщение ICMP PORT_UNREACHABLE для завершения трассировки маршрута). Если что-то
+прослушивает порт в диапазоне по умолчанию, этот параметр можно использовать
+для выбора неиспользуемого диапазона портов.
 .It Fl q Ar nprobes
-Set the number of probes per hop (default is 3,
-unless
+Устанавливает количество зондов за один переход (по умолчанию - 3,
+если только
 .Fl D
-is specified,
-when it is 1).
+указан,
+когда это 1).
 .It Fl r
-Bypass the normal routing tables and send directly to a host on an attached
-network.
-If the host is not on a directly-attached network,
-an error is returned.
-This option can be used to ping a local host through an interface
-that has no route through it (e.g., after the interface was dropped by
-.Xr routed 8 .
+Обход обычных таблиц маршрутизации и отправка непосредственно на узел в подключенной
+сети.
+Если узел не подключен к сети напрямую,
+возвращается сообщение об ошибке.
+Этот параметр можно использовать для проверки связи с локальным хостом через интерфейс
+, через который нет маршрута (например, после того, как интерфейс был удален
+.Xr routed 8 ).
 .It Fl s Ar src_addr
-Use the following IP address (which usually is given as an IP number, not
-a hostname) as the source address in outgoing probe packets.  On
-multi-homed hosts (those with more than one IP
-address), this option can be used to
-force the source address to be something other than the IP address
-of the interface the probe packet is sent on.  If the IP address
-is not one of this machine's interface addresses, an error is
-returned and nothing is sent. (See the
+Использует следующий IP-адрес (который обычно указывается как IP-номер, а не
+как имя хоста) в качестве адреса источника в исходящих контрольных пакетах. На
+хостах с несколькими домами (имеющих более одного IP
+-адреса) эта опция может быть использована для того, чтобы
+заставить исходный адрес быть чем-то иным, чем IP-адрес
+интерфейса, по которому отправляется пробный пакет. Если IP-адрес
+не является одним из интерфейсных адресов этого компьютера,
+возвращается сообщение об ошибке и ничего не отправляется. (Смотрите
 .Fl i
-flag for another way to do this.)
+флаг для другого способа сделать это.)
 .It Fl S
-Print a summary of how many probes were not answered for each hop.
+Выводит сводную информацию о том, на сколько запросов не были получены ответы за каждый переход.
 .It Fl t Ar tos
-Set the
+Устанавливает
 .Em type-of-service
-in probe packets to the following value (default zero).  The value must be
-a decimal integer in the range 0 to 255.  This option can be used to
-see if different types-of-service result in different paths.  The upper six
-bits are the Differentiated Services Codepoint (RFC4594). The lower two
-bits are the Explicit Congestion Notification field (RFC3168).
+в пакетах проверки на следующее значение (по умолчанию ноль). Значение должно быть
+десятичным целым числом в диапазоне от 0 до 255. Этот параметр можно использовать, чтобы
+увидеть, приводят ли разные типы обслуживания к разным путям. Верхние шесть
+битов представляют собой кодовую точку дифференцированных служб (RFC4594). Два нижних
+бита представляют собой поле явного уведомления о перегрузке (RFC3168).
 .It Fl v
-Verbose output.  Received ICMP packets other than
+Подробный вывод. Получает ICMP-пакеты, отличные от
 .Dv TIME_EXCEEDED
-and
+и
 .Dv UNREACHABLE Ns s
-are listed.
+отображаемые в списке.
 .It Fl w Ar waittime
-Set the time (in seconds) to wait for a response to a probe (default 5
-sec.).
+Устанавливает время (в секундах) ожидания ответа на запрос (по умолчанию 5
+секунд).
 .It Fl x
-Toggle ip checksums. Normally, this prevents traceroute from calculating
-ip checksums. In some cases, the operating system can overwrite parts of
-the outgoing packet but not recalculate the checksum (so in some cases
-the default is to not calculate checksums and using
+Переключает контрольные суммы ip. Обычно это не позволяет traceroute вычислять
+контрольные суммы ip. В некоторых случаях операционная система может перезаписывать части
+исходящего пакета, но не пересчитывать контрольную сумму (поэтому в некоторых случаях
+по умолчанию контрольные суммы не вычисляются, а используются
 .Fl x
-causes them to be calculated). Note that checksums are usually required
-for the last hop when using ICMP ECHO probes
+приводиящие к их вычислению). Обратите внимание, что контрольные суммы обычно требуются
+для последнего перехода при использовании ECHO ICMP зондов
 .Pq Fl I .
-So they are always calculated when using ICMP.
+Таким образом, они всегда вычисляются при использовании ICMP.
 .It Fl z Ar pausemsecs
-Set the time (in milliseconds) to pause between probes (default 0).
-Some systems such as Solaris and routers such as Ciscos rate limit
-icmp messages. A good value to use with this this is 500 (e.g. 1/2 second).
+Устанавливает время (в миллисекундах) паузы между запросами (по умолчанию 0).
+Некоторые системы, такие как Solaris, и маршрутизаторы, такие как Cisco, ограничивают скорость
+передачи icmp-сообщений. Оптимальное значение для этого параметра - 500 (например, 1/2 секунды).
 .El
 .Pp
-This program attempts to trace the route an IP packet would follow to some
-internet host by launching UDP probe
-packets with a small ttl (time to live) then listening for an
-ICMP "time exceeded" reply from a gateway.  We start our probes
-with a ttl of one and increase by one until we get an ICMP "port
-unreachable" (which means we got to "host") or hit a max (which
-defaults to the amount of hops specified by the
+Эта программа попытается проследить маршрут IP-пакет будет следить, чтобы некоторые
+интернет-узел запуска зонда UDP
+пакеты с небольшой TTL (время жить), то прослушивание
+Протокол ICMP "превышение времени" ответ от шлюза. Мы начинаем наши проверки
+с ttl, равным единице, и увеличиваем его на единицу, пока не получим ICMP-сообщение "порт
+недоступен" (что означает, что мы добрались до "хоста") или не достигнем максимального значения (которое
+по умолчанию равно количеству переходов, указанному
 .Va net.inet.ip.ttl
 .Xr sysctl 8
-and can be changed with the
+и может быть изменен с помощью
 .Fl m
-flag).  Three
-probes (change with
+флага). Три
+зонда (изменяемые с помощью
 .Fl q
-flag) are sent at each ttl setting and a
-line is printed showing the ttl, address of the gateway and
-round trip time of each probe.  If the probe answers come from
-different gateways, the address of each responding system will
-be printed.  If there is no response within a 5 sec. timeout
-interval (changed with the
+флага) отправляются при каждой настройке ttl, и
+печатается строка, показывающая ttl, адрес шлюза и
+время прохождения каждого запроса в оба конца. Если ответы на запросы поступают от
+разных шлюзов, будет напечатан адрес каждой отвечающей системы.
+Если в течение 5-секундного интервала ожидания ответа не будет
+(изменяемое вместе с
 .Fl w
-flag), a "*" is printed for that
-probe.
+флагом), для этого зонда напечатан символ "*".
 .Pp
-We don't want the destination
-host to process the UDP probe packets so the destination port is set to an
-unlikely value (if some clod on the destination is using that
-value, it can be changed with the
+Мы не хотим
+, чтобы хост назначения обрабатывал пакеты проверки UDP, поэтому для порта назначения задано
+маловероятное значение (если какой-либо узел назначения использует это
+значение, его можно изменить с помощью
 .Fl p
-flag).
+флага).
 .Pp
-A sample use and output might be:
+Примером использования и выходных данных может быть:
 .Bd -literal -offset 4n
 % traceroute nis.nsf.net.
 traceroute to nis.nsf.net (35.1.1.48), 64 hops max, 38 byte packet
@@ -240,14 +239,14 @@ traceroute to nis.nsf.net (35.1.1.48), 64 hops max, 38 byte packet
 11  nic.merit.edu (35.1.1.48)  239 ms  239 ms  239 ms
 .Ed
 .Pp
-Note that lines 2 & 3 are the same.  This is due to a buggy
-kernel on the 2nd hop system \- lilac-dmc.Berkeley.EDU \- that forwards
-packets with a zero ttl (a bug in the distributed version
-of 4.3BSD).  Note that you have to guess what path
-the packets are taking cross-country since the NSFNet (129.140)
-doesn't supply address-to-name translations for its NSSes.
+Обратите внимание, что строки 2 и 3 совпадают. Это связано с ошибкой
+ядра в системе 2-го перехода \- lilac-dmc.Berkeley.EDU\- который пересылает
+пакеты с нулевым ttl (ошибка в распространяемой версии
+4.3BSD). Обратите внимание, что вы должны угадать, какой путь
+проходят пакеты через всю страну, поскольку сеть NSFNet (129.140)
+не предоставляет преобразования адреса в имя для своих NSS.
 .Pp
-A more interesting example is:
+Более интересным примером является:
 .Bd -literal -offset 4n
 % traceroute allspice.lcs.mit.edu.
 traceroute to allspice.lcs.mit.edu (18.26.0.115), 64 hops max
@@ -271,19 +270,19 @@ traceroute to allspice.lcs.mit.edu (18.26.0.115), 64 hops max
 18  ALLSPICE.LCS.MIT.EDU (18.26.0.115)  339 ms  279 ms  279 ms
 .Ed
 .Pp
-Note that the gateways 12, 14, 15, 16 & 17 hops away
-either don't send ICMP "time exceeded" messages or send them
-with a ttl too small to reach us.  14 \- 17 are running the
-MIT C Gateway code that doesn't send "time exceeded"s.  God
-only knows what's going on with 12.
+Обратите внимание, что удаленные шлюзы 12, 14, 15, 16 и 17
+либо не отправляют ICMP-сообщения о превышении времени, либо отправляют их
+со слишком малым ttl, чтобы достичь нас. 14 \- 17 используют
+код шлюза MIT C, который не отправляет сообщения о превышении времени. Одному богу
+известно, что происходит с 12-м номером.
 .Pp
-The silent gateway 12 in the above may be the result of a bug in
-the 4.[23]BSD network code (and its derivatives):  4.x (x <= 3)
-sends an unreachable message using whatever ttl remains in the
-original datagram.  Since, for gateways, the remaining ttl is
-zero, the ICMP "time exceeded" is guaranteed to not make it back
-to us.  The behavior of this bug is slightly more interesting
-when it appears on the destination system:
+Отключенный шлюз 12, описанный выше, может быть результатом ошибки в
+сетевом коде 4.[23]BSD (и его производных): 4.x (x <= 3),
+отправляет сообщение о недоступности, используя любой ttl, оставшийся в
+исходной дейтаграмме. Поскольку для шлюзов оставшийся ttl равен
+нулю, сообщение ICMP "превышено время" гарантированно не вернется
+к нам. Поведение этой ошибки немного интереснее
+, когда она появляется в целевой системе:
 .Bd -literal -offset 4n
  1  helios.ee.lbl.gov (128.3.112.1)  0 ms  0 ms  0 ms
  2  lilac-dmc.Berkeley.EDU (128.32.216.1)  39 ms  19 ms  39 ms
@@ -300,91 +299,91 @@ when it appears on the destination system:
 13  rip.Berkeley.EDU (128.32.131.22)  59 ms !  39 ms !  39 ms !
 .Ed
 .Pp
-Notice that there are 12 "gateways" (13 is the final
-destination) and exactly the last half of them are "missing".
-What's really happening is that rip (a Sun-3 running Sun OS3.5)
-is using the ttl from our arriving datagram as the ttl in its
-ICMP reply.  So, the reply will time out on the return path
-(with no notice sent to anyone since ICMP's aren't sent for
-ICMP's) until we probe with a ttl that's at least twice the path
-length.  I.e., rip is really only 7 hops away.  A reply that
-returns with a ttl of 1 is a clue this problem exists.
-Traceroute prints a "!" after the time if the ttl is <= 1.
-Since vendors ship a lot of obsolete
+Обратите внимание, что существует 12 "шлюзов" (13 - это конечный
+пункт назначения), и ровно половина из них "отсутствует".
+Что на самом деле происходит, так это то, что rip (Sun-3 под управлением Sun OS3.5)
+использует ttl из нашей поступающей дейтаграммы в качестве ttl в своем
+ICMP-ответе. Таким образом, время ожидания ответа на обратном пути
+истечет (без уведомления, отправленного кому-либо, поскольку ICMP-сообщения не отправляются для
+ICMP), пока мы не проверим с помощью ttl, который, по крайней мере, вдвое
+превышает длину пути. То есть rip на самом деле находится всего в 7 переходах. Ответ, который
+возвращает значение ttl, равное 1, указывает на существование проблемы.
+Traceroute выводит символ "!" после заданного времени, если значение ttl <= 1.
+Поскольку поставщики поставляют много устаревших
 .Pf ( Tn DEC Ns \'s
-Ultrix, Sun 3.x) or
-non-standard
+Ultrix, Sun 3.x) или
+нестандартное
 .Pq Tn HP-UX
-software, expect to see this problem
-frequently and/or take care picking the target host of your
-probes.
+программное обеспечение, ожидайте, что вы будете часто сталкиваться с этой проблемой,
+и/или позаботьтесь о выборе целевого хоста для ваших
+зондов.
 .Pp
-Other possible annotations after the time are:
+Другими возможными комментариями по истечении этого времени являются:
 .Bl -hang -offset indent -width 12n
 .It Sy !H
-Host unreachable.
+Хост недоступен.
 .It Sy !N
-Network unreachable.
+Сеть недоступна.
 .It Sy !P
-Protocol unreachable.
+Протокол недоступен.
 .It Sy !S
-Source route failed.
+Сбой исходного маршрута.
 .It Sy !F\-<pmtu>
-Fragmentation needed.
-The RFC1191 Path MTU Discovery value is displayed.
+Необходима фрагментация.
+Отображается значение обнаружения MTU пути RFC1191.
 .It Sy !U
-Destination network unknown.
+Конечная сеть неизвестна.
 .It Sy !W
-Destination host unknown.
+Конечный хост неизвестен.
 .It Sy !I
-Source host is isolated.
+Исходный хост изолирован.
 .It Sy !A
-Communication with destination network administratively prohibited.
+Связь с целевой сетью запрещена в административном порядке.
 .It Sy !Z
-Communication with destination host administratively prohibited.
+Связь с хостом назначения запрещена в административном порядке.
 .It Sy !Q
-For this ToS the destination network is unreachable.
+Для этого ToS целевая сеть недоступна.
 .It Sy !T
-For this ToS the destination host is unreachable.
+Для этого ToS конечный хост недоступен.
 .It Sy !X
-Communication administratively prohibited.
+Общение запрещено в административном порядке.
 .It Sy !V
-Host precedence violation.
+Нарушение приоритета хоста.
 .It Sy !C
-Precedence cutoff in effect.
+Действует ограничение приоритета.
 .It Sy !<num>
-ICMP unreachable code <num>.
+Недоступный код ICMP <num>.
 .El
 .Pp
-These are defined by RFC1812 (which supersedes RFC1716).
-If almost all the probes result in some kind of unreachable,
+Они определены в RFC1812 (который заменяет RFC1716).
+Если почти все проверки приводят к каким-либо недостижимым результатам,
 .Nm
-will give up and exit.
+сдастся и выйдет.
 .Pp
-This program is intended for use in network testing, measurement
-and management.
-It should be used primarily for manual fault isolation.
-Because of the load it could impose on the network, it is unwise to use
+Эта программа предназначена для тестирования, измерений
+и управления сетью.
+Ее следует использовать в первую очередь для ручной изоляции неисправностей.
+Из-за возможной нагрузки на сеть использовать ее нецелесообразно
 .Nm
-during normal operations or from automated scripts.
-.Sh SEE ALSO
+во время обычных операций или из автоматизированных сценариев.
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr netstat 1 ,
 .Xr ping 8 ,
 .Xr traceroute6 8 .
-.Sh AUTHORS
-Implemented by Van Jacobson from a suggestion by Steve Deering.  Debugged
-by a cast of thousands with particularly cogent suggestions or fixes from
-C. Philip Wood, Tim Seaver and Ken Adelman.
-.Sh BUGS
-When using protocols other than UDP, functionality is reduced.
-In particular, the last packet will often appear to be lost, because
-even though it reaches the destination host, there's no way to know
-that because no ICMP message is sent back.
-In the TCP case,
+.Sh АВТОРЫ
+Реализован Ван Джейкобсоном по предложению Стива Диринга. Отлажен
+тысячами разработчиков с особенно убедительными предложениями или исправлениями от
+К. Филипа Вуда, Тима Сивера и Кена Адельмана.
+.Sh НЕИСПРАВНОСТИ
+При использовании протоколов, отличных от UDP, функциональность снижается.
+В частности, часто кажется, что последний пакет потерян, потому
+что, даже если он достигает узла назначения, нет способа узнать
+об этом, поскольку обратно не отправляется ICMP-сообщение.
+В случае с TCP,,
 .Nm
-should listen for a RST from the destination host (or an intermediate
-router that's filtering packets), but this is not implemented yet.
+следует прослушивать RST от хоста назначения (или промежуточного
+маршрутизатора, который фильтрует пакеты), но это еще не реализовано.
 .Pp
-The AS number capability reports information that may sometimes be
-inaccurate due to discrepancies between the contents of the
-routing database server and the current state of the Internet.
+Функция AS number предоставляет информацию, которая иногда может быть
+неточной из-за несоответствий между содержимым
+сервера базы данных маршрутизации и текущим состоянием Интернета.

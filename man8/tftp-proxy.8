@@ -28,75 +28,73 @@
 .Dd November 28, 2005
 .Dt TFTP-PROXY 8
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm tftp-proxy
-.Nd Internet Trivial File Transfer Protocol proxy
-.Sh SYNOPSIS
+.Nd прокси-сервер протокола простой передачи файлов в Интернете
+.Sh КРАТКИЙ ОБЗОР
 .Nm tftp-proxy
 .Op Fl v
 .Op Fl w Ar transwait
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 .Nm
-is a proxy for the Internet Trivial File Transfer Protocol invoked by
-the
-.Xr inetd 8
-internet server.
-TFTP connections should be redirected to the proxy using the
+это прокси-сервер для протокола передачи файлов Internet Trivial, вызываемого
+интернет-сервером 
+.Xr inetd 8.
+TFTP-соединения должны быть перенаправлены на прокси-сервер с помощью
 .Xr pf 4
 .Ar rdr
-command, after which the proxy connects to the server on behalf of
-the client.
+команда, после выполнения которой прокси-сервер подключается к серверу от имени
+клиента.
 .Pp
-The proxy establishes a
+Прокси устанавливает
 .Xr pf 4
 .Ar rdr
-rule using the
+правило, использующее
 .Ar anchor
-facility to rewrite packets between the client and the server.
-Once the rule is established,
+средство для перезаписи пакетов между клиентом и сервером.
+Как только это правило будет установлено,
 .Nm
-forwards the initial request from the client to the server to begin the
-transfer.
-After
-.Ar transwait
-seconds, the
+пересылает первоначальный запрос от клиента на сервер, чтобы начать
+передачу.
+После нескольких секунд
+.Ar ожидания ,
 .Xr pf 4
-NAT state is assumed to have been established and the
+предполагает, что состояние NAT установлено, и
 .Ar rdr
-rule is deleted and the program exits.
-Once the transfer between the client and the server is completed, the
-NAT state will naturally expire.
+правило удаляется, и программа завершает работу.
+Как только передача данных между клиентом и сервером будет завершена, срок действия состояния 
+NAT естественным образом истечет.
 .Pp
-Assuming the TFTP command request is from $client to $server, the
-proxy connected to the server using the $proxy source address, and
-$port is negotiated,
+Предполагая, что запрос команды TFTP поступает от $client к $server,
+прокси-сервер подключается к серверу, используя исходный адрес $proxy, и
+$port согласовывается,
 .Nm
-adds the following rule to the anchor:
+добавляет следующее правило к привязке:
 .Bd -literal -offset indent
 rdr proto udp from $server to $proxy port $port -\*(Gt $client
 .Ed
 .Pp
-The options are as follows:
+Возможны следующие параметры:
 .Bl -tag -width Ds
 .It Fl v
-Log the connection and request information to
+Регистрирует соединение и запрашивает информацию у
 .Xr syslogd 8 .
 .It Fl w Ar transwait
-Number of seconds to wait for the data transmission to begin before
-removing the
+Количество секунд, в течение которых необходимо дождаться начала передачи данных, прежде
+чем удалять
 .Xr pf 4
 .Ar rdr
-rule.
-The default is 2 seconds.
+правило.
+По умолчанию это 2 секунды.
 .El
-.Sh CONFIGURATION
-To make use of the proxy,
+.Sh КОНФИГУРАЦИЯ
+Чтобы воспользоваться прокси-сервером,
 .Xr pf.conf 5
-needs the following rules.
-The anchors are mandatory.
-Adjust the rules as needed for your configuration.
+необходимы следующие правила.
+Привязки обязательны.
+Измените правила в соответствии с вашими требованиями к конфигурации.
 .Pp
-In the NAT section:
+В разделе NAT:
 .Bd -literal -offset indent
 nat on $ext_if from $int_if -\*(Gt ($ext_if:0)
 
@@ -107,23 +105,23 @@ rdr on $int_if proto udp from $lan to any port tftp -\*(Gt \e
     127.0.0.1 port 6969
 .Ed
 .Pp
-In the filter section, an anchor must be added to hold the pass rules:
+В разделе фильтр необходимо добавить привязку для сохранения правил прохождения:
 .Bd -literal -offset indent
 anchor "tftp-proxy/*"
 .Ed
 .Pp
 .Xr inetd 8
-must be configured to spawn the proxy on the port that packets are
-being forwarded to by
+должен быть настроен для запуска прокси-сервера по порту, на который
+пересылаются пакеты
 .Xr pf 4 .
-An example
+Например от
 .Xr inetd.conf 5
-entry follows:
+выход следующий:
 .Bd -literal -offset indent
 127.0.0.1:6969	dgram	udp	wait	root \e
 	/usr/libexec/tftp-proxy	tftp-proxy
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr tftp 1 ,
 .Xr pf 4 ,
 .Xr pf.conf 5 ,
@@ -131,10 +129,10 @@ entry follows:
 .Xr inetd 8 ,
 .Xr syslogd 8 ,
 .Xr tftpd 8
-.Sh CAVEATS
+.Sh ПРЕДУПРЕЖДЕНИЯ
 .Nm
-chroots to
+привязывается к
 .Pa /var/empty
-and changes to user
-.Dq proxy
-to drop privileges.
+и изменяется для пользователя
+.Dq proxy ,
+чтобы отказаться от привилегий.

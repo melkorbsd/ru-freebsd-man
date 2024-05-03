@@ -25,10 +25,10 @@
 .Dd April 2, 2021
 .Dt VALECTL 8
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm valectl
-.Nd manage VALE switches provided by netmap
-.Sh SYNOPSIS
+.Nd управление коммутаторами VALE, предоставляемыми netmap
+.Sh КРАТКИЙ ОБЗОР
 .Bk -words
 .Bl -tag -width "valectl"
 .It Nm
@@ -46,116 +46,117 @@
 .Op Fl m Ar memid
 .El
 .Ek
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 .Nm
-manages and inspects
+управляет и проверяет 
 .Xr vale 4
-switches, for instance attaching and detaching interfaces, creating
-and deleting persistent VALE ports, or listing the existing switches
-and their ports.
+коммутаторы, например, подключает и отключает интерфейсы, создает
+и удаляет постоянные порты VALE или перечисляет существующие коммутаторы
+и их порты.
 In the following,
+В дальнейшем,
 .Ar valeSSS
-is the name of a VALE switch, while
+это имя переключателя VALE, в то время как
 .Ar valeSSS:PPP
-is the name of a VALE port of
+это название порта в 
 .Ar valeSSS .
 .Pp
-When issued without options it lists all the existing switch ports together
-with their internal bridge number and port number.
+Если он выпущен без опций, в нем перечислены все существующие порты коммутатора вместе
+с их внутренним номером моста и номером порта.
 .Bl -tag -width Ds
 .It Fl g Ar valeSSS:PPP
-Print the number of receive rings of
+Выводит количество сигналов приема из
 .Ar valeSSS:PPP .
 .It Fl a Ar valeSSS:interface
-Attach
+Прикрепляет
 .Ar interface
-(which must be an existing network interface) to
+(который должен быть существующим сетевым интерфейсом) к
 .Ar valeSSS
-and detach it from the host stack.
+и отсоединяет его от стека хоста.
 .It Fl h Ar valeSSS:interface
-Attach
+Прикрепляет
 .Ar interface
-(which must be an existing network interface) to
+(который должен быть существующим сетевым интерфейсом) к
 .Ar valeSSS
-while keeping it attached to the host stack.
-More precisely, packets coming from
-the host stack and directed to the interface will go through the switch, where
-they can still reach the interface if the switch rules allow it.
-Conversely, packets coming from the interface will go through the switch and,
-if appropriate, will reach the host stack.
+сохраняя при этом его привязанным к стеку хоста.
+Точнее, пакеты, поступающие из
+стека хостов и направленные на интерфейс, будут проходить через коммутатор, откуда
+они все еще могут достичь интерфейса, если это разрешено правилами коммутатора.
+И наоборот, пакеты, поступающие из интерфейса, будут проходить через коммутатор и,
+при необходимости, попадут в стек хостов.
 .It Fl d Ar valeSSS:interface
-Detach
+Отсоединяет
 .Ar interface
-from
+от
 .Ar valeSSS .
 .It Fl n Ar interface
-Create a new persistent VALE port with name
+Создает новый постоянный порт VALE с именем
 .Ar interface .
-The name must be different from any other network interface
-already present in the system.
+Это имя должно отличаться от имени любого другого сетевого интерфейса, 
+уже присутствующего в системе.
 .It Fl r Ar interface
-Destroy the persistent VALE port with name
+Уничтожает постоянный порт VALE с именем
 .Ar interface .
 .It Fl l Ar valeSSS:PPP
-Show the internal bridge number and port number of the given switch port.
+Показывает номер внутреннего моста и номер порта данного порта коммутатора.
 .It Fl p Ar valeSSS:PPP
-Enable polling mode for
+Включает режим опроса для
 .Ar valeSSS:PPP .
-In polling mode, a dedicated kernel thread is spawned to handle packets
-received from
+В режиме опроса создается выделенный поток ядра для обработки пакетов, 
+полученных от
 .Ar valeSSS:PPP
-and push them into the switch.
-The kernel thread busy waits on the switch port rather than relying on
-interrupts or notifications.
-Polling mode can only be used on physical NICs attached to a VALE switch.
+и подключает их к коммутатору.
+Загруженный поток ядра ожидает на порту коммутатора, не полагаясь на
+прерывания или уведомления.
+Режим опроса можно использовать только на физических сетевых адаптерах, подключенных к коммутатору VALE.
 .It Fl P Ar valeSSS:PPP
-Disable polling mode for
+Отключает режим опроса для
 .Ar valeSSS:PPP .
 .It Fl C Ar x | Ar x,y | Ar x,y,z | Ar x,y,z,w
-When used in conjunction with
+При использовании в сочетании с
 .Fl n
-it supplies the number of tx and rx rings and slots.
-The full format with four numbers gives, in order, number of tx slots, number
-of rx slots, number of tx rings and number of rx rings.
-The form with three numbers uses
+в нем указано количество звонков и ячеек tx и rx.
+Полный формат с четырьмя числами по порядку показывает количество слотов tx, количество
+слотов rx, количество звонков tx и количество звонков rx.
+Форма с тремя числами использует
 .Ar z
-for both the number of tx and the number of rx rings.
-The forms with less than two numbers use the default values for the number
-of rings.
-The form with two numbers supplies the numbers of tx and rx slots.
-The form with only one number uses
+как для количества вызовов tx, так и для количества rx.
+В формах, содержащих менее двух цифр, используются значения по умолчанию для количества
+вызовов.
+В форме с двумя цифрами указаны номера слотов tx и rx.
+Форма, содержащая только один номер, использует
 .Ar x
-for both the number of tx and the number of rx slots.
+как для количества слотов tx, так и для количества слотов rx.
 .Pp
-When used in conjunction with
+При использовании в сочетании с
 .Fl p
-only the first three forms are used.
-The first number may be either 0 or 1.
-If 0, then all interface rings will be polled by a single thread, running
-on the core id given by the second number (the third number, if present,
-must be 1).
-If the first number is 1, then the ring identified by the second number will
-be polled by the core with the same id.
-If a third number is given, then this is repeated for as many consecutive
-rings and cores.
+используются только первые три формы.
+Первое число может быть либо 0, либо 1.
+Если 0, то все интерфейсные кольца будут опрашиваться одним потоком, выполняющимся
+на основе идентификатора ядра, указанного вторым номером (третье число, если присутствует,
+должно быть 1).
+Если первое число равно 1, то ядро будет опрашивать кольцо, обозначенное вторым номером, 
+с тем же идентификатором.
+Если указано третье число, то это повторяется для стольких последовательных
+колец и ядер.
 .It Fl m Ar memid
-Used in conjunction with
+Используется в сочетании с
 .Fl n
-supplies the netmap memory region identifier to use together with the newly
-created persistent VALE port.
-These ports use a private memory region by default.
-Using this option you can let them share memory with other ports.
-Pass 1 as
-.Ar memid
-to use the global memory region already shared by all
-hardware netmap ports.
+предоставляет идентификатор области памяти netmap для использования вместе с недавно
+созданным постоянным портом VALE.
+По умолчанию эти порты используют частную область памяти.
+Используя этот параметр, вы можете разрешить им совместно использовать память с другими портами.
+Передает 1 как
+.Ar memid ,
+чтобы использовать глобальную область памяти, уже разделяемую всеми
+аппаратными портами netmap.
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr netmap 4 ,
 .Xr vale 4
-.Sh AUTHORS
+.Sh АВТОРЫ
 .An -nosplit
 .Nm
-has been written by
-.An Michio Honda
-at NetApp.
+была написана
+.An Мичио Хондо
+из NetApp.

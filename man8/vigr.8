@@ -26,44 +26,40 @@
 .Dd December 14, 2014
 .Dt VIGR 8
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm vigr
-.Nd edit the group file
-.Sh SYNOPSIS
+.Nd редактирует файл группы
+.Sh КРАТКИЙ ОБЗОР
 .Nm
 .Op Fl d Ar directory
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
 .Nm
-utility makes a temporary copy of the group file, allows the user to
-edit it, then verifies that the edited file is valid before installing
-it.
+утилита создает временную копию файла группы, позволяет пользователю
+отредактировать ее, а затем проверяет правильность отредактированного файла перед его установкой.
 .Pp
-The following options are available:
+Доступны следующие параметры:
 .Bl -tag -width Fl
 .It Fl d Ar directory
-Edit the group file in the specified directory instead of the default
+Редактирует файл группы в указанном каталоге вместо каталога по умолчанию
 .Pa /etc/group .
 .El
-.Sh ENVIRONMENT
+.Sh ОКРУЖЕНИЕ
 .Bl -tag -width EDITOR
 .It Ev EDITOR
-The editor to use instead of
+Редактор, который будет использоваться вместо
 .Xr vi 1 .
 .It Ev TMPDIR
-The directory in which to store the temporary copy of the group file.
+Каталог, в котором будет храниться временная копия файла группы.
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr group 5 ,
 .Xr chkgrp 8 ,
 .Xr vipw 8
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
 .Nm
-utility appeared in
+утилита появилась в
 .Fx 11.0 .
-.Sh AUTHORS
-The
+.Sh АВТОРЫ
 .Nm
-utility and this manual page were written by
-.An Dag-Erling Sm\(/orgrav Aq Mt des@FreeBSD.org .
+утилита и эта страница руководства были написаны
+.An Даг-Эрлинг См\(/орграв Aq Mt des@FreeBSD.org .

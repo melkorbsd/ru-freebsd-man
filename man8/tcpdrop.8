@@ -18,10 +18,10 @@
 .Dd December 4, 2021
 .Dt TCPDROP 8
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm tcpdrop
-.Nd drop TCP connections
-.Sh SYNOPSIS
+.Nd удаляет TCP-соединения
+.Sh КРАТКИЙ ОБЗОР
 .Nm tcpdrop
 .Ar local-address
 .Ar local-port
@@ -45,39 +45,38 @@
 .Op Fl C Ar cc-algo
 .Op Fl S Ar stack
 .Fl s Ar state
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
 .Nm
-command may be used to drop TCP connections from the command line.
+команда может использоваться для удаления TCP-соединений из командной строки.
 .Pp
-If
+Если
 .Fl a
-is specified then
+указывается, тогда
 .Nm
-will attempt to drop all TCP connections.
+попытается разорвать все TCP-соединения.
 .Pp
-If
+Если
 .Fl C Ar cc-algo
-is specified then
+указывается, тогда
 .Nm
-will attempt to drop all connections using the TCP congestion control algorithm
+попытается разорвать все соединения, используя алгоритм контроля перегрузки TCP
 .Ar cc-algo .
 .Pp
-If
+Если
 .Fl S Ar stack
-is specified then
+указывается, тогда
 .Nm
-will attempt to drop all connections using the TCP stack
+попытается разорвать все соединения, используя стек TCP
 .Ar stack .
 .Pp
-If
+Если
 .Fl s Ar state
-is specified then
+указывается, тогда
 .Nm
-will attempt to drop all TCP connections being in the state
+попытается разорвать все TCP-соединения, находящиеся в этом состоянии
 .Ar state .
 .Ar state
-is one of
+является одним из
 .Dv SYN_SENT ,
 .Dv SYN_RCVD ,
 .Dv ESTABLISHED ,
@@ -88,114 +87,111 @@ is one of
 .Dv FIN_WAIT_2 , or
 .Dv TIME_WAIT .
 .Pp
-If multiple of
+Если несколько из
 .Fl C Ar cc-algo ,
 .Fl S Ar stack ,
-and
+и
 .Fl s Ar state
-are specified,
+указаны,
 .Nm
-will attempt to drop all TCP connections using the congestion control algorithm
+попытается разорвать все TCP-соединения, используя алгоритм контроля перегрузки
 .Ar cc-algo ,
-being in the state
+находясь в состоянии
 .Ar state ,
-and using the TCP stack
+и используя стек TCP
 .Ar stack ,
-if specified.
-Since TCP connections in the
+если указано.
+Поскольку TCP-соединения в
 .Dv TIME_WAIT
-state are not tied to any TCP stack, using the option
+состоянии не привязаны ни к какому стеку TCP, используя опцию
 .Fl s Dv TIME_WAIT
-in combination with the
+в сочетании с
 .Fl S Ar stack
-option results in
+параметром приводит к тому, что
 .Nm
-not dropping any TCP connection.
+не прерывает никакого TCP-соединения.
 .Pp
-The
 .Fl l
-flag may be given in addition to the
+флаг может быть присвоен в дополнение к
 .Fl a ,
 .Fl C ,
 .Fl S ,
-or
+или
 .Fl s
-options to list the tcpdrop invocation to drop all corresponding TCP
-connections one at a time.
+параметрам для перечисления вызова tcpdrop для удаления всех соответствующих TCP
+-подключений по одному за раз.
 .Pp
-If none of the
+Если ни один из
 .Fl a ,
 .Fl C ,
 .Fl S ,
-or
+или
 .Fl s
-options are specified then only the connection between the given local
-address
+параметров не указывается, только соединения между заданным локальным
+адресом
 .Ar local-address ,
-port
+портом
 .Ar local-port ,
-and the foreign address
+и сторонним адресом
 .Ar foreign-address ,
-port
+портом
 .Ar foreign-port ,
-will be dropped.
+будут удалены.
 .Pp
-Addresses and ports may be specified by name or numeric value.
-Both IPv4 and IPv6 address formats are supported.
+Адреса и порты могут быть указаны в виде имени или числового значения.
+Поддерживаются форматы адресов IPv4 и IPv6.
 .Pp
-The addresses and ports may be separated by periods or colons
-instead of spaces.
-.Sh EXIT STATUS
+Адреса и порты могут быть разделены точками или двоеточиями
+вместо пробелов.
+.Sh СТАТУС ВЫХОДА
 .Ex -std
-.Sh EXAMPLES
-If a connection to
+.Sh ПРИМЕРЫ
+Если соединение с
 .Xr httpd 8
-is causing congestion on a network link, one can drop the TCP session
-in charge:
+вызывает перегрузку на сетевом канале, можно прервать ответственный TCP-сеанс:
 .Bd -literal -offset indent
 # sockstat -c | grep httpd
 www      httpd      16525 3  tcp4 \e
 	192.168.5.41:80      192.168.5.1:26747
 .Ed
 .Pp
-The following command will drop the connection:
+Следующая команда приведет к разрыву соединения:
 .Bd -literal -offset indent
 # tcpdrop 192.168.5.41 80 192.168.5.1 26747
 .Ed
 .Pp
-The following command will drop all connections but those to or from
-port 22, the port used by
+Следующая команда приведет к разрыву всех подключений, кроме подключений к
+порту 22, используемому
 .Xr sshd 8 :
 .Bd -literal -offset indent
 # tcpdrop -l -a | grep -vw 22 | sh
 .Ed
 .Pp
-To drop all TCP connections using the new-reno congestion control algorithm use:
+Чтобы разорвать все TCP-соединения с помощью алгоритма контроля перегрузки new-reno, используйте:
 .Bd -literal -offset indent
 # tcpdrop -C new-reno
 .Ed
 .Pp
-The following command will drop all connections using the TCP stack
-rack:
+Следующая команда удалит все соединения, использующие стойку стека TCP:
 .Bd -literal -offset indent
 # tcpdrop -S rack
 .Ed
 .Pp
-To drop all TCP connections in the LAST_ACK state use:
+Чтобы разорвать все TCP-соединения в состоянии LAST_ACK, используйте:
 .Bd -literal -offset indent
 # tcpdrop -s LAST_ACK
 .Ed
 .Pp
-To drop all TCP connections using the congestion control algorithm new-reno and
-the TCP stack rack and being in the LAST_ACK state use:
+Чтобы разорвать все TCP-соединения, используя алгоритм управления перегрузкой new-reno и
+стойку стека TCP и находясь в состоянии LAST_ACK, используйте:
 .Bd -literal -offset indent
 # tcpdrop -C new-reno -S rack -s LAST_ACK
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr netstat 1 ,
 .Xr sockstat 1 ,
 .Xr tcp 4 ,
 .Xr tcp_functions 9
-.Sh AUTHORS
-.An Markus Friedl Aq Mt markus@openbsd.org
-.An Juli Mallett Aq Mt jmallett@FreeBSD.org
+.Sh АВТОРЫ
+.An Маркус Фридль Aq Mt markus@openbsd.org
+.An Джули Маллетт Aq Mt jmallett@FreeBSD.org

@@ -25,10 +25,10 @@
 .Dd November 3, 2013
 .Dt UTX 8
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm utx
-.Nd manage the user accounting database
-.Sh SYNOPSIS
+.Nd управление базой данных учета пользователей
+.Sh КРАТКИЙ ОБЗОР
 .Nm
 .Cm boot
 .Nm
@@ -37,59 +37,58 @@
 .Cm rm
 .Ar identifier
 .Ar ...
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 The
 .Nm
-utility can be used to perform operations on the user accounting
-database, as done by
+утилита может быть использована для выполнения операций с
+базой данных учета пользователей, как это делается с помощью
 .Xr pututxline 3 .
 .Pp
-The first argument to
+Первый аргумент
 .Nm
-indicates an action to be performed:
+указывает на действие, которое необходимо выполнить:
 .Bl -tag -width ".Cm shutdown"
 .It Cm boot
-Write a boot time record to the user accounting database.
-This option should typically only be used by
+Записывает запись времени загрузки в базу данных учета пользователей.
+Обычно эту опцию следует использовать только
 .Xr rc 8 .
 .It Cm shutdown
-Write a shutdown time record to the user accounting database.
-This option should typically only be used by
+Записывает запись о времени завершения работы в базу данных учета пользователей.
+Обычно этот параметр должен использоваться только
 .Xr rc 8 .
 .It Cm rm
-Remove stale sessions from the user accounting
-database, by referring to their
-.Ar identifier .
-Stale sessions can occur if a login service exits prematurely or fails
-to remove the session from the accounting database.
+Удаляет устаревшие сеансы из
+базы данных учета пользователей, обратившись к их
+.Ar идентификатору .
+Устаревшие сеансы могут возникать, если служба входа в систему завершает работу преждевременно или не удается
+удалить сеанс из базы данных учета.
 .Pp
-Utilities such as
+Такие утилиты, как
 .Xr w 1
-will not display the identifier corresponding with a login session,
-since its value is typically only of use by the process managing the
-record.
-The following command can be used to obtain all records from the user
-accounting database's active session table, including its identifiers:
+не будут отображать идентификатор, соответствующий сеансу входа в систему,
+поскольку его значение обычно используется только процессом, управляющим
+записью.
+Следующая команда может быть использована для получения всех записей из
+таблицы активных сеансов базы данных учета пользователей, включая их идентификаторы:
 .Pp
 .Dl getent utmpx active
 .Pp
-Identifiers can either be supplied in hexadecimal form as displayed by
+Идентификаторы могут быть представлены либо в шестнадцатеричном виде, как
 .Xr getent 1 ,
-or as a string if the identifier allows such a representation.
+или в виде строки, если идентификатор допускает такое представление.
 .El
 .Pp
-Because this utility requires write-access to the user accounting
-database, its use is limited to the super-user.
-.Sh SEE ALSO
+Поскольку эта утилита требует доступа на запись
+к базе данных учета пользователей, ее использование ограничено суперпользователями.
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr getent 1 ,
 .Xr w 1 ,
 .Xr pututxline 3
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
 .Nm
-utility replaced
+утилита заменила
 .Nm utxrm
-in
+в
 .Fx 10.0 .
-.Sh AUTHORS
-.An Ed Schouten Aq Mt ed@FreeBSD.org
+.Sh АВТОРЫ
+.An Эд Шоутен Aq Mt ed@FreeBSD.org
