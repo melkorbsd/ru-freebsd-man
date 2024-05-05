@@ -27,61 +27,60 @@
 .\"
 .\"     @(#)what.1	8.1 (Berkeley) 6/6/93
 .\"
-.Dd December 14, 2006
+.Dd Декабрь 14, 2006
 .Dt WHAT 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm what
-.Nd "show what versions of object modules were used to construct a file"
-.Sh SYNOPSIS
+.Nd "показывает, какие версии объектных модулей использовались для создания файла"
+.Sh КРАТКОЕ ОПИСАНИЕ
 .Nm
 .Op Fl qs
 .Op Ar
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 The
 .Nm
-utility searches each specified
-.Ar file
-for sequences of the form
+утилита, которая выполняет поиск в каждом указанном 
+.Ar файле
+последовательностей вида
 .Dq Li @(#)
-as inserted by the
+введенных с помощью
 .Tn SCCS
-source code control system.
-It prints the remainder
-of the string following this marker, up to a NUL character, newline, double
-quote,
+или системы управления исходным кодом.
+Она выводит оставшуюся часть
+строуи, следующую за данным маркером, прямиком до нулевого символа, новой строки, двойных
+кавычек,
 .Ql \&>
-character, or backslash.
+символ, или обратной косой черты.
 .Pp
-The following options are available:
+Доступны слеующие параметры:
 .Bl -tag -width indent
 .It Fl q
-Only output the match text, rather than formatting it.
+Выводит только соответствующий текст, вместо его форматирования.
 .It Fl s
-Stop searching each file after the first match.
+Прекращает поиск в каждом файле после первого совпадения.
 .El
-.Sh EXIT STATUS
-Exit status is 0 if any matches were found, otherwise 1.
-.Sh SEE ALSO
+.Sh СТАТУС ВЫХОДА
+Статус выхода равен 0, были найдены какие-либо совпадения, в противном случае равен 1.
+.Sh СМОТРЕТЬ ТАКЖЕ
 .Xr ident 1 ,
 .Xr strings 1
-.Sh STANDARDS
-The
+.Sh СТАНДАРТЫ
+Утилита
 .Nm
-utility conforms to
+соответствует 
 .St -p1003.1-2001 .
-The
+Параметр
 .Fl q
-option is a non-standard
+является нестандартным расширением
 .Fx
-extension which may not be available on other operating systems.
-.Sh HISTORY
-The
+которое может быть недоступно в других операционных системах.
+.Sh ИСТОРИЯ
+Команда
 .Nm
-command appeared in
+появилась в
 .Bx 4.0 .
-.Sh BUGS
-This is a rewrite of the
+.Sh ОШИБКИ
+Это переписанная версия одноименной команды
 .Tn SCCS
-command of the same name,
-and behavior may not be identical.
+и поведение может быть неидентичным.
