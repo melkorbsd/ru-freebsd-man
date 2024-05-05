@@ -15,25 +15,25 @@
 .Dd Апрель 6, 2022
 .Dt VIDCONTROL 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm vidcontrol
-.Nd system console control and configuration utility
-.Sh SYNOPSIS
+.Nd утилита управления и настройки системной консоли 
+.Sh КРАТКОЕ ОПИСАНИЕ
 .Nm
 .Op Fl CdHLPpx
-.Op Fl b Ar color
-.Op Fl c Ar appearance
-.Op Fl E Ar emulator
+.Op Fl b Ar цвет
+.Op Fl c Ar внешний вид
+.Op Fl E Ar эмулятор
 .Oo
 .Fl f
 .Oo
-.Op Ar size
-.Ar file
+.Op Ar размер
+.Ar файла
 .Oc
 .Oc
-.Op Fl g Ar geometry
-.Op Fl h Ar size
-.Op Fl i Cm active | adapter | mode
+.Op Fl g Ar геометрия
+.Op Fl h Ar размер
+.Op Fl i Cm активный | адаптер | режим
 .Op Fl l Ar screen_map
 .Op Fl M Ar char
 .Op Fl m Cm on | off
@@ -42,29 +42,27 @@
 .Op Fl s Ar number
 .Op Fl T Cm xterm | cons25
 .Op Fl t Ar N | Cm off
-.Op Ar mode
+.Op Ar режим
 .Op Ar foreground Op Ar background
 .Op Cm show
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility is used to set various options for the
+используется для установки различных параметров для консольного драйвера
 .Xr syscons 4
-or
+или
 .Xr vt 4
-console driver,
-such as video mode, colors, cursor shape, screen output map, font, and screen
-saver timeout.
-Only a small subset of options is supported by
+,
+таких как видеорежим, цвета, курсор форма, карта вывода на экран, шрифт и время ожидания экранной заставки.
+Только небольшое количество параметров поддерживается
 .Xr vt 4 .
-Unsupported options lead to error messages, typically including
-the text "Inappropriate ioctl for device".
+Неподдерживаемые параметры приводят к появлению сообщений об ошибках, обычно содержащих текст "Неподходящий ioctl для устройства".
 .Pp
-The following command line options are supported:
+Поддерживаются следующие параметры командной строки:
 .Bl -tag -width indent
 .It Ar mode
-Select a new video mode.
-The modes currently recognized are:
+Выберите новый видеорежим.
+В настоящее время распознаются следующие режимы:
 .Ar 80x25 ,
 .Ar 80x30 ,
 .Ar 80x43 ,
@@ -94,155 +92,150 @@ The modes currently recognized are:
 .\"The graphic mode
 .\".Ar VGA_320x200
 .\"and
-The raster text mode
+Режим растрового текста
 .Ar VESA_800x600
-can also be chosen.
-Alternatively, a mode can be specified with its number by using a mode name of
-the form
+может тоже быть выбран.
+В качестве альтернативы, режим можно указать с его номером, используя название режима
+в форме
 .Li MODE_ Ns Aq Ar NUMBER .
-A list of valid mode numbers can be obtained with the
-.Fl i Cm mode
-option.
-See
-.Sx Video Mode Support
-below.
-.It Ar foreground Op Ar background
-Change colors when displaying text.
-Specify the foreground color
+Список допустимых номеров режимов можно получить с помощью параметра
+.Режим Fl i Cm
+.
+Просмотреть
+.Sx Поддержка видеорежима
+приведена ниже.
+.It Ar передний план вместо фона
+Изменяет цвета при отображении текста.
+Укажзывает цвет переднего плана
 (e.g.,
 .Dq vidcontrol white ) ,
-or both a foreground and background colors
+или как цвета переднего плана, так и фона
 (e.g.,
 .Dq vidcontrol yellow blue ) .
-Use the
+Использует
 .Cm show
-command below to see available colors.
+нажматием кнопки ниже, чтобы просмотреть доступные цвета.
 .It Cm show
-See the supported colors on a given platform.
+Посмотрите, какие цвета поддерживаются на данной платформе.
 .It Fl b Ar color
-Set border color to
+Установите цвет границы равным
 .Ar color .
-This option may not be always supported by the video driver.
+Возможно, эта опция не всегда поддерживается видеодрайвером.
 .It Fl C
-Clear the history buffer.
+Очищает буфер истории.
 .It Fl c Ar setting Ns Op , Ns Ar setting ...
-Change the cursor appearance.
-The change is specified by a non-empty comma-separated list of
+Измените внешний вид курсора.
+Изменение задается непустым списком параметров, разделенных запятыми.
 .Ar setting Ns s .
-Each
+каждый
 .Ar setting
-overrides or modifies previous ones in left to right order.
+переопределяет или изменяет предыдущие в порядке слева направо.
 .Pp
-The following override
+Следующее переопределение
 .Ar setting Ns s
-are available:
+доступны:
 .Bl -tag -width indent
-.It Cm normal
-Set to a block covering 1 character cell,
-with a configuration-dependent coloring
-that should be at worst inverse video.
-.It Cm destructive
-Set to a blinking sub-block with
-.Cm height
-scanlines starting at
-.Cm base .
-The name
-.Dq destructive
-is bad for backwards compatibility.
-This
-.Ar setting
-should not force destructiveness,
-and it now only gives destructiveness in some
-configurations (typically for hardware cursors
-in text mode).
-Blinking limits destructiveness.
-This
-.Ar setting
-should now be spelled
+.It Cm Нормальные
+Устанавливается в блок, занимающий ячейку размером в 1 символ, с зависящей от конфигурации раскраской, которая в худшем случае должна быть обратной видео.
+.It Cm деструктивные
+Установлен мигающий подблок с
+.Cm высотой
+строк сканирования начиная с
+.Cm основания .
+Название
+.Dq деструктивный
+плохо влияет на обратную совместимость. 
+не следует форсировать деструктивность,
+и теперь это дает деструктивность только в некоторых
+конфигурациях (обычно для аппаратных курсоров
+в текстовом режиме).
+Мигание ограничивает деструктивность.
+Эта
+.Ar настройка
+теперь должно быть написано по буквам
 .Cm normal , Ns Cm blink , Ns Cm noblock .
-A non-blinking destructive cursor would be unusable,
-so old versions of
+Немигающий деструктивный курсор был бы непригоден для использования,
+поэтому старые версии
 .Nm
-did not support it,
-and this version does not have an override for it.
-.It Cm base Ns = Ns Ar value , Cm height Ns = Ns Ar value
-Set the specified scanline parameters.
-These parameters are only active in
+не поддерживается,
+и в этой версии для него нет переопределения.
+It Cm base Ns = Ns Ar-значение , Cm height Ns = Ns Ar-значение
+Установите указанные параметры линии развертки.
+Эти параметры активны только в
 .Cm noblock
-mode.
-.Cm value
-is an integer in any base supported by
+режим.
+.Cm значение
+является целым числом в любой базе, поддерживаемой
 .Xr strtol 3 .
-Setting
-.Cm height
-to 0 turns off the cursor in
+Настраивание
+.Cm роста
+до значения 0 отключает курсор
 .Cm noblock
-mode.
-Negative
-.Ar value Ns s
-are silently ignored.
-Positive
-.Ar value Ns s
-are clamped to fit in the character cell when the cursor is drawn.
+режим.
+Негативные
+.Ar значения Ns s
+игнорируются.
+Позитивные
+.Ar значения Ns s
+зажимаются так, чтобы они помещались в ячейку символа при наведении курсора.
 .El
 .Pp
-The following modifier
+Следующие настройки 
 .Ar setting Ns s
 are available:
 .Bl -tag -width indent
 .It Cm blink , noblink
-Set or clear the blinking attribute.
-This is not quite backwards compatible.
-In old versions of
-.Nm , Cm blink
-was an override to a blinking block.
+Установите или снимите мигающий атрибут.
+Это не совсем совместимо с предыдущими версиями.
+В старых версиях
+.Nm , Cm blinkмигание
+было заменено на блокировку мигания.
 .It Cm block , noblock
-Set or clear the
+Установите или очистите
 .Cm block
-attribute.
-This attribute is the inverse of the flag
+атрибут.
+Этот атрибут является обратным по отношению к флагу
 .Dv CONS_CHAR_CURSOR
-in the implementation.
-It deactivates the scanline parameters,
-and expresses a preference for using a
-simpler method of implementation.
-Its inverse does the opposite.
-When the scanline parameters give a full block,
-this attribute reduces to a method selection bit.
+в реализации.
+Он отключает параметры скана линии
+и выражает предпочтение использованию более
+простого метода реализации.
+Его обратное значение приводит к обратному результату.
+Когда параметры scanline задают полный блок,
+этот атрибут уменьшается до бита выбора метода.
 The
 .Cm block
-method tends to give better coloring.
+этот метод, как правило, дает лучшую окраску.
 .It Cm hidden , nohidden
-Set or clear the hidden attribute.
+Установите или снимите скрытый атрибут.
 .El
 .Pp
-The following (non-sticky) flags control application of the
+Следующие (не прилипающие) флаги управляют применением
 .Ar setting Ns s :
 .Bl -tag -width indent
 .It Cm charcolors
-Apply
+Применяется к
 .Cm base
-and
+и
 .Cm height
-to the (character) cursor's list of preferred colors instead of its shape.
-Beware that the color numbers are raw VGA palette indexes,
-not ANSI color numbers.
-The indexes are reduced mod 8, 16 or 256,
-or ignored,
-depending on the video mode and renderer.
+к списку предпочтительных цветов курсора (символа), а не к его форме.
+Обратите внимание, что номера цветов являются необработанными индексами палитры VGA,
+а не номерами цветов ANSI.
+Индексы уменьшаются до 8, 16 или 256
+или игнорируются,
+в зависимости от видеорежима и средства визуализации.
 .It Cm mousecolors
-Colors for the mouse cursor in graphics mode.
-Like
+Цвета для курсора мыши в графическом режиме.
+Как
 .Cm charcolors ,
-except there is no preference or sequence;
+за исключением того, что здесь нет никаких предпочтений или последовательности;
 .Cm base
 gives the mouse border color and
 .Cm height
-gives the mouse interior color.
 Together with
 .Cm charcolors ,
-this gives 2 selection bits which select between
-only 3 of 4 sub-destinations of the 4 destinations selected by
+это дает 2 бита выбора, которые выбирают
+только между 3 из 4 подпунктов назначения из 4 пунктов назначения, выбранных пользователем.
 .Cm default
 and
 .Cm local
@@ -252,8 +245,8 @@ if
 .Cm charcolors
 is also set).
 .It Cm default
-Apply the changes to the default settings and then to the active settings,
-instead of only to the active settings.
+Примените изменения к настройкам по умолчанию, а затем к активным настройкам,
+а не только к активным настройкам.
 Together with
 .Cm local ,
 this gives 2 selection bits which select between 4 destinations.
