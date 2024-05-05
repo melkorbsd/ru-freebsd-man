@@ -114,7 +114,7 @@
 .It Fl a , -alignment-shift Ns = (default: Sy 9 ) No (use Sy 0 No for random )
 Сдвиг выравнивания, используемый в тесте.
 .It Fl m , -mirror-copies Ns = (default: Sy 2 )
- Количество зеркальных копий.
+Количество зеркальных копий.
 .It Fl r , -raid-disks Ns = (default: Sy 4 No for raidz/ Ns Sy 16 No for draid )
 Количество дисков raidz/draid.
 .It Fl R , -raid-parity Ns = (default: Sy 1 )
@@ -176,66 +176,65 @@ will be loaded.
 .Ar value
 (little-endian only).
 .It Fl G , -dump-debug
-Dump zfs_dbgmsg buffer before exiting due to an error.
+Дамп буфера zfs_dbgmsg перед завершением работы из-за ошибки.
 .It Fl V , -verbose
-Verbose (use multiple times for ever more verbosity).
+Подробный (используется несколько раз для большей детализации).
 .El
 .
-.Sh EXAMPLES
-To override
+.Sh ПРИМЕРЫ
+Чтобы переопределить 
 .Pa /tmp
-as your location for block files, you can use the
+в качестве местоположения для файлов блоков, можно использовать
 .Fl f
-option:
+параметр:
 .Dl # ztest -f /
 .Pp
-To get an idea of what
+Чтобы получить представление о том, что
 .Nm
-is actually testing try this:
+на самом деле тестирует попробуйте это:
 .Dl # ztest -f / -VVV
 .Pp
-Maybe you'd like to run
+Может быть, вы хотели бы запускать 
 .Nm ztest
-for longer? To do so simply use the
+на больший промежуток времени? Для этого просто используйте параметр
 .Fl T
-option and specify the runlength in seconds like so:
+и укажите продолжительность выполнения в секундах следующим образом:
 .Dl # ztest -f / -V -T 120
 .
-.Sh ENVIRONMENT VARIABLES
+.Sh ПЕРЕМЕННЫЕ ОКРУЖАЮЩЕЙ СРЕДЫ
 .Bl -tag -width "ZF"
 .It Ev ZFS_HOSTID Ns = Ns Em id
-Use
+Используйте
 .Em id
-instead of the SPL hostid to identify this host.
-Intended for use with
-.Nm , but this environment variable will affect any utility which uses
-libzpool, including
+вместо SPL hostid для идентификации этого хоста.
+Предназначен для использования с
+.Nm , но эта переменная будет влиять на любую утилиту, использующую
+libzpool, включая
 .Xr zpool 8 .
-Since the kernel is unaware of this setting,
-results with utilities other than ztest are undefined.
+Так как ядро не знает об этом параметре,
+результаты использования других утилит, кроме ztest, не определены.
 .It Ev ZFS_STACK_SIZE Ns = Ns Em stacksize
-Limit the default stack size to
+Ограничьте размер стека по умолчанию до следующего значения
 .Em stacksize
-bytes for the purpose of
-detecting and debugging kernel stack overflows.
-This value defaults to
+байты для
+обнаружения и отладки переполнений стека ядра.
+По умолчанию это значение равно
 .Em 32K
-which is double the default
+что в два раза больше значения по умолчанию
 .Em 16K
-Linux kernel stack size.
+Размер стека ядра Linux.
 .Pp
-In practice, setting the stack size slightly higher is needed because
-differences in stack usage between kernel and user space can lead to spurious
-stack overflows (especially when debugging is enabled).
-The specified value
-will be rounded up to a floor of PTHREAD_STACK_MIN which is the minimum stack
-required for a NULL procedure in user space.
+На практике необходимо немного увеличить размер стека, поскольку
+различия в использовании стека ядром и пользовательским пространством могут привести к ложному переполнению стека (особенно при включенной отладке).
+Указанное значение
+будет округлено в большую сторону до значения PTHREAD_STACK_MIN which которое является минимальным стеком, требуемым для нулевой процедуры в пользовательском пространстве. 
+
 .Pp
-By default the stack size is limited to
+По умолчанию размер стека ограничен
 .Em 256K .
 .El
 .
-.Sh SEE ALSO
+.Sh СМОТРЕТЬ ТАКЖЕ
 .Xr zdb 1 ,
 .Xr zfs 1 ,
 .Xr zpool 1 ,
