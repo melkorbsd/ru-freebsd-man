@@ -30,79 +30,75 @@
 .\"
 .\"     @(#)write.1	8.1 (Berkeley) 6/6/93
 .\"
-.Dd February 13, 2012
+.Dd Февраль 13, 2012
 .Dt WRITE 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm write
-.Nd send a message to another user
-.Sh SYNOPSIS
+.Nd отправляет сообщение другому пользователю
+.Sh КРАТКОЕ ОПИСАНИЕ
 .Nm
-.Ar user
+.Ar пользователь
 .Op Ar tty
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility allows you to communicate with other users, by copying lines from
-your terminal to theirs.
+позволяет вам общаться с другими пользователями путем копирования строк с 
+вашего терминала на их терминалы.
 .Pp
-When you run the
+Когда вы используете команду
 .Nm
-command, the user you are writing to gets a message of the form:
+пользователь, которому вы пишете, получает сообщение следующего вида:
 .Pp
-.Dl Message from yourname@yourhost on yourtty at hh:mm ...
+.Dl Сообщение от yourname@yourhost на yourtty в чч:мм ...
 .Pp
-Any further lines you enter will be copied to the specified user's
-terminal.
-If the other user wants to reply, they must run
+Все дальнейшие введенные вами строки будут скопированы к указанному пользователю в терминал. 
+Если другой пользователь хочет ответить, он также должен использовать
 .Nm
-as well.
+команду.
 .Pp
-When you are done, type an end-of-file or interrupt character.
-The other user will see the message
+Когда вы завершите, введите символ окончания файла или прерывания. 
+Другой пользователь увидит сообщение
 .Ql EOF
-indicating that the
-conversation is over.
+указывающее, что
+разговор окончен.
 .Pp
-You can prevent people (other than the super-user) from writing to you
-with the
+Вы можете запретить людям (кроме правообладателя) писать вам сообщения 
+с помощью команды
 .Xr mesg 1
-command.
+команды.
 .Pp
-If the user you want to write to is logged in on more than one terminal,
-you can specify which terminal to write to by specifying the terminal
-name as the second operand to the
+Если пользователь, которому вы хотите написать, зарегистрирован более чем на одном терминале 
+вы можете указать, на какой терминал писать, указав имя терминала
+в качестве второго операнда
 .Nm
-command.
-Alternatively, you can let
+команды.
+Вы также можете позволить команде
 .Nm
-select one of the terminals \- it will pick the one with the shortest
-idle time.
-This is so that if the user is logged in at work and also dialed up from
-home, the message will go to the right place.
+выбрать один из терминалов \- он выберет тот, имя которого будет короче
+Это делается для того, чтобы, если пользователь вошел в систему на работе и также из дома, сообщение отправилось в нужное место.
 .Pp
-The traditional protocol for writing to someone is that the string
+
+Традиционный протокол для отправки кому-либо сообщений заключается в том, что символ
 .Ql \-o ,
-either at the end of a line or on a line by itself, means that it is the
-other person's turn to talk.
-The string
+находясь в конце строки или в отдельной строке, означает, что очередь говорить другого человека.
+Строка
 .Ql oo
-means that the person believes the conversation to be
-over.
-.Sh SEE ALSO
+означает, что собеседник считает разговор 
+оконченным.
+.Sh СМОТРЕТЬ ТАКЖЕ
 .Xr mesg 1 ,
 .Xr talk 1 ,
 .Xr wall 1 ,
 .Xr who 1
-.Sh HISTORY
+.Sh ИСТОРИЯ
 A
 .Nm
-command appeared in
+команда появилась в
 .At v1 .
-.Sh BUGS
-The sender's
+.Sh ОШИБКИ
+Настройки отправителя
 .Ev LC_CTYPE
-setting is used to determine which characters are safe to write to a
-terminal, not the receiver's (which
+используются для опредедления, какие символы являются безопасными для ипользования на терминале, не на терминале получателя (который
 .Nm
-has no way of knowing).
+об этом не знает).
