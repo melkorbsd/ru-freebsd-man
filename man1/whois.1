@@ -30,265 +30,254 @@
 .Dd Август 1, 2019
 .Dt WHOIS 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm whois
-.Nd "Internet domain name and network number directory service"
-.Sh SYNOPSIS
+.Nd "Служба каталогов доменных имен и сетевых номеров в Интернете"
+.Sh КРАТКОЕ ОПИСАНИЕ
 .Nm
 .Op Fl aAbfgiIklmPQrRS
 .Op Fl c Ar TLD | Fl h Ar host
 .Op Fl p Ar port
 .Op Fl -
-.Ar name ...
-.Sh DESCRIPTION
-The
+.Ar имя ...
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility looks up records in the databases maintained by several
-Network Information Centers
+ищет записи в базах данных, сохраняется ряд
+Сеть Информационных Центров
 .Pq Tn NICs .
 .Pp
-By default
+По умолчанию
 .Nm
-starts by querying the Internet Assigned Numbers Authority (IANA) whois server,
-and follows referrals to whois servers
-that have more specific details about the query
+начинает с выполнения запроса к серверу whois Управления по присвоению номеров в Интернете (IANA), а затем следуют 
+ссылки на серверы whois, которые содержат более подробную информацию о запросе
 .Ar name .
-The IANA whois server knows about
+IANA whois сервер знает о
 IP address and AS numbers
 as well as domain names.
 .Pp
-There are a few special cases where referrals do not work, so
+Есть несколько особых случаев, когда рефералы не работают, поэтому они
 .Nm
-goes directly to the appropriate server.
-These include point-of-contact handles for ARIN,
+отправляется непосредственно на соответствующий сервер.
+К ним относятся дескрипторы точек контакта для ARIN,
 .Pa nic.at ,
 NORID, and RIPE,
-and domain names under
+и имена домена в соответствии с
 .Pa ac.uk .
 .Pp
-The options are as follows:
+Возможны следующие параметры:
 .Bl -tag -width indent
 .It Fl a
-Use the American Registry for Internet Numbers
-.Pq Tn ARIN
-database.
-It contains network numbers used in those parts of the world covered neither by
+Использует базу данных Американского реестра интернет-номеров.
+В нем содержатся сетевые номера, используемые в тех частях света, на которые не распространяется ни
 .Tn APNIC , AfriNIC , LACNIC ,
-nor by
+ни
 .Tn RIPE .
-The query syntax is documented at
+Синтаксис запроса находится по адресу
 .Pa https://www.arin.net/resources/whoisrws/whois_api.html#nicname
 .It Fl A
-Use the Asia/Pacific Network Information Center
+Использует информационный центр Азиатско-Тихоокеанской сети
 .Pq Tn APNIC
-database.
-It contains network numbers used in East Asia, Australia,
-New Zealand, and the Pacific islands.
-Get query syntax documentation using
+базы данных.
+В нем указаны сетевые номера, используемые в Восточной Азии, Австралии,
+Новой Зеландии и на островах Тихого океана.
+Получите документацию по синтаксису запроса с помощью
 .Ic whois -A help
 .It Fl b
-Use the Network Abuse Clearinghouse database.
-It contains addresses to which network abuse should be reported,
-indexed by domain name.
+Используйте базу данных Центра обмена информацией о нарушениях в сети.
+Она содержит адреса, на которые следует сообщать о нарушениях в сети,
+проиндексированные по имени домена.
 .It Fl c Ar TLD
-This is the equivalent of using the
-.Fl h
-option with an argument of
+Это эквивалентно использованию параметра
+.Fl hс аргументом в пользу
 .Qq Ar TLD Ns Li .whois-servers.net .
-This can be helpful for locating country-class TLD whois servers.
+Это может быть полезно для поиска серверов whois TLD национального уровня.
 .It Fl f
-Use the African Network Information Centre
+Воспользуйтесь Африканским сетевым информационным центром
 .Pq Tn AfriNIC
-database.
-It contains network numbers used in Africa and the islands of the
-western Indian Ocean.
-Get query syntax documentation using
+базы данных.
+Он содержит номера сетей, используемых в Африке и на островах
+западной части Индийского океана.
+Получите документацию по синтаксису запроса, используя
 .Ic whois -f help
 .It Fl g
-Use the US non-military federal government database, which contains points of
-contact for subdomains of
+Используйте указанный хост вместо хостинга по умолчанию.
+Можно указать либо имя хоста, либо IP-адрес.
 .Pa .GOV .
 .It Fl h Ar host
-Use the specified host instead of the default.
-Either a host name or an IP address may be specified.
+Используйте указанный хост вместо хоста по умолчанию.
+Можно указать либо имя хоста, либо IP-адрес.
 .It Fl i
-Use the traditional Network Information Center (InterNIC)
+Используйте традиционный сетевой информационный центр (InterNIC)
 .Pq Pa whois.internic.net
-database.
-This now contains only registrations for domain names under
+базы данных.
+Теперь здесь указаны только регистрации доменных имен в соответствии
 .Pa .COM ,
 .Pa .NET ,
 .Pa .EDU .
-You can specify the type of object to search for like
-.Ic whois -i ' Ns Ar type Ar name Ns Ic '
+Вы можете указать тип объекта для поиска, который вам нравится
 where
 .Ar type
 can be
 .Nm domain , nameserver , registrar .
-The
+
 .Ar name
-can contain
+может содержать
 .Li *
-wildcards.
+подстановочные знаки.
 .It Fl I
-Use the Internet Assigned Numbers Authority
+Воспользуйтесь базой данных и полномочиями по присвоению номеров через Интернет
 .Pq Tn IANA
-database.
 .It Fl k
-Use the National Internet Development Agency of Korea's
+Воспользуйтесь базой данных и услугами Национального агентства по развитию Интернета Кореи.
 .Pq Tn KRNIC
-database.
-It contains network numbers and domain contact information
-for Korea.
+В нем содержатся номера сетей и контактная информация
+по домену в Корее.
 .It Fl l
-Use the Latin American and Caribbean IP address Regional Registry
+Используйте базу данных и региональный реестр IP-адресов Латинской Америки и Карибского бассейна
 .Pq Tn LACNIC
-database.
-It contains network numbers used in much of Latin America and the
-Caribbean.
+.
+В нем содержатся номера сетей, используемых на большей части территории Латинской Америки и Карибского бассейна.
 .It Fl m
-Use the Route Arbiter Database
+Используйте базу данных арбитра маршрута
 .Pq Tn RADB
-database.
-It contains route policy specifications for a large
-number of operators' networks.
+.
+В нем содержатся спецификации политики маршрутизации для сетей большого
+числа операторов.
 .It Fl p Ar port
-Connect to the whois server on
+Подключает к серверу whois на
 .Ar port .
-If this option is not specified,
+Если этот параметр не указан,
 .Nm
-defaults to port 43.
+по умолчанию ставится 43 порт.
 .It Fl P
-Use the PeeringDB database of AS numbers.
-It contains details about presence at internet peering points
-for many network operators.
+Использует базу данных номеров AS PeeringDB.
+Она содержит подробную информацию о присутствии в точках пиринга Интернета
+многих сетевых операторов.
 .It Fl Q
-Do a quick lookup;
+Производит быстрый поиск;
 .Nm
-will not attempt to follow referrals to other whois servers.
-This is the default if a server is explicitly specified
-using one of the other options or in an environment variable.
-See also the
+не будет пытаться отслеживать ссылки на другие whois-серверы.
+Это значение используется по умолчанию, если сервер явно указан
+с помощью одного из других параметров или в переменной среды.
+Также смотрите параметр
 .Fl R
-option.
+.
 .It Fl r
-Use the R\(aaeseaux IP Europ\(aaeens
+Использует R\(aaeseaux IP Europ\(aaeens
 .Pq Tn RIPE
-database.
-It contains network numbers and domain contact information
-for Europe.
-Get query syntax documentation using
+базу данных.
+Он содержит сетевые номера и контактную информацию
+по домену в Европе.
+Получает документацию по синтаксису запроса, используя
 .Ic whois -r help
 .It Fl R
-Do a recursive lookup;
+Выполняет рекурсивный поиск;
 .Nm
-will attempt to follow referrals to other whois servers.
-This is the default if no server is explicitly specified.
-See also the
+попытается перейти по ссылкам на другие whois-серверы.
+Это значение используется по умолчанию, если сервер явно не указан.
+См. также
 .Fl Q
-option.
+параметр.
 .It Fl S
-By default
+По умолчанию
 .Nm
-adjusts simple queries (without spaces) to produce more useful output
-from certain whois servers,
-and it suppresses some uninformative output.
-With the
+настраивает простые запросы (без пробелов) для получения более полезных выходных
+данных с определенных серверов whois,
+а также устраняет некоторые неинформативные выходные данные.
+С параметром
 .Fl S
-option,
+,
 .Nm
-sends the query and prints the output verbatim.
+отправляет запрос и печатает выходные данные дословно.
 .El
 .Pp
-The operands specified to
+Операнды, указанные для
 .Nm
-are treated independently and may be used
-as queries on different whois servers.
-.Sh ENVIRONMENT
+обрабатываются независимо и могут использоваться
+в качестве запросов на разных серверах whois.
+.Sh ОКРУЖАЮЩАЯ СРЕДА
 .Bl -tag -width WHOIS_SERVER
 .It Ev WHOIS_SERVER
-The primary default whois server.
-If this is unset,
+Основной сервер whois по умолчанию
+Если этот параметр не установлен,
 .Nm
-uses the
+испольует переменную среды
 .Ev RA_SERVER
-environment variable.
+.
 .It Ev RA_SERVER
-The secondary default whois server.
-If this is unset,
+Дополнительный сервер whois по умолчанию.
+Если этот параметр не установлен,
 .Nm
-will use
+тогда использует
 .Pa whois.iana.org .
 .El
-.Sh EXIT STATUS
+.Sh СТАТУС ВЫХОДА
 .Ex -std
-.Sh EXAMPLES
-To obtain contact information about an
-administrator located in the Russian
+.Sh ПРИМЕРЫ
+Чтобы получить контактную информацию об администраторе, расположенном в Российском домене
 .Tn TLD
-domain
+
 .Qq Li RU ,
-use the
+используйте параметр
 .Fl c
-option as shown in the following example, where
+как показано на примере ниже, где
 .Ar CONTACT-ID
-is substituted with the actual contact identifier.
+заменяется фактическим идентификатором контакта.
 .Pp
 .Dl Ic whois -c RU CONTACT-ID
 .Pp
-(Note: This example is specific to the
+(Примечание: Этот пример относится к
 .Tn TLD
 .Qq Li RU ,
-but other
+но другие
 .Tn TLDs
-can be queried by using a similar syntax.)
-.Pp
-The following example demonstrates how to query
-a whois server using a non-standard port, where
-.Dq Li query-data
-is the query to be sent to
+могут быть запрошены с использованием аналогичного синтаксиса.
+Следующий пример демонстрирует, как запросить сервер whois, используя нестандартный порт, где 
+.Dq Li запрос-данные
+это запрос, на который нужно отправить
 .Dq Li whois.example.com
-on port
+на порт
 .Dq Li rwhois
-(written numerically as 4321).
+(численно записывается как 4321).
 .Pp
 .Dl Ic whois -h whois.example.com -p rwhois query-data
 .Pp
-Some whois servers support complex queries
-with dash-letter options.
-You can use the
+Некоторые серверы whois поддерживают сложные запросы с параметрами, 
+состоящими из букв-тире.
+Вы можете использовать параметр
 .Fl -
-option to separate
+чтобы отделить
 .Nm
-command options from whois server query options.
-A query containing spaces must be quoted as one
-argument to the
+параметры команды whois от параметров запроса к серверу whois.
+Запрос, содержащий пробелы, должен быть заключен в кавычки в качестве одного
+из аргументов
 .Nm
-command.
-The following example asks the RIPE whois server
-to return a brief description of its
-.Dq Li domain
-object type:
+команды.
+В следующем примере сервер RIPE whois запрашивает
+краткое описание своего
+.Dq Li домена
+тип объекта:
 .Pp
 .Dl Ic whois -r -- '-t domain'
-.Sh STANDARDS
+.Sh СТАНДАРТЫ
 .Rs
 .%A K. Harrenstien
 .%A M. Stahl
 .%A E. Feinler
-.%D October 1985
+.%D Октябрь 1985
 .%R RFC 954
 .%T NICNAME/WHOIS
 .Re
 .Pp
 .Rs
 .%A L. Daigle
-.%D September 2004
+.%D Сентябрь 2004
 .%R RFC 3912
-.%T WHOIS Protocol Specification
+.%T WHOIS Спецификация протокола
 .Re
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Команда
 .Nm
-command appeared in
+появилаь
 .Bx 4.3 .
