@@ -23,14 +23,14 @@
 .\" reserved.
 .\" Copyright (c) 2017, Intel Corporation.
 .\"
-.Dd May 26, 2021
+.Dd Май 26, 2021
 .Dt ZTEST 1
 .Os
 .
-.Sh NAME
+.Sh ИМЯ
 .Nm ztest
-.Nd was written by the ZFS Developers as a ZFS unit test
-.Sh SYNOPSIS
+.Nd был написан разработчиками ZFS как модульный тест ZFS
+.Sh КРАТКОЕ ОПИСАНИЕ
 .Nm
 .Op Fl VEG
 .Op Fl v Ar vdevs
@@ -52,129 +52,127 @@
 .Op Fl T Ar time
 .Op Fl z Ar zil_failure_rate
 .
-.Sh DESCRIPTION
+.Sh ОПИСАНРИЕ
 .Nm
-was written by the ZFS Developers as a ZFS unit test.
-The tool was developed in tandem with the ZFS functionality and was
-executed nightly as one of the many regression test against the daily build.
-As features were added to ZFS, unit tests were also added to
+был написан разработчиками ZFS как модульный тест ZFS. Инструмент 
+был разработан в тандеме с функциональностью ZFS и выполнялся каждый вечер как один из многих регрессионных тестов по сравнению с ежедневной сборкой. По мере того, как 
+в ZFS добавлялись новые функции, модульные тесты также добавлялись в 
 .Nm .
-In addition, a separate test development team wrote and
-executed more functional and stress tests.
+Кроме того, отдельная команда разработчиков тестов написала и выполнила дополнительный функционал и стресс-тесты.
 .
 .Pp
-By default
+По умолчанию
 .Nm
-runs for ten minutes and uses block files
-(stored in
+выполняется в течение десяти минут и использует файлы блоков  (хранящихся в
 .Pa /tmp )
-to create pools rather than using physical disks.
-Block files afford
+для создания pools вместо использования физических дисков.
+Блоки файлов обеспечивают
 .Nm
-its flexibility to play around with
-zpool components without requiring large hardware configurations.
-However, storing the block files in
+гибкость работы с
+компонентами zpool, не требуя больших конфигураций оборудования.
+Однако сохранение блоков файлов в
 .Pa /tmp
-may not work for you if you
-have a small tmp directory.
+может не подойти для вас, если у вас
+небольшой каталог tmp.
 .
 .Pp
-By default is non-verbose.
-This is why entering the command above will result in
+По умолчанию не содержит подробных сведений.
+Вот почему ввод приведенной выше команды приведет к
 .Nm
-quietly executing for 5 minutes.
-The
+спокойно проводится в течение 5 минут
+Параметр
 .Fl V
-option can be used to increase the verbosity of the tool.
-Adding multiple
+может использоваться для увеличения детализации инструмента.
+Добавление нескольких параметров
 .Fl V
-options is allowed and the more you add the more chatty
+разрешено, и чем больше вы добавляете, тем более болтливым
 .Nm
-becomes.
+становится.
 .
 .Pp
-After the
+После того, как 
 .Nm
-run completes, you should notice many
+запуск завершится, вы должны заметить множество
 .Pa ztest.*
-files lying around.
-Once the run completes you can safely remove these files.
-Note that you shouldn't remove these files during a run.
-You can re-use these files in your next
+разбросанных файлов.
+После завершения запуска вы можете безопасно удалить эти файлы.
+Обратите внимание, что удалять эти файлы во время запуска не следует.
+Вы можете повторно использовать эти файлы в следующем
 .Nm
-run by using the
+запускается с помощью
 .Fl E
-option.
+параметра.
 .
-.Sh OPTIONS
+.Sh ПАРАМЕТРЫ
 .Bl -tag -width "-v v"
 .It Fl h , \&? , -help
-Print a help summary.
+Выносит сводку справки.
 .It Fl v , -vdevs Ns = (default: Sy 5 )
-Number of vdevs.
+Количество vdevs.
 .It Fl s , -vdev-size Ns = (default: Sy 64M )
-Size of each vdev.
+Размер каждого vdev.
 .It Fl a , -alignment-shift Ns = (default: Sy 9 ) No (use Sy 0 No for random )
-Alignment shift used in test.
+Сдвиг выравнивания, используемый в тесте.
 .It Fl m , -mirror-copies Ns = (default: Sy 2 )
-Number of mirror copies.
+ Количество зеркальных копий.
 .It Fl r , -raid-disks Ns = (default: Sy 4 No for raidz/ Ns Sy 16 No for draid )
-Number of raidz/draid disks.
+Количество дисков raidz/draid.
 .It Fl R , -raid-parity Ns = (default: Sy 1 )
 Raid parity (raidz & draid).
-.It Fl K , -raid-kind Ns = Ns Sy raidz Ns | Ns Sy draid Ns | Ns Sy random No (default : Sy random )
-The kind of RAID config to use.
-With
+.It Fl K , -raid-kind Ns = Ns Sy raidz Ns | Ns Sy draid Ns | Ns Sy random No (по умолчанию: выбирается случайно )
+Тип конфигурации RAID для использования.
+С
 .Sy random
-the kind alternates between raidz and draid.
+разновидности чередуются между raidz и draid.
 .It Fl D , -draid-data Ns = (default: Sy 4 )
-Number of data disks in a dRAID redundancy group.
+Количество дисков с данными в группе резервирования dRAID.
 .It Fl S , -draid-spares Ns = (default: Sy 1 )
-Number of dRAID distributed spare disks.
+Количество распределенных драйдом запасных дисков.
 .It Fl d , -datasets Ns = (default: Sy 7 )
-Number of datasets.
+Количество наборов данных.
 .It Fl t , -threads Ns = (default: Sy 23 )
-Number of threads.
+Количество потоков.
 .It Fl g , -gang-block-threshold Ns = (default: Sy 32K )
-Gang block threshold.
+Порог блокировки банды.
 .It Fl i , -init-count Ns = (default: Sy 1 )
-Number of pool initializations.
+Количество инициализаций пула.
 .It Fl k , -kill-percentage Ns = (default: Sy 70% )
-Kill percentage.
+Процент убитых.
 .It Fl p , -pool-name Ns = (default: Sy ztest )
-Pool name.
+Pool название.
 .It Fl f , -vdev-file-directory Ns = (default: Pa /tmp )
-File directory for vdev files.
+Файловый каталог для файлов vdev.
 .It Fl M , -multi-host
-Multi-host; simulate pool imported on remote host.
+Мультихост; имитация пула, импортированного на удаленный хост.
 .It Fl E , -use-existing-pool
-Use existing pool (use existing pool instead of creating new one).
+Используйте существующий пул (используйте существующий пул вместо создания нового).
 .It Fl T , -run-time Ns = (default: Sy 300 Ns s)
-Total test run time.
+Общее время выполнения теста.
 .It Fl P , -pass-time Ns = (default: Sy 60 Ns s)
-Time per pass.
+Время на один проход.
 .It Fl F , -freeze-loops Ns = (default: Sy 50 )
-Max loops in
+Максимальное количество циклов в
 .Fn spa_freeze .
 .It Fl B , -alt-ztest Ns =
-Path to alternate ("older")
+Путь к альтернативному ("более старому")
 .Nm ztest
-to drive, which will be used to initialise the pool, and, a stochastic half the
-time, to run the tests.
-The parallel
+для запуска, который будет использоваться для инициализации пула и, в половине
+случаев, для запуска тестов.
+Параллельный каталог
 .Pa lib
-directory is prepended to
+добавляется к
 .Ev LD_LIBRARY_PATH ;
 i.e. given
 .Fl B Pa ./chroots/lenny/usr/bin/ Ns Nm ,
 .Pa ./chroots/lenny/usr/lib
 will be loaded.
-.It Fl C , -vdev-class-state Ns = Ns Sy on Ns | Ns Sy off Ns | Ns Sy random No (default : Sy random  )
-The vdev allocation class state.
+.It Fl C , -vdev-class-state Ns = Ns Sy on Ns | Ns Sy off Ns | Ns Sy random No 
+будет загружен
+Состояние класса распределения vdev.
 .It Fl o , -option Ns = Ns Ar variable Ns = Ns Ar value
-Set global
-.Ar variable
-to an unsigned 32-bit integer
+Устанавливает глобальный
+.Ar переменный
+в 32-разрядное целое число без знака
 .Ar value
 (little-endian only).
 .It Fl G , -dump-debug
