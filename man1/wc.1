@@ -30,182 +30,168 @@
 .\"
 .\"     @(#)wc.1	8.2 (Berkeley) 4/19/94
 .\"
-.Dd April 11, 2020
+.Dd Апрель 11, 2020
 .Dt WC 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm wc
-.Nd word, line, character, and byte count
-.Sh SYNOPSIS
+.Nd количество слов, строк, символов и байтов
+.Sh КРАТКОЕ ОПИСАНИЕ
 .Nm
 .Op Fl -libxo
 .Op Fl Lclmw
 .Op Ar
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility displays the number of lines, words, and bytes contained in each
-input
-.Ar file ,
-or standard input (if no file is specified) to the standard output.
-A line is defined as a string of characters delimited by a
+отображает количество строк, слов и байтов, содержащихся в каждом входном
+.Ar файле ,
+или стандартный ввод (если файл не указан) в стандартный вывод.
+Строка определяется как строка символов, разделенная символом
+.Aq newline .
+Символы, находящиеся за пределами конечного символа
 .Aq newline
-character.
-Characters beyond the final
-.Aq newline
-character will not be included
-in the line count.
+считаться не будут.
 .Pp
-A word is defined as a string of characters delimited by white space
-characters.
-White space characters are the set of characters for which the
+Слово определяется как строка символов, разделенная пробелами.
+Пробела - это набор символов, для которых функция 
 .Xr iswspace 3
-function returns true.
-If more than one input file is specified, a line of cumulative counts
-for all the files is displayed on a separate line after the output for
-the last file.
+возвращает значение истина.
+Если указано более одного входного файла, отображается строка совокупного количества для всех файлов в отдельной строке после выходных 
+данных для последнего файла.
 .Pp
-The following options are available:
+Доступны следующие параметры:
 .Bl -tag -width indent
 .It Fl -libxo
-Generate output via
+Генерируйте выходные данные 
 .Xr libxo 3
-in a selection of different human and machine readable formats.
-See
+в выборку различных человекочитаемых и машиночитаемых форматах.
+См.
 .Xr xo_parse_args 3
-for details on command line arguments.
+для получения подробной информации об аргументах командной строки.
 .It Fl L
-Write the length of the line containing the most bytes (default) or characters
-(when
+Записывает длину строки, содержащей наибольшее количество байтов (по умолчанию) или символов (когда
 .Fl m
-is provided)
-to standard output.
-When more than one
-.Ar file
-argument is specified, the longest input line of
-.Em all
-files is reported as the value of the final
-.Dq total .
+указывается)
+в стандартный вывод.
+Когда указано более одного аргумента
+.Ar файла
+в качестве конечного значения указывается самая длинная строка из
+.Em всех
+файлов.
+.Dq итого .
 .It Fl c
-The number of bytes in each input file
-is written to the standard output.
-This will cancel out any prior usage of the
-.Fl m
-option.
+Количества байт в каждом входном файле
+записано на стандартный вывод данных.
+Это отменит любое предыдущее использование параметра
+.Fl m .
 .It Fl l
-The number of lines in each input file
-is written to the standard output.
+Количества байт в каждом входном файле
+записано на стандартный вывод данных.
 .It Fl m
-The number of characters in each input file is written to the standard output.
-If the current locale does not support multibyte characters, this
-is equivalent to the
+Число символов в каждом входном файле пишется стандартный вывод.
+Если текущая локаль не поддерживает мульти-байтовые символы, то это равносильно
 .Fl c
-option.
-This will cancel out any prior usage of the
-.Fl c
-option.
+параметру.
+Это отменяет любое предыдущее использование параметра
+.Fl c .
 .It Fl w
-The number of words in each input file
-is written to the standard output.
+Число слов в каждом входном файле пишется стандартный вывод
 .El
 .Pp
-When an option is specified,
+Когда параметр указан,
 .Nm
-only reports the information requested by that option.
-The order of output always takes the form of line, word,
-byte, and file name.
-The default action is equivalent to specifying the
+сообщает только информацию, запрошенную этим параметром. 
+Порядок вывода всегда принимает форму строки, слова, байта и имени файла. 
+Действие по умолчанию равносильно указанию параметров
 .Fl c , l
-and
-.Fl w
-options.
+и
+.Fl w .
 .Pp
-If no files are specified, the standard input is used and no
-file name is displayed.
-The prompt will accept input until receiving EOF, or
+Если файлы не указаны, используется стандартный ввод и 
+имя файла не отображается.
+Приглашение будет принимать ввод до получения EOF, или
 .Bq ^D
-in most environments.
+в большинстве случаев.
 .Pp
-If
+Если
 .Nm
-receives a
+получает
 .Dv SIGINFO
-(see the
-.Cm status
-argument for
+(см.
+.Cm аргумент 
+статус для
 .Xr stty 1 )
-signal, the interim data will be written
-to the standard error output in the same format
-as the standard completion message.
-.Sh ENVIRONMENT
-The
+сигнал, промежуточные данные будут записаны в стандартный вывод ошибки 
+в тот же формат, что и у стандартного 
+сообщения о завершении.
+.Sh EОКРУЖАЮЩАЯ СРЕДА
+
 .Ev LANG , LC_ALL
-and
+и
 .Ev LC_CTYPE
-environment variables affect the execution of
+влияют на выполнение 
 .Nm
-as described in
+как описано в
 .Xr environ 7 .
-.Sh EXIT STATUS
+.Sh СТАТУС ВЫХОДА
 .Ex -std
-.Sh EXAMPLES
-Count the number of characters, words and lines in each of the files
+.Sh ПРИМЕРЫ
+Подсчитайте количество символов, слов и строк в каждом из файлов
 .Pa report1
-and
+и
 .Pa report2
-as well as the totals for both:
+а также итоговые значения для обоих:
 .Pp
 .Dl "wc -mlw report1 report2"
 .Pp
-Find the longest line in a list of files:
+ Найдите самую длинную строку в списке файлов:
 .Pp
 .Dl "wc -L file1 file2 file3 | fgrep total"
-.Sh COMPATIBILITY
-Historically, the
+.Sh СОВМЕСТИМОСТЬ
+Исторически утилита
 .Nm
-utility was documented to define a word as a
+была задокументирована утилита для определения слова как
 .Do
-maximal string of
-characters delimited by <space>, <tab> or <newline> characters
+максимальная строка символов, 
+разделенная символами <пробел>, <tab> or <новая строка>
 .Dc .
-The implementation, however, did not handle non-printing characters
-correctly so that
+Реализация, однако, неправильно обрабатывала непечатаемые символы так, что
 .Dq Li "\ \ ^D^E\ \ "
-counted as 6 spaces, while
+считалось 6 пробелами, в то время как 
 .Dq Li foo^D^Ebar
-counted as 8 characters.
+считалось 8 символами.
 .Bx 4
-systems after
+Системы после
 .Bx 4.3
-modified the implementation to be consistent
-with the documentation.
-This implementation defines a
-.Dq word
-in terms of the
+привели в реализацию в соответствие с документацией.
+Эта реализация определяет
+.Dq слово
+с точки зрения функции
 .Xr iswspace 3
-function, as required by
+ как того требует
 .St -p1003.2 .
 .Pp
-The
+Параметр
 .Fl L
-option is a non-standard
+это нестандартное расширение
 .Fx
-extension, compatible with the
+совместимое с опцией
 .Fl L
-option of the GNU
+это параметр GNU
 .Nm
 utility.
-.Sh SEE ALSO
+.Sh СМОТРЕТЬ ТАКЖЕ
 .Xr iswspace 3 ,
 .Xr libxo 3 ,
 .Xr xo_parse_args 3
-.Sh STANDARDS
-The
+.Sh СТАНДАРТЫ
+Утилита
 .Nm
-utility conforms to
+соответствует стандарту
 .St -p1003.1-2001 .
-.Sh HISTORY
+.Sh ИСТОРИЯ
 A
 .Nm
-command appeared in
+команда появилась в
 .At v1 .
