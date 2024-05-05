@@ -27,48 +27,47 @@
 .\"
 .\"     @(#)wall.1	8.1 (Berkeley) 6/6/93
 .\"
-.Dd February 24, 2012
+.Dd Февраль 24, 2012
 .Dt WALL 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm wall
-.Nd write a message to users
-.Sh SYNOPSIS
+.Nd написать сообщение пользователям 
+.Sh КРАТКОЕ ОПИСАНИЕ
 .Nm
-.Op Fl g Ar group
-.Op Ar file
-.Sh DESCRIPTION
+.Op Fl g Ar группа
+.Op Ar файл
+.Sh ОПИСАНИЕ
 The
 .Nm
-utility displays the contents of
-.Ar file
-or, by default, its standard input, on the terminals of all
-currently logged in users.
+утилита отображает содержание
+.Ar файла
+или, по умолчанию, его стандартный ввод на терминалах всех пользователей в системе на данный момент.
 .Pp
-Only the super-user can write on the
-terminals of users who have chosen
-to deny messages or are using a program which
-automatically denies messages.
+Только правообладатель имеет право писать в 
+терминале других пользователей, которые решили 
+отклонить сообщения или используют программу, которая 
+автоматически отклоняет сообщения.
 .Bl -tag -width indent
 .It Fl g
-Send messages to users in this group.
-This option may be specified
-multiple times, and any user in any of the specified groups will
-receive the message.
+Отправляет сообщения пользователям в данной группе.
+Этот параметр может быть указан 
+множество раз, и любой пользователь из любой другой указанной 
+группы будет получать сообщение.
 .El
-.Sh SEE ALSO
+.Sh СМОТРЕТЬ ТАКЖЕ
 .Xr mesg 1 ,
 .Xr talk 1 ,
 .Xr write 1 ,
 .Xr shutdown 8
-.Sh HISTORY
+.Sh ИСТОРИЯ
 A
 .Nm
-command appeared in PWB UNIX.
-.Sh BUGS
-The sender's
+команда появилась в PWB UNIX.
+.Sh ОШИБКИ
+Установка параметра отправителя
 .Ev LC_CTYPE
-setting is used to determine which characters are safe to write to a
-terminal, not the receiver's (which
+используется для определения того, какие символы безопасно использовать 
+в терминале, но не на терминале получателя (который
 .Nm
-has no way of knowing).
+не имеет возможности узнать об этом).
