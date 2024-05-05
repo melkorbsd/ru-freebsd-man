@@ -28,68 +28,67 @@
 .\" (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 .\" THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 .\"
-.Dd September 3, 2015
+.Dd Сентябрь 3, 2015
 .Dt YPWHICH 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm ypwhich
-.Nd return hostname of NIS server of map master
-.Sh SYNOPSIS
+.Nd возвращает имя хоста NIS-сервера для основной карты 
+.Sh КРАТКОЕ ОПИСАНИЕ
 .Nm
-.Op Fl d Ar domain
+.Op Fl d Ar домен
 .Oo
 .Op Fl t
 .Fl m Oo Ar mname Oc | Ar host
 .Oc
 .Nm
 .Fl x
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility tells which
+собщает, какой из
 .Tn NIS
-server supplies
+сервер предоставляет
 .Tn NIS
-services to a client, or which is the master for a map.
-If invoked without arguments, it gives the
+услуги клиенту 
+или который является основным для карты.
+При вызове без аргументов он выдает
 .Tn NIS
-server for the local machine.
-If
+сервер для локальной машины.
+Если
 .Ar host
-is specified, that machine is queried to find out
-which
+указывает, что машина направляет запрос на выяснение того,
+какой из
 .Tn NIS
-server it is using.
+серверов используется.
 .Pp
-The options are as follows:
+Возможны следующие параметры:
 .Bl -tag -width indent
-.It Fl d Ar domain
-Specify a domain other than the default domain.
+.It Fl d Ar домен
+Указывает домен, отличный от домена по умолчанию.
 .It Fl t
-Inhibit translation of map nicknames
-to their corresponding map names.
+Запрещает перевод псевдонимов карт 
+в соответствующие им названия карт 
 .It Fl m Op Ar mname
-Find the master
+Находит основной
 .Tn NIS
-server for the named map.
+сервер для именованной карты.
 No
 .Ar host
-may be specified with the
-.Fl m
-option.
-The
+может быть указан с параметром
+.Fl m .
+Аргументом
 .Ar mname
-argument
-can be a map name or nickname.
-If
+может быть название или псевдоним карты.
+Если
 .Ar mname
-is omitted,
+опущено, то
 .Nm
-will produce a list of available maps.
+отобразит список доступных карт.
 .It Fl x
-Display the map nickname table.
+Отображает таблицу псевдонимов карт.
 .El
-.Sh SEE ALSO
+.Sh СМОТРЕТЬ ТАКЖЕ
 .Xr domainname 1 ,
 .Xr ypcat 1 ,
 .Xr ypmatch 1 ,
@@ -97,5 +96,5 @@ Display the map nickname table.
 .Xr ypbind 8 ,
 .Xr yppoll 8 ,
 .Xr ypset 8
-.Sh AUTHORS
-.An Theo De Raadt
+.Sh АВТОРЫ
+.An Тео де Раадт 
