@@ -27,89 +27,82 @@
 .\"
 .\"     @(#)w.1	8.1 (Berkeley) 6/6/93
 .\"
-.Dd August 24, 2020
+.Dd Август 24, 2020
 .Dt W 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm w
-.Nd "display who is logged in and what they are doing"
-.Sh SYNOPSIS
+.Nd "отображение тех, кто вошел в систему и что они делают"
+.Sh КРАТКОЕ ОПИСАНИЕ
 .Nm
 .Op Fl -libxo
 .Op Fl dhin
 .Op Fl M Ar core
 .Op Fl N Ar system
 .Op Ar user ...
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility prints a summary of the current activity on the system,
-including what each user is doing.
-The first line displays the current time of day, how long the system has
-been running, the number of users logged into the system, and the load
-averages.
-The load average numbers give the number of jobs in the run queue averaged
-over 1, 5 and 15 minutes.
+выводит сводную информацию о текущей активности в системе,
+включая то, что делает каждый пользователь.
+В первой строке отображается текущее время суток, продолжительность работы системы, количество пользователей, вошедших в систему, и средняя загрузка.
+Средние значения загрузки показывают количество заданий в очереди на выполнение, усредненное
+за 1, 5 и 15 минут.
 .Pp
-The fields output are the user's login name, the name of the terminal the
-user is on, the host from which the user is logged in, the time the user
-logged on, the time since the user last typed anything,
-and the name and arguments of the current process.
+Выводимыми полями являются имя пользователя для входа в систему, название терминала, на котором находится пользователь, хост, с которого пользователь вошел в систему, время входа пользователя в систему, время с момента последнего ввода пользователем чего-либо, а также имя и аргументы текущего процесса.
 .Pp
-The options are as follows:
+Возможны следующие параметры:
 .Bl -tag -width indent
 .It Fl -libxo
-Generate output via
+Генерирует вывод через
 .Xr libxo 3
-in a selection of different human and machine readable formats.
-See
+в различных форматах, удобочитаемых человеком и машиной.
+См.
 .Xr xo_parse_args 3
-for details on command line arguments.
+для получения подробной информации об аргументах командной строки.
 .It Fl d
-dumps out the entire process list on a per controlling
-tty basis, instead of just the top level process.
+выводит весь список процессов для каждого управляющего
+параметра, а не только для процесса верхнего уровня.
 .It Fl h
-Suppress the heading.
+Скрывает загголовок
 .It Fl i
-Output is sorted by idle time.
+Выходные данные сортируются по времени простоя.
 .It Fl M
-Extract values associated with the name list from the specified
-core instead of the default
+Извлекает значения, связанные со списком имен, из указанного ядра вместо значений по умолчанию
 .Pa /dev/kmem .
 .It Fl N
-Extract the name list from the specified system instead of the
-default
+Извлекает список имен из указанной системы вместо 
+файла по умолчанию 
 .Pa /boot/kernel/kernel .
 .It Fl n
-Do not attempt to resolve network addresses (normally
+Не пытается определить сетевые адреса (обычно
 .Nm
-interprets addresses and attempts to display them as names).
-When
+интерпретирует адреса и пытается отобразить их как имена).
+Когда
 .Fl n
-is specified more than once, hostnames stored in utmp are attempted to
-resolve to display them as network addresses.
+указывается более одного раза, имена хостов, сохраненные в utmp, предпринимается попытка разрешить отображение их в качестве сетевых адресов.
 .El
 .Pp
-If one or more
-.Ar user
-names are specified, the output is restricted to those users.
-.Sh FILES
+Если один или несколько
+.Ar пользователь
+указаны имена, выходные данные доступны только этим пользователям.
+.Sh ФАЙЛЫ
 .Bl -tag -width ".Pa /var/run/utx.active" -compact
 .It Pa /var/run/utx.active
-list of users on the system
+список пользователей в системе
 .El
-.Sh EXAMPLES
-Show global activity of the system:
+.Sh ПРИМЕРЫ
+Как показать глобальную активность системы:
 .Bd -literal -offset indent
 $ w
- 8:05PM  up 35 mins, 3 users, load averages: 0.09, 0.35, 0.27
+ 8:05PM  up 35 минут, 3 пользователя,  средняя нагрузка: 0.09, 0.35, 0.27
 USER       TTY      FROM            LOGIN@  IDLE WHAT
 fernape    v0       -               7:30PM     - tmux: client (/tmp/tmux-1001/default) (tmux)
 root       v1       -               8:03PM     1 -bash (bash)
 fernape    pts/0    tmux(1391).%0   8:04PM     - w
 .Ed
 .Pp
-Show the entire process list per tty:
+Как показать весь список процессов для каждого tty:
 .Bd -literal -offset indent
 $ w -d
  8:12PM  up 42 mins, 3 users, load averages: 0.01, 0.11, 0.17
@@ -126,65 +119,61 @@ root       v1       -               8:08PM     3 -bash (bash)
 fernape    pts/0    tmux(1509).%0   8:11PM     - w -d
 .Ed
 .Pp
-Same as above but only for the root user and omitting the heading:
+То же, что и выше, но только для пользователя root и без заголовка:
 .Bd -literal -offset indent
 $ w -d -h root
 		1183      login [pam] (login)
 		1204      -bash (bash)
 root       v1       -       7:15PM     - -bash (bash)
 .Ed
-.Sh COMPATIBILITY
-The
+.Sh СОВМЕСТИМОСТЬ
+
 .Fl f ,
 .Fl l ,
 .Fl s ,
-and
+и
 .Fl w
-flags are no longer supported.
-.Sh SEE ALSO
+флаги больше не поддерживаются
+.Sh СМОТРЕТЬ ТАКЖЕ
 .Xr finger 1 ,
 .Xr ps 1 ,
 .Xr uptime 1 ,
 .Xr who 1 ,
 .Xr libxo 3 ,
 .Xr xo_parse_args 3
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Команда
 .Nm
-command appeared in
+появилась в
 .Bx 3.0 .
-.Sh BUGS
-The notion of the
-.Dq current process
-is muddy.
-The current algorithm is
+.Sh ОШИБКИ
+Понятие 
+.Dq о текущем процессе
+довольно туманное.
+Текущий алгоритм заключается в том, что 
 .Do
-the highest numbered process on the terminal
-that is not ignoring interrupts, or, if there is none, the highest numbered
-process on the terminal
+процесс с самым высоким номером на терминале, который не игнорирует прерывания, или, если таковых нет, процесс с самым высоким номером 
+на терминале
 .Dc .
-This fails, for example, in critical sections of programs like the shell
-and editor, or when faulty programs running in the background fork and fail
-to ignore interrupts.
-(In cases where no process can be found,
+Это приводит к сбою, например, в критических разделах таких программ, как командная оболочка и редактор, или когда неисправные программы, работающие в фоновом режиме, разветвляются и не могут игнорировать прерывания.
+(В тех случаях, когда процесс не может быть найден,
 .Nm
-prints
+печатает
 .Ql \- . )
 .Pp
-The CPU time is only an estimate, in particular, if someone leaves a background
-process running after logging out, the person currently on that terminal is
-.Dq charged
-with the time.
+Процессорное время является лишь приблизительным, в частности, если кто-то оставляет
+запущенный фоновый процесс после выхода из системы, пользователь, находящийся в данный момент на этом терминале, 
+.Dq загружен 
+временем.
 .Pp
-Background processes are not shown, even though they account for
-much of the load on the system.
+Фоновые процессы не отображаются, хотя на них приходится
+большая часть нагрузки на систему.
 .Pp
-Sometimes processes, typically those in the background, are printed with
-null or garbaged arguments.
-In these cases, the name of the command is printed in parentheses.
+Иногда процессы, обычно выполняемые в фоновом режиме, выводятся с нулевыми аргументами или без них.
+В таких случаях название команды выводится в круглых скобках.
 .Pp
-The
+Утилита
 .Nm
-utility does not know about the new conventions for detection of background
-jobs.
-It will sometimes find a background job instead of the right one.
+не знает о новых соглашениях по обнаружению фоновых
+заданий.
+Иногда он находит фоновую работу вместо нужной.
