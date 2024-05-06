@@ -187,9 +187,9 @@
 .Ar key
 is an
 .Xr mdoc 7
-macro to query and
+макрокоманда для запроса и
 .Ar val
-is its value.
+это его значение.
 См.
 .Sx Macro Keys
 для получения списка доступных ключей.
@@ -244,269 +244,271 @@ is its value.
 .Pp
 Названия и описание:
 .Bl -column "xLix" description -offset indent -compact
-.It Li \&Nm Ta manual name
-.It Li \&Nd Ta one-line manual description
-.It Li arch Ta machine architecture (case-insensitive)
-.It Li sec  Ta manual section number
+.It Li \&Nm Ta ручное название
+.It Li \&Nd Ta описание инструкций в одну строку
+.It Li arch Ta архитектура машины (без учета регистра)
+.It Li sec  Ta номер раздела руководства
 .El
 .Pp
-Sections and cross references:
+Разделы и перекрестные ссылки:
 .Bl -column "xLix" description -offset indent -compact
-.It Li \&Sh Ta section header (excluding standard sections)
-.It Li \&Ss Ta subsection header
-.It Li \&Xr Ta cross reference to another manual page
-.It Li \&Rs Ta bibliographic reference
+.It Li \&Sh Ta заголовок раздела (за исключением стандартных разделов)
+.It Li \&Ss Ta заголовок подраздела
+.It Li \&Xr Ta перекрестная ссылка на другую страницу руководства
+.It Li \&Rs Ta библиографическая ссылка
 .El
 .Pp
-Semantic markup for command line utilities:
+Семантическая разметка для утилит командной строки:
 .Bl -column "xLix" description -offset indent -compact
-.It Li \&Fl Ta command line options (flags)
-.It Li \&Cm Ta command modifier
-.It Li \&Ar Ta command argument
-.It Li \&Ic Ta internal or interactive command
-.It Li \&Ev Ta environmental variable
-.It Li \&Pa Ta file system path
+.It Li \&Fl Ta параметры командной строки (флаги)
+.It Li \&Cm Ta vодификатор команды
+.It Li \&Ar Ta аргумент команды
+.It Li \&Ic Ta внутренняя или интерактивная команда
+.It Li \&Ev Ta переменные среды
+.It Li \&Pa Ta путь к файловой системе
 .El
 .Pp
-Semantic markup for function libraries:
+Семантическая разметка для библиотек функций:
 .Bl -column "xLix" description -offset indent -compact
-.It Li \&Lb Ta function library name
-.It Li \&In Ta include file
-.It Li \&Ft Ta function return type
-.It Li \&Fn Ta function name
-.It Li \&Fa Ta function argument type and name
-.It Li \&Vt Ta variable type
-.It Li \&Va Ta variable name
-.It Li \&Dv Ta defined variable or preprocessor constant
-.It Li \&Er Ta error constant
-.It Li \&Ev Ta environmental variable
+.It Li \&Lb Ta имя библиотеки функций
+.It Li \&In Ta включаемый файл 
+.It Li \&Ft Ta тип возвращаемого значения функции
+.It Li \&Fn Ta имя функции
+.It Li \&Fa Ta тип и имя аргумента функции
+.It Li \&Vt Ta тип переменной
+.It Li \&Va Ta имя переменной
+.It Li \&Dv Ta определенная переменная или константа препроцессора
+.It Li \&Er Ta константа ошибки
+.It Li \&Ev Ta переменная среды
 .El
 .Pp
-Various semantic markup:
+Различная семантическая разметка:
 .Bl -column "xLix" description -offset indent -compact
-.It Li \&An Ta author name
-.It Li \&Lk Ta hyperlink
-.It Li \&Mt Ta Do mailto Dc hyperlink
-.It Li \&Cd Ta kernel configuration declaration
-.It Li \&Ms Ta mathematical symbol
-.It Li \&Tn Ta tradename
+.It Li \&An Ta имя автора
+.It Li \&Lk Ta гиперссылка
+.It Li \&Mt Ta Do mailto Dc гиперссылка
+.It Li \&Cd Ta заявление о конфигурации ядра
+.It Li \&Ms Ta математический символ
+.It Li \&Tn Ta торговое наименование
 .El
 .Pp
-Physical markup:
-.Bl -column "xLix" description -offset indent -compact
-.It Li \&Em Ta italic font or underline
-.It Li \&Sy Ta boldface font
-.It Li \&Li Ta typewriter font
+Физическая разметка:
+.Bl -column "xLix" описание -offset indent -compact
+.It Li \&Em Ta курсив или подчеркивание
+.It Li \&Sy Ta жирным шрифтом
+.It Li \&Li Ta шрифт для пишущей машинки
 .El
 .Pp
-Text production:
-.Bl -column "xLix" description -offset indent -compact
-.It Li \&St Ta reference to a standards document
-.It Li \&At Ta At No version reference
-.It Li \&Bx Ta Bx No version reference
-.It Li \&Bsx Ta Bsx No version reference
-.It Li \&Nx Ta Nx No version reference
-.It Li \&Fx Ta Fx No version reference
-.It Li \&Ox Ta Ox No version reference
-.It Li \&Dx Ta Dx No version reference
+Построение текста:
+.Bl -column "xLix" описание -offset indent -compact
+.It Li \&St Ta ссылка на документ по стандартам
+.It Li \&At Ta At Ссылка на документ отсуствует
+.It Li \&Bx Ta Bx Ссылка на документ отсуствует
+.It Li \&Bsx Ta Bsx Ссылка на документ отсуствует
+.It Li \&Nx Ta Nx Ссылка на документ отсуствует
+.It Li \&Fx Ta Fx Ссылка на документ отсуствует
+.It Li \&Ox Ta Ox Ссылка на документ отсуствует
+.It Li \&Dx Ta Dx Ссылка на документ отсуствует
 .El
 .Pp
-In general, macro keys are supposed to yield complete results without
-expecting the user to consider actual macro usage.
-For example, results include:
+Как правило, ключи макросов, предположительно, дают полные результаты, не
+требуя от пользователя учета фактического использования макроса.
+Например, результаты включают:
 .Pp
 .Bl -tag -width 3n -offset 3n -compact
 .It Li \&Fa
-function arguments appearing on
+аргументы функции, появляющиеся на строках
 .Ic \&Fn
-lines
+
 .It Li \&Fn
-function names marked up with
+имена функций помечены символом с макросами
 .Ic \&Fo
-macros
+
 .It Li \&In
-include file names marked up with
+включает имена файлов, помеченные макросами
 .Ic \&Fd
-macros
+
 .It Li \&Vt
-types appearing as function return types and
+типы, отображаемые как возвращаемые функцией, и
 .It \&
-types appearing in function arguments in the SYNOPSIS
+типы, встречающиеся в аргументах функции в кратком описании
 .El
-.Sh ENVIRONMENT
-.Bl -tag -width MANPAGER
-.It Ev MANPAGER
-Any non-empty value of the environment variable
-.Ev MANPAGER
-is used instead of the standard pagination program,
+.Sh ОКРУЖАЮЩАЯ СРЕДА
+.Bl -tag -width ПЕЙДЖЕР УПРАВЛЕНИЯ
+.It Ev ПЕЙДЖЕР УПРАВЛЕНИЯ
+Любое непустое значение переменной окружения
+.Ev ПЕЙДЖЕР УПРАВЛЕНИЯ
+используется вместо стандартной программы разбивки на страницы,
 .Xr less 1 ;
-see
+см.
 .Xr man 1
-for details.
-Only used if
+для получения более подробной информации.
+Используется только если
 .Fl a
-or
+или
 .Fl l
-is specified.
+указаны.
 .It Ev MANPATH
-A colon-separated list of directories to search for manual pages; see
+Список каталогов, разделенных двоеточием, для поиска справочных страниц; см.
 .Xr man 1
-for details.
-Overridden by
+для получения более подробной информации.
+Переопределено с помощью
 .Fl M ,
-ignored if
+игнорируется, если
 .Fl l
-is specified.
-.It Ev PAGER
-Specifies the pagination program to use when
+указан.
+.It Ev ПЕЙДЖЕР
+Определяет программу разбивки, которая используется, когда
 .Ev MANPAGER
-is not defined.
-If neither PAGER nor MANPAGER is defined,
+не определен.
+Если ни ПЕЙДЖЕР, ни MANPAGER не определены, то используется
 .Xr less 1
-is used.
-Only used if
-.Fl a
-or
+.
+не определен.
+Используется только если
+.Fl a 
+или
 .Fl l
-is specified.
+указан.
 .El
-.Sh FILES
+.Sh ФАЙЛЫ
 .Bl -tag -width "/etc/man.conf" -compact
 .It Pa mandoc.db
-name of the
+имя базы данных ключевых слов
 .Xr makewhatis 8
-keyword database
+
 .It Pa /etc/man.conf
-default
+по умолчанию
 .Xr man 1
-configuration file
+файл конфигурации
 .El
-.Sh EXIT STATUS
+.Sh СТАТУС ВЫХОДА
 .Ex -std
-.Sh EXAMPLES
-Search for
+.Sh ПРИМЕРЫ
+Ищет 
 .Qq .cf
-as a substring of manual names and descriptions:
+в качестве подстроки в названиях и описаниях руководств
 .Pp
 .Dl $ apropos =.cf
 .Pp
-Include matches for
+Включает совпадения для
 .Qq .cnf
-and
+и
 .Qq .conf
-as well:
+таким же образом:
 .Pp
 .Dl $ apropos =.cf =.cnf =.conf
 .Pp
-Search in names and descriptions using a case-sensitive regular expression:
+Ищщет по именам и описаниям с использованием регулярного выражения, учитывающего регистр:
 .Pp
 .Dl $ apropos \(aq\(tiset.?[ug]id\(aq
 .Pp
-Search for all manual pages in a given section:
+Ищет по всем страницам руководства в заданном разделе:
 .Pp
 .Dl $ apropos \-s 9 \&.
 .Pp
-Search for manuals in the library section mentioning both the
+Ищет руководства в разделе библиотеки, в которых они упоминаются как
 .Qq optind
-and the
+и как
 .Qq optarg
-variables:
+переменные:
 .Pp
 .Dl $ apropos \-s 3 Va=optind \-a Va=optarg
 .Pp
-Do exactly the same as calling
+Выполняет команду точно так же, как при вызове
 .Nm whatis
-with the argument
+с аргументом
 .Qq ssh :
 .Pp
 .Dl $ apropos \-\- \-i \(aqNm\(ti[[:<:]]ssh[[:>:]]\(aq
 .Pp
-The following two invocations are equivalent:
+Следующие два вызова равносильны:
 .Pp
-.D1 Li $ apropos -S Ar arch Li -s Ar section expression
+.D1 Li $ apropos -S Ar arch Li -s Ar выражение раздела
 .Bd -ragged -offset indent
-.Li $ apropos \e( Ar expression Li \e)
+.Li $ apropos \e( Ar выражение Li \e)
 .Li -a arch\(ti^( Ns Ar arch Ns Li |any)$
-.Li -a sec\(ti^ Ns Ar section Ns Li $
+.Li -a sec\(ti^ Ns Ar раздел Ns Li $
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРЕТЬ ТАКЖЕ
 .Xr man 1 ,
 .Xr re_format 7 ,
 .Xr makewhatis 8
-.Sh STANDARDS
-The
+.Sh СТАНДАРТЫ
+Утилита
 .Nm
-utility is compliant with the
+совместима с
 .St -p1003.1-2008
-specification of
+спецификацией
 .Xr man 1
 .Fl k .
 .Pp
-All options, the
+Все параметры, команда
 .Nm whatis
-command, support for logical operators, macro keys,
-substring matching, sorting of results, the environment variables
+поддержка логических операторов, макроключей,
+сопоставления подстрок, сортировки результатов, переменных окружения
 .Ev MANPAGER
-and
+и
 .Ev MANPATH ,
-the database format, and the configuration file
-are extensions to that specification.
-.Sh HISTORY
-Part of the functionality of
+формат базы данных и файл конфигурации
+являются расширениями этой спецификации.
+.Sh ИСТОРИЯ
+Часть функционала
 .Nm whatis
-was already provided by the former
+уже был предоставлен с помощью прежнего
+утилита
 .Nm manwhere
-utility in
+в
 .Bx 1 .
-The
+Утилиты
 .Nm
-and
+и
 .Nm whatis
-utilities first appeared in
+впервые появились в
 .Bx 2 .
-They were rewritten from scratch for
+Они были полностью переписаны в
 .Ox 5.6 .
 .Pp
-The
+Параметр
 .Fl M
-option and the
+и переменная
 .Ev MANPATH
-variable first appeared in
+впервые появилась в
 .Bx 4.3 ;
 .Fl m
-in
+в
 .Bx 4.3 Reno ;
 .Fl C
-in
+в
 .Bx 4.4 Lite1 ;
-and
+и
 .Fl S
-and
+и
 .Fl s
-in
+в
 .Ox 4.5
-for
+для
 .Nm
-and in
+и в
 .Ox 5.6
-for
+для
 .Nm whatis .
-The options
+Параметры
 .Fl acfhIKklOTWw
-appeared in
+появились в
 .Ox 5.7 .
-.Sh AUTHORS
+.Sh АВТОРЫ
 .An -nosplit
-.An Bill Joy
-wrote
+.An Билл Джой
+написал
 .Nm manwhere
-in 1977 and the original
+в 1977 году и в первоисточнике
 .Bx
 .Nm
-and
+и
 .Nm whatis
-in February 1979.
-The current version was written by
-.An Kristaps Dzonsons Aq Mt kristaps@bsd.lv
-and
-.An Ingo Schwarze Aq Mt schwarze@openbsd.org .
+в Феврале 1979 годп.
+Текущая версия была написана
+.An Кристапсом Дзонсонсом Aq Mt kristaps@bsd.lv
+и
+.An Инго Шварце Aq Mt schwarze@openbsd.org .
