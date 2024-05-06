@@ -206,43 +206,43 @@ is its value.
 Не влияет на условия подстроки.
 .El
 .Pp
-Results are sorted first according to the section number in ascending
-numerical order, then by the page name in ascending
+Результаты сортируются сначала по номеру раздела в
+порядке возрастания, затем по названию страницы в порядке возрастания
 .Xr ascii 7
-alphabetical order, case-insensitive.
+в алфавитном порядке, без учета регистра.
 .Pp
-Each output line is formatted as
+Каждая выходная строка форматируется следующим образом
 .Pp
 .D1 name[, name...](sec) \- description
 .Pp
-Where
-.Dq name
-is the manual's name,
-.Dq sec
-is the manual section, and
-.Dq description
-is the manual's short description.
-If an architecture is specified for the manual, it is displayed as
+Где
+.Dq имя
+является названием руководства,
+.Dq сектор
+является разделом руководства, и
+.Dq описание
+это краткое описание руководства.
+Если для руководства указана архитектура, она отображается в виде
 .Pp
 .D1 name(sec/arch) \- description
 .Pp
-Resulting manuals may be accessed as
+К полученным руководствам можно получить доступ как
 .Pp
 .Dl $ man \-s sec name
 .Pp
-If an architecture is specified in the output, use
+Если в выходных данных указана архитектура, используется
 .Pp
 .Dl $ man \-s sec \-S arch name
 .Ss Macro Keys
-Queries evaluate over a subset of
+Запросы обрабатываются по подмножеству
 .Xr mdoc 7
-macros indexed by
+макроэлементы, индексируемые
 .Xr makewhatis 8 .
-In addition to the macro keys listed below, the special key
+В дополнение к перечисленным ниже макрокомандам, специальная клавиша
 .Cm any
-may be used to match any available macro key.
+может использоваться, чтобы сопоставить с любым доступным макроключем.
 .Pp
-Names and description:
+Названия и описание:
 .Bl -column "xLix" description -offset indent -compact
 .It Li \&Nm Ta manual name
 .It Li \&Nd Ta one-line manual description
