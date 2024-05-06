@@ -241,87 +241,85 @@ Call
 .Fx
 в версии
 .Nm .
-.It Fl R Ar replacements
-Specify the maximum number of arguments that
+.It Fl R Ar замены
+Указывает максимальное количество аргументов, которые
 .Fl I
-will do replacement in.
-If
-.Ar replacements
-is negative, the number of arguments in which to replace is unbounded.
+сделают замену.
+Если
+.Ar замены
+является отрицательным, количество аргументов, в которых требуется замена, не ограничено.
 .It Fl S Ar replsize
-Specify the amount of space (in bytes) that
+Указывает объем пространства (в байтах), который
 .Fl I
-can use for replacements.
-The default for
+может быть использован для замены.
+Значением по умолчанию для
 .Ar replsize
-is 255.
-.It Fl s Ar size , Fl -max-chars= Ns Ar size
-Set the maximum number of bytes for the command line length provided to
-.Ar utility .
-The sum of the length of the utility name, the arguments passed to
-.Ar utility
-(including
+является 255.
+.It Fl s Ar размер , Fl -max-chars= Ns Ar размер
+Устанавливает максимальное количество байт для длины командной строки, указанной в
+.Ar утилите .
+Итоговое значение длины имени утилиты, аргументов, переданы в
+.Ar утилиту
+(в том числе и
 .Dv NULL
-terminators) and the current environment will be less than or equal to
-this number.
-The current default value for
-.Ar size
-is
+терминалы) и текущая среда окажется меньше или равна
+этому значению.
+Текущим значением по умолчанию для
+.Ar размера
+является
 .Dv ARG_MAX
 - 4096.
 .It Fl t , Fl -verbose
-Echo the command to be executed to standard error immediately before it
-is executed.
-.It Fl x , Fl -exit
-Force
+Выводит команду, которая должна быть выполнена, на стандартную ошибку непосредственно перед ее выполнением.
+.It Fl x , Fl -выход
+Принудительно
 .Nm
-to terminate immediately if a command line containing
-.Ar number
-arguments will not fit in the specified (or default) command line length.
+завершает работу немедленно, если командная строка, содержащая
+.Ar число
+аргументов не будет вписываться в указанную (или установленную по умолчанию) длину командной строки.
 .El
 .Pp
-If
-.Ar utility
-is omitted,
+Если
+.Ar утилита
+опущена, тто используется
 .Xr echo 1
-is used.
+.
 .Pp
-Undefined behavior may occur if
-.Ar utility
-reads from the standard input.
+Неопределенное поведение может возникнуть, если
+.Ar утилита
+считывается из стандартного ввода.
 .Pp
-If a command line cannot be assembled, or
-cannot be invoked, or if an invocation of
-.Ar utility
-is terminated by a signal,
-or an invocation of
-.Ar utility
-exits with a value of 255, the
+Если командная строка не может быть собрана или вызвана, или если вызов
+.Ar утилиты
+приостанавливается сигналом,
+или вызовом 
+.Ar утилиты ,
+то работа завершается при значении 255,
 .Nm
-utility stops processing input and exits after all invocations of
-.Ar utility
-finish processing.
-.Sh EXIT STATUS
-The
+утилита прекращает обработку входных данных и завершает работу после того, как все вызовы
+.Ar утилиты
+заканчивают обработку.
+.Sh СТАТУС ВЫХОДА
+Утилита
 .Nm
-utility exits with a value of 0 if no error occurs.
-If
-.Ar utility
-cannot be found,
+завершает работу со значением 0, если не возникает никаких ошибок.
+Если
+.Ar утилита
+не может быть обнаружена,
 .Nm
-exits with a value of 127, otherwise if
-.Ar utility
-cannot be executed,
+завершает работу со значением 127, в противном случае, если
+.Ar утилита
+не может быть выполнена,
 .Nm
-exits with a value of 126.
-If any other error occurs,
+завершает работу со значением 126.
+Если возникают какие-либо другие ошибки,
 .Nm
-exits with a value of 1.
-.Sh EXAMPLES
-Create a 3x3 matrix with numbers from 1 to 9.
-Every
+завершает работу со значением 1.
+.Sh ПРИМЕРЫ
+Создание матрицы 3x3 с числами от 1 до 9.
+Каждый
 .Xr echo 1
-instance receives three lines as arguments:
+экземпляр получает в качестве аргументов три строки:
 .Bd -literal -offset indent
 $ seq 1 9 | xargs -L3 echo
 1 2 3
@@ -329,7 +327,7 @@ $ seq 1 9 | xargs -L3 echo
 7 8 9
 .Ed
 .Pp
-Duplicate every line from standard input:
+Дублирует каждую строку из стандартного ввода:
 .Bd -literal -offset indent
 $ echo -e "one\\ntwo\\nthree" | xargs -I % echo % %
 one one
@@ -337,47 +335,47 @@ two two
 three three
 .Ed
 .Pp
-Execute at most 2 concurrent instances of
+Выполняет одновременно не более двух экземпляров
 .Xr find 1
-every one of them using one of the directories from the standard input:
+каждый из которых использует один из каталогов стандартного ввода:
 .Bd -literal -offset indent
-echo -e "/usr/ports\\n/etc\\n/usr/local" | xargs -J % -P2 -n1 find % -name file
+echo -e "/usr/ports\\n/etc\\n/usr/local" | xargs -J % -P2 -n1 find % -имя файла
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРЕТЬ ТАКЖЕ
 .Xr echo 1 ,
 .Xr find 1 ,
 .Xr execvp 3
-.Sh STANDARDS
-The
+.Sh СТАНДАРТЫ
+Утилита
 .Nm
-utility is expected to be
+должна соответствовать 
 .St -p1003.2
-compliant.
-The
+стандарту.
+Параметры
 .Fl J , o , P , R
-and
+и
 .Fl S
-options are non-standard
+являются нестандартными
 .Fx
-extensions which may not be available on other operating systems.
-.Sh HISTORY
-The
+расширениями, которые могут быть недоступны в других операционных системах.
+.Sh ИСТОРИЯ
+Утилита
 .Nm
-utility appeared in PWB UNIX.
-.Sh BUGS
-If
-.Ar utility
-attempts to invoke another command such that the number of arguments or the
-size of the environment is increased, it risks
+появилась в PWB UNIX.
+.Sh ОШИБКИ
+Если
+.Ar утилита
+попытается вызвать другую команду таким образом, чтобы увеличить количество аргументов или
+размер среды, это может привести к риску
 .Xr execvp 3
-failing with
+потерпеть неудачу с
 .Er E2BIG .
 .Pp
-The
+Утилита
 .Nm
-utility does not take multibyte characters into account when performing
-string comparisons for the
+не учитывает многобайтовые символы при выполнении
+сравнения строк для параметров
 .Fl I
-and
+и
 .Fl J
-options, which may lead to incorrect results in some locales.
+что может привести к неверным результатам в некоторых задействованных местах.
