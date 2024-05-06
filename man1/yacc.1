@@ -27,10 +27,10 @@
 .ie n  .IP \(bu 4
 .el    .IP \(bu 2
 ..
-.TH YACC 1 "Ноябрь 6, 2022" "Berkeley Yacc" "User Commands"
-.SH NAME
+.TH YACC 1 "Ноябрь 6, 2022" "Berkeley Yacc" "Пользовательские Команды"
+.SH ИМЯ
 \*N \- an LALR(1) parser generator
-.SH SYNOPSIS
+.SH КРАТКОЕ ОПИСАНИЕ
 .B \*n [ \-BdghilLPrtvVy ] [ \-b
 .I file_prefix
 .B ] [ \-H
@@ -41,282 +41,274 @@
 .I symbol_prefix
 .B ]
 .I filename
-.SH DESCRIPTION
+.SH ОПИСАНИЕ
 .B \*N
-reads the grammar specification in the file
-.I filename
-and generates an LALR(1) parser for it.
-The parsers consist of a set of LALR(1) parsing tables and a driver routine
-written in the C programming language.
+считывает грамматическую спецификацию из файла в 
+.I названии файла
+и формирует для него синтаксический анализатор LALR(1).
+Анализаторы состоят из набора таблиц синтаксического анализа LALR(1) и программы-драйвера, написанной на языке программирования C.
 .B \*N
-normally writes the parse tables and the driver routine to the file
+обычно записывает таблицы синтаксического анализа и процедуру драйвера в файл
 .IR  y.tab.c .
 .PP
-The following options are available:
+Доступны следующие параметры:
 .TP 5
 \fB\-b \fIfile_prefix\fR
-The
+Параметры
 .B \-b
-option changes the prefix prepended to the output file names to
-the string denoted by
+изменяют префикс, добавляемый к именам выходных файлов, на
+строку, обозначаемую символом
 .I file_prefix.
-The default prefix is the character
+Префиксом по умолчанию является символ
 .I y.
 .TP
 .B \-B
-create a backtracking parser (compile-time configuration for \fBbtyacc\fP).
+создает синтаксический анализатор с обратным отслеживанием (конфигурация во время компиляции для \fBbtyacc\fP).
 .TP
 .B \-d
-causes the header file
+приводит к тому, что заголовок файла
 .B y.tab.h
-to be written.
-It contains #define's for the token identifiers.
+будет написан.
+Он содержит #define для идентификаторов токенов.
 .TP
 .B \-h
-print a usage message to the standard error.
+выведите сообщение об использовании со стандартной ошибкой.
 .TP
 \fB\-H \fIdefines_file\fR
-causes #define's for the token identifiers
-to be written to the given \fIdefines_file\fP rather
-than the \fBy.tab.h\fP file used by the \fB\-d\fP option.
+вызывает #define для записи идентификаторов токенов
+скорее в данный \fIdefines_file\fP файл, чем в файл \fBy.tab.h\fP , используемый параметром \fB\-d\fP .
 .TP
 .B \-g
-The
+Параметр
 .B \-g
-option causes a graphical description of the generated LALR(1) parser to
-be written to the file
+приводит к записи графического описания сгенерированного синтаксического анализатора LALR(1) в файл
 .B y.dot
-in graphviz format, ready to be processed by
+в формате graphviz готовой для обработки
 .BR dot (1).
 .TP
 .B \-i
-The \fB\-i\fR option causes a supplementary header file
+Параметр \fB\-i\fR приводит к написанию дополнительного заголовочного файла 
 .B y.tab.i
-to be written.
-It contains extern declarations
-and supplementary #define's as needed to map the conventional \fIyacc\fP
-\fByy\fP-prefixed names to whatever the \fB\-p\fP option may specify.
-The code file, e.g., \fBy.tab.c\fP is modified to #include this file
-as well as the \fBy.tab.h\fP file, enforcing consistent usage of the
-symbols defined in those files.
+.
+Он содержит внешние заявления 
+и дополнительный #define's по мере необходимости для сопоставления стандартных 
+\fIyacc\fP
+\fByy\fP-prefixed имен к чему бы не указал параметр \fB\-p\fP .
+Файл кода, например, \fBy.tab.c\fP видоизменен, чтобы #include данный файл
+таким же образом, как и файл \fBy.tab.h\fP , обеспечивая согласованное использование
+символов, определенных в этих файлах.
 .IP
-The supplementary header file makes it simpler to separate compilation
-of lex- and yacc-files.
+Дополнительный заголовочный файл упрощает раздельную компиляцию
+lex- и yacc-файлов.
 .TP
 .B \-l
-If the
+Если параметр
 .B \-l
-option is not specified,
+не указан, то
 .B \*n
-will insert \fI#line\fP directives in the generated code.
-The \fI#line\fP directives let the C compiler relate errors in the
-generated code to the user's original code.
-If the \fB\-l\fR option is specified,
+вставит директивы \fI#line\fP в сгенерированный код.
+Директивы \fI#line\fP позволяют компилятору языка Си соотносить ошибки в
+сгенерированном коде с исходным кодом пользователя.
+Если параметр \fB\-l\fR указан, то
 .B \*n
-will not insert the \fI#line\fP directives.
-\&\fI#line\fP directives specified by the user will be retained.
+не будет добавлен в директивы \fI#line\fP .
+\&\fI#line\fP директивы, указанные пользователем, будут сохранены.
 .TP
 .B \-L
-enable position processing,
-e.g., \*(``%locations\*('' (compile-time configuration for \fBbtyacc\fP).
+позволяет обработку местоположения,
+напр., \*(``%мlocations\*('' (настройка во время компиляции для \fBbtyacc\fP).
 .TP
 \fB\-o \fIoutput_file\fR
-specify the filename for the parser file.
-If this option is not given, the output filename is
-the file prefix concatenated with the file suffix, e.g., \fBy.tab.c\fP.
-This overrides the \fB\-b\fP option.
+указывает имя файла для синтаксического анализа.
+Если этот параметр не указан, именем выходного файла будет
+префикс файла, объединенный с суффиксом файла, напр., \fBy.tab.c\fP.
+Это перекрывает параметр \fB\-b\fP .
 .TP
 \fB\-p \fIsymbol_prefix\fR
-The
+Параметр
 .B \-p
-option changes the prefix prepended to yacc-generated symbols to
-the string denoted by
+ изменяет префикс, добавляемый к символам, сгенерированным yacc, на
+строку, обозначаемую как
 .I symbol_prefix.
-The default prefix is the string
+По умолчанию префиксом будет являться строка
 .B yy.
 .TP
 .B \-P
-create a reentrant parser, e.g., \*(``%pure\-parser\*(''.
+формирует реентерабельный синтаксический анализатор, напр., \*(``%pure\-parser\*(''.
 .TP
 .B \-r
-The
+Параметр
 .B \-r
-option causes
+приводит 
 .B \*n
-to produce separate files for code and tables.
-The code file is named
+для создания отдельных файлов для кода и таблиц.
+Файл с кодом называется
 .IR y.code.c ,
-and the tables file is named
+и файл с таблицами называется
 .IR y.tab.c .
-The prefix \*(``\fIy.\fP\*('' can be overridden using the \fB\-b\fP option.
+Префикс \*(``\fIy.\fP\*('' может быть переопределен с помощью параметра \fB\-b\fP .
 .TP
 .B \-s
-suppress \*(``\fB#define\fP\*('' statements generated for string literals in
-a \*(``\fB%token\fP\*('' statement,
-to more closely match original \fByacc\fP behavior.
+сжимает \*(``\fB#define\fP\*('' операторы, сгенерированные для строковых констант в
+ \*(``\fB%token\fP\*('' заявление,
+для лучшего соответствия с исходным поведением \fByacc\fP .
 .IP
-Normally when \fB\*n\fP sees a line such as
+Обычно, когда \fB\*n\fP видет такую строку, как
 .Ex
 %token OP_ADD "ADD"
 .Ee
 .IP
-it notices that the quoted \*(``ADD\*('' is a valid C identifier,
-and generates a #define not only for OP_ADD,
-but for ADD as well,
-e.g.,
+он отмечает, что цитированные \*(``ADD\*('' является допустимым C идентификатором,
+и формирует #define не только для OP_ADD,
+но и для ADD,
+напр.,
 .Ex
 #define OP_ADD 257
 .br
 #define ADD 258
 .Ee
 .IP
-The original \fByacc\fP does not generate the second \*(``\fB#define\fP\*(''.
-The \fB\-s\fP option suppresses this \*(``\fB#define\fP\*(''.
+Исходный \fByacc\fP не формирует второго \*(``\fB#define\fP\*(''.
+Параметр \fB\-s\fP подавляет этот \*(``\fB#define\fP\*(''.
 .IP
-POSIX (IEEE 1003.1 2004) documents only names and numbers
-for \*(``\fB%token\fP\*('',
-though original \fByacc\fP and bison also accept string literals.
+POSIX (IEEE 1003.1 2004) записывает только названия и числовые значения 
+для \*(``\fB%token\fP\*('',
+[jnz исходный \fByacc\fP b bison также принимают строковые константы.
 .TP
 .B \-t
-The
+Параметр
 .B \-t
-option changes the preprocessor directives generated by
+изменяет директивы препроцессора, генерируемые с помощью
 .B \*n
-so that debugging statements will be incorporated in the compiled code.
+так, что инструкции по отладке будут включены в скомпилированный код.
 .IP
-\fB\*N\fR sends debugging output to the standard output
-(compatible with both the original \fByacc\fP and \fBbtyacc\fP),
-while \fBbtyacc\fP writes debugging output to the standard error
-(like \fBbison\fP).
+\fB\*N\fR отправляет отладочные выходные данные на стандартный вывод
+(совместимый как с исходным \fByacc\fP и \fBbtyacc\fP),
+тем временем \fBbtyacc\fP записывает отладочный вывод в стандартную ошибку
+(как \fBbison\fP).
 .TP
 .B \-v
-The
+Параметр
 .B \-v
-option causes a human-readable description of the generated parser to
-be written to the file
+приводит к записи удобного для чтения человеком описания в файл сгенерированного синтаксического анализатора
 .I y.output.
 .TP
 .B \-V
-print the version number to the standard output.
+выводит номер версии на стандартный вывод.
 .TP
 .B \-y
-\fB\*n\fP ignores this option,
-which bison supports for ostensible POSIX compatibility.
+\fB\*n\fP игнорирует данный параметр,
+который поддерживает bison для обеспечения видимой совместимости с POSIX.
 .PP
-The \fIfilename\fP parameter is not optional.
-However, \fB\*n\fP accepts a single \*(``\-\*('' to read the grammar
-from the standard input.
-A double \*(``\-\-\*('' marker denotes the end of options.
-A single \fIfilename\fP parameter is expected after a \*(``\-\-\*('' marker.
-.SH EXTENSIONS
+Параметр \fIfilename\fP не будет оптимальным.
+Однако, \fB\*n\fP принимает сигнал \*(``\-\*('' чтобы прочитать содержание
+из стандартного ввода.
+Двойные кавычки \*(``\-\-\*('' обозначают конец списка опций.
+Одиночный параметр \fIfilename\fP ожидается следующим за \*(``\-\-\*('' маркером.
+.SH РАСШИРЕНИЯ
 .B \*N
-provides some extensions for
-compatibility with bison and other implementations of yacc.
-It accepts several \fIlong options\fP which have equivalents in \*n.
-The \fB%destructor\fP and \fB%locations\fP features are available
-only if \fB\*n\fP has been configured and compiled to support the
-back-tracking (\fBbtyacc\fP) functionality.
-The remaining features are always available:
+предоставляет некоторые расширения для
+совместимости с bison и другими реализациями yacc.
+Поддерживает некоторые \fIlong параметры\fP которые имеют аналоги в \*n.
+\fB%destructor\fP и \fB%locations\fP отображают доступные 
+только если \fB\*n\fP был сконфигурирован и скомпилирован для поддержки функции
+обратного отслеживания (\fBbtyacc\fP) .
+Остальные функции всегда доступны:
 .TP
 \fB %code\fP \fIkeyword\fP { \fIcode\fP }
-Adds the indicated source \fIcode\fP at a given point in the output file.
-The optional \fIkeyword\fP tells \fB\*n\fP where to insert the \fIcode\fP:
+Добавляет указанный источник \fIcode\fP в заданную точку файла выходных данных.
+Опционный \fIkeyword\fP указывает \fB\*n\fP куда вставляется \fIcode\fP:
 .RS 7
 .TP 5
-\fBtop\fP
-just after the version-definition in the generated code-file.
+\fBнаивысший\fP
+сразу после определения версии в сгенерированном файле кода.
 .TP 5
-\fBrequires\fP
-just after the declaration of public parser variables.
-If the \fB\-d\fP option is given, the code is inserted at the
-beginning of the defines-file.
+\fBтребует\fP
+сразу после заявления общедоступных переменных синтаксического анализатора.
+Если параметр \fB\-d\fP уже задан, то код вставляется в
+начало определяющего файла.
 .TP 5
-\fBprovides\fP
-just after the declaration of private parser variables.
-If the \fB\-d\fP option is given, the code is inserted at the
-end of the defines-file.
+\fBобеспечивает\fP
+сразу после объявления частных переменных синтаксического анализатора.
+Если параметр \fB\-d\fP уже заданn, то код вставляется в
+начало определяющего файла.
 .RE
 .IP
-If no \fIkeyword\fP is given, the code is inserted at the
-beginning of the section of code copied verbatim from the source file.
-Multiple \fB%code\fP directives may be given;
-\fB\*n\fP inserts those into the corresponding code- or defines-file
-in the order that they appear in the source file.
+Если никакое \fIkeyword\fP не задано, код вставляется в
+начало раздела кода, скопированного дословно из исходного файла.
+Множественные директивы \fB%code\fPмогут быть заданы;
+\fB\*n\fP вставляет их в соответствующий файл кода или определений
+в том порядке, в котором они отображаются в исходном файле.
 .TP
 \fB %debug\fP
-This has the same effect as the \*(``\-t\*('' command-line option.
+Это имеет такое же влияние, что и \*(``\-t\*('' параметр командной строки.
 .TP
 \fB %destructor\fP { \fIcode\fP } \fIsymbol+\fP
-defines code that is invoked when a symbol is automatically
-discarded during error recovery.
-This code can be used to
-reclaim dynamically allocated memory associated with the corresponding
-semantic value for cases where user actions cannot manage the memory
-explicitly.
+определяет код, который вызывается, при автоматическом удалении 
+символа во время восстановления после ошибки.
+Этот код может использоваться для
+исправления динамически выделяемой памяти, связанной с соответствующим
+семантическим значением, в случаях, когда действия пользователя не могут
+явно управлять памятью.
 .IP
-On encountering a parse error, the generated parser
-discards symbols on the stack and input tokens until it reaches a state
-that will allow parsing to continue.
-This error recovery approach results in a memory leak
-if the \fBYYSTYPE\fP value is, or contains,
-pointers to dynamically allocated memory.
+При обнаружении ошибки синтаксического анализа сгенерированный синтаксический
+анализатор удаляет символы из стека и вводит токены до тех пор, пока не достигнет состояния, позволяющего продолжить синтаксический анализ.
+Такой подход к устранению ошибок приводит к утечке памяти, 
+если \fBYYSTYPE\fP значение является или содержит
+указатели на динамически выделяемую память.
 .IP
-The bracketed \fIcode\fP is invoked whenever the parser discards one of
-the symbols.
-Within \fIcode\fP, \*(``\fB$$\fP\*('' or
-\*(``\fB$<\fItag\fB>$\fR\*('' designates the semantic value associated with the
-discarded symbol, and \*(``\fB@$\fP\*('' designates its location (see
-\fB%locations\fP directive).
+Заключенный в квадратные скобки \fIcode\fP вызывается всякий раз, когда синтаксический анализатор избавляется от одного из
+символов.
+В пределах \fIcode\fP, \*(``\fB$$\fP\*('' или
+\*(``\fB$<\fItag\fB>$\fR\*('' определяет семантическое значение, связанное с
+отброшенным символом, и \*(``\fB@$\fP\*('' обозначает его местоположение (см.
+\fB%locations\fP каталог).
 .IP
-A per-symbol destructor is defined by listing a grammar symbol
-in \fIsymbol+\fP.  A per-type destructor is defined by listing
-a semantic type tag (e.g., \*(``<some_tag>\*('') in \fIsymbol+\fP; in this
-case, the parser will invoke \fIcode\fP whenever it discards any grammar
-symbol that has that semantic type tag, unless that symbol has its own
-per-symbol destructor.
+Деструктор для каждого символа определяется путем перечисления грамматического символа
+в \fIsymbol+\fP.  Деструктор для каждого типа определяется путем перечисления
+семантического тега типа (напр., \*(``<some_tag>\*('') in \fIsymbol+\fP; в этом
+случае синтаксический анализатор будет применять \fIcode\fP всякий раз, когда он отбрасывает любой грамматический
+символ, имеющий этот семантический тег типа, если только этот символ не имеет собственного деструктора для каждого символа.
 .IP
-Two categories of default destructor are supported that are
-invoked when discarding any grammar symbol that has no per-symbol and no
-per-type destructor:
+Поддерживаются две категории деструкторов по умолчанию, которые
+вызываются при отбрасывании любого грамматического символа, у которого нет
+деструктора для каждого символа или типа:
 .RS
 .bP
-the code for \*(``\fB<*>\fP\*('' is used
-for grammar symbols that have an explicitly declared semantic type tag
-(via \*(``\fB%type\fP\*('');
+код для \*(``\fB<*>\fP\*('' используется
+для грамматических символов, имеющих объявленный тег семантического типа
+(через \*(``\fB%type\fP\*('');
 .bP
-the code for \*(``\fB<>\fP\*('' is used
-for grammar symbols that have no declared semantic type tag.
+код для \*(``\fB<>\fP\*('' используется
+для грамматических символов, у которых нет объявленного тега семантического типа.
 .RE
 .TP
 \fB %empty\fP
-ignored by \fB\*n\fP.
+упускается \fB\*n\fP.
 .TP
 \fB %expect\fP \fInumber\fP
-tells \fB\*n\fP the expected number of shift/reduce conflicts.
-That makes it only report the number if it differs.
+передает \fB\*n\fP ожидаемое количество противоречий сдвига/уменьшения.
+Таким образом номер будет сообщаться только в случае, если он отличается.
 .TP
 \fB %expect\-rr\fP \fInumber\fP
-tell \fB\*n\fP the expected number of reduce/reduce conflicts.
-That makes it only report the number if it differs.
-This is (unlike bison) allowable in LALR parsers.
+передает \fB\*n\fP ожидаемое количество противоречий сдвига/уменьшения.
+Таким образом номер будет сообщаться только в случае, если он отличается.
+Это (в отличие от bison) допустимо в анализаторах LALR.
 .TP
 \fB %locations\fP
-tells \fB\*n\fP to enable management of position information associated
-with each token, provided by the lexer in the global variable \fByylloc\fP,
-similar to management of semantic value information provided in \fByylval\fP.
+передает \fB\*n\fP включить управление информацией о местоположении, связанной
+с каждым токеном, предоставляемой лексическим средством в глобальной переменной \fByylloc\fP,
+похоже с управлением семантической ценной информацией, представленной в \fByylval\fP.
 .IP
-As for semantic values, locations can be referenced within actions using
-\fB@$\fP to refer to the location of the left hand side symbol, and \fB@\fIN\fR
-(\fIN\fP an integer) to refer to the location of one of the right hand side
-symbols.
-Also as for semantic values, when a rule is matched, a default
-action is used the compute the location represented by \fB@$\fP as the
-beginning of the first symbol and the end of the last symbol in the right
-hand side of the rule.
-This default computation can be overridden by
-explicit assignment to \fB@$\fP in a rule action.
+Что касается семантических значений, то на местоположения можно ссылаться в рамках действий используя
+\fB@$\fP чтобы указать расположение символа слева, и \fB@\fIN\fR
+(\fIN\fP an integer) чтобы указать местоположение одного из символов справа.
+Также, что касается семантических значений, при сопоставлении с правилом используется
+действие по умолчанию - вычисление местоположения, представленного \fB@$\fP в качестве начала первого символа и конца последнего символа справа от правила.
+Это вычисление по умолчанию может быть отменено путем
+прямого присвоения\fB@$\fP в действии правила.
 .IP
-The type of \fByylloc\fP is \fBYYLTYPE\fP, which is defined by default as:
+Тип \fByylloc\fP является \fBYYLTYPE\fP, который по умолчанию определен как:
 .Ex
 typedef struct YYLTYPE {
     int first_line;
@@ -326,63 +318,59 @@ typedef struct YYLTYPE {
 } YYLTYPE;
 .Ee
 .IP
-\fBYYLTYPE\fP can be redefined by the user
-(\fBYYLTYPE_IS_DEFINED\fP must be defined, to inhibit the default)
-in the declarations section of the specification file.
-As in bison, the macro \fBYYLLOC_DEFAULT\fP is invoked
-each time a rule is matched to calculate a position for the left hand side of
-the rule, before the associated action is executed; this macro can be
-redefined by the user.
+\fBYYLTYPE\fP может быть переопределен пользователем
+(\fBYYLTYPE_IS_DEFINED\fP должен быть определен, чтобы остановить использование по умолчанию)
+в разделе объявлений файла спецификации.
+Как и в bison, макрос \fBYYLLOC_DEFAULT\fP вызывается
+каждый раз, когда выполняется сопоставление с правилом, чтобы вычислить позицию для левой части правила перед выполнением соответствующего действия; 
+этот макрос может быть
+переопределен пользователем.
 .IP
-This directive adds a \fBYYLTYPE\fP parameter to \fByyerror()\fP.
-If the \fB%pure\-parser\fP directive is present,
-a \fBYYLTYPE\fP parameter is added to \fByylex()\fP calls.
+Этот директив добавляет параметр \fBYYLTYPE\fP к \fByyerror()\fP.
+Если директив \fB%pure\-parser\fP присуствует,
+параметр \fBYYLTYPE\fP добавляется к вызовам \fByylex()\fP .
 .TP
 \fB %lex\-param\fP { \fIargument-declaration\fP }
-By default, the lexer accepts no parameters, e.g., \fByylex()\fP.
-Use this directive to add parameter declarations for your customized lexer.
+Лексический анализатор по умолчанию не принимает никаких параметров, напр., \fByylex()\fP.
+Использует эту директиву для добавления заявлений параметров для настроенного лексического анализатора.
 .TP
 \fB %parse\-param\fP { \fIargument-declaration\fP }
-By default, the parser accepts no parameters, e.g., \fByyparse()\fP.
-Use this directive to add parameter declarations for your customized parser.
+Лексический анализатор по умолчанию не принимает никаких параметров, напр., \fByyparse()\fP.
+Использует эту директиву для добавления заявлений параметров для настроенного синтаксического анализаторf.
 .TP
 \fB %pure\-parser\fP
-Most variables (other than \fByydebug\fP and \fByynerrs\fP) are
-allocated on the stack within \fByyparse\fP, making the parser reasonably
-reentrant.
+Большинство переменных (кроме \fByydebug\fP и \fByynerrs\fP) 
+размещаются в стеке в пределах \fByyparse\fP, что делает синтаксический анализатор повторно используемым.
 .TP
 \fB %token\-table\fP
-Make the parser's names for tokens available in the \fByytname\fP array.
-However,
+Делает имена токенов, используемых синтаксическим анализатором, доступными в массиве \fByytname\fP.
+Однако,
 .B \*n
-does not predefine \*(``$end\*('', \*(``$error\*(''
-or \*(``$undefined\*('' in this array.
-.SH PORTABILITY
-According to Robert Corbett,
+не предопределяет \*(``$end\*('', \*(``$error\*(''
+or \*(``$undefined\*('' в этом массиве.
+.SH МОБИЛЬНОСТЬ
+По словам Роберта Корбетта,
 .Ex
-Berkeley Yacc is an LALR(1) parser generator.  Berkeley Yacc
-has been made as compatible as possible with AT&T Yacc.
-Berkeley Yacc can accept any input specification that
-conforms to the AT&T Yacc documentation.  Specifications
-that take advantage of undocumented features of AT&T Yacc
-will probably be rejected.
+Berkeley Yacc - это генератор синтаксических анализаторов LALR(1). Berkeley Yacc
+был сделан максимально совместимым с AT&T Yacc.
+Berkeley Yacc может принимать любые входные данные,
+соответствующие документации AT&T Yacc. Спецификации, которые могут воспользоваться недокументированными возможностями AT&T Yacc, вероятно, будут отклонены.
 .Ee
 .PP
-The rationale in
+Обоснование находится в
 .Ex
 http://pubs.opengroup.org/onlinepubs/9699919799/utilities/yacc.html
 .Ee
 .PP
-documents some features of AT&T yacc which are no longer required for POSIX
-compliance.
+документирует некоторые функции AT&T yacc, которые больше не требуются для
+обеспечения соответствия требованиям POSIX.
 .PP
-That said, you may be interested in reusing grammar files with some
-other implementation which is not strictly compatible with AT&T yacc.
-For instance, there is bison.
-Here are a few differences:
+Тем не менее, вы можете быть заинтересованы в повторном использовании грамматических файлов в какой-либо другой реализации, которая не совсем совместима с AT&T yacc.
+Например, есть bison.
+Вот несколько отличий:
 .bP
-\fBYacc\fP accepts an equals mark preceding the left curly brace
-of an action (as in the original grammar file \fBftp.y\fP):
+\fBYacc\fP принимает знак равенства, предшествующий левой фигурной скобке
+действия (как в исходном грамматическом файле \fBftp.y\fP):
 .Ex
     |   STAT CRLF
         = {
@@ -390,38 +378,38 @@ of an action (as in the original grammar file \fBftp.y\fP):
         }
 .Ee
 .bP
-\fBYacc\fP and bison emit code in different order, and in particular bison
-makes forward reference to common functions such as yylex, yyparse and
-yyerror without providing prototypes.
+\fBYacc\fP и bison генерируют код в разном порядке, и, в частности, bison
+создает прямые ссылки на общие функции, такие как yylex, yyparse и
+yyerror, без предоставления прототипов.
 .bP
-Bison's support for \*(``%expect\*('' is broken in more than one release.
-For best results using bison, delete that directive.
+Поддержка Bison для \*(``%expect\*('' не работает в нескольких версиях.
+Для достижения наилучших результатов при использовании bison удалите эту директиву.
 .bP
-Bison has no equivalent for some of \fB\*n\fP's command-line options,
-relying on directives embedded in the grammar file.
+У Bison нет аналога некоторым из \fB\*n\fP's параметры командной строки,
+основанные на директивах, встроенных в грамматический файл.
 .bP
-Bison's \*(``\fB\-y\fP\*('' option does not affect bison's lack of support for
-features of AT&T yacc which were deemed obsolescent.
+Параметр Bison \*(``\fB\-y\fP\*('' не влияет на отсутствие у bison поддержки
+функций AT&T yacc, которые были признаны устаревшими.
 .bP
-\fBYacc\fP accepts multiple parameters
-with \fB%lex\-param\fP and \fB%parse\-param\fP in two forms
+\fBYacc\fP принимает несколько параметров
+с \fB%lex\-param\fP и \fB%parse\-param\fP в двух формах
 .Ex
 {type1 name1} {type2 name2} ...
 {type1 name1,  type2 name2 ...}
 .Ee
 .IP
-Bison accepts the latter (though undocumented), but depending on the
-release may generate bad code.
+Bison принимает недавний (хотя и недокументированный), но в зависимости от
+версии может генерировать неверный код.
 .bP
-Like bison, \fB\*n\fP will add parameters specified via \fB%parse\-param\fP
-to \fByyparse\fP, \fByyerror\fP and (if configured for back-tracking)
-to the destructor declared using \fB%destructor\fP.
-Bison puts the additional parameters \fIfirst\fP for
-\fByyparse\fP and \fByyerror\fP but \fIlast\fP for destructors.
-\fBYacc\fP matches this behavior.
+Как и bison, \fB\*n\fP добавит параметры, указанные через \fB%parse\-param\fP
+to \fByyparse\fP, \fByyerror\fP и (если настроено для обратного отслеживания)
+к ликвидатору, объявленному с помощью\fB%destructor\fP.
+Bison задает дополнительные параметры \fIfirst\fP для
+\fByyparse\fP и \fByyerror\fP но \fIlast\fP для ликвидаторов.
+\fBYacc\fP соответствует такому поведению.
 .
-.SH DIAGNOSTICS
-If there are rules that are never reduced, the number of such rules is
-reported on standard error.
-If there are any LALR(1) conflicts, the number of conflicts is reported
-on standard error.
+.SH ДИАГНОСТИКА
+Если есть правила, которые никогда не сокращаются, количество таких правил
+отображается в виде стандартной ошибки.
+Если есть какие-либо конфликты LALR(1), количество конфликтов отображается
+в виде стандартной ошибки.
