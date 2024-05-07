@@ -25,190 +25,190 @@
 .\"
 .\" $FreeBSD$
 .\"
-.Dd December 1, 2022
+.Dd 1 декабря, 2022
 .Dt TAR 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm tar
-.Nd manipulate tape archives
-.Sh SYNOPSIS
+.Nd управление архивами ленты
+.Sh СИНТАКСИС
 .Nm
-.Op Ar bundled-flags Ao args Ac
-.Op Ao Ar file Ac | Ao Ar pattern Ac ...
+.Op Аргументы-флаги Ao args Ac
+.Op Ao Аргумент-файл Ac | Ao Ar Шаблон Ac ...
 .Nm
 .Brq Fl c
-.Op Ar options
-.Op Ar files | Ar directories
+.Op опции
+.Op файлы | директории
 .Nm
 .Brq Fl r | Fl u
-.Fl f Ar archive-file
-.Op Ar options
-.Op Ar files | Ar directories
+.Fl f Архивный-файл
+.Op опции
+.Op файлы | директории
 .Nm
 .Brq Fl t | Fl x
-.Op Ar options
-.Op Ar patterns
-.Sh DESCRIPTION
+.Op опции
+.Op шаблоны
+.Sh ОПИСАНИЕ
 .Nm
-creates and manipulates streaming archive files.
-This implementation can extract from tar, pax, cpio, zip, jar, ar, xar,
-rpm, 7-zip, and ISO 9660 cdrom images and can create tar, pax, cpio, ar, zip,
-7-zip, and shar archives.
+создает и управляет потоковыми архивными файлами.
+Эта реализация может извлекать из tar, pax, cpio, zip, jar, ar, xar,
+rpm, 7-zip, И ISO 9660 cdrom образов и создавать tar, pax, cpio, ar, zip,
+7-zip, и shar архивы.
 .Pp
-The first synopsis form shows a
+Первая форма синтаксиса показывает
 .Dq bundled
-option word.
-This usage is provided for compatibility with historical implementations.
-See COMPATIBILITY below for details.
+опцию пакетного слова.
+Это использование предоставлено для совместимости с историческими реализациями.
+См. раздел СОВМЕСТИМОСТЬ ниже для деталей.
 .Pp
-The other synopsis forms show the preferred usage.
-The first option to
+Другие формы синтаксиса показывают предпочтительное использование.
+Первая опция для
 .Nm
-is a mode indicator from the following list:
+это индикатор режима из следующего списка:
 .Bl -tag -compact -width indent
 .It Fl c
-Create a new archive containing the specified items.
-The long option form is
+Создать новый архив, содержащий указанные элементы.
+Длинная форма опции 
 .Fl Fl create .
 .It Fl r
-Like
+Как
 .Fl c ,
-but new entries are appended to the archive.
-Note that this only works on uncompressed archives stored in regular files.
-The
+но новые записи добавляются в архив.
+Обратите внимание, что это работает только с негруппированными архивами, хранящимися в обычных файлах.
+Опция
 .Fl f
-option is required.
-The long option form is
+обязательна.
+Длинная форма опции
 .Fl Fl append .
 .It Fl t
-List archive contents to stdout.
-The long option form is
+Вывести содержимое архива в stdout.
+Длинная форма опции 
 .Fl Fl list .
 .It Fl u
-Like
+Как
 .Fl r ,
-but new entries are added only if they have a modification date
-newer than the corresponding entry in the archive.
-Note that this only works on uncompressed archives stored in regular files.
-The
+но новые записи добавляются только если они имеют дату изменения,
+более позднюю, чем соответствующая запись в архиве.
+Обратите внимание, что это работает только с негруппированными архивами, хранящимися в обычных файлах.
+Опция
 .Fl f
-option is required.
-The long form is
+обязательна.
+Длинная форма
 .Fl Fl update .
 .It Fl x
-Extract to disk from the archive.
-If a file with the same name appears more than once in the archive,
-each copy will be extracted, with later copies overwriting (replacing)
-earlier copies.
-The long option form is
+Извлечь на диск из архива.
+Если файл с тем же именем появляется более одного раза в архиве,
+каждая копия будет извлечена, при этом более поздние копии перезаписывают (заменяют)
+ранние копии.
+Длинная форма опции
 .Fl Fl extract .
 .El
 .Pp
-In
+В
 .Fl c ,
 .Fl r ,
-or
+или
 .Fl u
-mode, each specified file or directory is added to the
-archive in the order specified on the command line.
-By default, the contents of each directory are also archived.
+режиме, каждый указанный файл или директория добавляется в 
+архив в порядке, указанном в командной строке.
+По умолчанию также архивируется содержимое каждой директории.
 .Pp
-In extract or list mode, the entire command line
-is read and parsed before the archive is opened.
-The pathnames or patterns on the command line indicate
-which items in the archive should be processed.
-Patterns are shell-style globbing patterns as
-documented in
+В режиме извлечения или списка командная строка 
+целиком считывается и разбирается перед открытием архива.
+Пути или шаблоны в командной строке указывают,
+какие элементы в архиве должны быть обработаны.
+Шаблоны - это шаблоны глобирования стиля оболочки,
+как описано в
 .Xr tcsh 1 .
-.Sh OPTIONS
-Unless specifically stated otherwise, options are applicable in
-all operating modes.
+.Sh ОПЦИИ
+За исключением явно указанных иначе, опции применимы 
+во всех режимах работы.
 .Bl -tag -width indent
-.It Cm @ Ns Pa archive
-(c and r modes only)
-The specified archive is opened and the entries
-in it will be appended to the current archive.
-As a simple example,
-.Dl Nm Fl c Fl f Pa - Pa newfile Cm @ Ns Pa original.tar
-writes a new archive to standard output containing a file
-.Pa newfile
-and all of the entries from
-.Pa original.tar .
-In contrast,
-.Dl Nm Fl c Fl f Pa - Pa newfile Pa original.tar
-creates a new archive with only two entries.
-Similarly,
-.Dl Nm Fl czf Pa - Fl Fl format Cm pax Cm @ Ns Pa -
-reads an archive from standard input (whose format will be determined
-automatically) and converts it into a gzip-compressed
-pax-format archive on stdout.
-In this way,
+.It Cm @ Ns Pa архив
+(только режимы c и r )
+Указанный архив открывается, и записи в нем будут 
+добавлены к текущему архиву.
+Простой пример,
+.Dl Nm Fl c Fl f Pa - Pa новый файл Cm @ Ns Pa оригинальный.tar
+записывает новый архив на стандартный вывод, содержащий файл
+.Pa новый файл
+и все записи из 
+.Pa оригинальный.tar .
+В отличие от этого,
+.Dl Nm Fl c Fl f Pa - Pa новый файл Pa оригинальный.tar
+создает новый архив только с двумя записями.
+Аналогично,
+.Dl Nm Fl czf Pa - Fl Fl формат Cm pax Cm @ Ns Pa -
+читает архив из стандартного ввода (формат будет определен 
+автоматически) и преобразует его в gzip-сжатый
+pax-формата архив на stdout.
+Таким образом,
 .Nm
-can be used to convert archives from one format to another.
+может использоваться для преобразования архивов из одного формата в другой.
 .It Fl a , Fl Fl auto-compress
-(c mode only)
-Use the archive suffix to decide a set of the format and
-the compressions.
-As a simple example,
+(только режим c )
+Используйте суффикс архива для определения набора формата и 
+сжатия.
+Простой пример,
 .Dl Nm Fl a Fl cf Pa archive.tgz source.c source.h
-creates a new archive with restricted pax format and gzip compression,
+создает новый архив с ограниченным pax fформат и gzip сжатием,
 .Dl Nm Fl a Fl cf Pa archive.tar.bz2.uu source.c source.h
-creates a new archive with restricted pax format and bzip2 compression
-and uuencode compression,
+создает новый архив с ограниченным pax форматом и bzip2 сжатием
+и uuencode сжатие,
 .Dl Nm Fl a Fl cf Pa archive.zip source.c source.h
-creates a new archive with zip format,
+создает новый архив в zip формате,
 .Dl Nm Fl a Fl jcf Pa archive.tgz source.c source.h
-ignores the
+игнорирует
 .Dq -j
-option, and creates a new archive with restricted pax format
-and gzip compression,
+опцию, и создает новый архив с ограниченным pax форматом
+и gzip сжатием,
 .Dl Nm Fl a Fl jcf Pa archive.xxx source.c source.h
-if it is unknown suffix or no suffix, creates a new archive with
-restricted pax format and bzip2 compression.
+Если это неизвестный суффикс или отсутствует суффикс, создает новый архив с
+ограниченным pax форматом и bzip2 сжатием.
 .It Fl Fl acls
 (c, r, u, x modes only)
-Archive or extract POSIX.1e or NFSv4 ACLs.
-This is the reverse of
+Архивирует или извлекает POSIX.1e или NFSv4 ACLs.
+Это противоположно
 .Fl Fl no-acls
-and the default behavior in c, r, and u modes (except on Mac OS X) or if
+и является поведением по умолчанию в c, r, и u режимах (за исключением Mac OS X) или при
 .Nm
-is run in x mode as root.
-On Mac OS X this option translates extended ACLs to NFSv4 ACLs.
-To store extended ACLs the
+запуске в x режиме от root.
+On Mac OS X эта опция преобразует расширенные ACLs в NFSv4 ACLs.
+Для сохранения расширенных ACLs 
 .Fl Fl mac-metadata
-option is preferred.
+опция предпочтительна.
 .It Fl B , Fl Fl read-full-blocks
-Ignored for compatibility with other
+Игнорируется для совместимости с другими
 .Xr tar 1
-implementations.
+реализациями.
 .It Fl b Ar blocksize , Fl Fl block-size Ar blocksize
-Specify the block size, in 512-byte records, for tape drive I/O.
-As a rule, this argument is only needed when reading from or writing
-to tape drives, and usually not even then as the default block size of
-20 records (10240 bytes) is very common.
+Указывает размер блока, в записях по 512 байт, для ввода-вывода на магнитную ленту.
+Как правило,этот аргумент необходим только при чтении с ленточных накопителей или записи
+на них,и обычно даже в этом случае его нет,поскольку размер блока по умолчанию
+составляет 20 записей (10240 байт).
 .It Fl C Ar directory , Fl Fl cd Ar directory , Fl Fl directory Ar directory
-In c and r mode, this changes the directory before adding
-the following files.
-In x mode, change directories after opening the archive
-but before extracting entries from the archive.
+В c и r режимах, меняет директорию перед добавлением 
+следующих файлов.
+В x режиме, меняет директории после открытия архива, 
+но перед извлечением записей из архива.
 .It Fl Fl chroot
-(x mode only)
+(только режим x )
 .Fn chroot
-to the current directory after processing any
+в текущий каталог после обработки любых
 .Fl C
-options and before extracting any files.
+опций и перед извлечением файлов.
 .It Fl Fl clear-nochange-fflags
-(x mode only)
-Before removing file system objects to replace them, clear platform-specific
-file attributes or file flags that might prevent removal.
+(только режим x)
+перед удалением объектов файловой системы для их замены очищает платформенные специфические атрибуты
+файла или флаги файла, которые могут предотвратить удаление.
 .It Fl Fl exclude Ar pattern
-Do not process files or directories that match the
-specified pattern.
-Note that exclusions take precedence over patterns or filenames
-specified on the command line.
+Не обрабатывает файлы или каталоги, соответствующие 
+указанному шаблону.
+Обратите внимание, что исключения имеют приоритет над шаблонами или именами файлов,
+указанными в командной строке.
 .It Fl Fl exclude-vcs
-Do not process files or directories internally used by the
-version control systems
+Не обрабатывает файлы или каталоги, используемые внутренне 
+системами контроля версий
 .Sq Arch ,
 .Sq Bazaar ,
 .Sq CVS ,
@@ -217,80 +217,80 @@ version control systems
 .Sq RCS ,
 .Sq SCCS ,
 .Sq SVN
-and
+и
 .Sq git .
 .It Fl Fl fflags
-(c, r, u, x modes only)
-Archive or extract platform-specific file attributes or file flags.
-This is the reverse of
+(только c, r, u, x режимы )
+Архивирует или извлекает платформенные специфические атрибуты файла или флаги файла. 
+Это противоположно 
 .Fl Fl no-fflags
-and the default behavior in c, r, and u modes or if
+и является поведением по умолчанию в c, r, и u режимах, если
 .Nm
-is run in x mode as root.
+запущен в x режиме от root.
 .It Fl Fl format Ar format
-(c, r, u mode only)
-Use the specified format for the created archive.
-Supported formats include
+(только c, r, u режимы)
+Использует указанный формат для созданного архива.
+Поддерживаемые форматы включают 
 .Dq cpio ,
 .Dq pax ,
 .Dq shar ,
-and
+и
 .Dq ustar .
-Other formats may also be supported; see
+Другие форматы также могут поддерживаться; см.
 .Xr libarchive-formats 5
-for more information about currently-supported formats.
-In r and u modes, when extending an existing archive, the format specified
-here must be compatible with the format of the existing archive on disk.
+для получения дополнительной информации о текущих поддерживаемых форматах.
+В r и u режимах, при расширении существующего архива указанный 
+здесь формат должен быть совместим с форматом существующего архива на диске.
 .It Fl f Ar file , Fl Fl file Ar file
-Read the archive from or write the archive to the specified file.
-The filename can be
+Читает архив из указанного файла или записывает архив в указанный файл.
+Имя файла может быть
 .Pa -
-for standard input or standard output.
-The default varies by system;
-on
+для стандартного ввода или стандартного вывода. 
+По умолчанию это зависит от системы;
+на
 .Fx ,
-the default is
+по умолчанию
 .Pa /dev/sa0 ;
-on Linux, the default is
+на Linux, по умолчанию
 .Pa /dev/st0 .
 .It Fl Fl gid Ar id
-Use the provided group id number.
-On extract, this overrides the group id in the archive;
-the group name in the archive will be ignored.
-On create, this overrides the group id read from disk;
-if
+Использует предоставленный номер группы. 
+При извлечении это переопределяет идентификатор группы в архиве; 
+имя группы в архиве будет проигнорировано. 
+При создании это переопределяет идентификатор группы, прочитанный с диска; 
+Если
 .Fl Fl gname
-is not also specified, the group name will be set to
-match the group id.
+не указано gname, имя группы будет установлено для 
+соответствия идентификатору группы.
 .It Fl Fl gname Ar name
-Use the provided group name.
-On extract, this overrides the group name in the archive;
-if the provided group name does not exist on the system,
-the group id
-(from the archive or from the
+Использует предоставленное имя группы. 
+При извлечении это переопределяет имя группы в архиве; 
+если предоставленное имя группы не существует в системе,
+идентификатор группы
+(из архива или из
 .Fl Fl gid
-option)
-will be used instead.
-On create, this sets the group name that will be stored
-in the archive;
-the name will not be verified against the system group database.
+опции)
+будет использован.
+При создании это задает имя группы, которое будет сохранено
+в архиве; 
+имя не будет проверено по базе данных системы групп.
 .It Fl H
-(c and r modes only)
-Symbolic links named on the command line will be followed; the
-target of the link will be archived, not the link itself.
+(только c и r режимы)
+Символические ссылки, указанные в командной строке, будут разрешены; 
+цель ссылки будет архивирована, а не сама ссылка.
 .It Fl h
-(c and r modes only)
-Synonym for
+(только c и r режимы)
+Синоним для
 .Fl L .
 .It Fl I
-Synonym for
+Синоним для
 .Fl T .
 .It Fl Fl help
-Show usage.
+Показать использование.
 .It Fl Fl hfsCompression
-(x mode only)
-Mac OS X specific (v10.6 or later). Compress extracted regular files with HFS+
-compression.
+(только x режим)
+Mac OS X специфично (v10.6 или позднее). Сжимает извлеченные обычные файлы с HFS+
+сжатием.
 .It Fl Fl ignore-zeros
 An alias of
 .Fl Fl options Cm read_concatenated_archives
