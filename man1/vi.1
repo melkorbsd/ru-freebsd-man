@@ -15,10 +15,10 @@
 .Dd Сентябрь 25, 2020
 .Dt VI 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm ex , vi , view
-.Nd text editors
-.Sh SYNOPSIS
+.Nd текстовые редакторы
+.Sh КРАТКОЕ ОПИСАНИЕ
 .Nm ex
 .Op Fl FRrSsv
 .Op Fl c Ar cmd
@@ -37,358 +37,357 @@
 .Op Fl t Ar tag
 .Op Fl w Ar size
 .Op Ar
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 .Nm vi
-is a screen-oriented text editor.
+это текстовый редактор, ориентированный на экран.
 .Nm ex
-is a line-oriented text editor.
+это текстовый редактор, ориентированный на строку.
 .Nm ex
-and
+и
 .Nm vi
-are different interfaces to the same program,
-and it is possible to switch back and forth during an edit session.
-.Nm view
-is the equivalent of using the
+являются разными интерфейсами лоя одной и той же программы,
+и могут переключаться во время сеанса редактирования.
+.Nm просмотр
+равносилен использованию параметра
 .Fl R
-.Pq read-only
-option of
+.Pq только для чтения
+
 .Nm vi .
 .Pp
-This manual page is the one provided with the
+Эта страница руководства прилагается к
 .Nm nex Ns / Ns Nm nvi
-versions of the
+версиям
 .Nm ex Ns / Ns Nm vi
-text editors.
+текстовых редакторов.
 .Nm nex Ns / Ns Nm nvi
-are intended as bug-for-bug compatible replacements for the original
-Fourth Berkeley Software Distribution
+предназначены для замены оригинального программного обеспечения, совместимого с различными ошибками
+Четвертый дистрибутив программного обеспечения Berkeley
 .Pq 4BSD
 .Nm ex
-and
+и
 .Nm vi
-programs.
-For the rest of this manual page,
+програмы.
+Для ознакомления с остальной частью этой страницы руководства,
 .Nm nex Ns / Ns Nm nvi
-is used only when it's necessary to distinguish it from the historic
-implementations of
+используется только тогда, когда необходимо отличить его от прошлых
+реализаций
 .Nm ex Ns / Ns Nm vi .
 .Pp
-This manual page is intended for users already familiar with
+Эта страница руководства предназначена для пользователей, уже знакомых с
 .Nm ex Ns / Ns Nm vi .
-Anyone else should almost certainly read a good tutorial on the
-editor before this manual page.
-If you're in an unfamiliar environment,
-and you absolutely have to get work done immediately,
-read the section after the options description, entitled
-.Sx FAST STARTUP .
-It's probably enough to get you going.
+Всем остальным, прежде чем приступить к этой странице руководства, наверняка следует ознакомиться с хорошим руководством по
+работе с редактором.
+Если вы находитесь в незнакомой среде
+и вам необходимо немедленно приступить к работе,
+прочтите раздел после описания параметров, озаглавленный
+.Sx FAST БЫСТРЫЙ ЗАПУСК .
+It's этого, вероятно, будет достаточно для начала работы
 .Pp
-The following options are available:
+Доступны следующие параметры:
 .Bl -tag -width "-w size "
 .It Fl c Ar cmd
-Execute
+Выполняет
 .Ar cmd
-on the first file loaded.
-Particularly useful for initial positioning in the file, although
+в первом загруженном файле.
+Особенно полезно для первоначального позиционирования в файле, хотя
 .Ar cmd
-is not limited to positioning commands.
-This is the POSIX 1003.2 interface for the historic
+не ограничивается командами позиционирования.
+Это интерфейс POSIX 1003.2 для исторического синтакса
 .Dq +cmd
-syntax.
+.
 .Nm nex Ns / Ns Nm nvi
-supports both the old and new syntax.
+поддерживает как старый, так и новый синтаксис.
 .It Fl e
-Start editing in ex mode, as if the command name were
+Начинает редактирование в режиме ex, будто бы название команды было 
 .Nm ex .
 .It Fl F
-Don't copy the entire file when first starting to edit.
-(The default is to make a copy in case someone else modifies
-the file during your edit session.)
+Не копирует файл целиком при первом запуске редактирования.
+(По умолчанию создается копия на случай, если кто-то другой внесет изменения
+в файл во время вашего сеанса редактирования.)
 .\" .It Fl l
 .\" Start editing with the lisp and showmatch options set.
 .It Fl R
-Start editing in read-only mode, as if the command name was
-.Nm view ,
-or the
-.Cm readonly
-option was set.
+Начинает редактирование в режиме только для чтения, как если бы имя команды было
+.Nm просмотр ,
+или параметр
+.Cm только для чтения
+был установлен.
 .It Fl r
-Recover the specified files, or, if no files are specified,
-list the files that could be recovered.
-If no recoverable files by the specified name exist,
-the file is edited as if the
+Восстанавливает указанные файлы или, если файлы не указаны,
+перечислите файлы, которые могут быть восстановлены.
+Если доступных для восстановления файлов с указанным именем не существует,
+файл редактируется так, как если бы параметр
 .Fl r
-option had not been specified.
+не был указан.
 .It Fl S
-Run with the
-.Cm secure
-edit option set, disallowing all access to external programs.
+Запускается с установленным параметром
+.Cm безопасного
+редактирования, запрещающим любой доступ к внешним программам
 .It Fl s
-Enter batch mode; applicable only to
+Переходит в пакетный режим; применимо только для редактирования сеансов
 .Nm ex
-edit sessions.
-Batch mode is useful when running
+.
+Пакетный режим полезен при запуске
 .Nm ex
-scripts.
-Prompts, informative messages and other user oriented messages are turned off,
-and no startup files or environment variables are read.
-This is the POSIX 1003.2 interface for the historic
+скриптов.
+Приглашения, информационные сообщения и другие сообщения, ориентированные на пользователя, отключены,
+и никакие файлы запуска или переменные среды не считываются.
+Это интерфейс POSIX 1003.2 для исторического параметра
 .Dq -
-argument.
+.
 .Nm nex Ns / Ns Nm nvi
-supports both the old and new syntax.
+поддерживает как старый, так и новый синтаксис.
 .It Fl t Ar tag
-Start editing at the specified
-.Ar tag
-.Pq see Xr ctags 1 .
+Начинает редактирование с указанного
+.Ar тега
+.Pq  Xr ctags 1 .
 .It Fl v
-Start editing in vi mode, as if the command name was
+Начинает редактирование в режиме vi, как если бы имя команды было
 .Nm vi .
 .It Fl w Ar size
-Set the initial window size to the specified number of lines.
+Устанавливает начальный размер окна равным указанному количеству строк.
 .El
 .Pp
-Command input for
+Ввод команд для
 .Nm ex Ns / Ns Nm vi
-is read from the standard input.
-In the
+считывается со стандартного ввода.
+На интерфейсе
 .Nm vi
-interface, it is an error if standard input is not a terminal.
-In the
+считается ошибкой, если стандартный ввод неявляется терминальным.
+На интерфейсе
 .Nm ex
-interface, if standard input is not a terminal,
+если стандартный ввод не является терминалом,
 .Nm ex
-will read commands from it regardless; however, the session will be a
-batch mode session, exactly as if the
+будет считывать команды из него в любом случае; однако сеанс будет в
+пакетном режиме, точно так же, как если бы параметр
 .Fl s
-option had been specified.
-.Sh FAST STARTUP
-This section will tell you the minimum amount that you need to
-do simple editing tasks using
+был указан.
+.Sh БЫСТРЫЙ ЗАПУСК
+В этом разделе будет указано минимальное количество операций, необходимых для простого выполнения задачи редактирования с помощью 
 .Nm vi .
-If you've never used any screen editor before,
-you're likely to have problems even with this simple introduction.
-In that case you should find someone that already knows
+Если вы никогда не пользовались экранными редакторами,
+у вас, скорее всего, возникнут проблемы даже с этим простым введением.
+В таком случае вам следует найти кого-нибудь, кто уже имеет опыт в этом
 .Nm vi
-and have them walk you through this section.
+и попросите их провести вас по этому разделу.
 .Pp
 .Nm vi
-is a screen editor.
-This means that it takes up almost the entire screen,
-displaying part of the file on each screen line,
-except for the last line of the screen.
-The last line of the screen is used for you to give commands to
+представляет из себя экранный редактор.
+Это означает, что он занимает почти весь экран,
+отображая часть файла в каждой строке экрана,
+за исключением последней строки.
+Последняя строка экрана используется для подачи команд на
 .Nm vi ,
-and for
+и для
 .Nm vi
-to give information to you.
+чтобы предоставить вам информацию.
 .Pp
-The other fact that you need to understand is that
+Другой факт, который вам необходимо понять, заключается в том, что
 .Nm vi
-is a modeful editor,
-i.e., you are either entering text or you are executing commands,
-and you have to be in the right mode to do one or the other.
-You will be in command mode when you first start editing a file.
-There are commands that switch you into input mode.
-There is only one key that takes you out of input mode,
-and that is the
+представляет из себя сдержанный редактор,
+напр., вы либо вводите текст, либо выполняете команды,
+и для выполнения того или иного действия вам необходимо быть в правильном режиме.
+При первом запуске редактирования файла вы перейдете в командный режим.
+Существуют команды, которые переключают вас в режим ввода.
+Существует только одна клавиша, которая выводит вас из режима ввода,
+и это
 .Aq escape
-key.
+клавиша.
 .Pp
-In this manual,
-key names are denoted with \(la and \(ra, e.g.,
+В данном руководстве
+названия клавиш обозначаются символом \(la и \(ra, напр.,
 .Aq escape
-means the
+обозначает
 .Dq escape
-key, usually labeled
+клавишу, обычно отмеченую как
 .Dq Esc
-on your terminal's keyboard.
-If you're ever confused as to which mode you're in,
-keep entering the
+на клавиатуре вашего терминала.
+Если вы не знаете, в каком режиме находитесь,
+продолжайте вводить
 .Aq escape
-key until
+клавишу до тех пор, пока 
 .Nm vi
-beeps at you.
-Generally,
+не подаст вам сигнал
+Обычно,
 .Nm vi
 will beep at you if you try and do something that's not allowed.
 It will also display error messages.
 .Pp
-To start editing a file, enter the following command:
+Чтобы начать редактирование файла, введите следующую команду:
 .Pp
 .Dl $ vi file
 .Pp
-The command you should enter as soon as you start editing is:
+Команда, которую вы должны ввести, как только начнете редактирование, такова:
 .Pp
-.Dl :set verbose showmode
+.Dl : устанавливает подробный режим показа
 .Pp
-This will make the editor give you verbose error messages and display
-the current mode at the bottom of the screen.
+Это заставит редактор выдавать вам подробные сообщения об ошибках и отображать
+текущий режим в нижней части экрана.
 .Pp
-The commands to move around the file are:
+Команды для перемещения по файлу следующие:
 .Bl -tag -width Ds
 .It Cm h
-Move the cursor left one character.
+Перемещает курсор влево на один символ.
 .It Cm j
-Move the cursor down one line.
+Перемещает курсор вниз на одну строку.
 .It Cm k
-Move the cursor up one line.
+Перемещает курсор вверх на одну строку.
 .It Cm l
-Move the cursor right one character.
+Перемещает курсор вправо на один символ.
 .It Aq Cm cursor-arrows
-The cursor arrow keys should work, too.
+Клавиши со стрелками курсора должны тоже работать.
 .It Cm / Ns Ar text
-Search for the string
+Выполняет поиск по строке
 .Dq Ar text
-in the file,
-and move the cursor to its first character.
+в файле
+и перемещает курсор на его первый символ.
 .El
 .Pp
-The commands to enter new text are:
+Команды для ввода нового текста следующие:
 .Bl -tag -width "<escape>"
 .It Cm a
-Append new text, after the cursor.
+Добавляет новый текст после курсора.
 .It Cm i
-Insert new text, before the cursor.
+Вставляет новый текст перед курсором.
 .It Cm o
-Open a new line below the line the cursor is on, and start entering text.
+Открывает новую строку под строкой, на которой находится курсор, и вводит текст.
 .It Cm O
-Open a new line above the line the cursor is on, and start entering text.
+Открывает новую строку над строкой, на которой находится курсор, и вводит текст.
 .It Aq Cm escape
-Once you've entered input mode using one of the
+Как только вы войдете в режим ввода с помощью одной из команд
 .Cm a ,
 .Cm i ,
 .Cm o
-or
+или
 .Cm O
-commands, use
+используется
 .Aq Cm escape
-to quit entering text and return to command mode.
+чтобы прекратить ввод текста и вернуться в командный режим.
 .El
 .Pp
-The commands to copy text are:
+Команды для копирования текста следующие:
 .Bl -tag -width Ds
 .It Cm yy
-Copy the line the cursor is on.
+Копирует строку, на которой находится курсор.
 .It Cm p
-Append the copied line after the line the cursor is on.
+Добавляет скопированную строку после той, на которой находится курсор.
 .El
 .Pp
-The commands to delete text are:
+Команды для удаления текста:
 .Bl -tag -width Ds
 .It Cm dd
-Delete the line the cursor is on.
+Удаляет строку, на которой находится курсор.
 .It Cm x
-Delete the character the cursor is on.
+Удаляет символ, на котором находится курсор.
 .El
 .Pp
-The commands to write the file are:
+Команды для записи файла:
 .Bl -tag -width Ds
 .It Cm :w
-Write the file back to the file with the name that you originally used
-as an argument on the
+Записывает файл обратно в файл с именем, которое вы изначально использовали
+в качестве аргумента в
 .Nm vi
-command line.
+командную строку.
 .It Cm :w Ar file_name
-Write the file back to the file with the name
+Записывает файл обратно в файл с указанным именем
 .Ar file_name .
 .El
 .Pp
-The commands to quit editing and exit the editor are:
+Команды для завершения редактирования и выхода из редактора:
 .Bl -tag -width Ds
 .It Cm :q
-Quit editing and leave
+Прекращает редактирование и завершает работу
 .Nm vi
-(if you've modified the file, but not saved your changes,
+(если вы изменяли файл, но не сохранили свои изменения,
 .Nm vi
-will refuse to quit).
+откажется закрываться).
 .It Cm :q!
-Quit, discarding any modifications that you may have made.
+Завершает работу, отбросив все изменения, которые вы могли внести.
 .El
 .Pp
-One final caution:
-Unusual characters can take up more than one column on the screen,
-and long lines can take up more than a single screen line.
-The above commands work on
-.Dq physical
-characters and lines,
-i.e., they affect the entire line no matter how many screen lines it takes up
-and the entire character no matter how many screen columns it takes up.
-.Sh REGULAR EXPRESSIONS
+Последнее предостережение:
+Необычные символы могут занимать более одного столбца на экране,
+а длинные строки могут занимать более одной строки на экране.
+Приведенные выше команды работают с
+.Dq физическими
+символы и строки,
+напр., 
+они влияют на целую строку, независимо от того, сколько экранных строк она занимает, и на весь символ, независимо от того, сколько экранных столбцов он занимает.
+.Sh РЕГУЛЯРНЫЕ ВЫРАЖЕНИЯ
 .Nm ex Ns / Ns Nm vi
-supports regular expressions
+поддерживает регулярные выражения
 .Pq REs ,
-as documented in
+как было прописано в 
 .Xr re_format 7 ,
-for line addresses, as the first part of the
+для адресов строк, в качестве первой части
 .Nm ex Cm substitute ,
-.Cm global
-and
+.Cm глобальбные 
+и
 .Cm v
-commands, and in search patterns.
-Basic regular expressions
+команды и в шаблонах поиска.
+Основные регулярные выражения
 .Pq BREs
-are enabled by default;
-extended regular expressions
+включеается по умолчанию;
+расширенные регулярные выражения
 .Pq EREs
-are used if the
+используютя если параметр
 .Cm extended
-option is enabled.
-The use of regular expressions can be largely disabled using the
+выключен.
+Использование регулярных выражений может быть в значительной степени отключено с помощью параметра
 .Cm magic
-option.
+.
 .Pp
-The following strings have special meanings in the
+Следующие строки имеют особое значение в версии
 .Nm ex Ns / Ns Nm vi
-version of regular expressions:
+регулярных выражений:
 .Bl -bullet -offset 6u
 .It
-An empty regular expression is equivalent to the last regular expression used.
+Пустое регулярное выражение равносильно последнему использованному регулярному выражению.
 .It
 .Sq \e<
-matches the beginning of the word.
+совпадает с началом слова.
 .It
 .Sq \e>
-matches the end of the word.
+совпадает с концом слова.
 .It
 .Sq \(ti
-matches the replacement part of the last
+соответствует заменяемой части последней
 .Cm substitute
-command.
+команды.
 .El
-.Sh BUFFERS
-A buffer is an area where commands can save changed or deleted text
-for later use.
+.Sh БУФЕРЫ
+Буфер представляет из себя область, в которой команды могут сохранять измененный или удаленный текст
+для последующего использования.
 .Nm vi
-buffers are named with a single character preceded by a double quote,
-for example
+буферы именуются одним символом, перед которым ставятся двойные кавычки,
+например
 .Cm \&" Ns Aq Ar c ;
 .Nm ex
-buffers are the same,
-but without the double quote.
+буферы остаются такими же,
+но без двойных кавычек.
 .Nm nex Ns / Ns Nm nvi
-permits the use of any character without another meaning in the position where
-a buffer name is expected.
+разрешает использование любого символа без другого значения в позиции, где
+ожидается имя буфера.
 .Pp
-All buffers are either in
-.Em line mode
-or
-.Em character mode .
-Inserting a buffer in line mode into the text creates new lines for each of the
-lines it contains, while a buffer in character mode creates new lines for any
-lines
-.Em other
-than the first and last lines it contains.
-The first and last lines are inserted at the current cursor position, becoming
-part of the current line.
-If there is more than one line in the buffer,
-the current line itself will be split.
-All
+Все буферы находятся либо в
+.Em строковом режиме
+или
+.Em символьном режиме .
+Вставка буфера в режиме строки в текст создает новые строки для каждой из
+содержащихся в нем строк, в то время как буфер в режиме символа создает новые строки для любых
+строк
+.Em кроме
+первой и последней строки, которые в нем содержатся.
+Первая и последняя строки вставляются в текущее положение курсора, становясь
+частью текущей строки.
+Если в буфере больше одной строки,
+сама текущая строка будет разделена.
+Все команды
 .Nm ex
-commands which store text into buffers do so in line mode.
-The behaviour of
+команды, которые сохраняют текст в буферах, сохраняют его в линейном режиме.
+Поведение команд
 .Nm vi
-commands depend on their associated motion command:
+команды зависят от связанной с ними команды перемещения:
 .Bl -bullet -offset 6u
 .It
 .Aq Cm control-A ,
@@ -405,9 +404,9 @@ commands depend on their associated motion command:
 .Cm b ,
 .Cm e ,
 .Cm f
-and
+и
 .Cm t
-make the destination buffer character-oriented.
+делает целевой буфер символьно-ориентированным.
 .It
 .Cm j ,
 .Aq Cm control-M ,
@@ -419,9 +418,9 @@ make the destination buffer character-oriented.
 .Cm L ,
 .Cm M ,
 .Cm _
-and
+и
 .Cm |\&
-make the destination buffer line-oriented.
+делает целевой буфер строчно-ориентированным.
 .It
 .Cm $ ,
 .Cm % ,
@@ -433,49 +432,48 @@ make the destination buffer line-oriented.
 .Cm [[ ,
 .Cm ]] ,
 .Cm {
-and
+и
 .Cm }
-make the destination buffer character-oriented, unless the starting and
-end positions are the first and last characters on a line.
-In that case, the buffer is line-oriented.
+назначает буфер назначения символьно-ориентированным, если только начальная и
+конечная позиции не являются первым и последним символами в строке.
+В этом случае буфер будет ориентирован на строку.
 .El
 .Pp
-The
+Команда
 .Nm ex
-command
-.Cm display buffers
-displays the current mode for each buffer.
+
+.Cm отображение буферов
+отображает текущий режим для каждого буфера.
 .Pp
-Buffers named
+Именованные буферы
 .Sq a
-through
+через
 .Sq z
-may be referred to using their uppercase equivalent, in which case new content
-will be appended to the buffer, instead of replacing it.
+могут быть указаны с использованием их аналога в верхнем регистре, в случае чего новое содержимое будет добавлено в буфер, а не заменено им.
 .Pp
-Buffers named
+Именованные буферы
 .Sq 1
-through
+через
 .Sq 9
-are special.
-A region of text modified using the
+являются особенными.
+Область текста, измененная с помощью команды
 .Cm c
 .Pq change
-or
+или
 .Cm d
 .Pq delete
-commands is placed into the numeric buffer
+помещается в числовой буфер
 .Sq 1
-if no other buffer is specified and if it meets one of the following conditions:
+если другой буфер не указан и если он удовлетворяет одному из следующих условий:
 .Bl -bullet -offset 6u
 .It
-It includes characters from more than one line.
+включает в себя символы из более чем одной строки.
 .It
-It is specified using a line-oriented motion.
+задается с помощью линейно-ориентированного движения.
 .It
-It is specified using one of the following motion commands:
+задается с помощью одной из следующих команд перемещения:
 .Aq Cm control-A ,
-.Cm \` Ns Aq Ar character ,
+.Cm \` Ns Aq Ar символ ,
 .Cm n ,
 .Cm N ,
 .Cm % ,
@@ -484,130 +482,129 @@ It is specified using one of the following motion commands:
 .Cm } ,
 .Cm \&( ,
 .Cm \&) ,
-and
+и
 .Cm \&? .
 .El
 .Pp
-Before this copy is done, the previous contents of buffer
+Прежде, чем данная копия будет завершена, предыдущее содержимое буфера будет удалено.
 .Sq 1
-are moved into buffer
+перемещаются в буфер
 .Sq 2 ,
 .Sq 2
-into buffer
+в буфер
 .Sq 3 ,
-and so on.
-The contents of buffer
+и так далее.
+Содержимое буфера
 .Sq 9
-are discarded.
-Note that this rotation occurs
-.Em regardless
-of the user specifying another buffer.
-In
+отбрасывается.
+Обратите внимание, что это вращение происходит
+.Em независимо
+от того, указывает ли пользователь другой буфер.
+В текст
 .Nm vi ,
-text may be explicitly stored into the numeric buffers.
-In this case, the buffer rotation occurs before the replacement of the buffer's
-contents.
-The numeric buffers are only available in
+может быть сохранен в числовых буферах.
+В этом случае перед заменой содержимого буфера происходит смена
+буфера.
+Числовые буферы доступны только в режиме
 .Nm vi
-mode.
-.Sh VI COMMANDS
-The following section describes the commands available in the command
-mode of the
+.
+.Sh VI КОМАНДЫ
+Следующий раздел описывает команды, доступные в командном
+режиме
 .Nm vi
-editor.
-The following words have a special meaning in the commands description:
+редактора.
+Следующие слова имеют особое значение в описании команд:
 .Pp
 .Bl -tag -width bigword -compact -offset 3u
 .It Ar bigword
-A set of non-whitespace characters.
-.It Ar buffer
-Temporary area where commands may place text.
-If not specified, the default buffer is used.
-See also
-.Sx BUFFERS ,
-above.
+Набор символов, не содержащих пробелов.
+.It Ar буфер
+Временная область, в которую команды могут перемещать текст.
+Если ничего не указано, используется буфер по умолчанию.
+См. также
+.Sx БУФЕРЫ ,
+расположенные выше.
 .It Ar count
-A positive number used to specify the desired number of iterations
-of a command.
-It defaults to 1 if not specified.
+Положительное число, используемое для указания желаемого количества повторений
+команды.
+По умолчанию значение равно 1, если не указано иное.
 .It Ar motion
-A cursor movement command which indicates the other end of the affected region
-of text, the first being the current cursor position.
-Repeating the command character makes it affect the whole current line.
-.It Ar word
-A sequence of letters, digits or underscores.
+Это команда перемещения курсора, которая указывает на другой конец затрагиваемой области текста, причем первым является текущее положение курсора.
+Повторение символа команды приводит к изменению всей текущей строки.
+Это слово
+Последовательность букв, цифр или знаков подчеркивания.
 .El
 .Pp
 .Ar buffer
-and
+и
 .Ar count ,
-if both present, may be specified in any order.
+если присутствуют оба параметра, они могут быть указаны в любом порядке.
 .Ar motion
-and
+и
 .Ar count ,
-if both present, are effectively multiplied together
-and considered part of the motion.
+если присутствуют оба параметра, они эффективно умножаются вместе
+и считаются частью движения.
 .Pp
 .Bl -tag -width Ds -compact
 .It Xo
 .Aq Cm control-A
 .Xc
-Search forward
-for the word starting at the cursor position.
+Выполняет поиск
+по слову, начинающемуся с позиции курсора.
 .Pp
 .It Xo
 .Op Ar count
 .Aq Cm control-B
 .Xc
-Page backwards
-.Ar count
-screens.
-Two lines of overlap are maintained, if possible.
+Экраны
+.Ar обратного отсчета 
+страниц.
+По возможности сохраняйте две линии перекрытия.
 .Pp
 .It Xo
 .Op Ar count
 .Aq Cm control-D
 .Xc
-Scroll forward
+Прокручивает страницу вперед
+.Ar считая
+строки.
+Если
 .Ar count
-lines.
-If
-.Ar count
-is not given, scroll forward the number of lines specified by the last
+не задано, нужно прокрутить вперед на количество строк, указанное последним
 .Aq Cm control-D
-or
+или
 .Aq Cm control-U
-command.
-If this is the first
+командами.
+Если это первая команда
 .Aq Cm control-D
-command, scroll half the number of lines in the current screen.
+прокрутите половину количества строк на текущем экране.
 .Pp
 .It Xo
 .Op Ar count
 .Aq Cm control-E
 .Xc
-Scroll forward
+Листает вперед
 .Ar count
-lines, leaving the current line and column as is, if possible.
+строки, оставляя текущую строку и столбец как есть, если это возможно.
 .Pp
 .It Xo
 .Op Ar count
 .Aq Cm control-F
 .Xc
-Page forward
+Перемотка страницы вперед
 .Ar count
-screens.
-Two lines of overlap are maintained, if possible.
+экраны.
+По возможности сохраняйте две линии перекрытия.
 .Pp
 .It Aq Cm control-G
-Display the following file information:
-the file name
+Отобразить следующую информацию о файле:
+имя файла
 .Pq as given to Nm vi ;
-whether the file has been modified since it was last written;
-if the file is read-only;
-the current line number;
-the total number of lines in the file;
-and the current line number as a percentage of the total lines in the file.
+изменялся ли файл с момента его последней записи;
+если файл доступен только для чтения;
+номер текущей строки;
+общее количество строк в файле;
+и номер текущей строки в процентах от общего количества строк в файле.
 .Pp
 .It Xo
 .Op Ar count
@@ -617,9 +614,9 @@ and the current line number as a percentage of the total lines in the file.
 .Op Ar count
 .Cm h
 .Xc
-Move the cursor back
+Перемесщает курсор назад
 .Ar count
-characters in the current line.
+символы в текущей строке.
 .Pp
 .It Xo
 .Op Ar count
@@ -633,13 +630,13 @@ characters in the current line.
 .Op Ar count
 .Cm j
 .Xc
-Move the cursor down
-.Ar count
-lines without changing the current column.
+Перемещает курсор вниз
+.Ar считает
+строки без изменения текущего столбца.
 .Pp
 .It Aq Cm control-L
 .It Aq Cm control-R
-Repaint the screen.
+Перекрасьте экран.
 .Pp
 .It Xo
 .Op Ar count
@@ -649,9 +646,9 @@ Repaint the screen.
 .Op Ar count
 .Cm +
 .Xc
-Move the cursor down
-.Ar count
-lines to the first non-blank character of that line.
+Перемещает курсор вниз
+.Ar считает
+строки до первого непустого символа этой строки.
 .Pp
 .It Xo
 .Op Ar count
@@ -661,56 +658,56 @@ lines to the first non-blank character of that line.
 .Op Ar count
 .Cm k
 .Xc
-Move the cursor up
-.Ar count
-lines, without changing the current column.
+Перемещает курсор вверх
+.Ar считает
+строк, без изменения текущего столбца.
 .Pp
 .It Aq Cm control-T
-Return to the most recent tag context.
+Возвращает к самому последнему контексту тега.
 .Pp
 .It Xo
 .Op Ar count
 .Aq Cm control-U
 .Xc
-Scroll backwards
-.Ar count
-lines.
-If
-.Ar count
-is not given, scroll backwards the number of lines specified by the last
+Прокручивает назад
+.Ar считает
+строки.
+Если значение
+.Ar счета
+не задано, прокрутите назад на количество строк, указанное в последней команде
 .Aq Cm control-D
-or
+или
 .Aq Cm control-U
-command.
-If this is the first
+.
+Если это первая команда
 .Aq Cm control-U
-command, scroll half the number of lines in the current screen.
+прокручивает половину количества строк на текущем экране.
 .Pp
 .It Aq Cm control-W
-Switch to the next lower screen in the window,
-or to the first screen if there are no lower screens in the window.
+Переключает на следующий нижний экран в окне
+или на первый экран, если в окне нет нижних экранов.
 .Pp
 .It Xo
 .Op Ar count
 .Aq Cm control-Y
 .Xc
-Scroll backwards
-.Ar count
-lines, leaving the current line and column as is, if possible.
+Перематывает назад
+.Ar считает
+строки, оставляя текущую строку и столбец как есть, если возможно.
 .Pp
 .It Aq Cm control-Z
-Suspend the current editor session.
+Приостанавливает текущий сеанс редактирования.
 .Pp
 .It Aq Cm escape
-Execute the
+Выполняет команду
 .Nm ex
-command being entered, or cancel it if it is only partial.
+ввода, или отмены, если она является только частичной.
 .Pp
 .It Aq Cm control-]
-Push a tag reference onto the tag stack.
+Помещает ссылку на тег в стек тегов.
 .Pp
 .It Aq Cm control-\(ha
-Switch to the most recently edited file.
+Переключает на самый последний отредактированный файл.
 .Pp
 .It Xo
 .Op Ar count
@@ -720,9 +717,9 @@ Switch to the most recently edited file.
 .Op Ar count
 .Cm l
 .Xc
-Move the cursor forward
-.Ar count
-characters without changing the current line.
+Перемещает курсор вперед
+.Ar считает
+символы без изменения текущей строки.
 .Pp
 .It Xo
 .Op Ar count
@@ -730,39 +727,40 @@ characters without changing the current line.
 .Ar motion shell-argument(s)
 .Aq Li carriage-return
 .Xc
-Replace the lines spanned by
-.Ar count
-and
-.Ar motion
-with the output
-.Pq standard output and standard error
-of the program named by the
-.Cm shell
-option, called with a
+Заменяет линии, пересекаемые
+.Ar счет
+и
+.Ar движение
+с выходом данных
+.Pq стандартный вывод и стандартная ошибка
+программы, названной пользователем
+Параметр
+.Cm оболочки
+ вызываемый с помощью
 .Fl c
-flag followed by the
+флаг, за которым следует
 .Ar shell-argument(s)
-.Pq bundled into a single argument .
-Within
+.Pq объединенные в один аргумент .
+Внутри
 .Ar shell-argument(s) ,
-the
+
 .Sq % ,
 .Sq #
-and
+и
 .Sq !\&
-characters are expanded to the current file name,
-the previous current file name,
-and the command text of the previous
+символы расширяются до текущего имени файла,
+предыдущего текущего имени файла
+и текста команды предыдущего
 .Cm !\&
-or
+или
 .Cm :!
-commands, respectively.
-The special meaning of
+команды, соответственно.
+Особое значение 
 .Sq % ,
 .Sq #
-and
+и
 .Sq !\&
-can be overridden by escaping them with a backslash.
+их можно переопределить, экранируя обратной косой чертой.
 .Pp
 .It Xo
 .Op Ar count
@@ -771,25 +769,25 @@ can be overridden by escaping them with a backslash.
 .Cm # | + | -
 .Sm on
 .Xc
-Increment
+Возрастание
 .Pq trailing So # Sc or So + Sc
-or decrement
+или уменьшение
 .Pq trailing Sq -
-the number under the cursor by
+число под курсором с помощью
 .Ar count ,
-starting at the cursor position or at the first non-blank
-character following it.
-Numbers with a leading
+начиная с позиции курсора или с первого непустого
+символа, следующего за ним.
+Цифры с начальным значением
 .Sq 0x
-or
+или
 .Sq 0X
-are interpreted as hexadecimal numbers.
-Numbers with a leading
+интерпретируются как шестнадцатеричные числа.
+Числа с начальным
 .Sq 0
-are interpreted as octal numbers unless they contain a non-octal digit.
-Other numbers may be prefixed with a
+интерпретируются как восьмеричные числа, если только они не содержат не восьмеричную цифру.
+Другие числа могут иметь префикс в виде
 .Sq +
-or
+или
 .Sq -
 sign.
 .Pp
@@ -797,21 +795,21 @@ sign.
 .Op Ar count
 .Cm $
 .Xc
-Move the cursor to the end of a line.
+Перемещает курсор в конец строки.
 If
-.Ar count
-is specified, additionally move the cursor down
-.Ar count
-\(mi 1 lines.
+.Ar счет
+указан, дополнительно перемещая курсор вниз
+.Ar счет
+\(mi 1 линии.
 .Pp
 .It Cm %
-Move to the
-.Cm matchchars
-character matching
-the one found at the cursor position or the closest to the right of it.
+Переход к
+.Cm matchars
+символ matchchars соответствует
+символу, находящемуся в позиции курсора или ближайшему справа от него.
 .Pp
 .It Cm &
-Repeat the previous substitution command on the current line.
+Повторяет предыдущую команду подстановки в текущей строке.
 .Pp
 .It Xo
 .Cm \(aq Ns Aq Ar character
@@ -819,15 +817,15 @@ Repeat the previous substitution command on the current line.
 .It Xo
 .Cm \` Ns Aq Ar character
 .Xc
-Return to the cursor position marked by the character
+Возвращает в положение курсора, отмеченное символом
 .Ar character ,
-or, if
-.Ar character
-is
+или, если
+.Ar символ
+
 .Sq \(aq
-or
+или
 .Sq \` ,
-to the position of the cursor before the last of the following commands:
+к положению курсора перед последней из следующих команд:
 .Aq Cm control-A ,
 .Aq Cm control-T ,
 .Aq Cm control-] ,
@@ -845,69 +843,67 @@ to the position of the cursor before the last of the following commands:
 .Cm ]] ,
 .Cm { ,
 .Cm } .
-The first form returns to the first non-blank character of the line marked by
-.Ar character .
-The second form returns to the line and column marked by
-.Ar character .
+Первая форма возвращает к первому непустому символу строки, отмеченной
+.Ar символом .
+Вторая форма возвращает к строке и столбцу, отмеченной
+.Ar символом .
 .Pp
 .It Xo
-.Op Ar count
+.Op Ar считает
 .Cm \&(
 .Xc
 .It Xo
-.Op Ar count
+.Op Ar считает
 .Cm \&)
 .Xc
-Move
-.Ar count
-sentences backward or forward, respectively.
-A sentence is an area of text that begins with the first nonblank character
-following the previous sentence, paragraph, or section
-boundary and continues until the next period, exclamation point,
-or question mark character, followed by any number of closing parentheses,
-brackets, double or single quote characters, followed by
-either an end-of-line or two whitespace characters.
-Groups of empty lines
-.Pq or lines containing only whitespace characters
-are treated as a single sentence.
+Перемещает
+.Ar счет
+предложения в обратном или прямом направлении, соответственно.
+Предложение - это область текста, которая начинается с первого непустого символа, следующего за предыдущим предложением, абзацем или
+разделом, и продолжается до следующей точки, восклицательного
+знака или вопросительного знака, за которыми следует любое количество закрывающих скобок,
+скобочных скобок, двойных или одинарных кавычек, за которыми следует
+конец-конец строки или два пробельных символа.
+Группы пустых строк
+.Pq или строки, содержащие только пробельные символы, рассматриваются как единое предложение.
 .Pp
 .It Xo
-.Op Ar count
+.Op Ar счет
 .Cm ,\&
 .Xc
-Reverse find character
-.Pq i.e., the last Cm F , f , T No or Cm t No command
-.Ar count
-times.
+Обратный символ поиска
+.Pq i.e., the last Cm F , f , T No or Cm t отсуствие команды
+.Ar счета
+времена.
 .Pp
 .It Xo
-.Op Ar count
+.Op Ar счет
 .Cm -
 .Xc
-Move to the first non-blank character of the previous line,
-.Ar count
-times.
+Переходит к первому непустому символу предыдущей строки,
+.Ar считает
+времена.
 .Pp
 .It Xo
-.Op Ar count
+.Op Ar счет
 .Cm .\&
 .Xc
-Repeat the last
+Повторяет последнюю команду
 .Nm vi
-command that modified text.
-.Ar count
-replaces both the
-.Ar count
-argument of the repeated command and that of the associated
-.Ar motion .
-If the
+, которая редактирует текст.
+.Ar счет
+заменяет оба
+.Ar счет
+параметр повторяющейся команды и параметра связанного с ней
+.Ar движение .
+Если команда
 .Cm .\&
-command repeats the
+повторяет команду
 .Cm u
-command, the change log is rolled forward or backward, depending on the action
-of the
+журнал изменений прокручивается вперед или назад, в зависимости от действия
+пользователя.
 .Cm u
-command.
+команда.
 .Pp
 .It Xo
 .Pf / Ns Ar RE
@@ -931,61 +927,61 @@ command.
 .Xc
 .It Cm N
 .It Cm n
-Search forward
+Ищет дальше
 .Pq Sq /
-or backward
+или обратно
 .Pq Sq ?\&
-for a regular expression.
+для регулярного выражения.
 .Cm n
-and
+и
 .Cm N
-repeat the last search in the same or opposite directions, respectively.
-If
+повторяет последний поиск в том же или противоположном направлениях соответственно.
+Если
 .Ar RE
-is empty, the last search regular expression is used.
-If
+пуст, используется последнее поисковое регулярное выражение.
+Если
 .Ar offset
-is specified, the cursor is placed
+указан, то курсор помещен
 .Ar offset
-lines before or after the matched regular expression.
-If either
+строки до или после соответствующего регулярного выражения.
+Если либо
 .Cm n
-or
+либо
 .Cm N
-commands are used as motion components for the
+команды используются в качестве компонентов движения для
 .Cm !\&
-command, there will be no prompt for the text of the command and the previous
+команда, не будет выдан запрос на ввод текста команды и предыдущего
 .Cm !\&
-will be executed.
-Multiple search patterns may be grouped together by delimiting them with
-semicolons and zero or more whitespace characters.
-These patterns are evaluated from left to right with the final cursor position
-determined by the last search pattern.
+будет выполнен.
+Несколько шаблонов поиска можно сгруппировать, разделив их точкой с
+запятой и нулем или более пробельными символами.
+Эти шаблоны вычисляются слева направо, а конечное положение курсора
+определяется последним шаблоном поиска.
 A
 .Cm z
-command may be appended to the closed search expressions to reposition the
-result line.
+команда может быть добавлена к закрытым поисковым выражениям, чтобы изменить положение
+строки результатов.
 .Pp
 .It Cm 0
-Move to the first character in the current line.
+Перейдите к первому символу в текущей строке.
 .Pp
 .It Cm :\&
-Execute an
+Выполняет команду
 .Nm ex
-command.
+.
 .Pp
 .It Xo
-.Op Ar count
+.Op Ar счет
 .Cm ;\&
 .Xc
-Repeat the last character find
-(i.e., the last
+Повторяет поиск последнего символа
+(то есть, последнюю команду
 .Cm F , f , T
-or
+или
 .Cm t
-command)
-.Ar count
-times.
+)
+.Ar считает
+времена.
 .Pp
 .It Xo
 .Op Ar count
@@ -997,46 +993,46 @@ times.
 .Cm >
 .Ar motion
 .Xc
-Shift
-.Ar count
-lines left or right, respectively, by an amount of
+Смена
+.Ar считает
+линии влево или вправо, соответственно, на величину
 .Cm shiftwidth .
 .Pp
-.It Cm @ Ar buffer
-Execute a named
-.Ar buffer
-as
+.It Cm @ Ar буфер
+Выполняет названный
+.Ar буфер
+как
 .Nm vi
-commands.
-The buffer may include
+команды.
+Буфер может включать в себя команды
 .Nm ex
-commands too, but they must be expressed as a
+тоже, но они должны быть выражены в виде
 .Cm \&:
-command.
+команды.
 If
 .Ar buffer
 is
 .Sq @
 or
 .Sq * ,
-then the last buffer executed shall be used.
+затем должен быть использован последний выполненный буфер.
 .Pp
 .It Xo
-.Op Ar count
+.Op Ar счет
 .Cm A
 .Xc
-Enter input mode, appending the text after the end of the line.
-If a
+Выполняет вход в режим ввода, добавляя текст после конца строки.
+Если
+.Ar счет
+при вводе параметра вводимые символы повторяются
 .Ar count
-argument is given, the characters input are repeated
-.Ar count
-\(mi 1 times after input mode is exited.
+\(mi 1 раз после выхода из режима ввода.
 .Pp
 .It Xo
 .Op Ar count
 .Cm B
 .Xc
-Move backwards
+Передвигается назад
 .Ar count
 bigwords.
 .Pp
@@ -1044,31 +1040,31 @@ bigwords.
 .Op Ar buffer
 .Cm C
 .Xc
-Change text from the current position to the end-of-line.
-If
-.Ar buffer
-is specified,
+Изменяет текст с текущей позиции на конец строки.
+Если
+.Ar буфер
+указан,
 .Dq yank
 the deleted text into
-.Ar buffer .
+.Ar буфер .
 .Pp
 .It Xo
-.Op Ar buffer
+.Op Ar буфер
 .Cm D
 .Xc
-Delete text from the current position to the end-of-line.
-If
-.Ar buffer
-is specified,
+Удаляет текст с текущей позиции до конца строки.
+Если
+.Ar буфер
+указывается,
 .Dq yank
-the deleted text into
-.Ar buffer .
+удаленный текст в
+.Ar буфер .
 .Pp
 .It Xo
 .Op Ar count
 .Cm E
 .Xc
-Move forward
+Передвигается вперед
 .Ar count
 end-of-bigwords.
 .Pp
@@ -1076,72 +1072,70 @@ end-of-bigwords.
 .Op Ar count
 .Cm F Aq Ar character
 .Xc
-Search
-.Ar count
-times backward through the current line for
-.Aq Ar character .
+Производит поиск
+.Ar отсчитывает
+время в обратном порядке по текущей строке для
+.Aq Ar символа .
 .Pp
 .It Xo
 .Op Ar count
 .Cm G
 .Xc
-Move to line
-.Ar count ,
-or the last line of the file if
-.Ar count
-is not specified.
+Перемещается к строке
+.Ar количество ,
+или последняя строка файла , если
+.Ar количество
+не указано.
 .Pp
 .It Xo
 .Op Ar count
 .Cm H
 .Xc
-Move to the screen line
-.Ar count
-\(mi 1 lines below the top of the screen.
+Переходит к строке экрана
+.Ar количество
+\(mi на 1 строчку ниже верхней части экрана.
 .Pp
 .It Xo
-.Op Ar count
+.Op Ar количество
 .Cm I
 .Xc
-Enter input mode, inserting the text at the beginning of the line.
-If a
-.Ar count
-argument is given,
-the characters input are repeated
-.Ar count
-\(mi 1 more times.
+Входит в режим ввода, вставив текст в начало строки.
+Если в параметре
+.Ar количество ,
+вводимые символы повторяются
+.Ar считает
+\(mi еще 1 раз.
 .Pp
 .It Xo
 .Op Ar count
 .Cm J
 .Xc
 Join
-.Ar count
-lines with the current line.
-The spacing between two joined lines is set to two whitespace characters if the
-former ends with a question mark, a period or an exclamation point.
-It is set to one whitespace character otherwise.
+.Ar отсчитывает
+строки от текущей строки.
+Интервал между двумя соединяемыми строками устанавливается равным двум пробельным символам, если первая заканчивается вопросительным знаком, точкой или восклицательным знаком.
+В противном случае он устанавливается равным одному пробельному символу.
 .Pp
 .It Xo
 .Op Ar count
 .Cm L
 .Xc
-Move to the screen line
+Переходит к строке экрана
 .Ar count
-\(mi 1 lines above the bottom of the screen.
+\(mi на 1 строчку выше нижней части экрана.
 .Pp
 .It Cm M
-Move to the screen line in the middle of the screen.
+Переходит к экранной строке в середине экрана.
 .Pp
 .It Xo
 .Op Ar count
 .Cm O
 .Xc
-Enter input mode, appending text in a new line above the current line.
-If a
+Входит в режим ввода, добавив текст в новой строке над текущей строкой.
+Если при вводе аргумента 
 .Ar count
-argument is given,
-the characters input are repeated
+вводимые
+символы повторяются
 .Ar count
 \(mi 1 more times.
 .Pp
@@ -1149,65 +1143,65 @@ the characters input are repeated
 .Op Ar buffer
 .Cm P
 .Xc
-Insert text from
+Вставляет текст из
 .Ar buffer
-before the current column if
+перед текущим столбцом, если
 .Ar buffer
-is character-oriented or before the current line if it is line-oriented.
+ориентирован на символы или перед текущей строкой, если она ориентирована на строку.
 .Pp
 .It Cm Q
-Exit
+Выходит
 .Nm vi
-.Pq or visual
-mode and switch to
+.Pq или визуальный
+режим и переключается в
 .Nm ex
-mode.
+режим.
 .Pp
 .It Xo
 .Op Ar count
 .Cm R
 .Xc
-Enter input mode, replacing the characters in the current line.
-If a
+Входит в режим ввода, заменив символы в текущей строке.
+Если аргумент
+.Ar count,
+указан,
+вводимые символы повторяются
 .Ar count
-argument is given,
-the characters input are repeated
-.Ar count
-\(mi 1 more times upon exit from insert mode.
+\(mi еще 1 раз при выходе из режима вставки.
 .Pp
 .It Xo
 .Op Ar buffer
 .Op Ar count
 .Cm S
 .Xc
-Substitute
+Заместитель
 .Ar count
-lines.
-If
+строк.
+Если
 .Ar buffer
-is specified,
+указан,
 .Dq yank
-the deleted text into
-.Ar buffer .
+удаленный текст в
+.Ar буфер .
 .Pp
 .It Xo
 .Op Ar count
 .Cm T
 .Aq Ar character
 .Xc
-Search backwards,
+Ищет в обратном направлении,
 .Ar count
-times, through the current line for the character after the specified
+разы, через текущую строку для символа после указанного
 .Aq Ar character .
 .Pp
 .It Cm U
-Restore the current line to its state before the cursor last moved to it.
+Восстанавливает текущую строку в том состоянии, в котором она находилась до последнего перемещения курсора на нее.
 .Pp
 .It Xo
 .Op Ar count
 .Cm W
 .Xc
-Move forward
+Передвигается вперед
 .Ar count
 bigwords.
 .Pp
@@ -1216,14 +1210,14 @@ bigwords.
 .Op Ar count
 .Cm X
 .Xc
-Delete
+Удаляет
 .Ar count
-characters before the cursor, on the current line.
-If
-.Ar buffer
-is specified,
+символы перед курсором в текущей строке.
+Если
+.Ar буфер
+указан
 .Dq yank
-the deleted text into
+удаленный текст в
 .Ar buffer .
 .Pp
 .It Xo
@@ -1231,19 +1225,19 @@ the deleted text into
 .Op Ar count
 .Cm Y
 .Xc
-Copy
+Копирует
 .Pq or Dq yank
 .Ar count
 lines into
 .Ar buffer .
 .Pp
 .It Cm ZZ
-Write the file and exit
+Записывает файл и завершите работу
 .Nm vi
-if there are no more files to edit.
-Entering two
+если больше нет файлов для редактирования.
+Ввод двух
 .Dq quit
-commands in a row ignores any remaining file to edit.
+команд подряд игнорирует все оставшиеся файлы для редактирования.
 .Pp
 .It Xo
 .Op Ar count
@@ -1251,46 +1245,46 @@ commands in a row ignores any remaining file to edit.
 .Xc
 Back up
 .Ar count
-section boundaries.
+границы раздела.
 .Pp
 .It Xo
 .Op Ar count
 .Cm ]]
 .Xc
-Move forward
+Передвигается вперед
 .Ar count
-section boundaries.
+границы раздела.
 .Pp
 .It Cm \(ha
-Move to the first non-blank character on the current line.
+Переходит к первому непустому символу в текущей строке.
 .Pp
 .It Xo
 .Op Ar count
 .Cm _
 .Xc
-Move down
+Передвигается вниз
 .Ar count
-\(mi 1 lines, to the first non-blank character.
+\(mi 1 строка, до первого непустого символа.
 .Pp
 .It Xo
 .Op Ar count
 .Cm a
 .Xc
-Enter input mode, appending the text after the cursor.
-If a
+Входит в режим ввода, добавляя текст после курсора.
+Если параметр
 .Ar count
-argument is given,
-the characters input are repeated
+указан,
+вводимые символы повторяются
 .Ar count
-number of times.
+некоторое количество раз.
 .Pp
 .It Xo
 .Op Ar count
 .Cm b
 .Xc
-Move backwards
+Передвигается назад
 .Ar count
-words.
+слов.
 .Pp
 .It Xo
 .Op Ar buffer
@@ -1298,15 +1292,15 @@ words.
 .Cm c
 .Ar motion
 .Xc
-Change the region of text described by
+Изменяет область текста, описываемую
 .Ar count
-and
+и
 .Ar motion .
-If
+Если
 .Ar buffer
-is specified,
+указан,
 .Dq yank
-the changed text into
+измененный текст в
 .Ar buffer .
 .Pp
 .It Xo
@@ -1315,22 +1309,22 @@ the changed text into
 .Cm d
 .Ar motion
 .Xc
-Delete the region of text described by
+Удаляет область текста, описанную
 .Ar count
-and
+и
 .Ar motion .
-If
+Если
 .Ar buffer
-is specified,
+указан,
 .Dq yank
-the deleted text into
+удаленный текст в
 .Ar buffer .
 .Pp
 .It Xo
 .Op Ar count
 .Cm e
 .Xc
-Move forward
+Передвигается вперед
 .Ar count
 end-of-words.
 .Pp
@@ -1338,62 +1332,62 @@ end-of-words.
 .Op Ar count
 .Cm f Aq Ar character
 .Xc
-Search forward,
+Ищет дальше,
 .Ar count
-times, through the rest of the current line for
+разы, через оставшуюся часть текущей строки для
 .Aq Ar character .
 .Pp
 .It Xo
 .Op Ar count
 .Cm i
 .Xc
-Enter input mode, inserting the text before the cursor.
-If a
+Войдите в режим ввода, вставив текст перед курсором.
+Если
 .Ar count
-argument is given,
-the characters input are repeated
+при вводе аргумента вводимые
+символы повторяются
 .Ar count
-number of times.
+количество рах.
 .Pp
 .It Xo
 .Cm m
 .Aq Ar character
 .Xc
-Save the current context
-.Pq line and column
-as
-.Aq Ar character .
+Сохраняет текущий контекст
+.Pq строки и столбца
+как
+.Aq Ar символы .
 .Pp
 .It Xo
 .Op Ar count
 .Cm o
 .Xc
-Enter input mode, appending text in a new line under the current line.
-If a
+Входит в режим ввода, добавив текст в новой строке под текущей строкой.
+Если параметр
 .Ar count
-argument is given,
-the characters input are repeated
+при вводе аргумента вводимые
+символы повторяются
 .Ar count
-\(mi 1 more times.
+\(mi еще 1 раз
 .Pp
 .It Xo
 .Op Ar buffer
 .Cm p
 .Xc
-Append text from
+Добавление текста из
 .Ar buffer .
-Text is appended after the current column if
+Текст добавляется после текущего столбца, если
 .Ar buffer
-is character oriented, or after the current line otherwise.
+ориентирован на символы или, в противном случае, после текущей строки.
 .Pp
 .It Xo
 .Op Ar count
 .Cm r
 .Aq Ar character
 .Xc
-Replace
+Меняет
 .Ar count
-characters with
+символы с 
 .Ar character .
 .Pp
 .It Xo
@@ -1403,12 +1397,12 @@ characters with
 .Xc
 Substitute
 .Ar count
-characters in the current line starting with the current character.
-If
+символы в текущей строке, начинающиеся с текущего символа.
+Если
 .Ar buffer
-is specified,
+указан,
 .Dq yank
-the substituted text into
+замененный текст в
 .Ar buffer .
 .Pp
 .It Xo
@@ -1417,23 +1411,23 @@ the substituted text into
 .Aq Ar character
 .Xc
 Search forward,
-.Ar count
-times, through the current line for the character immediately before
+.Ar количество
+раз, через текущую строку для символа непосредственно перед
 .Aq Ar character .
 .Pp
 .It Cm u
-Undo the last change made to the file.
-If repeated, the
+Отменяет последнее изменение, внесенное в файл.
+При повторном изменении файл
 .Cm u
-command alternates between these two states.
-The
+команда переключается между этими двумя состояниями.
+Команда
 .Cm .\&
-command, when used immediately after
+при использовании сразу после
 .Cm u ,
-causes the change log to be rolled forward or backward, depending on the action
-of the
+приводит к прокрутке журнала изменений вперед или назад, в зависимости от действия
+пользователя.
 .Cm u
-command.
+команда.
 .Pp
 .It Xo
 .Op Ar count
@@ -1450,8 +1444,8 @@ words.
 .Xc
 Delete
 .Ar count
-characters at the current cursor position, but no more than there are till the
-end of the line.
+символы в текущем положении курсора, но не более, чем до
+конца строки.
 .Pp
 .It Xo
 .Op Ar buffer
@@ -1459,13 +1453,13 @@ end of the line.
 .Cm y
 .Ar motion
 .Xc
-Copy
+Копирует
 .Pq or Dq yank
-a text region specified by
+текстовая область, заданная с помощью
 .Ar count
-and
+и
 .Ar motion
-into a buffer.
+в буфер.
 .Pp
 .It Xo
 .Op Ar count1
@@ -1473,161 +1467,161 @@ into a buffer.
 .Op Ar count2
 .Cm type
 .Xc
-Redraw, optionally repositioning and resizing the screen.
-If
+Переписывает, при необходимости изменив положение и размер экрана.
+Если
 .Ar count2
-is specified, limit the screen size to
+указан, ограничьте размер экрана до
 .Ar count2
-lines.
-The following
-.Cm type
-characters may be used:
+строки.
+Следующий
+.Cm тип
+могут быть использованы символы:
 .Bl -tag -width Ds
 .It Cm +
 If
 .Ar count1
-is specified, place the line
+указан, помещается в строку
 .Ar count1
-at the top of the screen.
-Otherwise, display the screen after the current screen.
+в верхней части экрана.
+В противном случае отобразите экран после текущего экрана.
 .It Aq Cm carriage-return
-Place the line
+Помещает строку
 .Ar count1
-at the top of the screen.
+в верхней части экрана.
 .It Cm .\&
-Place the line
+Помещает строку
 .Ar count1
-in the center of the screen.
+в центре экрана
 .It Cm -
-Place the line
+Продолжжает линию
 .Ar count1
-at the bottom of the screen.
+в нижней части экрана.
 .It Cm \(ha
-If
+Если
 .Ar count1
-is given,
-display the screen before the screen before
+задан,
+отображается экран перед экраном 
 .Ar count1
-.Pq i.e., 2 screens before .
-Otherwise, display the screen before the current screen.
+.Pq т.е. за 2 экрана до.
+В противном случае отобразите экран перед текущим экраном.
 .El
 .Pp
 .It Xo
 .Op Ar count
 .Cm {\&
 .Xc
-Move backward
+Передвигается назад
 .Ar count
-paragraphs.
+за абзацы.
 .Pp
 .It Xo
 .Op Ar column
 .Cm |\&
 .Xc
-Move to a specific
-.Ar column
-position on the current line.
-If
-.Ar column
-is omitted,
-move to the start of the current line.
+Переходит к определенному
+.Ar столбцу ,
+расположенному в текущей строке.
+Если
+.Ar столбец
+опущен,
+перемещает в начало текущей строки.
 .Pp
 .It Xo
 .Op Ar count
 .Cm }\&
 .Xc
-Move forward
+Передвигается вперед
 .Ar count
-paragraphs.
+абзацы.
 .Pp
 .It Xo
 .Op Ar count
 .Cm \(ti
-.Ar motion
+.Ar ход
 .Xc
 If the
 .Cm tildeop
-option is not set, reverse the case of the next
+если параметр не установлен, измените регистр следующего
 .Ar count
-character(s) and no
-.Ar motion
-can be specified.
-Otherwise
-.Ar motion
-is mandatory and
+символ(ы) и нет
+.Ar движение
+может быть задано.
+Иначе
+.Ar иначе
+является обязательным и
 .Cm \(ti
-reverses the case of the characters in a text region specified by the
+изменяет регистр символов в текстовой области на противоположный, заданный параметром
 .Ar count
-and
+и
 .Ar motion .
 .Pp
-.It Aq Cm interrupt
-Interrupt the current operation.
-The
-.Aq interrupt
-character is usually
+.It Aq Cm прерывает
+Прервите текущую операцию.
+К символу
+.Aq прерывания
+символом обычно является
+.Aq control-C .
 .Aq control-C .
 .El
-.Sh VI TEXT INPUT COMMANDS
-The following section describes the commands available in the text input mode
-of the
-.Nm vi
-editor.
+.Sh VI КОМАНДЫ ВВОДА ТЕКСТА
+В следующем разделе описываются команды, доступные в режиме ввода текста
+редактора .Nm vi
+.
 .Pp
 .Bl -tag -width Ds -compact
 .It Aq Cm nul
-Replay the previous input.
+Воспроизводит предыдущий ввод.
 .Pp
 .It Aq Cm control-D
-Erase to the previous
+Стирает предыдущие
 .Ar shiftwidth
-column boundary.
+границы столбца.
 .Pp
 .It Cm \(ha Ns Aq Cm control-D
-Erase all of the autoindent characters, and reset the autoindent level.
+Удаляет все символы автоиндентирования и сбросьте уровень автоиндентирования.
 .Pp
 .It Cm 0 Ns Aq Cm control-D
-Erase all of the autoindent characters.
+Стирает все автоиндентируемые символы.
 .Pp
 .It Aq Cm control-T
-Insert sufficient
+Вставляет достаточное количество
 .Aq tab
-and
+и
 .Aq space
-characters to move forward to the next
+символы для перехода к следующей
 .Ar shiftwidth
-column boundary.
-If the
+границе столбца.
+Если
 .Cm expandtab
-option is set, only insert
+параметр установлен, остается только вставить
 .Aq space
-characters.
+символы.
 .Pp
 .It Aq Cm erase
 .It Aq Cm control-H
-Erase the last character.
+Стирает последний символ.
 .Pp
 .It Aq Cm literal next
-Escape the next character from any special meaning.
-The
+Избавляет следующий символ от какого-либо особого значения.
+Символ
 .Aq literal\ \&next
-character is usually
+обычно
 .Aq control-V .
 .Pp
 .It Aq Cm escape
-Resolve all text input into the file, and return to command mode.
+Разрешает весь ввод текста в файл и возвращается в командный режим.
 .Pp
 .It Aq Cm line erase
-Erase the current line.
+Стирает текущую строку.
 .Pp
 .It Aq Cm control-W
 .It Aq Cm word erase
-Erase the last word.
-The definition of word is dependent on the
+Стирает последнее слово.
+Определение слова зависит от параметров
 .Cm altwerase
-and
+и
 .Cm ttywerase
-options.
+.
 .Pp
 .Sm off
 .It Xo
@@ -1636,24 +1630,24 @@ options.
 .Cm +
 .Xc
 .Sm on
-Insert a character with the specified hexadecimal value into the text.
+Вставляет в текст символ с указанным шестнадцатеричным значением.
 .Pp
 .It Aq Cm interrupt
-Interrupt text input mode, returning to command mode.
-The
+Прерывает режим ввода текста, возвращаясь в командный режим.
+Для
 .Aq interrupt
-character is usually
+символов обычно
 .Aq control-C .
 .El
-.Sh EX COMMANDS
-The following section describes the commands available in the
+.Sh ПРОШЛЫЕ КОМАНДЫ
+В последующем разделе описываются команды, доступные в
 .Nm ex
-editor.
-In each entry below, the tag line is a usage synopsis for the command.
+редактор.
+В каждой записи ниже строка тега представляет собой краткое описание использования команды.
 .Pp
 .Bl -tag -width Ds -compact
 .It Aq Cm end-of-file
-Scroll the screen.
+Прокрутите экран.
 .Pp
 .It Cm !\& Ar argument(s)
 .It Xo
@@ -1661,10 +1655,10 @@ Scroll the screen.
 .Cm !\&
 .Ar argument(s)
 .Xc
-Execute a shell command, or filter lines through a shell command.
+Выполняет команду shell или отфильтруйте строки с помощью команды shell.
 .Pp
 .It Cm \&"
-A comment.
+Комментарий.
 .Pp
 .It Xo
 .Op Ar range
@@ -1678,11 +1672,11 @@ A comment.
 .Op Ar count
 .Op Ar flags
 .Xc
-Display the selected lines, each preceded with its line number.
+Отобразите выбранные строки, каждой из которых предшествует свой номер строки:
 .Pp
 .It Cm @ Ar buffer
 .It Cm * Ar buffer
-Execute a buffer.
+Запускает буфер.
 .Pp
 .It Xo
 .Op Ar range
@@ -1690,18 +1684,18 @@ Execute a buffer.
 .Op Ar count
 .Op Ar flags
 .Xc
-Shift lines left.
+Сдвигает линии влево.
 .Pp
 .It Xo
 .Op Ar line
 .Cm =
 .Op Ar flags
 .Xc
-Display the line number of
-.Ar line .
-If
-.Ar line
-is not specified, display the line number of the last line in the file.
+Отображает номер 
+.Ar строки .
+Если
+.Ar строка
+не указана, выведите номер строки последней строки в файле.
 .Pp
 .It Xo
 .Op Ar range
@@ -1709,34 +1703,34 @@ is not specified, display the line number of the last line in the file.
 .Op Ar count
 .Op Ar flags
 .Xc
-Shift lines right.
+Сдвижение линии вправо.
 .Pp
 .It Xo
 .Cm ab Ns Op Cm breviate
 .Ar lhs rhs
 .Xc
 .Nm vi
-only.
-Add
+только.
+Добавляет
 .Ar lhs
-as an abbreviation for
+как сокращение от
 .Ar rhs
-to the abbreviation list.
+к списку сокращений.
 .Pp
 .It Xo
 .Op Ar line
 .Cm a Ns Op Cm ppend Ns
 .Op Cm !\&
 .Xc
-The input text is appended after the specified line.
+Вводимый текст добавляется после указанной строки.
 .Pp
 .It Cm ar Ns Op Cm gs
-Display the argument list.
+Отобразит список аргументов.
 .Pp
 .It Cm bg
 .Nm vi
 only.
-Background the current screen.
+Фон текущего экрана.
 .Pp
 .It Xo
 .Op Ar range
@@ -1744,7 +1738,7 @@ Background the current screen.
 .Op Cm !\&
 .Op Ar count
 .Xc
-The input text replaces the specified range.
+Введенный текст заменяет указанный диапазон.
 .Pp
 .It Xo
 .Cm chd Ns Op Cm ir Ns
@@ -1756,7 +1750,7 @@ The input text replaces the specified range.
 .Op Ar directory
 .Xc
 Change the current working directory.
-.Pp
+.PpИзмените текущий рабочий каталог.
 .It Xo
 .Op Ar range
 .Cm co Ns Op Cm py
@@ -1769,14 +1763,14 @@ Change the current working directory.
 .Ar line
 .Op Ar flags
 .Xc
-Copy the specified lines after the destination
-.Ar line .
+Скопируйте указанные строки после пункта назначения
+.Ar строки .
 .Pp
 .It Xo
 .Cm cs Ns Op Cm cope
 .Cm add | find | help | kill | reset
 .Xc
-Execute a Cscope command.
+Выполнит команду Cscope.
 .Pp
 .It Xo
 .Op Ar range
@@ -1785,7 +1779,7 @@ Execute a Cscope command.
 .Op Ar count
 .Op Ar flags
 .Xc
-Delete the lines from the file.
+Удалит строки из файла.
 .Pp
 .It Xo
 .Cm di Ns Op Cm splay
@@ -1794,7 +1788,7 @@ Delete the lines from the file.
 .Cm s Ns Oo Cm creens Oc |
 .Cm t Ns Op Cm ags
 .Xc
-Display buffers, Cscope connections, screens or tags.
+Отображает буферы, соединения Cscope, экраны или теги.
 .Pp
 .It Xo
 .Op Cm Ee Ns
@@ -1809,22 +1803,22 @@ Display buffers, Cscope connections, screens or tags.
 .Op Ar +cmd
 .Op Ar file
 .Xc
-Edit a different file. The capitalized command opens a new screen below the
-current screen.
+Отредактирует другой файл. Команда, написанная заглавными буквами, открывает новый экран под
+текущим экраном.
 .Pp
 .It Xo
 .Cm exu Ns Op Cm sage
 .Op Ar command
 .Xc
-Display usage for an
+Использование дисплея для команды
 .Nm ex
-command.
+.
 .Pp
 .It Xo
 .Cm f Ns Op Cm ile
 .Op Ar file
 .Xc
-Display and optionally change the file name.
+Отобразит и при необходимости измените имя файла.
 .Pp
 .It Xo
 .Op Cm Ff Ns
@@ -1832,9 +1826,8 @@ Display and optionally change the file name.
 .Op Ar name
 .Xc
 .Nm vi
-mode only.
-Foreground the specified screen. The capitalized command opens a new screen
-below the current screen.
+только в режиме ожидания.
+Выделите указанный экран на переднем плане. Команда, написанная заглавными буквами, открывает новый экран под текущим экраном.
 .Pp
 .It Xo
 .Op Ar range
@@ -1855,14 +1848,14 @@ or not matching
 a pattern.
 .Pp
 .It Cm he Ns Op Cm lp
-Display a help message.
+Отобразит справочное сообщение.
 .Pp
 .It Xo
 .Op Ar line
 .Cm i Ns Op Cm nsert Ns
 .Op Cm !\&
 .Xc
-The input text is inserted before the specified line.
+Вводимый текст вставляется перед указанной строкой.
 .Pp
 .It Xo
 .Op Ar range
@@ -1871,7 +1864,7 @@ The input text is inserted before the specified line.
 .Op Ar count
 .Op Ar flags
 .Xc
-Join lines of text together.
+Соединяйте строки текста вместе.
 .Pp
 .It Xo
 .Op Ar range
@@ -1879,14 +1872,14 @@ Join lines of text together.
 .Op Ar count
 .Op Ar flags
 .Xc
-Display the lines unambiguously.
+Отображает линии недвусмысленно.
 .Pp
 .It Xo
 .Cm map Ns Op Cm !\&
 .Op Ar lhs rhs
 .Xc
-Define or display maps
-.Pq for Nm vi No only .
+Определение или отображение карт
+.Pq для Nm vi No только .
 .Pp
 .It Xo
 .Op Ar line
@@ -1897,7 +1890,7 @@ Define or display maps
 .Op Ar line
 .Cm k Aq Ar character
 .Xc
-Mark the line with the mark
+Отметит линию меткой
 .Aq Ar character .
 .Pp
 .It Xo
@@ -1905,14 +1898,14 @@ Mark the line with the mark
 .Cm m Ns Op Cm ove
 .Ar line
 .Xc
-Move the specified lines after the target line.
+Переместит указанные линии после целевой линии.
 .Pp
 .It Xo
 .Cm mk Ns Op Cm exrc Ns
 .Op Cm !\&
 .Ar file
 .Xc
-Write the abbreviations, editor options and maps to the specified
+Запишет сокращения, параметры редактора и карты в соответствии с указанным
 .Ar file .
 .Pp
 .It Xo
@@ -1921,8 +1914,7 @@ Write the abbreviations, editor options and maps to the specified
 .Op Cm !\&
 .Op Ar
 .Xc
-Edit the next file from the argument list. The capitalized command opens a
-new screen below the current screen.
+Отредактирует следующий файл из списка аргументов. Команда, написанная с заглавной буквы, открывает новый экран под текущим экраном.
 .\" .Pp
 .\" .It Xo
 .\" .Op Ar line
@@ -1933,18 +1925,17 @@ new screen below the current screen.
 .\" Enter open mode.
 .Pp
 .It Cm pre Ns Op Cm serve
-Save the file in a form that can later be recovered using the
+Сохраните файл в виде, который позже можно будет восстановить с помощью
 .Nm ex
 .Fl r
-option.
+параметр.
 .Pp
 .It Xo
 .Op Cm \&Pp Ns
 .Cm rev Ns Op Cm ious Ns
 .Op Cm !\&
 .Xc
-Edit the previous file from the argument list. The capitalized command opens
-a new screen below the current screen.
+Отредактирует предыдущий файл из списка аргументов. Команда, написанная с заглавной буквы, открывает новый экран под текущим экраном.
 .Pp
 .It Xo
 .Op Ar range
@@ -1952,20 +1943,20 @@ a new screen below the current screen.
 .Op Ar count
 .Op Ar flags
 .Xc
-Display the specified lines.
+Отобразит указанные строки.
 .Pp
 .It Xo
 .Op Ar line
 .Cm pu Ns Op Cm t
 .Op Ar buffer
 .Xc
-Append buffer contents to the current line.
+Добавит содержимое буфера к текущей строке.
 .Pp
 .It Xo
 .Cm q Ns Op Cm uit Ns
 .Op Cm !\&
 .Xc
-End the editing session.
+Завершит сеанс редактирования.
 .Pp
 .It Xo
 .Op Ar line
@@ -1973,15 +1964,15 @@ End the editing session.
 .Op Cm !\&
 .Op Ar file
 .Xc
-Read a file.
+Прочитает файл.
 .Pp
 .It Xo
 .Cm rec Ns Op Cm over
 .Ar file
 .Xc
-Recover
-.Ar file
-if it was previously saved.
+Восстановит
+.Ar файл , 
+если он был ранее сохранен.
 .Pp
 .It Xo
 .Cm res Ns Op Cm ize
@@ -1989,14 +1980,14 @@ if it was previously saved.
 .Ar size
 .Xc
 .Nm vi
-mode only.
-Grow or shrink the current screen.
+только в режиме.
+Увеличивает или уменьшает размер текущего экрана.
 .Pp
 .It Xo
 .Cm rew Ns Op Cm ind Ns
 .Op Cm !\&
 .Xc
-Rewind the argument list.
+Перемотает список аргументов назад.
 .Pp
 .It Xo
 .Cm se Ns Op Cm t
@@ -2007,18 +1998,18 @@ Rewind the argument list.
 .Op option? ...
 .Op Ar all
 .Xc
-Display or set editor options.
+Отобразит или задаст параметры редактора.
 .Pp
 .It Cm sh Ns Op Cm ell
-Run a shell program.
+Запустит программу-оболочку.
 .Pp
 .It Xo
 .Cm so Ns Op Cm urce
 .Ar file
 .Xc
-Read and execute
+Чтение и выполнение команд
 .Nm ex
-commands from a file.
+из файла.
 .Pp
 .It Xo
 .Op Ar range
@@ -2044,46 +2035,46 @@ commands from a file.
 .Op Ar count
 .Op Ar flags
 .Xc
-Make substitutions.
-The
+Делает замены.
+на
 .Ar replace
-field may contain any of the following sequences:
+поле может содержать любую из следующих последовательностей:
 .Bl -tag -width Ds
 .It Sq \*(Am
-The text matched by
+Текст, соответствующий
 .Ar pattern .
 .It Sq \(ti
-The replacement part of the previous
+Заменяющая часть предыдущей
 .Cm substitute
-command.
+команды.
 .It Sq %
-If this is the entire
+Если это весь образец
 .Ar replace
-pattern, the replacement part of the previous
+заменяющий часть предыдущей
 .Cm substitute
-command.
+команды.
 .It Sq \e Ns Ar \(sh
-Where
+Где
 .Sq Ar \(sh
-is an integer from 1 to 9, the text matched by the
+представляет собой целое число от 1 до 9, текст которого соответствует
 .Ar # Ns 'th subexpression in
 .Ar pattern .
 .It Sq \eL
-Causes the characters up to the end of the line of the next occurrence of
+Приводит к тому, что символы располагаются до конца строки при следующем появлении
 .Sq \eE
-or
+или
 .Sq \ee
-to be converted to lowercase.
+для преобразования в нижний регистр.
 .It Sq \el
-Causes the next character to be converted to lowercase.
+Приводит к преобразованию следующего символа в нижний регистр.
 .It Sq \eU
-Causes the characters up to the end of the line of the next occurrence of
+Приводит к тому, что символы располагаются до конца строки при следующем появлении
 .Sq \eE
-or
+или
 .Sq \ee
-to be converted to uppercase.
+для преобразования в верхний регистр.
 .It Sq \eu
-Causes the next character to be converted to uppercase.
+Приводит к преобразованию следующего символа в верхний регистр.
 .El
 .Pp
 .It Xo
@@ -2095,10 +2086,10 @@ Causes the next character to be converted to uppercase.
 .Op Cm !\&
 .Xc
 .It Aq Cm suspend
-Suspend the edit session.
-The
+Приостановит сеанс редактирования.
+Для
 .Aq suspend
-character is usually
+символы обычно
 .Aq control-Z .
 .Pp
 .It Xo
@@ -2107,33 +2098,33 @@ character is usually
 .Op Cm !\&
 .Ar tagstring
 .Xc
-Edit the file containing the specified tag. The capitalized command opens a
-new screen below the current screen.
+Отредактирует файл, содержащий указанный тег. Команда, написанная заглавными буквами, открывает
+новый экран под текущим экраном.
 .Pp
 .It Xo
 .Cm tagn Ns Op Cm ext Ns
 .Op Cm !\&
 .Xc
-Edit the file containing the next context for the current tag.
+Отредактирует файл, содержащий следующий контекст для текущего тега.
 .Pp
 .It Xo
 .Cm tagp Ns Op Cm op Ns
 .Op Cm !\&
 .Op Ar file | number
 .Xc
-Pop to the specified tag in the tags stack.
+Перейдет к указанному тегу в стеке тегов.
 .Pp
 .It Xo
 .Cm tagpr Ns Op Cm ev Ns
 .Op Cm !\&
 .Xc
-Edit the file containing the previous context for the current tag.
+Отредактирует файл, содержащий предыдущий контекст для текущего тега.
 .Pp
 .It Xo
 .Cm tagt Ns Op Cm op Ns
 .Op Cm !\&
 .Xc
-Pop to the least recent tag on the tags stack, clearing the stack.
+Перейдет к последнему тегу в стеке тегов, очистив его.
 .Pp
 .It Xo
 .Cm una Ns Op Cm bbreviate
@@ -2141,20 +2132,20 @@ Pop to the least recent tag on the tags stack, clearing the stack.
 .Xc
 .Nm vi
 only.
-Delete an abbreviation.
+Удалит аббревиатуру.
 .Pp
 .It Cm u Ns Op Cm ndo
-Undo the last change made to the file.
+Отменит последнее изменение, внесенное в файл.
 .Pp
 .It Xo
 .Cm unm Ns Op Cm ap Ns
 .Op Cm !\&
 .Ar lhs
 .Xc
-Unmap a mapped string.
+Размонтирует сопоставленную строку.
 .Pp
 .It Cm ve Ns Op Cm rsion
-Display the version of the
+Отобразите версию приложения.
 .Nm ex Ns / Ns Nm vi
 editor.
 .Pp
@@ -2178,8 +2169,8 @@ Enter
 .Op Ar file
 .Xc
 .Nm vi
-mode only. Edit a different file by opening a new screen below the current
-screen.
+только в режиме просмотра. Отредактируйте другой файл, открыв новый экран под текущим
+экраном.
 .Pp
 .It Xo
 .Cm viu Ns Op Cm sage
@@ -2263,18 +2254,17 @@ Copy the specified lines to a buffer.
 .Xc
 Adjust the window.
 .El
-.Sh SET OPTIONS
-There are a large number of options that may be set
-.Pq or unset
-to change the editor's behavior.
-This section describes the options, their abbreviations and their
-default values.
+.Sh НАБОР ПАРАМЕТРОВ
+Существует большое количество опций, которые могут быть установлены
+.Pq или снимите флажок, чтобы изменить поведение редактора.
+В этом разделе описаны параметры, их сокращения и
+значения по умолчанию.
 .Pp
-In each entry below, the first part of the tag line is the full name
-of the option, followed by any equivalent abbreviations.
-The part in square brackets is the default value of the option.
-Most of the options are boolean, i.e., they are either on or off,
-and do not have an associated value.
+В каждой записи, приведенной ниже, первая часть заголовка - это полное название
+опции, за которым следуют любые эквивалентные сокращения.
+Часть, заключенная в квадратные скобки, - это значение опции по умолчанию.
+Большинство параметров являются логическими, то есть они либо включены, либо выключены,
+и не имеют соответствующего значения.
 .Pp
 Options apply to both
 .Nm ex
@@ -2310,11 +2300,11 @@ Set the number of columns in the screen.
 .It Cm comment Bq off
 .Nm vi
 only.
-Skip leading comments in shell, C and C++ language files.
-.It Cm directory , dir Bo environment variable Ev TMPDIR , or Pa /tmp Bc
-The directory where temporary files are created.
-.It Cm edcompatible , ed Bq off
-Remember the values of the
+Пропускает вводные комментарии в языковых файлах shell, C и C++.
+Каталог It Cm , dir с переменной окружения Ev TMPDIR или Pa /tmp Bc
+Каталог, в котором создаются временные файлы.
+.It Cm edcompatible , ed Bq отключен
+Запомните значения этого
 .Sq c
 and
 .Sq g
@@ -2354,30 +2344,30 @@ rather than basic regular expressions
 .Pq BREs .
 See
 .Xr re_format 7
-for more information on regular expressions.
+для получения дополнительной информации о регулярных выражениях.
 .It Cm filec Bq Aq tab
-Set the character to perform file path completion on the colon command line.
+Установите символ для завершения пути к файлу в командной строке с двоеточием.
 .It Cm fileencoding , fe Bq auto detect
-Set the encoding of the current file.
+Установите кодировку текущего файла.
 .It Cm flash Bq on
-Flash the screen instead of beeping the keyboard on error.
+Мигает экран вместо звукового сигнала клавиатуры при ошибке.
 .It Cm hardtabs, ht Bq 0
-Set the spacing between hardware tab settings.
-This option currently has no effect.
+Установите интервал между настройками вкладки "Оборудование".
+В настоящее время эта опция не действует.
 .It Cm iclower Bq off
-Makes all regular expressions case-insensitive,
-as long as an upper-case letter does not appear in the search string.
+Делает все регулярные выражения нечувствительными к регистру,
+до тех пор, пока в строке поиска не появится заглавная буква.
 .It Cm ignorecase , ic Bq off
-Ignore case differences in regular expressions.
+Игнорируйте различия в регистре в регулярных выражениях.
 .It Cm inputencoding , ie Bq locale
-Set the encoding of your input characters.
+Установите кодировку вводимых вами символов.
 .It Cm keytime Bq 6
-The tenths of a second
+Десятые доли секунды
 .Nm ex Ns / Ns Nm vi
-waits for a subsequent key to complete a key mapping.
+ожидает, пока последующий ключ завершит сопоставление ключей.
 .It Cm leftright Bq off
 .Nm vi
-only.
+только.
 Do left-right scrolling.
 .It Cm lines , li Bq 24
 .Nm vi
@@ -2386,19 +2376,19 @@ Set the number of lines in the screen.
 .It Cm lisp Bq off
 .Nm vi
 only.
-Modify various search commands and options to work with Lisp.
-This option is not yet implemented.
+Измените различные поисковые команды и параметры для работы с Lisp.
+Эта опция еще не реализована.
 .It Cm list Bq off
 Display lines in an unambiguous fashion.
 .It Cm lock Bq on
-Attempt to get an exclusive lock on any file being edited, read or written.
+Попытайтесь получить эксклюзивную блокировку для любого редактируемого, считываемого или записываемого файла.
 .It Cm magic Bq on
 When turned off, all regular expression characters except for
 .Sq \(ha
 and
 .Sq \(Do
-are treated as ordinary characters.
-Preceding individual characters by
+обрабатываются как обычные символы.
+Перед отдельными символами по
 .Sq \e
 re-enables them.
 .It Cm matchchars Bq []{}()
@@ -2604,13 +2594,13 @@ Set searches to wrap around the end or beginning of the file.
 .It Cm writeany , wa Bq off
 Turn off file-overwriting checks.
 .El
-.Sh ENVIRONMENT
+.Sh ОКРУЖАЮЩАЯ СРЕДА
 .Bl -tag -width "COLUMNS"
 .It Ev COLUMNS
 The number of columns on the screen.
 This value overrides any system or terminal specific values.
 If the
-.Ev COLUMNS
+.Ev КОЛОНКИ
 environment variable is not set when
 .Nm ex Ns / Ns Nm vi
 runs, or the
@@ -2682,20 +2672,16 @@ messages when operations are likely to take a long time.
 .Pp
 .It Dv SIGHUP
 .It Dv SIGTERM
-If the current buffer has changed since it was last written in its entirety,
-the editor attempts to save the modified file so it can be later recovered.
-See the
+Если текущий буфер изменился с момента его последней полной записи,
+редактор попытается сохранить измененный файл, чтобы позже его можно было восстановить.
+См.
 .Nm vi Ns / Ns Nm ex
 reference manual section
 .Sx Recovery
 for more information.
 .Pp
 .It Dv SIGINT
-When an interrupt occurs, the current operation is halted
-and the editor returns to the command level.
-If interrupted during text input,
-the text already input is resolved into the file as if the text
-input had been normally terminated.
+При возникновении прерывания текущая операция приостанавливается, и редактор возвращается к командному уровню. Если во время ввода текста происходит прерывание, уже введенный текст преобразуется в файл, как если бы ввод текста был завершен обычным образом.
 .Pp
 .It Dv SIGWINCH
 The screen is resized.
@@ -2720,79 +2706,78 @@ System-wide
 startup file.
 It is read for
 .Nm ex
-commands first in the startup sequence.
-Must be owned by root or the user,
-and writable only by the owner.
+команды, которые будут первыми в последовательности запуска.
+Они должны принадлежать root или пользователю
+и быть доступны только для записи владельцем.
 .It Pa /tmp
-Temporary file directory.
+Каталог временных файлов.
 .It Pa /var/tmp/vi.recover
-The default recovery file directory.
+Каталог файлов восстановления по умолчанию.
 .It Pa $HOME/.nexrc
-First choice for user's home directory startup file, read for
+Первый выбор для файла запуска домашнего каталога пользователя, прочитанного для
 .Nm ex
-commands right after
+команды сразу после
 .Pa /etc/vi.exrc
-unless either
+если только ни один из них
 .Ev NEXINIT
-or
-.Ev EXINIT
-are set.
-Must be owned by root or the user,
-and writable only by the owner.
+или
+.Ev EXINIT.
+Должен принадлежать root или пользователю
+и быть доступен только для записи владельцем последних цифр телефона.
 .It Pa $HOME/.exrc
-Second choice for user's home directory startup file, read for
+Второй вариант для файла запуска домашнего каталога пользователя, прочитанный для
 .Nm ex
-commands under the same conditions as
+команды при тех же условиях, что и
 .Pa $HOME/.nexrc .
 .It Pa .nexrc
-First choice for local directory startup file, read for
+Первый выбор для файла запуска локального каталога, прочитанный для
 .Nm ex
-commands at the end of the startup sequence if the
+команды в конце последовательности запуска, если
 .Cm exrc
-option was turned on earlier.
-Must be owned by the user
-and writable only by the owner.
+параметр был включена ранее.
+Должна принадлежать пользователю
+и быть доступна только для записи владельцем.
 .It Pa .exrc
-Second choice for local directory startup file, read for
-.Nm ex
-commands under the same conditions as
+Второй вариант для файла запуска локального каталога, прочитанный для
+.Nm 
+команды при тех же условиях, что и
 .Pa .nexrc .
 .El
-.Sh EXIT STATUS
+.Sh СТАТУС ВЫХОДА
 The
 .Nm ex
 and
 .Nm vi
 utilities exit 0 on success,
-and \*(Gt0 if an error occurs.
-.Sh SEE ALSO
+and \*(Gt0если возникнет ошибка.
+.Sh СМОТРЕТЬ ТАКЖЕ
 .Xr ctags 1 ,
 .Xr iconv 1 ,
 .Xr re_format 7
 .Rs
-.%T vi/ex reference manual
+.%T vi/ex справочное руководство
 .%U https://docs.freebsd.org/44doc/usd/13.viref/paper.pdf
 .Re
-.Sh STANDARDS
+.Sh СТАНДАРТЫ
 .Nm nex Ns / Ns Nm nvi
-is close to
+находится близко к
 .St -p1003.1-2008 .
-That document differs from historical
+Этот документ отличается от исторического
 .Nm ex Ns / Ns Nm vi
-practice in several places; there are changes to be made on both sides.
-.Sh HISTORY
-The
+практикуется в нескольких местах; с обеих сторон необходимо внести изменения.
+.Sh ИСТОРИЯ
+
 .Nm ex
-editor first appeared in
+редактор впервые появился в
 .Bx 1 .
-The
+
 .Nm nex Ns / Ns Nm nvi
 replacements for the
 .Nm ex Ns / Ns Nm vi
-editor first appeared in
+редактор впервые появился в
 .Bx 4.4 .
-.Sh AUTHORS
-.An Bill Joy
-wrote the original version of
+.Sh АВТОРЫ
+.An Билл Джой
+написал оригинальную версию
 .Nm ex
-in 1977.
+В 1977.
