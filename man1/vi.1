@@ -1395,9 +1395,9 @@ end-of-words.
 .Op Ar count
 .Cm s
 .Xc
-Substitute
-.Ar count
-символы в текущей строке, начинающиеся с текущего символа.
+Заменяет
+.Ar счет
+символов в текущей строке, начинающиеся с текущего символа.
 Если
 .Ar buffer
 указан,
@@ -1410,10 +1410,10 @@ Substitute
 .Cm t
 .Aq Ar character
 .Xc
-Search forward,
+Ищет дальше,
 .Ar количество
 раз, через текущую строку для символа непосредственно перед
-.Aq Ar character .
+.Aq Ar символами .
 .Pp
 .It Cm u
 Отменяет последнее изменение, внесенное в файл.
@@ -1433,18 +1433,18 @@ Search forward,
 .Op Ar count
 .Cm w
 .Xc
-Move forward
-.Ar count
-words.
+Передвигается вперед
+.Ar подсчет
+слов.
 .Pp
 .It Xo
 .Op Ar buffer
 .Op Ar count
 .Cm x
 .Xc
-Delete
-.Ar count
-символы в текущем положении курсора, но не более, чем до
+Удаляет
+.Ar счет
+символов в текущем положении курсора, но не более, чем до
 конца строки.
 .Pp
 .It Xo
@@ -1453,12 +1453,12 @@ Delete
 .Cm y
 .Ar motion
 .Xc
-Копирует
+Копирует текстовую область
 .Pq or Dq yank
-текстовая область, заданная с помощью
-.Ar count
+, заданную с помощью
+.Ar счета
 и
-.Ar motion
+.Ar движения
 в буфер.
 .Pp
 .It Xo
@@ -1749,8 +1749,8 @@ only.
 .Cm cd Ns Op Cm !\&
 .Op Ar directory
 .Xc
-Change the current working directory.
-.PpИзмените текущий рабочий каталог.
+Изменяет текущий рабочий каталог.
+.Pp
 .It Xo
 .Op Ar range
 .Cm co Ns Op Cm py
@@ -1935,7 +1935,7 @@ a pattern.
 .Cm rev Ns Op Cm ious Ns
 .Op Cm !\&
 .Xc
-Отредактирует предыдущий файл из списка аргументов. Команда, написанная с заглавной буквы, открывает новый экран под текущим экраном.
+Редактирует предыдущий файл из списка аргументов. Команда, написанная с заглавной буквы, открывает новый экран под текущим экраном.
 .Pp
 .It Xo
 .Op Ar range
@@ -1943,20 +1943,20 @@ a pattern.
 .Op Ar count
 .Op Ar flags
 .Xc
-Отобразит указанные строки.
+Отображает указанные строки.
 .Pp
 .It Xo
 .Op Ar line
 .Cm pu Ns Op Cm t
 .Op Ar buffer
 .Xc
-Добавит содержимое буфера к текущей строке.
+Добавляет содержимое буфера к текущей строке.
 .Pp
 .It Xo
 .Cm q Ns Op Cm uit Ns
 .Op Cm !\&
 .Xc
-Завершит сеанс редактирования.
+Завершает сеанс редактирования.
 .Pp
 .It Xo
 .Op Ar line
@@ -1964,13 +1964,13 @@ a pattern.
 .Op Cm !\&
 .Op Ar file
 .Xc
-Прочитает файл.
+Считывает файл.
 .Pp
 .It Xo
 .Cm rec Ns Op Cm over
 .Ar file
 .Xc
-Восстановит
+Восстанавливает
 .Ar файл , 
 если он был ранее сохранен.
 .Pp
@@ -1987,7 +1987,7 @@ a pattern.
 .Cm rew Ns Op Cm ind Ns
 .Op Cm !\&
 .Xc
-Перемотает список аргументов назад.
+Перематывает список аргументов назад.
 .Pp
 .It Xo
 .Cm se Ns Op Cm t
@@ -1998,16 +1998,16 @@ a pattern.
 .Op option? ...
 .Op Ar all
 .Xc
-Отобразит или задаст параметры редактора.
+Отображает или задаст параметры редактора.
 .Pp
 .It Cm sh Ns Op Cm ell
-Запустит программу-оболочку.
+Запускает программу-оболочку.
 .Pp
 .It Xo
 .Cm so Ns Op Cm urce
 .Ar file
 .Xc
-Чтение и выполнение команд
+Считывает и выполняет команд
 .Nm ex
 из файла.
 .Pp
@@ -2176,17 +2176,17 @@ Enter
 .Cm viu Ns Op Cm sage
 .Op Ar command
 .Xc
-Display usage for a
+Отображает использование команды
 .Nm vi
-command.
+.
 .Pp
 .It Xo
 .Cm vs Ns Op Cm plit
 .Op Ar +cmd
 .Op Ar file
 .Xc
-Edit a different file by opening a new screen to the right of the current
-screen.
+Редактирует другой файл, открыв новый экран справа от текущего
+экрана.
 .Pp
 .It Xo
 .Op Ar range
@@ -2212,21 +2212,21 @@ screen.
 .Op >>
 .Op Ar file
 .Xc
-Write the entire file, or
-.Ar range .
+Записывает весь файл или 
+.Ar диапазон .
 .Sq !\&
-overwrites a different, preexisting file.
+перезаписывает другой, ранее существовавший файл.
 .Sq >>
-appends to a file that may preexist. Whitespace followed by
+добавляется к файлу, который, возможно, существовал ранее. Пробел, за которым следует
 .Sq !\&
-pipes the file to
-.Ar shell-command .
+передает файл по каналам в
+.Ar команду-оболочку .
 .Cm wn
-moves to the next file if writing succeeds.
+переходит к следующему файлу, если запись выполнена успешно.
 .Cm wq
-exits the editor if writing succeeds, unless there are more files to edit;
+завершает работу редактора, если запись выполнена успешно, если только нет других файлов для редактирования;
 .Sq !\&
-exits regardless.
+выходит, несмотря ни на что.
 .Pp
 .It Xo
 .Op Ar range
@@ -2234,8 +2234,8 @@ exits regardless.
 .Op Cm !\&
 .Op Ar file
 .Xc
-Exit the editor,
-writing the file if it has been modified.
+Выходит из редактора,
+записав файл, если он был изменен.
 .Pp
 .It Xo
 .Op Ar range
@@ -2243,7 +2243,7 @@ writing the file if it has been modified.
 .Op Ar buffer
 .Op Ar count
 .Xc
-Copy the specified lines to a buffer.
+Копирует указанные строки в буфер.
 .Pp
 .It Xo
 .Op Ar line
@@ -2252,7 +2252,7 @@ Copy the specified lines to a buffer.
 .Op Ar count
 .Op Ar flags
 .Xc
-Adjust the window.
+Регулирует окно.
 .El
 .Sh НАБОР ПАРАМЕТРОВ
 Существует большое количество опций, которые могут быть установлены
@@ -2266,93 +2266,92 @@ Adjust the window.
 Большинство параметров являются логическими, то есть они либо включены, либо выключены,
 и не имеют соответствующего значения.
 .Pp
-Options apply to both
+Параметры применимы к обоим режимам
 .Nm ex
-and
+и
 .Nm vi
-modes, unless otherwise specified.
+до тех пор, пока не будет указан другой.
 .Bl -tag -width Ds
 .It Cm altwerase Bq off
 .Nm vi
-only.
-Select an alternate word erase algorithm.
+только.
+Выбирает альтернативный алгоритм стирания слов.
 .It Cm autoindent , ai Bq off
-Automatically indent new lines.
+Автоматически делает отступы для новых строк.
 .It Cm autoprint , ap Bq on
 .Nm ex
-only.
-Display the current line automatically.
+только.
+Автоматическое отображение текущей строки.
 .It Cm autowrite , aw Bq off
-Write modified files automatically when changing files or suspending the editor
-session.
+Автоматически записывайте измененные файлы при изменении файлов или приостановке сеанса редактирования.
 .It Cm backup Bq \&"\&"
-Back up files before they are overwritten.
+Создает резервные копии файлов до того, как они будут перезаписаны.
 .It Cm beautify , bf Bq off
-Discard control characters.
-.It Cm cdpath Bo environment variable Ev CDPATH , or current directory Bc
-The directory paths used as path prefixes for the
+Отбрасывает управляющие символы.
+.It Cm cdpath Bo environment variable Ev CDPATH , или текущий каталог Bc
+Пути к каталогам, используемые в качестве префиксов пути для команды
 .Cm cd
-command.
+.
 .It Cm cedit Bq no default
-Set the character to edit the colon command-line history.
+Устанавливает символ для редактирования истории двоеточия в командной строке.
 .It Cm columns , co Bq 80
-Set the number of columns in the screen.
+Устанавливает количество столбцов на экране.
 .It Cm comment Bq off
 .Nm vi
-only.
+только.
 Пропускает вводные комментарии в языковых файлах shell, C и C++.
 Каталог It Cm , dir с переменной окружения Ev TMPDIR или Pa /tmp Bc
 Каталог, в котором создаются временные файлы.
 .It Cm edcompatible , ed Bq отключен
 Запомните значения этого
 .Sq c
-and
+и
 .Sq g
-suffixes to the
+суффиксы к командам
 .Cm substitute
-commands, instead of initializing them as unset for each new command.
+, вместо того, чтобы инициализировать их как неустановленные для каждой новой команды.
 .It Cm errorbells , eb Bq off
 .Nm ex
-only.
-Announce error messages with a bell.
+тлько.
+Оповещает о сообщениях об ошибках с помощью колокольчика.
 .It Cm escapetime Bq 1
-The tenths of a second
+Десятые доли секунды ожидают
 .Nm ex Ns / Ns Nm vi
-waits for a subsequent key to complete an
+для получения последующего ключа для завершения сопоставления ключей
 .Aq escape
-key mapping.
+.
 .It Cm expandtab , et Bq off
-Expand
+Расширяет символы
 .Aq tab
-characters to
+до
 .Aq space
-when inserting, replacing or shifting text, autoindenting,
-indenting with
+при вставке, замене или перемещении текста, автоиндентировании,
+выделении отступов с помощью
 .Aq Ic control-T ,
-outdenting with
+выходя за рамки с 
 .Aq Ic control-D ,
-or
-when filtering lines with the
+или
+при фильтрации строк с помощью команды
 .Cm !\&
-command.
+.
 .It Cm exrc , ex Bq off
-Read the startup files in the local directory.
+Считывает файлы запуска в локальном каталоге.
 .It Cm extended Bq off
-Use extended regular expressions
+Использует расширенные регулярные выражения
 .Pq EREs
-rather than basic regular expressions
+вместо базовых регулярных выражений
 .Pq BREs .
-See
+См.
 .Xr re_format 7
 для получения дополнительной информации о регулярных выражениях.
 .It Cm filec Bq Aq tab
-Установите символ для завершения пути к файлу в командной строке с двоеточием.
+Устанавливает символ для завершения пути к файлу в командной строке с двоеточием.
 .It Cm fileencoding , fe Bq auto detect
-Установите кодировку текущего файла.
+Устанавливает кодировку текущего файла.
 .It Cm flash Bq on
 Мигает экран вместо звукового сигнала клавиатуры при ошибке.
 .It Cm hardtabs, ht Bq 0
-Установите интервал между настройками вкладки "Оборудование".
+Устанавливает интервал между настройками вкладки "Оборудование".
 В настоящее время эта опция не действует.
 .It Cm iclower Bq off
 Делает все регулярные выражения нечувствительными к регистру,
@@ -2388,287 +2387,286 @@ When turned off, all regular expression characters except for
 and
 .Sq \(Do
 обрабатываются как обычные символы.
-Перед отдельными символами по
+Перед отдельными символами, 
 .Sq \e
-re-enables them.
+повторно включая их.
 .It Cm matchchars Bq []{}()
-Character pairs looked for by the
+Пары символов, которые ищет пользователь по команде
 .Cm %
-command.
-.It Cm matchtime Bq 7
+.
+.It Cm время совпадения Bq 7
 .Nm vi
-only.
-The tenths of a second
+только.
+Десятые доли секунды останавливают
 .Nm ex Ns / Ns Nm vi
-pauses on the matching character when the
+на соответствующем символе, когда параметр
 .Cm showmatch
-option is set.
+установлен.
 .It Cm mesg Bq on
-Permit messages from other users.
+Разрешает сообщения от других пользователей.
 .It Cm msgcat Bq /usr/share/vi/catalog/
-Selects a message catalog to be used to display error and informational
-messages in a specified language.
+Выбирает каталог сообщений, который будет использоваться для отображения сообщений об ошибках и информационных сообщений на указанном языке.
 .It Cm modelines , modeline Bq off
-Read the first and last few lines of each file for
+Считывает несколько первых и последних строк каждого файла для команды
 .Nm ex
-commands.
-This option will never be implemented.
+.
+Этот параметр никогда не будет реализована.
 .It Cm noprint Bq \&"\&"
-Characters that are never handled as printable characters.
+Символы, которые никогда не обрабатываются как печатаемые символы.
 .It Cm number , nu Bq off
-Precede each line displayed with its current line number.
+Перед каждой отображаемой строкой указывается ее текущий номер.
 .It Cm octal Bq off
-Display unknown characters as octal numbers, instead of the default
-hexadecimal.
+Отображает неизвестные символы в виде восьмеричных чисел вместо
+шестнадцатеричных по умолчанию.
 .It Cm open Bq on
 .Nm ex
-only.
-If this option is not set, the
-.Cm open
-and
+только.
+Если этот параметр не установлен, то команды
+.Cm openи
 .Cm visual
-commands are disallowed.
-.It Cm optimize , opt Bq on
+запрещены.
+.It Cm оптимизирует , opt Bq on
 .Nm vi
-only.
-Optimize text throughput to dumb terminals.
-This option is not yet implemented.
+только.
+Оптимизирует передачу текста на немые терминалы.
+Этот параметр еще не реализована.
 .It Cm paragraphs , para Bq "IPLPPPQPP LIpplpipbp"
 .Nm vi
-only.
-Define additional paragraph boundaries for the
+только.
+Определяет дополнительные границы абзаца для команд
 .Cm {\&
-and
+и
 .Cm }\&
-commands.
+.
 .It Cm path Bq \&"\&"
-Define additional directories to search for files being edited.
-.It Cm print Bq \&"\&"
-Characters that are always handled as printable characters.
+Определяет дополнительные каталоги для поиска редактируемых файлов.
+.It Cm выводит Bq \&"\&"
+Символы, которые всегда обрабатываются как печатаемые символы.
 .It Cm prompt Bq on
 .Nm ex
-only.
-Display a command prompt.
+только.
+Отображает командную строку.
 .It Cm readonly , ro Bq off
-Mark the file and session as read-only.
+Помечает файл и сеанс как доступные только для чтения.
 .It Cm recdir Bq /var/tmp/vi.recover
-The directory where recovery files are stored.
+Каталог, в котором хранятся файлы для восстановления.
 .It Cm redraw , re Bq off
 .Nm vi
-only.
-Simulate an intelligent terminal on a dumb one.
-This option is not yet implemented.
+только.
+Имитирует интеллектуальный терминал на немом.
+Этот параметр еще не реализована.
 .It Cm remap Bq on
-Remap keys until resolved.
+Переназначает ключи до тех пор, пока проблема не будет решена.
 .It Cm report Bq 5
-Set the number of lines about which the editor reports changes or yanks.
+Задает количество строк, о которых редактор сообщает об изменениях или изъятиях.
 .It Cm ruler Bq off
 .Nm vi
-only.
-Display a row/column ruler on the colon command line.
+только.
+Отображает линейку строк/столбцов в командной строке с двоеточием.
 .It Cm scroll , scr Bq "window size / 2"
-Set the number of lines scrolled.
+Устанавливает количество прокручиваемых строк.
 .It Cm searchincr Bq off
-Makes the
+Делает команды 
 .Cm /
-and
+и
 .Cm ?\&
-commands incremental.
-.It Cm sections , sect Bq "NHSHH HUnhsh"
+пошаговыми.
+.It Cm разделы , sect Bq "NHSHH HUnhsh"
 .Nm vi
-only.
-Define additional section boundaries for the
+только.
+Определяет дополнительные границы сечения для команд
 .Cm [[
-and
+и
 .Cm ]]
-commands.
-.It Cm secure Bq off
-Turns off all access to external programs.
+.
+.It Cm защита Bq off
+Отключает весь доступ к внешним программам.
 .It Cm shell , sh Bo environment variable Ev SHELL , or Pa /bin/sh Bc
-Select the shell used by the editor.
+Выберите оболочку, используемую редактором.
 .It Cm shellmeta Bq \(ti{[*?$\`\(aq\&"\e
-Set the meta characters checked to determine if file name expansion
-is necessary.
+Устанавливает флажок для метасимволов, чтобы определить, необходимо ли расширение имени
+файла.
 .It Cm shiftwidth , sw Bq 8
-Set the autoindent and shift command indentation width.
+Устанавливает ширину отступа команд autoindent и shift.
 .It Cm showmatch , sm Bq off
 .Nm vi
-only.
-Note the left matching characters when the right ones are inserted.
+только.
+Обращает внимание на левые совпадающие символы при вставке правых.
 .It Cm showmode , smd Bq off
 .Nm vi
-only.
-Display the current editor mode and a
+только.
+Отображает текущий режим редактирования и флаг
 .Dq modified
-flag.
+.
 .It Cm sidescroll Bq 16
 .Nm vi
-only.
-Set the amount a left-right scroll will shift.
+только.
+Устанавливает величину сдвига при прокрутке влево-вправо.
 .It Cm slowopen , slow Bq off
-Delay display updating during text input.
-This option is not yet implemented.
+Задержка отображения текста во время ввода.
+Этот параметр еще не реализована.
 .It Cm sourceany Bq off
-Read startup files not owned by the current user.
-This option will never be implemented.
+Считывает файлы автозагрузки, не принадлежащие текущему пользователю.
+Этот параметр никогда не будет реализована.
 .It Cm tabstop , ts Bq 8
-This option sets tab widths for the editor display.
+Этот параметр устанавливает ширину табуляции для отображения в редакторе.
 .It Cm taglength , tl Bq 0
-Set the number of significant characters in tag names.
+Устанавливает количество значащих символов в названиях тегов.
 .It Cm tags , tag Bq tags
-Set the list of tags files.
+Задает список файлов с тегами.
 .It Xo
 .Cm term , ttytype , tty
-.Bq environment variable Ev TERM
+.Bq переменная окружения Ev TERM
 .Xc
-Set the terminal type.
+Устанавливает тип терминала.
 .It Cm terse Bq off
-This option has historically made editor messages less verbose.
-It has no effect in this implementation.
+Исторически сложилось так, что этот параметр делал сообщения редактора менее подробными.
+В данной реализации он не применяется.
 .It Cm tildeop Bq off
-Modify the
+Корректирует команду
 .Cm \(ti
-command to take an associated motion.
-.It Cm timeout , to Bq on
-Time out on keys which may be mapped.
+для выполнения соответствующего движения.
+.It Cm перерыв , to Bq on
+Перерыв для клавиш, которые могут быть сопоставлены.
 .It Cm ttywerase Bq off
 .Nm vi
-only.
-Select an alternate erase algorithm.
+только.
+Выбирает альтернативный алгоритм стирания.
 .It Cm verbose Bq off
 .Nm vi
-only.
-Display an error message for every error.
-.It Cm w300 Bq no default
+только.
+Выводит на экран сообщение об ошибке при каждой ошибке.
+.It Cm w300 Bqбез значения по умолчанию
 .Nm vi
-only.
-Set the window size if the baud rate is less than 1200 baud.
-.It Cm w1200 Bq no default
+только.
+Устанавливает размер окна, если скорость передачи данных составляет менее 1200 бод.
+.It Cm w1200 Bq без значения по умолчанию
 .Nm vi
-only.
-Set the window size if the baud rate is equal to 1200 baud.
-.It Cm w9600 Bq no default
+только.
+Устанавливает размер окна, если скорость передачи данных равна 1200 бод.
+.It Cm w9600 Bq без значения по умолчанию
 .Nm vi
-only.
-Set the window size if the baud rate is greater than 1200 baud.
+только.
+Устанавливает размер окна, если скорость передачи данных превышает 1200 бод.
 .It Cm warn Bq on
 .Nm ex
-only.
-This option causes a warning message to be printed on the terminal
-if the file has been modified since it was last written, before a
+только.
+Этот параметр приводит к тому, что на терминале выводится предупреждающее сообщение, 
+если файл был изменен с момента его последней записи, перед командой
 .Cm !\&
-command.
+.
 .It Xo
 .Cm window , w , wi
-.Bq environment variable Ev LINES No \(mi 1
+.Bq переменная среды Ev СТРОКИ No \(mi 1
 .Xc
-Set the window size for the screen.
+Устанавливает размер окна для экрана.
 .It Cm windowname Bq off
-Change the icon/window name to the current file name.
+Изменяет название значка/окна на текущее имя файла.
 .It Cm wraplen , wl Bq 0
 .Nm vi
-only.
-Break lines automatically,
-the specified number of columns from the left-hand margin.
-If both the
+только.
+Автоматически разбивает строки
+на заданное количество столбцов от левого поля.
+Если оба поля параметров редактирования
 .Cm wraplen
-and
+и
 .Cm wrapmargin
-edit options are set, the
+установлены, то используется значение
 .Cm wrapmargin
-value is used.
+.
 .It Cm wrapmargin , wm Bq 0
 .Nm vi
-only.
-Break lines automatically,
-the specified number of columns from the right-hand margin.
-If both the
+только.
+Автоматически разбивает строки
+на заданное количество столбцов от правого поля.
+Если оба поля параметров редактирования
 .Cm wraplen
-and
+и
 .Cm wrapmargin
-edit options are set, the
+установлены, то используется значение
 .Cm wrapmargin
-value is used.
+.
 .It Cm wrapscan , ws Bq on
-Set searches to wrap around the end or beginning of the file.
+Настраивает поиск так, чтобы он охватывал конец или начало файла.
 .It Cm writeany , wa Bq off
-Turn off file-overwriting checks.
+Отключает проверки на перезапись файлов.
 .El
 .Sh ОКРУЖАЮЩАЯ СРЕДА
-.Bl -tag -width "COLUMNS"
-.It Ev COLUMNS
-The number of columns on the screen.
-This value overrides any system or terminal specific values.
-If the
-.Ev КОЛОНКИ
-environment variable is not set when
+.Bl -tag -width "КОЛОНКИ"
+.It Ev СТОЛБЦЫ
+Количество столбцов на экране.
+Это значение переопределяет любые значения, относящиеся к системе или терминалу.
+Если переменная окружения
+.Ev СТОЛБЦЫ
+не задана, когда запускается
 .Nm ex Ns / Ns Nm vi
-runs, or the
-.Cm columns
-option is explicitly reset by the user,
+или параметр
+.Cm столбцы
+открыто сбрасывается пользователем,
 .Nm ex Ns / Ns Nm vi
-enters the value into the environment.
+вводит значение в среду.
 .It Ev EXINIT
-A list of
+Список команд запуска,
 .Nm ex
-startup commands, read after
+считывается после
 .Pa /etc/vi.exrc
-unless the variable
+если только переменная
 .Ev NEXINIT
-is also set.
-.It Ev HOME
-The user's home directory, used as the initial directory path for the startup
+тоже установлена.
+.It Ev ДОМОЙ
+Домашний каталог пользователя, используемый в качестве начального пути к каталогу для запуска файлов
 .Pa $HOME/.nexrc
-and
+и
 .Pa $HOME/.exrc
-files.
-This value is also used as the default directory for the
+.
+Это значение также используется по умолчанию в качестве каталога для команды
 .Cm cd
-command.
-.It Ev LINES
-The number of rows on the screen.
-This value overrides any system or terminal specific values.
-If the
-.Ev LINES
-environment variable is not set when
+.
+.It Ev СТРОКИ
+Количество строк на экране.
+Это значение переопределяет любые значения, относящиеся к системе или терминалу.
+Если переменная окружения
+.Ev СТРОКИ
+не задана, когда запускается
 .Nm ex Ns / Ns Nm vi
-runs, or the
-.Cm lines
-option is explicitly reset by the user,
+или параметр
+.Cm строки
+открыто сбрасывается пользователем,
 .Nm ex Ns / Ns Nm vi
-enters the value into the environment.
+вводит значение в среду.
 .It Ev NEXINIT
-A list of
+Список команд запуска,
 .Nm ex
-startup commands, read after
+считывается после
 .Pa /etc/vi.exrc .
-.It Ev SHELL
-The user's shell of choice
-.Pq see also the Cm shell No option .
-.It Ev TERM
-The user's terminal type.
-The default is the type
-.Dq unknown .
-If the
-.Ev TERM
-environment variable is not set when
+.It Ev ОБОЛОЧКА
+Выбранная пользователем оболочка
+.Pq см. также параметр Нет оболочки Cm .
+.It Ev ПЕРИОД
+Тип терминала пользователя.
+По умолчанию используется 
+.Dq неизвестный
+тип.
+Если переменная среды
+.Ev ПЕРИОД
+не задана, когда
 .Nm ex Ns / Ns Nm vi
-runs, or the
-.Cm term
-option is explicitly reset by the user,
+запускается или когда параметр
+.Cm период
+открыто сбрасывается пользователем,
 .Nm ex Ns / Ns Nm vi
-enters the value into the environment.
+вводит значение в среду.
 .It Ev TMPDIR
-The location used to store temporary files
-.Pq see also the Cm directory No edit option .
+Расположение, используемое для хранения временных файлов
+.Pq см. также параметр Каталог Cm без редактирования .
 .El
-.Sh ASYNCHRONOUS EVENTS
+.Sh АСИНХРОННЫЕ СОБЫТИЯ
 .Bl -tag -width "SIGWINCH" -compact
 .It Dv SIGALRM
 .Nm vi Ns / Ns Nm ex
-uses this signal for periodic backups of file modifications and to display
-.Dq busy
-messages when operations are likely to take a long time.
+использует сигнал для периодического создания резервных копий внесенных изменений и для отображения сообщения о
+.Dq занятости
+, когда операции, скорее всего, займут много времени.
 .Pp
 .It Dv SIGHUP
 .It Dv SIGTERM
@@ -2676,35 +2674,35 @@ messages when operations are likely to take a long time.
 редактор попытается сохранить измененный файл, чтобы позже его можно было восстановить.
 См.
 .Nm vi Ns / Ns Nm ex
-reference manual section
-.Sx Recovery
-for more information.
+раздел справочного руководства
+.Sx Восстановления
+для получения дополнительной информации.
 .Pp
 .It Dv SIGINT
 При возникновении прерывания текущая операция приостанавливается, и редактор возвращается к командному уровню. Если во время ввода текста происходит прерывание, уже введенный текст преобразуется в файл, как если бы ввод текста был завершен обычным образом.
 .Pp
 .It Dv SIGWINCH
-The screen is resized.
-See the
+Размер экрана изменяется.
+См.
 .Nm vi Ns / Ns Nm ex
-reference manual section
-.Sx Sizing the Screen
-for more information.
+раздел справочного руководства
+.Sx по определению размера экрана
+для получения дополнительной информации.
 .\" .Pp
 .\" .It Dv SIGCONT
 .\" .It Dv SIGTSTP
 .\" .Nm vi Ns / Ns Nm ex
 .\" ignores these signals.
 .El
-.Sh FILES
+.Sh ФАЙЛЫ
 .Bl -tag -width "/var/tmp/vi.recover"
 .It Pa /bin/sh
-The default user shell.
+Пользовательская оболочка по умолчанию.
 .It Pa /etc/vi.exrc
-System-wide
+Общесистемный
 .Nm vi
-startup file.
-It is read for
+загрузочный файл.
+считывается для
 .Nm ex
 команды, которые будут первыми в последовательности запуска.
 Они должны принадлежать root или пользователю
