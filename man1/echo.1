@@ -1,109 +1,108 @@
 .\"-
-.\" Copyright (c) 1990, 1993
-.\"	The Regents of the University of California.  All rights reserved.
+.\" Авторское право (c) 1990, 1993
+.\"	Регенты Калифорнийского университета. Все права защищены.
 .\"
-.\" This code is derived from software contributed to Berkeley by
-.\" the Institute of Electrical and Electronics Engineers, Inc.
+.\" Этот код создан на основе программного обеспечения, предоставленного
+.\" Институтом инженеров электротехники и электроники, Inc.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
-.\" 3. Neither the name of the University nor the names of its contributors
-.\"    may be used to endorse or promote products derived from this software
-.\"    without specific prior written permission.
+.\" Распространение и использование в исходной и двоичной формах, с изменениями или без них,
+.\" разрешены при соблюдении следующих условий:
+.\" 1. Распространения исходного кода должны сохранять вышеуказанное уведомление об авторском
+.\"    праве, этот список условий и следующий отказ от ответственности.
+.\" 2. Распространения в двоичной форме должны воспроизводить вышеуказанное уведомление об авторском
+.\"    праве, этот список условий и следующий отказ от ответственности в документации
+.\"    и/или других материалах, предоставляемых с распространением.
+.\" 3. Название университета и имена его участников не могут использоваться для поддержки или
+.\"    продвижения продуктов, созданных на основе этого программного обеспечения, без
+.\"    предварительного письменного разрешения.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЕНО РЕГЕНТАМИ И УЧАСТНИКАМИ «КАК ЕСТЬ», И
+.\" ЛЮБЫЕ ПРЯМЫЕ ИЛИ КОСВЕННЫЕ ГАРАНТИИ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ,
+.\" ГАРАНТИЯМИ ТОВАРНОЙ ПРИГОДНОСТИ И СООТВЕТСТВИЯ КОНКРЕТНОЙ ЦЕЛИ,
+.\" ОТКАЗЫВАЮТСЯ. В НИКАКОМ СЛУЧАЕ РЕГЕНТЫ ИЛИ УЧАСТНИКИ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ
+.\" ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, СПЕЦИАЛЬНЫЕ, ПОКАЗАТЕЛЬНЫЕ ИЛИ ПОСЛЕДУЮЩИЕ
+.\" УЩЕРБЫ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПРИОБРЕТЕНИЕМ ЗАМЕЩАЮЩИХ ТОВАРОВ
+.\" ИЛИ УСЛУГ; УТРАТОЙ ПРАВА ПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ЛИБО ПРЕРЫВАНИЕМ ДЕЯТЕЛЬНОСТИ)
+.\" НЕЗАВИСИМО ОТ ТОГО, НА КАКОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, ДОГОВОРНОЙ, СТРОГОЙ
+.\" ОТВЕТСТВЕННОСТИ ИЛИ ДЕЛИКТНОЙ (ВКЛЮЧАЯ НЕБРЕЖНОСТЬ ИЛИ ИНОЕ)
+.\" ОСНОВЫВАЕТСЯ ЛИСПОЛЬЗОВАНИЕ ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ БЫЛО СООБЩЕНО О
+.\" ВОЗМОЖНОСТИ ТАКОГО УЩЕРБА.
 .\"
-.\"	@(#)echo.1	8.1 (Berkeley) 7/22/93
+.\"	@(#)echo.1	8.1 (Беркли) 7/22/93
 .\"
-.Dd October 5, 2016
+.Dd 5 октября 2016
 .Dt ECHO 1
 .Os
-.Sh NAME
+.Sh НАЗВАНИЕ
 .Nm echo
-.Nd write arguments to the standard output
-.Sh SYNOPSIS
+.Nd запись аргументов в стандартный вывод
+.Sh СИНТАКСИС
 .Nm
 .Op Fl n
 .Op Ar string ...
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility writes any specified operands, separated by single blank
+записывает любые указанные операнды, разделенные одним пробелом
 .Pq Ql "\ "
-characters and followed by a newline
+и заканчивающиеся символом новой строки
 .Pq Ql \en
-character, to the standard
-output.
+в стандартный вывод.
 .Pp
-The following option is available:
+Доступен следующий параметр:
 .Bl -tag -width flag
 .It Fl n
-Do not print the trailing newline character.
+Не выводить завершающий символ новой строки.
 .El
 .Pp
-The end-of-options marker
+Маркер конца параметров
 .Fl Fl
-is not recognized and written literally.
+не распознается и записывается буквально.
 .Pp
-The newline may also be suppressed by appending
+Символ новой строки также может быть опущен путем добавления
 .Ql \ec
-to the end of the string, as is done
-by iBCS2 compatible systems.
-Note that the
+в конец строки, как это делается
+в системах, совместимых с iBCS2.
+Обратите внимание, что
+параметр
 .Fl n
-option as well as the effect of
+и эффект
 .Ql \ec
-are implementation-defined in
+определены реализацией в
 .St -p1003.1-2001
-as amended by Cor.\& 1-2002.
-For portability,
+с поправкой Cor.\& 1-2002.
+Для переносимости
 .Nm
-should only be used if the first argument does not start with a hyphen
+следует использовать только в случае, если первый аргумент не начинается с дефиса
 .Pq Ql "-"
-and does not contain any backslashes
+и не содержит обратных слешей
 .Pq Ql "\e" .
-If this is not sufficient,
+Если этого недостаточно,
 .Xr printf 1
-should be used.
+следует использовать.
 .Pp
-Most shells provide a builtin
-.Nm
-command which tends to differ from this utility
-in the treatment of options and backslashes.
-Consult the
-.Xr builtin 1
-manual page.
-.Sh EXIT STATUS
-.Ex -std
-.Sh SEE ALSO
+Большинство оболочек предоставляют встроенную команду
+.Nm ,
+которая, как правило, отличается от этой утилиты
+в обращении с опциями и обратными слешами.
+См. руководство по встроенным командам
+.Xr builtin 1 .
+.Sh КОД ЗАВЕРШЕНИЯ
+.Pp
+Приложение завершается с кодом 0 в случае успеха, и с кодом >0, если произошла ошибка.
+.Sh СМ. ТАКЖЕ
 .Xr builtin 1 ,
 .Xr csh 1 ,
 .Xr printf 1 ,
 .Xr sh 1
-.Sh STANDARDS
-The
+.Sh СТАНДАРТЫ
+Утилита
 .Nm
-utility conforms to
+соответствует
 .St -p1003.1-2001
-as amended by Cor.\& 1-2002.
-.Sh HISTORY
-The
+с поправкой Cor.\& 1-2002.
+.Sh ИСТОРИЯ
+Команда
 .Nm
-command appeared in
+появилась в
 .At v2 .
