@@ -27,75 +27,75 @@
 .\"
 .\"	@(#)uuencode.format.5	8.2 (Berkeley) 1/12/94
 .\"
-.Dd January 12, 1994
-.Dt UUENCODE 5
-.Os
+От 12 января 1994 г.
+.Dt UUENCODE 5 
+.Os 
 .Sh NAME
-.Nm uuencode
-.Nd format of an encoded uuencode file
-.Sh DESCRIPTION
-Files output by
+.Nm uuencode 
+.Формат Nd закодированного файла uuencode 
+.Sh ОПИСАНИЕ
+Файлы, выводимые
+.Xr uuencode 1 
+состоит из строки заголовка, 
+за которой следует ряд строк кузова, 
+и строки трейлера.
+Команда 
+.Xr uudecode 1 
+
+проигнорирует любые строки, предшествующие заголовку или 
+следующие за трейлером.
+Строки, предшествующие заголовку, конечно, не должны 
+выглядеть как заголовок.
+.Pp
+Строка заголовка отличается наличием первых
+6 символов
+.Dq begin\ \& 
+(обратите внимание на пробел в конце).
+Слово 
+.Em begin 
+за ним следует режим (восьмеричный), 
+и строка, которая называет удаленный файл.
+Три элемента в строке заголовка разделены пробелом.
+.Pp
+Основная часть состоит из нескольких строк, каждая длиной не более 62 символов 
+(включая завершающую новую строку).
+Они состоят из количества символов, 
+за которыми следуют закодированные символы, 
+за которыми следует новая строка.
+Количество символов - это один печатный символ, 
+и представляет собой целое число, количество байтов 
+представляет остальная часть строки.
+Такие целые числа всегда находятся в диапазоне от 1 до 45 или 64 и могут быть 
+определены путем вычитания символьного пробела (восьмеричной цифры 40) 
+из символа.
+Символ 64 представляет нулевое значение.
+.PP
+Группы по 3 байта хранятся в 4-х символов, 6 бит на символ.
+Все герои всегда находятся в диапазоне от 1 до 64 и это компенсируется
+космос (восьмеричном 40) чтобы принять печатными буквами.
+Символ
+64 представляет нулевое значение.
+Последняя строка может быть короче обычных 45 байт.
+Если размер не кратен 3, этот факт можно определить 
+по значению count в последней строке.
+Будут добавлены дополнительные символы null, чтобы количество символов было кратно 
+4.
+Основная часть заканчивается строкой со счетом, равным нулю.
+Эта строка состоит из единицы 
+.Tn ASCII 
+обратная кавычка (восьмеричная цифра 140).
+.Pp
+Линия прицепа состоит из 
+.Dq конца 
+отдельной линии.
+.Sh СМОТРИТЕ ТАКЖЕ
+.Xr mail 1 , 
+.Xr uucp 1 , 
+.Xr uudecode 1 , 
 .Xr uuencode 1
-consist of a header line,
-followed by a number of body lines,
-and a trailer line.
-The
-.Xr uudecode 1
-command
-will ignore any lines preceding the header or
-following the trailer.
-Lines preceding a header must not, of course,
-look like a header.
-.Pp
-The header line is distinguished by having the first
-6 characters
-.Dq begin\ \&
-(note the trailing space).
-The word
-.Em begin
-is followed by a mode (in octal),
-and a string which names the remote file.
-A space separates the three items in the header line.
-.Pp
-The body consists of a number of lines, each at most 62 characters
-long (including the trailing newline).
-These consist of a character count,
-followed by encoded characters,
-followed by a newline.
-The character count is a single printing character,
-and represents an integer, the number of bytes
-the rest of the line represents.
-Such integers are always in the range from 1 to 45 or 64 and can
-be determined by subtracting the character space (octal 40)
-from the character.
-Character 64 represents a count of zero.
-.Pp
-Groups of 3 bytes are stored in 4 characters, 6 bits per character.
-All characters are always in range from 1 to 64 and are offset by a
-space (octal 40) to make the characters printing.
-Character
-64 represents a count of zero.
-The last line may be shorter than the normal 45 bytes.
-If the size is not a multiple of 3, this fact can be determined
-by the value of the count on the last line.
-Extra null characters will be included to make the character count a multiple
-of 4.
-The body is terminated by a line with a count of zero.
-This line consists of one
-.Tn ASCII
-backquote (octal 140) character.
-.Pp
-The trailer line consists of
-.Dq end
-on a line by itself.
-.Sh SEE ALSO
-.Xr mail 1 ,
-.Xr uucp 1 ,
-.Xr uudecode 1 ,
-.Xr uuencode 1
-.Sh HISTORY
-The
-.Nm
-file format appeared in
+.Sh ИСТОРИЯ
+Формат файла 
+.Nm 
+появился в версии 
 .Bx 4.0 .
-.\" It was named uuencode.5 prior to 4.3
+.\" До версии 4.3 он назывался uuencode.5
