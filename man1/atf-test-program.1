@@ -22,13 +22,13 @@
 .\" IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 .\" OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 .\" IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-.Dd March 2, 2014
+.Dd 2 марта 2014 г.
 .Dt ATF-TEST-PROGRAM 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm atf-test-program
 .Nd common interface to ATF test programs
-.Sh SYNOPSIS
+.Sh СИНТАКСИС
 .Nm
 .Op Fl r Ar resfile
 .Op Fl s Ar srcdir
@@ -36,64 +36,64 @@
 .Ar test_case
 .Nm
 .Fl l
-.Sh DESCRIPTION
-Test programs written using the ATF libraries all share a common user
-interface, which is what this manual page describes.
-.Em NOTE: There is no binary known as
+.Sh ОПИСАНИЕ
+Все тестовые программы, написанные с использованием библиотек ATF, имеют общего пользователя.
+интерфейс, который описан на этой странице руководства.
+.Em ПРИМЕЧАНИЕ: Не существует двоичного файла, известного как
 .Nm ;
-.Em what is described in this manual page is the command-line interface
+.Em на этой странице руководства описан интерфейс командной строки.
 .Em exposed by the atf-c, atf-c++ and atf-sh bindings .
 .Pp
-In the first synopsis form, the test program will execute the provided
-test case and print its results to the standard output, unless otherwise
-stated by the
+В первой форме обзора тестовая программа выполнит предоставленную
+тестовый пример и выведите его результаты на стандартный вывод, если иное
+заявил
 .Fl r
-flag.
-Optionally, the test case name can be suffixed by
+флаг.
+При желании имя тестового примера может быть дополнено суффиксом
 .Sq :cleanup ,
-in which case the cleanup routine of the test case will be executed
-instead of the test case body; see
+в этом случае будет выполнена процедура очистки тестового примера
+вместо тела тестового примера; видеть
 .Xr atf-test-case 4 .
-Note that the test case is
-.Em executed without isolation ,
-so it can and probably will create and modify files in the current directory.
-To execute test cases in a controller manner, you need a runtime engine
-that understands the ATF interface.
-The recommended runtime engine is
+Обратите внимание, что тестовый пример
+.Em выполнен без изоляции,
+поэтому он может и, вероятно, будет создавать и изменять файлы в текущем каталоге.
+Для выполнения тестовых случаев в виде контроллера вам понадобится механизм времени выполнения.
+который понимает интерфейс ATF.
+Рекомендуемый механизм выполнения:
 .Xr kyua 1 .
-You should only execute test cases by hand for debugging purposes.
+Тестовые примеры следует выполнять только вручную в целях отладки.
 .Pp
-In the second synopsis form, the test program will list all available
-test cases alongside their meta-data properties in a format that is
-machine parseable.
-This list is processed by
+Во второй форме обзора тестовая программа перечислит все доступные
+тестовые примеры вместе с их свойствами метаданных в формате, который
+машина разборчивая.
+Этот список обрабатывается
 .Xr kyua 1
-to know how to execute the test cases of a given test program.
+знать, как выполнять тестовые примеры данной тестовой программы.
 .Pp
-The following options are available:
+Доступны следующие варианты:
 .Bl -tag -width XvXvarXvalueXX
 .It Fl l
-Lists available test cases alongside a brief description for each of them.
+Перечисляет доступные тестовые примеры вместе с кратким описанием каждого из них.
 .It Fl r Ar resfile
-Specifies the file that will receive the test case result.
-If not specified, the test case prints its results to stdout.
-If the result of a test case needs to be parsed by another program, you must
-use this option to redirect the result to a file and then read the resulting
-file from the other program.
-Note:
-.Em do not try to process the stdout of the test case
-because your program may break in the future.
+Указывает файл, который получит результат тестового примера.
+Если не указано, тестовый пример выводит свои результаты на стандартный вывод.
+Если результат тестового примера необходимо проанализировать другой программой, вы должны
+используйте эту опцию, чтобы перенаправить результат в файл, а затем прочитать полученный результат
+файл из другой программы.
+Примечание:
+.Em не пытайтесь обрабатывать стандартный вывод тестового примера
+потому что ваша программа может сломаться в будущем.
 .It Fl s Ar srcdir
-The path to the directory where the test program is located.
-This is needed in all cases, except when the test program is being executed
-from the current directory.
-The test program will use this path to locate any helper data files or
-utilities.
+Путь к каталогу, в котором находится тестовая программа.
+Это необходимо во всех случаях, кроме случаев выполнения тестовой программы.
+из текущего каталога.
+Тестовая программа будет использовать этот путь для поиска любых вспомогательных файлов данных или
+коммунальные услуги.
 .It Fl v Ar var=value
-Sets the configuration variable
+Устанавливает переменную конфигурации
 .Ar var
-to the value
+к значению
 .Ar value .
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr kyua 1

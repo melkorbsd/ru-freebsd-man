@@ -27,17 +27,17 @@
 .\"
 .\"     From: @(#)uuencode.1	8.1 (Berkeley) 6/6/93
 .\"
-.Dd April 18, 2022
+.Dd 18 апреля 2022 г.
 .Dt BINTRANS 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm bintrans ,
 .Nm uuencode ,
 .Nm uudecode ,
 .Nm b64encode ,
 .Nm b64decode
 .Nd encode/decode a binary file
-.Sh SYNOPSIS
+.Sh СИНТАКСИС
 .Nm
 .Op algorithm
 .Op ...
@@ -70,213 +70,213 @@
 .Op Fl d
 .Op Fl w Ar column
 .Op Ar file
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+
 .Nm uuencode
-and
+и
 .Nm uudecode
-utilities are used to transmit binary files over transmission mediums
-that do not support other than simple
+утилиты используются для передачи двоичных файлов по средам передачи.
+которые не поддерживают ничего, кроме простых
 .Tn ASCII
 data.
-The
+
 .Nm b64encode
-utility is synonymous with
+полезность является синонимом
 .Nm uuencode
-with the
+с
 .Fl m
-flag specified.
-The
+указан флаг.
+
 .Nm b64decode
-utility is synonymous with
+полезность является синонимом
 .Nm uudecode
-with the
+с
 .Fl m
-flag specified.
+указан флаг.
 .Pp
-The
+
 .Nm base64
-utility acts as a base64 decoder when passed the
+Утилита действует как декодер base64 при передаче
 .Fl -decode
 .Po or
 .Fl d
 .Pc
-flag and as a base64 encoder otherwise.
-As a decoder it only accepts raw base64 input
-and as an encoder it does not produce the framing lines.
+флаг и в качестве кодировщика base64 в противном случае.
+В качестве декодера он принимает только необработанный входной сигнал base64.
+и как кодер он не создает линии кадрирования.
 .Nm base64
-reads standard input or
+читает стандартный ввод или
 .Ar file
-if it is provided and writes to standard output.
-Options
+если он предоставляется и записывает в стандартный вывод.
+Параметры
 .Fl -wrap
 .Po or
 .Fl w
 .Pc
-and
+и
 .Fl -ignore-garbage
 .Po or
 .Fl i
 .Pc
-are accepted for compatibility with GNU base64,
-but the latter is unimplemented and silently ignored.
+приняты для совместимости с GNU base64,
+но последнее не реализовано и молча игнорируется.
 .Pp
-The
+
 .Nm uuencode
-utility reads
+утилита читает
 .Ar file
-(or by default the standard input) and writes an encoded version
-to the standard output, or
+(или по умолчанию стандартный ввод) и записывает закодированную версию
+на стандартный вывод или
 .Ar output_file
-if one has been specified.
-The encoding uses only printing
+если таковой был указан.
+Кодировка использует только печать
 .Tn ASCII
-characters and includes the
-mode of the file and the operand
+персонажей и включает в себя
+режим файла и операнда
 .Ar name
-for use by
+для использования
 .Nm uudecode .
 .Pp
-The
+
 .Nm uudecode
-utility transforms
+утилита преобразует
 .Em uuencoded
-files (or by default, the standard input) into the original form.
-The resulting file is named either
+файлы (или по умолчанию стандартный ввод) в исходную форму.
+Результирующий файл называется либо
 .Ar name
-or (depending on options passed to
+или (в зависимости от опций, переданных в
 .Nm uudecode )
 .Ar output_file
-and will have the mode of the original file except that setuid
-and execute bits are not retained.
-The
+и будет иметь режим исходного файла, за исключением setuid
+и биты выполнения не сохраняются.
+
 .Nm uudecode
-utility ignores any leading and trailing lines.
+Утилита игнорирует любые начальные и конечные строки.
 .Pp
-The following options are available for
+Доступны следующие варианты для
 .Nm uuencode :
 .Bl -tag -width ident
 .It Fl m
-Use the Base64 method of encoding, rather than the traditional
+Используйте метод кодирования Base64 вместо традиционного.
 .Nm uuencode
-algorithm.
+алгоритм.
 .It Fl r
-Produce raw output by excluding the initial and final framing lines.
+Создавайте необработанный результат, исключая начальную и конечную линии кадрирования.
 .It Fl o Ar output_file
-Output to
+Вывод в
 .Ar output_file
-instead of standard output.
+вместо стандартного вывода.
 .El
 .Pp
-The following options are available for
+Доступны следующие варианты для
 .Nm uudecode :
 .Bl -tag -width ident
 .It Fl c
-Decode more than one uuencoded file from
+Декодировать более одного файла в кодировке uu из
 .Ar file
-if possible.
+если возможно.
 .It Fl i
-Do not overwrite files.
+Не перезаписывайте файлы.
 .It Fl m
-When used with the
+При использовании с
 .Fl r
-flag, decode Base64 input instead of traditional
+флаг, декодировать ввод Base64 вместо традиционного
 .Nm uuencode
-input.
-Without
+вход.
+Без
 .Fl r
-it has no effect.
+это не имеет никакого эффекта.
 .It Fl o Ar output_file
-Output to
+Вывод в
 .Ar output_file
-instead of any pathname contained in the input data.
+вместо любого пути, содержащегося во входных данных.
 .It Fl p
-Decode
+Декодировать
 .Ar file
-and write output to standard output.
+и записать вывод в стандартный вывод.
 .It Fl r
-Decode raw (or broken) input, which is missing the initial and
-possibly the final framing lines.
-The input is assumed to be in the traditional
+Декодировать необработанный (или сломанный) ввод, в котором отсутствуют начальный и
+возможно, последние кадры.
+Предполагается, что ввод осуществляется в традиционном формате.
 .Nm uuencode
-encoding, but if the
+кодировка, но если
 .Fl m
-flag is used, or if the utility is invoked as
+используется флаг или если утилита вызывается как
 .Nm b64decode ,
-then the input is assumed to be in Base64 format.
+тогда предполагается, что входные данные имеют формат Base64.
 .It Fl s
-Do not strip output pathname to base filename.
-By default
+Не разделяйте выходной путь до базового имени файла.
+По умолчанию 
 .Nm uudecode
-deletes any prefix ending with the last slash '/' for security
-reasons.
+удаляет любой префикс, заканчивающийся последней косой чертой '/' в целях безопасности
+причины.
 .El
 .Pp
-Additionally,
+Кроме того,
 .Nm b64encode
-accepts the following option:
+принимает следующий вариант:
 .Bl -tag -width ident
 .It Fl w Ar column
-Wrap encoded output after
+Перенос закодированного вывода после
 .Ar column .
 .El
 .Pp
 .Nm
-is a generic utility that can run
-any of the aforementioned encoders and decoders.
-It can also run algorithms that are not available
-through a dedicated program:
+это универсальная утилита, которая может запускать
+любой из вышеупомянутых кодеров и декодеров.
+Он также может запускать алгоритмы, которые недоступны
+через специальную программу:
 .Pp
 .Nm qp
-is a quoted-printable converter
-and accepts the following options:
+конвертер котировок и печати
+и принимает следующие варианты:
 .Bl -tag -width ident
 .It Fl u
-Decode.
+Декодировать.
 .It Fl o Ar output_file
-Output to
+Вывод в
 .Ar output_file
-instead of standard output.
-.Sh EXAMPLES
-The following example packages up a source tree, compresses it,
-uuencodes it and mails it to a user on another system.
-When
+вместо стандартного вывода.
+.Sh ПРИМЕРЫ
+В следующем примере дерево исходного кода упаковывается, сжимается,
+uuenкодирует его и отправляет пользователю в другой системе.
+Когда
 .Nm uudecode
-is run on the target system, the file ``src_tree.tar.Z'' will be
-created which may then be uncompressed and extracted into the original
-tree.
+запускается в целевой системе, файл ``src_tree.tar.Z'' будет
+созданный файл, который затем можно распаковать и извлечь в оригинал.
+дерево.
 .Pp
 .Bd -literal -offset indent -compact
 tar cf \- src_tree \&| compress \&|
 uuencode src_tree.tar.Z \&| mail user@example.com
 .Ed
 .Pp
-The following example unpacks all uuencoded
-files from your mailbox into your current working directory.
+В следующем примере распаковываются все uuencoded.
+файлы из вашего почтового ящика в текущий рабочий каталог.
 .Pp
 .Bd -literal -offset indent -compact
 uudecode -c < $MAIL
 .Ed
 .Pp
-The following example extracts a compressed tar
-archive from your mailbox
+В следующем примере извлекается сжатый файл tar.
+архив из вашего почтового ящика
 .Pp
 .Bd -literal -offset indent -compact
 uudecode -o /dev/stdout < $MAIL | zcat | tar xfv -
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr basename 1 ,
 .Xr compress 1 ,
 .Xr mail 1 ,
 .Xr uucp 1 Pq Pa ports/net/freebsd-uucp ,
 .Xr uuencode 5
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+
 .Nm uudecode
-and
+и
 .Nm uuencode
-utilities appeared in
+утилиты появились в
 .Bx 4.0 .
-.Sh BUGS
-Files encoded using the traditional algorithm are expanded by 35% (3
-bytes become 4 plus control information).
+.Sh ОШИБКИ
+Файлы, закодированные традиционным алгоритмом, расширяются на 35% (3
+байты становятся 4 плюс управляющая информация).
