@@ -27,96 +27,96 @@
 .\"
 .\"     @(#)biff.1	8.1 (Berkeley) 6/6/93
 .\"
-.Dd April 28, 2013
+.Dd 28 апреля 2013 г.
 .Dt BIFF 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm biff
 .Nd "be notified if mail arrives and who it is from"
-.Sh SYNOPSIS
+.Sh СИНТАКСИС
 .Nm
 .Op Cm n | y | b
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 The
 .Nm
-utility informs the system whether you want to be notified on your terminal
-when mail arrives.
+утилита сообщает системе, хотите ли вы получать уведомления на своем терминале
+когда придет почта.
 .Pp
-Affected is the first terminal associated with the standard input,
-standard output or standard error file descriptor, in that order.
-Thus, it is possible to use the redirection facilities of a shell to
-toggle the notification for other terminals than the one
+Затрагивается первый терминал, связанный со стандартным вводом,
+стандартный вывод или стандартный дескриптор файла ошибок, именно в этом порядке.
+Таким образом, можно использовать средства перенаправления оболочки для
+переключить уведомление для других терминалов, кроме этого
 .Nm
-runs on.
+идем дальше
 .Pp
-The following options are available:
+Доступны следующие варианты:
 .Bl -tag -width indent
 .It Cm n
-Disable notification.
+Отключить уведомление.
 .It Cm y
-Enable header notification.
+Включить уведомление в заголовке.
 .It Cm b
-Enable bell notification.
+Включить уведомление о звонке.
 .El
 .Pp
-When header notification is enabled, the header and first few lines of
-the message will be printed on your terminal whenever mail arrives.
+Когда уведомление заголовка включено, заголовок и первые несколько строк
+сообщение будет распечатано на вашем терминале всякий раз, когда придет почта.
 A
 .Dq "biff y"
-command is often included in the file
+команда часто включается в файл
 .Pa .login
-or
+или
 .Pa .profile
-to be executed at each login.
+выполняться при каждом входе в систему.
 .Pp
-When bell notification is enabled, only two bell characters
+Когда уведомление о звонке включено, только два символа звонка
 .Tn ( ASCII
 \\007)
-will be printed on your terminal whenever mail arrives.
+будет распечатан на вашем терминале при каждом поступлении почты.
 .Pp
-If no arguments are given,
+Если аргументы не указаны,
 .Nm
-displays the present notification status of the terminal to the
-standard output.
+отображает текущий статус уведомления терминала на
+стандартный вывод.
 .Pp
 The
 .Nm
-utility operates asynchronously.
-For synchronous notification use the
+Утилита работает асинхронно.
+Для синхронного уведомления используйте
 .Ev MAIL
-variable of
+переменная
 .Xr sh 1
-or the
+или
 .Va mail
-variable of
+переменная
 .Xr csh 1 .
-.Sh EXIT STATUS
+.Sh ВОЗВРАЩАЕМОЕ ЗНАЧЕНИЕ
 The
 .Nm
-utility exits with one of the following values:
+Утилита завершает работу с одним из следующих значений:
 .Bl -tag -width indent
 .It 0
-Notification was enabled at the time of invocation.
+Уведомление было включено во время вызова.
 .It 1
-Notification was disabled at the time of invocation.
+Уведомление было отключено на момент вызова.
 .It >1
-An error occurred.
+Произошла ошибка.
 .El
-.Sh COMPATIBILITY
-Previous versions of the
+.Sh СОВМЕСТИМОСТЬ
+Предыдущие версии
 .Nm
-utility affected the terminal attached to standard error without first
-trying the standard input or output devices.
-.Sh SEE ALSO
+утилита повлияла на терминал, подключенный к стандартной ошибке, без предварительного
+пробуем стандартные устройства ввода или вывода.
+.Sh SСМОТРИТЕ ТАКЖЕ
 .Xr csh 1 ,
 .Xr mail 1 ,
 .Xr sh 1 ,
 .Xr comsat 8
-.Sh HISTORY
+.Sh ИСТОРИЯ
 The
 .Nm
-command appeared in
+команда появилась в
 .Bx 4.0 .
-It was named after the dog of Heidi Stettner.
-He died
-in August 1993, at 15.
+Он был назван в честь собаки Хайди Стеттнер.
+Он умер
+в августе 1993 года, в 15.

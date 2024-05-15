@@ -22,83 +22,83 @@
 .\" IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 .\" OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 .\" IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-.Dd March 6, 2017
+.Dd 6 марта 2017 г.
 .Dt ATF-SH 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm atf-sh
 .Nd interpreter for shell-based test programs
-.Sh SYNOPSIS
+.Sh СИНТАКСИС
 .Nm
 .Op Fl s Ar shell
 .Ar script
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 .Nm
-is an interpreter that runs the test program given in
+это интерпретатор, который запускает тестовую программу, указанную в
 .Ar script
-after loading the
+после загрузки
 .Xr atf-sh 3
-library.
+библиотека.
 .Pp
 .Nm
-is not a real interpreter though: it is just a wrapper around
-the system-wide shell defined by
+это не настоящий интерпретатор: это просто оболочка
+общесистемная оболочка, определяемая
 .Va ATF_SHELL .
 .Nm
-executes the interpreter, loads the
+запускает интерпретатор, загружает
 .Xr atf-sh 3
-library and then runs the script.
-You must consider
+библиотеку, а затем запускает скрипт.
+Вы должны рассмотреть
 .Nm atf-sh
-to be a POSIX shell by default and thus should not use any non-standard
-extensions.
+быть оболочкой POSIX по умолчанию и, следовательно, не должен использовать какие-либо нестандартные
+расширения.
 .Pp
-The following options are available:
+Доступны следующие варианты:
 .Bl -tag -width XsXshellXXX
 .It Fl s Ar shell
-Specifies the shell to use instead of the value provided by
+Указывает оболочку, которая будет использоваться вместо значения, предоставленного
 .Va ATF_SHELL .
 .El
-.Sh ENVIRONMENT
+.Sh СРЕДА
 .Bl -tag -width ATFXLIBEXECDIRXX -compact
 .It Va ATF_LIBEXECDIR
-Overrides the builtin directory where
+Переопределяет встроенный каталог, в котором
 .Nm
-is located.
-Should not be overridden other than for testing purposes.
+расположен.
+Не следует переопределять, кроме как в целях тестирования.
 .It Va ATF_PKGDATADIR
-Overrides the builtin directory where
+Переопределяет встроенный каталог, в котором
 .Pa libatf-sh.subr
-is located.
-Should not be overridden other than for testing purposes.
+расположен.
+Не следует переопределять, кроме как в целях тестирования.
 .It Va ATF_SHELL
-Path to the system shell to be used in the generated scripts.
-Scripts must not rely on this variable being set to select a specific
-interpreter.
+Путь к системной оболочке, которая будет использоваться в создаваемых скриптах.
+Сценарии не должны полагаться на то, что эта переменная установлена для выбора определенного
+устный переводчик.
 .It Va ATF_SHELL
-Path to the system shell to be used in the generated scripts.
+Путь к системной оболочке, которая будет использоваться в создаваемых скриптах.
 .El
-.Sh EXAMPLES
-Scripts using
+.Sh ПРИМЕРЫ
+Скрипты, использующие
 .Xr atf-sh 3
-should start with:
+должно начинаться с:
 .Bd -literal -offset indent
 #! /usr/bin/env atf-sh
 .Ed
 .Pp
-Alternatively, if you want to explicitly choose a shell interpreter, you cannot
-rely on
+Альтернативно, если вы хотите явно выбрать интерпретатор оболочки, вы не можете
+полагаться на
 .Xr env 1
-to find
+найти
 .Nm .
-Instead, you have to hardcode the path to
+Вместо этого вам придется жестко запрограммировать путь к
 .Nm
-in the script and then use the
+в скрипте, а затем используйте
 .Fl s
-option afterwards as a
-.Em single parameter :
+вариант впоследствии как
+Em single parameter :
 .Bd -literal -offset indent
 #! /path/to/bin/atf-sh -s/bin/bash
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr atf-sh 3

@@ -24,36 +24,36 @@
 .\"
 .\" $FreeBSD$
 .\"
-.Dd March 1, 2014
+.Dd 1 марта 2014 г.
 .Dt BSDCAT 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm bsdcat
 .Nd expand files to standard output
-.Sh SYNOPSIS
+.Sh СИНТАКСИС
 .Nm
 .Op options
 .Op files
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 .Nm
-expands files to standard output.
-.Sh OPTIONS
+расширяет файлы до стандартного вывода.
+.Sh ПАРАМЕТРЫ
 .Nm
-typically takes a filename as an argument or reads standard input when used in a
-pipe.
-In both cases decompressed data it written to standard output.
-.Sh EXAMPLES
-To decompress a file:
+обычно принимает имя файла в качестве аргумента или читает стандартный ввод при использовании в
+трубка.
+В обоих случаях распакованные данные записываются на стандартный вывод.
+.Sh ПРИМЕРЫ
+Чтобы распаковать файл:
 .Pp
 .Dl bsdcat example.txt.gz > example.txt
 .Pp
-To decompress standard input in a pipe:
+Чтобы распаковать стандартный ввод в канале:
 .Pp
 .Dl cat example.txt.gz | bsdcat > example.txt
 .Pp
-Both examples achieve the same results - a decompressed file by redirecting
-output.
-.Sh SEE ALSO
+Оба примера дают одинаковые результаты: распакованный файл путем перенаправления
+выход.
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr bzcat 1 ,
 .Xr uncompress 1 ,
 .Xr xzcat 1 ,

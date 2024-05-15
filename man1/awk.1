@@ -21,13 +21,13 @@
 .\" IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,
 .\" ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
 .\" THIS SOFTWARE.
-.Dd July 30, 2021
+.Dd 30 июля 2021 г.
 .Dt AWK 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm awk
 .Nd pattern-directed scanning and processing language
-.Sh SYNOPSIS
+.Sh СИНТАКСИС
 .Nm awk
 .Op Fl safe
 .Op Fl version
@@ -36,183 +36,183 @@
 .Op Fl v Ar var Ns = Ns Ar value
 .Op Ar prog | Fl f Ar progfile
 .Ar
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 .Nm
-scans each input
+сканирует каждый вход
 .Ar file
-for lines that match any of a set of patterns specified literally in
+для строк, которые соответствуют любому из набора шаблонов, указанных буквально в
 .Ar prog
-or in one or more files specified as
+или в одном или нескольких файлах, указанных как
 .Fl f Ar progfile .
-With each pattern there can be an associated action that will be performed
-when a line of a
+С каждым шаблоном может быть связано действие, которое будет выполнено.
+когда линия a
 .Ar file
-matches the pattern.
-Each line is matched against the
-pattern portion of every pattern-action statement;
-the associated action is performed for each matched pattern.
-The file name
+соответствует рисунку.
+Каждая строка сопоставляется с
+часть шаблона каждого оператора шаблонного действия;
+соответствующее действие выполняется для каждого совпавшего шаблона.
+Имя файла
 .Sq -
-means the standard input.
-Any
+означает стандартный ввод.
+Любой
 .Ar file
-of the form
+формы
 .Ar var Ns = Ns Ar value
-is treated as an assignment, not a filename,
-and is executed at the time it would have been opened if it were a filename.
+рассматривается как задание, а не имя файла,
+и выполняется в тот момент, когда он был бы открыт, если бы это было имя файла.
 .Pp
-The options are as follows:
+Возможные варианты:
 .Bl -tag -width "-safe "
 .It Fl d Ns Op Ar n
-Debug mode.
-Set debug level to
+Режим отладки.
+Установите уровень отладки на
 .Ar n ,
-or 1 if
+или 1, если
 .Ar n
-is not specified.
-A value greater than 1 causes
+не указано.
+Значение больше 1 вызывает
 .Nm
-to dump core on fatal errors.
+сбрасывать ядро на фатальные ошибки.
 .It Fl F Ar fs
-Define the input field separator to be the regular expression
+Определите разделитель полей ввода как регулярное выражение.
 .Ar fs .
 .It Fl f Ar progfile
-Read program code from the specified file
+Прочитать код программы из указанного файла
 .Ar progfile
-instead of from the command line.
+а не из командной строки.
 .It Fl safe
-Disable file output
+Отключить вывод файлов
 .Pf ( Ic print No > ,
 .Ic print No >> ) ,
-process creation
+создание процесса
 .Po
 .Ar cmd | Ic getline ,
 .Ic print | ,
 .Ic system
-.Pc
-and access to the environment
+.P
+и доступ к окружающей среде
 .Pf ( Va ENVIRON ;
-see the section on variables below).
-This is a first
+см. раздел о переменных ниже).
+Это первый
 .Pq and not very reliable
-approximation to a
+приближение к
 .Dq safe
-version of
+версия
 .Nm .
 .It Fl version
-Print the version number of
+Распечатайте номер версии
 .Nm
-to standard output and exit.
+на стандартный вывод и выйти.
 .It Fl v Ar var Ns = Ns Ar value
-Assign
+Назначать
 .Ar value
-to variable
+в переменную
 .Ar var
-before
+до
 .Ar prog
-is executed;
-any number of
+выполняется;
+любое количество
 .Fl v
-options may be present.
+варианты могут присутствовать.
 .El
 .Pp
-The input is normally made up of input lines
+Ввод обычно состоит из строк ввода.
 .Pq records
-separated by newlines, or by the value of
+разделенные символами новой строки или значением
 .Va RS .
-If
+Если
 .Va RS
-is null, then any number of blank lines are used as the record separator,
-and newlines are used as field separators
-(in addition to the value of
+имеет значение NULL, то в качестве разделителя записей используется любое количество пустых строк,
+и новые строки используются в качестве разделителей полей.
+(помимо стоимости
 .Va FS ) .
-This is convenient when working with multi-line records.
+Это удобно при работе с многострочными записями.
 .Pp
-An input line is normally made up of fields separated by whitespace,
-or by the extended regular expression
+Строка ввода обычно состоит из полей, разделенных пробелами.
+или расширенным регулярным выражением
 .Va FS
-as described below.
-The fields are denoted
+как описано ниже.
+Поля обозначены
 .Va $1 , $2 , ... ,
-while
+пока
 .Va $0
-refers to the entire line.
-If
+относится ко всей строке.
+Если
 .Va FS
-is null, the input line is split into one field per character.
-While both gawk and mawk have the same behavior, it is unspecified in the
+имеет значение null, строка ввода разбивается на одно поле на каждый символ.
+Хотя поведение gawk и mawk одинаковое, оно не указано в
 .St -p1003.1-2008
-standard.
-If
+стандарт.
+Если
 .Va FS
-is a single space, then leading and trailing blank and newline characters are
-skipped.
-Fields are delimited by one or more blank or newline characters.
-A blank character is a space or a tab.
-If
+представляет собой один пробел, тогда начинаются и заканчиваются пробелы и символы новой строки.
+пропущен.
+Поля разделяются одним или несколькими пробелами или символами новой строки.
+Пустой символ — это пробел или табуляция.
+Если
 .Va FS
-is a single character, other than space, fields are delimited by each single
-occurrence of that character.
-The
+представляет собой один символ, кроме пробела, поля разделяются каждым отдельным символом.
+появление этого персонажа.
+
 .Va FS
-variable defaults to a single space.
+переменная по умолчанию равна одному пробелу.
 .Pp
-Normally, any number of blanks separate fields.
-In order to set the field separator to a single blank, use the
+Обычно любое количество пробелов разделяет поля.
+Чтобы установить в качестве разделителя полей один пробел, используйте
 .Fl F
-option with a value of
+вариант со стоимостью
 .Sq [\ \&] .
-If a field separator of
+Если разделитель полей
 .Sq t
-is specified,
+указано,
 .Nm
-treats it as if
+относится к этому так, как будто
 .Sq \et
-had been specified and uses
+был указан и использует
 .Aq TAB
-as the field separator.
-In order to use a literal
+в качестве разделителя полей.
+Чтобы использовать буквальный
 .Sq t
-as the field separator, use the
+в качестве разделителя полей используйте
 .Fl F
-option with a value of
+вариант со стоимостью
 .Sq [t] .
 .Pp
-A pattern-action statement has the form
+Оператор шаблон-действие имеет форму
 .Pp
 .D1 Ar pattern Ic \&{ Ar action Ic \&}
 .Pp
-A missing
+Пропавший без вести
 .Ic \&{ Ar action Ic \&}
-means print the line;
-a missing pattern always matches.
-Pattern-action statements are separated by newlines or semicolons.
+означает печать строки;
+отсутствующий образец всегда совпадает.
+Операторы шаблонного действия разделяются символами новой строки или точкой с запятой.
 .Pp
-Newlines are permitted after a terminating statement or following a comma
+Символы новой строки допускаются после завершающего оператора или после запятой.
 .Pq Sq ,\& ,
-an open brace
+открытая скобка
 .Pq Sq { ,
-a logical AND
+логическое И
 .Pq Sq && ,
-a logical OR
+логическое ИЛИ
 .Pq Sq || ,
-after the
+после
 .Sq do
-or
+или
 .Sq else
-keywords,
-or after the closing parenthesis of an
+ключевые слова,
+или после закрывающей скобки
 .Sq if ,
 .Sq for ,
-or
+или
 .Sq while
-statement.
-Additionally, a backslash
+заявление.
+Кроме того, обратная косая черта
 .Pq Sq \e
-can be used to escape a newline between tokens.
+может использоваться для экранирования новой строки между токенами.
 .Pp
-An action is a sequence of statements.
-A statement can be one of the following:
+Действие – это последовательность утверждений.
+Заявление может быть одним из следующих:
 .Pp
 .Bl -tag -width Ds -offset indent -compact
 .It Ic if Ar ( expression ) Ar statement Op Ic else Ar statement
@@ -249,107 +249,107 @@ A statement can be one of the following:
 .Sm off
 .Ar array Ic \&[ Ar expression Ic \&]
 .Sm on
-.No # delete an array element
+.No # удалить элемент массива
 .Xc
 .It Xo Ic delete Ar array
-.No # delete all elements of array
+.No # удалить все элементы массива
 .Xc
 .It Xo Ic exit
 .Op Ar expression
-.No # exit immediately; status is Ar expression
+.No # немедленно выйти; статус — это выражение Ar
 .Xc
 .El
 .Pp
-Statements are terminated by
-semicolons, newlines or right braces.
-An empty
+Заявления прекращаются
+точки с запятой, символы новой строки или правые фигурные скобки.
+Пустой
 .Ar expression-list
-stands for
+означает
 .Ar $0 .
-String constants are quoted
+Строковые константы заключаются в кавычки
 .Li \&"" ,
-with the usual C escapes recognized within
-(see
+с обычными экранами C, распознаваемыми внутри
+(смотреть
 .Xr printf 1
-for a complete list of these).
-Expressions take on string or numeric values as appropriate,
-and are built using the operators
+полный их список).
+Выражения принимают строковые или числовые значения в зависимости от ситуации.
+и строятся с использованием операторов
 .Ic + \- * / % ^
 .Pq exponentiation ,
-and concatenation
+и конкатенация
 .Pq indicated by whitespace .
-The operators
+Операторы
 .Ic \&! ++ \-\- += \-= *= /= %= ^=
 .Ic > >= < <= == != ?\&:
-are also available in expressions.
-Variables may be scalars, array elements
-(denoted
+также доступны в выражениях.
+Переменные могут быть скалярами, элементами массива.
+(обозначается
 .Li x[i] )
-or fields.
-Variables are initialized to the null string.
-Array subscripts may be any string,
-not necessarily numeric;
-this allows for a form of associative memory.
-Multiple subscripts such as
+или поля.
+Переменные инициализируются нулевой строкой.
+Индексы массива могут быть любой строкой,
+не обязательно числовой;
+это допускает форму ассоциативной памяти.
+Множественные индексы, такие как
 .Li [i,j,k]
-are permitted; the constituents are concatenated,
-separated by the value of
+разрешены; составляющие объединяются,
+разделенные по значению
 .Va SUBSEP
 .Pq see the section on variables below .
 .Pp
 The
 .Ic print
-statement prints its arguments on the standard output
-(or on a file if
+оператор выводит свои аргументы на стандартный вывод
+(или в файле, если
 .Pf > Ar file
-or
+или
 .Pf >> Ar file
-is present or on a pipe if
+присутствует или на трубе, если
 .Pf |\ \& Ar cmd
-is present), separated by the current output field separator,
-and terminated by the output record separator.
+присутствует), разделенный разделителем полей текущего вывода,
+и завершается разделителем выходных записей.
 .Ar file
-and
+и
 .Ar cmd
-may be literal names or parenthesized expressions;
-identical string values in different statements denote
-the same open file.
-The
+могут быть буквальными именами или выражениями в скобках;
+идентичные строковые значения в разных операторах обозначают
+тот же открытый файл.
+
 .Ic printf
-statement formats its expression list according to the format
-(see
+оператор форматирует свой список выражений в соответствии с форматом
+(смотреть
 .Xr printf 1 ) .
 .Pp
-Patterns are arbitrary Boolean combinations
-(with
+Шаблоны — это произвольные логические комбинации.
+(с
 .Ic "\&! || &&" )
-of regular expressions and
-relational expressions.
+регулярных выражений и
+выражения отношения.
 .Nm
-supports extended regular expressions
+поддерживает расширенные регулярные выражения
 .Pq EREs .
-See
+Смотреть
 .Xr re_format 7
-for more information on regular expressions.
-Isolated regular expressions
-in a pattern apply to the entire line.
-Regular expressions may also occur in
-relational expressions, using the operators
+для получения дополнительной информации о регулярных выражениях.
+Изолированные регулярные выражения
+в шаблоне применяются ко всей линии.
+Регулярные выражения также могут встречаться в
+выражения отношения с использованием операторов
 .Ic ~
-and
+и
 .Ic !~ .
 .Pf / Ar re Ns /
-is a constant regular expression;
-any string (constant or variable) may be used
-as a regular expression, except in the position of an isolated regular expression
-in a pattern.
+— постоянное регулярное выражение;
+можно использовать любую строку (константу или переменную)
+как регулярное выражение, за исключением позиции изолированного регулярного выражения
+в шаблоне.
 .Pp
-A pattern may consist of two patterns separated by a comma;
-in this case, the action is performed for all lines
-from an occurrence of the first pattern
-through an occurrence of the second.
+Шаблон может состоять из двух шаблонов, разделенных запятой;
+в этом случае действие выполняется для всех строк
+от появления первого шаблона
+через возникновение второго.
 .Pp
-A relational expression is one of the following:
+Реляционное выражение является одним из следующих:
 .Pp
 .Bl -tag -width Ds -offset indent -compact
 .It Ar expression matchop regular-expression
@@ -361,380 +361,379 @@ A relational expression is one of the following:
 .Xc
 .El
 .Pp
-where a
+где
 .Ar relop
-is any of the six relational operators in C, and a
+— это любой из шести операторов отношений в C, а
 .Ar matchop
-is either
+либо
 .Ic ~
-(matches)
-or
+(матчи)
+или
 .Ic !~
-(does not match).
-A conditional is an arithmetic expression,
-a relational expression,
-or a Boolean combination
-of these.
+(не совпадает).
+Условное выражение – это арифметическое выражение,
+относительное выражение,
+или логическая комбинация
+из этих.
 .Pp
-The special patterns
+Специальные узоры
 .Ic BEGIN
-and
+и
 .Ic END
-may be used to capture control before the first input line is read
-and after the last.
+может использоваться для захвата управления до того, как будет прочитана первая строка ввода
+и после последнего.
 .Ic BEGIN
-and
+и
 .Ic END
-do not combine with other patterns.
+не комбинируйте с другими узорами.
 .Pp
-Variable names with special meanings:
+Имена переменных со специальным значением:
 .Pp
 .Bl -tag -width "FILENAME " -compact
-.It Va ARGC
-Argument count, assignable.
+.It Va ARG
+Количество аргументов, назначаемое.
 .It Va ARGV
-Argument array, assignable;
-non-null members are taken as filenames.
+Массив аргументов, назначаемый;
+ненулевые члены принимаются в качестве имен файлов.
 .It Va CONVFMT
-Conversion format when converting numbers
-(default
+Формат преобразования при преобразовании чисел
+(по умолчанию
 .Qq Li %.6g ) .
 .It Va ENVIRON
-Array of environment variables; subscripts are names.
+Массив переменных среды; индексы — это имена.
 .It Va FILENAME
-The name of the current input file.
+Имя текущего входного файла.
 .It Va FNR
-Ordinal number of the current record in the current file.
+Порядковый номер текущей записи в текущем файле.
 .It Va FS
-Regular expression used to separate fields; also settable
-by option
+Регулярное выражение, используемое для разделения полей; также настраиваемый
+по выбору
 .Fl F Ar fs .
 .It Va NF
-Number of fields in the current record.
+Количество полей в текущей записи.
 .Va $NF
-can be used to obtain the value of the last field in the current record.
+может использоваться для получения значения последнего поля в текущей записи.
 .It Va NR
-Ordinal number of the current record.
+Порядковый номер текущей записи.
 .It Va OFMT
-Output format for numbers (default
 .Qq Li %.6g ) .
 .It Va OFS
-Output field separator (default blank).
+Разделитель полей вывода (по умолчанию пустой).
 .It Va ORS
-Output record separator (default newline).
+Разделитель выходных записей (новая строка по умолчанию).
 .It Va RLENGTH
-The length of the string matched by the
+Длина строки, соответствующей
 .Fn match
-function.
+функция.
 .It Va RS
-Input record separator (default newline).
+Разделитель входных записей (новая строка по умолчанию).
 .It Va RSTART
-The starting position of the string matched by the
+Начальная позиция строки, совпадающей с
 .Fn match
-function.
+функция.
 .It Va SUBSEP
-Separates multiple subscripts (default 034).
+Разделяет несколько индексов (по умолчанию 034).
 .El
-.Sh FUNCTIONS
-The awk language has a variety of built-in functions:
-arithmetic, string, input/output, general, and bit-operation.
+.Sh ФУНКЦИИ
+Язык awk имеет множество встроенных функций:
+арифметика, строка, ввод/вывод, общие сведения и битовые операции.
 .Pp
-Functions may be defined (at the position of a pattern-action statement)
-thusly:
+Могут быть определены функции (в позиции оператора шаблона-действия).
+таким образом:
 .Pp
 .Dl function foo(a, b, c) { ...; return x }
 .Pp
-Parameters are passed by value if scalar, and by reference if array name;
-functions may be called recursively.
-Parameters are local to the function; all other variables are global.
-Thus local variables may be created by providing excess parameters in
-the function definition.
+Параметры передаются по значению, если скаляр, и по ссылке, если имя массива;
+функции могут вызываться рекурсивно.
+Параметры являются локальными для функции; все остальные переменные являются глобальными.
+Таким образом, локальные переменные могут быть созданы путем предоставления избыточных параметров в
+определение функции.
 .Ss Arithmetic Functions
 .Bl -tag -width "atan2(y, x)"
 .It Fn atan2 y x
-Return the arctangent of
+Вернуть арктангенс
 .Fa y Ns / Ns Fa x
-in radians.
+в радианах.
 .It Fn cos x
-Return the cosine of
+Вернуть косинус
 .Fa x ,
-where
+где
 .Fa x
-is in radians.
+находится в радианах.
 .It Fn exp x
-Return the exponential of
+Вернуть экспоненту
 .Fa x .
 .It Fn int x
-Return
+Возвращаться
 .Fa x
-truncated to an integer value.
+усекается до целочисленного значения.
 .It Fn log x
-Return the natural logarithm of
+Вернуть натуральный логарифм
 .Fa x .
 .It Fn rand
-Return a random number,
+Вернуть случайное число,
 .Fa n ,
-such that
+такой, что
 .Sm off
 .Pf 0 \*(Le Fa n No \*(Lt 1 .
 .Sm on
 .It Fn sin x
-Return the sine of
+Вернуть синус
 .Fa x ,
-where
+где
 .Fa x
-is in radians.
+находится в радианах.
 .It Fn sqrt x
-Return the square root of
+Вернуть квадратный корень из
 .Fa x .
 .It Fn srand expr
-Sets seed for
+Устанавливает начальное значение для
 .Fn rand
-to
+к
 .Fa expr
-and returns the previous seed.
-If
+и возвращает предыдущее семя.
+Если
 .Fa expr
-is omitted, the time of day is used instead.
+опущено, вместо него используется время суток.
 .El
 .Ss String Functions
 .Bl -tag -width "split(s, a, fs)"
 .It Fn gsub r t s
-The same as
+Такой же как
 .Fn sub
-except that all occurrences of the regular expression are replaced.
+за исключением того, что заменяются все вхождения регулярного выражения.
 .Fn gsub
-returns the number of replacements.
+возвращает количество замен.
 .It Fn index s t
-The position in
+Позиция в
 .Fa s
-where the string
+где строка
 .Fa t
-occurs, or 0 if it does not.
+происходит, или 0, если это не происходит.
 .It Fn length s
-The length of
+Длина
 .Fa s
-taken as a string,
-or of
+воспринимается как строка,
+или из
 .Va $0
-if no argument is given.
+если аргумент не указан.
 .It Fn match s r
-The position in
+Позиция в
 .Fa s
-where the regular expression
+где регулярное выражение
 .Fa r
-occurs, or 0 if it does not.
-The variable
+происходит, или 0, если это не происходит.
+Переменная
 .Va RSTART
-is set to the starting position of the matched string
+устанавливается в начальную позицию совпадающей строки
 .Pq which is the same as the returned value
-or zero if no match is found.
-The variable
+или ноль, если совпадение не найдено.
+Переменная
 .Va RLENGTH
-is set to the length of the matched string,
-or \-1 if no match is found.
+устанавливается на длину совпадающей строки,
+или \-1, если совпадение не найдено.
 .It Fn split s a fs
-Splits the string
+Разбивает строку
 .Fa s
-into array elements
+в элементы массива
 .Va a[1] , a[2] , ... , a[n]
-and returns
+и возвращается
 .Va n .
-The separation is done with the regular expression
+Разделение осуществляется с помощью регулярного выражения
 .Ar fs
-or with the field separator
+или с разделителем полей
 .Va FS
-if
+если
 .Ar fs
-is not given.
-An empty string as field separator splits the string
-into one array element per character.
+не дано.
+Пустая строка в качестве разделителя полей разделяет строку.
+в один элемент массива на каждый символ.
 .It Fn sprintf fmt expr ...
-The string resulting from formatting
+Строка, полученная в результате форматирования
 .Fa expr , ...
-according to the
+согласно
 .Xr printf 1
-format
+формат
 .Fa fmt .
 .It Fn sub r t s
-Substitutes
+Заменители
 .Fa t
-for the first occurrence of the regular expression
+для первого появления регулярного выражения
 .Fa r
-in the string
+в строке
 .Fa s .
-If
+Если
 .Fa s
-is not given,
+не дано,
 .Va $0
-is used.
-An ampersand
+используется.
+Амперсанд
 .Pq Sq &
-in
+в
 .Fa t
-is replaced in string
+заменяется в строке
 .Fa s
-with regular expression
+с регулярным выражением
 .Fa r .
-A literal ampersand can be specified by preceding it with two backslashes
+Буквальный амперсанд можно указать, поставив перед ним две обратную косую черту.
 .Pq Sq \e\e .
-A literal backslash can be specified by preceding it with another backslash
+Буквальную обратную косую черту можно указать, поставив перед ней другую обратную косую черту.
 .Pq Sq \e\e .
 .Fn sub
-returns the number of replacements.
+возвращает количество замен.
 .It Fn substr s m n
-Return at most the
+Вернуть не более
 .Fa n Ns -character
-substring of
+подстрока
 .Fa s
-that begins at position
+который начинается с позиции
 .Fa m
-counted from 1.
-If
+считается с 1.
+Если
 .Fa n
-is omitted, or if
+опущено, или если
 .Fa n
-specifies more characters than are left in the string,
-the length of the substring is limited by the length of
+указывает больше символов, чем осталось в строке,
+длина подстроки ограничена длиной
 .Fa s .
 .It Fn tolower str
-Returns a copy of
+Возвращает копию
 .Fa str
-with all upper-case characters translated to their
-corresponding lower-case equivalents.
+со всеми символами верхнего регистра, переведенными в их
+соответствующие эквиваленты в нижнем регистре.
 .It Fn toupper str
-Returns a copy of
+Возвращает копию
 .Fa str
-with all lower-case characters translated to their
-corresponding upper-case equivalents.
+со всеми строчными буквами, переведенными в их
+соответствующие эквиваленты в верхнем регистре.
 .El
 .Ss Input/Output and General Functions
 .Bl -tag -width "getline [var] < file"
 .It Fn close expr
-Closes the file or pipe
+Закрывает файл или канал
 .Fa expr .
 .Fa expr
-should match the string that was used to open the file or pipe.
+должно соответствовать строке, которая использовалась для открытия файла или канала.
 .It Ar cmd | Ic getline Op Va var
-Read a record of input from a stream piped from the output of
+Считайте запись ввода из потока, передаваемого по конвейеру с выхода
 .Ar cmd .
-If
+Если
 .Va var
-is omitted, the variables
+опущено, переменные
 .Va $0
-and
+и
 .Va NF
-are set.
-Otherwise
+установлены.
+В противном случае
 .Va var
-is set.
-If the stream is not open, it is opened.
-As long as the stream remains open, subsequent calls
-will read subsequent records from the stream.
-The stream remains open until explicitly closed with a call to
+установлен.
+Если поток не открыт, он открывается.
+Пока поток остается открытым, последующие вызовы
+будет читать последующие записи из потока.
+Поток остается открытым до тех пор, пока он не будет явно закрыт вызовом
 .Fn close .
 .Ic getline
-returns 1 for a successful input, 0 for end of file, and \-1 for an error.
+возвращает 1 в случае успешного ввода, 0 в случае конца файла и \-1 в случае ошибки.
 .It Fn fflush [expr]
-Flushes any buffered output for the file or pipe
+Сбрасывает любой буферизованный вывод для файла или канала.
 .Fa expr ,
-or all open files or pipes if
+или все открытые файлы или каналы, если
 .Fa expr
-is omitted.
+опущено.
 .Fa expr
-should match the string that was used to open the file or pipe.
+должно соответствовать строке, которая использовалась для открытия файла или канала.
 .It Ic getline
-Sets
+Наборы
 .Va $0
-to the next input record from the current input file.
-This form of
+к следующей входной записи из текущего входного файла.
+Эта форма
 .Ic getline
-sets the variables
+устанавливает переменные
 .Va NF ,
 .Va NR ,
-and
+и
 .Va FNR .
 .Ic getline
-returns 1 for a successful input, 0 for end of file, and \-1 for an error.
+возвращает 1 в случае успешного ввода, 0 в случае конца файла и \-1 в случае ошибки.
 .It Ic getline Va var
-Sets
+Наборы
 .Va $0
-to variable
+в переменную
 .Va var .
-This form of
+Эта форма
 .Ic getline
-sets the variables
+устанавливает переменные
 .Va NR
-and
+и
 .Va FNR .
 .Ic getline
-returns 1 for a successful input, 0 for end of file, and \-1 for an error.
+возвращает 1 в случае успешного ввода, 0 в случае конца файла и \-1 в случае ошибки.
 .It Xo
 .Ic getline Op Va var
 .Pf \ \&< Ar file
 .Xc
-Sets
+Наборы
 .Va $0
-to the next record from
+к следующей записи из
 .Ar file .
-If
+Если
 .Va var
-is omitted, the variables
+опущено, переменные
 .Va $0
-and
+и
 .Va NF
-are set.
-Otherwise
+установлены.
+В противном случае
 .Va var
-is set.
-If
+установлен.
+Если
 .Ar file
-is not open, it is opened.
-As long as the stream remains open, subsequent calls will read subsequent
-records from
+не открыт, он открыт.
+Пока поток остается открытым, последующие вызовы будут читать последующие
+записи из
 .Ar file .
 .Ar file
-remains open until explicitly closed with a call to
+остается открытым до тех пор, пока не будет явно закрыт вызовом
 .Fn close .
 .It Fn system cmd
-Executes
+Выполняет
 .Fa cmd
-and returns its exit status.
+и возвращает статус выхода
 .El
 .Ss Bit-Operation Functions
 .Bl -tag -width "lshift(a, b)"
 .It Fn compl x
-Returns the bitwise complement of integer argument x.
+Возвращает побитовое дополнение целочисленного аргумента x.
 .It Fn and v1 v2 ...
-Performs a bitwise AND on all arguments provided, as integers.
-There must be at least two values.
+Выполняет побитовое И для всех предоставленных аргументов в виде целых чисел.
+Должно быть как минимум два значения.
 .It Fn or v1 v2 ...
-Performs a bitwise OR on all arguments provided, as integers.
-There must be at least two values.
+Выполняет побитовое ИЛИ для всех предоставленных аргументов как целых чисел.
+Должно быть как минимум два значения.
 .It Fn xor v1 v2 ...
-Performs a bitwise Exclusive-OR on all arguments provided, as integers.
-There must be at least two values.
+Выполняет поразрядное исключающее ИЛИ для всех предоставленных аргументов в виде целых чисел.
+Должно быть как минимум два значения.
 .It Fn lshift x n
-Returns integer argument x shifted by n bits to the left.
+Возвращает целочисленный аргумент x, сдвинутый на n бит влево.
 .It Fn rshift x n
-Returns integer argument x shifted by n bits to the right.
+Возвращает целочисленный аргумент x, сдвинутый на n бит вправо.
 .El
-.Sh EXIT STATUS
+.Sh ВОЗВРАЩАЕМОЕ ЗНАЧЕНИЕ
 .Ex -std awk
 .Pp
-But note that the
+Но учтите, что
 .Ic exit
-expression can modify the exit status.
-.Sh EXAMPLES
-Print lines longer than 72 characters:
+выражение может изменить статус выхода.
+.Sh ПРИМЕРЫ
+Вывести строки длиной более 72 символов:
 .Pp
 .Dl length($0) > 72
 .Pp
-Print first two fields in opposite order:
+Напечатайте первые два поля в обратном порядке:
 .Pp
 .Dl { print $2, $1 }
 .Pp
-Same, with input fields separated by comma and/or blanks and tabs:
+То же самое, с полями ввода, разделенными запятыми и/или пробелами и табуляциями:
 .Bd -literal -offset indent
 BEGIN { FS = ",[ \et]*|[ \et]+" }
       { print $2, $1 }
@@ -758,11 +757,11 @@ BEGIN { # Simulate echo(1)
         exit }
 .Ed
 .Pp
-Print an error message to standard error:
+Распечатайте сообщение об ошибке в стандартную ошибку:
 .Bd -literal -offset indent
 { print "error!" > "/dev/stderr" }
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr cut 1 ,
 .Xr lex 1 ,
 .Xr printf 1 ,
@@ -777,79 +776,78 @@ Print an error message to standard error:
 .%D 1988
 .%O ISBN 0-201-07981-X
 .Re
-.Sh STANDARDS
+.Sh СТАНДАРТЫ
 The
 .Nm
-utility is compliant with the
+утилита соответствует требованиям
 .St -p1003.1-2008
-specification,
-except
+Спецификация,
+кроме
 .Nm
-does not support {n,m} pattern matching.
+не поддерживает сопоставление с образцом {n,m}.
 .Pp
-The flags
+Флаги
 .Fl d ,
 .Fl safe ,
-and
+и
 .Fl version
-as well as the commands
+а также команды
 .Cm fflush , compl , and , or ,
 .Cm xor , lshift , rshift ,
-are extensions to that specification.
-.Sh HISTORY
+являются расширениями этой спецификации.
+.Sh ИСТОРИЯ
 An
 .Nm
-utility appeared in
+утилита появилась в
 .At v7 .
 .Sh BUGS
-There are no explicit conversions between numbers and strings.
-To force an expression to be treated as a number add 0 to it;
-to force it to be treated as a string concatenate
+Явных преобразований между числами и строками нет.
+Чтобы заставить выражение рассматриваться как число, добавьте к нему 0;
+чтобы заставить его рассматриваться как объединение строк
 .Li \&""
-to it.
+к этому.
 .Pp
-The scope rules for variables in functions are a botch;
-the syntax is worse.
-.Sh DEPRECATED BEHAVIOR
-One True Awk has accpeted
+Правила области видимости для переменных в функциях — это лажа;
+синтаксис хуже.
+.Sh УСТАРЕВШЕЕ ПОВЕДЕНИЕ
+Один True Awk принял
 .Fl F Ar t
-to mean the same as
+означать то же самое, что и
 .Fl F Ar <TAB>
-to make it easier to specify tabs as the separator character.
-Upstream One True Awk has deprecated this wart in the name of better
-compatibility with other awk implementations like gawk and mawk.
+чтобы упростить указание табуляции в качестве символа-разделителя.
+Компания Upstream One True Awk отказалась от этой бородавки во имя лучшего
+совместимость с другими реализациями awk, такими как gawk и mawk.
 .Pp
-Historically,
+Исторически,
 .Nm
-did not accept
-.Dq 0x
-as a hex string.
-However, since One True Awk used strtod to convert strings to floats, and since
+не принял
+.Dq 0xкак шестнадцатеричная строка.
+Однако, поскольку One True Awk использовал strtod для преобразования строк в числа с плавающей запятой, и поскольку
 .Dq 0x12
-is a valid hexadecimal representation of a floating point number,
-On
+является допустимым шестнадцатеричным представлением числа с плавающей запятой,
+На
 .Fx ,
 .Nm
-has accepted this notation as an extension since One True Awk was imported in
+принял это обозначение как расширение, поскольку One True Awk был импортирован в
 .Fx 5.0 .
-Upstream One True Awk has restored the historical behavior for better
-compatibility between the different awk implementations.
-Both gawk and mawk already behave similarly.
-Starting with
+Upstream One True Awk восстановил историческое поведение в лучшую сторону
+совместимость между различными реализациями awk.
+И gawk, и mawk уже ведут себя одинаково.
+Начиная с
 .Fx 14.0
 .Nm
-will no longer accept this extension.
+больше не будет принимать это расширение.
 .Pp
 The
 .Fx
 .Nm
-sets the locale for many years to match the environment it was running in.
-This lead to pattern ranges, like
+устанавливает языковой стандарт на многие годы в соответствии со средой, в которой он работает.
+Это приводит к появлению диапазонов шаблонов, например
 .Dq "[A-Z]"
-sometimes matching lower case characters in some locales.
-This misbehavior was never in upstream One True Awk and has been removed as a
-bug in
+иногда совпадают символы нижнего регистра в некоторых локалях.
+Такого нарушения никогда не было в исходной версии One True Awk, и оно было удалено как ошибка.
+ошибка в
 .Fx 12.3 ,
 .Fx 13.1 ,
-and
+и
 .Fx 14.0 .
