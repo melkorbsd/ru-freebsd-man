@@ -1,126 +1,127 @@
 .\"-
 .\" Copyright (c) 1990, 1993
-.\"	The Regents of the University of California.  All rights reserved.
+.\"	Ректоры Калифорнийского университета. Все права защищены.
 .\"
-.\" This code is derived from software contributed to Berkeley by
-.\" the Institute of Electrical and Electronics Engineers, Inc.
+.\" Этот код является производным от программного обеспечения, предоставленного в Беркли
+.\" Institute of Electrical and Electronics Engineers, Inc.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
-.\" 3. Neither the name of the University nor the names of its contributors
-.\"    may be used to endorse or promote products derived from this software
-.\"    without specific prior written permission.
+.\" Распространение и использование в исходном коде и двоичной форме, с использованием или без использования
+.\" модификаций, если следующие условия
+.\" соблюдаются:
+.\" 1. При распространении исходного кода должно сохраняться вышеуказанное уведомление
+.\"    об авторских правах, этот список условий и следующий дисклеймер.
+.\" 2. При распространиении в двоичной форме должно воспроизводиться уведомление об авторских правах,
+.\"    этот список условий и следующий ниже отказ от ответственности в
+.\"    документации и/или других материалах, поставляемых с дистрибутивом.
+.\" 3. Ни название университета, ни имена его участников не могут быть использованы для
+.\"    поддержки или продвижения продуктов, созданных на основе данного программного обеспечения,
+.\"    без специального предварительного письменного согласия.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ ПРАВООБЛАДАТЕЛЯМИ И СОАВТОРАМИ ``КАК ЕСТЬ'', И 
+.\" МЫ ОТКАЗЫВАЕМСЯ ОТ ЛЮБЫХ ПОДРАЗУМЕВАЕМЫХ ОБЯЗАТЕЛЬСТВ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, 
+.\" ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ТОВАРНОЙ ПРИГОДНОСТИ И НЕПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ
+.\" ЦЕЛИ. НИ В КОЕМ СЛУЧАЕ ПРАВООБЛАДАТЕЛИ ИЛИ СОВАТОРЫ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ
+.\" ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, ОСОБЫЕ, ПОКАЗАТЕЛЬНЫЕ ИЛИ ЛОГИЧЕСКИ ВЫТЕКАЮЩИЕ
+.\" УБЫТКИ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ ИМИ, ПРИОБРЕТЕНИЕ ЗАМЕНЯЮЩИХ ТОВАРОВ ИЛИ УСЛУГ;
+.\" ПОТЕРЮ ВОЗМОЖНОСТИ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПРЕКРАЩЕНИЕ ДЕЯТЕЛЬНОСТИ)
+.\" НЕЗАВИСИМО ОТ ПРИЧИНЕННОГО УЩЕРБА И НА ОСНОВАНИИ ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО В РАМКАХ КОНТРАКТА, 
+.\" ПРЯМОЙ ОТВЕТСТВЕННОСТИ ИЛИ ДЕЛИКТА (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНОЕ), ВОЗНИКШЕГО КАКИМ-ЛИБО ОБРАЗОМ
+.\" В РЕЗУЛЬТАТЕ ИСПОЛЬЗОВАНИЯ ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ ВЫ БЫЛИ ОСВЕДОМЛЕНЫ О ВОЗМОЖНОСТИ
+.\" ТАКОГО УЩЕРБА.
 .\"
 .\"     @(#)pwd.1	8.2 (Berkeley) 4/28/95
 .\"
-.Dd May 22, 2023
+.Dd 22 мая, 2023 год
 .Dt PWD 1
 .Os
-.Sh NAME
+.Sh НАЗВАНИЕ
 .Nm pwd
 .Nd return working directory name
-.Sh SYNOPSIS
+.Sh СИНТАКСИС
 .Nm
 .Op Fl L | P
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility writes the absolute pathname of the current working directory to
-the standard output.
+утилита записывает абсолютный путь к текущему рабочей директории в
+стандартный вывод.
 .Pp
-Some shells may provide a builtin
-.Nm
-command which is similar or identical to this utility.
-Consult the
+Некоторые оболочки могут содержать встроенную команду
+.Nm ,
+которая похожа или идентична этой утилите.
+Обратитесь к
 .Xr builtin 1
-manual page.
+странице мануала.
 .Pp
-The options are as follows:
+Возможны следующие варианты:
 .Bl -tag -width indent
 .It Fl L
-Display the logical current working directory.
+Отображает логическую текущую рабочую директорию.
 .It Fl P
-Display the physical current working directory (all symbolic links resolved).
+Отображет текущую физическую рабочую директорию (все символьные ссылки разрешены).
 .El
 .Pp
-If no options are specified, the
+Если никакие параметры не указаны, то опция
 .Fl P
-option is assumed.
-.Sh ENVIRONMENT
-Environment variables used by
+предполагается.
+.Sh ОКРУЖЕНИЕ
+Переменные среды, используемые
 .Nm :
 .Bl -tag -width ".Ev PWD"
 .It Ev PWD
 Logical current working directory.
+Логической текущей рабочей директорией.
 .El
-.Sh EXIT STATUS
+.Sh СТАТУС ЗАВЕРШЕНИЯ
 .Ex -std
-.Sh EXAMPLES
-Show current working directory with symbolic links resolved:
+.Sh ПРИМЕРЫ
+Показать текущий рабочий каталог с разрешенными символическими ссылками:
 .Bd -literal -offset indent
 $ /bin/pwd
 /usr/src/sys/kern
 .Ed
 .Pp
-Show the logical current directory.
-Then use
+Показывает логическую текущую директорию.
+Затем используйте
 .Xr file 1
-to inspect the
+чтобы просмотреть
 .Pa /sys
-directory:
+диреторию:
 .Bd -literal -offset indent
 $ /bin/pwd -L
 /sys/kern
 $ file /sys
 /sys: symbolic link to usr/src/sys
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr builtin 1 ,
 .Xr cd 1 ,
 .Xr csh 1 ,
 .Xr realpath 1 ,
 .Xr sh 1 ,
 .Xr getcwd 3
-.Sh STANDARDS
+.Sh СТАНДАРТЫ
 The
 .Nm
 utility conforms to
 .St -p1003.1-2001 .
 .Sh HISTORY
-The
+Команда
 .Nm
-command appeared in
+появилась в
 .At v5 .
-.Sh BUGS
-In
+.Sh БАГИ
+В
 .Xr csh 1
-the command
+команда
 .Ic dirs
-is always faster because it is built into that shell.
-However, it can give a different answer in the rare case
-that the current directory or a containing directory was moved after
-the shell descended into it.
+всегда работает быстрее, потому что она встроена в эту оболочку.
+Однако это может дать другой ответ в том редком случае,
+когда текущая директория или содержащая ее директоия была перемещена после
+того, как в нее вошла оболочка.
 .Pp
-The
+Опция
 .Fl L
-option does not work unless the
+не работает, если только
 .Ev PWD
-environment variable is exported by the shell.
+переменная окружения экспортируется командной оболочкой.

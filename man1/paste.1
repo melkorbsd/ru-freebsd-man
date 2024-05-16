@@ -1,157 +1,154 @@
 .\" Copyright (c) 1989, 1990, 1993
-.\"	The Regents of the University of California.  All rights reserved.
+.\"	Ректоры Калифорнийского университета. Все права защищены.
 .\"
-.\" This code is derived from software contributed to Berkeley by
-.\" Adam S. Moskowitz and the Institute of Electrical and Electronics
-.\" Engineers, Inc.
+.\" Распространение и использование в исходном коде и двоичной форме, с использованием или без использования
+.\" модификаций, если следующие условия
+.\" соблюдаются:
+.\" 1. При распространении исходного кода должно сохраняться вышеуказанное уведомление
+.\"    об авторских правах, этот список условий и следующий дисклеймер.
+.\" 2. При распространиении в двоичной форме должно воспроизводиться уведомление об авторских правах,
+.\"    этот список условий и следующий ниже отказ от ответственности в
+.\"    документации и/или других материалах, поставляемых с дистрибутивом.
+.\" 3. Ни название университета, ни имена его участников не могут быть использованы для
+.\"    поддержки или продвижения продуктов, созданных на основе данного программного обеспечения,
+.\"    без специального предварительного письменного согласия.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
-.\" 3. Neither the name of the University nor the names of its contributors
-.\"    may be used to endorse or promote products derived from this software
-.\"    without specific prior written permission.
-.\"
-.\" THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ ПРАВООБЛАДАТЕЛЯМИ И СОАВТОРАМИ ``КАК ЕСТЬ'', И 
+.\" МЫ ОТКАЗЫВАЕМСЯ ОТ ЛЮБЫХ ПОДРАЗУМЕВАЕМЫХ ОБЯЗАТЕЛЬСТВ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, 
+.\" ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ТОВАРНОЙ ПРИГОДНОСТИ И НЕПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ
+.\" ЦЕЛИ. НИ В КОЕМ СЛУЧАЕ ПРАВООБЛАДАТЕЛИ ИЛИ СОВАТОРЫ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ
+.\" ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, ОСОБЫЕ, ПОКАЗАТЕЛЬНЫЕ ИЛИ ЛОГИЧЕСКИ ВЫТЕКАЮЩИЕ
+.\" УБЫТКИ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ ИМИ, ПРИОБРЕТЕНИЕ ЗАМЕНЯЮЩИХ ТОВАРОВ ИЛИ УСЛУГ;
+.\" ПОТЕРЮ ВОЗМОЖНОСТИ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПРЕКРАЩЕНИЕ ДЕЯТЕЛЬНОСТИ)
+.\" НЕЗАВИСИМО ОТ ПРИЧИНЕННОГО УЩЕРБА И НА ОСНОВАНИИ ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО В РАМКАХ КОНТРАКТА, 
+.\" ПРЯМОЙ ОТВЕТСТВЕННОСТИ ИЛИ ДЕЛИКТА (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНОЕ), ВОЗНИКШЕГО КАКИМ-ЛИБО ОБРАЗОМ
+.\" В РЕЗУЛЬТАТЕ ИСПОЛЬЗОВАНИЯ ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ ВЫ БЫЛИ ОСВЕДОМЛЕНЫ О ВОЗМОЖНОСТИ
+.\" ТАКОГО УЩЕРБА.
 .\"
 .\"	@(#)paste.1	8.1 (Berkeley) 6/6/93
 .\"
-.Dd November 6, 2022
+.Dd 6 ноября, 2022 год
 .Dt PASTE 1
 .Os
-.Sh NAME
+.Sh НАЗВАНИЕ
 .Nm paste
 .Nd merge corresponding or subsequent lines of files
-.Sh SYNOPSIS
+.Sh СИНТАКСИС
 .Nm
 .Op Fl s
 .Op Fl d Ar list
 .Ar
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility concatenates the corresponding lines of the given input files,
-replacing all but the last file's newline characters with a single tab
-character, and writes the resulting lines to standard output.
-If end-of-file is reached on an input file while other input files
-still contain data, the file is treated as if it were an endless source
-of empty lines.
+объединяет соответствующие строки из заданных входных файлов,
+заменяя все символы новой строки в последнем файле, кроме одного символа табуляции,
+и записывает полученные строки в стандартный вывод.
+Если во входном файле достигнут конец файла, в то время как другие входные файлы
+все еще содержат данные, файл обрабатывается так, как если бы он был бесконечным источником
+пустых строк.
 .Pp
-The options are as follows:
+Возможные следующие опции:
 .Bl -tag -width Fl
 .It Fl d Ar list
-Use one or more of the provided characters to replace the newline
-characters instead of the default tab.
-The characters in
+Используется один или несколько предоставленных символов для замены
+символов новой строки вместо табуляции по умолчанию.
+Символы в
 .Ar list
-are used circularly, i.e., when
+используются по циркулярно, т.е. когда
 .Ar list
-is exhausted the first character from
+исчерпан, первый символ из списка
 .Ar list
-is reused.
-This continues until a line from the last input file (in default operation)
-or the last line in each file (using the
+используется повторно
+Это продолжается до тех пор, пока строка из последнего входного файла (в режиме по умолчанию)
+или последняя строка в каждом файле (с использованием 
 .Fl s
-option) is displayed, at which
-time
+опции) не отобразится, 
+после чего
 .Nm
-begins selecting characters from the beginning of
+начинается выбор символов с начала
 .Ar list
-again.
+снова.
 .Pp
-The following special characters can also be used in list:
+Следующие специальные символы могут также использоваться в списке:
 .Pp
 .Bl -tag -width flag -compact
 .It Li \en
-newline character
+символ новой строки
 .It Li \et
-tab character
+символ табуляции
 .It Li \e\e
-backslash character
+символ обратной косой черты
 .It Li \e0
-Empty string (not a null character).
+Пустая строка (не нулевой символ).
 .El
 .Pp
-Any other character preceded by a backslash is equivalent to the
-character itself.
+Любой другой символ, которому предшествует обратная косая черта, эквивалентен самому
+символу.
 .It Fl s
-Concatenate all of the lines of each separate input file in command line
-order.
-The newline character of every line except the last line in each input
-file is replaced with the tab character, unless otherwise specified by
-the
+Объединяет все строки каждого отдельного входного файла в
+порядке следования командной строки.
+Символ новой строки в каждой строке, кроме последней, в каждом входном
+файле заменяется символом табуляции, если иное не указано 
+в
 .Fl d
-option.
+опции.
 .El
 .Pp
-If
+Если
 .Sq Fl
-is specified for one or more of the input files, the standard
-input is used; standard input is read one line at a time, circularly,
-for each instance of
+задается для одного или более входных файлов, используется стандартный
+ввод; стандартный ввод считывается по одной строке за раз, циркулярно,
+для каждого экземпляра
 .Sq Fl .
-.Sh EXIT STATUS
+.Sh СТАТУС ЗАВЕРШЕНИЯ
 .Ex -std
-.Sh EXAMPLES
-List the files in the current directory in three columns:
+.Sh ПРИМЕРЫ
+Перечислить файлы в текущей директории в трех столбцах:
 .Pp
 .Dl "ls | paste - - -"
 .Pp
-Combine pairs of lines from a file into single lines:
+Объединить пары строк из файла в одиночные строки:
 .Pp
 .Dl "paste -s -d '\et\en' myfile"
 .Pp
-Number the lines in a file, similar to
+Пронумеровать строки в файле, аналогично
 .Xr nl 1 :
 .Pp
 .Dl "sed = myfile | paste - -"
 .Pp
-Create a colon-separated list of directories named
+Создайте разделенный двоеточием список директорий с именами
 .Pa bin ,
-suitable
-for use in the
+подходящими
+для использования в
 .Ev PATH
-environment variable:
+переменной окружения:
 .Pp
 .Dl "find / -name bin -type d | paste -s -d : -"
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr cut 1 ,
 .Xr lam 1
-.Sh STANDARDS
-The
+.Sh СТАНДАРТЫ
+Ожидается, что
+утилита
 .Nm
-utility is expected to be
+и
 .St -p1003.2
-compatible.
-.Sh HISTORY
-A
+будут совместимы.
+.Sh ИСТОРИЯ
+Команда
 .Nm
-command first appeared in
+впервые появилась в
 .At III
-and has been available since
+и была доступна с
 .Bx 4.3 Reno .
-.Sh AUTHORS
+.Sh АВТОРЫ
 .An -nosplit
-The original Bell Labs version was written by
+Оригинальная версия Bell Labs была написана
 .An Gottfried W. R. Luderer
-and the
+и версия
 .Bx
-version by
+от
 .An Adam S. Moskowitz
-and
+и
 .An Marciano Pitargue .

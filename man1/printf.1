@@ -1,336 +1,334 @@
 .\" Copyright (c) 1989, 1990, 1993
-.\"	The Regents of the University of California.  All rights reserved.
+.\"	Ректоры Калифорнийского университета. Все права защищены.
 .\"
-.\" This code is derived from software contributed to Berkeley by
-.\" the Institute of Electrical and Electronics Engineers, Inc.
+.\" Этот код основан на программном обеспечении, предоставленном в Беркли
+.\" Institute of Electrical and Electronics Engineers, Inc.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
-.\" 3. Neither the name of the University nor the names of its contributors
-.\"    may be used to endorse or promote products derived from this software
-.\"    without specific prior written permission.
+.\" Распространение и использование в исходном коде и двоичной форме, с использованием или без использования
+.\" модификаций, если следующие условия
+.\" соблюдаются:
+.\" 1. При распространении исходного кода должно сохраняться вышеуказанное уведомление
+.\"    об авторских правах, этот список условий и следующий дисклеймер.
+.\" 2. При распространиении в двоичной форме должно воспроизводиться уведомление об авторских правах,
+.\"    этот список условий и следующий ниже отказ от ответственности в
+.\"    документации и/или других материалах, поставляемых с дистрибутивом.
+.\" 3. Ни название университета, ни имена его участников не могут быть использованы для
+.\"    поддержки или продвижения продуктов, созданных на основе данного программного обеспечения,
+.\"    без специального предварительного письменного согласия.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ ПРАВООБЛАДАТЕЛЯМИ И СОАВТОРАМИ ``КАК ЕСТЬ'', И 
+.\" МЫ ОТКАЗЫВАЕМСЯ ОТ ЛЮБЫХ ПОДРАЗУМЕВАЕМЫХ ОБЯЗАТЕЛЬСТВ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, 
+.\" ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ТОВАРНОЙ ПРИГОДНОСТИ И НЕПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ
+.\" ЦЕЛИ. НИ В КОЕМ СЛУЧАЕ ПРАВООБЛАДАТЕЛИ ИЛИ СОВАТОРЫ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ
+.\" ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, ОСОБЫЕ, ПОКАЗАТЕЛЬНЫЕ ИЛИ ЛОГИЧЕСКИ ВЫТЕКАЮЩИЕ
+.\" УБЫТКИ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ ИМИ, ПРИОБРЕТЕНИЕ ЗАМЕНЯЮЩИХ ТОВАРОВ ИЛИ УСЛУГ;
+.\" ПОТЕРЮ ВОЗМОЖНОСТИ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПРЕКРАЩЕНИЕ ДЕЯТЕЛЬНОСТИ)
+.\" НЕЗАВИСИМО ОТ ПРИЧИНЕННОГО УЩЕРБА И НА ОСНОВАНИИ ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО В РАМКАХ КОНТРАКТА, 
+.\" ПРЯМОЙ ОТВЕТСТВЕННОСТИ ИЛИ ДЕЛИКТА (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНОЕ), ВОЗНИКШЕГО КАКИМ-ЛИБО ОБРАЗОМ
+.\" В РЕЗУЛЬТАТЕ ИСПОЛЬЗОВАНИЯ ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ ВЫ БЫЛИ ОСВЕДОМЛЕНЫ О ВОЗМОЖНОСТИ
+.\" ТАКОГО УЩЕРБА.
 .\"
 .\"	@(#)printf.1	8.1 (Berkeley) 6/6/93
 .\"
 .Dd July 1, 2020
 .Dt PRINTF 1
 .Os
-.Sh NAME
+.Sh НАЗВАНИЕ
 .Nm printf
 .Nd formatted output
-.Sh SYNOPSIS
+.Sh СИНТАКСИС
 .Nm
-.Ar format Op Ar arguments ...
-.Sh DESCRIPTION
-The
+.Ar формат Op Ar аргументы ...
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility formats and prints its arguments, after the first, under control
-of the
-.Ar format .
-The
-.Ar format
-is a character string which contains three types of objects: plain characters,
-which are simply copied to standard output, character escape sequences which
-are converted and copied to the standard output, and format specifications,
-each of which causes printing of the next successive
-.Ar argument .
+форматирует и выводит свои аргументы, начиная со второго, под управлением
+.Ar формат.
+Аргумент
+.Ar Формат
+— это строка символов, которая содержит три типа объектов: обычные символы,
+которые просто копируются в стандартный вывод, последовательности символов для экранирования,
+которые преобразуются и копируются в стандартный вывод, и спецификации формата,
+каждая из которых вызывает вывод следующего
+.Ar аргумент.
 .Pp
-The
-.Ar arguments
-after the first are treated as strings if the corresponding format is
-either
-.Cm c , b
-or
-.Cm s ;
-otherwise it is evaluated as a C constant, with the following extensions:
+Аргументы
+.Ar
+после первого рассматриваются как строки, если соответствующий формат
+либо
+.Cm c, b
+или
+.Cm s;
+в противном случае он вычисляется как константа C со следующими расширениями:
 .Pp
 .Bl -bullet -offset indent -compact
 .It
-A leading plus or minus sign is allowed.
+Допускается использование ведущего знака плюс или минус.
 .It
-If the leading character is a single or double quote, the value is the
-character code of the next character.
+Если ведущий символ является одинарной или двойной кавычкой, значение является
+кодом символа следующего символа.
 .El
 .Pp
-The format string is reused as often as necessary to satisfy the
-.Ar arguments .
-Any extra format specifications are evaluated with zero or the null
-string.
+Строка формата используется столько раз, сколько необходимо, чтобы удовлетворить
+.Ar аргументы .
+Любые дополнительные спецификации формата оцениваются как ноль или пустая 
+строка.
 .Pp
-Character escape sequences are in backslash notation as defined in the
+Последовательности экранирования символов находятся в нотации обратного слеша, как определено в
 .St -ansiC ,
-with extensions.
-The characters and their meanings
-are as follows:
+с расширениями.
+Символы и их значения 
+следующие:
 .Pp
 .Bl -tag -width Ds -offset indent -compact
 .It Cm \ea
-Write a <bell> character.
+Записать символ <звонок>.
 .It Cm \eb
-Write a <backspace> character.
+Записать символ <забой>.
 .It Cm \ef
-Write a <form-feed> character.
+Записать символ <перевод формата>.
 .It Cm \en
-Write a <new-line> character.
+Записать символ <новая строка>.
 .It Cm \er
-Write a <carriage return> character.
+Записать символ <возврат каретки>.
 .It Cm \et
-Write a <tab> character.
+Записать символ <табуляция>.
 .It Cm \ev
-Write a <vertical tab> character.
+Записать символ <вертикаль табуляция>.
 .It Cm \e\'
-Write a <single quote> character.
+Записать символ <одинарная кавычка>.
 .It Cm \e\e
-Write a backslash character.
-.It Cm \e Ns Ar num
-Write a byte whose
-value is the 1-, 2-, or 3-digit
-octal number
-.Ar num .
-Multibyte characters can be constructed using multiple
-.Cm \e Ns Ar num
-sequences.
+Записать символ <обратная косая черта>.
+.It Cm \e Ns Ar число
+Записывает байт, значение которого — 1-, 2- или 3-значное
+октальное число
+.Ar число .
+Многобайтовые символы могут быть сконструированы с использованием нескольких
+.Cm \e Ns Ar число
+последовательностей.
 .El
 .Pp
-Each format specification is introduced by the percent character
+Каждая спецификация формата начинается с символа процента
 (``%'').
-The remainder of the format specification includes,
-in the following order:
+Оставшаяся часть спецификации формата включает в себя,
+в следующем порядке:
 .Bl -tag -width Ds
-.It "Zero or more of the following flags:"
+.It ""Ноль или более следующих флагов:"
 .Bl -tag -width Ds
 .It Cm #
-A `#' character
-specifying that the value should be printed in an ``alternate form''.
-For
+Символ `#`,
+указывающий, что значение должно быть напечатано в "альтернативной форме".
+Для форматов
 .Cm b , c , d , s
-and
+и
 .Cm u
-formats, this option has no effect.
-For the
+этот параметр не имеет эффекта.
+Для формата
 .Cm o
-formats the precision of the number is increased to force the first
-character of the output string to a zero.
-For the
+точность числа увеличивается, чтобы первый 
+символ выходной строки был нулём.
+Для форматов
 .Cm x
-.Pq Cm X
-format, a non-zero result has the string
+.Pq Cm X,
+если результат не равен нулю, к нему добавляется строка
 .Li 0x
-.Pq Li 0X
-prepended to it.
-For
-.Cm a , A , e , E , f , F , g
-and
-.Cm G
-formats, the result will always contain a decimal point, even if no
-digits follow the point (normally, a decimal point only appears in the
-results of those formats if a digit follows the decimal point).
-For
+.Pq Li 0X.
+Для форматов
+.Cm a, A, e, E, f, F, g
+и
+.Cm G,
+результат всегда будет содержать десятичную точку, даже если 
+за точкой не следуют цифры (обычно десятичная точка появляется 
+в результатах этих форматов, только если за точкой следует цифра).
+Для форматов
 .Cm g
-and
+и
 .Cm G
-formats, trailing zeros are not removed from the result as they
-would otherwise be;
-.It Cm \&\-
-A minus sign `\-' which specifies
-.Em left adjustment
-of the output in the indicated field;
+конечные нули в результате не удаляются, 
+как это обычно происходит;
+.It Cm &-
+Знак минуса `\-' указывает на
+.Em Выравнивание по левому краю
+выхода в указанном поле;
 .It Cm \&+
-A `+' character specifying that there should always be
-a sign placed before the number when using signed formats.
+Символ `+' указывает, что всегда должен быть 
+знак, помещенный перед числом при использовании форматов со знаком.
 .It Sq \&\ \&
-A space specifying that a blank should be left before a positive number
-for a signed format.
-A `+' overrides a space if both are used;
+Пробел указывает, что пробел должен быть оставлен перед положительным числом 
+для формата со знаком. 
+Символ `+' имеет приоритет над пробелом, если используются оба;
 .It Cm \&0
-A zero `0' character indicating that zero-padding should be used
-rather than blank-padding.
-A `\-' overrides a `0' if both are used;
+Символ нуля `0' указывает, что должно использоваться
+заполнение нулями, вместо заполнения пробелами.
+Знак минуса `\-' имеет приоритет над `0', если используются оба;
 .El
 .It "Field Width:"
-An optional digit string specifying a
-.Em field width ;
-if the output string has fewer bytes than the field width it will
-be blank-padded on the left (or right, if the left-adjustment indicator
-has been given) to make up the field width (note that a leading zero
-is a flag, but an embedded zero is part of a field width);
+Опциональная последовательность цифр, указывающая
+.Em ширина поля ;
+если строка вывода содержит меньше байтов, чем ширина поля, она будет
+дополнена пробелами слева (или справа, если индикатор выравнивания по левому краю
+задан), чтобы достичь ширины поля (обратите внимание, что ведущий ноль
+является флагом, но встроенный ноль является частью ширины поля);
 .It Precision:
-An optional period,
+Опциональный период,
 .Sq Cm \&.\& ,
-followed by an optional digit string giving a
-.Em precision
-which specifies the number of digits to appear after the decimal point,
-for
+за которым следует необязательная последовательность цифр, задающая
+.Em точность
+которая указывает количество цифр после десятичной точки 
+для форматов
 .Cm e
-and
+и
 .Cm f
-formats, or the maximum number of bytes to be printed
-from a string; if the digit string is missing, the precision is treated
-as zero;
+или максимальное количество байтов, которые будут выведены 
+из строки; если последовательность цифр отсутствует, точность считается 
+равной нулю;
 .It Format:
-A character which indicates the type of format to use (one of
+Символ, который указывает тип используемого формата (один из
 .Cm diouxXfFeEgGaAcsb ) .
-The uppercase formats differ from their lowercase counterparts only in
-that the output of the former is entirely in uppercase.
-The floating-point format specifiers
+Форматы в верхнем регистре отличаются от их аналогов в нижнем регистре только тем,
+что результат выполнения первых полностью написаны в верхнем регистре.
+Спецификаторы формата с плавающей точкой
 .Pq Cm fFeEgGaA
-may be prefixed by an
+могут быть предварены
 .Cm L
-to request that additional precision be used, if available.
+чтобы запросить использование дополнительной точности, если возможно.
 .El
 .Pp
-A field width or precision may be
+Ширина поля или точность могут быть
 .Sq Cm \&*
-instead of a digit string.
-In this case an
-.Ar argument
-supplies the field width or precision.
+вместо последовательности цифр.
+В этом случае
+.Ar аргумент
+определяет ширину поля или точность.
 .Pp
-The format characters and their meanings are:
+Символы формата и их значения:
 .Bl -tag -width Fl
 .It Cm diouXx
-The
-.Ar argument
-is printed as a signed decimal (d or i), unsigned octal, unsigned decimal,
-or unsigned hexadecimal (X or x), respectively.
+Аргумент
+.Ar аргумент
+выводится как знаковое десятичное число (d или i), беззнаковое восьмеричное, беззнаковое десятичное,
+или беззнаковое шестнадцатеричное (X или x) соответственно.
 .It Cm fF
-The
-.Ar argument
-is printed in the style `[\-]ddd.ddd' where the number of d's
-after the decimal point is equal to the precision specification for
-the argument.
-If the precision is missing, 6 digits are given; if the precision
-is explicitly 0, no digits and no decimal point are printed.
-The values \*[If] and \*[Na] are printed as
+Аргумент
+.Ar аргумент
+выводится в стиле `[-]ddd.ddd', где количество d после десятичной точки
+соответствует спецификации точности для
+аргумента.
+Если точность отсутствует, задается 6 цифр; если точность
+явно равна 0, цифры и десятичная точка не выводятся.
+Значения *[If] и *[Na] выводятся как
 .Ql inf
-and
+и
 .Ql nan ,
-respectively.
+соответственно.
 .It Cm eE
-The
-.Ar argument
-is printed in the style
+Аргумент
+.Ar аргумент
+выводится в стиле
 .Cm e
 .Sm off
 .Sq Op - Ar d.ddd No \(+- Ar dd
 .Sm on
 where there
-is one digit before the decimal point and the number after is equal to
-the precision specification for the argument; when the precision is
-missing, 6 digits are produced.
-The values \*[If] and \*[Na] are printed as
+где перед шестнадцатеричной точкой находится одна цифра, а количество цифр после неё соответствует
+указанной точности для аргумента; когда точность не указана,
+производится 6 цифр.
+когда точность не указана, производится достаточное количество цифр для точного представления аргумента в формате двойной точности с плавающей запятой.
+ЗЗначения \*[If] и \*[Na] выводятся как
 .Ql inf
-and
+и
 .Ql nan ,
-respectively.
+соответственно.
 .It Cm gG
-The
-.Ar argument
-is printed in style
+Аргумент
+.Ar аргумент
+выводится  стиле
 .Cm f
 .Pq Cm F
-or in style
+или в стиле
 .Cm e
 .Pq Cm E
-whichever gives full precision in minimum space.
+в зависимости от того, что обеспечивает полную точность с минимальным занимаемым пространством.
 .It Cm aA
-The
-.Ar argument
-is printed in style
+Аргумент
+.Ar аргумент
+выводится в стиле
 .Sm off
 .Sq Op - Ar h.hhh No \(+- Li p Ar d
 .Sm on
-where there is one digit before the hexadecimal point and the number
-after is equal to the precision specification for the argument;
-when the precision is missing, enough digits are produced to convey
-the argument's exact double-precision floating-point representation.
-The values \*[If] and \*[Na] are printed as
+где перед шестнадцатеричной точкой находится одна цифра, а количество цифр
+после неё соответствует указанной точности для аргумента;
+когда точность не указана, производится достаточное количество цифр для
+точного представления аргумента в формате двойной точности с плавающей запятой.
+Значения \*[If] и \*[Na] выводятся как
 .Ql inf
-and
+и
 .Ql nan ,
-respectively.
+соответственно.
 .It Cm c
-The first byte of
-.Ar argument
-is printed.
+Первый байт
+.Ar аргумент
+выводится.
 .It Cm s
-Bytes from the string
-.Ar argument
-are printed until the end is reached or until the number of bytes
-indicated by the precision specification is reached; however if the
-precision is 0 or missing, the string is printed entirely.
+Байты из строки
+.Ar аргумент
+ выводятся до достижения конца или пока не будет достигнуто количество байт,
+указанное в спецификации точности; однако, если
+точность равна 0 или отсутствует, строка выводится полностью.
 .It Cm b
-As for
+Так же, как и для
 .Cm s ,
-but interpret character escapes in backslash notation in the string
-.Ar argument .
-The permitted escape sequences are slightly different in that
-octal escapes are
+но интерпретирует последовательности управляющих символов с обратным слешем в строке
+.Ar аргумент .
+ Разрешенные последовательности управляющих символов немного отличаются тем, что восьмеричные управляющие последовательности 
+ записываются как 
 .Cm \e0 Ns Ar num
-instead of
+вместо
 .Cm \e Ns Ar num
-and that an additional escape sequence
+и дополнительная последовательность управляющих символов 
 .Cm \ec
-stops further output from this
+рекращает дальнейший вывод из этого
 .Nm
-invocation.
+вызова.
 .It Cm n$
-Allows reordering of the output according to
-.Ar argument .
+Позволяет изменять порядок вывода в соответствии с
+.Ar аргумент .
 .It Cm \&%
-Print a `%'; no argument is used.
+Выводит `%'; аргумент не используется..
 .El
 .Pp
-The decimal point
-character is defined in the program's locale (category
+Символ десятичной точки
+определяется в локали программы (категория
 .Dv LC_NUMERIC ) .
 .Pp
-In no case does a non-existent or small field width cause truncation of
-a field; padding takes place only if the specified field width exceeds
-the actual width.
+Ни в одном случае отсутствие или малый размер поля не приводит к обрезанию 
+поля; поля; заполнение происходит только в случае, если указанная ширина поля 
+превышает фактическую ширину.
 .Pp
-Some shells may provide a builtin
+некоторые оболочки могут предоставлять встроенную команду
 .Nm
-command which is similar or identical to this utility.
-Consult the
+которая похожа или идентична этой утилите. 
+Смотрите
 .Xr builtin 1
-manual page.
-.Sh EXIT STATUS
+страницу руководства.
+.Sh СТАТУС ЗАВЕРШЕНИЯ
 .Ex -std
-.Sh EXAMPLES
-Print the string
+.Sh ПРИМЕРЫ
+Вывести строку
 .Qq hello :
 .Bd -literal -offset indent
 $ printf "%s\en" hello
 hello
 .Ed
 .Pp
-Same as above, but notice that the format string is not quoted and hence we
-do not get the expected behavior:
+То же самое, что и выше, но обратите внимание, что строка формата не заключена в кавычки, и поэтому мы
+не получаем ожидаемого поведения:
 .Bd -literal -offset indent
 $ printf %s\en hello
 hellon$
 .Ed
 .Pp
-Print arguments forcing sign only for the first argument:
+вывести аргументы, принудительно указывая знак только для первого аргумента
 .Bd -literal -offset indent
 $ printf "%+d\en%d\en%d\en" 1 -2 13
 +1
@@ -338,8 +336,8 @@ $ printf "%+d\en%d\en%d\en" 1 -2 13
 13
 .Ed
 .Pp
-Same as above, but the single format string will be applied to the three
-arguments:
+То же самое, что и выше, но единая строка формата будет применена к трем
+аргументам:
 .Bd -literal -offset indent
 $ printf "%+d\en" 1 -2 13
 +1
@@ -347,71 +345,71 @@ $ printf "%+d\en" 1 -2 13
 +13
 .Ed
 .Pp
-Print number using only two digits after the decimal point:
+Вывести число, используя только две цифры после десятичной точки:
 .Bd -literal -offset indent
 $ printf "%.2f\en" 31.7456
 31.75
 .Ed
-.Sh COMPATIBILITY
-The traditional
+.Sh СОВМЕСТИМОСТЬ
+Традиционное поведение
 .Bx
-behavior of converting arguments of numeric formats not beginning
-with a digit to the ASCII
-code of the first character is not supported.
-.Sh SEE ALSO
+в системе FreeBSD, при котором аргументы числовых форматов, не начинающиеся
+с цифры, преобразуются в ASCII-код
+первого символа, не поддерживается.
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr builtin 1 ,
 .Xr echo 1 ,
 .Xr sh 1 ,
 .Xr printf 3
-.Sh STANDARDS
-The
+.Sh СТАНДАРТЫ
+Команда
 .Nm
-command is expected to be compatible with the
+ожидаемо совместима с
 .St -p1003.2
-specification.
-.Sh HISTORY
-The
+спецификацией.
+.Sh ИСТОРИЯ
+Команда
 .Nm
-command appeared in
+появилась в
 .Bx 4.3 Reno .
-It is modeled
-after the standard library function,
+Она создана
+по образцу стандартной библиотечной функции
 .Xr printf 3 .
-.Sh CAVEATS
-ANSI hexadecimal character constants were deliberately not provided.
+.Sh ПРЕДУПРЕЖДЕНИЕ
+Константы символов в шестнадцатеричном формате ANSI намеренно не были предоставлены.
 .Pp
-Trying to print a dash ("-") as the first character causes
+Попытка напечатать тире ("-") в качестве первого символа заставляет
 .Nm
-to interpret the dash as a program argument.
+интерпретировать тире как аргумент программы.
 .Nm --
-must be used before
-.Ar format .
+должен использоваться перед
+.Ar формат .
 .Pp
-If the locale contains multibyte characters
-(such as UTF-8),
-the
+Если локаль содержит многобайтовые символы
+(такие как UTF-8),
+то формат
 .Cm c
-format and
+и
 .Cm b
-and
+и
 .Cm s
-formats with a precision
-may not operate as expected.
-.Sh BUGS
-Since the floating point numbers are translated from ASCII
-to floating-point and then back again, floating-point precision may be lost.
-(By default, the number is translated to an IEEE-754 double-precision
-value before being printed.
-The
+с указанием точности
+могут работать не так, как ожидается.
+.Sh БАГИ
+Поскольку числа с плавающей точкой переводятся из ASCII
+в формат с плавающей точкой и обратно, может произойти потеря точности.
+(По умолчанию, число переводится в значение с двойной точностью по стандарту IEEE-754 перед тем,
+как быть напечатанным.
+Модификатор
 .Cm L
-modifier may produce additional precision, depending on the hardware platform.)
+может обеспечить дополнительную точность в зависимости от аппаратной платформы.)
 .Pp
-The escape sequence \e000 is the string terminator.
-When present in the argument for the
-.Cm b
-format, the argument will be truncated at the \e000 character.
+Последовательность символов \e000 является терминатором строки.
+Когда она присутствует в аргументе для формата
+.Cm b ,
+аргумент будет обрезан на символе \e000.
 .Pp
-Multibyte characters are not recognized in format strings (this is only
-a problem if
+Многобайтовые символы не распознаются в строках формата (это становится проблемой 
+только если
 .Ql %
-can appear inside a multibyte character).
+может появиться внутри многобайтового символа).
