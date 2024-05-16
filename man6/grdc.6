@@ -1,44 +1,44 @@
 .Dd September 25, 2001
 .Dt GRDC 6
 .Os
-.Sh NAME
+.Sh Название
 .Nm grdc
-.Nd grand digital clock (curses)
-.Sh SYNOPSIS
+.Nd большие цифровые часы (curses)
+.Sh Краткий обзор
 .Nm
 .Op Fl st
 .Op Ar n
-.Sh DESCRIPTION
+.Sh Описание
 .Nm
-runs a digital clock made of reverse-video blanks on a curses
-compatible VDU screen.
-With an optional numeric argument
+запускает цифровые часы, сделанные из заготовок обратного видео, на curses
+совместимым экраном VDU.
+С необязательным числовым аргументом
 .Ar n
-it stops after
+это прекращается после
 .Ar n
-seconds (default never).
-The optional
+секунд (по умолчанию - никогда).
+Необязательный
 .Fl s
-flag makes digits scroll as they change.
-The optional
+флаг заставляет цифры прокручиваться по мере их изменения.
+Необязательный
 .Fl t
-flag tells grdc to output the time in a 12-hour format.
-In this curses mode implementation,
-the scrolling option has trouble keeping up.
-.Sh ENVIRONMENT
+флажок указывает grdc выводить время в 12-часовом формате.
+В curses моде, реализация
+опция прокрутки работает с трудом.
+.Sh Условие
 .Bl -tag -width Ds
 .It Ev TZ
-The time zone to use for displaying the time.
-It is normally specified as a pathname relative to
+Часовой пояс, используемый для отображения времени.
+Обычно он указывается как путь к
 .Pa /usr/share/zoneinfo ,
-though see
+хотя видишь
 .Xr tzset 3
-for more information.
-If this variable is not set, the time zone is determined based on
+для получения дополнительной информации.
+Если эта переменная не задана, часовой пояс определяется на основе
 .Pa /etc/localtime .
 .El
-.Sh AUTHORS
+.Sh Авторы
 .An -nosplit
 .An Amos Shapir ,
-modified for curses by
+модифицированя для Curses с помощью
 .An John Lupien .
