@@ -1,131 +1,127 @@
-.\" Copyright (c) 2000 Christoph Herrmann, Thomas-Henning von Kamptz
-.\" Copyright (c) 1980, 1989, 1993 The Regents of the University of California.
-.\" All rights reserved.
 .\"
-.\" This code is derived from software contributed to Berkeley by
-.\" Christoph Herrmann and Thomas-Henning von Kamptz, Munich and Frankfurt.
+.\" Авторское право (c) 2000 Кристоф Херрманн, Томас-Хеннинг фон Кампц
+.\" Авторское право (c) 1980, 1989, 1993 Правительство Университета Калифорнии.
+.\" Все права защищены.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
-.\" 3. All advertising materials mentioning features or use of this software
-.\"    must display the following acknowledgment:
-.\"      This product includes software developed by the University of
-.\"      California, Berkeley and its contributors, as well as Christoph
-.\"      Herrmann and Thomas-Henning von Kamptz.
-.\" 4. Neither the name of the University nor the names of its contributors
-.\"    may be used to endorse or promote products derived from this software
-.\"    without specific prior written permission.
+.\" Этот код основан на программном обеспечении, предоставленном в Беркли
+.\" Кристофом Херрманном и Томасом-Хеннингом фон Кампц, Мюнхен и Франкфурт.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" Распространение и использование в исходных и двоичных формах, с изменениями или без,
+.\" разрешено при условии соблюдения следующих условий:
+.\" 1. Распространение исходного кода должно сохранять вышеуказанное уведомление об авторском праве,
+.\"    этот список условий и следующее отказ от ответственности.
+.\" 2. Распространение в двоичной форме должно воспроизводить вышеуказанное уведомление об авторском праве,
+.\"    этот список условий и отказ от ответственности в
+.\"    документации и/или других материалах, поставляемых с дистрибутивом.
+.\" 3. Все рекламные материалы, упоминающие функции или использование этого программного обеспечения,
+.\"    должны содержать следующее признание:
+.\"      Этот продукт включает программное обеспечение, разработанное Университетом
+.\"      Калифорния, Беркли и его участниками, а также Кристофом Херрманном и Томасом-Хеннингом фон Кампц.
+.\" 4. Ни имя Университета, ни имена участников
+.\"    не могут быть использованы для поддержки или продвижения продуктов, полученных из этого программного обеспечения,
+.\"    без конкретного предварительного письменного разрешения.
+.\"
+.\" ЭТО ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ ПРАВЛЕНИЕМ И УЧАСТНИКАМИ «КАК ЕСТЬ» И
+.\" ЛЮБЫЕ ЯВНЫЕ ИЛИ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ ЭТИМ,
+.\" ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ КОММЕРЧЕСКОЙ ЦЕННОСТИ И ПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ ЦЕЛИ
+.\" ОТКЛЮЧЕНЫ. НИ В КОАКОМ СЛУЧАЕ ПРАВЛЕНИЕ ИЛИ УЧАСТНИКИ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ
+(здесь текст обрывается, поскольку исходное сообщение было неполным).\" ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, ОСОБЫЕ, ШТРАФНЫЕ ИЛИ ПОСЛЕДУЮЩИЕ
+.\" УБЫТКИ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ЗАТРАТАМИ НА ЗАМЕНУ ТОВАРОВ ИЛИ УСЛУГ,
+.\" ПОТЕРЕЙ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ ИЛИ ПРЕРЫВАНИЕМ БИЗНЕСА),
+.\" ПРИЧИНЕННЫЕ КАКИМ-ЛИБО ОБРАЗОМ И НА ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО
+.\" В ДОГОВОРЕ, СТРОГОЙ ОТВЕТСТВЕННОСТИ ИЛИ ДЕЛИКТЕ (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНОЕ)
+.\" ВОЗНИКШИЕ КАКИМ-ЛИБО ОБРАЗОМ В РЕЗУЛЬТАТЕ ИСПОЛЬЗОВАНИЯ ДАННОГО ПРОГРАММНОГО
+.\" ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ УВЕДОМЛЕНЫ О ВОЗМОЖНОСТИ ТАКОГО УЩЕРБА.
 .\"
 .\" $TSHeader: src/sbin/growfs/growfs.8,v 1.3 2000/12/12 19:31:00 tomsoft Exp $
 .\"
-.Dd December 13, 2017
+.Dd 13 декабря 2017
 .Dt GROWFS 8
 .Os
-.Sh NAME
+.Sh НАЗВАНИЕ
 .Nm growfs
-.Nd expand an existing UFS file system
-.Sh SYNOPSIS
+.Nd расширение существующей файловой системы UFS
+.Sh СИНТАКСИС
 .Nm
 .Op Fl Ny
-.Op Fl s Ar size
-.Ar special | filesystem
-.Sh DESCRIPTION
-The
+.Op Fl s Ar размер
+.Ar специальный | файловая_система
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility makes it possible to expand an UFS file system.
-Before running
+позволяет расширить файловую систему UFS.
+Перед запуском
 .Nm
-the partition or slice containing the file system must be extended using
+раздел или слайс, содержащий файловую систему, должен быть расширен с помощью
 .Xr gpart 8 .
-If you are using volumes you must enlarge them by using
+Если вы используете тома, их необходимо увеличить с помощью
 .Xr gvinum 8 .
-The
+Утилита
 .Nm
-utility extends the size of the file system on the specified special file.
-The following options are available:
+расширяет размер файловой системы на указанном специальном файле.
+Доступны следующие опции:
 .Bl -tag -width indent
 .It Fl N
-.Dq Test mode .
-Causes the new file system parameters to be printed out without actually
-enlarging the file system.
+.Dq Режим тестирования .
+Позволяет выводить новые параметры файловой системы без фактического увеличения размера файловой системы.
 .It Fl y
-Causes
+Заставляет
 .Nm
-to assume yes
-as the answer to all operator questions.
-.It Fl s Ar size
-Determines the
-.Ar size
-of the file system after enlarging in sectors.
-.Ar Size
-is the number of 512 byte sectors unless suffixed with a
-.Cm b , k , m , g ,
-or
-.Cm t
-which
-denotes byte, kilobyte, megabyte, gigabyte and terabyte respectively.
-This value defaults to the size of the raw partition specified in
-.Ar special
-(in other words,
+предполагать да
+в качестве ответа на все вопросы оператора.
+.It Fl s Ar размер
+Определяет
+.Ar размер
+файловой системы после увеличения в секторах.
+.Ar Размер
+является числом 512-байтных секторов, если не суффиксирован
+.Cm b, k, m, g,
+или
+.Cm t,
+что
+обозначает байт, килобайт, мегабайт, гигабайт и терабайт соответственно.
+Это значение по умолчанию равно размеру необработанного раздела, указанного в.Ar special
+(другими словами,
 .Nm
-will enlarge the file system to the size of the entire partition).
+увеличивает файловую систему до размера всего раздела).
 .El
-.Sh EXAMPLES
-Expand root file system to fill up available space:
+.Sh ПРИМЕРЫ
+Расширение корневой файловой системы для использования доступного пространства:
 .Dl growfs /
 .Pp
-Refresh the LUN size, resize the partition to use all available
-capacity, and expand the filesystem accordingly:
+Обновление размера LUN, изменение размера раздела для использования всей доступной
+ёмкости и соответствующее расширение файловой системы:
 .Dl camcontrol reprobe da0
 .Dl gpart recover da0
 .Dl gpart resize -i 1 da0
 .Dl growfs /dev/da0p1
-.Sh SEE ALSO
+.Sh СМОТРИ ТАКЖЕ
 .Xr growfs 7 ,
 .Xr camcontrol 8 ,
 .Xr fsck 8 ,
 .Xr gpart 8 ,
 .Xr newfs 8 ,
 .Xr tunefs 8
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Утилита
 .Nm
-utility first appeared in
+впервые появилась в
 .Fx 4.4 .
-The ability to resize mounted file systems was added in
+Возможность изменения размера смонтированных файловых систем была добавлена в
 .Fx 10.0 .
-.Sh AUTHORS
+.Sh АВТОРЫ
 .An Christoph Herrmann Aq Mt chm@FreeBSD.org
 .An Thomas-Henning von Kamptz Aq Mt tomsoft@FreeBSD.org
-.An The GROWFS team Aq Mt growfs@Tomsoft.COM
+.An КОМАНДА GROWFS Aq Mt growfs@Tomsoft.COM
 .An Edward Tomasz Napierala Aq Mt trasz@FreeBSD.org
-.Sh CAVEATS
-When expanding a file system mounted read-write, any writes to that file system
-will be temporarily suspended until the expansion is finished.
-.Sh BUGS
-Normally
+.Sh ОСТОРОЖНО
+При расширении файловой системы, смонтированной для чтения-записи, любые записи в эту файловую систему
+будут временно приостановлены до завершения расширения.
+.Sh ОШИБКИ
+Обычно
 .Nm
-writes cylinder group summary to disk and reads it again later for doing more
-updates.
-This read operation will provide unexpected data when using
+записывает сводку по группам цилиндров на диск и считывает её позже для дополнительных
+обновлений.
+Эта операция чтения предоставит неожиданные данные при использовании
 .Fl N .
-Therefore, this part cannot really be simulated and will be skipped in test
-mode.
+Следовательно, эту часть нельзя действительно симулировать, и она будет пропущена в тестовом режиме.

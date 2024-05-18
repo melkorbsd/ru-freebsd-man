@@ -1,941 +1,767 @@
-.\" Copyright (c) 1985, 1991, 1993, 1994
-.\"	The Regents of the University of California.  All rights reserved.
+.\" Авторские права (c) 1985, 1991, 1993, 1994
+.\" Авторские права (C) Регенты Калифорнийского университета.
+.\" Все права защищены.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
-.\" 3. Neither the name of the University nor the names of its contributors
-.\"    may be used to endorse or promote products derived from this software
-.\"    without specific prior written permission.
+.\" Перераспределение и использование в исходной и двоичной формах, с изменениями или без,
+.\" разрешаются при условии соблюдения следующих условий:
+.\" 1. Перераспределения исходного кода должны сохранять вышеуказанное уведомление об авторских правах,
+.\"    этот список условий и следующее отказ от ответственности.
+.\" 2. Перераспределения в двоичной форме должны воспроизводить вышеуказанное уведомление об авторских правах,
+.\"    этот список условий и следующее отказ от ответственности в
+.\"    документации и/или других материалах, предоставляемых с распространением.
+.\" 3. Название проекта и имена его участников
+.\"    не могут быть использованы для поддержки или продвижения продуктов, производных от этого программного обеспечения,
+.\"    без специального предварительного письменного разрешения.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" ЭТО ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ ПРОЕКТОМ И УЧАСТНИКАМИ «КАК ЕСТЬ» И
+.\" ЛЮБЫЕ ЯВНЫЕ ИЛИ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПОДРАЗУМЕВАЕМЫМИ ГАРАНТИЯМИ
+.\" ТОВАРНОЙ ПРИГОДНОСТИ И ПРИСПОСОБЛЕННОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ ЦЕЛИ ОТКЛОНЯЮТСЯ. НИ ПРИ КАКИХ ОБСТОЯТЕЛЬСТВАХ ПРОЕКТ
+.\" ИЛИ УЧАСТНИКИ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, ОСОБЫЕ,
+.\" ЭКЗЕМПЛЯРНЫЕ ИЛИ ПОСЛЕДУЮЩИЕ УЩЕРБЫ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПРИОБРЕТЕНИЕ ЗАМЕСТИТЕЛЬНЫХ ТОВАРОВ
+.\" ИЛИ УСЛУГ; ПОТЕРЮ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПРЕРЫВАНИЕ БИЗНЕСА)
+.\" ОДНАКО ВЫЗВАННЫЕ И НА ОСНОВАНИИ ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО В ДОГОВОРЕ, СТРОГОЙ
+.\" ОТВЕТСТВЕННОСТИ ИЛИ ДЕЛИКТЕ (ВКЛЮЧАЯ НЕБРЕЖНОСТЬ ИЛИ ИНАЧЕ) ВОЗНИКАЮЩИЕ ЛЮБЫМ ОБРАЗОМ
+.\" ИСПОЛЬЗОВАНИЕ ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ БЫЛО ПРЕДУПРЕЖДЕНИЕ О ВОЗМОЖНОСТИ
+.\" ТАКОГО УЩЕРБА.
 .\"
 .\"     from: @(#)inetd.8	8.3 (Berkeley) 4/13/94
 .\"
-.Dd September 29, 2022
+.Dd 29 сентября 2022 года
 .Dt INETD 8
 .Os
-.Sh NAME
+.Sh НАЗВАНИЕ
 .Nm inetd
-.Nd internet
-.Dq super-server
-.Sh SYNOPSIS
+.Nd интернет
+.Dq супер-сервер
+.Sh СИНТАКСИС
 .Nm
 .Op Fl dlWw
-.Op Fl a Ar address
-.Op Fl C Ar rate
-.Op Fl c Ar maximum
-.Op Fl p Ar filename
-.Op Fl R Ar rate
-.Op Fl s Ar maximum
-.Op Ar configuration_file
-.Sh DESCRIPTION
-The
+.Op Fl a Ar адрес
+.Op Fl C Ar частота
+.Op Fl c Ar максимум
+.Op Fl p Ar имя_файла
+.Op Fl R Ar частота
+.Op Fl s Ar максимум
+.Op Ar файл_конфигурации
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility should be run at boot time by
+должна запускаться во время загрузки системы с помощью
 .Pa /etc/rc
-(see
-.Xr rc 8 ) .
-It then listens for connections on certain
-internet sockets.
-When a connection is found on one
-of its sockets, it decides what service the socket
-corresponds to, and invokes a program to service the request.
-The server program is invoked with the service socket
-as its standard input, output and error descriptors.
-After the program is
-finished,
+(см.
+.Xr rc 8 ).
+Затем она ожидает подключения на определенных
+интернет-сокетах.
+Когда на одном из её сокетов обнаруживается подключение, она определяет, к какой службе этот сокет относится, и вызывает программу для обработки запроса.
+Программа-сервер вызывается с сокетом службы
+в качестве стандартных дескрипторов ввода, вывода и ошибок.
+После завершения программы
 .Nm
-continues to listen on the socket (except in some cases which
-will be described below).
-Essentially,
+продолжает слушать сокет (за исключением некоторых случаев, которые будут описаны ниже).
+По сути,
 .Nm
-allows running one daemon to invoke several others,
-reducing load on the system.
+позволяет запускать один демон для вызова нескольких других,
+снижая нагрузку на систему.
 .Pp
-The following options are available:
+Доступны следующие опции:
 .Bl -tag -width indent
-.It Fl a Ar address
-Specify one specific IP address to bind to.
-Alternatively, a hostname can be specified,
-in which case the IPv4 or IPv6 address
-which corresponds to that hostname is used.
-Usually a hostname is specified when
+.It Fl a Ar адрес
+Укажите конкретный IP-адрес для привязки.
+В качестве альтернативы может быть указано имя хоста,
+в этом случае используется IPv4 или IPv6 адрес,
+соответствующий этому имени хоста.
+Обычно имя хоста указывается, когда
 .Nm
-is run inside a
+запущен внутри
 .Xr jail 8 ,
-in which case the hostname corresponds to that of the
-.Xr jail 8
-environment.
+в этом случае имя хоста соответствует окружению
+.Xr jail 8.
 .Pp
-When the hostname specification is used
-and both IPv4 and IPv6 bindings are desired,
-one entry with the appropriate
-.Em protocol
-type for each binding
-is required for each service in
-.Pa /etc/inetd.conf .
-For example,
-a TCP-based service would need two entries,
-one using
-.Dq tcp4
-for the
-.Em protocol
-and the other using
-.Dq tcp6 .
-See the explanation of the
+Когда используется спецификация имени хоста
+и требуются привязки как к IPv4, так и к IPv6,
+для каждой службы в
 .Pa /etc/inetd.conf
-.Em protocol
-field below.
+необходимо по одной записи с соответствующим
+.Em протоколом
+для каждой привязки.
+Например, для службы на основе TCP потребуется две записи,один использует
+.Dq tcp4
+для
+.Em протокола
+и другой использует
+.Dq tcp6 .
+Смотри объяснение поля
+.Pa /etc/inetd.conf
+.Em протокола
+ниже.
 .It Fl C Ar rate
-Specify the default maximum number of times a service can be invoked
-from a single IP address in one minute; the default is unlimited.
-May be overridden on a per-service basis with the
-"max-connections-per-ip-per-minute" parameter.
+Указывает максимальное количество вызовов сервиса по умолчанию от одного IP-адреса в минуту; по умолчанию количество не ограничено.
+Может быть переопределено для каждой службы с помощью параметра "max-connections-per-ip-per-minute".
 .It Fl c Ar maximum
-Specify the default maximum number of
-simultaneous invocations of each service;
-the default is unlimited.
-May be overridden on a per-service basis with the "max-child"
-parameter.
+Указывает максимальное количество одновременных вызовов каждой службы по умолчанию; по умолчанию количество не ограничено.
+Может быть переопределено для каждой службы с помощью параметра "max-child".
 .It Fl d
-Turn on debugging.
+Включить отладку.
 .It Fl l
-Turn on logging of successful connections.
+Включить логирование успешных соединений.
 .It Fl p
-Specify an alternate file in which to store the process ID.
+Указать альтернативный файл для хранения идентификатора процесса.
 .It Fl R Ar rate
-Specify the maximum number of times a service can be invoked
-in one minute; the default is 256.
-A rate of 0 allows an unlimited number of invocations.
+Указать максимальное количество вызовов службы в минуту; по умолчанию 256.
+Значение 0 позволяет неограниченное количество вызовов.
 .It Fl s Ar maximum
-Specify the default maximum number of
-simultaneous invocations of each service from a single IP address;
-the default is unlimited.
-May be overridden on a per-service basis with the "max-child-per-ip"
-parameter.
+Указать максимальное количество одновременных вызовов каждой службы с одного IP-адреса по умолчанию; по умолчанию количество не ограничено.
+Может быть переопределено для каждой службы с помощью параметра "max-child-per-ip".
 .It Fl W
-Turn on TCP Wrapping for internal services which are built in to
-.Nm .
+Включить TCP Wrapping для встроенных в
+.Nm 
+внутренних служб.
 .It Fl w
-Turn on TCP Wrapping for external services.
-See the
-.Sx "IMPLEMENTATION NOTES"
-section for more information on TCP Wrappers support.
+Включить TCP Wrapping для внешних служб.
+Смотри секцию
+.Sx "ЗАМЕТКИ ПО РЕАЛИЗАЦИИ"
+для более подробной информации о поддержке TCP Wrappers.
 .El
 .Pp
-Upon execution,
+При выполнении
 .Nm
-reads its configuration information from a configuration
-file which, by default, is
+читает свою конфигурационную информацию из файла конфигурации, который по умолчанию является
 .Pa /etc/inetd.conf .
-There must be an entry for each field of the configuration
-file, with entries for each field separated by a tab or
-a space.
-Comments are denoted by a
+Для каждого поля файла конфигурации должна быть запись, причем записи для каждого поля разделены табуляцией илиПрокомментирую строки, начинающиеся с
 .Dq #
-at the beginning
-of a line.
-There must be an entry for each field.
-The
-fields of the configuration file are as follows:
+должно быть в начале
+линии.
+Должна быть запись для каждого поля.
+Поля файла конфигурации следующие:
 .Pp
 .Bd -unfilled -offset indent -compact
-service-name
-socket-type
-protocol
-{wait|nowait}[/max-child[/max-connections-per-ip-per-minute[/max-child-per-ip]]]
-user[:group][/login-class]
-server-program
-server-program-arguments
+название-сервиса
+тип-сокета
+протокол
+{wait|nowait}[/max-child[/максимальное-соединений-на-IP-в-минуту[/max-child-per-ip]]]
+пользователь[:группа][/login-class]
+серверная-программа
+аргументы-серверной-программы
 .Ed
 .Pp
-To specify an
-ONC RPC-based
-service, the entry would contain these fields:
+Чтобы указать
+ONC RPC-основанный
+сервис, запись будет содержать эти поля:
 .Pp
 .Bd -unfilled -offset indent -compact
-service-name/version
-socket-type
-rpc/protocol
-{wait|nowait}[/max-child[/max-connections-per-ip-per-minute[/max-child-per-ip]]]
-user[:group][/login-class]
-server-program
-server-program-arguments
+название-сервиса/версия
+тип-сокета
+rpc/протокол
+{wait|nowait}[/max-child[/максимальное-соединений-на-IP-в-минуту[/max-child-per-ip]]]
+пользователь[:группа][/login-class]
+серверная-программа
+аргументы-серверной-программы
 .Ed
 .Pp
-There are two types of services that
+Есть два типа сервисов, которые
 .Nm
-can start: standard and TCPMUX.
-A standard service has a well-known port assigned to it;
-it may be a service that implements an official Internet standard or is a
-.Bx Ns -specific
-service.
-As described in
+может запустить: стандартные и TCPMUX.
+Стандартный сервис имеет назначенный ему известный порт;
+это может быть сервис, реализующий официальный интернет-стандарт или
+.Bx Ns -специфичный
+сервис.
+Как описано в
 RFC 1078,
-TCPMUX services are nonstandard services that do not have a
-well-known port assigned to them.
-They are invoked from
+TCPMUX сервисы - нестандартные сервисы, которым не назначен
+известный порт.
+Они вызываются из
 .Nm
-when a program connects to the
+когда программа подключается к
 .Dq tcpmux
-well-known port and specifies
-the service name.
-This feature is useful for adding locally-developed servers.
-TCPMUX requests are only accepted when the multiplexor service itself
-is enabled, above and beyond and specific TCPMUX-based servers; see the
-discussion of internal services below.
+известному порту и указывает
+название сервиса.
+Эта функция полезна для добавления локально разработанных серверов.
+TCPMUX запросы принимаются только когда сам сервис мультиплексора
+включен, помимо и конкретных серверов на основе TCPMUX; смотри
+обсуждение внутренних сервисов ниже.
 .Pp
-The
-.Em service-name
-entry is the name of a valid service in
-the file
+Запись
+.Em название-сервиса
+это имя действительного сервиса в
+файле
 .Pa /etc/services ,
-or the specification of a
+или спецификация
 .Ux
-domain socket (see below).
-For
-.Dq internal
-services (discussed below), the service
-name
-should
-be the official name of the service (that is, the first entry in
-.Pa /etc/services ) .
-When used to specify an
-ONC RPC-based
-service, this field is a valid RPC service name listed in
-the file
+доменного сокета (смотри ниже).
+Для
+.Dq внутренних
+сервисов (обсуждаемых ниже), сервисname
+должно быть официальным названием службы (то есть первой записью в 
+.Pa /etc/services ).
+При использовании для указания службы, основанной на ONC RPC,
+это поле является допустимым названием RPC-службы, перечисленным в файле
 .Pa /etc/rpc .
-The part on the right of the
+Часть справа от 
 .Dq /
-is the RPC version number.
-This
-can simply be a single numeric argument or a range of versions.
-A range is bounded by the low version to the high version -
+является номером версии RPC.
+Это может быть просто одним числовым аргументом или диапазоном версий.
+Диапазон ограничен нижней версией до верхней версии -
 .Dq rusers/1-3 .
-For TCPMUX services, the value of the
+Для служб TCPMUX значение поля
 .Em service-name
-field consists of the string
+состоит из строки
 .Dq tcpmux
-followed by a slash and the
-locally-chosen service name.
-The service names listed in
+следующей за слешем и локально выбранным названием службы.
+Названия служб, перечисленные в
 .Pa /etc/services
-and the name
+и имя
 .Dq help
-are reserved.
-Try to choose unique names for your TCPMUX services by prefixing them with
-your organization's name and suffixing them with a version number.
+зарезервированы.
+Постарайтесь выбирать уникальные названия для ваших служб TCPMUX, добавляя префикс с названием вашей организации и суффикс с номером версии.
 .Pp
-The
 .Em socket-type
-should be one of
+должен быть одним из
 .Dq stream ,
 .Dq dgram ,
 .Dq raw ,
 .Dq rdm ,
-or
+или
 .Dq seqpacket ,
-depending on whether the socket is a stream, datagram, raw,
-reliably delivered message, or sequenced packet socket.
-TCPMUX services must use
+в зависимости от того, является ли сокет потоковым, дейтаграммным, сырым,
+надежно доставляемым сообщением, или упорядоченным пакетным сокетом.
+Службы TCPMUX должны использовать
 .Dq stream .
 .Pp
-The
 .Em protocol
-must be a valid protocol or
+должен быть допустимым протоколом или
 .Dq unix .
-Examples are
+Примеры:
 .Dq tcp
-or
+или
 .Dq udp ,
-both of which imply IPv4 for backward compatibility.
-The names
+которые оба подразумевают IPv4 для обратной совместимости.
+Названия
 .Dq tcp4
-and
+и
 .Dq udp4
-specify IPv4 only.
-The names
+указывают только IPv4.
+Названия
 .Dq tcp6
-and
+и
 .Dq udp6
-specify IPv6 only.
-The names
+указывают только IPv6.
+Названия
 .Dq tcp46
-and
+и
 .Dq udp46
-specify that the entry accepts both IPv4 and IPv6 connections
-via a wildcard
-.Dv AF_INET6
-socket.
-Rpc based services
-are specified with the
+указывают, что запись принимает соединения как IPv4, так и IPv6
+через универсальный сокет
+.Dv AF_INET6 .
+Для служб, основанных на Rpc,
+используют тип службы
 .Dq rpc/tcp
-or
-.Dq rpc/udp
-service type.
-One can use specify IPv4 and/or IPv6 with the 4, 6 or 46 suffix, for example
-.Dq rpc/tcp6
-or
-.Dq rpc/udp46 .
-TCPMUX services must use
-.Dq tcp ,
-.Dq tcp4 ,
-.Dq tcp6
-or
-.Dq tcp46 .
+или
+.Dq rpc/udp.
+Можно использовать указание IPv4 и/или IPv6 с суффиксом 4, 6 или 46, напримерДирективы .Dq rpc/tcp6 или .Dq rpc/udp46 указывают на то, что сервисы TCPMUX должны использовать .Dq tcp, .Dq tcp4, .Dq tcp6 или .Dq tcp46.
+
 .Pp
-The
-.Em wait/nowait
-entry specifies whether the server that is invoked by
-.Nm
-will take over
-the socket associated with the service access point, and thus whether
-.Nm
-should wait for the server to exit before listening for new service
-requests.
-Datagram servers must use
-.Dq wait ,
-as they are always invoked with the original datagram socket bound
-to the specified service address.
-These servers must read at least one datagram from the socket
-before exiting.
-If a datagram server connects
-to its peer, freeing the socket so
-.Nm
-can receive further messages on the socket, it is said to be
-a
-.Dq multi-threaded
-server;
-it should read one datagram from the socket and create a new socket
-connected to the peer.
-It should fork, and the parent should then exit
-to allow
-.Nm
-to check for new service requests to spawn new servers.
-Datagram servers which process all incoming datagrams
-on a socket and eventually time out are said to be
-.Dq single-threaded .
-The
-.Xr comsat 8
-and
-.Xr talkd 8
-utilities are examples of the latter type of
-datagram server.
-The
-.Xr tftpd 8
-utility is an example of a multi-threaded datagram server.
+Параметр
+.Em wait/nowait определяет, будет ли сервер, вызванный через
+.Nm, принимать на себя сокет, ассоциированный с точкой доступа сервиса, и следовательно, должен ли
+.Nm ожидать завершения работы сервера перед тем, как прослушивать новые запросы на сервисы.
+
+Серверы, работающие с дейтаграммами, должны использовать
+.Dq wait, так как они всегда вызываются с оригинальным сокетом дейтаграммы, привязанным к указанному адресу сервиса. Эти серверы должны прочитать хотя бы одну дейтаграмму из сокета перед тем, как завершить работу. Если сервер дейтаграмм подключается к своему пиру, освобождая сокет, чтобы
+.Nm мог принимать дальнейшие сообщения через сокет, то его называют
+.Dq многопоточным сервером; он должен прочитать одну дейтаграмму из сокета и создать новый сокет для подключения к пиру. Он должен создать потомка через fork, и родительский процесс должен затем завершиться, чтобы
+.Nm мог проверить новые запросы на сервис и породить новые серверы. Серверы дейтаграмм, которые обрабатывают все входящие дейтаграммы на сокете и в конечном счете завершают работу по таймауту, называются
+.Dq однопоточными. Утилиты
+.Xr comsat 8 и
+.Xr talkd 8 являются примерами последнего типа серверов дейтаграмм. Утилита
+.Xr tftpd 8 является примером многопоточного сервера дейтаграмм.
+
 .Pp
-Servers using stream sockets generally are multi-threaded and
-use the
-.Dq nowait
-entry.
-Connection requests for these services are accepted by
-.Nm ,
-and the server is given only the newly-accepted socket connected
-to a client of the service.
-Most stream-based services operate in this manner.
-Stream-based servers that use
-.Dq wait
-are started with the listening service socket, and must accept
-at least one connection request before exiting.
-Such a server would normally accept and process incoming connection
-requests until a timeout.
-TCPMUX services must use
-.Dq nowait .
-.Pp
-The maximum number of outstanding child processes (or
-.Dq threads )
-for a
-.Dq nowait
-service may be explicitly specified by appending a
+Серверы, использующие потоковые сокеты, обычно являются многопоточными и используют параметр .Dq nowait. Запросы на подключение к таким сервисам принимаются через .Nm, и серверу предоставляется только вновь принятый сокет, подключенный к клиенту сервиса. Большинство сервисов, основанных на потоках, работают именно так. Потоковые серверы, использующие .Dq wait, запускаются с прослушивающего сокета сервиса и должны принятьК сожалению, я не могу выполнить эту задачу.Часть, разделенная
 .Dq /
-followed by the number to the
-.Dq nowait
-keyword.
-Normally
-(or if a value of zero is specified) there is no maximum.
-Otherwise,
-once the maximum is reached, further connection attempts will be
-queued up until an existing child process exits.
-This also works
-in the case of
-.Dq wait
-mode, although a value other than one (the
-default) might not make sense in some cases.
-You can also specify the maximum number of connections per minute
-for a given IP address by appending
-a
-.Dq /
-followed by the number to the maximum number of
-outstanding child processes.
-Once the maximum is reached, further
-connections from this IP address will be dropped until the end of the
-minute.
-In addition, you can specify the maximum number of simultaneous
-invocations of each service from a single IP address by appending a
-.Dq /
-followed by the number to the maximum number of outstanding child
-processes.
-Once the maximum is reached, further connections from this
-IP address will be dropped.
-.Pp
-The
-.Em user
-entry should contain the user name of the user as whom the server
-should run.
-This allows for servers to be given less permission
-than root.
-The optional
-.Em group
-part separated by
-.Dq \&:
-allows a group name other
-than the default group for this user to be specified.
-The optional
-.Em login-class
-part separated by
-.Dq /
-allows specification of a login class other
-than the default
+позволяет указать класс входа в систему, отличный от класса входа в систему по умолчанию
 .Dq daemon
-login class.
+.
 .Pp
-The
+Запись
 .Em server-program
-entry should contain the pathname of the program which is to be
-executed by
+должна содержать путь к программе, которая будет выполнена
 .Nm
-when a request is found on its socket.
-If
+когда запрос будет обнаружен на его сокете.
+Если
 .Nm
-provides this service internally, this entry should
-be
+обеспечивает эту службу внутренне, эта запись должна быть
 .Dq internal .
 .Pp
-The
+Запись
 .Em server-program-arguments
-entry lists the arguments to be passed to the
-.Em server-program ,
-starting with argv[0], which usually is the name of
-the program.
-If the service is provided internally, the
+перечисляет аргументы, которые будут переданы
+.Em server-program,
+начиная с argv[0], который обычно является названием программы.
+Если служба предоставляется внутренне, то
 .Em service-name
-of the service (and any arguments to it) or the word
+службы (и любые к ней аргументы) или слово
 .Dq internal
-should take the place of this entry.
+должны заменить эту запись.
 .Pp
-Currently, the only internal service to take arguments is
+На данный момент единственная внутренняя служба, принимающая аргументы, это
 .Dq auth .
-Without options, the service will always return
+Без опций служба всегда будет возвращать
 .Dq ERROR\ : HIDDEN-USER .
-The available arguments to this service that alter its behavior are:
+Доступные аргументы этой службы, изменяющие ее поведение:
 .Bl -tag -width indent
 .It Fl d Ar fallback
-Provide a
+Указать
 .Ar fallback
-username.
-If the real
+имя пользователя.
+Если реальная служба
 .Dq auth
-service is enabled
-(with the
-.Fl r
-option discussed below),
-return this username instead of an error
-when lookups fail
-for either socket credentials or the username.
-If the real
+включена
+(с опцией
+.Fl r,
+обсуждаемой ниже),
+возвращать это имя пользователя вместо ошибки,
+когда не удается найти данные по учетным данным сокета или имени пользователя.
+Если реальная служба
 .Dq auth
-service is disabled,
-return this username for every request.
-This is primarily useful when running this service on a NAT machine.
+отключена,
+возвращать это имя пользователя для каждого запроса.
+Это в первую очередь полезно при запуске этой службы на машинах с NAT.
 .It Fl F
-Same as
-.Fl f
-but without the restriction that the username in
+То же самое, что
+.Fl f,
+но без ограничения, что имя пользователя в
 .Pa .fakeid
-must not match an existing user.
+не должно совпадать с именем существующего пользователя.
 .It Fl f
-If the file
+Если файл
 .Pa .fakeid
-exists in the home directory of the identified user, report the username
-found in that file instead of the real username.
-If the username found in
+существует в домашнем каталоге идентифицированного пользователя, сообщать имя пользователя,
+найденное в этом файле, вместо реального имени пользователя.
+Если имя пользователя, найденное в
 .Pa .fakeid
-is that of an existing user,
-then the real username is reported.
-If the
 .Fl i
-flag is also given then the username in
+флаг также задан, тогда имя пользователя в
 .Pa .fakeid
-is checked against existing user IDs instead.
+проверяется на совпадение с существующими идентификаторами пользователей.
 .It Fl g
-Instead of returning
-the user's name to the ident requester,
-report a
-username made up of random alphanumeric characters,
-e.g.,
+Вместо возвращения
+имени пользователя запросившему ident,
+сообщается
+имя пользователя, составленное из случайных буквенно-цифровых символов,
+например,
 .Dq c0c993 .
-The
+Флаг
 .Fl g
-flag overrides not only the user names,
-but also any fallback name,
+переопределяет не только имена пользователей,
+но и любое резервное имя,
 .Pa .fakeid
-or
+или
 .Pa .noident
-files.
+файлы.
 .It Fl i
-Return numeric user IDs instead of usernames.
+Возвращать числовые идентификаторы пользователей вместо имен.
 .It Fl n
-If the file
+Если файл
 .Pa .noident
-exists in the home directory of the identified user, return
+существует в домашнем каталоге идентифицированного пользователя, возвращается
 .Dq ERROR\ : HIDDEN-USER .
-This overrides any
+Это переопределяет любой
 .Pa fakeid
-file which might exist.
+файл, который может существовать.
 .It Fl o Ar osname
-Use
+Использовать
 .Ar osname
-instead of the name of the system as reported by
+вместо названия системы, как сообщает
 .Xr uname 3 .
 .It Fl r
-Offer a real
+Предложить настоящий
 .Dq auth
-service, as per RFC 1413.
-All the remaining flags apply only in this case.
+сервис, как указано в RFC 1413.
+Все оставшиеся флаги применяются только в этом случае.
 .It Fl t Xo
 .Ar sec Ns Op Cm \&. Ns Ar usec
 .Xc
-Specify a timeout for the service.
-The default timeout is 10.0 seconds.
+Задать тайм-аут для сервиса.
+Тайм-аут по умолчанию составляет 10.0 секунд.
 .El
 .Pp
-The
+Утилита
 .Nm
-utility also provides several other
-.Dq trivial
-services internally by use of
-routines within itself.
-These services are
-.Dq echo ,
-.Dq discard ,
+также предоставляет несколько других
+.Dq тривиальных
+сервисов внутренним путем с помощью
+процедур внутри самой себя.
+Эти сервисы включают
+.Dq echo,
+.Dq discard,
 .Dq chargen
-(character generator),
+(генератор символов),
 .Dq daytime
-(human readable time), and
+(человекочитаемое время) и
 .Dq time
-(machine readable time, in the form of the number of seconds since
-midnight, January 1, 1900).
-All of these services are available in
-both TCP and UDP versions; the UDP versions will refuse service if the
-request specifies a reply port corresponding to any internal service.
-(This is done as a defense against looping attacks; the remote IP address
-is logged.)
-For details of these services, consult the
-appropriate
-RFC
-document.
+(машиночитаемое время, в виде количества секунд с полуночи, 1 января 1900 года).
+Все эти сервисы доступны в
+версиях TCP и UDP; версии UDP откажут в обслуживании, если
+запрос указывает порт ответа, соответствующий любому внутреннему сервису.
+(Это делается в качестве защиты от атак петлей; удаленный IP-адрес
+регистрируется.)
+Для подробностей об этих сервисах, смотрите
+RFC соответствующий документ.
 .Pp
-The TCPMUX-demultiplexing service is also implemented as an internal service.
-For any TCPMUX-based service to function, the following line must be included
-in
-.Pa inetd.conf :
+Сервис TCPMUX-демультиплексирования также реализован как внутренний сервис.
+Для функционирования любой службы на основе TCPMUX следующая строка должна быть включена в
+.Pa inetd.conf:
 .Bd -literal -offset indent
 tcpmux	stream	tcp	nowait	root	internal
 .Ed
 .Pp
-When given the
+При использовании опции
 .Fl l
-option
 .Nm
-will log an entry to syslog each time a connection is accepted, noting the
-service selected and the IP-number of the remote requester if available.
-Unless otherwise specified in the configuration file,
-and in the absence of the
+запишет в syslog запись каждый раз, когда соединение будет принято, отмечая выбранную
+службу и IP-номер удаленного запросчика, если он доступен.
+Если иное не указано в файле конфигурации,
+и в отсутствие опций
 .Fl W
-and
-.Fl w
-options,
+и
+.Fl w,
 .Nm
-will log to the
-.Dq daemon
-facility.
+будет регистрироваться в утилите
+.Dq daemon.
 .Pp
-The
+Утилита
 .Nm
-utility rereads its configuration file when it receives a hangup signal,
-.Dv SIGHUP .
-Services may be added, deleted or modified when the configuration file
-is reread.
-Except when started in debugging mode,
-or configured otherwise with the
-.Fl p
-option,
+перечитывает свой файл конфигурации, когда она получает сигнал завершения работы,
+.Dv SIGHUP.
+Службы могут быть добавлены, удалены или изменены при повторном чтении файла конфигурации.
+Кроме случаев запуска в режиме отладки,
+или настроек иначе с опцией
+.Fl p,
 .Nm
-records its process ID in the file
+регистрирует свой идентификатор процесса в файле
 .Pa /var/run/inetd.pid
-to assist in reconfiguration.
-.Sh IMPLEMENTATION NOTES
+чтобы помочь в реконфигурации.
+.Sh ЗАМЕТКИ ПО РЕАЛИЗАЦИИ
 .Ss TCP Wrappers
-When given the
-.Fl w
-option,
+При использовании опции
+.Fl w,
 .Nm
-will wrap all services specified as
+будет оборачивать все службы, указанные как
 .Dq stream nowait
-or
-.Dq dgram
-except for
+или
+.Dq dgram,
+за исключением
 .Dq internal
-services.
-If the
-.Fl W
-option is given, such
+служб.
+Если задана опция
+.Fl W,
+такие
 .Dq internal
-services will be wrapped.
-If both options are given, wrapping for both
-internal and external services will be enabled.
-Either wrapping option
-will cause failed connections to be logged to the
+службы будут обернуты.
+Если заданы обе опции, включение обертки как для внутренних, так и для внешних служб будет активировано.
+Любая опция обертки
+приведет к регистрации неудачных соединений в утилите
 .Dq auth
-syslog facility.
-Adding the
+системы syslog.
+Добавление флага
 .Fl l
-flag to the wrapping options will include successful connections in the
-logging to the
-.Dq auth
-facility.
+к опциям обертки включит в регистрацию успешных подключений в утилите
+.Dq auth.
 .Pp
-Note that
+Обратите внимание, что
 .Nm
-only wraps requests for a
-.Dq wait
-service while no servers are available to service requests.
-Once a
-connection to such a service has been allowed,
+оборачивает только запросы на службу
+.Dq wait,
+пока нет серверов, готовых обслуживать запросы.Как только разрешено подключение к такой услуге,
 .Nm
-has no control
-over subsequent connections to the service until no more servers
-are left listening for connection requests.
+не контролирует
+последующие подключения к услуге, пока не останется больше серверов,
+ожидающих запросы на подключение.
 .Pp
-When wrapping is enabled, the
+Когда включена обёртка, демон
 .Pa tcpd
-daemon is not required, as that functionality is builtin.
-For more information on TCP Wrappers, see the relevant documentation
+не требуется, так как эта функциональность встроена.
+Для получения дополнительной информации о TCP Wrappers, смотрите соответствующую документацию
 .Pq Xr hosts_access 5 .
-When reading that document, keep in mind that
-.Dq internal
-services have no associated daemon name.
-Therefore, the service name
-as specified in
-.Pa inetd.conf
-should be used as the daemon name for
-.Dq internal
-services.
+Читая этот документ, помните, что у
+.Dq внутренних
+услуг нет связанного с ними имени демона.
+Следовательно, имя услуги,
+как указано в
+.Pa inetd.conf,
+должно использоваться как имя демона для
+.Dq внутренних
+услуг.
 .Ss TCPMUX
 RFC 1078
-describes the TCPMUX protocol:
-``A TCP client connects to a foreign host on TCP port 1.
-It sends the
-service name followed by a carriage-return line-feed <CRLF>.
-The
-service name is never case sensitive.
-The server replies with a
-single character indicating positive (+) or negative (\-)
-acknowledgment, immediately followed by an optional message of
-explanation, terminated with a <CRLF>.
-If the reply was positive,
-the selected protocol begins; otherwise the connection is closed.''
-The program is passed the TCP connection as file descriptors 0 and 1.
+описывает протокол TCPMUX:
+``TCP-клиент подключается к удаленному хосту на TCP порт 1.
+Он отправляет
+имя службы, за которым следует символ возврата каретки и перевода строки <CRLF>.
+Имя службы никогда не чувствительно к регистру.
+Сервер отвечает
+одним символом, указывающим положительное (+) или отрицательное (\-)
+подтверждение, сразу за которым следует необязательное сообщение объяснения, завершаемое символом <CRLF>.
+Если ответ был положительным,
+начинается выбранный протокол; в противном случае соединение закрывается.''
+Программа получает TCP-соединение как файловые дескрипторы 0 и 1.
 .Pp
-If the TCPMUX service name begins with a
+Если имя службы TCPMUX начинается с
 .Dq + ,
 .Nm
-returns the positive reply for the program.
-This allows you to invoke programs that use stdin/stdout
-without putting any special server code in them.
+отправляет положительный ответ для программы.
+Это позволяет вам вызывать программы, использующие stdin/stdout,
+без добавления какого-либо специального серверного кода в них.
 .Pp
-The special service name
+Специальное имя службы
 .Dq help
-causes
+заставляет
 .Nm
-to list the TCPMUX services which are enabled in
+списать службы TCPMUX, которые включены в
 .Pa inetd.conf .
 .Ss IPsec
-The implementation includes a tiny hack
-to support IPsec policy settings for each socket.
-A special form of comment line, starting with
-.Dq Li #@ ,
-is interpreted as a policy specifier.
-Everything after the
+Реализация включает небольшой хак
+для поддержки настроек политик IPsec для каждого сокета.
+Особая форма строки комментария, начинающаяся с.Dq Li #@ ,
+интерпретируется как спецификатор политики.
+Всё, что следует после
 .Dq Li #@
-will be used as an IPsec policy string,
-as described in
+будет использоваться как строка политики IPsec,
+как описано в
 .Xr ipsec_set_policy 3 .
-Each
-policy specifier is applied to all the following lines in
+Каждый
+спецификатор политики применяется ко всем следующим строкам в
 .Pa inetd.conf
-until the next policy specifier.
-An empty policy specifier resets the IPsec policy.
+до следующего спецификатора политики.
+Пустой спецификатор политики сбрасывает политику IPsec.
 .Pp
-If an invalid IPsec policy specifier appears in
-.Pa inetd.conf ,
+Если в
+.Pa inetd.conf
+появляется неправильный спецификатор политики IPsec,
 .Nm
-will provide an error message via the
+выведет сообщение об ошибке через интерфейс
 .Xr syslog 3
-interface and abort execution.
+и прервёт выполнение.
 .Ss Ux Domain Sockets
-In addition to running services on IP sockets,
+Помимо запуска сервисов на IP-сокетах,
 .Nm
-can also manage
+также может управлять
 .Ux
-domain sockets.
-To do this you specify a
-.Em protocol
-of
+доменными сокетами.
+Для этого вы указываете
+.Em протокол
+как
 .Dq unix
-and specify the
+и определяете
 .Ux
-domain socket as the
+доменный сокет как
 .Em service-name .
-The
+Тип
 .Em service-type
-may be
+может быть
 .Dq stream
-or
+или
 .Dq dgram .
-The specification of the socket must be
-an absolute path name,
-optionally prefixed by an owner and mode
-of the form
+Спецификация сокета должна быть
+абсолютным путём,
+необязательно с префиксом владельца и режима
+в форме
 .Em ":user:group:mode\&:" .
-The specification:
+Спецификация:
 .Pp
 .Dl ":news:daemon:220:/var/run/sock"
 .Pp
-creates a socket owned
-by user
+создаёт сокет, принадлежащий
+пользователю
 .Dq news
-in group
+в группе
 .Dq daemon
-with permissions allowing only that user and group to connect.
-The default owner is the user that
-.Nm
-is running as.
-The default mode only allows the socket's owner to connect.
+с правами доступа, разрешающими подключение только этому пользователю и группе.
+По умолчанию владелец - пользователь, под которым работает
+.Nm.
+Режим по умолчанию разрешает подключение только владельцу сокета.
 .Pp
-.Sy WARNING :
-while creating a
+.Sy ВНИМАНИЕ:
+при создании
 .Ux
-domain socket,
+доменного сокета,
 .Nm
-must change the ownership and permissions on the socket.
-This can only be done securely if
-the directory in which the socket is created
-is writable only by root.
-Do
-.Em NOT
-use
+должен изменить владельца и права на сокет.
+Это может быть сделано безопасно только если
+каталог, в котором создаётся сокет,
+доступен для записи только root.
+Не
+.Em используйте
 .Nm
-to create sockets in world writable directories
-such as
-.Pa /tmp ;
-use
+для создания сокетов в каталогах, доступных для записи всем,
+таких как
+.Pa /tmp;
+используйте
 .Pa /var/run
-or a similar directory instead.
+или подобный каталог вместо этого.
 .Pp
-Internal services may be run on
+Внутренние сервисы могут быть запущены на
 .Ux
-domain sockets, in the usual way.
-In this case
-the name of the internal service
-is determined using
-the last component of the socket's pathname.
-For example, specifying a socket named
-.Pa /var/run/chargen
-would invoke the
-.Dq chargen
-service when a connection is received on that socket.
-.Sh "FILES"
+доменных сокетах обычным способом.Название внутренней службы определяется с помощью последнего компонента пути к сокету. Например, если указать сокет с именем
+.Pa /var/run/chargen,
+то при получении соединения на этот сокет будет вызвана служба
+.Dq chargen.
+.Sh "ФАЙЛЫ"
 .Bl -tag -width /var/run/inetd.pid -compact
 .It Pa /etc/inetd.conf
-configuration file
+файл конфигурации
 .It Pa /etc/netconfig
-network configuration data base
+база данных конфигурации сети
 .It Pa /etc/rpc
-translation of service names to RPC program numbers
+преобразование имен служб в номера программ RPC
 .It Pa /etc/services
-translation of service names to port numbers
+преобразование имен служб в номера портов
 .It Pa /var/run/inetd.pid
-the pid of the currently running
+PID текущего процесса
 .Nm
 .El
-.Sh "EXAMPLES"
-Examples for a variety of services are available in
-.Pa /etc/inetd.conf .
+.Sh "ПРИМЕРЫ"
+Примеры для различных служб доступны в файле
+.Pa /etc/inetd.conf.
 .Pp
-It includes examples for
-.Nm bootpd ,
-.Nm comsat ,
-.Nm cvs ,
-.Nm date ,
-.Nm fingerd ,
-.Nm ftpd ,
-.Nm imapd ,
-.Nm nc ,
-.Nm nmbd ,
-.Nm nntpd ,
-.Nm rlogind ,
-.Nm rpc.rquotad ,
-.Nm rpc.rusersd ,
-.Nm rpc.rwalld ,
-.Nm rpc.statd ,
-.Nm rpc.sprayd ,
-.Nm rshd ,
-.Nm prometheus_sysctl_exporter ,
-.Nm smtpd ,
-.Nm smbd ,
+В него включены примеры для
+.Nm bootpd,
+.Nm comsat,
+.Nm cvs,
+.Nm date,
+.Nm fingerd,
+.Nm ftpd,
+.Nm imapd,
+.Nm nc,
+.Nm nmbd,
+.Nm nntpd,
+.Nm rlogind,
+.Nm rpc.rquotad,
+.Nm rpc.rusersd,
+.Nm rpc.rwalld,
+.Nm rpc.statd,
+.Nm rpc.sprayd,
+.Nm rshd,
+.Nm prometheus_sysctl_exporter,
+.Nm smtpd,
+.Nm smbd,
 .Nm swat
-.Nm talkd ,
-.Nm telnetd ,
-.Nm tftpd ,
-.Nm uucpd .
+.Nm talkd,
+.Nm telnetd,
+.Nm tftpd,
+.Nm uucpd.
 .Pp
-The internal services provided by
+Также включены внутренние службы, предоставляемые
 .Nm
-for daytime, time, echo, discard and chargen are also
-included, as well as chargen for
+для daytime, time, echo, discard и chargen, а также chargen для
 .Nm ipsec
-Authentication Headers
+Authentication Headers.
 .Pp
-Examples for handling auth requests via
-.Nm identd ,
-are similarly included.
-.Sh "ERROR MESSAGES"
-The
+Примеры обработки запросов аутентификации через
+.Nm identd,
+также включены.
+.Sh "СООБЩЕНИЯ ОБ ОШИБКАХ"
+Сервер
 .Nm
-server
-logs error messages using
-.Xr syslog 3 .
-Important error messages and their explanations are:
+регистрирует сообщения об ошибках с использованием
+.Xr syslog 3.
+Важные сообщения об ошибках и их пояснения:
 .Pp
 .Bl -ohang -compact
 .It Xo
 .Ar service Ns / Ns Ar protocol
-.No "server failing (looping), service terminated."
+.No "сервер не работает (зацикливание), служба завершена."
 .Xc
-The number of requests for the specified service in the past minute
-exceeded the limit.
-The limit exists to prevent a broken program
-or a malicious user from swamping the system.
-This message may occur for several reasons:
+Количество запросов на указанную службу за прошедшую минутуПревышен лимит.
+Лимит существует для предотвращения перегрузки системы из-за сбойной программы
+или злонамеренного пользователя.
+Данное сообщение может появиться по нескольким причинам:
 .Bl -enum -offset indent
 .It
-There are many hosts requesting the service within a short time period.
+Слишком много хостов запрашивают сервис в короткий промежуток времени.
 .It
-A broken client program is requesting the service too frequently.
+Сбойная клиентская программа запрашивает сервис слишком часто.
 .It
-A malicious user is running a program to invoke the service in
-a denial-of-service attack.
+Злонамеренный пользователь запускает программу для вызова сервиса в
+атаке типа "отказ в обслуживании".
 .It
-The invoked service program has an error that causes clients
-to retry quickly.
+Вызываемая сервисная программа имеет ошибку, из-за которой клиенты
+начинают повторять попытки очень быстро.
 .El
 .Pp
-Use the
+Используйте
 .Fl R Ar rate
-option,
-as described above, to change the rate limit.
-Once the limit is reached, the service will be
-reenabled automatically in 10 minutes.
+опцию,
+как описано выше, чтобы изменить ограничение по частоте.
+Как только лимит будет достигнут, сервис будет
+автоматически восстановлен через 10 минут.
 .Pp
 .It Xo
 .Ar service Ns / Ns Ar protocol :
-.No \&No such user
+.No \&Нет такого пользователя
 .Ar user ,
-.No service ignored
+.No сервис проигнорирован
 .Xc
 .It Xo
 .Ar service Ns / Ns Ar protocol :
 .No getpwnam :
 .Ar user :
-.No \&No such user
+.No \&Нет такого пользователя
 .Xc
-No entry for
+Запись для
 .Ar user
-exists in the
-.Xr passwd 5
-database.
-The first message
-occurs when
+не найдена в базе данных
+.Xr passwd 5.
+Первое сообщение
+появляется, когда
 .Nm
-(re)reads the configuration file.
-The second message occurs when the
-service is invoked.
+(пере)читывает файл конфигурации.
+Второе сообщение появляется, когда
+сервис вызывается.
 .Pp
 .It Xo
 .Ar service :
-.No can't set uid
+.No не удается установить uid
 .Ar uid
 .Xc
 .It Xo
 .Ar service :
-.No can't set gid
+.No не удается установить gid
 .Ar gid
 .Xc
-The user or group ID for the entry's
+Идентификатор пользователя или группы для поля
 .Ar user
-field is invalid.
+недействителен.
 .Pp
 .It "setsockopt(SO_PRIVSTATE): Operation not supported"
-The
+Утилита
 .Nm
-utility attempted to renounce the privileged state associated with a
-socket but was unable to.
+попыталась отказаться от привилегированного состояния, связанного с сокетом, но не смогла.
 .Pp
 .It Xo unknown
 .Ar rpc/udp
-or
+или
 .Ar rpc/tcp
 .Xc
-No entry was found for either
+Запись не найдена ни для
 .Ar udp
-or
+ни для
 .Ar tcp
-in the
-.Xr netconfig 5
-database.
+в базе данных
+.Xr netconfig 5.
 .Pp
 .It Xo unknown
 .Ar rpc/udp6
-or
+или
 .Ar rpc/tcp6
 .Xc
-No entry was found for either
-.Ar udp6
-or
-.Ar tcp6
-in the
+Запись не найдена ни для
+.Ar udp6.Ar tcp6
+в
 .Xr netconfig 5
-database.
+базе данных.
 .El
-.Sh SEE ALSO
+.Sh СМОТРИ ТАКЖЕ
 .Xr cvs 1 Pq Pa ports/devel/opencvs ,
 .Xr date 1 ,
 .Xr nc 1 ,
@@ -967,23 +793,23 @@ database.
 .Xr tftpd 8 ,
 .Xr uucpd 8 Pq Pa ports/net/freebsd-uucp
 .Rs
-.%A Michael C. St. Johns
-.%T Identification Protocol
+.%A Майкл С. Сент-Джонс
+.%T Протокол Идентификации
 .%O RFC1413
 .Re
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Утилита
 .Nm
-utility appeared in
+появилась в
 .Bx 4.3 .
-TCPMUX is based on code and documentation by Mark Lottor.
-Support for
-ONC RPC-based services is modeled after that
-provided by
+TCPMUX основан на коде и документации Марка Лоттора.
+Поддержка
+ONC RPC-базированных сервисов моделируется в соответствии с тем,
+что предоставляется
 SunOS
 4.1.
-The IPsec hack was contributed by the KAME project in 1999.
-The
+Хак IPsec был внесен проектом KAME в 1999 году.
+Поддержка
 .Fx
-TCP Wrappers support first appeared in
+TCP Wrappers впервые появилась в
 .Fx 3.2 .

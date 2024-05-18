@@ -1,88 +1,83 @@
 .\" Copyright (c) 2016 Microsoft Corp.
-.\" All rights reserved.
+.\" Все права защищены.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
+.\" Распространение и использование в исходном и двоичном виде, с изменениями или без них,
+.\" разрешается при условии соблюдения следующих условий:
+.\" 1. Перераспределения исходного кода должны сохранять вышеуказанное уведомление об авторских правах,
+.\"    этот список условий и следующее отказ от ответственности.
+.\" 2. Перераспределения в двоичной форме должны воспроизводить вышеуказанное уведомление об авторских правах,
+.\"    этот список условий и следующее отказ от ответственности в
+.\"    документации и/или других материалах, распространяемых в комплекте.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" ЭТО ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ АВТОРАМИ И УЧАСТНИКАМИ "КАК ЕСТЬ" И
+.\" ЛЮБЫЕ ЯВНЫЕ ИЛИ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПОДРАЗУМЕВАЕМЫМИ ГАРАНТИЯМИ
+.\" ТОВАРНОЙ ПРИГОДНОСТИ И ПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ ЦЕЛИ, ОТКЛОНЯЮТСЯ. НИ В КОЕМ СЛУЧАЕ АВТОРЫ ИЛИ УЧАСТНИКИ НЕ НЕСУТ
+.\" ОТВЕТСТВЕННОСТЬ ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, ОСОБЫЕ, ЭКЗЕМПЛЯРНЫЕ ИЛИ КОСВЕННЫЕ УБЫТКИ
+.\" (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПРИОБРЕТЕНИЕМ ЗАМЕНЯЕМЫХ ТОВАРОВ ИЛИ УСЛУГ; ПОТЕРЕЙ
+.\" ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПРЕРЫВАНИЕМ БИЗНЕСА)
+.\" ТЕМ НЕ МЕНЕЕ ВЫЗВАННЫЕ И КАКИМ ЛИБО ОБРАЗОМ СВЯЗАННЫЕ С ЛЮБОЙ ТЕОРИЕЙ ОТВЕТСТВЕННОСТИ, БУДЬ ТО В КОНТРАКТЕ, СТРОГОЙ
+.\" ОТВЕТСТВЕННОСТИ ИЛИ ДЕЛИКТЕ (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНАЧЕ) ВОЗНИКАЮЩИЕ В ЛЮБОМ СЛУЧАЕ
+.\" В РЕЗУЛЬТАТЕ ИСПОЛЬЗОВАНИЯ ЭТОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ УВЕДОМЛЕНЫ О ВОЗМОЖНОСТИ ТАКОГО УЩЕРБА.
 .\"
 .\" $FreeBSD$
-.Dd October 12, 2016
+.Dd 12 октября 2016 года
 .Dt HV_VSS_DAEMON 8
 .Os
-.Sh NAME
+.Sh НАЗВАНИЕ
 .Nm hv_vss_daemon
 .Nd Hyper-V Volume Shadow Copy Service Daemon
-.Sh SYNOPSIS
+.Sh СИНТАКСИС
 .Nm
 .Op Fl dn
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Демон
 .Nm
-daemon provides the ability to freeze and thaw the file system for
+обеспечивает возможность замораживания и размораживания файловой системы для
 .Fx
-guest partitions running on Hyper-V.
+гостевые разделы, работающие на Hyper-V.
 .Pp
-Hyper-V allows administrators to backup or restore the 
+Hyper-V позволяет администраторам выполнять резервное копирование или восстановление
 .Fx
-guest partition.
-Administrators can
-use Windows Powershell scripts to backup or restore the
+гостевого раздела.
+Администраторы могут
+использовать скрипты Windows Powershell для резервного копирования или восстановления
 .Fx
 VM.
 .Pp
 The
 .Nm
-accepts file system freeze and thaw requests from the
+принимает запросы на заморозку и разморозку файловой системы от
 .Xr hv_utils 4
-driver and performs the actual file-system operation.
+драйвера и выполняет фактическую операцию с файловой системой.
 .Pp
-The file system freeze and thaw functionality is
-useful when the Hyper-V host wants to do live backup of
+Функциональность заморозки и разморозки файловой системы полезна, когда хост Hyper-V хочет выполнить живое резервное копирование
 .Fx
-guest. Hyper-V host sends file system freezing request to
+гостя. Хост Hyper-V отправляет запрос на заморозку файловой системы к
 .Nm
-which conducts the real operation. After successfully freezing file
-system, Hyper-V host takes a snapshot of the VM. In the future,
-Hyper-V host can restore the
+который проводит реальную операцию. После успешной заморозки файловой системы хост Hyper-V создает снимок VM. В будущем,
+хост Hyper-V может восстановить
 .Fx
-VM through that snapshot.
+VM через этот снимок.
 .Pp
-The options are as follows:
+Варианты следующие:
 .Bl -tag -width indent
 .It Fl d
-Run as regular process instead of a daemon for debugging purpose.
+Запускать как обычный процесс вместо демона для отладки.
 .It Fl n
-Generate debugging output.
+Генерировать отладочный вывод.
 .El
-.Sh SEE ALSO
+.Sh СМОТРИ ТАКЖЕ
 .Xr hv_vmbus 4 ,
 .Xr hv_utils 4 ,
 .Xr hv_netvsc 4 ,
 .Xr hv_storvsc 4 ,
 .Xr hv_kvp 4
-.Sh HISTORY
-The daemon was introduced in October 2016 and developed by Microsoft Corp.
-.Sh AUTHORS
+.Sh ИСТОРИЯ
+Демон был представлен в октябре 2016 года и разработан корпорацией Microsoft.
+.Sh АВТОРЫ
 .An -nosplit
 .Fx
-support for
+поддержка для
 .Nm
-was first added by
-.An Microsoft BSD Integration Services Team Aq Mt bsdic@microsoft.com .
+впервые была добавлена
+.An командой Microsoft BSD Integration Services Aq Mt bsdic@microsoft.com.
