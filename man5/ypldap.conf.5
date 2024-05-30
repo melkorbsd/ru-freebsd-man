@@ -23,7 +23,7 @@
 .Sh ОПИСАНИЕ 
 .Xr ypldap 8 
 предоставляет карты YP, используя LDAP в качестве серверной части.
-РАЗДЕЛЫ .Sh
+.Sh РАЗДЕЛЫ
 Файл конфигурации 
 .Nm 
 разделен на три основных раздела.
@@ -50,7 +50,7 @@
 Макросы не заключаются в кавычки.
 .Pp 
 Например:
-.Bd -буквенный отступ смещения
+.Bd -literal -offset indent
 
 fixed_gecos="Извлечен из LDAP"
 
@@ -83,7 +83,7 @@ group.byname, group.bygid.
 .Xr group 5 
 строки.
 Объявление каталога имеет следующую форму:
-.Bd -буквенный отступ со смещением 
+.Bd -literal -offset indent
 каталог "some.host" {
  # directives
 }
@@ -136,8 +136,8 @@ group.byname, group.bygid.
 .It Ic gecos
 .It Ic home
 .It Ic shell
-.It Ic изменить
-.It Ic истечь
+.It Ic change
+.It Ic expire
 .It Ic class
 .It Ic groupname
 .It Ic grouppasswd
@@ -148,7 +148,7 @@ group.byname, group.bygid.
 Используйте прилагаемый фильтр LDAP для извлечения записей паролей.
 .El 
 .Sh ФАЙЛЫ 
-.Bl -tag -width "/etc/ypldap.conf" -компактный
+.Bl -tag -width "/etc/ypldap.conf" -compact
 .Он содержит /etc/ypldap.conf
 .Xr ypldap 8 
 файл конфигурации.
