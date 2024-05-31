@@ -6,6 +6,7 @@
 .Nm src.conf
 .Nd "параметры сборки исходного кода"
 .Sh ОПИСАНИЕ
+файл
 .Nm
 файл содержит переменные, которые управляют тем, какие компоненты будут созданы во время
 процесс сборки
@@ -13,6 +14,7 @@
 исходного дерева; 
 .Xr build 7 .
 .Pp
+файл
 .Nm
 файл использует стандартный синтаксис make-файла.
 Однако,
@@ -470,6 +472,7 @@ amd64/amd64, arm64/aarch64, i386/i386, powerpc/powerpc64 and powerpc/powerpc64le
 .Xr dialog 3 ,
 .Xr dpv 1 ,
 и
+.Xr dpv 3 .
 Когда он установлен, он применяет эти параметры:
 .Pp
 .Bl -item -compact
@@ -977,8 +980,9 @@ Regardless of this setting, LLVM tools are used for
 В большинстве случаев следует использовать этот вариант, а не этот.
 .It Va WITHOUT_LLVM_TARGET_POWERPC
 Do not build LLVM target support for PowerPC.
+В
 .Va LLVM_TARGET_ALL
-В большинстве случаев следует использовать этот вариант, а не этот.
+большинстве случаев следует использовать этот вариант, а не этот.
 .It Va WITHOUT_LLVM_TARGET_RISCV
 Не создавайте целевую поддержку LLVM для RISC-V.
 .Va LLVM_TARGET_ALL
@@ -1608,8 +1612,9 @@ amd64/amd64, arm64/aarch64, powerpc/powerpc64, powerpc/powerpc64le and riscv/ris
 тип и ревизию компилятора, то он не будет собран.
 Однако это не мешает сборке компилятора для установки
 только для сборки одного для самой сборки.
+Опция
 .Va WITHOUT_CLANG
-Опция контролирует это.
+контролирует это.
 .It Va WITHOUT_SYSTEM_LINKER
 Не упускайте возможность случайно пропустить создание сшивающего агента во время
 этап начальной загрузки сборки.
@@ -1617,8 +1622,9 @@ amd64/amd64, arm64/aarch64, powerpc/powerpc64, powerpc/powerpc64le and riscv/ris
 тип и ревизию компоновщика, то он не будет собран.
 Однако это не мешает сборке компоновщика для установки.
 только для сборки одного для самой сборки.
+Опция
 .Va WITHOUT_LLD
-Опция контролирует это.
+контролирует это.
 .Pp
 Этот параметр актуален только тогда, когда
 .Va WITH_LLD_BOOTSTRAP
@@ -1828,8 +1834,9 @@ When set, warnings are still printed in the build log but do not fail the build.
 .Xr build 7 ,
 .Xr ports 7
 .Sh ИСТОРИЯ
+Файл
 .Nm
-Файл появился в
+ появился в
 .Fx 7.0 .
 .Sh АВТОРЫ
 Эта страница руководства была автоматически создана пользователем
