@@ -34,19 +34,18 @@
 .Sh ИМЯ
 .Nm locate.updatedb
 .Nd обновляет базу данных поиска
-.Sh КРАТКОЕ ОПИСАНИЕ
+.Sh СИНТАКСИС
 .Nm /usr/libexec/locate.updatedb
 .Sh ОПИСАНИЕ
+Утилита
 .Nm
-утилита обновляет базу данных, используемую
+обновляет базу данных, используемую
 .Xr locate 1 .
-Обычно он проводится раз в неделю
-.Pa /etc/periodic/weekly/310.locate
-скриптом.
+Обычно он проводится раз в неделю скриптом
+.Pa /etc/periodic/weekly/310.locate .
 .Pp
-Содержимым вновь созданной базы данных можно управлять с помощью
-.Pa /etc/locate.rc
-файла.
+Содержимым вновь созданной базы данных можно управлять с помощью файла
+.Pa /etc/locate.rc .
 .Sh ОКРУЖЕНИЕ
 .Bl -tag -width /var/db/locate.database -compact
 .It Pa LOCATE_CONFIG
