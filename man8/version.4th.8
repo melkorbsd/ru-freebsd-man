@@ -56,9 +56,9 @@
 .Pp
 .Bl -tag -width disable-module_module -compact -offset indent
 .It Ic print_version
-Выводит содержимое
-.Va loader_version
-переменной среды, выровненной по правому краю столбца
+Выводит содержимое переменной среды
+.Va loader_version ,
+выровненной по правому краю столбца
 .Va loader_version_x
 и строки
 .Va loader_version_y .
@@ -100,9 +100,9 @@
 скрипт начальной загрузки.
 .El
 .Sh ПРИМЕРЫ
-Переопределение
+Переопределение версии
 .Xr loader 8
-версии в
+в
 .Xr loader.conf 5 :
 .Pp
 .Bd -literal -offset indent -compact
@@ -113,11 +113,13 @@ loader_version="loader 1.1"
 .Xr color.4th 8 ,
 .Xr loader 8
 .Sh ИСТОРИЯ
+Набор команд
 .Nm
-набор команд впервые появился в
+впервые появился в
 .Fx 9.0 .
 .Sh АВТОРЫ
+Набор команд
 .Nm
-набор команд был написан
+был написан
 .An -nosplit
 .An Дэвином Теске Aq dteske@FreeBSD.org .
