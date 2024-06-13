@@ -30,10 +30,10 @@
 .Dd August 16, 2022
 .Dt TUNEFS 8
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm tunefs
-.Nd tune up an existing UFS file system
-.Sh SYNOPSIS
+.Nd настройка существующей файловой системы UFS
+.Sh СИНТАКСИС
 .Nm
 .Op Fl A
 .Op Fl a Cm enable | disable
@@ -53,197 +53,194 @@
 .Op Fl S Ar size
 .Op Fl t Cm enable | disable
 .Ar special | filesystem
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility is designed to change the dynamic parameters of a UFS file system
-which affect the layout policies.
-The
+предназначена для изменения динамических параметров файловой системы UFS,
+которые влияют на политику компоновки.
+Утилита
 .Nm
-utility cannot be run on an active file system.
-To change an active file system,
-it must be downgraded to read-only or unmounted.
+не может быть запущена в активной файловой системе.
+Чтобы изменить активную файловую систему,
+ее необходимо изменить на доступную только для чтения или размонтировать.
 .Pp
-The parameters which are to be changed are indicated by the flags
-given below:
+Параметры, которые необходимо изменить, обозначены флагами,
+приведенными ниже:
 .Bl -tag -width indent
 .It Fl A
-The file system has several backups of the super-block.
-Specifying
-this option will cause all backups to be modified as well as the
-primary super-block.
-This is potentially dangerous - use with caution.
+В файловой системе имеется несколько резервных копий суперблока.
+Указание
+этого параметра приведет к изменению всех резервных копий, а также
+основного суперблока.
+Это потенциально опасно - используйте с осторожностью.
 .It Fl a Cm enable | disable
-Turn on/off the administrative POSIX.1e ACL enable flag.
+Включает/выключает флаг административного списка управления доступом POSIX.1e.
 .It Fl e Ar maxbpg
-Indicate the maximum number of blocks any single file can
-allocate out of a cylinder group before it is forced to begin
-allocating blocks from another cylinder group.
-Typically this value is set to about one quarter of the total blocks
-in a cylinder group.
-The intent is to prevent any single file from using up all the
-blocks in a single cylinder group,
-thus degrading access times for all files subsequently allocated
-in that cylinder group.
-The effect of this limit is to cause big files to do long seeks
-more frequently than if they were allowed to allocate all the blocks
-in a cylinder group before seeking elsewhere.
-For file systems with exclusively large files,
-this parameter should be set higher.
+Указывает максимальное количество блоков, которые может выделить любой отдельный файл
+из группы цилиндров, прежде чем он будет вынужден начать
+выделение блоков из другой группы цилиндров.
+Обычно это значение устанавливается равным примерно четверти от общего количества блоков
+в группе цилиндров.
+Цель состоит в том, чтобы предотвратить использование каким-либо отдельным файлом всех
+блоков в одной группе цилиндров,
+что приведет к сокращению времени доступа ко всем файлам, впоследствии размещенным
+в этой группе цилиндров.
+Это ограничение приводит к тому, что большие файлы выполняют длительный поиск
+чаще, чем если бы им разрешалось размещать все блоки
+в группе цилиндров, прежде чем выполнять поиск в другом месте.
+Для файловых систем с исключительно большими файлами
+этот параметр следует установить выше.
 .It Fl f Ar avgfilesize
-Specify the expected average file size.
+Указывает ожидаемый средний размер файла.
 .It Fl j Cm enable | disable
-Turn on/off soft updates journaling.
+Включает/выключает ведение журнала программных обновлений.
 .Pp
-Enabling journaling reduces the time spent by
+Включение ведения журнала сокращает время, затрачиваемое
 .Xr fsck_ffs 8
-cleaning up a filesystem after a crash to a few seconds from minutes to hours.
-Without journaling, the time to recover after a crash is a function
-of the number of files in the filesystem and the size of the filesystem.
-With journaling, the time to recover after a crash is a function of the
-amount of activity in the filesystem in the minute before the crash.
-Journaled recovery time is usually only a few seconds and never
-exceeds a minute.
+на очистку файловой системы после сбоя, с нескольких минут до нескольких часов.
+Без ведения журнала время восстановления после сбоя зависит
+от количества файлов в файловой системе и ее размера.
+При ведении журнала время восстановления после сбоя зависит от
+активности в файловой системе за минуту до сбоя.
+Время восстановления, записанное в журнал, обычно составляет всего несколько секунд и никогда
+не превышает минуты.
 .Pp
-The drawback to using journaling is that the writes to its log adds
-an extra write load to the media containing the filesystem.
-Thus a write-intensive workload will have reduced throughput on a
-filesystem running with journaling.
+Недостатком использования журналирования является то, что запись в журнал
+приводит к дополнительной нагрузке на носитель, содержащий файловую систему.
+Таким образом, нагрузка, связанная с интенсивной записью, приведет к снижению пропускной
+способности файловой системы, работающей с журналированием.
 .Pp
-Like all journaling filesystems, the journal recovery will only fix
-issues known to the journal.
-Specifically if a media error occurs,
-the journal will not know about it and hence will not fix it.
-Thus when using journaling, it is still necessary to run a full fsck
-every few months or after a filesystem panic to check for and fix
-any errors brought on by media failure.
-A full fsck can be done by running a background fsck on a live
-filesystem or by running with the
+Как и во всех файловых системах ведения журнала, при восстановлении журнала будут устранены только
+известные журналу проблемы.
+В частности, если произойдет ошибка носителя,
+журнал не узнает об этом и, следовательно, не исправит ее.
+Таким образом, при использовании журналирования все равно необходимо запускать полную проверку fsck
+каждые несколько месяцев или после сбоя файловой системы, чтобы проверить и исправить
+любые ошибки, вызванные сбоем носителя.
+Полная проверка fsck может быть выполнена путем запуска фоновой проверки fsck в действующей
+файловой системе или с помощью флага
 .Fl f
-flag on an unmounted filesystem.
-When running
+для немонтированной файловой системы.
+При запуске
 .Xr fsck_ffs 8
-in background on a live filesystem the filesystem performance
-will be about half of normal during the time that the background
-.Xr fsck_ffs 8
-is running.
-Running a full fsck on a UFS filesystem is the equivalent of
-running a scrub on a ZFS filesystem.
+в фоновом режиме в работающей файловой системе производительность
+файловой системы будет примерно вдвое ниже нормальной в течение того времени, пока в фоновом режиме работает
+.Xr fsck_ffs 8 .
+Запуск полной проверки fsck в файловой системе UFS эквивалентен
+запуску очистки в файловой системе ZFS.
 .It Fl J Cm enable | disable
-Turn on/off gjournal flag.
+Включает/выключает флаг gjournal.
 .It Fl k Ar held-for-metadata-blocks
-Set the amount of space to be held for metadata blocks.
-When set, the file system preference routines will try to save
-the specified amount of space immediately following the inode blocks
-in each cylinder group for use by metadata blocks.
-Clustering the metadata blocks speeds up random file access
-and decreases the running time of
+Задает объем пространства, который будет выделен для блоков метаданных.
+Если этот параметр установлен, процедуры настройки файловой системы попытаются сохранить
+указанный объем пространства непосредственно после индексных блоков
+в каждой группе цилиндров для использования блоками метаданных.
+Кластеризация блоков метаданных ускоряет произвольный доступ к файлам
+и сокращает время выполнения
 .Xr fsck 8 .
-While this option can be set at any time,
-it is most effective if set before any data is loaded into the file system.
-By default
+Хотя этот параметр можно установить в любое время,
+он наиболее эффективен, если его установить до загрузки каких-либо данных в файловую систему.
+По умолчанию
 .Xr newfs 8
-sets it to half of the space reserved to minfree.
+устанавливает его равным половине пространства, зарезервированного для minfree.
 .It Fl L Ar volname
-Add/modify an optional file system volume label.
-Legal characters are alphanumerics, dashes, and underscores.
+Добавляет/изменяет необязательную метку тома файловой системы.
+Допустимыми символами являются буквы и цифры, тире и подчеркивания.
 .It Fl l Cm enable | disable
-Turn on/off MAC multilabel flag.
+Включает/выключает флаг MAC multilabel.
 .It Fl m Ar minfree
-Specify the percentage of space held back
-from normal users; the minimum free space threshold.
-The default value used is 8%.
-Note that lowering the threshold can adversely affect performance:
+Указывает процент свободного места,
+недоступного обычным пользователям; минимальный порог свободного места.
+По умолчанию используется значение 8%.
+Обратите внимание, что снижение порога может отрицательно сказаться на производительности:
 .Bl -bullet
 .It
-Settings of 5% and less force space optimization to
-always be used which will greatly increase the overhead for file
-writes.
+Настройки, равные 5% и менее, заставляют
+всегда использовать оптимизацию пространства, что значительно увеличивает затраты на
+запись файлов.
 .It
-The file system's ability to avoid fragmentation will be reduced
-when the total free space, including the reserve, drops below 15%.
-As free space approaches zero, throughput can degrade by up to a
-factor of three over the performance obtained at a 10% threshold.
+Способность файловой системы избегать фрагментации снижается,
+когда общее количество свободного места, включая резервное, падает ниже 15%.
+Когда количество свободного места приближается к нулю, пропускная
+способность может снизиться в три раза по сравнению с производительностью, достигнутой при пороговом значении в 10%.
 .El
 .Pp
-If the value is raised above the current usage level,
-users will be unable to allocate files until enough files have
-been deleted to get under the higher threshold.
+Если значение превысит текущий уровень использования,
+пользователи не смогут распределять файлы до
+тех пор, пока не будет удалено достаточное количество файлов, чтобы превысить более высокий порог.
 .It Fl N Cm enable | disable
-Turn on/off the administrative NFSv4 ACL enable flag.
+Включает/выключает флаг административного списка управления доступом NFSv4.
 .It Fl n Cm enable | disable
-Turn on/off soft updates.
+Включает/выключает программные обновления.
 .It Fl o Cm space | time
-The file system can either try to minimize the time spent
-allocating blocks, or it can attempt to minimize the space
-fragmentation on the disk.
-Optimization for space has much
-higher overhead for file writes.
-The kernel normally changes the preference automatically as
-the percent fragmentation changes on the file system.
+Файловая система может либо попытаться минимизировать время, затрачиваемое
+на выделение блоков, либо попытаться минимизировать
+фрагментацию пространства на диске.
+Оптимизация пространства приводит к гораздо
+большим затратам на запись файлов.
+Ядро обычно автоматически изменяет настройки по мере
+изменения процента фрагментации в файловой системе.
 .It Fl p
-Show a summary of what the current tunable settings
-are on the selected file system.
-More detailed information can be
-obtained from the
-.Xr dumpfs 8
-utility.
+Отображает сводную информацию о текущих настраиваемых параметрах
+в выбранной файловой системе.
+Более подробную информацию можно
+получить в утилите
+.Xr dumpfs 8 .
 .It Fl s Ar avgfpdir
-Specify the expected number of files per directory.
+Указывает ожидаемое количество файлов в каждом каталоге.
 .It Fl S Ar size
-Specify the softdep journal size in bytes.
-The minimum is 4M.
+Указывает размер журнала softdep в байтах.
+Минимальное значение - 4 миллиона.
 .It Fl t Cm enable | disable
-Turn on/off the TRIM enable flag.
-If enabled, and if the underlying device supports the BIO_DELETE
-command, the file system will send a delete request to the underlying
-device for each freed block.
-The trim enable flag is typically set when the underlying device
-uses flash-memory as the device can use the delete command to
-pre-zero or at least avoid copying blocks that have been deleted.
+Включает/выключает флаг TRIM enable.
+Если он включен и если базовое устройство поддерживает
+команду BIO_DELETE, файловая система будет отправлять запрос на удаление базовому
+устройству для каждого освобожденного блока.
+Флаг trim enable обычно устанавливается, когда базовое устройство
+использует флэш-память, поскольку устройство может использовать команду delete для
+предварительного обнуления или, по крайней мере, для предотвращения копирования удаленных блоков.
 .Pp
-Note that this does not trim blocks that are already free.
-See the
+Обратите внимание, что при этом не обрезаются блоки, которые уже свободны.
+Смотрите флаг
 .Xr fsck_ffs 8
-.Fl E
-flag.
+.Fl E .
 .El
 .Pp
-At least one of these flags is required.
-.Sh FILES
+Необходим хотя бы один из этих флагов.
+.Sh ФАЙЛЫ
 .Bl -tag -width ".Pa /etc/fstab"
 .It Pa /etc/fstab
-read this to determine the device file for a
-specified mount point.
+читается, чтобы определить файл устройства для
+указанной точки подключения.
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr fs 5 ,
 .Xr dumpfs 8 ,
 .Xr gjournal 8 ,
 .Xr growfs 8 ,
 .Xr newfs 8
 .Rs
-.%A M. McKusick
-.%A W. Joy
-.%A S. Leffler
-.%A R. Fabry
-.%T "A Fast File System for UNIX"
-.%J "ACM Transactions on Computer Systems 2"
+.%A М. Маккьюзик
+.%A У. Джой
+.%A С. Леффлер
+.%A Р. Фабри
+.%T "Быстрая файловая система для UNIX"
+.%J "Транзакции ACM в компьютерных системах 2"
 .%N 3
-.%P pp 181-197
-.%D August 1984
-.%O "(reprinted in the BSD System Manager's Manual, SMM:5)"
+.%P стр. 181-197
+.%D Август 1984
+.%O "(перепечатано в Руководстве системного менеджера BSD, SMM:5)"
 .Re
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Утилита
 .Nm
-utility appeared in
+появилась в
 .Bx 4.2 .
-.Sh BUGS
-This utility does not work on active file systems.
-To change the root file system, the system must be rebooted
-after the file system is tuned.
+.Sh ПРОБЛЕМЫ
+Эта утилита не работает с активными файловыми системами.
+Чтобы изменить корневую файловую систему, необходимо перезагрузить
+систему после настройки файловой системы.
 .\" Take this out and a Unix Daemon will dog your steps from now until
 .\" the time_t's wrap around.
 .Pp
-You can tune a file system, but you cannot tune a fish.
+Вы можете настроить файловую систему, но вы не можете настроить fish.

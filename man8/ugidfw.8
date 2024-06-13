@@ -31,10 +31,10 @@
 .Dd February 24, 2004
 .Dt UGIDFW 8
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm ugidfw
-.Nd "firewall-like access controls for file system objects"
-.Sh SYNOPSIS
+.Nd "средства управления доступом к объектам файловой системы, подобные брандмауэру"
+.Sh СИНТАКСИС
 .Nm
 .Cm add
 .Cm subject
@@ -145,18 +145,17 @@
 .Nm
 .Cm remove
 .Ar rulenum
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility provides an
+обеспечивает интерфейс
 .Xr ipfw 8 Ns -like
-interface to manage access to file system objects by UID and GID,
-supported by the
+для управления доступом к объектам файловой системы по UID и GID,
+поддерживаемый политикой
 .Xr mac_bsdextended 4
-.Xr mac 9
-policy.
+.Xr mac 9 .
 .Pp
-The arguments are as follows:
+Аргументы заключаются в следующем:
 .Bl -tag -width indent -offset indent
 .It Xo
 .Cm add
@@ -167,14 +166,14 @@ The arguments are as follows:
 .Cm mode
 .Ar arswxn
 .Xc
-Add a new rule, automatically selecting the rule number.
-See the description of
+Добавляет новое правило, автоматически выбрав номер правила.
+Смотрите описание
 .Cm set
-for syntax information.
+для получения информации о синтаксисе.
 .It Cm list
-Produces a list of all the current
+Создает список всех текущих правил
 .Nm
-rules in the system.
+в системе.
 .It Xo
 .Cm set Ar rulenum
 .Cm subject
@@ -184,16 +183,14 @@ rules in the system.
 .Cm mode
 .Ar arswxn
 .Xc
-Add a new rule or modify an existing rule.
-The arguments are as follows:
+Добавляет новое правило или изменяет существующее.
+Аргументы следующие:
 .Bl -tag -width ".Ar rulenum"
 .It Ar rulenum
-Rule number.
-Entries with a lower rule number
-are applied first;
-placing the most frequently-matched rules at the beginning of the list
-(i.e., lower-numbered)
-will yield a slight performance increase.
+Номер правила.
+Сначала применяются элементы с меньшим номером правила;
+размещение наиболее часто встречающихся правил в начале списка (т.е. с меньшим номером)
+приведет к небольшому увеличению производительности.
 .It Xo
 .Cm subject
 .Op Cm not
@@ -210,19 +207,19 @@ will yield a slight performance increase.
 .Cm jailid Ad jailid
 .Oc
 .Xc
-Subjects performing an operation must match all the conditions given.
-A leading
-.Cm not
-means that the subject should not match the remainder of the specification.
-A condition may be prefixed by
-.Cm \&!
-to indicate that particular condition must not match the subject.
-The subject can be required to have a particular
+Субъекты, выполняющие операцию, должны соответствовать всем приведенным условиям.
+Ведущее
+.Cm не
+означает, что тема не должна соответствовать остальной части спецификации.
+Условие может иметь префикс в виде
+.Cm \&! ,
+чтобы указать, что конкретное условие не должно соответствовать предмету исследования.
+От субъекта может потребоваться наличие определенного
 .Ar uid
-and/or
+и/или
 .Ar gid .
-A range of uids/gids can be specified, separated by a colon.
-The subject can be required to be in a particular jail with the
+Можно указать диапазон идентификаторов uids/gids, разделенных двоеточием.
+От субъекта может потребоваться, чтобы он находился в определенном заключении с
 .Ar jailid .
 .It Xo
 .Cm object
@@ -260,99 +257,97 @@ The subject can be required to be in a particular jail with the
 .Cm type Ar ardbclsp
 .Oc
 .Xc
-The rule will apply only to objects matching all the specified conditions.
-A leading
-.Cm not
-means that the object should not match all the remaining conditions.
-A condition may be prefixed by
+Правило будет применяться только к объектам, соответствующим всем указанным условиям.
+Ведущее
+.Cm не
+означает, что объект не должен соответствовать всем остальным условиям.
+Условие может иметь префикс в виде
 .Cm \&!
-to indicate that particular condition must not match the object.
-Objects can be required to be owned by the user and/or group specified by
+чтобы указать, что конкретное условие не должно соответствовать объекту.
+Может потребоваться, чтобы объекты принадлежали пользователю и/или группе, указанным в
 .Ar uid
-and/or
+и/или
 .Ar gid .
-A range of uids/gids can be specified, separated by a colon.
-The object can be required to be in a particular filesystem by
-specifying the filesystem using
+Можно указать диапазон идентификаторов uids/gids, разделенных двоеточием.
+Можно потребовать, чтобы объект находился в определенной файловой
+системе, указав файловую систему с помощью
 .Cm filesys .
-Note,
-if the filesystem is unmounted and remounted,
-then the rule may need to be reapplied to ensure the correct filesystem
-id is used.
-The object can be required to have the
+Обратите внимание,
+что если файловая система размонтирована и повторно подключена,
+то, возможно, потребуется повторно применить это правило, чтобы убедиться,
+что используется правильный идентификатор файловой системы.
+От объекта может потребоваться наличие набора битов
 .Cm suid
-or
-.Cm sgid
-bits set.
-The owner of the object can be required to match the
+или
+.Cm sgid .
+Может потребоваться, чтобы владелец объекта соответствовал
 .Cm uid_of_subject
-or the
-.Cm gid_of_subject
-attempting the operation.
-The type of the object can be restricted to a subset of
-the following types.
+или
+.Cm gid_of_subject ,
+выполняющему операцию.
+Тип объекта может быть ограничен подмножеством из
+следующих типов.
 .Pp
 .Bl -tag -width ".Cm w" -compact -offset indent
 .It Cm a
-any file type
+любой тип файла
 .It Cm r
-a regular file
+бычный файл
 .It Cm d
-a directory
+каталог
 .It Cm b
-a block special device
+блочное специальное устройство
 .It Cm c
-a character special device
+специальное устройство для персонажей
 .It Cm l
-a symbolic link
+символическая ссылка
 .It Cm s
-a unix domain socket
+доменный сокет unix
 .It Cm p
-a named pipe (FIFO)
+именованный канал (FIFO)
 .El
 .It Cm mode Ar arswxn
-Similar to
+Похожий на
 .Xr chmod 1 ,
-each character represents an access mode.
-If the rule applies,
-the specified access permissions are enforced
-for the object.
-When a character is specified in the rule,
-the rule will allow for the operation.
-Conversely, not including it will cause the operation
-to be denied.
-The definitions of each character are as follows:
+каждый символ представляет режим доступа.
+Если применяется правило,
+для объекта применяются указанные права доступа.
+Если в правиле указан символ,
+то правило разрешает выполнение операции.
+И наоборот, если его не включить, операция
+будет отклонена.
+Ниже приведены определения каждого символа:
 .Pp
 .Bl -tag -width ".Cm w" -compact -offset indent
 .It Cm a
-administrative operations
+административные операции
 .It Cm r
-read access
+доступ для чтения
 .It Cm s
-access to file attributes
+доступ к атрибутам файла
 .It Cm w
-write access
+доступ на запись
 .It Cm x
-execute access
+выполнить доступ
 .It Cm n
-none
+нет
 .El
 .El
 .It Cm remove Ar rulenum
-Disable and remove the rule with the specified rule number.
+Отключает и удаляет правило с указанным номером правила.
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr mac_bsdextended 4 ,
 .Xr mac 9
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Утилита
 .Nm
-utility first appeared in
+впервые появилась в
 .Fx 5.0 .
-.Sh AUTHORS
-This software was contributed to the
-.Fx
-Project by NAI Labs, the Security Research Division of Network Associates
-Inc.\& under DARPA/SPAWAR contract N66001-01-C-8035
-.Pq Dq CBOSS ,
-as part of the DARPA CHATS research program.
+.Sh АВТОРЫ
+Это программное обеспечение было внесено в проект NAI Labs
+.Fx ,
+исследовательского подразделения по безопасности Network Associates
+Inc., в рамках контракта DARPA/SPAWAR N66001-01-C-8035
+.Pq Dq CBOSS,
+в рамках исследовательской программы DARPA CHATS.

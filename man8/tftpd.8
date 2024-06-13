@@ -30,10 +30,10 @@
 .Dd July 20, 2023
 .Dt TFTPD 8
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm tftpd
-.Nd Internet Trivial File Transfer Protocol server
-.Sh SYNOPSIS
+.Nd сервер Интернет-Протокола Простой Передачи Файлов (TFTP)
+.Sh СИНТАКСИС
 .Nm tftpd
 .Op Fl cdClnow
 .Op Fl F Ar strftime-format
@@ -41,198 +41,188 @@
 .Op Fl u Ar user
 .Op Fl U Ar umask
 .Op Ar directory ...
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility is a server which supports the
-Internet Trivial File Transfer
-Protocol
+представляет собой сервер, который поддерживает
+Интернет-Протокол Простой Передачи Файлов
 .Pq Tn RFC 1350 .
-The
 .Tn TFTP
-server operates
-at the port indicated in the
-.Ql tftp
-service description;
-see
+сервер работает
+через порт, указанный в описании сервиса
+.Ql tftp ;
+смотрите
 .Xr services 5 .
-The server is normally started by
+Обычно сервер запускается с помощью
 .Xr inetd 8 .
 .Pp
-The use of
+Использование
 .Xr tftp 1
-does not require an account or password on the remote system.
-Due to the lack of authentication information,
+не требует учетной записи или пароля в удаленной системе.
+Из-за отсутствия аутентификационной информации,
 .Nm
-will allow only publicly readable files to be
-accessed.
-Files containing the string
+будет разрешен доступ только к общедоступным файлам.
+Файлы, содержащие строку
 .Dq Li "/../"
-or starting with
+или начинающиеся с
 .Dq Li "../"
-are not allowed.
-Files may be written only if they already exist (unless the
-.Fl w
-option is used) and are publicly writable (unless chrooted and the
+не допускаются.
+Файлы могут быть записаны только в том случае, если они уже существуют(если не используется параметр
+.Fl w ) и доступны для публичной записи (если не производилась временная смена корня (chroot) и параметр
 .Fl S
-option is used).
-Note that this extends the concept of
-.Dq public
-to include
-all users on all hosts that can be reached through the network;
-this may not be appropriate on all systems, and its implications
-should be considered before enabling tftp service.
-The server should have the user ID with the lowest possible privilege.
+не используется).
+Обратите внимание, что это расширяет концепцию
+.Dq общедоступности
+вплоть до всех пользователей на всех хостах, к которым можно получить доступ через сеть;
+это может быть применимо не ко всем системам, и
+следует учитывать последствия, прежде чем включать службу tftp.
+Сервер должен иметь идентификатор пользователя с минимально возможными привилегиями.
 .Pp
-Access to files may be restricted by invoking
+Доступ к файлам может быть ограничен путем вызова
 .Nm
-with a list of directories by including up to 20 pathnames
-as server program arguments in
+со списком каталогов, включив до 20 путей
+в качестве аргументов серверной программы в
 .Xr inetd.conf 5 .
-In this case access is restricted to files whose
-names are prefixed by the one of the given directories.
-The given directories are also treated as a search path for
-relative filename requests.
+В этом случае доступ ограничен к файлам,
+имена которых начинаются с префикса одного из указанных каталогов.
+Данные каталоги также рассматриваются как путь поиска для
+соответствующих запросов имен файлов.
 .Pp
-The
+Параметр
 .Fl s
-option provides additional security by changing
-the root directory of
+обеспечивает дополнительную безопасность за счет изменения
+корневого каталога
 .Nm ,
-thereby prohibiting accesses to outside of the specified
-.Ar directory .
-Because
+тем самым запрещая доступ за пределы указанного
+.Ar каталога .
+Потому что
 .Xr chroot 2
-requires super-user privileges,
+требуются привилегии суперпользователя,
 .Nm
-must be run as
+должен быть запущен как
 .Li root .
-However, after performing the
+Однако после выполнения
 .Xr chroot 2
-call,
+вызова,
 .Nm
-will set its user ID to that of the specified
+установит свой идентификатор пользователя на указанный в параметре
 .Ar user ,
-or
-.Dq Li nobody
-if no
-.Fl u
-option is specified.
+или
+.Dq Li nobody ,
+если не указан параметр
+.Fl u .
 .Pp
-The options are:
+Параметрами являются:
 .Bl -tag -width Ds
 .It Fl c
-Changes the default root directory of a connecting host via
+Изменяет корневой каталог подключающегося хоста по умолчанию с помощью
 .Xr chroot 2
-based on the connecting IP address.
-This prevents multiple clients from writing to the same file at the same time.
-If the directory does not exist, the client connection is refused.
-The
+на основе подключаемого IP-адреса.
+Это предотвращает одновременную запись данных в один и тот же файл несколькими клиентами.
+Если каталог не существует, клиентское соединение не будет установлено.
+Параметр
 .Fl s
-option is required for
+необходим для
 .Fl c
-and the specified
-.Ar directory
-is used as a base.
+и позволяет указать
+.Ar каталог
+используемый в качестве корневого.
 .It Fl C
-Operates the same as
+Работает так же, как и параметр
 .Fl c
-except it falls back to
-.Ar directory
-specified via
+за исключением того, что все возвращается к
+.Ar каталогу
+указанному с помощью параметра
 .Fl s
-if a directory does not exist for the client's IP.
+если для IP-адреса клиента не существует.
 .It Fl F
-Use this
+Используйте строку формата, совместимую с
 .Xr strftime 3
-compatible format string for the creation of the suffix if
-.Fl W
-is specified.
-By default the string "%Y%m%d" is used.
+для создания суффикса, если указан параметр
+.Fl W .
+По умолчанию используется строка "%Y%m%d".
 .It Fl d, d Ar [value]
-Enables debug output.
-If
+Включает отладочный вывод.
+Если значение
 .Ar value
-is not specified, then the debug level is increased by one
-for each instance of
-.Fl d
-which is specified.
+не указано, то уровень отладки увеличивается на единицу
+для каждого заданного параметра
+.Fl d .
 .Pp
-If
+Если значение
 .Ar value
-is specified, then the debug level is set to
+указано, то уровень отладки устанавливается равным
 .Ar value .
-The debug level is a bitmask implemented in
+Уровень отладки - это битовая маска, реализованная в
 .Pa src/libexec/tftpd/tftp-utils.h .
-Valid values are 0 (DEBUG_NONE), 1 (DEBUG_PACKETS), 2, (DEBUG_SIMPLE),
-4 (DEBUG_OPTIONS), and 8 (DEBUG_ACCESS).  Multiple debug values can be combined
-in the bitmask by logically OR'ing the values.  For example, specifying
+Допустимые значения - 0 (DEBUG_NONE), 1 (DEBUG_PACKETS), 2, (DEBUG_SIMPLE),
+4 (DEBUG_OPTIONS), и 8 (DEBUG_ACCESS).  В битовой маске можно объединить несколько значений для отладки
+путем логического объединения значений. Например, указание
 .Fl d
 .Ar 15
-will enable all the debug values.
+включит все значения для отладки.
 .It Fl l
-Log all requests using
+Регистрирует все запросы, используя
 .Xr syslog 3
-with the facility of
+с помощью
 .Dv LOG_FTP .
-.Sy Note :
-Logging of
+.Sy Примечание :
+Ведение журнала сообщений
 .Dv LOG_FTP
-messages
-must also be enabled in the syslog configuration file,
+также должно быть включено в файле конфигурации syslog,
 .Xr syslog.conf 5 .
 .It Fl n
-Suppress negative acknowledgement of requests for nonexistent
-relative filenames.
+Подавляет сообщения об ошибках запросов к несуществующим
+относительным именам файлов.
 .It Fl o
-Disable support for RFC2347 style TFTP Options.
+Отключает поддержку параметров TFTP в стиле RFC2347.
 .It Fl s Ar directory
-Cause
+Указание для
 .Nm
-to change its root directory to
+изменить его корневой каталог на указанный в параметре
 .Ar directory .
-After doing that but before accepting commands,
+После этого, но до получения команд,
 .Nm
-will switch credentials to an unprivileged user.
+работает под учетной записью непривилегированного пользователя.
 .It Fl S
-If
+Если
 .Nm
-runs chrooted, the option allows write requests according to generic
-file permissions, skipping requirement for files to be publicly writable.
-The option is ignored for non-chrooted run.
+запущен в режиме chroot, этот параметр разрешает запросы на запись в соответствии с общими
+правами доступа к файлам, не требуя, чтобы файлы были общедоступными для записи.
+При запуска без указания режима chroot этот параметр игнорируется.
+При запуске без прав chrooted этот параметр игнорируется.
 .It Fl u Ar user
-Switch credentials to
+Работать под учётной записью пользователя
 .Ar user
-(default
-.Dq Li nobody )
-when the
-.Fl s
-option is used.
-The user must be specified by name, not a numeric UID.
+(по умолчанию
+.Dq Li nobody ),
+если используется параметр
+.Fl s .
+Пользователь должен быть указан по имени, а не по числовому идентификатору UID.
 .It Fl U Ar umask
-Set the
+Устанавливает права доступа по параметру
 .Ar umask
-for newly created files.
-The default is 022
+для вновь созданных файлов.
+По умолчанию это 022
 .Pq Dv S_IWGRP | S_IWOTH .
 .It Fl w
-Allow write requests to create new files.
-By default
+Разрешает запросы на запись для создания новых файлов.
+По умолчанию
 .Nm
-requires that the file specified in a write request exist.
-Note that this only works in directories writable by the user
-specified with
+требуется, чтобы файл, указанный в запросе на запись, существовал.
+Обратите внимание, что это работает только в каталогах, доступных для записи пользователем,
+указанным с помощью параметра
 .Fl u
-option
+параметра.
 .It Fl W
-As
+Подобен параметру
 .Fl w
-but append a YYYYMMDD.nn sequence number to the end of the filename.
-Note that the string YYYYMMDD can be changed with the
+но добавляет порядковый номер YYYYMMDD.nn в конец имени файла.
+Обратите внимание, что строка YYYYMMDD может быть изменена с помощью параметра
 .Fl F
-option.
+параметра.
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr tftp 1 ,
 .Xr chroot 2 ,
 .Xr syslog 3 ,
@@ -241,7 +231,7 @@ option.
 .Xr syslog.conf 5 ,
 .Xr inetd 8
 .Pp
-The following RFC's are supported:
+Поддерживаются следующие RFC:
 .Rs
 .%T RFC 1350: The TFTP Protocol (Revision 2)
 .Re
@@ -258,68 +248,68 @@ The following RFC's are supported:
 .%T RFC 7440: TFTP Windowsize Option
 .Re
 .Pp
-The non-standard
+Нестандартные TFTP-параметры
 .Cm rollover
-and
+и
 .Cm blksize2
-TFTP options are mentioned here:
+упомянуты здесь:
 .Rs
-.%T Extending TFTP
+.%T Расширение TFTP
 .%U http://www.compuphase.com/tftp.htm
 .Re
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Утилита
 .Nm
-utility appeared in
+появилась в
 .Bx 4.2 ;
-the
+параметр
 .Fl s
-option was introduced in
+был представлен в
 .Fx 2.2 ,
-the
+параметр
 .Fl u
-option was introduced in
+был представлен в
 .Fx 4.2 ,
-the
+параметр
 .Fl c
-option was introduced in
+был представлен в
 .Fx 4.3 ,
-the
+параметры
 .Fl F
-and
+и
 .Fl W
-options were introduced in
+были представлены в
 .Fx 7.4 ,
-and the
+и параметр
 .Fl S
-option was introduced in
+был представлен в
 .Fx 13.3 .
 .Pp
-Support for Timeout Interval and Transfer Size Options (RFC2349)
-was introduced in
+Поддержка параметров интервала ожидания и размера передачи (RFC2349)
+была введена в
 .Fx 5.0 ,
-support for the TFTP Blocksize Option (RFC2348) and the blksize2 option
-was introduced in
+поддержка параметра размера блока TFTP (RFC2348) и параметра
+blksize2 была введена в
 .Fx 7.4 .
 .Pp
-Edwin Groothuis <edwin@FreeBSD.org> performed a major rewrite of the
+Эдвин Гроотхейс <edwin@FreeBSD.org> полностью переписал
 .Nm
-and
+и
 .Xr tftp 1
-code to support RFC2348.
+код для поддержки RFC2348.
 .Pp
-Support for the windowsize option (RFC7440) was introduced in
+Поддержка параметра windowsize (RFC7440) была введена в
 .Fx 13.0 .
-.Sh NOTES
-Files larger than 33,553,919 octets (65535 blocks, last one <512
-octets) cannot be correctly transferred without client and server
-supporting blocksize negotiation (RFCs 2347 and 2348),
-or the non-standard TFTP rollover option.
-As a kludge,
+.Sh ПРИМЕЧАНИЯ
+Файлы размером более 33 553 919 байт (65 535 блоков, последний из которых <512
+байт) не могут быть корректно переданы без поддержки клиентом и сервером
+согласования размера блока (RFC 2347 и 2348)
+или нестандартного параметра переноса TFTP.
+В качестве дополнения
 .Nm
-accepts a sequence of block number which wrap to zero after 65535,
-even if the rollover option is not specified.
+принимает последовательность номеров блоков, которые после 65535 обнуляются,
+даже если опция переноса не указана.
 .Pp
-Many tftp clients will not transfer files over 16,776,703 octets
-(32767 blocks), as they incorrectly count the block number using
-a signed rather than unsigned 16-bit integer.
+Многие клиенты tftp не будут передавать файлы длиной более 16 776 703 октетов
+(32 767 блоков), поскольку они неправильно подсчитывают номер блока, используя
+16-разрядное целое число со знаком, а не без знака.

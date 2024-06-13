@@ -34,62 +34,62 @@
 .Dd December  8, 2004
 .Dt VERIFY_KRB5_CONF 8
 .Os HEIMDAL
-.Sh NAME
+.Sh ИМЯ
 .Nm verify_krb5_conf
-.Nd checks krb5.conf for obvious errors
-.Sh SYNOPSIS
+.Nd проверяет krb5.conf на наличие очевидных ошибок
+.Sh СИНТАКСИС
 .Nm
 .Ar [config-file]
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 .Nm
-reads the configuration file
+считывает конфигурационный файл
 .Pa krb5.conf ,
-or the file given on the command line,
-parses it, checking verifying that the syntax is not correctly wrong.
+или файл, указанный в командной строке,
+анализирует его, проверяя правильность синтаксиса.
 .Pp
-If the file is syntactically correct,
+Если файл синтаксически корректен,
 .Nm
-tries to verify that the contents of the file is of relevant nature.
-.Sh ENVIRONMENT
+пытается убедиться, что содержимое файла имеет отношение к делу.
+.Sh ОКРУЖЕНИЕ
 .Ev KRB5_CONFIG
-points to the configuration file to read.
-.Sh FILES
+указывает на файл конфигурации для чтения.
+.Sh ФАЙЛЫ
 .Bl -tag -width /etc/krb5.conf -compact
 .It Pa /etc/krb5.conf
-Kerberos 5 configuration file
+Конфигурационный файл Kerberos 5
 .El
-.Sh DIAGNOSTICS
-Possible output from
+.Sh ДИАГНОСТИКА
+Возможный результат из
 .Nm
-include:
+включает:
 .Bl -tag -width "FpathF"
 .It "<path>: failed to parse <something> as size/time/number/boolean"
-Usually means that <something> is misspelled, or that it contains
-weird characters. The parsing done by
+Обычно это означает, что <что-то> написано с ошибкой или содержит
+странные символы. Синтаксический анализ, выполненный
 .Nm
-is more strict than the one performed by libkrb5, so strings that
-work in real life might be reported as bad.
+является более строгим, чем тот, который выполняется libkrb5, поэтому строки, которые
+работают в реальной жизни, могут быть помечены как плохие.
 .It "<path>: host not found (<hostname>)"
-Means that <path> is supposed to point to a host, but it can't be
-recognised as one.
+Означает, что <путь> должен указывать на хост, но он не может быть
+распознан как таковой.
 .It <path>: unknown or wrong type
-Means that <path> is either a string when it should be a list, vice
-versa, or just that
+Означает, что <path> - это либо строка, когда она должна быть списком,
+или наоборот, либо просто что
 .Nm
-is confused.
+запутался.
 .It <path>: unknown entry
-Means that <string> is not known by
+Означает, что <строка> неизвестна
 .Nm .
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr krb5.conf 5
-.Sh BUGS
-Since each application can put almost anything in the config file,
-it's hard to come up with a watertight verification process. Most of
-the default settings are sanity checked, but this does not mean that
-every problem is discovered, or that everything that is reported as a
-possible problem actually is one. This tool should thus be used with
-some care.
+.Sh ПРОБЛЕМЫ
+Поскольку каждое приложение может поместить в конфигурационный файл практически все, что угодно,
+трудно разработать четкий процесс проверки. Большинство
+настроек по умолчанию проверяются на работоспособность, но это не означает, что
+обнаруживаются все проблемы или что все, о чем сообщается как
+о возможной проблеме, на самом деле таковыми и являются. Таким образом, этим инструментом следует пользоваться с
+некоторой осторожностью.
 .Pp
-It should warn about obsolete data, or bad practice, but currently
-doesn't.
+Он должен предупреждать об устаревших данных или плохой практике, но в настоящее
+время этого не происходит.

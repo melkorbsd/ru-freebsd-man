@@ -25,10 +25,10 @@
 .Dd April 3, 2022
 .Dt SYSRC 8
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm sysrc
-.Nd safely edit system rc files
-.Sh SYNOPSIS
+.Nd безопасное редактирование системных rc-файлов
+.Sh СИНТАКСИС
 .Nm
 .Op Fl cdDeEFhinNqvx
 .Op Fl s Ar name
@@ -51,246 +51,238 @@
 .Op Fl eEqv
 .Fl L
 .Op Ar name ...
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility retrieves
+извлекает переменные
 .Xr rc.conf 5
-variables from the collection of system rc files and allows processes with
-appropriate privilege to change values in a safe and effective manner.
+из коллекции системных rc-файлов и позволяет процессам с
+соответствующими привилегиями изменять значения безопасным и эффективным способом.
 .Pp
-The following options are available:
+Доступны следующие параметры:
 .Bl -tag -width indent+
 .It Fl a
-Dump a list of all non-default configuration variables.
+Вывести список всех переменных конфигурации, не используемых по умолчанию.
 .It Fl A
-Dump a list of all configuration variables
-.Pq incl. defaults .
+Вывести список всех конфигурационных переменных
+.Pq включая значения по умолчанию .
 .It Fl c
-Check only.
-For querying, return success if all requested variables are set
-.Pq even if NULL ,
-otherwise return error status.
-For assignments, return success if no changes are required, otherwise failure.
-If verbose
+Только проверка.
+Для запроса возвращает значение success, если заданы все запрошенные переменные
+.Pq даже если значение равно NULL ,
+в противном случае возвращает статус ошибки.
+Для назначений возвращает значение success, если изменения не требуются, в противном случае - failure.
+В подробном режиме
 .Pq see Dq Fl v
-prints a message stating whether variables are set and/or changes are required.
+вывести сообщение о том, установлены ли переменные и/или требуются ли изменения.
 .It Fl d
-Print a description of the given variable.
+Вывести описание данной переменной.
 .It Fl D
-Show default value(s) only (this is the same as setting RC_CONFS to NULL or
-passing `-f' with a NULL file-argument).
+Показать только значения по умолчанию (это то же самое, что присвоить RC_CONFS значение NULL или
+передать `-f' с NULLв качестве аргумента-файла).
 .It Fl e
-Print query results as
+Вывести результаты запроса в виде
 .Xr sh 1
-compatible syntax
-.Pq for example, Ql var=value .
-Ignored if either
+совместимого синтаксиса,
+.Pq например, Ql var=value .
+Игнорируется, если указаны параметры
 .Ql Fl n
-or
-.Ql Fl F
-is specified.
+или
+.Ql Fl F .
 .It Fl E
-When given
+Если указан параметр
 .Sq Fl l
-or
+или
 .Sq Fl L
-to list configuration files, only list those that exist.
-When changing a setting, prefer to modify existing files.
+для отображения списка конфигурационных файлов, отображаются только существующие.
+При изменении настроек предпочительнее изменять существующие файлы.
 .It Fl f Ar file
-Operate on the specified file(s) instead of the files obtained by reading the
+Работает с указанными файлами вместо файлов, полученных при чтении параметра
 .Sq rc_conf_files
-entry in the
-.Ev RC_DEFAULTS
-file.
-This option can be specified multiple times for additional files.
+в файле
+.Ev RC_DEFAULTS .
+Этот параметр может быть указан несколько раз для дополнительных файлов.
 .It Fl F
-Show only the last
-.Xr rc.conf 5
-file each directive is in.
+Показать только последние директивы в файле
+.Xr rc.conf 5 ,
+в котором находится каждая директива.
 .It Fl h
-Print a short usage message to stderr and exit.
+Вывести короткую справку по использованию в stderr и завершить работу.
 .It Fl -help
-Print a full usage statement to stderr and exit.
+Вывести полную справку по использованию в stderr и завершить работу.
 .It Fl i
-Ignore unknown variables.
+Игнорировать неизвестные переменные.
 .It Fl j Ar jail
-The
-.Ar jid
-or name of the
+Действовать в пределах клетки
 .Ar jail
-to operate within
-.Pq overrides So Fl R Ar dir Sc ; requires Xr jexec 8 .
+согласно указанному имени или
+.Ar jid
+.Pq переопределяет So Fl R Ar dir Sc ; требует Xr jexec 8 .
 .It Fl l
-List configuration files used at startup on stdout and exit.
+Вывести список конфигурационных файлов, используемых при запуске, в стандартный вывод и завершить работу.
 .It Fl L
-List all configuration files including rc.conf.d entries on stdout and exit.
-Can be combined with
+Вывести список всех конфигурационных файлов (включая rc.conf.d) в стандартный вывод и завершить работу.
+Может сочетаться с
 .Sq Fl v
-or
-.Sq Fl e
-to show service names.
+или
+.Sq Fl e ,
+чтобы отображать названия служб.
 .Nm
-exits with success if all named services are installed, failure otherwise.
+завершается успешно, если установлены все названные службы, в противном случае происходит сбой.
 .It Fl n
-Show only variable values, not their names.
+Отображать только значения переменных, а не их имена.
 .It Fl N
-Show only variable names, not their values.
+Отображать только имена переменных, но не их значения.
 .It Fl q
-Quiet.
-Disable verbose and hide certain errors.
-When combined with
+Тихий режим.
+Отключает детализацию и скрывает некоторые ошибки.
+В сочетании с
 .Sq Fl L
-and one or more
-.Ar name
-arguments, provide only exit status and no output.
+и одним или несколькими аргументами
+.Ar name ,
+укажет только статус выхода без вывода какой-либо информации.
 .It Fl R Ar dir
-Operate within the root directory
+Работать в корневом каталоге
 .Sq Ar dir
-rather than
+вместо
 .Sq / .
 .It Fl s Ar name
-If an
+Если существует скрипт в
 .Li rc.d
-script of
+с именем
 .Ar name
-exists
 .Po
-in
+в каталогах
 .Dq /etc/rc.d
-or
+или
 .Li local_startup
-directories
 .Pc ,
-process its
+обрабатывает его записи в
 .Dq rc.conf.d
-entries as potential overrides to
+в качестве потенциальных заменителей для
 .Sq rc_conf_files .
-See
+Смотрите
 .Xr rc.subr 8
-for additional information on
+для получения дополнительной информации о
 .Dq rc.conf.d .
-Can be combined with
-.Sq Fl l
-to list configuration files used by service at startup.
+Может сочетаться с
+.Sq Fl l ,
+чтобы отобразить список конфигурационных файлов, используемых службой при запуске.
 .It Fl v
-Verbose.
-Print the pathname of the specific
-.Xr rc.conf 5
-file where the directive was found.
+Подробный режим.
+Выводить путь к конкретному файлу
+.Xr rc.conf 5 ,
+в котором была найдена директива.
 .It Fl -version
-Print version information to stdout and exit.
+Вывести информацию о версии в стандартный вывод и завершить работу.
 .It Fl x
-Remove variable(s) from specified file(s).
+Удалить переменную(ые) из указанного файла(ов).
 .El
 .Pp
-This utility has a similar syntax to
+Эта утилита имеет синтаксис, аналогичный
 .Xr sysctl 8 .
-It shares the `-e' and `-n' options
-.Pq detailed above
-and also has the same
+Она совместно использует параметры `-e" и `-n"
+.Pq подробности выше
+и также имеет тот же самый синтаксис
 .Ql name[=value]
-syntax for making queries/assignments.
-In addition
-.Pq but unlike Xr sysctl 8 ,
+для выполнения запросов/назначений.
+В дополнение
+.Pq но в отличие от Xr sysctl 8 ,
 .Ql name+=value
-is supported for adding items to values
-.Pq see APPENDING VALUES
-and
+поддерживает добавление элементов к значениям
+.Pq смотрите СЛОЖЕНИЕ ЗНАЧЕНИЙ
+и
 .Ql name-=value
-is supported for removing items from values
-.Pq see SUBTRACTING VALUES .
+поддерживает удаление элементов из значений
+.Pq смотрите ВЫЧИТАНИЕ ЗНАЧЕНИЙ .
 .Pp
-However, while
+Однако, в то время как
 .Xr sysctl 8
-serves to query/modify MIBs in the entrant kernel,
+служит для запроса/изменения переменных ядра,
 .Nm
-instead works on values in the system
-.Xr rc.conf 5
-configuration files.
+вместо этого работает со значениями в системных конфигурационных файлах
+.Xr rc.conf 5 .
 .Pp
-The list of system configuration files is configured in the file
+Список файлов конфигурации системы настраивается в файле
 .Ql /etc/defaults/rc.conf
-within the variable
+внутри переменной
 .Ql rc_conf_files ,
-which by-default contains a space-separated list of pathnames.
-On all
+которая по умолчанию содержит список путей, разделенных пробелами.
+На всех
 .Fx
-systems, this defaults to the value "/etc/rc.conf /etc/rc.conf.local".
-Each
-pathname is sourced in-order upon startup.
-It is in the same fashion that
+системах по умолчанию используется значение "/etc/rc.conf /etc/rc.conf.local".
+Каждый
+путь к файлу обрабатывается по порядку при запуске.
+Таким же образом
 .Nm
-sources the configuration files before returning the value of the given
-variable.
+выполняет обработку конфигурационных файлов перед возвратом значения заданной
+переменной.
 .Pp
-When supplied a variable name,
+Если указано имя переменной,
 .Nm
-will return the value of the variable.
-If the variable does not appear in any
-of the configured
+вернет значение переменной.
+Если переменная не присутствует ни в одном
+из заданных
 .Ql rc_conf_files ,
-an error is printed and error status is returned.
+выводится сообщение об ошибке и возвращается статус ошибки.
 .Pp
-When changing values of a given variable, it does not matter if the variable
-appears in any of the
+При изменении значения заданной переменной не имеет значения, присутствует ли эта переменная
+в каком-либо из
 .Ql rc_conf_files
-or not.
-If the variable does not appear in any of the files, it is appended to
-the end of the first pathname in the
-.Ql rc_conf_files
-variable.
-Otherwise,
+или нет.
+Если переменная не присутствует ни в одном из файлов, она добавляется в
+конец первого пути в переменной
+.Ql rc_conf_files .
+Иначе,
 .Nm
-will replace only the last-occurrence in the last-file found to contain the
-variable.
-This gets the value to take effect next boot without heavily
-modifying these integral files (yet taking care not to allow the file to
-grow unwieldy should
-.Nm
-be called repeatedly).
-.Sh APPENDING VALUES
-When using the
+заменит только последнее вхождение в последнем найденном файле, содержащем
+переменную.
+Это позволяет получить значение, которое вступит в силу при следующей загрузке без существенного
+изменения встроенных файлов (тем не менее, следует позаботиться о том, чтобы файл не
+стал громоздким при повторном вызове
+.Nm ).
+.Sh СЛОЖЕНИЕ ЗНАЧЕНИЙ
+При использовании синтаксиса
 .Ql key+=value
-syntax to add items to existing values,
-the first character of the value is taken as the delimiter separating items
-.Pq usually Qo " " Qc or Qo , Qc .
-For example, in the following statement:
+для добавления элементов к существующим значениям
+первый символ значения должен быть символ-разделитель
+.Pq обычно Qo " " Qc или Qo , Qc .
+Например, в следующем выражении:
 .Bl -item -offset indent
 .It
 .Nm
 cloned_interfaces+=" gif0"
 .El
 .Pp
-the first character is a space, informing
-.Nm
-that existing values are to be considered separated by whitespace.
-If
+первый символ - это пробел, сообщающий
+.Nm ,
+что существующие значения следует рассматривать как разделенные пробелом.
+Если
 .Ql gif0
-is not found in the existing value for
+не присутствует в текущем значении параметра
 .Va cloned_interfaces ,
-it is added
-.Pq with delimiter only if existing value is non-NULL .
+он добавляется
+.Pq с разделителем, если только существующее значение не является NULL .
 .Pp
-For convenience, if the first character is alpha-numeric
-.Pq letters A-Z, a-z, or numbers 0-9 ,
-dot
+По соглашению, если первый символ является буквенно-цифровым
+.Pq буквы A-Z, a-z, или цифры 0-9 ,
+точка
 .Pq Li \&. ,
-or slash
+или слэш
 .Pq Li / ,
 .Nm
-uses the default setting of whitespace as separator.
-For example, the above and below statements are equivalent since
+использует значение пробела по умолчанию в качестве разделителя.
+Например, приведенные выше и ниже инструкции эквивалентны, поскольку
 .Dq gif0
-starts with an alpha-numeric character
-.Pq the letter Li g :
+начинается с буквенно-цифрового символа
+.Pq буква Li g :
 .Bl -item -offset indent
 .It
 .Nm
 cloned_interfaces+=gif0
 .El
 .Pp
-Take the following sequence for example:
+Возьмем, к примеру, следующую последовательность действий:
 .Bl -item -offset indent
 .It
 .Nm
@@ -309,46 +301,46 @@ cloned_interfaces+="tun0 gif0"
 .El
 .Pp
 .Nm
-prevents the same value from being added if already there.
-.Sh SUBTRACTING VALUES
-When using the
+предотвращает добавление того же значения, если оно уже существует.
+.Sh ВЫЧИТАНИЕ ЗНАЧЕНИЙ
+При использовании
 .Ql key-=value
-syntax to remove items from existing values,
-the first character of the value is taken as the delimiter separating items
-.Pq usually Qo " " Qc or Qo , Qc .
-For example, in the following statement:
+синтаксиса для удаления элементов из существующих значений
+в качестве разделителя между элементами используется первый символ значения
+.Pq обычно Qo " " Qc или Qo , Qc .
+Например, в следующем выражении:
 .Pp
 .Dl Nm cloned_interfaces-=" gif0"
 .Pp
-the first character is a space, informing
+первый символ - это пробел, сообщающий
 .Nm
-that existing values are to be considered separated by whitespace.
-If
+что существующие значения следует рассматривать как разделенные пробелом.
+Если
 .Ql gif0
-is found in the existing value for
+присутствует в текущем значении переменной
 .Va cloned_interfaces ,
-it is removed
-.Pq extra delimiters removed .
+он удаляется
+.Pq при этом удаляются и лишние разделители .
 .Pp
-For convenience, if the first character is alpha-numeric
-.Pq letters A-Z, a-z, or numbers 0-9 ,
-dot
+По соглашению, если первый символ является буквенно-цифровым
+.Pq буквы A-Z, a-z, или цифры 0-9 ,
+точка
 .Pq Li \&. ,
-or slash
+или слэш
 .Pq Li / ,
 .Nm
-uses the default setting of whitespace as separator.
-For example, the above and below statements are equivalent since
+использует значение пробела по умолчанию в качестве разделителя.
+Например, приведенные выше и ниже инструкции эквивалентны, поскольку
 .Dq gif0
-starts with an alpha-numeric character
-.Pq the letter Li g :
+начинается с буквенно-цифрового символа
+.Pq буквы Li g :
 .Bl -item -offset indent
 .It
 .Nm
 cloned_interfaces-=gif0
 .El
 .Pp
-Take the following sequence for example:
+Возьмем, к примеру, следующую последовательность действий:
 .Bl -item -offset indent
 .It
 .Nm
@@ -362,24 +354,23 @@ foo-=baz # `baz' -> NULL
 .El
 .Pp
 .Nm
-removes all occurrences of all items provided
-and collapses extra delimiters between items.
-.Sh ENVIRONMENT
-The following environment variables are referenced by
+удаляет все вхождения всех предоставленных элементов и удаляет дополнительные разделители между элементами.
+.Sh ОКРУЖЕНИЕ
+На следующие переменные среды ссылаются
 .Nm :
 .Bl -tag -width ".Ev RC_DEFAULTS"
 .It Ev RC_CONFS
-Override default
+Переопределить значение по умолчанию
 .Ql rc_conf_files
-.Pq even if set to NULL .
+.Pq даже если установлено значение NULL .
 .It Ev RC_DEFAULTS
-Location of
-.Ql /etc/defaults/rc.conf
-file.
+Местонахождение файла
+.Ql /etc/defaults/rc.conf .
 .El
-.Sh DEPENDENCIES
-The following standard commands are required by
-.Nm :
+.Sh ЗАВИСИМОСТИ
+Для работы
+.Nm
+требуются следующие стандартные команды:
 .Pp
 .Xr awk 1 ,
 .Xr cat 1 ,
@@ -397,7 +388,7 @@ The following standard commands are required by
 .Xr jls 8 ,
 and
 .Xr jexec 8 .
-.Sh FILES
+.Sh ФАЙЛЫ
 .Bl -tag -width ".Pa /etc/defaults/rc.conf" -compact
 .It Pa /etc/defaults/rc.conf
 .It Pa /etc/rc.conf
@@ -407,64 +398,64 @@ and
 .It Pa /usr/local/etc/rc.conf.d/name
 .It Pa /usr/local/etc/rc.conf.d/name/*
 .El
-.Sh EXAMPLES
-Below are some simple examples of how
+.Sh ПРИМЕРЫ
+Ниже приведены несколько простых примеров того, как
 .Nm
-can be used to query certain values from the
-.Xr rc.conf 5
-collection of system configuration files:
+может использоваться для запроса определенных значений из
+коллекции системных конфигурационных файлов
+.Xr rc.conf 5 :
 .Pp
 .Nm
 sshd_enable
-.Dl returns the value of $sshd_enable, usually YES or NO .
+.Dl возвращает значение $sshd_enable, обычно YES или NO .
 .Pp
 .Nm
 defaultrouter
-.Dl returns IP address of default router Pq if configured .
+.Dl возвращает IP-адрес шлюза по умолчанию Pq если настроен .
 .Pp
-Working on other files, such as
+Работа с другими файлами, такими как
 .Xr crontab 5 :
 .Pp
 .Nm
 -f /etc/crontab MAILTO
-.Dl returns the value of the MAILTO setting Pq if configured .
+.Dl возвращает значение параметра MAILTO Pq если настроен .
 .Pp
-Appending to existing values:
+Добавление к существующим значениям:
 .Pp
 .Nm
 \&cloned_interfaces+=gif0
-.Dl appends Qo gif0 Qc to $cloned_interfaces Pq see APPENDING VALUES .
+.Dl добавляет Qo gif0 Qc к $cloned_interfaces Pq смотрите СЛОЖЕНИЕ ЗНАЧЕНИЙ .
 .Pp
 .Nm
 \&cloned_interfaces-=gif0
-.Dl removes Qo gif0 Qc from $cloned_interfaces Pq see SUBTRACTING VALUES .
+.Dl удаляет Qo gif0 Qc из $cloned_interfaces Pq смотрите ВЫЧИТАНИЕ ЗНАЧЕНИЙ .
 .Pp
-In addition to the above syntax,
+В дополнение к приведенному выше синтаксису,
 .Nm
-also supports inline
+также поддерживает встроенное в
 .Xr sh 1
-PARAMETER expansion for changing the way values are reported, shown below:
+расширение параметров для изменения способа представления значений, показанное ниже:
 .Pp
 .Nm
 \&'hostname%%.*'
-.Dl returns $hostname up to (but not including) first `.' .
+.Dl возвращает $hostname вплоть до (но не включая) первой `.' .
 .Pp
 .Nm
 \&'network_interfaces%%[$IFS]*'
-.Dl returns first word of $network_interfaces .
+.Dl возвращает первое слово из $network_interfaces .
 .Pp
 .Nm
 \&'ntpdate_flags##*[$IFS]'
-.Dl returns last word of $ntpdate_flags (time server address) .
+.Dl возвращает последнее слово из $ntpdate_flags (адрес сервера времени) .
 .Pp
 .Nm
 usbd_flags-"default"
-.Dl returns $usbd_flags or "default" if unset or NULL .
+.Dl возвращает $usbd_flags или "default" если значение не задано или NULL .
 .Pp
 .Nm
 cloned_interfaces+"alternate"
-.Dl returns "alternate" if $cloned_interfaces is set .
-.Sh SEE ALSO
+.Dl возвращает "alternate" если $cloned_interfaces установлен .
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr rc.conf 5 ,
 .Xr jail 8 ,
 .Xr jexec 8 ,
@@ -472,14 +463,14 @@ cloned_interfaces+"alternate"
 .Xr rc 8 ,
 .Xr rc.subr 8 ,
 .Xr sysctl 8
-.Sh HISTORY
-A
+.Sh ИСТОРИЯ
+Утилита
 .Nm
-utility first appeared in
+впервые появилась в
 .Fx 9.2 .
-.Sh AUTHORS
-.An Devin Teske Aq Mt dteske@FreeBSD.org
-.Sh THANKS TO
-Brandon Gooch, Enji Cooper, Julian Elischer, Pawel Jakub Dawidek,
-Cyrille Lefevre, Ross West, Stefan Esser, Marco Steinbach, Jilles Tjoelker,
-Allan Jude, and Lars Engels for suggestions, help, and testing.
+.Sh АВТОРЫ
+.An Девин Теске Aq Mt dteske@FreeBSD.org
+.Sh БЛАГОДАРНОСТИ
+Брэндон Гуч, Энджи Купер, Джулиан Элишер, Павел Якуб Давидек,
+Сирил Лефевр, Росс Уэст, Стефан Эссер, Марко Стейнбах, Жиль Тьелкер.,
+Аллану Джуду и Ларсу Энгельсу за предложения, помощь и тестирование.
