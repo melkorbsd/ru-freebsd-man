@@ -36,7 +36,7 @@
 .Sh ИМЯ
 .Nm zfs-userspace
 .Nd пространство для отображения и квоты набора данных ZFS
-.Sh КРАТКИЙ ОБЗОР
+.Sh СИНТАКСИС
 .Nm zfs
 .Cm userspace
 .Op Fl Hinp
@@ -77,13 +77,12 @@
 файловой системе,
 снапшоте или пути.
 Если указан путь, будет использоваться файловая система, содержащая этот путь.
-Это соответствует
+Это соответствует свойствам
 .Sy userused@ Ns Em user ,
 .Sy userobjused@ Ns Em user ,
 .Sy userquota@ Ns Em user ,
-and
-.Sy userobjquota@ Ns Em user
-properties.
+и
+.Sy userobjquota@ Ns Em user .
 .Bl -tag -width "-S field"
 .It Fl H
 Не печатает заголовки, использует выходные данные, разделенные табуляцией.
