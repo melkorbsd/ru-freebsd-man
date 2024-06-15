@@ -1,93 +1,92 @@
 .\"
-.\" Copyright (c) 2010 The FreeBSD Foundation 
-.\" All rights reserved. 
+.\" Copyright (c) 2010 FreeBSD Foundation 
+.\" Все права защищены. 
 .\" 
-.\" This software was developed by Rui Paulo under sponsorship from the
+.\" Это программное обеспечение было разработано Руи Пауло при спонсорской поддержке
 .\" FreeBSD Foundation. 
 .\"  
-.\" Redistribution and use in source and binary forms, with or without 
-.\" modification, are permitted provided that the following conditions 
-.\" are met: 
-.\" 1. Redistributions of source code must retain the above copyright 
-.\"    notice, this list of conditions and the following disclaimer. 
-.\" 2. Redistributions in binary form must reproduce the above copyright 
-.\"    notice, this list of conditions and the following disclaimer in the 
-.\"    documentation and/or other materials provided with the distribution. 
+.\" Распространение и использование в исходном коде и двоичной форме, с использованием или без использования
+.\" модификаций, если следующие условия
+.\" соблюдаются:
+.\" 1. При распространении исходного кода должно сохраняться вышеуказанное уведомление
+.\"    об авторских правах, этот список условий и следующий дисклеймер.
+.\" 2. При распространиении в двоичной форме должно воспроизводиться уведомление об авторских правах,
+.\"    этот список условий и следующий ниже отказ от ответственности в
+.\"    документации и/или других материалах, поставляемых с дистрибутивом.
 .\" 
-.\" THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND 
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE 
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS 
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) 
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT 
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY 
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF 
-.\" SUCH DAMAGE. 
+.\" ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ ПРАВООБЛАДАТЕЛЯМИ И СОАВТОРАМИ ``КАК ЕСТЬ'', И 
+.\" МЫ ОТКАЗЫВАЕМСЯ ОТ ЛЮБЫХ ПОДРАЗУМЕВАЕМЫХ ОБЯЗАТЕЛЬСТВ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, 
+.\" ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ТОВАРНОЙ ПРИГОДНОСТИ И НЕПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ
+.\" ЦЕЛИ. НИ В КОЕМ СЛУЧАЕ ПРАВООБЛАДАТЕЛИ ИЛИ СОВАТОРЫ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ
+.\" ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, ОСОБЫЕ, ПОКАЗАТЕЛЬНЫЕ ИЛИ ЛОГИЧЕСКИ ВЫТЕКАЮЩИЕ
+.\" УБЫТКИ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ ИМИ, ПРИОБРЕТЕНИЕ ЗАМЕНЯЮЩИХ ТОВАРОВ ИЛИ УСЛУГ;
+.\" ПОТЕРЮ ВОЗМОЖНОСТИ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПРЕКРАЩЕНИЕ ДЕЯТЕЛЬНОСТИ)
+.\" НЕЗАВИСИМО ОТ ПРИЧИНЕННОГО УЩЕРБА И НА ОСНОВАНИИ ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО В РАМКАХ КОНТРАКТА, 
+.\" ПРЯМОЙ ОТВЕТСТВЕННОСТИ ИЛИ ДЕЛИКТА (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНОЕ), ВОЗНИКШЕГО КАКИМ-ЛИБО ОБРАЗОМ
+.\" В РЕЗУЛЬТАТЕ ИСПОЛЬЗОВАНИЯ ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ ВЫ БЫЛИ ОСВЕДОМЛЕНЫ О ВОЗМОЖНОСТИ
+.\" ТАКОГО УЩЕРБА.
 .\"
-.Dd September 13, 2010
+.Dd 13 сентября, 2010 год
 .Dt PLOCKSTAT 1
 .Os
-.Sh NAME
+.Sh НАЗВАНИЕ
 .Nm plockstat
 .Nd Trace pthread lock statistics using DTrace
-.Sh SYNOPSIS
+.Sh СИНТАКСИС
 .Nm
 .Op Fl vACHV
-.Op Fl n Ar count
-.Op Fl s Ar depth
-.Op Fl e Ar secs
-.Op Fl x Ar opt Ns = Ns Ar val
-.Ar command
+.Op Fl n Ar количество
+.Op Fl s Ar глубина
+.Op Fl e Ar секунды
+.Op Fl x Ar опция Ns = Ns Ar значение
+.Ar команда
 .Op arg...
 .Nm
 .Op Fl vACHV
-.Op Fl n Ar count
-.Op Fl s Ar depth
-.Op Fl e Ar secs
-.Op Fl x Ar opt Ns = Ns Ar val
-.Fl p Ar pid
+.Op Fl n Ar количество
+.Op Fl s Ar глубина
+.Op Fl e Ar секунды
+.Op Fl x Ar опция Ns = Ns Ar значение
+.Fl p Ar идентификатор_процесса
 .Sh DESCRIPTION
-The
+Утилита
 .Nm
-utility traces pthread locks (mutexes and rwlocks) and prints statistics about
-them.
-You can use
+отслеживает блокировки POSIX поток (мьютексы и читатель-писатель блокировки) и печатает статистику о
+них.
+Вы можете использовать
 .Nm
-to investigate bottlenecks in your software.
+для исследования боттлнеков в вашем программном обеспечении.
 .Pp
-The following options are available:
+Доступны следующие опции:
 .Bl -tag -width indent
 .It Fl v
-Be verbose.
+Подробный вывод.
 .It Fl A
-Print all statistics.
+Печатать всю статистику.
 .It Fl C
-Print commulative statistics (the default).
+Печатать совокупную статистику (по умолчанию).
 .It Fl H
-Print a histogram.
-.It Fl V
-Print the DTrace script about to be used to stderr.
-.It Fl n Ar count
-Set the aggregation count for the data set.
-.It Fl s Ar depth
-Set the ustack (userland stack) caller depth.
-.It Fl e Ar secs
-Does nothing at the moment.
-.It Fl x Ar opt Ns = Ns Ar val
-Specify DTrace options.
-See the
+Печатать гистограмму.
+Печатать скрипт DTrace, который будет использоваться в стандартном потоке ошибок.
+.It Fl n Ar количество
+Установить количество агрегации для набора данных.
+.It Fl s Ar глубина
+Установить глубину вызова ustack (стек в пользовательском пространстве).
+.It Fl e Ar секунды
+В данный момент ничего не делает.
+.It Fl x Ar опция Ns = Ns Ar значение
+Указать опции DTrace.
+Смотрите
 .Xr dtrace 1
-man page for more details.
+страницу руководства для получения дополнительной информации.
 .El
-.Sh EXIT STATUS
+.Sh СТАТУС ЗАВЕРШЕНИЯ
 .Ex -std
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr dtrace 1 ,
 .Xr pthread 3
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Утилита
 .Nm
-utility comes from OpenSolaris and was first imported into
+происходит от OpenSolaris и впервые была импортирована в
 .Fx 9.0 .

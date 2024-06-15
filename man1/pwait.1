@@ -2,96 +2,97 @@
 .\" Copyright (c) 2004-2009, Jilles Tjoelker
 .\" All rights reserved.
 .\"
-.\" Redistribution and use in source and binary forms, with
-.\" or without modification, are permitted provided that the
-.\" following conditions are met:
+.\" Распространение и использование в исходном коде и двоичной форме, с 
+.\" использованием или без использования модификаций, если 
+.\" следующие условия соблюдаются:
 .\"
-.\" 1. Redistributions of source code must retain the above
-.\"    copyright notice, this list of conditions and the
-.\"    following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the
-.\"    above copyright notice, this list of conditions and
-.\"    the following disclaimer in the documentation and/or
-.\"    other materials provided with the distribution.
+.\" 1. При распространении исходного кода должно сохраняться вышеуказанное уведомление
+.\"    об авторских правах, этот список условий 
+.\"    и следующий дисклеймер.
+.\" 2. При распространиении в двоичной форме должно воспроизводиться 
+.\"    уведомление об авторских правах, этот список условий и 
+.\"    следующий ниже отказ от ответственности вдокументации 
+.\"     и/или других материалах, поставляемых с дистрибутивом.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
-.\" CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
-.\" WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-.\" WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-.\" PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-.\" COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY
-.\" DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-.\" CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-.\" PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
-.\" USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-.\" CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-.\" CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-.\" NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-.\" USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
-.\" OF SUCH DAMAGE.
+.\" ЭТО ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ ПРАВООБЛАДАТЕЛЯМИ И
+.\" СОАВТОРАМИ "КАК ЕСТЬ" И ЛЮБЫЕ ЯВНЫЕ ИЛИ ПОДРАЗУМЕВАЕМЫЕ
+.\" ГАРАНТИИ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПОДРАЗУМЕВАЕМЫМИ
+.\" ГАРАНТИЯМИ ТОВАРНОЙ ПРИГОДНОСТИ И ПРИГОДНОСТИ ДЛЯ
+.\" КОНКРЕТНОЙ ЦЕЛИ ОТКЛОНЯЮТСЯ. НИ ПРИ КАКИХ ОБСТОЯТЕЛЬСТВАХ
+.\" ПРАВООБЛАДАТЕЛЬ ИЛИ СОАВТОРЫ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ ЗА
+.\" ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, ОСОБЫЕ, ПОКАЗАТЕЛЬНЫЕ ИЛИ
+.\" ПОСЛЕДОВАТЕЛЬНЫЕ УБЫТКИ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ,
+.\" ПРИОБРЕТЕНИЕМ ЗАМЕНЯЮЩИХ ТОВАРОВ ИЛИ УСЛУГ; ПОТЕРЕЙ
+.\" ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПРЕРЫВАНИЕМ
+.\" БИЗНЕСА) ОДНАКО ПРИЧИНЕННЫЕ И НА ОСНОВАНИИ ЛЮБОЙ ТЕОРИИ
+.\" ОТВЕТСТВЕННОСТИ, БУДЬ ТО В ДОГОВОРЕ, СТРОГОЙ
+.\" ОТВЕТСТВЕННОСТИ ИЛИ ДЕЛИКТЕ (ВКЛЮЧАЯ НЕБРЕЖНОСТЬ ИЛИ
+.\" ИНАЧЕ) ВОЗНИКШИЕ В ЛЮБОМ СЛУЧАЕ ИЗ-ЗА
+.\" ИСПОЛЬЗОВАНИЯ ЭТОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ УВЕДОМЛЕНЫ О ВОЗМОЖНОСТИ
+.\" ТАКОГО УЩЕРБА.
 .\"
-.Dd January 21, 2021
+.Dd 21 января, 2021 год
 .Dt PWAIT 1
 .Os
-.Sh NAME
+.Sh НАЗВАНИЕ
 .Nm pwait
 .Nd wait for processes to terminate
-.Sh SYNOPSIS
+.Sh СИНТАКСИС
 .Nm
-.Op Fl t Ar duration
+.Op Fl t Ar срок_действия
 .Op Fl ov
-.Ar pid
+.Ar идентификатор_процесса
 \&...
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility will wait until each of the given processes has terminated.
+будет ждать, пока не завершится каждый из заданных процессов.
 .Pp
-The following option is available:
+Доступны следующие опция:
 .Bl -tag -width indent
 .It Fl o
-Exit when any of the given processes has terminated.
-.It Fl t Ar duration
-If any process is still running after
-.Ar duration ,
+Завершает работу, когда завершится любой из заданных процессов.
+.It Fl t Ar срок_действия
+Если какой-либо процесс все еще выполняется после
+.Ar срок_действия ,
 .Nm
-will exit.
-The
-.Ar duration
-value can be integer or decimal numbers.
-Values without unit symbols are interpreted as seconds.
+завершит работу.
+Значением
+.Ar срок_действия
+могут быть целые или десятичные числа.
+Значения без символов единиц измерения интерпретируются как секунды.
 .Pp
-Supported unit symbols are:
+Поддерживаемые символы единиц измерения:
 .Bl -tag -width indent -compact
 .It s
-seconds
+секунды
 .It m
-minutes
+минуты
 .It h
-hours
+часы
 .El
 .It Fl v
-Print the exit status when each process terminates or
+Выводит статус завершения при завершении каждого процесса или
 .Ql timeout
-if the timer goes off earlier.
+если таймер сработает раньше.
 .El
-.Sh EXIT STATUS
-The
+.Sh СТАТУС ЗАВЕРШЕНИЯ
+Утилита
 .Nm
-utility exits 0 on success, and >0 if an error occurs.
+ завершает работу с 0 в случае успеха и >0 в случае возникновения ошибки.
 .Pp
-If the
+Если флаг
 .Fl t
-flag is specified and a timeout occurs, the exit status will be 124.
+указан и истек тайм-аут, статус выхода будет равен 124.
 .Pp
-Invalid pids elicit a warning message but are otherwise ignored.
-.Sh EXAMPLES
-Start two
+Недопустимые ID пользователя выдают предупреждающее сообщение, но в остальном игнорируются.
+.Sh ПРИМЕРЫ
+Запустить два
 .Xr sleep 1
-processes in the background.
-The first one will sleep for 30 seconds and the second one for one hour.
-Wait for any of them to finish but no more than 5 seconds.
-Since a timeout occurs the exit status is 124:
+в фоновом режиме.
+Первый будет в режиме сна на 30 секунд, а второй - на один час.
+Подождите, пока кто-либо из них закончит, но не более 5 секунд.
+Поскольку наступает таймаут, статус выхода равен 124:
 .Bd -literal -offset indent
 $ sleep 30 & sleep 3600 &
 [1] 1646
@@ -101,24 +102,24 @@ $?
 124
 .Ed
 .Pp
-Same as above but try to obtain the exit status of the processes.
-In this case
+То же, что и выше, но пытается получить статус завершения процессов.
+В этом случае
 .Ql timeout
-is shown and the exit status is 124:
+отображается, и статус выхода равен 124:
 .Bd -literal -offset indent
 $ sleep 30 & sleep 3600 &
 [1] 1652
 [2] 1653
 $ pwait -v -t 5 1652 1653
-timeout
+таймаут
 $?
 124
 .Ed
 .Pp
-Start two
+Запустить дова процесса
 .Xr sleep 1
-processes in the background sleeping for 30 and 40 seconds respectively.
-Wait 60 seconds for any of them to finish and get their exit codes:
+в фоновом режиме, переходящих в спящий режим в спящий режим на 30 и 40 секунд соответственно.
+Подождите 60 секунд, пока кто-либо из них завершится, и получите их коды выхода:
 .Bd -literal -offset indent
 $ sleep 30 & sleep 40 &
 [1] 1674
@@ -131,23 +132,23 @@ $ pwait -v -t 60 1674 1675
 $ echo $?
 0
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr kill 1 ,
 .Xr pkill 1 ,
 .Xr ps 1 ,
 .Xr wait 1 ,
 .Xr kqueue 2
-.Sh NOTES
+.Sh ПРИМЕЧАНИЯ
 .Nm
-is not a substitute for the
+не является заменой для
 .Xr wait 1
-builtin
-as it will not clean up any zombies or state in the parent process.
+встроенного,
+поскольку он не очистит никаких зомби или состояний в родительском процессе.
 .Pp
-To avoid deadlock,
+Чтобы избежать тупиков,
 .Nm
-will ignore its own pid, if it is provided as a process id to wait for.
-.Sh HISTORY
-A
+будет игнорировать свой собственный ID процесса, если он указан в качестве ID процесса для ожидания.
+.Sh ИСТОРИЯ
+Команда
 .Nm
-command first appeared in SunOS 5.8.
+впервые появилась в SunOS 5.8.

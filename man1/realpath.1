@@ -1,85 +1,85 @@
 .\"-
 .\" Copyright (c) 1990, 1993
-.\"	The Regents of the University of California.  All rights reserved.
+.\"	Ректоры Калифорнийского университета. Все права защищены.
 .\"
-.\" This code is derived from software contributed to Berkeley by
-.\" the Institute of Electrical and Electronics Engineers, Inc.
+.\" Этот код является производным от программного обеспечения, предоставленного в Беркли
+.\" Адамом С. Московицем и Institute of Electrical and Electronics Engineers, Inc.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
-.\" 3. Neither the name of the University nor the names of its contributors
-.\"    may be used to endorse or promote products derived from this software
-.\"    without specific prior written permission.
+.\" Распространение и использование в исходном коде и двоичной форме, с использованием или без использования
+.\" модификаций, если следующие условия
+.\" соблюдаются:
+.\" 1. При распространении исходного кода должно сохраняться вышеуказанное уведомление
+.\"    об авторских правах, этот список условий и следующий дисклеймер.
+.\" 2. При распространиении в двоичной форме должно воспроизводиться уведомление об авторских правах,
+.\"    этот список условий и следующий ниже отказ от ответственности в
+.\"    документации и/или других материалах, поставляемых с дистрибутивом.
+.\" 3. Ни название университета, ни имена его участников не могут быть использованы для
+.\"    поддержки или продвижения продуктов, созданных на основе данного программного обеспечения,
+.\"    без специального предварительного письменного согласия.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ ПРАВООБЛАДАТЕЛЯМИ И СОАВТОРАМИ ``КАК ЕСТЬ'', И 
+.\" МЫ ОТКАЗЫВАЕМСЯ ОТ ЛЮБЫХ ПОДРАЗУМЕВАЕМЫХ ОБЯЗАТЕЛЬСТВ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, 
+.\" ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ТОВАРНОЙ ПРИГОДНОСТИ И НЕПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ
+.\" ЦЕЛИ. НИ В КОЕМ СЛУЧАЕ ПРАВООБЛАДАТЕЛИ ИЛИ СОВАТОРЫ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ
+.\" ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, ОСОБЫЕ, ПОКАЗАТЕЛЬНЫЕ ИЛИ ЛОГИЧЕСКИ ВЫТЕКАЮЩИЕ
+.\" УБЫТКИ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ ИМИ, ПРИОБРЕТЕНИЕ ЗАМЕНЯЮЩИХ ТОВАРОВ ИЛИ УСЛУГ;
+.\" ПОТЕРЮ ВОЗМОЖНОСТИ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПРЕКРАЩЕНИЕ ДЕЯТЕЛЬНОСТИ)
+.\" НЕЗАВИСИМО ОТ ПРИЧИНЕННОГО УЩЕРБА И НА ОСНОВАНИИ ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО В РАМКАХ КОНТРАКТА, 
+.\" ПРЯМОЙ ОТВЕТСТВЕННОСТИ ИЛИ ДЕЛИКТА (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНОЕ), ВОЗНИКШЕГО КАКИМ-ЛИБО ОБРАЗОМ
+.\" В РЕЗУЛЬТАТЕ ИСПОЛЬЗОВАНИЯ ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ ВЫ БЫЛИ ОСВЕДОМЛЕНЫ О ВОЗМОЖНОСТИ
+.\" ТАКОГО УЩЕРБА.
 .\"
 .\"     @(#)pwd.1	8.2 (Berkeley) 4/28/95
-.\" From: src/bin/pwd/pwd.1,v 1.11 2000/11/20 11:39:39 ru Exp
+.\" От: src/bin/pwd/pwd.1,v 1.11 2000/11/20 11:39:39 ru Exp
 .\"
-.Dd June 21, 2011
+.Dd 21 июня, 2011 год
 .Dt REALPATH 1
 .Os
-.Sh NAME
+.Sh НАЗВАНИЕ
 .Nm realpath
 .Nd return resolved physical path
-.Sh SYNOPSIS
+.Sh СИНТАКСИС
 .Nm
 .Op Fl q
-.Op Ar path ...
-.Sh DESCRIPTION
-The
+.Op Ar путь ...
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility uses the
+использует функцию
 .Xr realpath 3
-function to resolve all symbolic links, extra
+для разрешения всех символических ссылок, дополнительных
 .Ql /
-characters and references to
+символов и ссылок на
 .Pa /./
-and
+и
 .Pa /../
-in
-.Ar path .
-If
-.Ar path
-is absent, the current working directory
+в
+.Ar путь .
+Если
+.Ar путь
+отсутствует, то предполагается текущая рабочая директория
 .Pq Sq Pa .\&
-is assumed.
+предполагается.
 .Pp
-If
+Если опция
 .Fl q
-is specified, warnings will not be printed when
+указана, то предупреждения не будут выводиться, когда функция
 .Xr realpath 3
-fails.
-.Sh EXIT STATUS
+не выполнится.
+.Sh СТАТУС ЗАВЕРШЕНИЯ
 .Ex -std
-.Sh EXAMPLES
-Show the physical path of the
-.Pa /dev/log
-directory silencing warnings if any:
+.Sh ПРИМЕРЫ
+Показывать физический путь к директории
+.Pa /dev/log ,
+отключая предупреждения, если таковые имеются:
 .Bd -literal -offset indent
 $ realpath -q /dev/log
 /var/run/log
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr realpath 3
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Утилита
 .Nm
-utility first appeared in
+впервые появилась в
 .Fx 4.3 .

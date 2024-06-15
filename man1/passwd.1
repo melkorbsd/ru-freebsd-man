@@ -1,210 +1,209 @@
 .\" Copyright (c) 1990, 1993
-.\"	The Regents of the University of California.  All rights reserved.
+.\"	Ректоры Калифорнийского университета. Все права защищены.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
-.\" 3. Neither the name of the University nor the names of its contributors
-.\"    may be used to endorse or promote products derived from this software
-.\"    without specific prior written permission.
+.\" Распространение и использование в исходном коде и двоичной форме, с использованием или без использования
+.\" модификаций, если следующие условия
+.\" соблюдаются:
+.\" 1. При распространении исходного кода должно сохраняться вышеуказанное уведомление
+.\"    об авторских правах, этот список условий и следующий дисклеймер.
+.\" 2. При распространиении в двоичной форме должно воспроизводиться уведомление об авторских правах,
+.\"    этот список условий и следующий ниже отказ от ответственности в
+.\"    документации и/или других материалах, поставляемых с дистрибутивом.
+.\" 3. Ни название университета, ни имена его участников не могут быть использованы для
+.\"    поддержки или продвижения продуктов, созданных на основе данного программного обеспечения,
+.\"    без специального предварительного письменного согласия.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ ПРАВООБЛАДАТЕЛЯМИ И СОАВТОРАМИ ``КАК ЕСТЬ'', И 
+.\" МЫ ОТКАЗЫВАЕМСЯ ОТ ЛЮБЫХ ПОДРАЗУМЕВАЕМЫХ ОБЯЗАТЕЛЬСТВ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, 
+.\" ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ТОВАРНОЙ ПРИГОДНОСТИ И НЕПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ
+.\" ЦЕЛИ. НИ В КОЕМ СЛУЧАЕ ПРАВООБЛАДАТЕЛИ ИЛИ СОВАТОРЫ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ
+.\" ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, ОСОБЫЕ, ПОКАЗАТЕЛЬНЫЕ ИЛИ ЛОГИЧЕСКИ ВЫТЕКАЮЩИЕ
+.\" УБЫТКИ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ ИМИ, ПРИОБРЕТЕНИЕ ЗАМЕНЯЮЩИХ ТОВАРОВ ИЛИ УСЛУГ;
+.\" ПОТЕРЮ ВОЗМОЖНОСТИ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПРЕКРАЩЕНИЕ ДЕЯТЕЛЬНОСТИ)
+.\" НЕЗАВИСИМО ОТ ПРИЧИНЕННОГО УЩЕРБА И НА ОСНОВАНИИ ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО В РАМКАХ КОНТРАКТА, 
+.\" ПРЯМОЙ ОТВЕТСТВЕННОСТИ ИЛИ ДЕЛИКТА (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНОЕ), ВОЗНИКШЕГО КАКИМ-ЛИБО ОБРАЗОМ
+.\" В РЕЗУЛЬТАТЕ ИСПОЛЬЗОВАНИЯ ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ ВЫ БЫЛИ ОСВЕДОМЛЕНЫ О ВОЗМОЖНОСТИ
+.\" ТАКОГО УЩЕРБА.
 .\"
-.\"	@(#)passwd.1	8.1 (Berkeley) 6/6/93
+.\"	    @(#)passwd.1	8.1 (Berkeley) 6/6/93
 .\"
-.Dd February 14, 2014
+.Dd 14 февраля, 2014 год
 .Dt PASSWD 1
 .Os
-.Sh NAME
+.Sh НАЗВАНИЕ
 .Nm passwd , yppasswd
 .Nd modify a user's password
-.Sh SYNOPSIS
+.Sh СИНТАКСИС
 .Nm
 .Op Fl l
-.Op Ar user
+.Op Ar пользователь
 .Nm yppasswd
 .Op Fl l
 .Op Fl y
-.Op Fl d Ar domain
-.Op Fl h Ar host
+.Op Fl d Ar домен
+.Op Fl h Ar хост
 .Op Fl o
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility changes the user's local, Kerberos, or NIS password.
-If the user is not the super-user,
+изменяет локальный пароль пользователя,
+пароль Kerberos или пароль NIS.
+Если пользователь не является суперпользователем,
 .Nm
-first prompts for the current password and will not continue unless the correct
-password is entered.
+сначала запрашивает текущий пароль, и она не будет продолжена, пока
+не будет введен правильный пароль.
 .Pp
-When entering the new password, the characters entered do not echo, in order to
-avoid the password being seen by a passer-by.
-The
+При введении нового пароля, введенные символы не выводятся на экран, 
+чтобы посторонний не увидел пароль.
+Утилита
 .Nm
-utility prompts for the new password twice in order to detect typing errors.
+запрашивает новый пароль дважды, для того, чтобы выявить опечатки.
 .Pp
-The total length of the password must be less than
+Общая длинна пароля не должна быть бльше чем
 .Dv _PASSWORD_LEN
-(currently 128 characters).
+(на данный момент 128 символов).
 .Pp
-Once the password has been verified,
+Как только пароль будет подтвержен,
 .Nm
-communicates the new password information to
-the Kerberos authenticating host.
+передает информацию о новом пароле
+на хост аутентификации Kerberos.
 .Pp
-The following option is available:
+Доступна следующая опция:
 .Bl -tag -width indent
 .It Fl l
-Cause the password to be updated only in the local
-password file, and not with the Kerberos database.
-When changing only the local password,
+Заставляет пароль обновляться только в локальном 
+файле паролей, а не в базе данных Kerberos.
+При изменении только локального пароля,
 .Xr pwd_mkdb 8
-is used to update the password databases.
+Испльзуется для обновления базы данных паролей.
 .El
 .Pp
-When changing local or NIS password, the next password change date
-is set according to
+При смене локального пароля или пароля NIS, дата следующей смены пароля 
+устанавлиается в соответствии  с возможностью
 .Dq passwordtime
-capability in the user's login class.
+в классе логинов пользователя.
 .Pp
-To change another user's Kerberos password, one must first
-run
+Чтобы изменить пароль другого пользователя Kerberos, необходимо сначала
+запустить
 .Xr kinit 1
-followed by
+сопровождаемый
 .Nm .
-The super-user is not required to provide a user's current password
-if only the local password is modified.
-.Sh NIS INTERACTION
-The
+Суперпользователю не требуется вводить текущий пароль пользователя,
+если изменен только локальный пароль.
+.Sh NIS ВЗАИМОДЕЙСТВИЕ
+Утилита
 .Nm
-utility has built-in support for NIS.
-If a user exists in the NIS password
-database but does not exist locally,
+утилита имеет встроенную поддержку NIS.
+Если пользователь существует вбазе данных паролей NIS,
+но не существует локально,
 .Nm
-automatically switches into
+автоматически переключается в 
 .Nm yppasswd
-mode.
-If the specified
-user does not exist in either the local password database or the
-NIS password maps,
+режим.
+Если указанный
+пользователь не существует ни в локальной базе данных паролей,
+ни в картах паролей NIS,
 .Nm
-returns an error.
+возвращает сообщение об ошибке.
 .Pp
-When changing an NIS password, unprivileged users are required to provide
-their old password for authentication (the
+При смене пароля NIS непривилегированные пользователи должны указать
+свой старый пароль для аутентификации (демон
 .Xr rpc.yppasswdd 8
-daemon requires the original password before
-it will allow any changes to the NIS password maps).
-This restriction applies even to the
-super-user, with one important exception: the password authentication is
-bypassed for the super-user on the NIS master server.
-This means that
-the super-user on the NIS master server can make unrestricted changes to
-anyone's NIS password.
-The super-user on NIS client systems and NIS slave
-servers still needs to provide a password before the update will be processed.
+требует ввести исходный пароль, прежде
+чем он разрешит какие-либо изменения в картах паролей NIS).
+Это ограничение распространяется даже на
+суперпользователя, за одним важным исключением: аутентификация по паролю
+для суперпользователя обходится без проверки подлинности по паролю на главном сервере NIS.
+Это означает, что
+суперпользователь на главном сервере NIS может беспрепятственно изменять
+чей-либо пароль NIS.
+Суперпользователю в клиентских системах NIS и на подчиненных
+серверах NIS по-прежнему необходимо ввести пароль, прежде чем обновление будет обработано.
 .Pp
-The following additional options are supported for use with NIS:
+Доступны следующие дополнительные опции, поддерживающие работу с NIS:
 .Bl -tag -width indent
 .It Fl y
-Override
+переопределение
 .Nm Ns 's
-checking heuristics and forces
-it into NIS mode.
+проверяет эвристику и переводит
+ее в режим NIS.
 .It Fl l
-When NIS is enabled, the
+Когда NIS доступна, флаг
 .Fl l
-flag can be used to force
+Может быть использован для принудительного
 .Nm
-into
-.Dq local only
-mode.
-This flag can be used to change the entry
-for a local user when an NIS user exists with the same login name.
-For example, you will sometimes find entries for system
+внутри
+.Dq только локально
+режима.
+Этот флаг можно использовать для изменения записи
+для локального пользователя, если существует пользователь NIS с таким же логином.
+Например, иногда вы можете найти записи для системных пользователей
 .Dq placeholder
-users such as
+таких как
 .Pa bin
-or
+или
 .Pa daemon
-in both the NIS password maps and the local user database.
-By
-default,
+как в картах паролей NIS, так и в локальной базе данных пользователей.
+По
+умолчанию,
 .Nm
-will try to change the NIS password.
-The
+попытается изменить пароль NIS.
+Вместо этого, флаг
 .Fl l
-flag can be used to change the local password instead.
-.It Fl d Ar domain
-Specify what domain to use when changing an NIS password.
-By default,
+можно использовать для изменения локального пароля.
+.It Fl d Ar домен
+Укажите, какой домен использовать при смене пароля NIS.
+По умолчанию,
 .Nm
-assumes that the system default domain should be used.
-This flag is
-primarily for use by the superuser on the NIS master server: a single
-NIS server can support multiple domains.
-It is also possible that the
-domainname on the NIS master may not be set (it is not necessary for
-an NIS server to also be a client) in which case the
+предполагает, что следует использовать системный домен по умолчанию.
+Этот флаг
+в первую очередь предназначен для использования суперпользователем на главном сервере NIS: один
+Сервер NIS может поддерживать несколько доменов.
+Доменное имя на главном сервере NIS может быть не задано (необязательно,
+чтобы сервер NIS также был клиентом) в этом случае команде
 .Nm
-command needs to be told what domain to operate on.
-.It Fl h Ar host
-Specify the name of an NIS server.
-This option, in conjunction
-with the
+необходимо указать, в каком домене она будет работать.
+.It Fl h Ar хост
+Указывает имя NIS-сервера.
+Эта опция, в сочетании
+с опцией 
 .Fl d
-option, can be used to change an NIS password on a non-local NIS
-server.
-When a domain is specified with the
+может использоваться для изменения пароля NIS на нелокальном
+сервере NIS.
+Когда домен указан с помощью опции
 .Fl d
-option and
+и
 .Nm
-is unable to determine the name of the NIS master server (possibly because
-the local domainname is not set), the name of the NIS master is assumed to
-be
+не удается определить имя главного сервера NIS (возможно, из
+-за того, что не задано локальное доменное имя), предполагается, что имя мастера NIS является
 .Dq localhost .
-This can be overridden with the
-.Fl h
-flag.
-The specified hostname need not be the name of an NIS master: the
-name of the NIS master for a given map can be determined by querying any
-NIS server (master or slave) in a domain, so specifying the name of a
-slave server will work equally well.
+Это может быть отменено с помощью флага
+.Fl h .
+Указанное имя хоста необязательно должно быть именем главного сервера NIS:
+имя главного сервера NIS для данной карты можно определить, запросив любой
+Сервер NIS (главный или подчиненный) в домене, поэтому указание имени
+подчиненного сервера будет работать одинаково хорошо.
 .It Fl o
-Do not automatically override the password authentication checks for the
-super-user on the NIS master server; assume
+Не следует автоматически отменять проверку подлинности по паролю для
+суперпользователя на главном сервере NIS; предполагается установить
 .Dq old
-mode instead.
-This
-flag is of limited practical use but is useful for testing.
+режим вместо этого.
+Этот
+флаг имеет ограниченное практическое применение, но полезен для тестирования.
 .El
-.Sh FILES
+.Sh ФИЛЬТРЫ
 .Bl -tag -width /etc/master.passwd -compact
 .It Pa /etc/master.passwd
-the user database
+база данных пользователей
 .It Pa /etc/passwd
-a Version 7 format password file
+файл паролей в формате Version 7
 .It Pa /etc/passwd.XXXXXX
-temporary copy of the password file
+временная копия файла паролей
 .It Pa /etc/login.conf
 login class capabilities database
+база данных возможностей класса логинов
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr chpass 1 ,
 .Xr kinit 1 ,
 .Xr login 1 ,
@@ -217,17 +216,17 @@ login class capabilities database
 .Xr pwd_mkdb 8 ,
 .Xr vipw 8
 .Rs
-.%A Robert Morris
-.%A Ken Thompson
-.%T "UNIX password security"
+.%A Роберт Моррис
+.%A Кен Томпсон
+.%T "защита паролем UNIX"
 .Re
-.Sh NOTES
-The
+.Sh ПРИМЕЧАНИЯ
+Команда
 .Nm yppasswd
-command is really only a link to
+на самом деле является всего лишь ссылкой на
 .Nm .
-.Sh HISTORY
-A
+.Sh ИСТОРИЯ
+Команда 
 .Nm
-command appeared in
+появилась в
 .At v6 .
