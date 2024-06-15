@@ -1,3 +1,4 @@
+
 .\"
 .\" Copyright (c) 2010 Weongyo Jeong.
 .\" All rights reserved.
@@ -26,10 +27,10 @@
 .Dd May 14, 2021
 .Dt USBDUMP 8
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm usbdump
-.Nd "dump traffic on USB host controller"
-.Sh SYNOPSIS
+.Nd "сбрасывает трафик на USB-хост-контроллер"
+.Sh СИНТАКСИС
 .Nm
 .Op Fl d Ar [ugen]B
 .Op Fl d Ar [ugen]B.D
@@ -42,142 +43,139 @@
 .Op Fl f Ar filter
 .Op Fl b Ar file
 .Op Fl h
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility provides a way to dump USB packets on host controllers.
+предоставляет способ выгрузки USB-пакетов на хост-контроллеры.
 .Pp
-The following options are accepted:
+Применяются следующие параметры:
 .Bl -tag -width ".Fl f Ar file"
 .It Fl d Ar [ugen]bus
-Shortcut for
-.Fl i
-option.
-The argument may be prefixed by "ugen".
-The option may be specified multiple times, but the bus specified must
-be the same.
+Кратчайший путь до параметра
+.Fl i .
+Аргумент может иметь префикс "ugen".
+Параметр может быть указан несколько раз, но указанная шина должна
+быть одной и той же.
 .It Fl d Ar [ugen]bus.device
-Shortcut for
+Кратчайший путь к параметрам
 .Fl i
-and
-.Fl f
-options.
-The argument may be prefixed by "ugen".
-The option may be specified multiple times, but the bus specified must
-be the same.
+и
+.Fl f .
+Аргумент может иметь префикс "ugen".
+Параметр может быть указан несколько раз, но указанная шина должна
+быть одной и той же.
 .It Fl d Ar [ugen]bus.device.endpoint
-Shortcut for
+Кратчайший путь к параметрам
 .Fl i
-and
-.Fl f
-options.
-The argument may be prefixed by "ugen".
-The option may be specified multiple times, but the bus specified must
-be the same.
+и
+.Fl f .
+Аргумент может иметь префикс "ugen".
+Параметр может быть указан несколько раз, но указанная шина должна
+быть одной и той же.
 .It Fl b Ar file
-Store data part of the USB trace in binary format to the given
-.Ar file .
-This option also works with the -r and -f options.
+Сохраняет часть данных трассировки USB в двоичном формате в заданном
+.Ar файле .
+Этот параметр также работает с параметрами -r и -f.
 .It Fl i Ar ifname
-Listen on USB bus interface
+Прослушивает по интерфейсу шины USB
 .Ar ifname .
 .It Fl r Ar file
-Read the raw packets from
-.Ar file .
-This option also works with the -f option.
+Считывает необработанные пакеты из
+.Ar файла .
+Этот параметр также работает с параметром -f.
 .It Fl s Ar snaplen
-Snapshot
-.Ar snaplen
-bytes from each packet.
+Снапшот
+.Ar фиксирует
+байты из каждого пакета.
 .It Fl v
-Enable debugging messages.
-When defined multiple times the verbosity level increases.
+Включает сообщения об отладке.
+При многократном задании уровень детализации увеличивается.
 .It Fl w Ar file
-Write the raw packets to
-.Ar file .
-This option also works with the -s and -v options.
+Записывает необработанные пакеты в 
+.Ar файл .
+Этот параметр также работает с параметрами -s и -v.
 .It Fl f Ar filter
-The filter argument consists of either one or two numbers separated by a dot.
-The first indicates the device unit number which should be traced.
-The second number which is optional indicates the endpoint which should be traced.
-To get all traffic for the control endpoint, two filters should be
-created, one for endpoint 0 and one for endpoint 128.
-If 128 is added to the endpoint number that means IN direction, else OUT direction is implied.
-A device unit or endpoint value of -1 means ignore this field.
-If no filters are specified, all packets are passed through using the default -1,-1 filter.
-This option can be specified multiple times.
+Аргумент фильтра состоит из одного или двух чисел, разделенных точкой.
+Первое указывает номер устройства, который необходимо отследить.
+Второе число, которое является необязательным, указывает конечную точку, которую необходимо отследить.
+Чтобы получить весь трафик для контрольной конечной точки, необходимо
+создать два фильтра: один для конечной точки 0 и один для конечной точки 128.
+Если к номеру конечной точки добавлено 128, что означает направление "В", в противном случае подразумевается направление "ИЗ".
+Значение единицы измерения устройства или конечной точки, равное -1, означает игнорирование этого поля.
+Если фильтры не заданы, все пакеты проходят через фильтр по умолчанию -1,-1.
+Этот параметр можно указать несколько раз.
 .It Fl h
-This option displays a summary of the command line options.
+Этот параметр отображает сводку параметров командной строки.
 .El
-.Sh EXAMPLES
-Capture the USB raw packets on usbus2:
+.Sh ПРИМЕРЫ
+Захватывает необработанные пакеты USB на usbus2:
 .Pp
 .Dl "usbdump -i usbus2 -s 256 -v"
 .Pp
-Dump the USB raw packets of usbus2 into the file without packet
-size limit:
+Сбрасывает необработанные пакеты USB с usbus2 в файл без
+ограничения размера пакета:
 .Pp
 .Dl "usbdump -i usbus2 -s 0 -w /tmp/dump_pkts"
 .Pp
-Dump the USB raw packets of usbus2, but only the control endpoint traffic
-of device unit number 3:
+Сбрасывает необработанные пакеты USB на usbus2, но только трафик контрольной конечной
+точки блока номер 3:
 .Pp
 .Dl "usbdump -i usbus2 -s 0 -f 3.0 -f 3.128 -w /tmp/dump_pkts"
 .Pp
-Read and display the USB raw packets from previous file:
+Считывает и отображает необработанные пакеты USB из предыдущего файла:
 .Pp
 .Dl "usbdump -r /tmp/dump_pkts -v"
-.Sh OUTPUT FORMAT
-The output format of
+.Sh ФОРМАТ ВЫХОДА
+Выходной формат
 .Nm
-is as follows:
+заключается в следующем:
 .Pp
 .Dl "<time> <bus>.<addr> <ep> <xfertype> <S/D> (<frames>/<length>) <...>"
 .Pp
-The meaning of the output format elements is as follows:
+Значения элементов выходного формата заключается в следующем:
 .Bl -tag -width "<xfertype>"
 .It <time>
-A timestamp preceding all output lines.
-The timestamp has the format "hh:mm:ss.frac" and is as accurate as
-the kernel's clock.
+Временная метка, предшествующая всем строкам вывода.
+Временная метка имеет формат "hh:mm:ss.frac" и является такой же точной, как
+часы ядра.
 .It <bus>
-The USB host controller's bus unit number.
+Номер блока шины главного контроллера USB.
 .It <addr>
-The unique number of the USB device as allocated by the host controller driver.
+Уникальный номер USB-устройства, присвоенный драйвером хост-контроллера.
 .It <ep>
-The USB endpoint address that indicates whether the address is
-.Dv OUT
-or
-.Dv IN .
+Адрес конечной точки USB, указывающий, является ли этот адрес
+.Dv выходом
+или
+.Dv входом .
 .It <xfertype>
-The USB transfer type.
-Can be
+Тип передачи данных по USB.
+Может быть
 .Dv CTRL ,
 .Dv ISOC ,
 .Dv BULK
-or
+или
 .Dv INTR .
 .It <S/D>
-`S' indicates a USB submit.
-`D' indicates a USB transfer done.
+`S' указывает на отправку по USB.
+`D' указывает на выполненную передачу по USB.
 .It <frames>
-Numbers of frames in this packets.
-If this is a USB submit, its value is
-.Li xfer->nframes
-which means how many frames are acceptable or registered to transfer.
-If this is a USB done,
+Количество кадров в этих пакетах.
+Если это передача по USB, то ее значение равно
+.Li xfer->nframes ,
+что означает, сколько кадров допустимо или зарегистрировано для передачи.
+Если это сделано по USB, то,
 .Li xfer->aframes
-is the actual number of frames.
+- это фактическое количество кадров.
 .It <length>
-Total packet size.
-If this is a USB submit, its value is
+Общий размер пакета.
+Если это передача по USB, его значение равно
 .Li xfer->sumlen .
-If this is a USB done, its value is
+Если это сделано по USB, его значение равно
 .Li xfer->actlen .
 .It <...>
-Optional field used for printing an error string if the packet is from USB done.
+Необязательное поле, используемое для вывода строки с ошибкой, если пакет отправлен с USB-накопителя.
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr usbconfig 8
-.Sh AUTHORS
-.An Weongyo Jeong Aq Mt weongyo@FreeBSD.org
+.Sh АВТОРЫ
+.An Веонге Джонг Aq Mt weongyo@FreeBSD.org

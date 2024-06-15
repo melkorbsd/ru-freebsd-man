@@ -27,10 +27,10 @@
 .Dd July 11, 2015
 .Dt UEFISIGN 8
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm uefisign
-.Nd UEFI Secure Boot signing utility
-.Sh SYNOPSIS
+.Nd Утилита для подписи защищенной загрузки UEFI
+.Sh СИНТАКСИС
 .Nm
 .Fl k Ar key
 .Fl c Ar certificate
@@ -41,50 +41,50 @@
 .Fl V
 .Op Fl v
 .Ar file
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility signs PE binary files using Authenticode scheme, as required by
-UEFI Secure Boot specification.
-Alternatively, it can be used to view and verify existing signatures.
-These options are available:
+подписывает двоичные файлы PE, используя схему Authenticode, как того требует
+спецификация безопасной загрузки UEFI.
+Кроме того, ее можно использовать для просмотра и проверки существующих подписей.
+Доступны следующие параметры:
 .Bl -tag -width ".Fl l"
 .It Fl V
-Determine whether the file is signed.
-Note that this does not verify the correctness of the signature;
-only that the file contains a signature.
+Определяет, подписан ли файл.
+Обратите внимание, что он не проверяет правильность подписи;
+только то, что файл содержит подпись.
 .It Fl k
-Name of file containing the private key used to sign the binary.
+Имя файла, содержащего закрытый ключ, используемый для подписи двоичного файла.
 .It Fl c
-Name of file containing the certificate used to sign the binary.
+Имя файла, содержащего сертификат, используемый для подписи двоичного файла.
 .It Fl o
-Name of file to write the signed binary to.
+Имя файла, в который будет записан подписанный двоичный файл.
 .It Fl v
-Be verbose.
+Подробно.
 .El
-.Sh EXIT STATUS
-The
+.Sh ВОЗВРАЩАЕМОЕ ЗНАЧЕНИЕ
+Утилита
 .Nm
-utility exits 0 on success, and >0 if an error occurs.
-.Sh EXAMPLES
-Generate self-signed certificate and use it to sign a binary:
+завершает работу с 0 в случае успеха и >0 в случае возникновения ошибки.
+.Sh ПРИМЕРЫ
+Генерирует самозаверяющий сертификат и использует его для подписи двоичного файла:
 .Dl /usr/share/examples/uefisign/uefikeys testcert
 .Dl uefisign -c testcert.pem -k testcert.key -o signed-binary binary
 .Pp
-View signature:
+Просмотр подписи:
 .Dl uefisign -Vv binary
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr openssl 1 ,
 .Xr loader 8 ,
 .Xr uefi 8
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Утилита
 .Nm
-command appeared in
+появилась в
 .Fx 10.2 .
-.Sh AUTHORS
-The
+.Sh АВТОРЫ
+Утилита
 .Nm
-utility was developed by
-.An Edward Tomasz Napierala Aq Mt trasz@FreeBSD.org
-under sponsorship from the FreeBSD Foundation.
+была разработана
+.An Эдвардом Томашом Напиралом, уроженцем Монтаны trasz@FreeBSD.org
+при спонсорской поддержке FreeBSD Foundation.

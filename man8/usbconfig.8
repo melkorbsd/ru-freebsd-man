@@ -25,10 +25,10 @@
 .Dd January 29, 2022
 .Dt USBCONFIG 8
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm usbconfig
-.Nd configure the USB subsystem
-.Sh SYNOPSIS
+.Nd настройка подсистемы USB
+.Sh СИНТАКСИС
 .Nm
 .Op Fl v
 .Op Fl a Ar addr
@@ -43,161 +43,156 @@
 .Op Fl v
 .Op Fl i Ar interface_index
 .Op Ar cmds ...
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility is used to configure and dump information about the USB subsystem.
+используется для настройки и вывода информации о USB-подсистеме.
 .Pp
-The options are as follows:
+Возможны следующие параметры:
 .Bl -tag -width "-u unit"
 .It Fl a Ar addr
-Limit device range to the given USB device index.
-Should only be used in conjunction with the unit argument.
+Ограничивает диапазон устройств указанным индексом USB-устройства.
+Следует использовать только в сочетании с аргументом unit.
 .It Xo
 .Fl d
 .Sm off
 .Oo Oo Cm /dev/ Oc Cm ugen Oc Ar unit Cm \&. Ar addr
 .Sm on
 .Xc
-Limit device range to USB devices connected to the given unit and address.
-The unit and address coordinates may be prefixed by the lowercased word
+Ограничивает диапазон USB-устройств, подключенных к данному устройству и адресу.
+Перед координатами устройства и адреса может быть указано слово в нижнем регистре
 .Cm ugen ,
-or the full path name
+или полное имя пути
 .Cm /dev/ugen .
 .It Fl h
-Show help and available commands.
+Отображает справку и доступные команды.
 .It Fl i Ar interface_index
-Specify interface index as indicated by the command description.
-If this argument is not specified
-a value of zero will be used for the interface index.
+Указывает индекс интерфейса, как в описании команды.
+Если этот аргумент не указан, 
+в качестве индекса интерфейса будет использоваться нулевое значение.
 .It Fl u Ar unit
-Limit device range to USB devices connected to the given USBUS unit.
+Ограничивает диапазон USB-устройств, подключенных к данному устройству USBUS.
 .It Fl v
-Activate the
+Активирует команды
 .Cm dump_device_desc ,
 .Cm dump_curr_config_desc ,
-and
+и
 .Cm show_ifdrv
-commands
-.Pq Dq verbose mode .
+.Pq Dq подробный режим .
 .El
 .Pp
-The following commands may be used with
+Следующие команды могут быть использованы с
 .Nm :
 .Bl -tag -width indent
 .It Cm set_config Ar cfg_index
-Choose the configuration for the USB device.
-Valid values range from zero to the number reported as the
+Выберает конфигурацию для USB-устройства.
+Допустимые значения варьируются от нуля до числа, указанного в качестве
 .Ar bNumConfigurations
-in
-.Cm dump_device_desc
-output.
-The special value of 255 unconfigures the device, detaching
-the interface drivers and reducing the power consumption to minimum,
-but without going into power saving mode or detaching from the bus.
-In some cases, it prevents the device from charging.
+в выводе
+.Cm dump_device_desc .
+Специальное значение 255 отключает конфигурацию устройства, отсоединяя
+драйверы интерфейса и снижая энергопотребление до минимума,
+но без перехода в режим энергосбережения или отсоединения от шины.
+В некоторых случаях это предотвращает зарядку устройства.
 .It Cm set_alt Ar alt_index
-Choose the alternate interface for the selected interface and USB device.
-Alternative settings for the current configuration are available as the
+Выберает альтернативный интерфейс для выбранного интерфейса и USB-устройства.
+Альтернативные настройки для текущей конфигурации доступны в виде
 .Ar bAlternateSetting
-in
-.Cm dump_curr_config_desc
-output.
-Usually there is no need to adjust this setting.
-This command uses the
-.Fl i Ar interface_index
-option.
+в выводе
+.Cm dump_curr_config_desc .
+Обычно нет необходимости изменять этот параметр.
+Эта команда использует параметр
+.Fl i Ar interface_index .
 .It Cm set_template Ar template
-Set the global USB device side template.
-See
+Устанавливает глобальный шаблон на стороне USB-устройства.
+Смотрите
 .Xr usb_template 4
-for more information.
+для получения дополнительной информации.
 .It Cm get_template
-Get the current USB device side template.
+Получает текущий шаблон на стороне USB-устройства.
 .It Cm add_dev_quirk_vplh Ar vid Ar pid Ar lo_rev Ar hi_rev Ar quirk_name
-Add a quirk by specifying the Vendor ID, Product ID, low and high
-revision numbers, and the quirk name.
-See
+Добавляетособенность, указав идентификатор поставщика, идентификатор продукта, номера младшей и старшей
+редакций и название особенности.
+Смотрите
 .Xr usb_quirk 4
-for more information.
+для получения дополнительной информации.
 .It Cm remove_dev_quirk_vplh Ar vid Ar pid Ar lo_rev Ar hi_rev Ar quirk_name
-Remove a quirk.
+Удаляет особенность.
 .It Cm add_quirk Ar quirk_name
-Add quirk for the currently selected USB device.
+Добавляет особенность для выбранного в данный момент USB-устройства.
 .It Cm remove_quirk Ar quirk_name
-Remove a quirk for the currently selected USB device.
+Удаляет особенность с выбранного в данный момент USB-устройством.
 .It Cm dump_all_desc
-Display the device and configuration descriptors.
+Отображает дескрипторы устройства и конфигурации.
 .It Cm dump_quirk_names
-Display the list of supported quirk names.
+Отображает список поддерживаемых названий особенностей.
 .It Cm dump_device_quirks
-Display the list of current device quirks.
+Отображает список текущих особенностей устройства.
 .It Cm dump_device_desc
-Display the device descriptor.
+Отображает дескриптор устройства.
 .It Cm dump_curr_config_desc
-Display current configuration descriptor.
+Отображает дескриптор текущей конфигурации.
 .It Cm dump_all_config_desc
-Display all the configuration descriptors.
+Отображает все дескрипторы конфигурации.
 .It Cm dump_string Ar index
-Display string descriptor at selected index.
+Отображает строковый дескриптор по выбранному индексу.
 .It Cm dump_info
-Display summary information about the device.
+Отображает сводную информацию об устройстве.
 .It Cm dump_stats
-Display USB transfer statistics.
+Отображает статистики передачи данных по USB.
 .It Cm show_ifdrv
-Display the list of interface drivers (such as
+Отображает список драйверов интерфейса (таких как
 .Xr ukbd 4
-or
-.Xr u3g 4 )
-currently attached to the device.
+или
+.Xr u3g 4 ),
+подключенного в данный момент к устройству.
 .It Cm detach_kernel_driver
-Detach kernel driver for the selected interface and USB device.
-This command uses the
-.Fl i Ar interface_index
-option.
+Отключает драйвер ядра для выбранного интерфейса и USB-устройства.
+Эта команда использует параметр
+.Fl i Ar interface_index .
 .It Cm suspend
-Force the device to suspend.
+Принудительно приостанавливает работу устройства.
 .It Cm resume
-Force the device to resume.
+Принудительно возобновляет работу устройства.
 .It Cm power_off
-Turn the device off.
+Выключает устройство.
 .It Cm power_save
-Turn the automatic suspend and resume on.
-This is the default for USB hubs.
+Включает функцию автоматической приостановки и возобновления работы.
+Это значение используется по умолчанию для USB-концентраторов.
 .It Cm power_on
-Turn the device on and disable automatic suspend and resume.
-This is the default for non-hub devices.
+Включает устройство и отключает автоматическую приостановку и возобновление работы.
+Это значение используется по умолчанию для устройств, не подключенных к концентратору.
 .It Cm reset
-Reset the device.
-This forces the USB stack to reenumerate the bus.
+Перезагружает устройство.
+Это заставит USB-накопитель повторно перенумеровать шину.
 .It Cm list
-List all available USB devices.
-This is the default if
+Перечисляет все доступные USB-устройства.
+Это значение используется по умолчанию, если
 .Nm
-is called without specifying a command.
+вызывается без указания команды.
 .It Cm do_request Ar bmReqTyp Ar bReq Ar wVal Ar wIdx Ar wLen Ar data...
-Perform a synchronous control request on the specified device.
-See
+Выполняет синхронный запрос управления на указанном устройстве.
+Смотрите
 .Xr libusb20_dev_request_sync 3
-for more information.
+для получения дополнительной информации.
 .El
-.Sh EXAMPLES
-List all connected USB devices and their attached interface drivers:
+.Sh ПРИМЕРЫ
+Перечисляет все подключенные USB-устройства и подключенные к ним драйверы интерфейса:
 .Pp
 .Dl usbconfig show_ifdrv
 .Pp
-Dump device and configuration descriptors for device on USB bus 1 at address 2:
+Вывод устройства и дескрипторов конфигурации для устройства на шину USB 1 по адресу 2:
 .Pp
 .Dl usbconfig -d ugen1.2 dump_all_desc
 .Pp
-Dump HID descriptor for device on USB bus 1 at address 2:
+Выводит скрытый дескриптор устройства на шину USB 1 по адресу 2:
 .Pp
 .Dl usbconfig -d ugen1.2 do_request 0x81 0x06 0x2200 0 0x100
 .Pp
-Power off the device on USB bus 1 at address 2:
+Отключает питание устройства по шине USB 1 по адресу 2:
 .Pp
 .Dl usbconfig -d ugen1.2 power_off
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr usb 4 ,
 .Xr usb_quirk 4 ,
 .Xr usb_template 4
