@@ -30,13 +30,13 @@
 .\"
 .\"	@(#)tail.1	8.1 (Berkeley) 6/6/93
 .\"
-.Dd July 12, 2022
+.Dd 12 июля, 2022
 .Dt TAIL 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm tail
-.Nd display the last part of a file
-.Sh SYNOPSIS
+.Nd отображает последнюю часть файла
+.Sh СИНТАКСИС
 .Nm
 .Op Fl F | f | r
 .Op Fl qv
@@ -44,169 +44,168 @@
 .Fl b Ar number | Fl c Ar number | Fl n Ar number
 .Oc
 .Op Ar
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility displays the contents of
+отображает содержимое файла
 .Ar file
-or, by default, its standard input, to the standard output.
+или, по умолчанию, стандартного ввода, на стандартный вывод.
 .Pp
-The display begins at a byte, line or 512-byte block location in the
-input.
-Numbers having a leading plus
+Отображение начинается с байта, строки или блока размером 512 байт
+во входных данных.
+Числа с ведущим знаком плюс
 .Pq Ql +
-sign are relative to the beginning
-of the input, for example,
+относятся к началу ввода,
+например,
 .Dq Li "-c +2"
-starts the display at the second
-byte of the input.
-Numbers having a leading minus
+начинает отображение со второго
+байта ввода.
+Числа с ведущим знаком минус
 .Pq Ql -
-sign or no explicit sign are
-relative to the end of the input, for example,
+или без явного знака 
+относятся к концу ввода, например,
 .Dq Li "-n 2"
-displays the last two lines of the input.
-The default starting location is
+отображает последние две строки ввода.
+По умолчанию начальное положение
 .Dq Li "-n 10" ,
-or the last 10 lines of the input.
+или последние 10 строк ввода.
 .Pp
-The options are as follows:
+Допустимы следующие параметры:
 .Bl -tag -width indent
 .It Fl b Ar number , Fl -blocks Ns = Ns Ar number
-The location is
+Смещение задано числом
 .Ar number
-512-byte blocks.
+блоков по 512 байт.
 .It Fl c Ar number , Fl -bytes Ns = Ns Ar number
-The location is
+Смещение задано числом
 .Ar number
-bytes.
+байтов.
 .It Fl f
-The
+Параметр
 .Fl f
-option causes
+позволяет
 .Nm
-to not stop when end of file is reached, but rather to wait for additional
-data to be appended to the input.
-The
+не останавливаться при достижении конца файла,а ждать
+дополнительных данных, добавленных во ввод.
+Параметр
 .Fl f
-option is ignored if the standard input is a pipe, but not if it is a FIFO.
+игнорируется, если стандартный ввод является каналом, но если это не FIFO.
 .It Fl F
-The
+Параметр
 .Fl F
-option implies the
+Подразумевает параметр
 .Fl f
-option, but
+но
 .Nm
-will also check to see if the file being followed has been renamed or rotated.
-The file is closed and reopened when
+также проверяет, был ли отслеживаемый файл переименован или заменен.
+Файл закрывается и открывается заново, когда
 .Nm
-detects that the filename being read from has a new inode number.
+обнаруживает, что имя файла, из которого происходит чтение, имеет новый номер индексного дескриптора (inode).
 .Pp
-If the file being followed does not (yet) exist or if it is removed, tail
-will keep looking and will display the file from the beginning if and when
-it is created.
+Если отслеживаемый файл (ешё) не существует или был удален,
+продолжит его ожидание и отобразит файл с начала, когда
+он будет создан.
 .Pp
-The
+Параметр
 .Fl F
-option is the same as the
+эквивалентен параметру
 .Fl f
-option if reading from standard input rather than a file.
+при чтении из стандартного ввода, а не из файла.
 .It Fl n Ar number , Fl -lines Ns = Ns Ar number
-The location is
+Смещение задано числом
 .Ar number
-lines.
+строк.
 .It Fl q, Fl -quiet, Fl -silent
-Suppresses printing of headers when multiple files are being examined.
+Подавляет печать заголовков при анализе нескольких файлов.
 .It Fl r
-The
+Параметр
 .Fl r
-option causes the input to be displayed in reverse order, by line.
-Additionally, this option changes the meaning of the
+приводит к отображению ввода в обратном порядке, по строкам.
+Кроме того, эта опция изменяет значение параметров 
 .Fl b , c
-and
+и
 .Fl n
-options.
-When the
+параметры
+Когда указан параметр
 .Fl r
-option is specified, these options specify the number of bytes, lines
-or 512-byte blocks to display, instead of the bytes, lines or blocks
-from the beginning or end of the input from which to begin the display.
-The default for the
+эти параметры указывают количество байтов, строк
+или блоков по 512 байт смещения, вместо байтов, строк или блоков
+с начала или конца ввода, с которых начинается отображение.
+По умолчанию параметр
 .Fl r
-option is to display all of the input.
+предполагает отображение всего ввода.
 .It Fl v, Fl -verbose
-Prepend each file with a header.
+Добавляет заголовок к каждому файлу.
 .El
 .Pp
-If more than a single file is specified, or if the
+Если указано более одного файла или использован параметр
 .Fl v
-option is used, each file is preceded by a
-header consisting of the string
+каждый файл предваряется заголовком,
+состоящим из строки
 .Dq Li "==> " Ns Ar XXX Ns Li " <=="
-where
+где
 .Ar XXX
-is the name of the file.
-The
+это имя файла.
+Флаг
 .Fl q
-flag disables the printing of the header in all cases.
+отключает печать заголовка во всех случаях.
 .Pp
-All
+Все аргументы
 .Ar number
-arguments may also be specified with size suffixes supported by
+могут также быть указаны с суффиксами размеров, поддерживаемыми функцией
 .Xr expand_number 3 .
-.Sh EXIT STATUS
+.Sh ВОЗВРАЩАЕМОЕ ЗНАЧЕНИЕ
 .Ex -std
-.Sh EXAMPLES
-To display the last 500 lines of the file
+.Sh ПРИМЕРЫ
+Для отображения последних 500 строк файла
 .Ar foo :
 .Pp
 .Dl $ tail -n 500 foo
 .Pp
-Keep
+Удерживать открытым файл
 .Pa /var/log/messages
-open, displaying to the standard output anything appended to the file:
+отображая на стандартный вывод все добавленные данные в файл:
 .Pp
 .Dl $ tail -F /var/log/messages
-.Sh SEE ALSO
+.Sh СМОТРИ ТАКЖЕ
 .Xr cat 1 ,
 .Xr head 1 ,
 .Xr sed 1 ,
 .Xr expand_number 3
-.Sh STANDARDS
-The
+.Sh СТАНДАРТЫ
+Ожидается,что утилитв
 .Nm
-utility is expected to be a superset of the
+будет дополнением к спецификации
 .St -p1003.2-92
-specification.
-In particular, the
+В частности, параметры 
 .Fl F ,
 .Fl b
-and
+и
 .Fl r
-options are extensions to that standard.
+являются расширениями этого стандарта.
 .Pp
-The historic command line syntax of
+Исторический синтаксис команды
 .Nm
-is supported by this implementation.
-The only difference between this implementation and historic versions
-of
+поддерживается этой реализацией.
+Единственное различие между этой реализацией и историческими
+версиями
 .Nm ,
-once the command line syntax translation has been done, is that the
+заключается в том, что после того выполнения синтаксического разбора командной строки, параметры 
 .Fl b ,
 .Fl c
-and
+и
 .Fl n
-options modify the
+меняют значение параметра
 .Fl r
-option, i.e.,
+т.е.,
 .Dq Li "-r -c 4"
-displays the last 4 characters of the last line
-of the input, while the historic tail (using the historic syntax
+отображает последние 4 символа последней строки 
+ввода, тогда как исторический tail (используя исторический синтаксис 
 .Dq Li -4cr )
-would ignore the
+игнорировал бы параметр
 .Fl c
-option and display the last 4 lines of the input.
-.Sh HISTORY
-A
+и отображал бы последние 4 строки ввода. 
+.Sh ИСТОРИЯ
+Команда 
 .Nm
-command appeared in PWB UNIX.
+появилась в PWB UNIX.

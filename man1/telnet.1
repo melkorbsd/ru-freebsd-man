@@ -28,15 +28,15 @@
 .\"	@(#)telnet.1	8.6 (Berkeley) 6/1/94
 .\" $FreeBSD$
 .\"
-.Dd September 29, 2022
+.Dd 29 сентября, 2022
 .Dt TELNET 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm telnet
-.Nd user interface to the
+.Nd пользовательский интерфейс для
 .Tn TELNET
-protocol
-.Sh SYNOPSIS
+протокола
+  .Sh СИНТАКСИС
 .Nm
 .Op Fl 468EFKLNQacdfruxy
 .Op Fl B Ar baudrate
@@ -52,555 +52,554 @@ protocol
 .Ar host
 .Op Ar port
 .Oc
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Команда
 .Nm
 command
-is used to communicate with another host using the
+используется для связи с другим хостом с использованием
 .Tn TELNET
-protocol.
-If
+протокола.
+Если
 .Nm
-is invoked without the
+вызывается без
 .Ar host
-argument, it enters command mode,
-indicated by its prompt
+аргумента, она входит в режим команд,
+указанный своим приглашением
 .Pq Dq Li telnet\&> .
-In this mode, it accepts and executes the commands listed below.
-If it is invoked with arguments, it performs an
+В этом режиме она принимает и выполняет перечисленные ниже команды.
+Если она вызывается с аргументами, она выполняет 
 .Ic open
-command with those arguments.
+команду с этими аргументами.
 .Pp
-Options:
+Опции:
 .Bl -tag -width indent
 .It Fl 4
-Forces
+Принудительно заставляет
 .Nm
-to use IPv4 addresses only.
+использовать только адреса IPv4.
 .It Fl 6
-Forces
+Принудительно заставляет
 .Nm
-to use IPv6 addresses only.
+использовать только адреса IPv6.
 .It Fl 8
-Specifies an 8-bit data path.
-This causes an attempt to
-negotiate the
+Указывает 8-битный путь данных.
+Это вызывает попытку 
+согласования
 .Dv TELNET BINARY
-option on both input and output.
+опции как на вводе, так и на выводе.
 .It Fl B Ar baudrate
-Sets the baud rate to
+Устанавливает скорость передачи данных в
 .Ar baudrate .
 .It Fl E
-Stops any character from being recognized as an escape character.
+Предотвращает распознавание любого символа как символа экранирования.
 .It Fl F
-If Kerberos V5 authentication is being used, the
+Если используется аутентификация Kerberos V5, 
 .Fl F
-option allows the local credentials to be forwarded
-to the remote system, including any credentials that
-have already been forwarded into the local environment.
+опция позволяет перенаправить локальные учетные данные на 
+удаленную систему, включая любые учетные данные, которые уже были 
+перенаправлены в локальное окружение.
 .It Fl K
-Specifies no automatic login to the remote system.
+Указывает на отсутствие автоматического входа в удаленную систему.
 .It Fl L
-Specifies an 8-bit data path on output.
-This causes the
+Указывает 8-битный путь данных на выводе.
+Это вызывает
 .Dv BINARY
-option to be negotiated on output.
+согласование опции на выводе.
 .It Fl N
-Prevents IP address to name lookup when destination host is given
-as an IP address.
+Предотвращает преобразование IP-адреса в имя при указании
+IP-адреса целевого хоста.
 .It Fl Q
-Quiet mode.
-This suppresses the messages
+Тихий режим.
+Это подавляет сообщения,
 .Nm
-would normally output upon connecting or disconnecting.
+которые обычно выводит при подключении или отключении.
 .It Fl S Ar tos
-Sets the IP type-of-service (TOS) option for the telnet
-connection to the value
+Устанавливает опцию типа обслуживания IP (TOS) для telnet-соединения 
+в значение 
 .Ar tos ,
-which can be a numeric TOS value
-or, on systems that support it, a symbolic
-TOS name found in the
+которое может быть числовым значением TOS 
+или, на системах, поддерживающих это, символьным 
+именем TOS, найденным в
 .Pa /etc/iptos
-file.
+файле.
 .It Fl X Ar atype
-Disables the
+Отключает
 .Ar atype
-type of authentication.
+тип аутентификации.
 .It Fl a
-Attempt automatic login.
-This is now the default, so this option is ignored.
-Currently, this sends the user name via the
+Попытка автоматического входа.
+Сейчас это значение по умолчанию, поэтому эта опция игнорируется.
+В настоящее время это отправляет имя пользователя 
 .Ev USER
-variable
-of the
+через
+переменную
 .Ev ENVIRON
-option if supported by the remote system.
-The name used is that of the current user as returned by
+опции, если ее поддерживает удаленная система.
+Имя, используемое, является именем текущего пользователя, возвращаемым 
 .Xr getlogin 2
-if it agrees with the current user ID,
-otherwise it is the name associated with the user ID.
+если оно совпадает с текущим идентификатором пользователя, 
+в противном случае это имя, связанное с идентификатором пользователя.
 .It Fl c
-Disables the reading of the user's
+Отключает чтение пользователя
 .Pa \&.telnetrc
-file.
-(See the
+файла.
+(Смотри
 .Ic toggle skiprc
-command on this man page.)
+команду на этой странице руководства.)
 .It Fl d
-Sets the initial value of the
+Устанавливает начальное значение
 .Ic debug
-toggle to
+переключателя в
 .Dv TRUE .
 .It Fl e Ar escapechar
-Sets the initial
+Устанавливает начальный символ
 .Nm
-escape character to
+экранирования в символ
 .Ar escapechar .
-If
+Если
 .Ar escapechar
-is omitted, then
-there will be no escape character.
+опущен,то
+то символ экранирования не будет установлен.
 .It Fl f
-If Kerberos V5 authentication is being used, the
+Если используется аутентификация Kerberos V5, 
 .Fl f
-option allows the local credentials to be forwarded to the remote system.
+опция позволяет перенаправить локальные учетные данные на удаленную систему.
 .It Fl k Ar realm
-If Kerberos authentication is being used, the
+Если используется аутентификация Kerberos,
 .Fl k
-option requests that
+опция запрашивает,чтобы
 .Nm
-obtain tickets for the remote host in
-realm
+получить билеты для удаленного хоста 
+в области
 .Ar realm
-instead of the remote host's realm, as determined by
+вместо области удаленного хоста, определенной
 .Xr krb_realmofhost 3 .
 .It Fl l Ar user
-When connecting to the remote system, if the remote system
-understands the
+При подключении к удаленной системе, если удаленная система
+понимает
 .Ev ENVIRON
-option, then
+опцию,то
 .Ar user
-will be sent to the remote system as the value for the variable
+будет отправлен на удаленную систему в качестве значения переменной
 .Ev USER .
-This option implies the
+Эта опция подразумевает 
 .Fl a
-option.
-This option may also be used with the
+опцию.
+Эту опцию также можно использовать с
 .Ic open
-command.
+командой.
 .It Fl n Ar tracefile
-Opens
+Открывает
 .Ar tracefile
-for recording trace information.
-See the
+для записи трассировочной информации.
+Смотрите
 .Ic set tracefile
-command below.
+команду ниже.
 .It Fl P Ar policy
-Use IPsec policy specification string
+Использовать строку спецификации политики IPsec
 .Ar policy ,
-for the connections.
-See
+для соединений.
+Смотрите
 .Xr ipsec_set_policy 3
-for details.
+для подбробностей.
 .It Fl r
-Specifies a user interface similar to
+Указывает пользовательский интерфейс, аналогичный
 .Xr rlogin 1 .
-In this
-mode, the escape character is set to the tilde (~) character,
-unless modified by the
+В этом
+режиме символ экранирования установлен на символ тильды (~),
+если его не изменяет
 .Fl e
-option.
+опция.
 .It Fl s Ar src_addr
-Set the source IP address for the
+Устанавливает исходный IP-адрес для
 .Nm
-connection to
+соединения на
 .Ar src_addr ,
-which can be an IP address or a host name.
+который может быть IP-адресом или именем хоста.
 .It Fl u
-Forces
+Принудительно заставляет
 .Nm
-to use
+использовать
 .Dv AF_UNIX
-addresses only (e.g.,
+только адреса (например,
 .Ux
-domain sockets, accessed with a file path).
+доменные сокеты, доступные по пути к файлу).
 .It Fl x
-Turns on encryption of the data stream if possible.
-This is now the default, so this option is ignored.
+Включает шифрование потока данных, если это возможно.
+Сейчас это значение по умолчанию, поэтому эта опция игнорируется.
 .It Fl y
-Suppresses encryption of the data stream.
+Подавляет шифрование потока данных.
 .It Ar host
-Indicates the official name, an alias, or the Internet address
-of a remote host.
-If
+Указывает официальное имя, псевдоним или интернет-адрес
+удаленного хоста.
+Если
 .Ar host
-starts with a
+начинается с
 .Ql / ,
 .Nm
-establishes a connection to the corresponding named socket.
+устанавливает соединение с соответствующим именованным сокетом.
 .It Ar port
-Indicates a port number (address of an application).
-If a number is
-not specified, the default
+Указывает номер порта (адрес приложения).
+Если номер
+не указан,используется
 .Nm
-port is used.
+порт по умолчанию.
 .El
 .Pp
-When in rlogin mode, a line of the form ~.\& disconnects from the
-remote host; ~ is the
+В режиме rlogin строка вида ~.\& отключает соединение с
+удаленным хостом; ~ это
 .Nm
-escape character.
-Similarly, the line ~^Z suspends the
+символ экранирования.
+Аналогично,строка ~^Z приостанавливает
 .Nm
-session.
-The line ~^] escapes to the normal
+сеанс.
+Строка ~^] переходит в обычный
 .Nm
-escape prompt.
+приглашение на экране.
 .Pp
-Once a connection has been opened,
+После установления соединения,
 .Nm
-will attempt to enable the
+попытается включить
 .Dv TELNET LINEMODE
-option.
-If this fails, then
+опцию.
+Если это не удается, то
 .Nm
-will revert to one of two input modes:
-either \*(Lqcharacter at a time\*(Rq
-or \*(Lqold line by line\*(Rq
-depending on what the remote system supports.
+вернется к одному из двух режимов ввода:
+либо \*(Lqcharacter по символу\*(Rq
+либо \*(Lqold по старой строке\*(Rq
+в зависимости от того, что поддерживает удаленная система.
 .Pp
-When
+Когда
 .Dv LINEMODE
-is enabled, character processing is done on the
-local system, under the control of the remote system.
-When input
-editing or character echoing is to be disabled, the remote system
-will relay that information.
-The remote system will also relay
-changes to any special characters that happen on the remote
-system, so that they can take effect on the local system.
+обработка символов выполняется на 
+локальной системе под управлением удаленной системы.
+Когда отключается
+редактирование ввода или эхо символов, удаленная система
+передаст эту информацию.
+Удаленная система также передаст
+изменения любых специальных символов, происходящих на удаленной 
+системе, чтобы они могли вступить в силу на локальной системе.
 .Pp
-In \*(Lqcharacter at a time\*(Rq mode, most
-text typed is immediately sent to the remote host for processing.
+В \*(Lqcharacter по символу\*(Rq mode, большинство
+введенного текста немедленно отправляется на удаленный хост для обработки.
 .Pp
-In \*(Lqold line by line\*(Rq mode, all text is echoed locally,
-and (normally) only completed lines are sent to the remote host.
-The \*(Lqlocal echo character\*(Rq (initially \*(Lq^E\*(Rq) may be used
-to turn off and on the local echo
-(this would mostly be used to enter passwords
-without the password being echoed).
+В \*(Lqold по старой строке\*(Rq mode, весь текст отображается локально,
+и (обычно) отправляются только завершенные строки на удаленный хост.
+Символ \*(Lqlocal локального эха\*(Rq (изначально \*(Lq^E\*(Rq) можно использовать
+для отключения и включения локального эха 
+(это, как правило, используется для ввода паролей 
+без их отображения).
 .Pp
-If the
+Если
 .Dv LINEMODE
-option is enabled, or if the
+включена или если переключатель 
 .Ic localchars
-toggle is
+установлен в
 .Dv TRUE
-(the default for \*(Lqold line by line\*(Rq; see below),
-the user's
+(по умолчанию для \*(Lqold по старой строке\*(Rq; смотрите ниже),
+символы пользователя
 .Ic quit ,
 .Ic intr ,
-and
+и
 .Ic flush
-characters are trapped locally, and sent as
+захватываются локально и отправляются как последовательности
 .Tn TELNET
-protocol sequences to the remote side.
-If
+протокола на удаленную сторону.
+Если
 .Dv LINEMODE
-has ever been enabled, then the user's
+когда-либо был включен, то символы пользователя
 .Ic susp
-and
+и
 .Ic eof
-are also sent as
+также отправляются как
 .Tn TELNET
-protocol sequences,
-and
+последовательности протокола,
+а
 .Ic quit
-is sent as a
+отправляется как
 .Dv TELNET ABORT
-instead of
+вместо
 .Dv BREAK .
-There are options (see
+Существуют опции (см.
 .Ic toggle
 .Ic autoflush
-and
+и
 .Ic toggle
 .Ic autosynch
-below)
-which cause this action to flush subsequent output to the terminal
-(until the remote host acknowledges the
+ниже)
+которые вызывают сброс последующего вывода на терминале 
+(до того, как удаленный хост подтвердит последовательность
 .Tn TELNET
-sequence) and flush previous terminal input
-(in the case of
+протокола) и сброс предыдущего ввода терминала 
+(в случае символов
 .Ic quit
-and
+и
 .Ic intr ) .
 .Pp
-While connected to a remote host,
+Во время подключения к удаленному хосту
 .Nm
-command mode may be entered by typing the
+режим команды может быть введен путем набора 
 .Nm
-\*(Lqescape character\*(Rq (initially \*(Lq^]\*(Rq).
-When in command mode, the normal terminal editing conventions are available.
+\*(Lqescape символа\*(Rq (изначально \*(Lq^]\*(Rq).
+В режиме команды доступны обычные конвенции редактирования терминала.
 .Pp
-The following
+Доступны
 .Nm
-commands are available.
-Only enough of each command to uniquely identify it need be typed
-(this is also true for arguments to the
+следующие команды.
+Необходимо ввести только то количество каждой команды,которое необходимо для ее однозначной идентификации
+(это также верно для аргументов
 .Ic mode ,
 .Ic set ,
 .Ic toggle ,
 .Ic unset ,
 .Ic slc ,
 .Ic environ ,
-and
+и
 .Ic display
-commands).
+команд).
 .Bl -tag -width "mode type"
-.It Ic auth Ar argument ...
-The auth command manipulates the information sent through the
-.Dv TELNET AUTHENTICATE
-option.
-Valid arguments for the
+.It Ic auth Ar аргумент ...
+Команда auth управляет информацией, отправляемой через 
+Dv TELNET AUTHENTICATE
+опцию.
+Допустимые аргументы для
 .Ic auth
-command are:
+команды:
 .Bl -tag -width "disable type"
 .It Ic disable Ar type
-Disables the specified type of authentication.
-To
-obtain a list of available types, use the
+Отключает указанный тип аутентификации. 
+Для
+получения списка доступных типов используйте
 .Ic auth disable ?\&
-command.
+команду.
 .It Ic enable Ar type
-Enables the specified type of authentication.
-To
-obtain a list of available types, use the
+Включает указанный тип аутентификации.
+Для
+получения списка доступных типов используйте
 .Ic auth enable ?\&
-command.
+команду.
 .It Ic status
-Lists the current status of the various types of
-authentication.
+Выводит текущий статус различных типов
+аутентификации.
 .El
 .It Ic close
-Close a
+Закрывает
 .Tn TELNET
-session and return to command mode.
+сеанс и возвращает в режим команды.
 .It Ic display Ar argument ...
-Displays all, or some, of the
-.Ic set
-and
+Отображает все или некоторые
+Ic set
+и
 .Ic toggle
-values (see below).
+значения (смотри ниже).
 .It Ic encrypt Ar argument ...
-The encrypt command manipulates the information sent through the
+ Команда encrypt управляет информацией, отправляемой через
 .Dv TELNET ENCRYPT
-option.
+опцию.
 .Pp
-Valid arguments for the
+Допустимые аргументы для
 .Ic encrypt
-command are:
+команды:
 .Bl -tag -width Ar
 .It Ic disable Ar type Xo
 .Op Cm input | output
 .Xc
-Disables the specified type of encryption.
-If you
-omit the input and output, both input and output
-are disabled.
-To obtain a list of available
-types, use the
+Отключает указанный тип шифрования.
+Если вы
+опустите ввод и вывод, то и ввод, и вывод будут отключены.
+Для получения списка доступных
+типов,используйте
 .Ic encrypt disable ?\&
-command.
+команду.
 .It Ic enable Ar type Xo
 .Op Cm input | output
 .Xc
-Enables the specified type of encryption.
-If you
-omit input and output, both input and output are
-enabled.
-To obtain a list of available types, use the
+Включает указанный тип шифрования.
+Если вы
+опустите ввод и вывод, то и ввод, и вывод будут 
+включены.
+Для получения списка доступных типов используйте
 .Ic encrypt enable ?\&
-command.
+команду.
 .It Ic input
-This is the same as the
+Это то же самое,что и
 .Ic encrypt start input
-command.
+команда.
 .It Ic -input
-This is the same as the
+Это то же самое,что и
 .Ic encrypt stop input
-command.
+команда.
 .It Ic output
-This is the same as the
+Это то же самое,что и
 .Ic encrypt start output
-command.
+команда.
 .It Ic -output
-This is the same as the
+Это то же самое,что и
 .Ic encrypt stop output
-command.
+команда.
 .It Ic start Op Cm input | output
-Attempts to start encryption.
-If you omit
+Пытается начать шифрование.
+Если вы опустите
 .Ic input
-and
+и
 .Ic output ,
-both input and output are enabled.
-To
-obtain a list of available types, use the
+то и ввод, и вывод будут включены.
+Для
+получения списка доступных типов используйте
 .Ic encrypt enable ?\&
-command.
+команда.
 .It Ic status
-Lists the current status of encryption.
+Выводит текущий статус шифрования.
 .It Ic stop Op Cm input | output
-Stops encryption.
-If you omit input and output,
-encryption is on both input and output.
+Останавливает шифрование.
+Если вы опустите ввод и вывод,
+то шифрование будет применено как к вводу, так и к выводу.
 .It Ic type Ar type
-Sets the default type of encryption to be used
-with later
+Устанавливает тип шифрования по умолчанию для 
+последующих
 .Ic encrypt start
-or
+или
 .Ic encrypt stop
-commands.
+команд.
 .El
 .It Ic environ Ar arguments ...
-The
+Команда
 .Ic environ
-command is used to manipulate the
-variables that may be sent through the
+используется для управления 
+переменными, которые могут быть отправлены через 
 .Dv TELNET ENVIRON
-option.
-The initial set of variables is taken from the users
-environment, with only the
+опцию.
+Начальный набор переменных берется из среды
+пользователя, только
 .Ev DISPLAY
-and
+и
 .Ev PRINTER
-variables being exported by default.
-The
+переменные экспортируются по умолчанию.
+Переменная
 .Ev USER
-variable is also exported if the
+также экспортируется, если
 .Fl a
-or
+или
 .Fl l
-options are used.
+используются опции.
 .Pp
-Valid arguments for the
+Допустимые аргументы
 .Ic environ
-command are:
+для команды:
 .Bl -tag -width Fl
-.It Ic define Ar variable value
-Define the variable
+.It Ic определяет Ar variable value
+Определяет переменную
 .Ar variable
-to have a value of
+со значением
 .Ar value .
-Any variables defined by this command are automatically exported.
-The
+Любые переменные, определенные этой командой, автоматически экспортируются.
+Значение
 .Ar value
-may be enclosed in single or double quotes so
-that tabs and spaces may be included.
+может быть заключено в одинарные или двойные 
+кавычки, чтобы можно было включить табуляции и пробелы.
 .It Ic undefine Ar variable
-Remove
+Удаляет
 .Ar variable
-from the list of environment variables.
+из списка переменных среды.
 .It Ic export Ar variable
-Mark the variable
+Отмечает переменную
 .Ar variable
-to be exported to the remote side.
+для экспорта на удаленную сторону.
 .It Ic unexport Ar variable
-Mark the variable
+Отмечает переменную
 .Ar variable
-to not be exported unless
-explicitly asked for by the remote side.
+чтобы она не экспортировалась,
+если это не было явно запрошено удаленной стороной.
 .It Ic list
-List the current set of environment variables.
-Those marked with a
+Выводит текущий набор переменных среды.
+Те,что помечены
 .Cm *
-will be sent automatically,
-other variables will only be sent if explicitly requested.
+будут отправлены автоматически,
+другие переменные будут отправлены только при явном запросе.
 .It Ic ?\&
-Prints out help information for the
+Выводит информацию для
 .Ic environ
-command.
+команды.
 .El
 .It Ic logout
-Sends the
+Отправляет
 .Dv TELNET LOGOUT
-option to the remote side.
-This command is similar to a
+опцию на удаленную сторону.
+Эта команда аналогична
 .Ic close
-command; however, if the remote side does not support the
+команде; однако, если удаленная сторона не поддерживает
 .Dv LOGOUT
-option, nothing happens.
-If, however, the remote side does support the
+опцию, ничего не происходит.
+Если же удаленная сторона поддерживает
 .Dv LOGOUT
-option, this command should cause the remote side to close the
+опцию, эта команда должна заставить удаленную сторону закрыть
 .Tn TELNET
-connection.
-If the remote side also supports the concept of
-suspending a user's session for later reattachment,
-the logout argument indicates that you
-should terminate the session immediately.
+соединение.
+Если удаленная сторона также поддерживает возможность
+приостановки сеанса пользователя для последующего повторного подключения,
+аргумент logout указывает, что вы 
+должны немедленно завершить сеанс.
 .It Ic mode Ar type
 .Ar Type
-is one of several options, depending on the state of the
+является одним из нескольких вариантов, в зависимости от состояния
 .Tn TELNET
-session.
-The remote host is asked for permission to go into the requested mode.
-If the remote host is capable of entering that mode, the requested
-mode will be entered.
+сеанса.
+Запрашивается разрешение у удаленного хоста на переход в запрошенный режим.
+Если удаленный хост способен войти в этот режим, 
+будет введен запрошенный режим.
 .Bl -tag -width Ar
 .It Ic character
-Disable the
+Отключает 
 .Dv TELNET LINEMODE
-option, or, if the remote side does not understand the
+опцию, или, если удаленная сторона не понимает 
 .Dv LINEMODE
-option, then enter \*(Lqcharacter at a time\*(Rq mode.
+опцию, то входит в \*(Lqcharacter по символам\*(Rq режим.
 .It Ic line
-Enable the
+Включает
 .Dv TELNET LINEMODE
-option, or, if the remote side does not understand the
+опцию, если удаленная сторона не понимает 
 .Dv LINEMODE
-option, then attempt to enter \*(Lqold-line-by-line\*(Rq mode.
+опцию, то пытается войти в \*(Lqold-line-by-line\*(Rq режим.
 .It Ic isig Pq Ic \-isig
-Attempt to enable (disable) the
+Пытается включить (выключить)
 .Dv TRAPSIG
-mode of the
+режим
 .Dv LINEMODE
-option.
-This requires that the
+опции.
+Для этого требуется включить
 .Dv LINEMODE
-option be enabled.
+опцию.
 .It Ic edit Pq Ic \-edit
-Attempt to enable (disable) the
+Пытается включить (выключить)
 .Dv EDIT
-mode of the
+режим
 .Dv LINEMODE
-option.
-This requires that the
+опции.
+Для этого требуется включить
 .Dv LINEMODE
-option be enabled.
+опцию.
 .It Ic softtabs Pq Ic \-softtabs
-Attempt to enable (disable) the
+Пытается включить (выключить)
 .Dv SOFT_TAB
-mode of the
+режим
 .Dv LINEMODE
-option.
-This requires that the
+опции.
+Для этого требуется включить
 .Dv LINEMODE
-option be enabled.
+опцию.
 .It Ic litecho Pq Ic \-litecho
-Attempt to enable (disable) the
+Пытается включить (выключить)
 .Dv LIT_ECHO
-mode of the
+режим
 .Dv LINEMODE
-option.
-This requires that the
+опции.
+Для этого требуется включить
 .Dv LINEMODE
-option be enabled.
+опцию.
 .It Ic ?\&
-Prints out help information for the
+Выводит справочную информацию для
 .Ic mode
-command.
+команды.
 .El
 .It Xo
 .Ic open
@@ -608,636 +607,635 @@ command.
 .Op Ar host
 .Op Oo Fl /+ Oc Ns Ar port
 .Xc
-Open a connection to the named host.
-If no port number
-is specified,
+Устанавливает соединение с указанным хостом.
+Если номер порта
+не указан,
 .Nm
-will attempt to contact a
+попытается связаться с
 .Tn TELNET
-server at the default port.
-The host specification may be either a host name (see
+сервером на порте по умолчанию.
+Хост может быть именем хоста (см.
 .Xr hosts 5 ) ,
-an Internet address specified in the \*(Lqdot notation\*(Rq (see
+адресом в формате \*(Lqdot notation\*(Rq (см.
 .Xr inet 3 ) ,
-or IPv6 host name or IPv6 coloned-hexadecimal address.
-The
+или IPv6 именем хоста или IPv6 адресом в шестнадцатеричной записи.
+Опция
 .Fl l
-option may be used to specify the user name
-to be passed to the remote system via the
+используется для указания имени пользователя,
+которое будет передано на удаленную систему через
 .Ev ENVIRON
-option.
-When connecting to a non-standard port,
+опцию.
+При подключении к нестандартному порту
 .Nm
-omits any automatic initiation of
+пропускает любую автоматическую инициацию
 .Tn TELNET
-options.
-When the port number is preceded by a minus sign,
-the initial option negotiation is done.
-When, however, the port number
-is preceded by a plus sign,
-any option negotiation and understanding is prohibited,
-making telnet dumb client for POP3/SMTP/NNTP/HTTP-like
-protocols with any data including
+опций.
+Если номер порта предшествует минусовой знак, 
+происходит начальная согласованность опций. 
+Если же номер порта 
+предшествует плюсовой знак, 
+любая согласованность опций запрещена,
+создание простого Telnet-клиента для POP3/SMTP/NNTP/HTTP-подобных
+протоколов с любыми данными,включая
 .Tn TELNET
-IAC character (0xff).
-After establishing a connection, the file
+IAC символ (0xff).
+После установления соединения, файл
 .Pa \&.telnetrc
-in the
-users home directory is opened.
-Lines beginning with a # are
-comment lines.
-Blank lines are ignored.
-Lines that begin
-without white space are the start of a machine entry.
-The
-first thing on the line is the name of the machine that is
-being connected to.
-It may be the hostname or numeric address specified as the argument
+в
+домашнем каталоге пользователя открывается.
+Строки,начинающиеся с # являются
+строками комментариев.
+Пустые строки игнорируются.
+Строки, начинающиеся 
+без пробелов, считаются началом записи для машины.
+Первое
+в строке — это имя машины, к которой происходит 
+подключение.
+Это может быть имя хоста или числовой адрес в аргументе
 .Ar host ,
-the canonical name of that string as determined by
+каноническое имя этой строки, определенное с помощью
 .Xr getaddrinfo 3 ,
-or the string
+или строка
 .Dq Li DEFAULT
-indicating all hosts.
-The rest of the line, and successive
-lines that begin with white space are assumed to be
+указывающая на все хосты.
+Оставшаяся часть строки и последующие
+строки, начинающиеся с пробелов, считаются
 .Nm
-commands and are processed as if they had been typed
-in manually to the
+командами и обрабатываются так, как если бы они были введены 
+вручную
 .Nm
-command prompt.
+в командой строке.
 .It Ic quit
-Close any open
+Закрывает любую
 .Tn TELNET
-session and exit
+сессию и выходит из
 .Nm .
 An end of file (in command mode) will also close a session and exit.
 .It Ic send Ar arguments
-Sends one or more special character sequences to the remote host.
-The following are the arguments which may be specified
-(more than one argument may be specified at a time):
+Отправляет одну или несколько специальных последовательностей символов на удаленный хост.Ниже приведены аргументы, которые могут быть указаны 
+(можно указать более одного аргумента за раз):
 .Bl -tag -width escape
 .It Ic abort
-Sends the
+Отправляет
 .Dv TELNET ABORT
-(Abort
-processes)
-sequence.
+(прерывание
+процессов)
+последовательность.
 .It Ic ao
-Sends the
+Отправляет
 .Dv TELNET AO
-(Abort Output) sequence, which should cause the remote system to flush
-all output
+(прерывание вывода) последовательность, что должно заставить удаленную систему очистить
+все выводы
 .Em from
-the remote system
+с удаленной системы
 .Em to
-the user's terminal.
+к терминалу пользователя.
 .It Ic ayt
-Sends the
+Отправляет
 .Dv TELNET AYT
 (Are You There)
-sequence, to which the remote system may or may not choose to respond.
+последовательность, на которую удаленная система может или не может ответить.
 .It Ic brk
-Sends the
+Отправляет
 .Dv TELNET BRK
-(Break) sequence, which may have significance to the remote
-system.
+(Break) последовательность,которая может иметь значение для удаленной
+системы.
 .It Ic ec
-Sends the
+Отправляет
 .Dv TELNET EC
 (Erase Character)
-sequence, which should cause the remote system to erase the last character
-entered.
+последовательность,что должно заставить удаленную систему стереть последний введенный
+символ.
 .It Ic el
-Sends the
+Отправляет
 .Dv TELNET EL
 (Erase Line)
-sequence, which should cause the remote system to erase the line currently
-being entered.
+последовательность, что должно заставить удаленную систему стереть текущую 
+вводимую строку.
 .It Ic eof
-Sends the
+Отправляет
 .Dv TELNET EOF
 (End Of File)
-sequence.
+поледовательность.
 .It Ic eor
-Sends the
+Отправляет
 .Dv TELNET EOR
 (End of Record)
-sequence.
+последовательность.
 .It Ic escape
-Sends the current
+Отправляет текущий
 .Nm
-escape character (initially \*(Lq^\*(Rq).
+escape символ (изначально \*(Lq^\*(Rq).
 .It Ic ga
-Sends the
+Отправляет
 .Dv TELNET GA
 (Go Ahead)
-sequence, which likely has no significance to the remote system.
+последовательность, которая вероятно не имеет значения для удаленной системы.
 .It Ic getstatus
-If the remote side supports the
+Если удаленная сторона поддерживает 
 .Dv TELNET STATUS
-command,
+команду,
 .Ic getstatus
-will send the subnegotiation to request that the server send
-its current option status.
+отправит подзапрос для запроса серверу отправить его
+текущий статус опции.
 .It Ic ip
-Sends the
+Отправляет
 .Dv TELNET IP
-(Interrupt Process) sequence, which should cause the remote
-system to abort the currently running process.
+(Interrupt Process) последовательность, что должно заставить удаленную
+систему прервать текущий запущенный процесс.
 .It Ic nop
-Sends the
+Отправляет
 .Dv TELNET NOP
 (No OPeration)
-sequence.
+последовательность.
 .It Ic susp
-Sends the
+Отправляет
 .Dv TELNET SUSP
 (SUSPend process)
-sequence.
+последовательность.
 .It Ic synch
-Sends the
+Отправляет
 .Dv TELNET SYNCH
-sequence.
-This sequence causes the remote system to discard all previously typed
-(but not yet read) input.
-This sequence is sent as
+последовательность.
+Эта последовательность заставляет удаленную систему отбросить все предварительно введенные 
+(но еще не прочитанные) данные.
+Эта последовательность отправляется как 
 .Tn TCP
 urgent
-data (and may not work if the remote system is a
+data (и может не работать, если удаленная система является
 .Bx 4.2
-system -- if
-it doesn't work, a lower case \*(Lqr\*(Rq may be echoed on the terminal).
+системой -- если
+это не работает, строчная \*(Lqr\*(Rq может быть отображена на терминале).
 .It Ic do Ar cmd
 .It Ic dont Ar cmd
 .It Ic will Ar cmd
 .It Ic wont Ar cmd
-Sends the
+Отправляет
 .Dv TELNET DO
 .Ar cmd
-sequence.
+последовательность.
 .Ar Cmd
-can be either a decimal number between 0 and 255,
-or a symbolic name for a specific
+может быть как десятичным числом от 0 до 255, 
+так и символическим именем для конкретной 
 .Dv TELNET
-command.
+команды.
 .Ar Cmd
-can also be either
+также может быть либо
 .Ic help
-or
+либо
 .Ic ?\&
-to print out help information, including
-a list of known symbolic names.
+для вывода справочной информации, включая 
+список известных символических имен. 
 .It Ic ?\&
-Prints out help information for the
+Выводит справочную информацию для 
 .Ic send
-command.
+команды.
 .El
-.It Ic set Ar argument value
-.It Ic unset Ar argument value
-The
+.It Ic set Ar аргумент значение
+.It Ic unset Ar аргумент значение
+Команда
 .Ic set
-command will set any one of a number of
+устанавливает любую из нескольких
 .Nm
-variables to a specific value or to
+переменных в определенное значение или в
 .Dv TRUE .
-The special value
+Особое значение
 .Ic off
-turns off the function associated with
-the variable, this is equivalent to using the
+отключает функцию, связанную с
+переменной, что эквивалентно использованию
 .Ic unset
-command.
-The
+команды.
+Команда
 .Ic unset
-command will disable or set to
+отключит или установит в
 .Dv FALSE
-any of the specified functions.
-The values of variables may be interrogated with the
+любые из указанных функций.
+Значения переменных можно запросить с помощью
 .Ic display
-command.
-The variables which may be set or unset, but not toggled, are
-listed here.
-In addition, any of the variables for the
+командыd.
+Переменные, которые могут быть установлены или отменены, но не переключены,
+перечислены здесь.
+Кроме того, любую из переменных для
 .Ic toggle
-command may be explicitly set or unset using
-the
+команды можно явно установить или отменить с 
+помощью
 .Ic set
-and
+и
 .Ic unset
-commands.
+команд.
 .Bl -tag -width escape
 .It Ic ayt
-If
+Если
 .Tn TELNET
-is in localchars mode, or
+находится в режиме локальных символов или
 .Dv LINEMODE
-is enabled, and the status character is typed, a
+включен режим, и нажата символьная команда статуса, то 
 .Dv TELNET AYT
-sequence (see
+последовательность (см.
 .Ic send ayt
-preceding) is sent to the
-remote host.
-The initial value for the \*(LqAre You There\*(Rq
-character is the terminal's status character.
+выше) будет отправлена на
+удаленный хост.
+Исходное значение символа \*(LqAre You There\*(Rq
+это символ статуса терминала.
 .It Ic echo
-This is the value (initially \*(Lq^E\*(Rq) which, when in
-\*(Lqline by line\*(Rq mode, toggles between doing local echoing
-of entered characters (for normal processing), and suppressing
-echoing of entered characters (for entering, say, a password).
+Это значение (изначально \*(Lq^E\*(Rq) который,когда в
+\*(Lqline by line\*(Rq режиме, переключается между локальным эхо
+вводимых символов (для нормальной обработки), и подавление
+эхо вводимых символов (например, при вводе пароля).
 .It Ic eof
-If
+Если
 .Nm
-is operating in
+работает в
 .Dv LINEMODE
-or \*(Lqold line by line\*(Rq mode, entering this character
-as the first character on a line will cause this character to be
-sent to the remote system.
-The initial value of the eof character is taken to be the terminal's
+или \*(Lqold старый построчный\*(Rq режим, ввод этого символа
+как первого символа на строке приведет к 
+отправке этого символа на удаленную систему.
+Исходное значение символа eof принимается равным eof терминала
 .Ic eof
-character.
+символу.
 .It Ic erase
-If
+Если
 .Nm
-is in
+находится в
 .Ic localchars
-mode (see
+режиме (см.
 .Ic toggle
 .Ic localchars
-below),
-.Sy and
-if
+ниже),
+.Sy и
+если
 .Nm
-is operating in \*(Lqcharacter at a time\*(Rq mode, then when this
-character is typed, a
+работает в \*(Lqcharacter по символьно\*(Rq режиме, то при вводе этого
+символа будет отправлена
 .Dv TELNET EC
-sequence (see
+последовательность (см.
 .Ic send
 .Ic ec
-above)
-is sent to the remote system.
-The initial value for the erase character is taken to be
-the terminal's
+выше)
+на удаленную систему.
+Исходное значение стирания принимается равным стирания 
+терминала
 .Ic erase
-character.
+символу.
 .It Ic escape
-This is the
+Это
 .Nm
-escape character (initially \*(Lq^[\*(Rq) which causes entry
-into
+символ экранного вывода (изначально \*(Lq^[\*(Rq) который вызывает переход
+в
 .Nm
-command mode (when connected to a remote system).
+режим команд (при подключении к удаленной системе).
 .It Ic flushoutput
-If
+Если
 .Nm
-is in
+в
 .Ic localchars
-mode (see
+режиме (см.
 .Ic toggle
 .Ic localchars
-below)
-and the
+ниже)
+и
 .Ic flushoutput
-character is typed, a
+нажата клавиша, 
 .Dv TELNET AO
-sequence (see
+отпрааляется (см.
 .Ic send
 .Ic ao
-above)
-is sent to the remote host.
-The initial value for the flush character is taken to be
-the terminal's
+выше)
+последовательность на удаленный хост.
+Символ для очистки буфера (flush character) изначально равен очистке
+терминала
 .Ic flush
-character.
+символу.
 .It Ic forw1
 .It Ic forw2
-If
+Если
 .Nm
-is operating in
+активен в
 .Dv LINEMODE ,
-these are the
-characters that, when typed, cause partial lines to be
-forwarded to the remote system.
-The initial value for
-the forwarding characters are taken from the terminal's
-eol and eol2 characters.
+этих
+символах передают частичные строки на
+удаленную систему.
+ Символы для передачи
+изначально берутся из терминала
+eol и eol2 символов.
 .It Ic interrupt
-If
+Если
 .Nm
-is in
+в
 .Ic localchars
-mode (see
+режиме (см.
 .Ic toggle
 .Ic localchars
-below)
-and the
+ниже)
+и
 .Ic interrupt
-character is typed, a
+клавиша нажата, 
 .Dv TELNET IP
-sequence (see
+последвательность (см.
 .Ic send
 .Ic ip
-above)
-is sent to the remote host.
-The initial value for the interrupt character is taken to be
-the terminal's
+выше)
+отправляется на удаленный хост.
+Символ для прерывания изначально равен 
+терминалу
 .Ic intr
-character.
+символа.
 .It Ic kill
-If
+Если
 .Nm
-is in
+в
 .Ic localchars
-mode (see
+режиме (см.
 .Ic toggle
 .Ic localchars
-below),
-.Ic and
-if
+ниже),
+.Ic и
+если
 .Nm
-is operating in \*(Lqcharacter at a time\*(Rq mode, then when this
-character is typed, a
+активны в \*(Lqcharacter at a time\*(Rq режиме, при нажатии
+символа
 .Dv TELNET EL
-sequence (see
+последовательность (см.
 .Ic send
 .Ic el
-above)
-is sent to the remote system.
-The initial value for the kill character is taken to be
-the terminal's
+выше)
+отправляется на удаленную систему
+Символ для завершения изначально равен завершению
+терминала
 .Ic kill
-character.
+символу.
 .It Ic lnext
-If
+Если
 .Nm
-is operating in
+активны в
 .Dv LINEMODE
-or \*(Lqold line by line\*(Rq mode, then this character is taken to
-be the terminal's
+или \*(Lqold line by line\*(Rq режиме, то этот символ принимается как символ
+для перехода на новую строку
 .Ic lnext
-character.
-The initial value for the lnext character is taken to be
-the terminal's
+символа.
+Исходное значение символ берется 
+из терминала
 .Ic lnext
-character.
+символа.
 .It Ic quit
-If
+Если
 .Nm
-is in
+в
 .Ic localchars
-mode (see
+режиме (см.
 .Ic toggle
 .Ic localchars
-below)
-and the
+ниже)
+и
 .Ic quit
-character is typed, a
+нажата клавиша
 .Dv TELNET BRK
-sequence (see
+последовательность (см.
 .Ic send
 .Ic brk
-above)
-is sent to the remote host.
-The initial value for the quit character is taken to be
-the terminal's
+выше)
+отправляется на удаленный хост.
+Символ для завершения изначально равен символу 
+терминала
 .Ic quit
-character.
+символа.
 .It Ic reprint
-If
+Если
 .Nm
-is operating in
+работает в
 .Dv LINEMODE
-or \*(Lqold line by line\*(Rq mode, then this character is taken to
-be the terminal's
+или \*(Lqold line by line\*(Rq режиме, то этот символ считается
+терминалом
 .Ic reprint
-character.
-The initial value for the reprint character is taken to be
-the terminal's
+символа.
+Начальное значение для символа повтора берется из 
+терминала
 .Ic reprint
-character.
+символаr.
 .It Ic rlogin
-This is the rlogin escape character.
-If set, the normal
+Это символ выхода из rlogin.
+Если установлен обычный
 .Nm
-escape character is ignored unless it is
-preceded by this character at the beginning of a line.
-This character, at the beginning of a line followed by
-a "." closes the connection; when followed by a ^Z it
-suspends the
+символ игнорируется, если его 
+предшествует этот символ в начале строки.
+Этот символ в начале строки, за которым следует
+"." закрывает соединение; если за ним следуе ^Z iон
+приостанавливает
 .Nm
-command.
-The initial state is to
-disable the
+командуd.
+Начальное состояние-это
+отключить
 .Nm rlogin
-escape character.
+символ выхода.
 .It Ic start
-If the
+Если
 .Dv TELNET TOGGLE-FLOW-CONTROL
-option has been enabled,
-then this character is taken to
-be the terminal's
+опция включена,
+то этот символ считается
+стартом терминала
 .Ic start
-character.
-The initial value for the start character is taken to be
-the terminal's
+символа.
+Начальное значение для символа старта берется из 
+терминала
 .Ic start
-character.
+символа.
 .It Ic stop
-If the
+Если
 .Dv TELNET TOGGLE-FLOW-CONTROL
-option has been enabled,
-then this character is taken to
-be the terminal's
+опция включена,
+то этот символ считается остановкой
+терминала.
 .Ic stop
-character.
-The initial value for the stop character is taken to be
-the terminal's
+символа.
+Начальное значение для символа остановки берется из
+терминала
 .Ic stop
-character.
+символа.
 .It Ic susp
-If
+Если
 .Nm
-is in
+в
 .Ic localchars
-mode, or
+режиме, или
 .Dv LINEMODE
-is enabled, and the
+включен и
 .Ic suspend
-character is typed, a
+нажат символ
 .Dv TELNET SUSP
-sequence (see
+последовательность (см.
 .Ic send
 .Ic susp
-above)
-is sent to the remote host.
-The initial value for the suspend character is taken to be
-the terminal's
+выше)
+отправляется на удаленный хост.
+Начальное значение для символа приостановки берется из  
+терминала
 .Ic suspend
-character.
+символа.
 .It Ic tracefile
-This is the file to which the output, caused by
+Это файл, куда будет записываться вывод, вызванный 
 .Ic netdata
-or
+или
 .Ic option
-tracing being
+отслеживанием
 .Dv TRUE ,
-will be written.
-If it is set to
+будет установлен.
+Если установлено в
 .Dq Fl ,
-then tracing information will be written to standard output (the default).
+то информация об отслеживании будет записываться в стандартный вывод (по умолчанию).
 .It Ic worderase
-If
+Если
 .Nm
-is operating in
+работает в
 .Dv LINEMODE
-or \*(Lqold line by line\*(Rq mode, then this character is taken to
-be the terminal's
+или \*(Lqold line by line\*(Rq режиме, то этот символ считается
+терминалом
 .Ic worderase
-character.
-The initial value for the worderase character is taken to be
-the terminal's
+символа.
+Начальное значение для символа стирания слова берется из 
+терминала
 .Ic worderase
-character.
+символа.
 .It Ic ?\&
-Displays the legal
+Отображает правильные
 .Ic set
 .Pq Ic unset
-commands.
+команды.
 .El
 .It Ic slc Ar state
-The
+Команда
 .Ic slc
-command (Set Local Characters) is used to set
-or change the state of the special
-characters when the
+(Set Local Characters) используется для установки
+или изменения состояния специальных
+символов, когда
 .Dv TELNET LINEMODE
-option has
-been enabled.
-Special characters are characters that get
-mapped to
+опция
+включена.
+Специальные символы - это символы, которые
+отображаются на
 .Tn TELNET
-commands sequences (like
+последовательности команд (например,
 .Ic ip
-or
+или
 .Ic quit )
-or line editing characters (like
+или символы редактирования строки (например,
 .Ic erase
-and
+и
 .Ic kill ) .
-By default, the local special characters are exported.
+По умолчанию локальные специальные символы экспортируются.
 .Bl -tag -width Fl
 .It Ic check
-Verify the current settings for the current special characters.
-The remote side is requested to send all the current special
-character settings, and if there are any discrepancies with
-the local side, the local side will switch to the remote value.
+Проверить текущие настройки для текущих специальных символов.
+Сторона удаленного соединения запрашивает отправку всех текущих специальных
+настроек символов, и если есть какие-либо расхождения с
+локальной стороной, локальная сторона переключится на удаленное значение.
 .It Ic export
-Switch to the local defaults for the special characters.
-The
-local default characters are those of the local terminal at
-the time when
+Переключиться на локальные значения по умолчанию для специальных символов.
+Локальные
+значения по умолчанию - это значения локального терминала 
+во время
 .Nm
-was started.
+запуска.
 .It Ic import
-Switch to the remote defaults for the special characters.
-The remote default characters are those of the remote system
-at the time when the
+Переключиться на удаленные значения по умолчанию для специальных символов.
+Удаленные значения по умолчанию - это значения 
+удаленной системы во время
 .Tn TELNET
-connection was established.
+установки соединения.
 .It Ic ?\&
-Prints out help information for the
+Выводит информацию справки для
 .Ic slc
-command.
+команды.
 .El
 .It Ic status
-Show the current status of
+Показать текущий статус
 .Nm .
-This includes the peer one is connected to, as well
-as the current mode.
+Это включает пирсона, к которому вы подключены, а 
+также текущий режим.
 .It Ic toggle Ar arguments ...
-Toggle (between
+Переключение (между
 .Dv TRUE
-and
+и
 .Dv FALSE )
-various flags that control how
+различных флагов, которые контролируют, как
 .Nm
-responds to events.
-These flags may be set explicitly to
+реагирует на события.
+Эти флаги могут быть явно установлены в
 .Dv TRUE
-or
+или
 .Dv FALSE
-using the
+используя
 .Ic set
-and
+и
 .Ic unset
-commands listed above.
-More than one argument may be specified.
-The state of these flags may be interrogated with the
+команды,перечисленные выше.
+Можно указать более одного аргумента.
+Состояние этих флагов может быть опрошено с помощью
 .Ic display
-command.
-Valid arguments are:
+команды.
+Допустимые аргументы:
 .Bl -tag -width Ar
 .It Ic authdebug
-Turns on debugging information for the authentication code.
+Включает отладочную информацию для кода аутентификации.
 .It Ic autoflush
-If
+Если
 .Ic autoflush
-and
+и
 .Ic localchars
-are both
+оба
 .Dv TRUE ,
-then when the
+то,когда
 .Ic ao ,
-or
+или
 .Ic quit
-characters are recognized (and transformed into
+символы распознаются (и преобразуются в
 .Tn TELNET
-sequences; see
+последовательности; см.
 .Ic set
-above for details),
+выше для подробностей),
 .Nm
-refuses to display any data on the user's terminal
-until the remote system acknowledges (via a
+отказывается отображать любые данные на терминале пользователя
+до тех пор,пока удаленная система не подтвердит (через
 .Dv TELNET TIMING MARK
-option)
-that it has processed those
+опцию)
+что она обработала эти
 .Tn TELNET
-sequences.
-The initial value for this toggle is
+последовательности.
+Начальное значение для этого переключателя установлено в
 .Dv TRUE
-if the terminal user had not
-done an "stty noflsh", otherwise
+если пользователь терминала не выполнял
+"stty noflsh", в проотивном случае
 .Dv FALSE
-(see
+(см.
 .Xr stty 1 ) .
 .It Ic autodecrypt
-When the
+Когда
 .Dv TELNET ENCRYPT
-option is negotiated, by
-default the actual encryption (decryption) of the data
-stream does not start automatically.
-The autoencrypt
-(autodecrypt) command states that encryption of the
-output (input) stream should be enabled as soon as
-possible.
+опция согласована,по
+умолчанию фактическое шифрование (дешифрование) потока данных
+не начинается автоматически.
+Команда
+(autodecrypt) указывает, что шифрование 
+выходного (входного) потока должно быть включено 
+как можно скорее.
 .It Ic autologin
-If the remote side supports the
+Если удаленная сторона поддерживает 
 .Dv TELNET AUTHENTICATION
-option
+опцию
 .Nm
-attempts to use it to perform automatic authentication.
-If the
+пытается использовать ее для выполнения автоматической аутентификации.
+Если
 .Dv AUTHENTICATION
-option is not supported, the user's login
-name are propagated through the
+опция не поддерживается, имя пользователя
+передается через
 .Dv TELNET ENVIRON
-option.
-This command is the same as specifying
+опцию.
+Эта команда эквивалентна указанию
 .Fl a
-option on the
+опции
 .Ic open
-command.
+команде.
 .It Ic autosynch
-If
+Если
 .Ic autosynch
 and
 .Ic localchars
@@ -1344,138 +1342,138 @@ option is enabled, the value of
 .Ic localchars
 is ignored, and assumed to always be
 .Dv TRUE .
-If
+Если
 .Dv LINEMODE
-has ever been enabled, then
+когда-либо был включен, тогда
 .Ic quit
-is sent as
+отправляется как
 .Ic abort ,
-and
+и
 .Ic eof
-and
+и
 .Ic suspend
-are sent as
+отправляются как
 .Ic eof
-and
+и
 .Ic susp
-(see
+(см.
 .Ic send
-above).
+выше).
 .It Ic netdata
-Toggles the display of all network data (in hexadecimal format).
-The initial value for this toggle is
+Переключает отображение всех сетевых данных (в шестнадцатеричном формате).
+Начальное значение для этого переключателя
 .Dv FALSE .
 .It Ic options
-Toggles the display of some internal
+Переключает отображение некоторой внутренней 
 .Nm
-protocol processing (having to do with
+обработки протокола (связанной с 
 .Tn TELNET
-options).
-The initial value for this toggle is
+опциями).
+Начальное значение для этого переключателя 
 .Dv FALSE .
 .It Ic prettydump
-When the
+Когда
 .Ic netdata
-toggle is enabled, if
+переключатель включен,если
 .Ic prettydump
-is enabled the output from the
+включен вывод к
 .Ic netdata
-command will be formatted in a more user readable format.
-Spaces are put between each character in the output, and the
-beginning of any
+команды будет отформатирован в более удобочитаемом формате для пользователя.
+Между каждым символом в выводе ставятся пробелы, и начало 
+любой последовательности 
 .Nm
-escape sequence is preceded by a '*' to aid in locating them.
+эскейп-последовательности,предшествуя '*'  для облегчения их обнаружения.
 .It Ic skiprc
-When the skiprc toggle is
+Когда переключатель skiprc установлен в
 .Dv TRUE ,
 .Nm
-skips the reading of the
+пропускает чтение
 .Pa \&.telnetrc
-file in the users home
-directory when connections are opened.
-The initial
-value for this toggle is
+файла в домашнем 
+каталоге пользователя при открытии соединений.
+Начальное
+значение для этого переключателя
 .Dv FALSE .
 .It Ic termdata
-Toggles the display of all terminal data (in hexadecimal format).
-The initial value for this toggle is
+Переключает отображение всех терминальных данных (в шестнадцатеричном формате).
+Начальное значение для этого переключателя
 .Dv FALSE .
 .It Ic verbose_encrypt
-When the
+Когда
 .Ic verbose_encrypt
-toggle is
+переключатель
 .Dv TRUE ,
 .Nm
-prints out a message each time encryption is enabled or
-disabled.
-The initial value for this toggle is
+выводит сообщение каждый раз, когда шифрование включается 
+или отключается.
+Начальное значение для этого переключателя 
 .Dv FALSE .
 .It Ic ?\&
-Displays the legal
+Отображает список доступных
 .Ic toggle
-commands.
+команд.
 .El
 .It Ic z
-Suspend
+Приостановить
 .Nm .
-This command only works when the user is using the
+Эта команда работает только при использовании пользователем
 .Xr csh 1 .
 .It Ic \&! Op Ar command
-Execute a single command in a subshell on the local
-system.
-If
+Выполнить одну команду в подоболочке на локальной 
+системе.
+Если
 .Ar command
-is omitted, then an interactive
-subshell is invoked.
+опущен, то вызывается интерактивная 
+подоболочка
 .It Ic ?\& Op Ar command
-Get help.
-With no arguments,
+Получить помощь.
+Без аргументов,
 .Nm
-prints a help summary.
-If
+ыводит краткое руководство.
+Если
 .Ar command
-is specified,
+указан,
 .Nm
-will print the help information for just that command.
+выведет информацию по помощи только для этой команды.
 .El
-.Sh ENVIRONMENT
+.Sh ОКРУЖАЮЩАЯ СРЕДА
 .Nm
-uses at least the
+использует как минимум
 .Ev HOME ,
 .Ev SHELL ,
 .Ev DISPLAY ,
-and
+и
 .Ev TERM
-environment variables.
-Other environment variables may be propagated
-to the other side via the
+переменные окружения.
+Другие переменные окружения могут быть переданы 
+на другую сторону через 
 .Dv TELNET ENVIRON
-option.
-.Sh FILES
+опцию.
+.Sh ФАЙЛЫ
 .Bl -tag -width ~/.telnetrc -compact
 .It Pa ~/.telnetrc
-user customized telnet startup values
+настраиваемые пользователем значения запуска telnet.
 .El
-.Sh SEE ALSO
+.Sh СМ. ТАКЖЕ
 .Xr rlogin 1 ,
 .Xr rsh 1 ,
 .Xr hosts 5 ,
 .Xr nologin 5 ,
 .Xr telnetd 8 Pq Pa ports/net/freebsd-telnetd
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Команда
 .Nm
-command appeared in
+появилась в
 .Bx 4.2 .
 .Pp
-IPv6 support was added by WIDE/KAME project.
-.Sh NOTES
-On some remote systems, echo has to be turned off manually when in
-\*(Lqold line by line\*(Rq mode.
+IPv6 была добавлена WIDE/KAME проектом.
+.Sh ЗАПИСИ
+На некоторых удаленных системах режим эха должен быть выключен вручную при использовании
+\*(Lqold line by line\*(Rq режима.
 .Pp
-In \*(Lqold line by line\*(Rq mode or
+В \*(Lqold line by line\*(Rq режиме или
 .Dv LINEMODE
-the terminal's
+терминала
 .Ic eof
-character is only recognized (and sent to the remote system)
-when it is the first character on a line.
+символ распознается (и отправляется на удаленную систему)
+только тогда, когда он является первым символом в строке.
