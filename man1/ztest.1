@@ -30,7 +30,7 @@
 .Sh ИМЯ
 .Nm ztest
 .Nd был написан разработчиками ZFS как модульный тест ZFS
-.Sh КРАТКОЕ ОПИСАНИЕ
+.Sh СИНТАКСИС
 .Nm
 .Op Fl VEG
 .Op Fl v Ar vdevs
@@ -106,7 +106,7 @@
 .Sh ПАРАМЕТРЫ
 .Bl -tag -width "-v v"
 .It Fl h , \&? , -help
-Выносит сводку справки.
+Выносить сводку справки.
 .It Fl v , -vdevs Ns = (default: Sy 5 )
 Количество vdevs.
 .It Fl s , -vdev-size Ns = (default: Sy 64M )
@@ -165,12 +165,12 @@ Pool название.
 i.e. given
 .Fl B Pa ./chroots/lenny/usr/bin/ Ns Nm ,
 .Pa ./chroots/lenny/usr/lib
-will be loaded.
+будет загружен.
 .It Fl C , -vdev-class-state Ns = Ns Sy on Ns | Ns Sy off Ns | Ns Sy random No 
 будет загружен
 Состояние класса распределения vdev.
 .It Fl o , -option Ns = Ns Ar variable Ns = Ns Ar value
-Устанавливает глобальный
+Устанавливать глобальный
 .Ar переменный
 в 32-разрядное целое число без знака
 .Ar value
@@ -234,7 +234,7 @@ libzpool, включая
 .Em 256K .
 .El
 .
-.Sh СМОТРЕТЬ ТАКЖЕ
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr zdb 1 ,
 .Xr zfs 1 ,
 .Xr zpool 1 ,
