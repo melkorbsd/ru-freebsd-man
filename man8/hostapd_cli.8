@@ -1,110 +1,105 @@
 .\" Copyright (c) 2005 Sam Leffler <sam@errno.com>
-.\" All rights reserved.
+.\" Все права защищены.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
+.\" Перераспределение и использование в исходном и двоичном формах, с изменениями или без,
+.\" разрешается при условии соблюдения следующих условий:
+.\" 1. Перераспределенный исходный код должен сохранять вышеуказанное уведомление об авторских правах,
+.\"    этот список условий и следующее отказ от ответственности.
+.\" 2. Перераспределенные в двоичной форме данные должны воспроизводить вышеуказанное уведомление об авторских правах,
+.\"    этот список условий и следующее отказ от ответственности в
+.\"    документации и/или других материалах, предоставляемых с распространением.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" ЭТО ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ АВТОРОМ И УЧАСТНИКАМИ "КАК ЕСТЬ" И
+.\" ОТКАЗ ОТ ВСЕХ ЯВНЫХ ИЛИ ПОДРАЗУМЕВАЕМЫХ ГАРАНТИЙ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПОДРАЗУМЕВАЕМЫЕ
+.\" ГАРАНТИИ ТОВАРНОЙ ПРИГОДНОСТИ И ПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ ЦЕЛИ ОТКЛОНЕНЫ. НИ В КОЕМ СЛУЧАЕ АВТОР ИЛИ УЧАСТНИКИ НЕ НЕСУТ
+.\" ОТВЕТСТВЕННОСТИ ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, ОСОБЫЕ, ПРИМЕРНЫЕ ИЛИ ПОСЛЕДОВАТЕЛЬНЫЕ
+.\" УБЫТКИ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПРИОБРЕТЕНИЕ ЗАМЕНЯЮЩИХ ТОВАРОВ ИЛИ УСЛУГ; ПОТЕРЯ ИСПОЛЬЗОВАНИЯ,
+.\" ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПРЕРЫВАНИЕ БИЗНЕСА)
+.\" ОДНАКО ВЫЗВАННЫЕ И ПО ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО В КОНТРАКТЕ, СТРОГОЙ
+.\" ОТВЕТСТВЕННОСТИ ИЛИ ДЕЛИКТЕ (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНЫЙ) ВОЗНИКШИЕ ЛЮБЫМ ОБРАЗОМ
+.\" ИЗ-ЗА ИСПОЛЬЗОВАНИЯ ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ ИЗВЕЩЕН О ВОЗМОЖНОСТИ ТАКОГО
+.\" УЩЕРБА.
 .\"
-.Dd June 16, 2005
+.Dd 16 июня 2005
 .Dt HOSTAPD_CLI 8
 .Os
-.Sh NAME
+.Sh НАЗВАНИЕ
 .Nm hostapd_cli
-.Nd text-based frontend program for interacting with
+.Nd текстовая программа для взаимодействия с
 .Xr hostapd 8
-.Sh SYNOPSIS
+.Sh СИНТАКСИС
 .Nm
-.Op Ar commands
-.Sh DESCRIPTION
-The
+.Op Ar команды
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility
-is a text-based frontend program for interacting with
+является текстовой программой для взаимодействия с
 .Xr hostapd 8 .
-It is used to query the current status.
+Она используется для запроса текущего состояния.
 .Pp
-The
+Утилита
 .Nm
-utility
-can show the
-current authentication status,
-dot11 and dot1x MIBs, etc.
+может показать
+текущий статус аутентификации,
+MIB dot11 и dot1x и т.д.
 .Pp
-The
+Утилита
 .Nm
-utility
-supports two modes: interactive and command line.
-Both modes share the same command set.
+поддерживает два режима: интерактивный и командной строки.
+Оба режима используют один и тот же набор команд.
 .Pp
-Interactive mode is started when
+Интерактивный режим запускается, когда
 .Nm
-is executed without any parameters on the command line.
-Commands are then entered from the controlling terminal in
-response to the
+выполняется без каких-либо параметров в командной строке.
+Команды вводятся с контролирующего терминала в
+ответ на приглашение
 .Nm
-prompt.
-In command line mode, the same commands are
-entered as command line arguments.
-.Sh COMMANDS
-The following commands may be supplied on the command line
-or at a prompt when operating interactively.
+промпт.
+В режиме командной строки те же команды вводятся
+как аргументы командной строки.
+.Sh КОМАНДЫ
+Следующие команды могут быть использованы в командной строке
+или при интерактивной работе.
 .Bl -tag -width indent
 .It Ic mib
-Report MIB variables (dot1x, dot11) for the current interface.
+Сообщить переменные MIB (dot1x, dot11) для текущего интерфейса.
 .It Ic sta Ar addr
-Report the MIB variables for the associated station with MAC address
+Сообщить переменные MIB для ассоциированной станции с MAC-адресом
 .Ar addr .
 .It Ic all_sta
-Report the MIB variables for all associated stations.
+Сообщить переменные MIB для всех ассоциированных станций.
 .It Ic help
-Show usage help.
+Показать справку по использованию.
 .It Ic interface Op Ar ifname
-Show available interfaces and/or set the current interface
-when multiple are available.
+Показать доступные интерфейсы и/или установить текущий интерфейс,
+когда доступно несколько.
 .It Ic level Ar debug_level
-Change the debugging level in
+Изменить уровень отладки в
 .Xr hostapd 8 .
-Larger numbers generate more messages.
+Большие числа генерируют больше сообщений.
 .It Ic license
-Display the full
-license for
+Отобразить полную
+лицензию для
 .Nm .
 .It Ic quit
-Exit
+Выйти из
 .Nm .
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr hostapd.conf 5 ,
 .Xr hostapd 8
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Утилита
 .Nm
-utility first appeared in
+впервые появилась в
 .Fx 6.0 .
-.Sh AUTHORS
-The
+.Sh АВТОРЫ
+Утилиту
 .Nm
-utility was written by
+написал
 .An Jouni Malinen Aq Mt j@w1.fi .
-This manual page is derived from the
+Эта страница руководства произведена на основе
 .Pa README
-file included in the
+файла, включенного в дистрибутив
 .Nm hostapd
-distribution.
+распределение.

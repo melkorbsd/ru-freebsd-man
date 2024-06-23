@@ -1,207 +1,197 @@
-.\" Copyright (c) 2010 The FreeBSD Foundation
-.\" All rights reserved.
 .\"
-.\" This software was developed by Pawel Jakub Dawidek under sponsorship from
-.\" the FreeBSD Foundation.
+.\" Авторское право (c) 2010 Фонд FreeBSD
+.\" Все права защищены.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
+.\" Данное программное обеспечение было разработано Павлом Якубом Давидеком при спонсорстве
+.\" от Фонда FreeBSD.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE AUTHORS AND CONTRIBUTORS ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHORS OR CONTRIBUTORS BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" Распространение и использование в исходных и бинарных формах, с изменениями или без,
+.\" разрешается при условии соблюдения следующих условий:
+.\" 1. Распространения исходного кода должны сохранять вышеуказанное уведомление об авторском праве,
+.\"    этот список условий и следующее отказ от гарантий.
+.\" 2. Распространения в бинарной форме должны воспроизводить вышеуказанное уведомление об авторском праве,
+.\"    этот список условий и следующий отказ от гарантий в
+.\"    документации и/или других материалах, поставляемых с дистрибутивом.
 .\"
-.Dd December 21, 2019
+.\" ЭТО ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ АВТОРАМИ И УЧАСТНИКАМИ "КАК ЕСТЬ" И
+.\" ЛЮБЫЕ ЯВНЫЕ ИЛИ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПОДРАЗУМЕВАЕМЫМИ ГАРАНТИЯМИ
+.\" ТОВАРНОЙ ПРИГОДНОСТИ И ПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ ЦЕЛИ ОТКЛОНЯЮТСЯ. НИ В КОАКОМ СЛУЧАЕ АВТОРЫ ИЛИ УЧАСТНИКИ НЕ НЕСУТ
+.\" ОТВЕТСТВЕННОСТИ ЗА ЛЮБОЙ ПРЯМОЙ, КОСВЕННЫЙ, СЛУЧАЙНЫЙ, ОСОБЫЙ, ЭКЗЕМПЛЯРНЫЙ ИЛИ ПОСЛЕДУЮЩИЙ
+.\" УЩЕРБ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПОСТАВКОЙ ЗАМЕНЯЮЩИХ ТОВАРОВ
+.\" ИЛИ УСЛУГ; ПОТЕРЕЮ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПРЕРЫВАНИЕ БИЗНЕСА)
+.\" ОДНАКО ВЫЗВАННОЕ И НА ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО В ДОГОВОРЕ, СТРОГОЙ
+.\" ОТВЕТСТВЕННОСТИ ИЛИ ДЕЛИКТЕ (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНОЕ) ВОЗНИКАЮЩЕЕ В ЛЮБОМ СЛУЧАЕ
+.\" ИЗ ИСПОЛЬЗОВАНИЯ ЭТОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ ИЗВЕЩЕНО О ВОЗМОЖНОСТИ
+.\" ТАКОГО УЩЕРБА.
+.\"
+.Dd 21 декабря 2019 года
 .Dt HASTD 8
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm hastd
-.Nd "Highly Available Storage daemon"
-.Sh SYNOPSIS
-.Nm
+.Nd "Демон высокодоступного хранилища данных"
+.Sh СИНТАКСИС.Nm
 .Op Fl dFh
 .Op Fl c Ar config
 .Op Fl P Ar pidfile
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Демон
 .Nm
-daemon is responsible for managing highly available GEOM providers.
+отвечает за управление высокодоступными провайдерами GEOM.
 .Pp
 .Nm
-allows the transparent storage of data on two physically separated machines
-connected over a TCP/IP network.
-Only one machine (cluster node) can actively use storage provided by
+позволяет прозрачно хранить данные на двух физически разделенных машинах,
+соединенных через сеть TCP/IP.
+Только одна машина (узел кластера) может активно использовать хранилище, предоставляемое
 .Nm .
-This machine is called primary.
-The
+Эта машина называется первичной.
+Демон
 .Nm
-daemon operates on block level, which makes it transparent to file
-systems and applications.
+работает на уровне блоков, что делает его прозрачным для файловых систем и приложений.
 .Pp
-There is one main
-.Nm
-daemon which starts new worker process as soon as a role for the given
-resource is changed to primary or as soon as a role for the given
-resource is changed to secondary and remote (primary) node will
-successfully connect to it.
-Every worker process gets a new process title (see
-.Xr setproctitle 3 ) ,
-which describes its role and resource it controls.
-The exact format is:
+Существует один главный демон
+.Nm,
+который запускает новый рабочий процесс, как только роль для данного
+ресурса изменяется на первичную или как только роль для данного
+ресурса изменяется на вторичную, и удаленный (первичный) узел будет
+успешно подключен к нему.
+Каждый рабочий процесс получает новое название процесса (см.
+.Xr setproctitle 3 ),
+которое описывает его роль и ресурс, которым он управляет.
+Точный формат:
 .Bd -literal -offset indent
-hastd: <resource name> (<role>)
+hastd: <имя ресурса> (<роль>)
 .Ed
 .Pp
-If (and only if)
+Если (и только если)
 .Nm
-operates in primary role for the given resource, a corresponding
-.Pa /dev/hast/<name>
-disk-like device (GEOM provider) is created.
-File systems and applications can use this provider to send I/O
-requests to.
-Every write, delete and flush operation
+работает в первичной роли для данного ресурса, создается соответствующее
+.Pa /dev/hast/<имя>
+подобное диску устройство (провайдер GEOM).
+Файловые системы и приложения могут использовать этот провайдер для отправки I/O
+запросов к нему.
+Каждая операция записи, удаления и сброса
 .Dv ( BIO_WRITE , BIO_DELETE , BIO_FLUSH )
-is sent to the local component and replicated on the remote (secondary) node
-if it is available.
-Read operations
+отправляется на локальный компонент и реплицируется на удаленном (вторичном) узле,
+если он доступен.
+Операции чтения
 .Dv ( BIO_READ )
-are handled locally unless an I/O error occurs or the local version of the data
-is not up-to-date yet (synchronization is in progress).
+обрабатываются локально, если только не произошла ошибка ввода/вывода или локальная версия данных
+еще не актуализирована (идет синхронизация).
 .Pp
-The
+Демон
 .Nm
-daemon uses the GEOM Gate class to receive I/O requests from the
-in-kernel GEOM infrastructure.
-The
-.Nm geom_gate.ko
-module is loaded automatically if the kernel was not compiled with the
-following option:
+использует класс GEOM Gate для получения I/O запросов от
+встроенной в ядро инфраструктуры GEOM.Модуль 
+.Nm geom_gate.ko 
+автоматически загружается, если ядро не было скомпилировано с 
+следующей опцией:
 .Bd -ragged -offset indent
 .Cd "options GEOM_GATE"
 .Ed
 .Pp
-The connection between two
+Соединение между двумя 
 .Nm
-daemons is always initiated from the one running as primary to the one
-running as secondary.
-When the primary
-.Nm
-is unable to connect or the connection fails, it will try to re-establish
-the connection every few seconds.
-Once the connection is established, the primary
-.Nm
-will synchronize every extent that was modified during connection outage
-to the secondary
+демонами всегда инициируется тем, который работает как первичный, к тому, который 
+работает как вторичный.
+Когда первичный 
+.Nm 
+не может установить соединение или соединение терпит неудачу, он будет пытаться 
+восстановить связь каждые несколько секунд.
+Как только соединение установлено, первичный 
+.Nm 
+синхронизирует каждый сегмент, который был изменен во время отсутствия связи,
+с вторичным 
 .Nm .
 .Pp
-It is possible that in the case of a connection outage between the nodes the
+Возможно, что в случае прерывания связи между узлами первичная роль для данного 
+ресурса будет настроена на обоих узлах.
+Это, в свою очередь, приводит к несовместимым изменениям данных.
+Такое состояние называется раздвоением мозга (split-brain) и не может быть 
+автоматически разрешено 
 .Nm
-primary role for the given resource will be configured on both nodes.
-This in turn leads to incompatible data modifications.
-Such a condition is called a split-brain and cannot be automatically
-resolved by the
+демоном, так как это скорее всего приведет к повреждению данных или потере 
+важных изменений.
+Хотя это и не может быть исправлено 
 .Nm
-daemon as this will lead most likely to data corruption or loss of
-important changes.
-Even though it cannot be fixed by
-.Nm
-itself, it will be detected and a further connection between independently
-modified nodes will not be possible.
-Once this situation is manually resolved by an administrator, the resource
-on one of the nodes can be initialized (erasing local data), which makes
-a connection to the remote node possible again.
-Connection of the freshly initialized component will trigger full resource
-synchronization.
+самостоятельно, это будет обнаружено, и дальнейшее соединение между 
+независимо измененными узлами не будет возможно.
+После того как эта ситуация будет вручную разрешена администратором, ресурс 
+на одном из узлов можно будет инициализировать (стирая локальные данные), что 
+сделает возможным снова соединение с удаленным узлом.
+Подключение недавно инициализированного компонента вызовет полную синхронизацию 
+ресурса.
 .Pp
-A
-.Nm
-daemon never picks its role automatically.
-The role has to be configured with the
-.Xr hastctl 8
-control utility by additional software like
+Демон 
+.Nm 
+никогда не выбирает свою роль автоматически.
+Роль должна быть настроена с помощью утилиты управления 
+.Xr hastctl 8 
+дополнительным программным обеспечением типа 
 .Nm ucarp
-or
-.Nm heartbeat
-that can reliably manage role separation and switch secondary node to
-primary role in case of the primary's failure.
+или 
+.Nm heartbeat,
+которые могут надежно управлять разделением ролей и переключением вторичного узла на
 .Pp
-The
+daemon
 .Nm
-daemon can be started with the following command line arguments:
+может быть запущен со следующими аргументами командной строки:
 .Bl -tag -width ".Fl P Ar pidfile"
 .It Fl c Ar config
-Specify alternative location of the configuration file.
-The default location is
+Укажите альтернативное расположение файла конфигурации.
+Расположение по умолчанию —
 .Pa /etc/hast.conf .
 .It Fl d
-Print or log debugging information.
-This option can be specified multiple times to raise the verbosity
-level.
+Выводить или записывать отладочную информацию.
+Эта опция может быть указана несколько раз для увеличения уровня детализации.
 .It Fl F
-Start the
+Запустить
 .Nm
-daemon in the foreground.
-By default
+демон в режиме переднего плана.
+По умолчанию
 .Nm
-starts in the background.
+запускается в фоновом режиме.
 .It Fl h
-Print the
-.Nm
-usage message.
+Вывести сообщение о использовании
+.Nm .
 .It Fl P Ar pidfile
-Specify alternative location of a file where main process PID will be
-stored.
-The default location is
+Укажите альтернативное расположение файла, где будет храниться PID основного процесса.
+Расположение по умолчанию —
 .Pa /var/run/hastd.pid .
 .El
 .Sh FILES
 .Bl -tag -width ".Pa /var/run/hastd.pid" -compact
 .It Pa /etc/hast.conf
-The configuration file for
+Файл конфигурации для
 .Nm
-and
+и
 .Xr hastctl 8 .
 .It Pa /var/run/hastctl
-Control socket used by the
+Контрольный сокет, используемый утилитой управления
 .Xr hastctl 8
-control utility to communicate with
+для связи с
 .Nm .
 .It Pa /var/run/hastd.pid
-The default location of the
-.Nm
-PID file.
+Расположение по умолчанию PID файла демона
+.Nm .
 .El
 .Sh EXIT STATUS
-Exit status is 0 on success, or one of the values described in
+Код выхода 0 в случае успеха, или одно из значений, описанных в
 .Xr sysexits 3
-on failure.
+в случае неудачи.
 .Sh EXAMPLES
-Launch
+Запустите
 .Nm
-on both nodes.
-Set role for resource
+на обеих нодах.
+Установите роль для ресурса
 .Nm shared
-to primary on
+как primary на
 .Nm nodeA
-and to secondary on
+и secondary на
 .Nm nodeB .
-Create file system on
+Создайте файловую систему на
 .Pa /dev/hast/shared
-provider and mount it.
+провайдере и смонтируйте её.
 .Bd -literal -offset indent
 nodeB# hastd
 nodeB# hastctl role secondary shared
@@ -222,14 +212,14 @@ nodeA# mount -o noatime /dev/hast/shared /shared
 .Xr mount 8 ,
 .Xr newfs 8 ,
 .Xr g_bio 9
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Утилита
 .Nm
-utility appeared in
+появилась в
 .Fx 8.1 .
-.Sh AUTHORS
-The
+.Sh АВТОРЫ
+Утилиту
 .Nm
-was developed by
-.An Pawel Jakub Dawidek Aq Mt pjd@FreeBSD.org
-under sponsorship of the FreeBSD Foundation.
+разработал
+.An Павел Якуб Давидек Aq Mt pjd@FreeBSD.org
+при спонсорстве Фонда FreeBSD.

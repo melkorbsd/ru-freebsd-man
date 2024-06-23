@@ -1,44 +1,42 @@
-.\" Copyright (c) 2005 Pawel Jakub Dawidek <pjd@FreeBSD.org>
-.\" All rights reserved.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
+.\" Авторское право (c) 2005 Pawel Jakub Dawidek <pjd@FreeBSD.org>
+.\" Все права защищены.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE AUTHORS AND CONTRIBUTORS ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHORS OR CONTRIBUTORS BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" Перераспределение и использование в исходных и двоичных формах, с изменениями или без,
+.\" разрешается при условии соблюдения следующих условий:
+.\" 1. Перераспределения исходного кода должны сохранять вышеуказанное уведомление об авторском праве,
+.\"    этот список условий и следующее отказ от гарантий.
+.\" 2. Перераспределения в двоичной форме должны воспроизводить вышеуказанное уведомление об авторском праве,
+.\"    этот список условий и следующее отказ от гарантий в
+.\"    документации и/или других материалах, предоставляемых с распространением.
 .\"
-.Dd October 1, 2013
+.\" ЭТО ПО программное обеспечение предоставляется авторами и участниками «КАК ЕСТЬ» и
+.\" ЛЮБЫЕ ЯВНЫЕ ИЛИ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ ТЕМ,
+.\" ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ КОММЕРЧЕСКОЙ ЦЕННОСТИ И ПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ ЦЕЛИ
+.\" ОТКАЗЫВАЮТСЯ. НИ ПРИ КАКИХ ОБСТОЯТЕЛЬСТВАХ АВТОРЫ ИЛИ УЧАСТНИКИ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ
+.\" ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, ОСОБЫЕ, ЭКЗЕМПЛЯРНЫЕ ИЛИ ПОСЛЕДОВАТЕЛЬНЫЕ
+.\" УБЫТКИ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ ЗАМЕНОЙ ТОВАРОВ ИЛИ УСЛУГ;
+.\" ПОТЕРЯ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПРЕРЫВАНИЕ БИЗНЕСА)
+.\" ОДНАКО ПРИЧИНЕННЫЕ И ПО ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО В ДОГОВОРЕ, СТРОГОЙ
+.\" ОТВЕТСТВЕННОСТИ ИЛИ ДЕЛИКТЕ (ВКЛЮЧАЯ НЕБРЕЖНОСТЬ ИЛИ ИНАЧЕ) ВОЗНИКАЮЩИЕ В ЛЮБОМ СЛУЧАЕ
+.\" ИЗ ИСПОЛЬЗОВАНИЯ ЭТОГО ПО, ДАЖЕ ЕСЛИ БЫЛИ ПРЕДУПРЕЖДЕНЫ О ВОЗМОЖНОСТИ ТАКОГО УЩЕРБА.
+.\"
+.Dd 1 октября 2013 г.
 .Dt GSHSEC 8
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm gshsec
-.Nd "control utility for shared secret devices"
-.Sh SYNOPSIS
+.Nd "утилита управления для устройств с общим секретом"
+.Sh СИНТАКСИС
 .Nm
 .Cm label
 .Op Fl hv
-.Ar name
-.Ar prov prov ...
+.Ar имя
+.Ar пров пров ...
 .Nm
 .Cm stop
 .Op Fl fv
-.Ar name ...
-.Nm
+.Ar имя ....Nm
 .Cm clear
 .Op Fl v
 .Ar prov ...
@@ -53,76 +51,74 @@
 .Cm load
 .Nm
 .Cm unload
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 The
 .Nm
-utility is used for setting up a device which contains a shared secret.
-The secret is shared between the given providers.
-To collect the secret, all providers are needed.
-If one of the components is missing, there is no way to get any useful data from
-the rest of them.
-The first argument to
+утилита используется для настройки устройства, которое содержит общий секрет.
+Секрет распределяется между указанными провайдерами.
+Для сбора секрета необходимы все провайдеры.
+Если один из компонентов отсутствует, нет возможности получить какие-либо полезные данные с
+остальных.
+Первым аргументом к
 .Nm
-indicates an action to be performed:
+указывается выполняемое действие:
 .Bl -tag -width ".Cm destroy"
 .It Cm label
-Set up a shared secret device from the given components with the specified
+Создать устройство с общим секретом из указанных компонентов с заданным
 .Ar name .
-Metadata are stored in the last sector of every component.
+Метаданные хранятся в последнем секторе каждого компонента.
 .It Cm stop
-Turn off an existing shared secret device by its
+Выключить существующее устройство с общим секретом по его
 .Ar name .
-This command does not touch on-disk metadata!
+Эта команда не затрагивает метаданные на диске!
 .It Cm clear
-Clear metadata on the given providers.
+Очистить метаданные на указанных провайдерах.
 .It Cm dump
-Dump metadata stored on the given providers.
+Выгрузить метаданные, хранящиеся на указанных провайдерах.
 .It Cm list
-See
+Смотрите
 .Xr geom 8 .
 .It Cm status
-See
+Смотрите
 .Xr geom 8 .
 .It Cm load
-See
+Смотрите
 .Xr geom 8 .
 .It Cm unload
-See
+Смотрите
 .Xr geom 8 .
 .El
 .Pp
-Additional options:
+Дополнительные опции:
 .Bl -tag -width ".Fl f"
 .It Fl f
-Force the removal of the specified shared secret device.
+Принудительно удалить указанное устройство с общим секретом.
 .It Fl h
-Hardcode providers' names in metadata.
+Захардкодить имена провайдеров в метаданных.
 .It Fl v
-Be more verbose.
+Подробный вывод.
 .El
-.Sh EXIT STATUS
-Exit status is 0 on success, and 1 if the command fails.
-.Sh EXAMPLES
-The following example shows how to create a shared secret device.
-The secret will be split between a slice on a local disk and a USB Pen drive.
+.Sh СТАТУС ВЫХОДА
+Статус выхода - 0 при успехе и 1, если команда не выполнена.
+.Sh ПРИМЕРЫ
+Следующий пример показывает, как создать устройство с общим секретом.
+Секрет будет разделен между срезом на локальном диске и USB-флеш-накопителем.
 .Bd -literal -offset indent
 gshsec label -v secret /dev/ada0s1 /dev/da0
 newfs /dev/shsec/secret
 .Ed
 .Pp
-From now on, when the USB Pen drive is inserted, it will be automatically
-detected and connected, making the secret available via the
-.Pa /dev/shsec/secret
-device.
-.Sh SEE ALSO
+Теперь, когда USB-флеш-накопитель подключен, он будет автоматически обнаружен и подключен, делая секрет доступным через устройство
+.Pa /dev/shsec/secret .
+.Sh СМОТРИ ТАКЖЕ
 .Xr geom 4 ,
 .Xr gbde 8 ,
 .Xr geom 8 ,
 .Xr newfs 8
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Утилита
 .Nm
-utility appeared in
+появилась в
 .Fx 5.4 .
-.Sh AUTHORS
+.Sh АВТОРЫ
 .An Pawel Jakub Dawidek Aq Mt pjd@FreeBSD.org

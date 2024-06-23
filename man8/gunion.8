@@ -1,318 +1,309 @@
 .\"
-.\" Copyright (c) 2022 Marshall Kirk McKusick <mckusick@mckusick.com>
+.\" Авторское право (c) 2022 Marshall Kirk McKusick <mckusick@mckusick.com>
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
+.\" Перераспределение и использование в исходных и бинарных формах, с изменениями или без,
+.\" разрешены при условии соблюдения следующих условий:
+.\" 1. Перераспределения исходного кода должны сохранять вышеуказанное уведомление об авторском праве,
+.\"    этот список условий и следующее отказ от ответственности.
+.\" 2. Перераспределения в бинарной форме должны воспроизводить вышеуказанное уведомление об авторском праве,
+.\"    этот список условий и следующее отказ от ответственности в
+.\"    документации и/или других материалах, предоставляемых с распределением.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE AUTHORS AND CONTRIBUTORS ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHORS OR CONTRIBUTORS BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" ЭТО ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ АВТОРАМИ И УЧАСТНИКАМИ "КАК ЕСТЬ" БЕЗ
+.\" ВЫРАЖЕННЫХ ИЛИ ПОДРАЗУМЕВАЕМЫХ ГАРАНТИЙ ЛЮБОГО РОДА, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПОДРАЗУМЕВАЕМЫМИ
+.\" ГАРАНТИЯМИ КОММЕРЧЕСКОЙ ЦЕННОСТИ И ПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ ЦЕЛИ.
+.\" ОТКАЗЫВАЮТСЯ. В НИКАКОМ СЛУЧАЕ АВТОРЫ ИЛИ УЧАСТНИКИ НЕ НЕСУТ ОТВЕТСТВЕННОСТЬ
+.\" ЗА ЛЮБОЙ ПРЯМОЙ, КОСВЕННЫЙ, СЛУЧАЙНЫЙ, ОСОБЫЙ, ПРИМЕРНЫЙ ИЛИ ПОСЛЕДУЮЩИЙ
+.\" УЩЕРБ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ЗАМЕЩЕНИЕ ТОВАРОВ ИЛИ УСЛУГ;
+.\" ПОТЕРЯ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПРЕРЫВАНИЕ БИЗНЕСА)
+.\" ОДНАКО ПРОИЗОШЛО И НА ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО В КОНТРАКТЕ, СТРОГОЙ
+.\" ОТВЕТСТВЕННОСТИ, ИЛИ ДЕЛИКТЕ (ВКЛЮЧАЯ НЕБРЕЖНОСТЬ ИЛИ ИНАЧЕ) ВОЗНИКАЮЩИЕ В ЛЮБОМ СЛУЧАЕ
+.\" ИСПОЛЬЗОВАНИЯ ЭТОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ УВЕДОМЛЕНЫ О ВОЗМОЖНОСТИ
+.\" ТАКОГО УЩЕРБА.
 .\"
-.Dd January 19, 2022
+.Dd 19 января 2022 года
 .Dt GUNION 8
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm gunion
-.Nd "control utility for UNION GEOM class"
-.Sh SYNOPSIS
+.Nd "утилита управления для GEOM класса UNION"
+.Sh СИНТАКСИС
 .Nm
 .Cm create
 .Op Fl v
 .Op Fl o Ar offset
 .Op Fl s Ar size
 .Op Fl S Ar secsize
-.Op Fl Z Ar gunionname
-.Ar upperdev lowerdev
+.Op Fl Z Ar gunionname.Ar upperdev lowerdev
 .Nm
-.Cm destroy
+.Cm уничтожить
 .Op Fl fv
 .Ar prov ...
 .Nm
-.Cm reset
+.Cm сброс
 .Op Fl v
 .Ar prov ...
 .Nm
-.Cm revert
+.Cm откат
 .Op Fl v
 .Ar prov ...
 .Nm
-.Cm commit
+.Cm подтвердить
 .Op Fl frv
 .Ar prov ...
 .Nm
-.Cm list
+.Cm список
 .Nm
-.Cm status
+.Cm статус
 .Nm
-.Cm load
+.Cm загрузка
 .Nm
-.Cm unload
-.Sh DESCRIPTION
+.Cm выгрузка
+.Sh ОПИСАНИЕ
 The
 .Nm
-utility is used to track changes to a read-only disk on a writable disk.
-Logically, a writable disk is placed over a read-only disk.
-Write requests are intercepted and stored on the writable disk.
-Read requests are first checked to see if they have been written
-on the top (writable disk) and if found are returned.
-If they have not been written on the top disk,
-then they are read from the lower disk.
+утилита используется для отслеживания изменений на диске только для чтения на записываемом диске.
+Логически записываемый диск размещается поверх диска только для чтения.
+Запросы на запись перехватываются и сохраняются на записываемом диске.
+Запросы на чтение в первую очередь проверяются, были ли они записаны
+на верхнем (записываемом) диске и, если найдены, возвращаются.
+Если они не были записаны на верхнем диске,
+то они считываются с нижнего диска.
 .Pp
-The
+Утилита
 .Nm
-utility can be especially useful if you have a large disk with a
-corrupted filesystem that you are unsure of how to repair.
-You can use
+может быть особенно полезна, если у вас есть большой диск с
+поврежденной файловой системой и вы не знаете, как её восстановить.
+Вы можете использовать
 .Nm
-to place another disk over the corrupted disk and then attempt
-to repair the filesystem.
-If the repair fails, you can revert all the changes in the upper disk
-and be back to the unchanged state of the lower disk thus allowing you
-to try another approach to repairing it.
-If the repair is successful you can request that all the writes recorded
-on the top disk be written to the lower disk.
+чтобы разместить другой диск поверх поврежденного диска и затем попытаться
+восстановить файловую систему.
+Если восстановление не удаётся, вы можете откатить все изменения на верхнем диске
+и вернуться к неизменному состоянию нижнего диска, что позволит вам
+попробовать другой подход к его восстановлению.
+Если восстановление успешно, вы можете запросить, чтобы все записи, зафиксированные
+на верхнем диске, были записаны на нижний диск.
 .Pp
-Another use of the
+Другое использование утилиты
 .Nm
-utility is to try out upgrades to your system.
-Place the upper disk over the disk holding your filesystem that
-is to be upgraded and then run the upgrade on it.
-If it works, commit it;
-if it fails, revert the upgrade.
-An example is given below.
+- это попробовать обновления для вашей системы.
+Разместите верхний диск над диском, на котором находится ваша файловая система, которая
+должна быть обновлена, и затем выполните обновление на нём.
+Если это работает, подтвердите его;
+если это не удаётся, откатите обновление.
+Пример приведен ниже.
 .Pp
-The upper disk must be at least the size of the disk that it covers.
-The union metadata exists only for the
-period of time that the union is instantiated,
-so it is important to commit the updates before destroying the union.
-If the top disk is about 2.5 percent larger for 512 byte sector disks
-(or 0.5 percent larger for 4K sector disks) than the disk that it covers,
-it is posible (thought not currently implemented) to save the union
-metadata between instantiations of the union device.
+Верхний диск должен быть по крайней мере такого же размера, как диск, который он покрывает.
+Метаданные объединения существуют только в течение
+периода времени, когда объединение реализовано,
+
+
+так что важно применить обновления перед удалением объединения.
+Если верхний диск примерно на 2,5 процента больше для дисков с секторами 512 байт 
+(или на 0,5 процента больше для дисков с секторами 4K), то это возможно (хотя и не реализовано на данный момент) сохранить метаданные объединения между инстанцированиями устройства объединения.
 .Pp
-If you do not have physical media available to use for the upper layer, the
+Если у вас нет физических носителей, которые можно использовать для верхнего слоя, то вместо этого может быть использован
 .Xr md 4
-disk can be used instead.
-When used in
+диск. Когда используется в
 .Cm swap
-mode the changes are all held in buffer memory.
-Pages get pushed out to the swap when the system is under memory pressure,
-otherwise they stay in the operating memory.
-If long-term persistance is desired,
+режиме, все изменения хранятся в буферной памяти.
+Страницы отправляются в своп, когда система испытывает нехватку памяти, в остальное время они остаются в оперативной памяти.
+Если необходимо долгосрочное сохранение данных,
 .Cm vnode
-mode can be used in which a regular file is used as backing store.
-The disk space used by the file is based on the amount of data that
-is written to the top device.
+режим может быть использован, в котором обычный файл используется в качестве хранилища.
+Используемое дисковое пространство файла основано на объеме данных, записанных на верхнее устройство.
 .Pp
-The first argument to
+Первый аргумент к
 .Nm
-indicates an action to be performed:
+указывает на действие, которое должно быть выполнено:
 .Bl -tag -width "destroy"
 .It Cm create
-Set up a union provider on the two given devices.
-The first device given is used as the top device and must be writable.
-The second device given is used as the bottom device and need only be readable.
-The second device may be mounted read-only but it is recommended
-that it be unmounted and accessed only through a mount of the union device.
-If the operation succeeds, the new provider should appear with name
+Настройте провайдер объединения на двух данных устройствах.
+Первое устройство используется в качестве верхнего устройства и должно быть доступно для записи.
+Второе устройство используется в качестве нижнего устройства и должно быть только доступно для чтения.
+Второе устройство может быть смонтировано только для чтения, но рекомендуется
+чтобы его было размонтировано и доступно только через монтирование устройства объединения.
+Если операция проходит успешно, новый провайдер должен появиться с именем
 .Pa /dev/ Ns Ao Ar upperdev Ac Ns - Ns Ao Ar lowerdev Ac Ns Pa .union .
-An alternate name can be specified with the
+Альтернативное имя может быть указано с помощью
 .Fl Z
-flag.
-The kernel module
+флага.
+Модуль ядра
 .Pa geom_union.ko
-will be loaded if it is not loaded already.
+будет загружен, если он уже не загружен.
 .Pp
-Additional options include:
+Дополнительные опции включают:
 .Bl -tag -width "-Z gunionname"
 .It Fl o Ar offset
-Where to begin on the original provider.
-The default is to start at the beginning of the disk (i.e., at offset 0).
-This option may be used to skip over partitioning information stored
-at the beginning of a disk.
-The offset must be a multiple of the sector size.
+С какого места начать на оригинальном носителе.
+По умолчанию начало происходит с начала диска (то есть, с смещения 0).
+Эту опцию можно использовать, чтобы пропустить информацию о разделении, хранящуюся
+в начале диска.
+Смещение должно быть кратно размеру сектора.
 .It Fl s Ar size
-Size of the transparent provider.
-The default is to be the same size as the lower disk.
-Any extra space at the end of the upper disk may be used to store
-union metadata.
+Размер прозрачного носителя.
+По умолчанию размер должен совпадать с размером нижнего диска.
+Любое дополнительное пространство в конце верхнего диска может быть использовано для хранения
+метаданных объединения.
 .It Fl S Ar secsize
-Sector size of the transparent provider.
-The default is to be the same sector size as the lower disk.
+Размер сектора прозрачного носителя.
+Стандартный размер сектора должен совпадать с размером сектора нижнего диска.
 .It Fl v
-Be more verbose.
+Выводить более подробную информацию.
 .It Fl Z Ar gunionname
-The name of the new provider.
-The suffix
+Имя нового носителя.
+Суффикс
 .Dq .union
-will be appended to the provider name.
+будет добавлен к имени носителя.
 .El
 .It Cm destroy
-Turn off the given union providers.
+Выключить указанные объединенные носители.
 .Pp
-Additional options include:
+Дополнительные опции включают:
 .Bl -tag -width "-f"
 .It Fl f
-Force the removal of the specified provider.
+Принудительно удалить указанный носитель.
 .It Fl v
-Be more verbose.
+Выводить более подробную информацию.
 .El
 .It Cm revert
-Discard all the changes made in the top layer thus reverting to the
-original state of the lower device.
-The union device may not be mounted or otherwise in use when a
-.Cm revert
-operation is being done.
+Отменить все изменения, сделанные в верхнем слое, тем самым возвращаясь к
+исходному состоянию нижнего устройства.
+Объединенное устройство не должно быть смонтировано или иным образом использоваться, когда
+выполняется операция
+.Cm revert.
 .It Cm commit
-Write all the changes made in the top device to the lower device
-thus committing the lower device to have the same data as the union.
+Записать все изменения, сделанные в верхнем устройстве, на нижнее устройство,
+тем самым подтверждая, что нижнее устройство будет иметь те же данные, что и объединение.
 .Pp
-Additional options include:
+Дополнительные опции включают:
 .Bl -tag -width "-f"
 .It Fl f
-The
+Команда
 .Cm commit
-command will not allow the lower device to be mounted
-or otherwise in use while the
-.Cm commit
-operation is being done.
-However, the
+не позволяет нижнему устройству быть смонтированным
+или иным образом использоваться во время операции
+.Cm commit.
+Однако, флаг
 .Fl f
-flag may be specified to allow the lower device to be mounted read-only.
-To prevent a filesystem panic on the mounted lower-device filesystem,
-immediately after the
+может быть указан, чтобы разрешить нижнему устройству быть смонтированным только для чтения.
+Чтобы предотвратить сбой файловой системы на смонтированном нижележащем устройстве,
+сразу после завершения операции
 .Cm commit
-operation finishes the lower-device filesystem should be unmounted
-and then remounted to update its metadata state.
-If the lower-device filesystem is currently being used as the root
-filesystem then the
+файловую систему нижележащего устройства следует размонтировать
+и затем смонтировать снова, чтобы обновить состояние её метаданных.
+Если файловая система нижележащего устройства в данный момент используется как корневая
+файловая система, то должен быть указан флаг
 .Fl r
-flag should be specified to reboot the system at the completion of the
-.Cm commit
-operation.
+чтобы перезагрузить систему по завершении операции
+.Cm commit.
 .It Fl r
-Reboot the system at the completion of the
-.Cm commit
-operation.
+Перезагрузить систему по завершении операции
+.Cm commit.
 .It Fl v
-Be more verbose.
+Выводить более подробную информацию.
 .El
 .It Cm reset
-Reset statistics for the given union providers.
+Сбросить статистику для указанных объединённых провайдеров.
 .It Cm list
-See
+Смотрите
 .Xr geom 8 .
 .It Cm status
-See
+Смотрите
 .Xr geom 8 .
 .It Cm load
-See
+Смотрите
 .Xr geom 8 .
 .It Cm unload
-See
+Смотрите
 .Xr geom 8 .
 .El
 .Sh EXIT STATUS
-Exit status is 0 on success, and 1 if the command fails.
+Статус выхода равен 0 в случае успеха и 1, если команда не выполнена.
 .Sh EXAMPLES
-The following example shows how to create and destroy a
-union provider with disks
+Следующий пример показывает, как создать и уничтожить
+объединённый провайдер с дисками
 .Pa /dev/da0p1
-as the read-only disk on the bottom and
+как только для чтения диск снизу и
 .Pa /dev/md0
-as the wriable disk on the top.
+как диск, доступный для записи, сверху.
 .Bd -literal -offset indent
 gunion create -v md0 da0p1
 mount /dev/md0-da0p1.union /mnt
 .Ed
 .Pp
-Proceed to make changes in /mnt filesystem.
-If they are successful and you want to keep them.
+Произведите изменения в файловой системе /mnt.
+Если они успешные и вы хотите их сохранить.
 .Bd -literal -offset indent
 umount /mnt
 gunion commit -v md0-da0p1.union
 .Ed
 .Pp
-If they are unsuccessful and you want to roll back.
+Если изменения неудачные и вы хотите откатиться.
 .Bd -literal -offset indent
 umount /mnt
 gunion revert -v md0-da0p1.union
 .Ed
 .Pp
-When done eliminate the union.
+По завершении удалите объединение.
 .Bd -literal -offset indent
 umount /mnt
 gunion destroy -v md0-da0p1.union
 .Ed
 .Pp
-All uncommitted changes will be discarded when the union is destroyed.
+Все неподтверждённые изменения будут отброшены при уничтожении объединения.
 .Pp
-If you use the name of the full disk, for example
-.Pa da0
-and it is labelled,
-then a union name will appear for the disk as
+Если вы используете имя полного диска, например.Pa da0
+и он помечен,
+то имя объединения будет отображаться для диска как
 .Pa md0-da0.union
-as well as for each partition on the disk as
+также как для каждого раздела на диске как
 .Pa md0-da0p1.union ,
 .Pa md0-da0p2.union ,
-etc.
-A commit operation can be done only on
+и т.д.
+Операция принятия изменений может быть выполнена только на
 .Pa md0-da0.union
-and will commit changes to all the partitions.
-If partition level commits are desired,
-then a union must be created for each partition.
+и будет применять изменения ко всем разделам.
+Если нужно применять изменения к определенному разделу,
+то объединение должно быть создано для каждого раздела.
 .Pp
-The traffic statistics for the given
-union providers can be obtained with the
+Статистику трафика для указанных
+провайдеров объединения можно получить с помощью
+команды
 .Cm list
-command.
-The example below shows the number of bytes written with
+Пример ниже показывает количество записанных байт с помощью
 .Xr newfs 8 :
 .Bd -literal -offset indent
 gunion create md0 da0p1
 newfs /dev/md0-da0p1.union
 gunion list
 .Ed
-.Sh SYSCTL VARIABLES
-The following
+.Sh ПЕРЕМЕННЫЕ SYSCTL
+Следующие переменные
 .Xr sysctl 8
-variables can be used to control the behavior of the
+могут быть использованы для управления поведением класса
 .Nm UNION
-GEOM class.
-The default value is shown next to each variable.
+GEOM.
+Рядом с каждой переменной показано значение по умолчанию.
 .Bl -tag -width indent
 .It Va kern.geom.union.debug : No 0
-Debug level of the
+Уровень отладки класса
 .Nm UNION
-GEOM class.
-This can be set to a number between 0 and 4 inclusive.
-If set to 0, no debug information is printed.
-If set to 1, all the verbose messages are logged.
-If set to 2, addition error-related information is logged.
-If set to 3, mapping operations are logged.
-If set to 4, the maximum amount of debug information is printed.
+GEOM.
+Может быть установлен в число от 0 до 4 включительно.
+Если установлено в 0, информация об отладке не выводится.
+Если установлено в 1, все подробные сообщения регистрируются.
+Если установлено в 2, регистрируется дополнительная информация об ошибках.
+Если установлено в 3, регистрируются операции отображения.
+Если установлено в 4, выводится максимальное количество информации об отладке.
 .El
-.Sh SEE ALSO
+.Sh СМОТРИ ТАКЖЕ
 .Xr geom 4 ,
 .Xr geom 8
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Утилита
 .Nm
-utility appeared in
+появилась в
 .Fx 14.0 .
-.Sh AUTHORS
+.Sh АВТОРЫ
 .An Marshall Kirk McKusick Aq Mt mckusick@mckusick.com
