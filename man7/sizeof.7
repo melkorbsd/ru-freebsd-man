@@ -22,78 +22,75 @@
 .\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 .\" SUCH DAMAGE.
 .\"
-.Dd December 12, 2022
+.Dd Декабрь 12, 2022
 .Dt sizeof 7
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm sizeof
 operator
-.Nd yield the storage size of the given operand
-.Sh SYNTAX
+.Nd возвращает размер хранилища для данного операнда
+.Sh СИНТАКСИС
 .Nm Vt ( type )
 .br
 .Nm Vt expression
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
 .Nm
-operator yields the size of its operand.
-The
+оператор возвращает размер своего операнда.
 .Nm
-operator cannot be applied to incomplete types and expressions
-with incomplete types (e.g.
+оператор не может быть применен к неполным типам и выражениям
+с неполными типами (например,
 .Vt void ,
-or forward-defined
+или заранее определенный
 .Vt struct foo ),
-and function types.
+и типами функций.
 .Pp
-The size of primitive (non-derived) data types in C may differ
-across hardware platforms and implementations.
-They are defined by corresponding Application Binary Interface (ABI)
-specifications, see
+Размер примитивных (непроизводных) типов данных в C может отличаться
+в зависимости от аппаратных платформ и реализаций.
+Они определяются соответствующим двоичным интерфейсом приложения (ABI)
+спецификации, смотрите в разделе
 .Xr arch 7
-for details about ABI used by
+для получения подробной информации об ABI, используемом
 .Fx .
-It may be necessary or useful for a program to be able
-to determine the storage size of a data type or object
-to account for the platform specifics.
+Для программы может оказаться необходимым или полезным иметь возможность
+определять размер хранилища для типа данных или объекта
+с учетом специфики платформы.
 .Pp
-The unary
+Унарный оператор
 .Nm
-operator yields the storage size of an expression or
-data type in
+возвращает размер хранилища выражения или
+типа данных в
 .Em char sized units
-(C language bytes).
-As a result,
+(Байты на языке Си).
+В результате,
 .Ql sizeof(char)
-is always guaranteed to be 1.
-(The number of bits per
+всегда гарантированно равно 1.
+(Количество битов в
 .Vt char
-is given by the
+задается с помощью определения
 .Dv CHAR_BIT
-definition in the
-.In limits.h
-header; many systems also provide the "number of bits
-per byte" definition as
+в заголовке
+.In limits.h ;
+многие системы также предоставляют определение "количества битов
+в байте" в виде
 .Dv NBBY
-in the
-.In sys/param.h
-header.)
-.Sh EXAMPLES
-Different platforms may use different data models.
-For example, systems on which integers, longs, and
-pointers are using 32 bits (e.g., i386) are referred
-to as using the "ILP32" data model, systems using
-64 bit longs and pointers (e.g., amd64 / x86_64)
-as the "LP64" data model.
+в заголовке
+.In sys/param.h .)
+.Sh ПРИМЕРЫ
+Разные платформы могут использовать разные модели данных.
+Например, системы, в которых целые числа, длинные строки и
+указатели используют 32 бита (например, i386),
+называются использующими модель данных "ILP32", системы, использующие
+64-битные длинные строки и указатели (например, amd64 / x86_64)
+в качестве модели данных "LP64".
 .Pp
-The following examples illustrate the possible results
-of calling
+Следующие примеры иллюстрируют возможные результаты
+вызова
 .Nm
-on an ILP32 vs. an LP64 system:
+в системе ILP32 по сравнению с системой LP64:
 .Pp
-When applied to a simple variable or data type,
+При применении к простой переменной или типу данных,
 .Nm
-returns the storage size of the data type of the object:
+возвращает размер хранилища для типа данных объекта:
 .Bl -column -offset indent \
     ".Li sizeof(struct flex)" ".Sy Result (ILP32)" ".Sy Result (LP64)"
 .It Sy Object or type \
@@ -119,10 +116,10 @@ returns the storage size of the data type of the object:
  Ta 8
 .El
 .Pp
-For initialized data or uninitialized arrays of a
-fixed size known at compile time,
+Для инициализированных данных или неинициализированных массивов
+фиксированного размера, известного во время компиляции,
 .Nm
-will return the correct storage size:
+вернет правильный размер хранилища:
 .Bd -literal -offset indent
 #define DATA "1234567890"
 char buf1[] = "abc";
@@ -143,16 +140,16 @@ char buf3[1024] = { 'a', 'b', 'c' };
  Ta 1024
 .El
 .Pp
-The examples above are the same for ILP32 and LP64
-platforms, as they are based on character units.
+Приведенные выше примеры одинаковы для платформ ILP32 и LP64,
+поскольку они основаны на символьных единицах измерения.
 .Pp
-When applied to a struct or union,
+При применении к структуре или объединению,
 .Nm
-returns the total number of bytes in the object,
-including any internal or trailing padding used to
-align the object in memory.
-This result may thus be larger than if the storage
-size of each individual member had been added:
+возвращает общее количество байт в объекте,
+включая любые внутренние или конечные отступы, используемые для
+выравнивания объекта в памяти.
+Таким образом, этот результат может быть больше, чем если
+бы размер хранилища каждого отдельного элемента был добавлен:
 .Bd -literal -offset indent
 struct s1 {
         char c;
@@ -203,13 +200,13 @@ struct s5 {
  Ta 56
 .El
 .Pp
-When applied to a struct containing a flexible array
-member,
+При применении к структуре, содержащей
+элемент гибкого массива,
 .Nm
-returns the size of the struct
-.Em without
-the array, although again possibly including any
-padding the compiler deemed appropriate:
+возвращает размер структуры
+.Em без
+массива, хотя, опять же, возможно, включает любое
+дополнение, которое компилятор сочтет подходящим:
 .Bd -literal -offset indent
 struct flex {
         char c;
@@ -227,40 +224,38 @@ struct flex {
  Ta 16
 .El
 .Pp
-One of the more common uses of the
+Одно из наиболее распространенных применений оператора
 .Nm
-operator is to determine the correct amount of memory
-to allocate:
+определение правильного объема выделяемой памяти:
 .Bd -literal -offset indent
 int *nums = calloc(512, sizeof(int));
 .Ed
 .Pp
-The
+Оператор
 .Nm
-operator can be used to calculate the number of
-elements in an array by dividing the size of the array
-by the size of one of its elements:
+может быть использован для вычисления количества
+элементов в массиве путем деления размера массива
+на размер одного из его элементов:
 .Bd -literal -offset indent
 int nums[] = { 1, 2, 3, 4, 5 };
 const int howmany = sizeof(nums) / sizeof(nums[0]);
 .Ed
 .Pp
-Many systems provide this shortcut as the macro
+Многие системы предоставляют этот ярлык в качестве макроса
 .Dv ntimes()
-via the
-.In sys/param.h
-header file.
-.Sh RESULT
-The result of the
+через заголовочный файл
+.In sys/param.h .
+.Sh РЕЗУЛЬТАТ
+Результат оператора
 .Nm
-operator is an unsigned integer type, defined in the
+это целочисленный тип без знака, определенный в заголовке
 .Dv stddef.h
-header as a
+как
 .Vt size_t .
-.Sh NOTES
-It is a common mistake to apply
+.Sh ПРИМЕЧАНИЯ
+Это распространенная ошибка - применять
 .Nm
-to a dynamically allocated array:
+к динамически выделяемому массиву:
 .Bd -literal -offset indent
 char *buf;
 if ((buf = malloc(BUFSIZ)) == NULL) {
@@ -270,39 +265,39 @@ if ((buf = malloc(BUFSIZ)) == NULL) {
 (void)strncat(buf, input, sizeof(buf) - 1);
 .Ed
 .Pp
-In that case, the operator will return the storage
-size of the pointer (
+В этом случае оператор вернет
+размер указателя для хранения (
 .Ql sizeof(char *)
-), not the
-allocated memory.
+), а не
+выделенную память.
 .Pp
 .Nm
-determines the
-.Ev size
-of the result of the expression given, but
-.Em does not
-evaluate the expression:
+определяет
+.Ev размер
+результата приведенного выражения, но
+.Em не
+вычисляет выражение:
 .Bd -literal -offset indent
 int a = 42;
 printf("%ld - %d\\n", sizeof(a = 10), a); /* Result: "4 - 42" */
 .Ed
 .Pp
-Since it is evaluated by the compiler and not the
-preprocessor, the
+Поскольку он вычисляется компилятором, а не
+препроцессором, то оператор
 .Nm
-operator cannot be used in a preprocessor expression.
-.Sh SEE ALSO
+не может быть использован в выражении препроцессора.
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr arch 7 ,
 .Xr operator 7
-.Sh STANDARDS
-The
+.Sh СТАНДАРТЫ
+Оператор
 .Nm
-operator conforms to
+соблюдает следующие требования
 .St -ansiC .
 .Pp
-Handling of flexible array members in structures
-conforms to
+Обработка гибких элементов массива в структурах
+соответствует
 .St -isoC-99 .
-.Sh AUTHORS
-This manual page was written by
-.An Jan Schaumann Aq Mt jschauma@netmeister.org .
+.Sh АВТОРЫ
+Эта страница руководства была написана
+.An Ян Шауманн Aq Mt jschauma@netmeister.org .

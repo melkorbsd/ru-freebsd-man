@@ -16,10 +16,10 @@
 .Dt ZFS-PROGRAM 8
 .Os
 .
-.Sh NAME
+.Sh ИМЯ
 .Nm zfs-program
-.Nd execute ZFS channel programs
-.Sh SYNOPSIS
+.Nd выполнение программ канала ZFS
+.Sh СИНТАКСИС
 .Nm zfs
 .Cm program
 .Op Fl jn
@@ -29,106 +29,102 @@
 .Ar script
 .Op Ar script arguments
 .
-.Sh DESCRIPTION
-The ZFS channel program interface allows ZFS administrative operations to be
-run programmatically as a Lua script.
-The entire script is executed atomically, with no other administrative
-operations taking effect concurrently.
-A library of ZFS calls is made available to channel program scripts.
-Channel programs may only be run with root privileges.
+.Sh ОПИСАНИЕ
+Программный интерфейс канала ZFS позволяет
+выполнять административные операции ZFS программно в виде Lua-скрипта.
+Весь сценарий выполняется атомарно, и никакие другие административные
+операции не выполняются одновременно.
+Библиотека вызовов ZFS доступна для программных сценариев канала.
+Программы канала могут запускаться только с правами root.
 .Pp
-A modified version of the Lua 5.2 interpreter is used to run channel program
-scripts.
-The Lua 5.2 manual can be found at
+Для запуска сценариев программы канала используется модифицированная версия интерпретатора Lua 5.2.
+Руководство по Lua 5.2 можно найти по адресу
 .Lk http://www.lua.org/manual/5.2/
 .Pp
-The channel program given by
-.Ar script
-will be run on
-.Ar pool ,
-and any attempts to access or modify other pools will cause an error.
-.
-.Sh OPTIONS
+Программа канала, представленная
+.Ar скриптом
+будет запущена на
+.Ar пуле ,
+и любые попытки получить доступ к другим пулам или изменить их приведут к ошибке.
+.Sh ПАРАМЕТРЫ
 .Bl -tag -width "-t"
 .It Fl j
-Display channel program output in JSON format.
-When this flag is specified and standard output is empty -
-channel program encountered an error.
-The details of such an error will be printed to standard error in plain text.
+Отображать выходные данные программы канала в формате JSON.
+Если этот флаг установлен, а стандартный вывод пуст
+, значит, программа канала столкнулась с ошибкой.
+Подробная информация о такой ошибке будет вывдена в стандартной ошибке в простом тексте.
 .It Fl n
-Executes a read-only channel program, which runs faster.
-The program cannot change on-disk state by calling functions from the
-zfs.sync submodule.
-The program can be used to gather information such as properties and
-determining if changes would succeed (zfs.check.*).
-Without this flag, all pending changes must be synced to disk before a
-channel program can complete.
+Запускает программу канала только для чтения, которая работает быстрее.
+Программа не может изменять состояние диска, вызывая функции из
+подмодуля zfs.sync.
+Программа может использоваться для сбора такой информации, как свойства, и
+определения того, будут ли изменения успешными (zfs.check.*).
+Без этого флага все ожидающие изменения должны быть синхронизированы с диском, прежде
+чем программа канала сможет завершиться.
 .It Fl t Ar instruction-limit
-Limit the number of Lua instructions to execute.
-If a channel program executes more than the specified number of instructions,
-it will be stopped and an error will be returned.
-The default limit is 10 million instructions, and it can be set to a maximum of
-100 million instructions.
+Ограничивает количество выполняемых инструкций Lua.
+Если канальная программа выполнит больше указанного количества инструкций,
+она будет остановлена и будет возвращена ошибка.
+Ограничение по умолчанию составляет 10 миллионов инструкций, и его можно установить максимум
+на 100 миллионов инструкций.
 .It Fl m Ar memory-limit
-Memory limit, in bytes.
-If a channel program attempts to allocate more memory than the given limit, it
-will be stopped and an error returned.
-The default memory limit is 10 MiB, and can be set to a maximum of 100 MiB.
+Ограничение памяти в байтах.
+Если канальная программа попытается выделить больше памяти, чем задано, она
+будет остановлена и выдаст сообщение об ошибке.
+Ограничение памяти по умолчанию составляет 10 Мб, но может быть установлено максимум на 100 Мб.
 .El
 .Pp
-All remaining argument strings will be passed directly to the Lua script as
-described in the
-.Sx LUA INTERFACE
-section below.
-.
-.Sh LUA INTERFACE
-A channel program can be invoked either from the command line, or via a library
-call to
+Все оставшиеся строки аргументов будут переданы непосредственно в Lua-скрипт, как
+описано в разделе
+.Sx LUA ИНТЕРФЕЙС
+ниже.
+.Sh LUA ИНТЕРФЕЙС
+Канальная программа может быть вызвана либо из командной строки, либо с помощью библиотечного
+вызова
 .Fn lzc_channel_program .
 .
-.Ss Arguments
-Arguments passed to the channel program are converted to a Lua table.
-If invoked from the command line, extra arguments to the Lua script will be
-accessible as an array stored in the argument table with the key 'argv':
+.Ss Аргументы
+Аргументы, передаваемые программе канала, преобразуются в таблицу Lua.
+При вызове из командной строки дополнительные аргументы скрипта Lua будут
+доступны в виде массива, хранящегося в таблице аргументов с ключом 'argv':
 .Bd -literal -compact -offset indent
 args = ...
 argv = args["argv"]
 -- argv == {1="arg1", 2="arg2", ...}
 .Ed
 .Pp
-If invoked from the libzfs interface, an arbitrary argument list can be
-passed to the channel program, which is accessible via the same
-.Qq Li ...
-syntax in Lua:
+При вызове из интерфейса libzfs произвольный список аргументов может быть
+передан программе канала, которая доступна через тот же самый синтаксис в Lua
+.Qq Li ... :
 .Bd -literal -compact -offset indent
 args = ...
 -- args == {"foo"="bar", "baz"={...}, ...}
 .Ed
 .Pp
-Note that because Lua arrays are 1-indexed, arrays passed to Lua from the
-libzfs interface will have their indices incremented by 1.
-That is, the element
-in
+Обратите внимание, что поскольку массивы Lua индексируются на 1, индексы массивов, передаваемых в Lua из
+интерфейса libzfs, будут увеличены на 1.
+То есть элемент
+в массиве
 .Va arr[0]
-in a C array passed to a channel program will be stored in
+в C, передаваемом на канал, программа будет храниться в
 .Va arr[1]
-when accessed from Lua.
+при доступе из Lua.
 .
-.Ss Return Values
-Lua return statements take the form:
+.Ss Возвращаемые значения
+Инструкции возврата Lua принимают вид:
 .Dl return ret0, ret1, ret2, ...
 .Pp
-Return statements returning multiple values are permitted internally in a
-channel program script, but attempting to return more than one value from the
-top level of the channel program is not permitted and will throw an error.
-However, tables containing multiple values can still be returned.
-If invoked from the command line, a return statement:
+Инструкции возврата, возвращающие несколько значений, разрешены внутри
+скрипта программы канала, но попытка вернуть более одного значения с
+верхнего уровня программы канала запрещена и приведет к ошибке.
+Однако таблицы, содержащие несколько значений, все равно могут быть возвращены.
+При вызове из командной строки оператор возврата:
 .Bd -literal -compact -offset indent
 a = {foo="bar", baz=2}
 return a
 .Ed
 .Pp
-Will be output formatted as:
+Будет выведен в следующем формате:
 .Bd -literal -compact -offset indent
 Channel program fully executed with return value:
     return:
@@ -136,45 +132,45 @@ Channel program fully executed with return value:
         foo: 'bar'
 .Ed
 .
-.Ss Fatal Errors
-If the channel program encounters a fatal error while running, a non-zero exit
-status will be returned.
-If more information about the error is available, a singleton list will be
-returned detailing the error:
+.Ss Критические ошибки
+Если программа канала столкнется с фатальной ошибкой во время выполнения, будет возвращен ненулевой
+статус завершения.
+Если доступна дополнительная информация об ошибке, будет
+возвращен одноэлементный список с подробным описанием ошибки:
 .Dl error: \&"error string, including Lua stack trace"
 .Pp
-If a fatal error is returned, the channel program may have not executed at all,
-may have partially executed, or may have fully executed but failed to pass a
-return value back to userland.
+Если возвращается критическая ошибка, то программа канала, возможно, не выполнялась вообще,
+частично или полностью, но не смогла передать
+возвращаемое значение обратно в пользовательскую область.
 .Pp
-If the channel program exhausts an instruction or memory limit, a fatal error
-will be generated and the program will be stopped, leaving the program partially
-executed.
-No attempt is made to reverse or undo any operations already performed.
-Note that because both the instruction count and amount of memory used by a
-channel program are deterministic when run against the same inputs and
-filesystem state, as long as a channel program has run successfully once, you
-can guarantee that it will finish successfully against a similar size system.
+Если программа канала исчерпает инструкцию или объем памяти,
+будет сгенерирована критическая ошибка, и программа будет остановлена, в результате чего программа
+будет выполнена частично.
+Не предпринимается попыток отменить какие-либо уже выполненные операции.
+Обратите внимание, что, поскольку как количество команд, так и объем памяти, используемый
+канальной программой, являются детерминированными при запуске с одинаковыми входными данными и
+состоянием файловой системы, если канальная программа была успешно запущена один раз, вы
+можете гарантировать, что она успешно завершится в системе аналогичного размера.
 .Pp
-If a channel program attempts to return too large a value, the program will
-fully execute but exit with a nonzero status code and no return value.
+Если программа канала попытается вернуть слишком большое значение, программа будет
+полностью выполнена, но завершит работу с ненулевым кодом состояния и без возвращаемого значения.
 .Pp
-.Em Note :
-ZFS API functions do not generate Fatal Errors when correctly invoked, they
-return an error code and the channel program continues executing.
-See the
+.Em Примечание:
+Функции ZFS API не генерируют фатальных ошибок при правильном вызове, они
+возвращают код ошибки, и программа канала продолжает выполняться.
+Смотрите раздел
 .Sx ZFS API
-section below for function-specific details on error return codes.
+ниже для получения подробной информации о кодах возврата ошибок, относящихся к конкретной функции
 .
-.Ss Lua to C Value Conversion
-When invoking a channel program via the libzfs interface, it is necessary to
-translate arguments and return values from Lua values to their C equivalents,
-and vice-versa.
+.Ss Преобразование значений Lua в C
+При вызове канальной программы через интерфейс libzfs необходимо
+преобразовать аргументы и возвращаемые значения из значений Lua в их эквиваленты на C,
+и наоборот.
 .Pp
-There is a correspondence between nvlist values in C and Lua tables.
-A Lua table which is returned from the channel program will be recursively
-converted to an nvlist, with table values converted to their natural
-equivalents:
+Существует соответствие между значениями nvlist в таблицах C и Lua.
+Таблица Lua, которая возвращается из программы канала, будет рекурсивно
+преобразована в nvlist, а табличные значения будут преобразованы в их естественные
+эквиваленты:
 .TS
 cw3 l c l .
 	string	->	string
@@ -184,7 +180,7 @@ cw3 l c l .
 	table	->	nvlist
 .TE
 .Pp
-Likewise, table keys are replaced by string equivalents as follows:
+Аналогично, табличные ключи заменяются строковыми эквивалентами следующим образом:
 .TS
 cw3 l c l .
 	string	->	no change
@@ -192,13 +188,13 @@ cw3 l c l .
 	boolean	->	"true" | "false"
 .TE
 .Pp
-Any collision of table key strings (for example, the string "true" and a
-true boolean value) will cause a fatal error.
+Любое столкновение ключевых строк таблицы (например, строка "true" и
+логическое значение true) приведет к фатальной ошибке.
 .Pp
-Lua numbers are represented internally as signed 64-bit integers.
+Числа Lua внутренне представлены в виде 64-разрядных целых чисел со знаком.
 .
-.Sh LUA STANDARD LIBRARY
-The following Lua built-in base library functions are available:
+.Sh СТАНДАРТНАЯ БИБЛИОТЕКА LUA
+Доступны следующие встроенные функции базовой библиотеки Lua:
 .TS
 cw3 l l l l .
 	assert	rawlen	collectgarbage	rawget
@@ -207,17 +203,16 @@ cw3 l l l l .
 	pairs	tostring	rawequal	type
 .TE
 .Pp
-All functions in the
-.Em coroutine ,
-.Em string ,
-and
-.Em table
-built-in submodules are also available.
-A complete list and documentation of these modules is available in the Lua
-manual.
+Всем функциям в
+.Em сопрограмме ,
+.Em строке ,
+и
+.Em таблице
+также доступны встроенные подмодули.
+Полный список и документация по этим модулям доступны в руководстве по Lua.
 .Pp
-The following functions base library functions have been disabled and are
-not available for use in channel programs:
+Следующие функции базовой библиотеки функций были отключены и
+недоступны для использования в программах канала:
 .TS
 cw3 l l l l l l .
 	dofile	loadfile	load	pcall	print	xpcall
@@ -225,42 +220,40 @@ cw3 l l l l l l .
 .
 .Sh ZFS API
 .
-.Ss Function Arguments
-Each API function takes a fixed set of required positional arguments and
-optional keyword arguments.
-For example, the destroy function takes a single positional string argument
-(the name of the dataset to destroy) and an optional "defer" keyword boolean
-argument.
-When using parentheses to specify the arguments to a Lua function, only
-positional arguments can be used:
+.Ss Аргументы функции
+Каждая функция API принимает фиксированный набор обязательных позиционных аргументов и
+необязательных ключевых слов.
+Например, функция destroy принимает единственный позиционный строковый аргумент
+(имя уничтожаемого набора данных) и необязательный логический аргумент ключевого слова "defer".
+При использовании круглых скобок для указания аргументов функции Lua
+можно использовать только позиционные аргументы:
 .Dl Sy zfs.sync.destroy Ns Pq \&"rpool@snap"
 .Pp
-To use keyword arguments, functions must be called with a single argument that
-is a Lua table containing entries mapping integers to positional arguments and
-strings to keyword arguments:
+Чтобы использовать аргументы по ключевым словам, функции должны вызываться с одним аргументом, который
+представляет собой таблицу Lua, содержащую записи, преобразующие целые числа в позиционные аргументы, а
+строки - в аргументы по ключевым словам:
 .Dl Sy zfs.sync.destroy Ns Pq {1="rpool@snap", defer=true}
 .Pp
-The Lua language allows curly braces to be used in place of parenthesis as
-syntactic sugar for this calling convention:
+Язык Lua позволяет использовать фигурные скобки вместо круглых скобок в качестве
+синтаксического дополнения для этого соглашения о вызове:
 .Dl Sy zfs.sync.snapshot Ns {"rpool@snap", defer=true}
 .
-.Ss Function Return Values
-If an API function succeeds, it returns 0.
-If it fails, it returns an error code and the channel program continues
-executing.
-API functions do not generate Fatal Errors except in the case of an
-unrecoverable internal file system error.
+.Ss Функция возвращения значения
+При успешном выполнении функции API возвращается значение 0.
+При сбое возвращается код ошибки, и программа канала продолжает
+выполнение.
+Функции API не генерируют фатальных ошибок, за исключением случаев
+неустранимой внутренней ошибки файловой системы.
 .Pp
-In addition to returning an error code, some functions also return extra
-details describing what caused the error.
-This extra description is given as a second return value, and will always be a
-Lua table, or Nil if no error details were returned.
-Different keys will exist in the error details table depending on the function
-and error case.
-Any such function may be called expecting a single return value:
+В дополнение к возвращению кода ошибки, некоторые функции также возвращают дополнительные
+сведения, описывающие причину ошибки.
+Это дополнительное описание задается в качестве второго возвращаемого значения и всегда будет таблица Lua или Nil, если сведения об ошибке возвращены не были.
+В таблице сведений об ошибке могут быть разные ключи в зависимости от функции
+и случая ошибки.
+Любая такая функция может быть вызвана с ожиданием единственного возвращаемого значения:
 .Dl errno = Sy zfs.sync.promote Ns Pq dataset
 .Pp
-Or, the error details can be retrieved:
+Или же можно получить подробную информацию об ошибке:
 .Bd -literal -compact -offset indent
 .No errno, details = Sy zfs.sync.promote Ns Pq dataset
 if (errno == EEXIST) then
@@ -269,8 +262,8 @@ if (errno == EEXIST) then
 end
 .Ed
 .Pp
-The following global aliases for API function error return codes are defined
-for use in channel programs:
+Следующие глобальные псевдонимы для кодов возврата ошибок функций API определены
+для использования в канальных программах:
 .TS
 cw3 l l l l l l l .
 	EPERM	ECHILD	ENODEV	ENOSPC	ENOENT	EAGAIN	ENOTDIR
@@ -280,198 +273,193 @@ cw3 l l l l l l l .
 	ENOEXEC	EEXIST	ETXTBSY	EDQUOT	EBADF	EXDEV	EFBIG
 .TE
 .
-.Ss API Functions
-For detailed descriptions of the exact behavior of any ZFS administrative
-operations, see the main
-.Xr zfs 8
-manual page.
+.Ss Функции API
+Для получения подробного описания точного поведения любых административных
+операций ZFS, смотрите главную страницу руководства
+.Xr zfs 8 .
 .Bl -tag -width "xx"
 .It Fn zfs.debug msg
-Record a debug message in the zfs_dbgmsg log.
-A log of these messages can be printed via mdb's "::zfs_dbgmsg" command, or
-can be monitored live by running
+Записывает отладочное сообщение в журнал zfs_dbgmsg.
+Журнал этих сообщений можно распечатать с помощью команды mdb "::zfs_dbgmsg" или
+отслеживать в реальном времени, выполнив
 .Dl dtrace -n 'zfs-dbgmsg{trace(stringof(arg0))}'
 .Pp
 .Bl -tag -compact -width "property (string)"
 .It Ar msg Pq string
-Debug message to be printed.
+Отладочное сообщение, которое будет напечатано.
 .El
 .It Fn zfs.exists dataset
-Returns true if the given dataset exists, or false if it doesn't.
-A fatal error will be thrown if the dataset is not in the target pool.
-That is, in a channel program running on rpool,
+Возвращает значение true, если данный набор данных существует, или значение false, если его нет.
+Если набор данных отсутствует в целевом пуле, будет выдана неустранимая ошибка.
+То есть в программе канала, запущенной на rpool,
 .Sy zfs.exists Ns Pq \&"rpool/nonexistent_fs"
-returns false, but
-.Sy zfs.exists Ns Pq \&"somepool/fs_that_may_exist"
-will error.
+возвращает значение false, но будет ошибка
+.Sy zfs.exists Ns Pq \&"somepool/fs_that_may_exist" .
 .Pp
 .Bl -tag -compact -width "property (string)"
 .It Ar dataset Pq string
-Dataset to check for existence.
-Must be in the target pool.
+Набор данных для проверки на существование.
+Должен быть в целевом пуле.
 .El
 .It Fn zfs.get_prop dataset property
-Returns two values.
-First, a string, number or table containing the property value for the given
-dataset.
-Second, a string containing the source of the property (i.e. the name of the
-dataset in which it was set or nil if it is readonly).
-Throws a Lua error if the dataset is invalid or the property doesn't exist.
-Note that Lua only supports int64 number types whereas ZFS number properties
-are uint64.
-This means very large values (like GUIDs) may wrap around and appear negative.
+Возвращает два значения.
+Во-первых, строку, число или таблицу, содержащие значение свойства для данного
+набора данных.
+Во-вторых, строка, содержащая источник свойства (т.е. имя
+набора данных, в котором оно было задано, или nil, если оно доступно только для чтения).
+Выдает ошибку Lua, если набор данных недействителен или свойство не существует.
+Обратите внимание, что Lua поддерживает только типы чисел int64, тогда как свойства чисел ZFS
+- uint64.
+Это означает, что очень большие значения (например, идентификаторы GUID) могут искажаться и выглядеть отрицательными.
 .Pp
 .Bl -tag -compact -width "property (string)"
 .It Ar dataset Pq string
-Filesystem or snapshot path to retrieve properties from.
+Путь к файловой системе или снапшоту, из которого можно извлекать свойства.
 .It Ar property Pq string
-Name of property to retrieve.
-All filesystem, snapshot and volume properties are supported except for
+Имя свойства для извлечения.
+Поддерживаются все свойства файловой системы, снапшота и тома, за исключением
 .Sy mounted
-and
+и
 .Sy iscsioptions .
-Also supports the
-.Sy written@ Ns Ar snap
-and
+Также поддерживаются свойства
+.Sy written@ Ns Ar snap ,
 .Sy written# Ns Ar bookmark
-properties and the
-.Ao Sy user Ns | Ns Sy group Ac Ns Ao Sy quota Ns | Ns Sy used Ac Ns Sy @ Ns Ar id
-properties, though the id must be in numeric form.
+и
+.Ao Sy user Ns | Ns Sy group Ac Ns Ao Sy quota Ns | Ns Sy used Ac Ns Sy @ Ns Ar id ,
+хотя идентификатор должен быть в числовой форме.
 .El
 .El
 .Bl -tag -width "xx"
 .It Sy zfs.sync submodule
-The sync submodule contains functions that modify the on-disk state.
-They are executed in "syncing context".
+Подмодуль синхронизации содержит функции, которые изменяют состояние диска.
+Они выполняются в "контексте синхронизации".
 .Pp
-The available sync submodule functions are as follows:
+Доступны следующие функции подмодуля синхронизации:
 .Bl -tag -width "xx"
 .It Sy zfs.sync.destroy Ns Pq Ar dataset , Op Ar defer Ns = Ns Sy true Ns | Ns Sy false
-Destroy the given dataset.
-Returns 0 on successful destroy, or a nonzero error code if the dataset could
-not be destroyed (for example, if the dataset has any active children or
-clones).
+Уничтожает данный набор данных.
+Возвращает 0 при успешном уничтожении или ненулевой код ошибки, если набор
+данных не удалось уничтожить (например, если у набора данных есть какие-либо активные дочерние элементы или
+клоны).
 .Pp
 .Bl -tag -compact -width "newbookmark (string)"
 .It Ar dataset Pq string
-Filesystem or snapshot to be destroyed.
+Файловая система или снапшот, подлежащие уничтожению.
 .It Op Ar defer Pq boolean
-Valid only for destroying snapshots.
-If set to true, and the snapshot has holds or clones, allows the snapshot to be
-marked for deferred deletion rather than failing.
+Допустимо только для уничтожения снапшотов.
+Если установлено значение true и в снапшоте есть удержания или клоны, это позволяет
+помечать снапшот для отложенного удаления, а не для сбоя.
 .El
 .It Fn zfs.sync.inherit dataset property
-Clears the specified property in the given dataset, causing it to be inherited
-from an ancestor, or restored to the default if no ancestor property is set.
-The
+Очищает указанное свойство в данном наборе данных, в результате чего оно наследуется
+от предка или восстанавливается до значения по умолчанию, если свойство предка не задано.
 .Nm zfs Cm inherit Fl S
-option has not been implemented.
-Returns 0 on success, or a nonzero error code if the property could not be
-cleared.
+параметр не был реализован.
+Возвращает 0 в случае успеха или ненулевой код ошибки, если не удалось
+очистить свойство.
 .Pp
 .Bl -tag -compact -width "newbookmark (string)"
 .It Ar dataset Pq string
-Filesystem or snapshot containing the property to clear.
+Файловая система или снапшот, содержащий свойство, которое требуется очистить.
 .It Ar property Pq string
-The property to clear.
-Allowed properties are the same as those for the
-.Nm zfs Cm inherit
-command.
+Свойство, которое необходимо очистить.
+Разрешенные свойства такие же, как и для команды
+.Nm zfs Cm inherit .
 .El
 .It Fn zfs.sync.promote dataset
-Promote the given clone to a filesystem.
-Returns 0 on successful promotion, or a nonzero error code otherwise.
-If EEXIST is returned, the second return value will be an array of the clone's
-snapshots whose names collide with snapshots of the parent filesystem.
+Перемещает данный клон в файловую систему.
+Возвращает 0 в случае успешного продвижения или ненулевой код ошибки в противном случае.
+Если возвращено значение EEXIST, то вторым возвращаемым значением будет массив
+снапшотов клона, имена которых совпадают со снапшотами родительской файловой системы.
 .Pp
 .Bl -tag -compact -width "newbookmark (string)"
 .It Ar dataset Pq string
-Clone to be promoted.
+Клон, подлежащий перемещению.
 .El
 .It Fn zfs.sync.rollback filesystem
-Rollback to the previous snapshot for a dataset.
-Returns 0 on successful rollback, or a nonzero error code otherwise.
-Rollbacks can be performed on filesystems or zvols, but not on snapshots
-or mounted datasets.
-EBUSY is returned in the case where the filesystem is mounted.
+Откат к предыдущему снимку для набора данных.
+При успешном откате возвращает 0 или ненулевой код ошибки в противном случае.
+Откат может выполняться для файловых систем или zvols, но не для снимков
+или подключенных наборов данных.
+EBUSY возвращается в том случае, если файловая система смонтирована.
 .Pp
 .Bl -tag -compact -width "newbookmark (string)"
 .It Ar filesystem Pq string
-Filesystem to rollback.
+Файловая система для отката.
 .El
 .It Fn zfs.sync.set_prop dataset property value
-Sets the given property on a dataset.
-Currently only user properties are supported.
-Returns 0 if the property was set, or a nonzero error code otherwise.
+Устанавливает данное свойство для набора данных.
+В настоящее время поддерживаются только пользовательские свойства.
+Возвращает 0, если свойство было задано, или ненулевой код ошибки в противном случае.
 .Pp
 .Bl -tag -compact -width "newbookmark (string)"
 .It Ar dataset Pq string
-The dataset where the property will be set.
+Набор данных, в котором будет задано свойство.
 .It Ar property Pq string
-The property to set.
+Свойство, которое нужно установить.
 .It Ar value Pq string
-The value of the property to be set.
+Значение свойства, которое должно быть установлено.
 .El
 .It Fn zfs.sync.snapshot dataset
-Create a snapshot of a filesystem.
-Returns 0 if the snapshot was successfully created,
-and a nonzero error code otherwise.
+Создаёт снапшот файловой системы.
+Возвращает 0, если снапшот был успешно создан,
+и ненулевой код ошибки в противном случае.
 .Pp
-Note: Taking a snapshot will fail on any pool older than legacy version 27.
-To enable taking snapshots from ZCP scripts, the pool must be upgraded.
+Примечание: Создание снапшота не удастся в любом пуле старше устаревшей версии 27.
+Чтобы разрешить создание снапшотов из ZCP-скриптов, необходимо обновить пул.
 .Pp
 .Bl -tag -compact -width "newbookmark (string)"
 .It Ar dataset Pq string
-Name of snapshot to create.
+Имя создаваемого моментального снимка.
 .El
 .It Fn zfs.sync.rename_snapshot dataset oldsnapname newsnapname
-Rename a snapshot of a filesystem or a volume.
-Returns 0 if the snapshot was successfully renamed,
-and a nonzero error code otherwise.
+Переименовует снапшот файловой системы или тома.
+Возвращает 0, если снапшот был успешно переименован,
+и ненулевой код ошибки в противном случае.
 .Pp
 .Bl -tag -compact -width "newbookmark (string)"
 .It Ar dataset Pq string
-Name of the snapshot's parent dataset.
+Имя родительского набора данных снапшота.
 .It Ar oldsnapname Pq string
-Original name of the snapshot.
+Оригинальное название снапшота.
 .It Ar newsnapname Pq string
-New name of the snapshot.
+Новое имя снапшота.
 .El
 .It Fn zfs.sync.bookmark source newbookmark
-Create a bookmark of an existing source snapshot or bookmark.
-Returns 0 if the new bookmark was successfully created,
-and a nonzero error code otherwise.
+Создаёт закладку из существующего исходного снапшота или закладки.
+Возвращает 0, если новая закладка была успешно создана,
+и ненулевой код ошибки в противном случае.
 .Pp
-Note: Bookmarking requires the corresponding pool feature to be enabled.
+Примечание: Для создания закладок требуется включить соответствующую функцию пула.
 .Pp
 .Bl -tag -compact -width "newbookmark (string)"
 .It Ar source Pq string
-Full name of the existing snapshot or bookmark.
+Полное имя существующего снапшота или закладки.
 .It Ar newbookmark Pq string
-Full name of the new bookmark.
+Полное название новой закладки.
 .El
 .El
 .It Sy zfs.check submodule
-For each function in the
+Для каждой функции в подмодуле
+.Sy zfs.sync ,
+существует соответствующая функция
+.Sy zfs.check ,
+которая выполняет "пробный запуск" той же операции.
+Каждый из них принимает те же аргументы, что и его аналог
 .Sy zfs.sync
-submodule, there is a corresponding
-.Sy zfs.check
-function which performs a "dry run" of the same operation.
-Each takes the same arguments as its
-.Sy zfs.sync
-counterpart and returns 0 if the operation would succeed,
-or a non-zero error code if it would fail, along with any other error details.
-That is, each has the same behavior as the corresponding sync function except
-for actually executing the requested change.
-For example,
+и возвращает 0, если операция завершится успешно,
+или ненулевой код ошибки, если произойдет сбой, а также любые другие сведения об ошибке.
+То есть, каждая из них ведет себя так же, как и соответствующая функция синхронизации, за исключением
+фактического выполнения запрошенного изменения.
+Например,
 .Fn zfs.check.destroy \&"fs"
-returns 0 if
+возврнет 0, если бы
 .Fn zfs.sync.destroy \&"fs"
-would successfully destroy the dataset.
+привело к успешному уничтожению набора данных.
 .Pp
-The available
+Доступными функцями
 .Sy zfs.check
-functions are:
+являются:
 .Bl -tag -compact -width "xx"
 .It Sy zfs.check.destroy Ns Pq Ar dataset , Op Ar defer Ns = Ns Sy true Ns | Ns Sy false
 .It Fn zfs.check.promote dataset
@@ -480,99 +468,99 @@ functions are:
 .It Fn zfs.check.snapshot dataset
 .El
 .It Sy zfs.list submodule
-The zfs.list submodule provides functions for iterating over datasets and
-properties.
-Rather than returning tables, these functions act as Lua iterators, and are
-generally used as follows:
+Подмодуль zfs.list предоставляет функции для перебора наборов данных и
+свойств.
+Вместо того, чтобы возвращать таблицы, эти функции действуют как итераторы Lua и
+обычно используются следующим образом:
 .Bd -literal -compact -offset indent
 .No for child in Fn zfs.list.children \&"rpool" No do
     ...
 end
 .Ed
 .Pp
-The available
+Доступными функцями
 .Sy zfs.list
-functions are:
+являются:
 .Bl -tag -width "xx"
 .It Fn zfs.list.clones snapshot
-Iterate through all clones of the given snapshot.
+Выполните итерацию по всем клонам данного снапшота.
 .Pp
 .Bl -tag -compact -width "snapshot (string)"
 .It Ar snapshot Pq string
-Must be a valid snapshot path in the current pool.
+Должен быть действительный путь к снапшоту в текущем пуле.
 .El
 .It Fn zfs.list.snapshots dataset
-Iterate through all snapshots of the given dataset.
-Each snapshot is returned as a string containing the full dataset name,
-e.g. "pool/fs@snap".
+Выполняет итерацию по всем снапшотам данного набора данных.
+Каждый снапшот возвращается в виде строки, содержащей полное имя набора данных,
+например "pool/fs@snap".
 .Pp
 .Bl -tag -compact -width "snapshot (string)"
 .It Ar dataset Pq string
-Must be a valid filesystem or volume.
+Должна быть допустимая файловая система или том.
 .El
 .It Fn zfs.list.children dataset
-Iterate through all direct children of the given dataset.
-Each child is returned as a string containing the full dataset name,
-e.g. "pool/fs/child".
+Выполняетитерацию по всем прямым дочерним элементам данного набора данных.
+Каждый дочерний элемент возвращается в виде строки, содержащей полное имя набора данных,
+например "pool/fs/child".
 .Pp
 .Bl -tag -compact -width "snapshot (string)"
 .It Ar dataset Pq string
-Must be a valid filesystem or volume.
+Должна быть допустимая файловая система или том.
 .El
 .It Fn zfs.list.bookmarks dataset
-Iterate through all bookmarks of the given dataset.
-Each bookmark is returned as a string containing the full dataset name,
-e.g. "pool/fs#bookmark".
+Выполняет итерацию по всем закладкам данного набора данных.
+Каждая закладка возвращается в виде строки, содержащей полное название набора данных,
+например "pool/fs#bookmark".
 .Pp
 .Bl -tag -compact -width "snapshot (string)"
 .It Ar dataset Pq string
-Must be a valid filesystem or volume.
+Должна быть допустимая файловая система или том.
 .El
 .It Fn zfs.list.holds snapshot
-Iterate through all user holds on the given snapshot.
-Each hold is returned
-as a pair of the hold's tag and the timestamp (in seconds since the epoch) at
-which it was created.
+Выполните итерацию по всем пользовательским удержаниям в данном снапшоте.
+Каждое удержание возвращается
+в виде пары тегов удержания и временной метки (в секундах с момента создания), в
+которую оно было создано.
 .Pp
 .Bl -tag -compact -width "snapshot (string)"
 .It Ar snapshot Pq string
-Must be a valid snapshot.
+Должен быть действительный снапшот.
 .El
 .It Fn zfs.list.properties dataset
-An alias for zfs.list.user_properties (see relevant entry).
+Псевдоним для zfs.list.user_properties (смотрите соответствующую запись).
 .Pp
 .Bl -tag -compact -width "snapshot (string)"
 .It Ar dataset Pq string
-Must be a valid filesystem, snapshot, or volume.
+Должна быть допустимая файловая система, снапшот или том.
 .El
 .It Fn zfs.list.user_properties dataset
-Iterate through all user properties for the given dataset.
-For each step of the iteration, output the property name, its value,
-and its source.
-Throws a Lua error if the dataset is invalid.
+Выполняет итерацию по всем пользовательским свойствам для данного набора данных.
+На каждом шаге итерации выводит имя свойства, его значение
+и источник.
+Выдает ошибку Lua, если набор данных является недопустимым.
 .Pp
 .Bl -tag -compact -width "snapshot (string)"
 .It Ar dataset Pq string
-Must be a valid filesystem, snapshot, or volume.
+Должна быть допустимая файловая система, снапшот или том.
 .El
 .It Fn zfs.list.system_properties dataset
-Returns an array of strings, the names of the valid system (non-user defined)
-properties for the given dataset.
-Throws a Lua error if the dataset is invalid.
+Возвращает массив строк, имена допустимых системных параметров (не определенных пользователем)
+свойств для данного набора данных.
+Выдает ошибку Lua, если набор данных является недопустимым.
 .Pp
 .Bl -tag -compact -width "snapshot (string)"
 .It Ar dataset Pq string
-Must be a valid filesystem, snapshot or volume.
+Должна быть допустимая файловая система, снапшот или том.
 .El
 .El
 .El
 .
-.Sh EXAMPLES
+.Sh ПРИМЕРЫ
 .
-.Ss Example 1
-The following channel program recursively destroys a filesystem and all its
-snapshots and children in a naive manner.
-Note that this does not involve any error handling or reporting.
+.Ss Пример 1
+Следующая программа канала рекурсивно уничтожает файловую систему и все ее
+снапшоты и дочерние элементы наивным образом.
+Обратите внимание, что это не требует обработки ошибок или создания отчетов.
 .Bd -literal -offset indent
 function destroy_recursive(root)
     for child in zfs.list.children(root) do
@@ -586,10 +574,10 @@ end
 destroy_recursive("pool/somefs")
 .Ed
 .
-.Ss Example 2
-A more verbose and robust version of the same channel program, which
-properly detects and reports errors, and also takes the dataset to destroy
-as a command line argument, would be as follows:
+.Ss Пример 2
+Более подробная и надежная версия той же программы канала, которая
+корректно обнаруживает ошибки и сообщает о них, а также использует набор данных для уничтожения
+в качестве аргумента командной строки, была бы следующей:
 .Bd -literal -offset indent
 succeeded = {}
 failed = {}
@@ -625,9 +613,9 @@ results["failed"] = failed
 return results
 .Ed
 .
-.Ss Example 3
-The following function performs a forced promote operation by attempting to
-promote the given clone and destroying any conflicting snapshots.
+.Ss Пример 3
+Следующая функция выполняет операцию принудительного продвижения, пытаясь
+продвигать данный клон и уничтожая все конфликтующие снапшоты.
 .Bd -literal -offset indent
 function force_promote(ds)
    errno, details = zfs.check.promote(ds)

@@ -29,14 +29,14 @@
 .\" Copyright 2018 Nexenta Systems, Inc.
 .\" Copyright 2019 Joyent, Inc.
 .\"
-.Dd February 16, 2019
+.Dd Февраль 16, 2019
 .Dt ZFS-MOUNT 8
 .Os
 .
-.Sh NAME
+.Sh ИМЯ
 .Nm zfs-mount
-.Nd manage mount state of ZFS filesystems
-.Sh SYNOPSIS
+.Nd управление состоянием монтирования файловых систем ZFS
+.Sh СИНТАКСИС
 .Nm zfs
 .Cm mount
 .Nm zfs
@@ -49,13 +49,13 @@
 .Op Fl fu
 .Fl a Ns | Ns Ar filesystem Ns | Ns Ar mountpoint
 .
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 .Bl -tag -width ""
 .It Xo
 .Nm zfs
 .Cm mount
 .Xc
-Displays all ZFS file systems currently mounted.
+Отображает все файловые системы ZFS, подключенные в данный момент.
 .It Xo
 .Nm zfs
 .Cm mount
@@ -63,49 +63,49 @@ Displays all ZFS file systems currently mounted.
 .Op Fl o Ar options
 .Fl a Ns | Ns Ar filesystem
 .Xc
-Mount ZFS filesystem on a path described by its
+Смонтируйте файловую систему ZFS по пути, описанному в ее свойстве
+.Sy mountpoint ,
+если путь существует и пуст.
+Если
 .Sy mountpoint
-property, if the path exists and is empty.
-If
-.Sy mountpoint
-is set to
+установлен на
 .Em legacy ,
-the filesystem should be instead mounted using
+вместо этого файловая система должна быть смонтирована с помощью
 .Xr mount 8 .
 .Bl -tag -width "-O"
 .It Fl O
-Perform an overlay mount.
-Allows mounting in non-empty
+Выполните монтаж внахлест.
+Позволяет выполнять монтаж в непустых
 .Sy mountpoint .
-See
+Смотрите
 .Xr mount 8
-for more information.
+для получения дополнительной информации.
 .It Fl a
-Mount all available ZFS file systems.
-Invoked automatically as part of the boot process if configured.
+Подключите все доступные файловые системы ZFS.
+Запускается автоматически в процессе загрузки, если настроено.
 .It Ar filesystem
-Mount the specified filesystem.
+Смонтируйте указанную файловую систему.
 .It Fl o Ar options
-An optional, comma-separated list of mount options to use temporarily for the
-duration of the mount.
-See the
+Дополнительный список параметров монтирования, разделенных запятыми, который можно временно использовать на
+время монтирования.
+Смотрите раздел
 .Em Temporary Mount Point Properties
-section of
+из
 .Xr zfsprops 7
-for details.
+для получения подробной информации.
 .It Fl l
-Load keys for encrypted filesystems as they are being mounted.
-This is equivalent to executing
+Загружайте ключи для зашифрованных файловых систем по мере их монтирования.
+Это эквивалентно выполнению
 .Nm zfs Cm load-key
-on each encryption root before mounting it.
-Note that if a filesystem has
+в каждом корневом каталоге шифрования перед его подключением.
+Обратите внимание, что если файловая система имеет
 .Sy keylocation Ns = Ns Sy prompt ,
-this will cause the terminal to interactively block after asking for the key.
+это приведет к интерактивной блокировке терминала после запроса ключа.
 .It Fl v
-Report mount progress.
+Сообщайте о ходе монтажа.
 .It Fl f
-Attempt to force mounting of all filesystems, even those that couldn't normally
-be mounted (e.g. redacted datasets).
+Попытайтесь принудительно смонтировать все файловые системы, даже те, которые обычно не
+монтируются (например, отредактированные наборы данных).
 .El
 .It Xo
 .Nm zfs
@@ -113,19 +113,19 @@ be mounted (e.g. redacted datasets).
 .Op Fl fu
 .Fl a Ns | Ns Ar filesystem Ns | Ns Ar mountpoint
 .Xc
-Unmounts currently mounted ZFS file systems.
+Отключает подключенные в данный момент файловые системы ZFS.
 .Bl -tag -width "-a"
 .It Fl a
-Unmount all available ZFS file systems.
-Invoked automatically as part of the shutdown process.
+Отключите все доступные файловые системы ZFS.
+Запускается автоматически в процессе завершения работы.
 .It Fl f
-Forcefully unmount the file system, even if it is currently in use.
-This option is not supported on Linux.
+Принудительно размонтируйте файловую систему, даже если она используется в данный момент.
+Эта опция не поддерживается в Linux.
 .It Fl u
-Unload keys for any encryption roots unmounted by this command.
+Выгрузите ключи для всех корней шифрования, размонтированных с помощью этой команды.
 .It Ar filesystem Ns | Ns Ar mountpoint
-Unmount the specified filesystem.
-The command can also be given a path to a ZFS file system mount point on the
-system.
+Отключите указанную файловую систему.
+Команде также может быть задан путь к точке подключения файловой системы ZFS в
+системе.
 .El
 .El
