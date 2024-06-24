@@ -7,111 +7,110 @@
 .\" # LICENSE.
 .\" # Phil Shafer, July 2014
 .\" 
-.Dd December 4, 2014
+.Dd Декабрь 4, 2014
 .Dt XO 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm xo
-.Nd emit formatted output based on format string and arguments
-.Sh SYNOPSIS
+.Nd выдает форматированный вывод на основе строки формата и аргументов 
+.Sh СИНТАКСИС
 .Nm
-.Op Fl options
-.Op Ar argument...
-.Sh DESCRIPTION
-The
+.Op Fl параметры
+.Op Ar аргумент...
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility allows command line access to the functionality of
-the
+предоставляет доступ из командной строки к функциональности 
 .Nm libxo
-library.
-Using
+библиотеки.
+Используя
 .Nm ,
-shell scripts can emit
+сценарии оболочки могут выдавать 
 .Em XML ,
 .Em JSON ,
-or
+или
 .Em HTML
-using the same commands that emit text output.
+используя те же команды, что выводят текст.
 .Pp
 .Bl -tag -width indent
 .It Ic --close Ar path
-Close tags for the given path
-.It Ic -C | Ic --continuation
-Indicates this output is a continuation of the previous output data
-and should appear on the same line.
-This is allows HTML output to be constructed correctly.
+Закрытые теги для данного пути
+.It Ic -C | Ic --продолжение
+Указывает, что этот вывод является продолжением предыдущего вывода данные 
+и должны отображаться в той же строке.
+Это позволяет выводу HTML быть более корректным.
 .It Ic --depth Ar num
-Set the depth for pretty printing
+Устанавливает глубину для красивой печати
 .It Ic --help
-Display help text
+Отображает вспомогательный текст
 .It Ic -H | Ic --html
-Generate HTML output
+Генерирует выходные данные HTML
 .It Ic -J | Ic --json
-Generate JSON output
+Генерирует выходные данные JSON
 .It Ic --leading-xpath Ar path
-Add a prefix to generated XPaths (HTML)
+Добавляет префикс к сгенерированным XPaths (HTML)
 .It Ic --not-first
-Indicate that this content is not the first in a series of sibling
-objects, which is vital information for "JSON" output, which requires
-a comma between such objects.
+Распознает, что это содержимое не первое в серии исходных данных, 
+которые являются важной информацией для вывода "JSON", которая требует 
+запятой между такими объектами.
 .It Ic --open Ar path
-Open tags for the given path
+Открывает теги для заданного пути
 .It Ic -p | Ic --pretty
-Make 'pretty' output (add indent, newlines)
+Делает вывод данных "красивым" (добавляет отступ, новые строки)
 .It Ic --style Ar style
-Generate given style (xml, json, text, html)
+Сгенерировать заданный стиль (xml, json, text, html)
 .It Ic -T | Ic --text
-Generate text output (the default style)
+Генерировать текстовый вывод (стиль по умолчанию)
 .It Ic --top-warp
-Indicates the entire object should be placed inside a top-level
-object wrapper, specifically when generating JSON output.
+Определяет, что весь объект должен быть помещен внутри объекта верхнего уровня 
+оболочка объекта, особенно при генерации выходных данных в формате JSON.
 .It Ic --version
-Display version information
+Отображает информацию о версии
 .It Ic -W | Ic --warn
-Display warnings in text on stderr
+Отображает редупреждения в виде текста в stderr
 .It Ic --warn-xml
-Display warnings in xml on stdout
+Отображает предупреждения в xml в стандартном выводе
 .It Ic --wrap Ar path
-Wrap output in a set of containers
+Оборачивает выходные данные в набор контейнеров
 .It Ic -X | Ic --xml
-Generate XML output
+Генерирует выходные данные XML
 .It Ic --xpath
-Add XPath data to HTML output
+Добавляет данные XPath в выходные данные HTML
 .El
 .Pp
 The
 .Nm
-utility accepts a format string suitable for
+утилита принимает строку формата, подходящую для
 .Xr xo_emit 3
-and a set of zero or more arguments used to supply data for that string.
+и набор из нуля или более аргументов, используемых для предоставления данных для этой строки
 .Pp
-In addition,
+Кроме того,
 .Nm
-accepts any of the
+принимает любые
 .Nm libxo
-options listed in
+параметры, перечисленные в
 .Xr xo_options 7 .
-.Sh EXAMPLES
-In this example,
+.Sh ПРИМЕРЫ
+В этом примере,
 .Nm
-is used to emit the same data encoded in text and then in XML by
-adding the "-p" (pretty) and "-X" (XML output) flags:
+используется для передачи одних и тех же данных, закодированных в тексте, 
+а затем в XML, добавляя флаги "-p" (pretty) и "-X" (XML вывод):
 .Bd -literal -offset indent
   % xo 'The {:product} is {:status}\\n' stereo "in route"
-  The stereo is in route
+   Стереосистема в пути
   % xo -p -X 'The {:product} is {:status}\\n' stereo "in route"
   <product>stereo</product>
   <status>in route</status>
 .Ed
 .Pp
-In this example, the output from a
+В этом примере выходные данные команды
 .Nm
-command is shown in several styles:
+показаны в нескольких стилях:
 .Bd -literal -offset indent
   xo "The {k:name} weighs {:weight/%d} pounds.\\n" fish 6
 .Pp
-  TEXT:
-    The fish weighs 6 pounds.
+  ТЕКСТ:
+    Рыба весит 6 фунтов.
   XML:
     <name>fish</name>
     <weight>6</weight>
@@ -130,10 +129,10 @@ command is shown in several styles:
 .Pp
 The
 .Fl "-wrap <path>"
-option can be used to wrap emitted content in a
-specific hierarchy.
-The path is a set of hierarchical names separated
-by the '/' character.
+опция может использоваться, чтобы обернуть контент, выбрасываемых 
+В иерархия вызова.
+уть представляет собой набор иерархических имен, разделенных
+ символом '/'.
 .Bd -literal -offset indent
   xo --wrap top/a/b/c '{:tag}' value
 .Pp
@@ -163,19 +162,17 @@ The
 .Fl "\-open <path>"
 and
 .Fl "\-close <path>"
-can be used to emit
-hierarchical information without the matching close and open
-tag.
-This allows a shell script to emit open tags, data, and
-then close tags.
+может быть использован для передачи
+иерархической информации без соответствующих тегов close и open.
+Это позволяет сценарию оболочки генерировать открытые теги, данные, 
+а затем закрывать теги
 The
 .Fl \-depth
-option may be used to set the
-depth for indentation.
-The
+параметр может быть использован для установки глубины.
+Символ
 .Fl "\-leading-xpath"
-may be used to
-prepend data to the XPath values used for HTML output style.
+может использоваться 
+для добавления данных к используемым значениям XPath для стиля вывода HTML.
 .Bd -literal -offset indent
   #!/bin/sh
   xo --open top/data
@@ -186,7 +183,6 @@ prepend data to the XPath values used for HTML output style.
     <top>
       <data>
         <tag>value</tag>
-      </data>
     </top>
   JSON:
     "top": {
@@ -195,17 +191,17 @@ prepend data to the XPath values used for HTML output style.
       }
     }
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr libxo 3 ,
 .Xr xo_emit 3 ,
 .Xr xo_options 7
-.Sh HISTORY
+.Sh ИСТОРИЯ
 The
 .Nm libxo
-library first appeared in
+библиотека впервые появилась в
 .Fx 11.0 .
-.Sh AUTHORS
+.Sh АВТОРЫ
 .Nm libxo
-was written by
-.An Phil Shafer Aq Mt phil@freebsd.org .
+была написана
+.An Филом Шейфером Aq Mt phil@freebsd.org .
 

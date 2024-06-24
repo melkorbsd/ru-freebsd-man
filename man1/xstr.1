@@ -27,95 +27,94 @@
 .\"
 .\"     @(#)xstr.1	8.2 (Berkeley) 12/30/93
 .\"
-.Dd December 30, 1993
+.Dd Декабрь 30, 1993
 .Dt XSTR 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm xstr
-.Nd "extract strings from C programs to implement shared strings"
-.Sh SYNOPSIS
+.Nd "извлекает строки из программ на C для реализации общих строк "
+.Sh СИНТАКСИС
 .Nm
 .Op Fl cv
 .Op Fl
 .Op Ar
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility maintains a file
+поддерживает файл
 .Pa strings
-into which strings in component parts of a large program are hashed.
-These strings are replaced with references to this common area.
-This serves to implement shared constant strings, most useful if they
-are also read-only.
+в который записываются хэшируемые строки в составе частей большой программы.
+
+Эти строки заменены отссылками на общую область. 
+Это служит для реализации совместно используемых константных строк, наиболее полезных, если они 
+также доступны только для чтения.
 .Pp
-The following options are available:
+Доступны следующие параметры:
 .Bl -tag -width indent
 .It Fl
-Read from the standard input.
+Считывает со стандартного ввода.
 .It Fl c
-Extract the strings from the C source
+Извлекает строки из исходного языка С
 .Ar file
-or the standard input
+или стандартного
 .Pq Fl ,
-replacing
-string references by expressions of the form
+заменяя
+ссылки строки на выражения вида
 .Li (&xstr[number])
-for some
+для некоторых
 .Ar number .
-An appropriate declaration of
+Соответствующее заявление
 .Va xstr
-is prepended to the file.
-The resulting C text is placed in the file
+добавляется к файлу.
+Полученный текст на C помещается в файл
 .Pa x.c ,
-to then be compiled.
-The strings from this file are placed in the
+для последующей компиляции.
+Строки из этого файла помещаются в
 .Pa strings
-data base if they are not there already.
-Repeated strings and strings which are suffixes of existing strings
-do not cause changes to the data base.
+базу данных, если их еще не было там.
+Повторяющиеся строки и строки, являющиеся суффиксами существующих строк, 
+не вызывают изменений в базе данных.
 .It Fl v
-Verbose mode.
+Подробный режим.
 .El
 .Pp
-After all components of a large program have been compiled a file
+После компиляции всех компонентов большой программы файл,
 .Pa xs.c
-declaring the common
+с заявлением общего 
 .Va xstr
-space can be created by a command of the form
+пространства, может быть создан с помощью команды вида
 .Pp
 .Dl xstr
 .Pp
-The file
+Файл
 .Pa xs.c
-should then be compiled and loaded with the rest
-of the program.
-If possible, the array can be made read-only (shared) saving
-space and swap overhead.
+затем должен быть скомпилирован и загружен вместе с остальной программой.
+При возможности, массив может быть сделан доступным только для чтения (общим), экономя пространство и накладные расходы на подкачку.
 .Pp
-The
+Утилита
 .Nm
-utility can also be used on a single file.
-A command
+может также быть использована для единственного файла.
+Команда
 .Bd -literal -offset indent
 xstr name
 .Ed
 .Pp
-creates files
+создает файлы
 .Pa x.c
-and
+и
 .Pa xs.c
-as before, without using or affecting any
+как и раньше, без использования или влияния на
 .Pa strings
-file in the same directory.
+файл в одном и том же каталоге.
 .Pp
-It may be useful to run
+Это может быть использованно для запуска
 .Nm
-after the C preprocessor if any macro definitions yield strings
-or if there is conditional code which contains strings
-which may not, in fact, be needed.
-An appropriate command sequence for running
+после препроцессора C, если какие-либо макро-определения инициалы выдают строки 
+или если есть условный код, содержащий строки, 
+которые на самом деле могут и не понадобиться.
+Подходящей командой для запуска
 .Nm
-after the C preprocessor is:
+после С процессора является:
 .Pp
 .Bd -literal -offset indent -compact
 cc -E name.c | xstr -c -
@@ -125,38 +124,38 @@ mv x.o name.o
 .Pp
 The
 .Nm
-utility does not touch the file
+утилита не прикасается к файлу
 .Pa strings
-unless new items are added, thus
+пока не будут добавлены новые элементы, таким образом
 .Xr make 1
-can avoid remaking
+может избежать переделки
 .Pa xs.o
-unless truly necessary.
-.Sh FILES
+пока это не будет действительно необходимо.
+.Sh ФАЙЛЫ
 .Bl -tag -width ".Pa /tmp/xs*" -compact
-.It Pa strings
-data base of strings
+.It Pa строки
+база данных строк
 .It Pa x.c
 massaged C source
 .It Pa xs.c
-C source for definition of array
+C источник для определения
 .Va xstr
 .It Pa /tmp/xs*
-temporary file when
+временного файла, когда
 .Dq Li "xstr name"
-does not touch
-.Pa strings
+не затрагивает
+.Pa строки
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr mkstr 1
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Команда
 .Nm
-command appeared in
+появлась в
 .Bx 3.0 .
-.Sh BUGS
-If a string is a suffix of another string in the data base,
-but the shorter string is seen first by
+.Sh ОШИБКИ
+Если строка является суффиксом другой строки в базе данных, 
+но более короткая строка видна первой,
 .Nm
-both strings will be placed in the data base, when just
-placing the longer one there will do.
+обе строки будут помещены в базу данных, когда просто
+поместить туда более длинную будет достаточно

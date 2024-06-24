@@ -22,10 +22,10 @@
 .\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 .\" SUCH DAMAGE.
 .\"
-.Dd July 20, 2020
+.Dd Июль 20, 2020
 .Dt ZGREP 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm zgrep ,
 .Nm zegrep ,
 .Nm zfgrep ,
@@ -41,72 +41,71 @@
 .Nm zstdgrep ,
 .Nm zstdegrep ,
 .Nm zstdfgrep
-.Nd grep compressed files
-.Sh SYNOPSIS
+.Nd сжатые файлы grep
+.Sh СИНТАКСИС
 .Nm
-.Oo Ar flags Oc Ar files
+.Oo Ar флаги Oc Ar файлы
 .Nm zegrep
-.Oo Ar flags Oc Ar files
+.Oo Ar флаги Oc Ar файлы
 .Nm zfgrep
-.Oo Ar flags Oc Ar files
+.Oo Ar флаги Oc Ar файлы
 .Pp
 .Nm bzgrep
-.Oo Ar flags Oc Ar files
+.Oo Ar флаги Oc Ar файлы
 .Nm bzegrep
-.Oo Ar flags Oc Ar files
+.Oo Ar флаги Oc Ar файлы
 .Nm bzfgrep
-.Oo Ar flags Oc Ar files
+.Oo Ar флаги Oc Ar файлы
 .Pp
 .Nm lzgrep
-.Oo Ar flags Oc Ar files
+.Oo Ar флаги Oc Ar файлы
 .Nm lzegrep
-.Oo Ar flags Oc Ar files
+.Oo Ar флаги Oc Ar файлы
 .Nm lzfgrep
-.Oo Ar flags Oc Ar files
+.Oo Ar флаги Oc Ar файлы
 .Pp
 .Nm xzgrep
-.Oo Ar flags Oc Ar files
+.Oo Ar флаги Oc Ar файлы
 .Nm xzegrep
-.Oo Ar flags Oc Ar files
+.Oo Ar флаги Oc Ar файлы
 .Nm xzfgrep
-.Oo Ar flags Oc Ar files
+.Oo Ar флаги Oc Ar файлы
 .Pp
 .Nm zstdgrep
-.Oo Ar flags Oc Ar files
+.Oo Ar флаги Oc Ar файлы
 .Nm zstdegrep
-.Oo Ar flags Oc Ar files
+.Oo Ar флаги Oc Ar файлы
 .Nm zstdfgrep
-.Oo Ar flags Oc Ar files
-.Sh DESCRIPTION
-Allow
+.Oo Ar флаги Oc Ar файлы
+.Sh ОПИСАНИЕ
+Позволяет
 .Xr grep 1
-to read compressed files.
-.Sh SEE ALSO
+читать сжатые файлы.
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr bzip2 1 ,
 .Xr grep 1 ,
 .Xr gzip 1 ,
 .Xr xz 1 ,
 .Xr zstd 1
-.Sh AUTHORS
-This version of the
+.Sh АВТОРЫ
+Данная версия утилиты
 .Nm
-utility was written by
-.An Thomas Klausner Aq Mt wiz@NetBSD.org .
-.Sh BUGS
+была написана
+.An Томасом Клаузнером Aq Mt wiz@NetBSD.org .
+.Sh ОШИБКИ
 .Xr zgrep 1
-does not handle flags that take arguments if there is no whitespace
-between the flag and the argument, for example:
+не обрабатывает флаги, которые принимают аргументы, если нет пробела 
+между флагом и аргументом, например:
 .Pp
 .Dl "zgrep -enfs /etc/rpc"
 .Pp
-When more than one
+Когда больше,чем один
 .Fl e
-flag is used matching
-should occur for any of the patterns (similar to multiple patterns
-supplied in a file with the
+флаг используется, сопоставление
+должно произойти для любого из шаблонов (аналогично нескольким шаблонам, поставляемым в файле с 
 .Fl f
-flag).
+флагом).
 .Xr zgrep 1
-only matches the last
+Соответствует только последнему 
 .Fl e
-pattern.
+шаблону.
