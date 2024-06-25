@@ -1,65 +1,61 @@
 .\"-
-.\" Copyright (c) 1983, 1988, 1990, 1993
-.\"	The Regents of the University of California.  All rights reserved.
+.\"  Авторское право (c) 1983, 1988, 1990, 1993
+.\" Ректоры Калифорнийского университета. Все права защищены.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
-.\" 3. Neither the name of the University nor the names of its contributors
-.\"    may be used to endorse or promote products derived from this software
-.\"    without specific prior written permission.
+.\" Разрешение на распространение и использование в исходной и бинарной формах,
+.\" с изменениями или без них, разрешается при условии соблюдения следующих условий:
+.\" 1. Распространение исходного кода должно сохранять приведенное выше уведомление о копирайте,
+.\"    этот список условий и следующий отказ от ответственности.
+.\" 2. Распространение в бинарной форме должно воспроизводить приведенное выше уведомление о копирайте,
+.\"    этот список условий и следующий отказ от ответственности в
+.\"    документации и/или других материалах, предоставляемых вместе с распространением.
+.\" 3. Ни название университета, ни имена его участников
+.\"    не могут использоваться для продвижения производных продуктов
+.\"    без явного предварительного письменного разрешения.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЕНО РЕГЕНТАМИ И УЧАСТНИКАМИ «КАК ЕСТЬ», И
+.\" ЛЮБЫЕ ПРЯМЫЕ ИЛИ КОСВЕННЫЕ ГАРАНТИИ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ,
+.\" ГАРАНТИЯМИ ТОВАРНОЙ ПРИГОДНОСТИ И СООТВЕТСТВИЯ КОНКРЕТНОЙ ЦЕЛИ,
+.\" ОТКАЗЫВАЮТСЯ. В НИКАКОМ СЛУЧАЕ РЕГЕНТЫ ИЛИ УЧАСТНИКИ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ
+.\" ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, СПЕЦИАЛЬНЫЕ, ПОКАЗАТЕЛЬНЫЕ ИЛИ ПОСЛЕДУЮЩИЕ
+.\" УЩЕРБЫ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПРИОБРЕТЕНИЕМ ЗАМЕЩАЮЩИХ ТОВАРОВ
+.\" ИЛИ УСЛУГ; УТРАТОЙ ПРАВА ПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ЛИБО ПРЕРЫВАНИЕМ ДЕЯТЕЛЬНОСТИ)
+.\" НЕЗАВИСИМО ОТ ТОГО, НА КАКОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, ДОГОВОРНОЙ, СТРОГОЙ
+.\" ОТВЕТСТВЕННОСТИ ИЛИ ДЕЛИКТНОЙ (ВКЛЮЧАЯ НЕБРЕЖНОСТЬ ИЛИ ИНОЕ)
+.\" ОСНОВЫВАЕТСЯ ЛИСПОЛЬЗОВАНИЕ ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ БЫЛО СООБЩЕНО О
+.\" ВОЗМОЖНОСТИ ТАКОГО УЩЕРБА.
 .\"
-.\"	From: @(#)hostname.1	8.1 (Berkeley) 5/31/93
+.\"	От: @(#)hostname.1	8.1 (Беркли) 5/31/93
 .\"
-.Dd April 22, 2013
+.Dd 22 апреля 2013 года
 .Dt DOMAINNAME 1
 .Os
-.Sh NAME
+.Sh НАЗВАНИЕ
 .Nm domainname
-.Nd set or print name of current YP/NIS domain
-.Sh SYNOPSIS
+.Nd установить или напечатать имя текущего YP/NIS домена
+.Sh СИНТАКСИС
 .Nm
 .Op Ar ypdomain
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility prints the name of the current YP/NIS domain.
-The super-user can
-set the domain name by supplying an argument; this is usually done with the
+выводит имя текущего YP/NIS домена.
+Суперпользователь может
+установить имя домена, указав аргумент; это обычно делается с помощью переменной
 .Va nisdomainname
-variable in the
-.Pa /etc/rc.conf
-file, normally run at boot
-time.
-.Sh NOTES
-The YP/NIS (formerly ``Yellow Pages'' but renamed for legal reasons)
-domain name does not necessarily have anything to do with the Domain
-Name System domain name, although they are often set equal for administrative
-convenience.
-.Sh SEE ALSO
+в файле
+.Pa /etc/rc.conf ,
+обычно выполняемом при загрузке системы.
+.Sh ЗАМЕТКИ
+Имя домена YP/NIS (ранее называвшееся "Желтые страницы", но переименованное по юридическим причинам)
+не обязательно связано с именем домена системы доменных имен, хотя они часто устанавливаются равными для административного удобства.
+.Sh СМ. ТАКЖЕ
 .Xr getdomainname 3 ,
 .Xr rc.conf 5
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Команда
 .Nm
-command appeared in
+появилась в
 .Fx 1.1 ,
-based on a similar command in
+на основе аналогичной команды в
 .Tn SunOS .
