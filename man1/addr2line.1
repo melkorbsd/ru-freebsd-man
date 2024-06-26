@@ -1,36 +1,36 @@
 .\" Copyright (c) 2009,2010 Joseph Koshy <jkoshy@users.sourceforge.net>
 .\" All rights reserved.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer
-.\"    in this position and unchanged.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
+.\" Распространение и использование в исходной и двоичной формах, с или без
+.\" изменения разрешены при соблюдении следующих условий
+.\" которые встретились:
+.\" 1. При повторном распространении исходного кода необходимо сохранять вышеуказанные авторские права.
+.\" обратите внимание, этот список условий и следующий отказ от ответственности
+.\" в этом положении и без изменений.
+.\" 2. При распространении в двоичной форме необходимо воспроизводить вышеуказанные авторские права.
+.\" обратите внимание, этот список условий и следующий отказ от ответственности в
+.\" документация и/или другие материалы, прилагаемые к дистрибутиву.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE AUTHORS ``AS IS'' AND ANY EXPRESS OR
-.\" IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-.\" OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-.\" IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
-.\" INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-.\" NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-.\" DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-.\" THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-.\" (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-.\" THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+.\» ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЕНО АВТОРАМИ «КАК ЕСТЬ» И ЛЮБЫМИ ЯВНЫМИ ИЛИ
+.\» ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ
+.\» ТОВАРНОЙ ПРИГОДНОСТИ И ПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ ЦЕЛИ ОТКАЗЫВАЮТСЯ.
+АВТОР НИ ПРИ КАКИХ ОБСТОЯТЕЛЬСТВАХ НЕ НЕСЕТ ОТВЕТСТВЕННОСТИ ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ,
+.\» СЛУЧАЙНЫЕ, ОСОБЫЕ, ПРИМЕРНЫЕ ИЛИ КОСВЕННЫЕ УБЫТКИ (ВКЛЮЧАЯ, НО
+.\» НЕ ОГРАНИЧИВАЯСЬ ЗАКУПКОЙ ТОВАРОВ-ЗАМЕНИТЕЛЕЙ ИЛИ УСЛУГ; ПОТЕРИ ИСПОЛЬЗОВАНИЯ,
+.\» ДАННЫЕ, ИЛИ ПРИБЫЛЬ, ИЛИ ПЕРЕРЫВ БИЗНЕСА), КАКИЕ бы причины ни были вызваны, И НА ЛЮБОМ
+.\» ТЕОРИЯ ОТВЕТСТВЕННОСТИ, КАК ДОГОВОР, СТРОГО ОТВЕТСТВЕННОСТЬ ИЛИ ДЕЛИК
+.\» (ВКЛЮЧАЯ НЕБРЕЖНОСТЬ ИЛИ ДРУГОЕ), ВОЗНИКАЮЩИЕ ЛЮБЫМ СПОСОБОМ ПРИ ИСПОЛЬЗОВАНИИ
+.\» ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ ПРЕДУПРЕЖДЕНО О ВОЗМОЖНОСТИ ТАКОГО ПОВРЕЖДЕНИЯ.
 .\"
 .\" $Id: addr2line.1 3642 2018-10-14 14:24:28Z jkoshy $
 .\"
-.Dd November 30, 2015
+.Dd 30 ноября 2015 г.
 .Dt ADDR2LINE 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm addr2line
-.Nd translate program addresses to source file names and line numbers
-.Sh SYNOPSIS
+.Nd перевести адреса программ в имена исходных файлов и номера строк
+.Sh СИНОПСИС
 .Nm
 .Op Fl a | Fl -addresses
 .Op Fl b Ar target | Fl -target Ns = Ns Ar target
@@ -44,129 +44,129 @@
 .Op Fl H | Fl -help
 .Op Fl V | Fl -version
 .Op Ar hexaddress Ns ...
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 The
 .Nm
-utility translates program addresses specified by the command line
-arguments
-.Ar hexaddress
-to their corresponding source file names and line numbers.
-If no arguments are given to
+утилита транслирует адреса программы, указанные в командной строке
+аргументы
+.Ar шестнадцатеричный адрес
+соответствующим именам исходных файлов и номерам строк.
+Если аргументы не указаны
 .Nm ,
-it will read these addresses from standard input.
+он прочитает эти адреса со стандартного ввода.
 .Pp
-Program addresses specified by arguments
-.Ar hexaddress
-are encoded using the conventions accepted by
+Адреса программ, указанные аргументами
+.Ar шестнадцатеричные адреса
+кодируются с использованием соглашений, принятых
 .Xr strtoull 3 .
 .Pp
-By default,
-.Nm
-will use the executable
+По умолчанию,
+.Nm 
+будет использовать исполняемый файл
 .Dq Pa a.out .
 The
 .Fl e
-option may be used to specified a different ELF object.
+опция может использоваться для указания другого объекта ELF.
 .Pp
 The
 .Nm
-utility recognizes the following options:
+утилита распознает следующие параметры:
 .Bl -tag -width indent
 .It Fl a | Fl -addresses
-Display the address prior to the line number information.
+Отобразите адрес перед информацией о номере строки.
 .It Fl b Ar target | Fl -target Ns = Ns Ar target
-This option is recognized by
+Этот вариант признан
 .Nm
-but is ignored.
-It is supported for compatibility with GNU binutils.
+но игнорируется.
+Он поддерживается для совместимости с GNU binutils.
 .It Fl e Ar pathname | Fl -exe Ns = Ns Ar pathname
-Use the ELF object specified by argument
+Используйте объект ELF, указанный аргументом.
 .Ar pathname
-to translate addresses.
-If this option is not specified,
+переводить адреса.
+Если этот параметр не указан,
 .Nm
-will use the file
+будет использовать файл
 .Dq Pa a.out .
 .It Fl f | Fl -functions
-Display function names in addition to file and line number information.
+Отображение названий функций в дополнение к информации о номерах файлов и строк.
 .It Fl i | Fl -inlines
-If the address specified belongs to an inlined function, also display the line
-number information for its caller, recursively until the first non-inlined
-caller.
+Если указанный адрес принадлежит встроенной функции, также отобразите строку
+номерную информацию для вызывающего абонента, рекурсивно до первого невстроенного
+звонящий.
 .It Fl j Ar sectionname | Fl -section Ns = Ns Ar sectionname
-The values specified by arguments
+Значения, указанные аргументами
 .Ar hexaddress
-are to be treated as offsets into the section named
+следует рассматривать как смещения в раздел с именем
 .Ar sectionname .
 .It Fl p | -pretty-print
-Display the line number information on one line, in human readable manner.
+Отобразите информацию о номере строки в одной строке в удобочитаемой форме.
 .It Fl s | -basename
-Display only the base name for each file name.
+Отображать только базовое имя для каждого имени файла.
 .It Fl C | Fl -demangle
-Demangle C++ names.
+Устранение имен C++.
 .It Fl H | Fl -help
-Print a help message.
+Распечатайте справочное сообщение.
 .It Fl V | Fl -version
-Print a version identifier and exit.
+Распечатайте идентификатор версии и выйдите.
 .El
-.Sh OUTPUT FORMAT
-If the
+.Sh ВЫХОДНОЙ ФОРМАТ
+Если
 .Fl f
-option was not specified,
+вариант не указан,
 .Nm
-will print the file name and line number for each address specified
-on a separate line.
+напечатает имя файла и номер строки для каждого указанного адреса
+на отдельной строке.
 .Pp
-If the
+Если
 .Fl f
-option was specified,
+указан вариант,
 .Nm
-will print a line containing the name of the function corresponding
-to program address
+напечатает строку, содержащую имя функции, соответствующей
+по программному адресу
 .Ar hexaddress ,
-followed by a line with the file name and line number.
+за которым следует строка с именем файла и номером строки.
 .Pp
-If the
+Если
 .Fl p
-option was specified,
+указан вариант,
 .Nm
-will print line number information and function name on one line in
-human readable manner. If the
+будет печатать информацию о номере строки и имя функции в одной строке в
+читаемый человеком способ. Если
 .Fl i
-option was also specified,
+также был указан вариант,
 .Nm
-will print the caller function information prefixed with
+напечатает информацию о функции вызывающего абонента с префиксом
 .Dq (inlined by) .
 .Pp
 The
 .Nm
-utility prints the file name and line number using the format
+утилита печатает имя файла и номер строки в формате
 .Dq FILENAME:LINENUMBER .
 .Pp
-If a file or function name could not be determined,
+Если имя файла или функции определить не удалось,
 .Nm
-will print a question mark in their place.
-If the line number could not be determined,
+на их месте будет напечатан вопросительный знак.
+Если номер строки определить не удалось,
 .Nm
-will print a zero in its place.
+напечатает ноль на своем месте.
 .Sh EXAMPLES
-To map address 080483c4 in the default executable
+Чтобы сопоставить адрес 080483c4 в исполняемом файле по умолчанию
 .Pa a.out
-to a source file name and line number use:
+к имени исходного файла и номеру строки используйте:
 .D1 "% addr2line 080483c4"
 .Pp
-To map address 080483c4 in executable
+Чтобы сопоставить адрес 080483c4 в исполняемом файле
 .Pa helloworld ,
-use:
+использовать:
 .D1 "% addr2line -e helloworld 080483c4"
 .Pp
-To have
+Иметь
 .Nm
-act as a filter reading addresses from its standard input use:
+действовать как фильтр, считывающий адреса из своего стандартного ввода:
 .D1 "% addr2line"
 .Pp
-To print the function name corresponding to an address in addition to
-its source file and line number use:
+Чтобы напечатать имя функции, соответствующее адресу, в дополнение к
+его исходный файл и номер строки используют:
 .D1 "% addr2line -f 080483c4"
 .Sh EXIT STATUS
 .Ex -std
@@ -179,4 +179,4 @@ its source file and line number use:
 The
 .Nm
 utility was written by
-.An Kai Wang Aq Mt kaiwang27@users.sourceforge.net .
+.An Kai Wang Aq Mt kaiwang27@users.sourceforge.net
