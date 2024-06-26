@@ -1,29 +1,29 @@
 .\" Copyright (c) 2008 The NetBSD Foundation, Inc.
 .\" All rights reserved.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
+.\" Распространение и использование в исходной и двоичной формах, с или без
+.\" изменения разрешены при соблюдении следующих условий
+.\" которые встретились:
+.\" 1. При повторном распространении исходного кода необходимо сохранять вышеуказанные авторские права.
+.\" обратите внимание на этот список условий и следующий отказ от ответственности.
+.\" 2. При распространении в двоичной форме необходимо воспроизводить вышеуказанные авторские права.
+.\" обратите внимание, этот список условий и следующий отказ от ответственности в
+.\" документация и/или другие материалы, прилагаемые к дистрибутиву.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE NETBSD FOUNDATION, INC. AND
-.\" CONTRIBUTORS ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
-.\" INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-.\" MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-.\" IN NO EVENT SHALL THE FOUNDATION OR CONTRIBUTORS BE LIABLE FOR ANY
-.\" DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
-.\" GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-.\" INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
-.\" IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
-.\" OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
-.\" IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-.Dd June 21, 2020
-.Dt ATF-CHECK 1
+.» ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЕНО NETBSD FOUNDATION, INC. И
+.» УЧАСТНИКИ «КАК ЕСТЬ» И ЛЮБЫЕ ЯВНЫЕ ИЛИ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ,
+.» ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ
+.» ТОВАРНАЯ ПРИГОДНОСТЬ И ПРИГОДНОСТЬ ДЛЯ ОПРЕДЕЛЕННОЙ ЦЕЛИ ОТКАЗЫВАЕТСЯ.
+.» НИ ПРИ КАКИХ ОБСТОЯТЕЛЬСТВАХ ФОНД ИЛИ ВКЛАДЧИКИ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ ЗА ЛЮБЫЕ
+.» ПРЯМОЙ, КОСВЕННЫЙ, СЛУЧАЙНЫЙ, ОСОБЫЙ, ПРИМЕРНЫЙ ИЛИ КОСВЕННЫЙ
+.» УБЫТКИ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПРИОБРЕТЕНИЕ ЗАМЕНЫ
+.» ТОВАРОВ ИЛИ УСЛУГ; ПОТЕРИ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ БИЗНЕСА
+.\" ПЕРЕРЫВ) ОДНАКО ВЫЗВАН И ПО ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БОЛЬШЕ
+.» ПО КОНТРАКТУ, СТРОГОВОЙ ОТВЕТСТВЕННОСТИ ИЛИ ПРАВИЛАМ (ВКЛЮЧАЯ НЕБРЕЖНОСТЬ ИЛИ
+.\" ИНАЧЕ), ВОЗНИКАЮЩИХ ЛЮБЫМ СПОСОБОМ ИСПОЛЬЗОВАНИЯ ЭТОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ
+.» ЕСЛИ ПРЕДУПРЕЖДЕНО О ВОЗМОЖНОСТИ ТАКОГО УЩЕРБА.
+.Dd 21 июня 2020 г.
+Dt ATF-CHECK 1
 .Os
 .Sh NAME
 .Nm atf-check
@@ -37,117 +37,117 @@
 .Ar command
 .Sh DESCRIPTION
 .Nm
-executes a given command and analyzes its results, including
-exit code, stdout and stderr.
+выполняет заданную команду и анализирует ее результаты, в том числе
+код выхода, stdout и stderr.
 .Pp
 .Bf Em
-Test cases must use
+Тестовые случаи должны использовать
 .Xr atf-sh 3 Ns ' Ns s
 .Nm atf_check
-builtin function instead of calling this utility directly.
+встроенную функцию вместо прямого вызова этой утилиты.
 .Ef
 .Pp
-In the first synopsis form,
+В первой форме конспекта
 .Nm
-will execute the provided command and apply checks specified
-by arguments.
-By default it will act as if it was run with
+выполнит предоставленную команду и применит указанные проверки
+по аргументам.
+По умолчанию он будет действовать так, как если бы он был запущен с помощью
 .Fl s
 .Ar exit:0
 .Fl o
 .Ar empty
 .Fl e
 .Ar empty .
-Multiple checks for the same output channel are allowed and, if specified,
-their results will be combined as a logical and (meaning that the output must
-match all the provided checks).
+Допускаются множественные проверки для одного и того же выходного канала и, если указано,
+их результаты будут объединены как логические и (это означает, что выходные данные должны
+соответствовать всем предоставленным проверкам).
 .Pp
-In the second synopsis form,
+Во второй форме конспекта
 .Nm
-will print information about all supported options and their purpose.
+распечатает информацию обо всех поддерживаемых опциях и их назначении.
 .Pp
-The following options are available:
+Доступны следующие варианты:
 .Bl -tag  -width XqualXvalueXX
 .It Fl s Ar qual:value
-Analyzes termination status.
-Must be one of:
+Анализирует статус завершения.
+Должно быть одно из:
 .Bl -tag -width signal:<value> -compact
 .It Ar exit:<value>
-checks that the program exited cleanly and that its exit status is equal to
+проверяет, что программа завершилась корректно и что ее статус выхода равен
 .Va value .
-The exit code can be omitted altogether, in which case any clean exit is
-accepted.
+Код выхода можно вообще опустить, и в этом случае любой чистый выход будет
+принял.
 .It Ar ignore
-ignores the exit check.
+игнорирует выходную проверку.
 .It Ar signal:<value>
-checks that the program exited due to a signal and that the signal that
-terminated it is
+проверяет, что программа завершилась по сигналу и что сигнал, который
+прекращено, это
 .Va value .
-The signal can be specified both as a number or as a name, or it can also
-be omitted altogether, in which case any signal is accepted.
+Сигнал может быть указан как в виде числа, так и в виде имени, а также
+можно вообще опустить, и в этом случае принимается любой сигнал.
 .El
 .Pp
-Most of these checkers can be prefixed by the
+Большинство из этих шашек могут иметь префикс
 .Sq not-
-string, which effectively reverses the check.
+строка, которая эффективно отменяет проверку.
 .It Fl o Ar action:arg
-Analyzes standard output.
-Must be one of:
+Анализирует стандартный вывод.
+Должно быть одно из:
 .Bl -tag -width inline:<value> -compact
 .It Ar empty
-checks that stdout is empty
+проверяет, что стандартный вывод пуст
 .It Ar ignore
-ignores stdout
+игнорирует стандартный вывод
 .It Ar file:<path>
-compares stdout with given file
+сравнивает стандартный вывод с заданным файлом
 .It Ar inline:<value>
-compares stdout with inline value
+сравнивает стандартный вывод со встроенным значением
 .It Ar match:<regexp>
-looks for a regular expression in stdout
+ищет регулярное выражение в стандартном выводе
 .It Ar save:<path>
-saves stdout to given file
+сохраняет стандартный вывод в заданный файл
 .El
 .Pp
-Most of these checkers can be prefixed by the
+Большинство из этих шашек могут иметь префикс
 .Sq not-
-string, which effectively reverses the check.
+строка, которая эффективно отменяет проверку.
 .It Fl e Ar action:arg
-Analyzes standard error (syntax identical to above)
+Анализирует стандартную ошибку (синтаксис идентичен приведенному выше)
 .It Fl x
-Executes
+Выполняет
 .Ar command
-as a shell command line, executing it with the system shell defined by
+как командную строку оболочки, выполняя ее с помощью системной оболочки, определенной
 .Va ATF_SHELL .
-You should avoid using this flag if at all possible to prevent shell quoting
-issues.
+Вам следует избегать использования этого флага, если это вообще возможно, чтобы предотвратить цитирование оболочки
+проблемы.
 .It Fl r Ar timeout[:interval]
-Repeats failed checks until the
+Повторяет неудачные проверки до тех пор, пока
 .Ar timeout
-(in seconds) expires.
-If unspecified, the default
+(в секундах) истекает.
+Если не указано, по умолчанию
 .Ar interval
-(in milliseconds) is 50 ms.
-This can be used to wait for an expected update to the contents of a file.
+(в миллисекундах) составляет 50 мс.
+Это можно использовать для ожидания ожидаемого обновления содержимого файла.
 .El
 .Sh ENVIRONMENT
 .Bl -tag -width ATFXSHELLXX -compact
 .It Va ATF_SHELL
-Path to the system shell to be used when the
+Путь к системной оболочке, который будет использоваться при
 .Fl x
-is given to run commands.
+предназначен для запуска команд.
 .El
 .Sh EXIT STATUS
 .Nm
-exits 0 on success, and other (unspecified) value on failure.
+выходит из 0 в случае успеха и другого (неуказанного) значения в случае неудачи.
 .Sh EXAMPLES
-The following are sample invocations from within a test case.
-Note that we use the
+Ниже приведены примеры вызовов из тестового примера.
+Обратите внимание, что мы используем
 .Nm atf_check
-function provided by
+функция, предоставляемая
 .Xr atf-sh 3
-instead of executing
+вместо выполнения
 .Nm
-directly:
+напрямую:
 .Bd -literal -offset indent
 # Exit code 0, nothing on stdout/stderr
 atf_check 'true'
