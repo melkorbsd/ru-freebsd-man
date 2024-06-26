@@ -1,111 +1,107 @@
 .\" Copyright (c) 2005 Sam Leffler <sam@errno.com>
-.\" All rights reserved.
+.\" Все права защищены.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
+.\" Перераспределение и использование в исходном и двоичном формах, с изменениями или без,
+.\" разрешается при условии соблюдения следующих условий:
+.\" 1. Перераспределенный исходный код должен сохранять вышеуказанное уведомление об авторских правах,
+.\"    этот список условий и следующее отказ от ответственности.
+.\" 2. Перераспределенные в двоичной форме данные должны воспроизводить вышеуказанное уведомление об авторских правах,
+.\"    этот список условий и следующее отказ от ответственности в
+.\"    документации и/или других материалах, предоставляемых с распространением.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" ЭТО ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ АВТОРОМ И УЧАСТНИКАМИ "КАК ЕСТЬ" И
+.\" ОТКАЗ ОТ ВСЕХ ЯВНЫХ ИЛИ ПОДРАЗУМЕВАЕМЫХ ГАРАНТИЙ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПОДРАЗУМЕВАЕМЫЕ
+.\" ГАРАНТИИ ТОВАРНОЙ ПРИГОДНОСТИ И ПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ ЦЕЛИ ОТКЛОНЕНЫ. НИ В КОЕМ СЛУЧАЕ АВТОР ИЛИ УЧАСТНИКИ НЕ НЕСУТ
+.\" ОТВЕТСТВЕННОСТИ ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, ОСОБЫЕ, ПРИМЕРНЫЕ ИЛИ ПОСЛЕДОВАТЕЛЬНЫЕ
+.\" УБЫТКИ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПРИОБРЕТЕНИЕ ЗАМЕНЯЮЩИХ ТОВАРОВ ИЛИ УСЛУГ; ПОТЕРЯ ИСПОЛЬЗОВАНИЯ,
+.\" ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПРЕРЫВАНИЕ БИЗНЕСА)
+.\" ОДНАКО ВЫЗВАННЫЕ И ПО ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО В КОНТРАКТЕ, СТРОГОЙ
+.\" ОТВЕТСТВЕННОСТИ ИЛИ ДЕЛИКТЕ (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНЫЙ) ВОЗНИКШИЕ ЛЮБЫМ ОБРАЗОМ
+.\" ИЗ-ЗА ИСПОЛЬЗОВАНИЯ ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ ИЗВЕЩЕН О ВОЗМОЖНОСТИ ТАКОГО
+.\" УЩЕРБА.
 .\"
-.Dd July 18, 2012
+.Dd 18 июля 2012
 .Dt HOSTAPD 8
 .Os
-.Sh NAME
+.Sh НАЗВАНИЕ
 .Nm hostapd
-.Nd "authenticator for IEEE 802.11 networks"
-.Sh SYNOPSIS
+.Nd "аутентификатор для сетей IEEE 802.11"
+.Sh СИНТАКСИС
 .Nm
 .Op Fl BdhKtv
 .Op Fl P Ar pidfile
-.Ar config-file ...
-.Sh DESCRIPTION
-The
+.Ar файл-конфигурации ...
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility
-is an authenticator for IEEE 802.11 networks.
-It provides full support for WPA/IEEE 802.11i and
-can also act as an IEEE 802.1X Authenticator with a suitable
-backend Authentication Server (typically
-.Tn FreeRADIUS ) .
-The
+является аутентификатором для сетей IEEE 802.11.
+Он обеспечивает полную поддержку WPA/IEEE 802.11i и
+также может выступать в качестве IEEE 802.1X Аутентификатора с соответствующим
+сервером аутентификации на бэкенде (обычно
+.Tn FreeRADIUS ).
+Утилита
 .Nm
-utility
-implements the authentication protocols that piggyback on top
-of the normal IEEE 802.11 protocol mechanisms.
-To use
+реализует протоколы аутентификации, которые используются поверх
+стандартных механизмов протокола IEEE 802.11.
+Для использования
 .Nm
-as an authenticator, the underlying device must support some
-basic functionality such as the ability to set security information
-in the 802.11 management frames.
-Beware that not all devices have this support.
+в качестве аутентификатора, базовое устройство должно поддерживать некоторые
+базовые функции, такие как возможность настройки информации о безопасности
+в управляющих кадрах 802.11.
+Учтите, что не все устройства поддерживают это.
 .Pp
-The
+Утилита
 .Nm
-utility
-is designed to be a
-.Dq daemon
-program that runs in the
-background and acts as the backend component controlling
-the wireless connection.
-It supports separate frontend programs such as the
-text-based frontend,
+разработана для работы в качестве
+.Dq демона,
+который выполняется в фоновом режиме и действует как бэкенд компонент,
+управляющий беспроводным подключением.
+Он поддерживает отдельные программы фронтенда, такие как
+текстовый фронтенд,
 .Xr hostapd_cli 8 .
 .Pp
-The following arguments must be specified on the command line:
+Следующие аргументы должны быть указаны в командной строке:
 .Bl -tag -width indent
-.It Ar config-file
-Use the settings in the specified configuration file; the name of
-the specified wireless interface is contained in this file.
-See
+.It Ar файл-конфигурации
+Использовать настройки в указанном конфигурационном файле; имя
+указанного беспроводного интерфейса содержится в этом файле.
+Смотрите
 .Xr hostapd.conf 5
-for a description of the configuration file syntax.
+для описания синтаксиса конфигурационного файла.
 .Pp
-Changes to the configuration file can be reloaded by sending a
+Изменения в конфигурационном файле могут быть перезагружены отправкой сигнала
 .Dv SIGHUP
-to the
+процессору
 .Nm
-processor or with the
-.Xr hostapd_cli 8
-utility, using
+или с помощью утилиты
+.Xr hostapd_cli 8,
+используя
 .Dq Li "hostapd_cli reconfigure" .
 .El
-.Sh OPTIONS
-The options are as follows:
+.Sh ОПЦИИ
+Опции следующие:
 .Bl -tag -width indent
 .It Fl d
-Enable debugging messages.
-If this option is supplied twice, more verbose messages are displayed.
+Включить сообщения отладки.
+Если эта опция указана дважды, отображаются более подробные сообщения.
 .It Fl h
-Show help text.
+Показать текст помощи.
 .It Fl t
-Include timestamps in debugging output.
+Включить временные метки в вывод отладки.
 .It Fl v
-Display version information on the terminal and exit.
+Отобразить информацию о версии в терминале и выйти.
 .It Fl B
-Detach from the controlling terminal and run as a daemon process
-in the background.
+Отсоединиться от управляющего терминала и запустить процесс в качестве демонаКонечно, вот перевод страницы с сохранением форматирования и техническими терминами:
+
+```
+.in the background.
 .It Fl K
-Include key information in debugging output.
+Включить ключевую информацию в вывод отладки.
 .It Fl P Ar pidfile
-Store PID in
+Хранить PID в
 .Ar pidfile .
 .El
-.Sh SEE ALSO
+.Sh СМОТРИ ТАКЖЕ
 .Xr ath 4 ,
 .Xr ipw 4 ,
 .Xr iwi 4 ,
@@ -117,18 +113,20 @@ Store PID in
 .Xr hostapd.conf 5 ,
 .Xr hostapd_cli 8 ,
 .Xr ifconfig 8
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Утилита
 .Nm
-utility first appeared in
+впервые появилась в
 .Fx 6.0 .
-.Sh AUTHORS
-The
+.Sh АВТОРЫ
+Утилиту
 .Nm
-utility was written by
+написал
 .An Jouni Malinen Aq Mt j@w1.fi .
-This manual page is derived from the
+Эта страница руководства произведена из
 .Pa README
-file included in the
-.Nm
-distribution.
+файла, включенного в дистрибутив
+.Nm.
+```
+
+Обратите внимание, что некоторые части, такие как имена команд и файлов, остаются без перевода, поскольку они являются частью стандартного технического словаря, и перевод этих терминов может привести к путанице.

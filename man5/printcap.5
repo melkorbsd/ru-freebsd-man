@@ -1,419 +1,419 @@
-.\" Copyright (c) 1983, 1991, 1993
-.\"	The Regents of the University of California.  All rights reserved.
+.\" Авторское право (c) 1983, 1991, 1993
+.\"	Регенты Калифорнийского университета.  Все права защищены.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
-.\" 3. Neither the name of the University nor the names of its contributors
-.\"    may be used to endorse or promote products derived from this software
-.\"    without specific prior written permission.
+.\" Распространение и использование в исходных и двоичных формах, с модификацией или без
+.\" модификацией, разрешается при соблюдении следующих условий
+.\" соблюдены:
+.\" 1. Перераспределение исходного кода должно сохранять вышеуказанное уведомление об авторских правах
+.\" уведомление об авторских правах, этот список условий и следующий отказ от ответственности.
+.\" 2. Перераспределение в двоичной форме должно воспроизводить вышеуказанное уведомление об авторских правах
+.\" уведомление об авторских правах, этот список условий и следующий отказ от ответственности в
+.\" документации и/или других материалах, поставляемых вместе с дистрибутивом.
+.\" 3. Ни название Университета, ни имена его соавторов
+.\" не могут быть использованы для поддержки или продвижения продуктов, созданных на основе этого программного обеспечения
+.\" без специального предварительного письменного разрешения.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ РЕГЕНТАМИ И РАЗРАБОТЧИКАМИ "КАК ЕСТЬ" И
+.\" ЛЮБЫЕ ЯВНЫЕ ИЛИ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ
+.\" ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ТОВАРНОГО СОСТОЯНИЯ И ПРИГОДНОСТИ ДЛЯ КОНКРЕТНОЙ ЦЕЛИ
+.\" НЕ ПРИНИМАЮТСЯ.  НИ ПРИ КАКИХ ОБСТОЯТЕЛЬСТВАХ РЕГЕНТЫ ИЛИ ВКЛАДЧИКИ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ
+.\" ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, СПЕЦИАЛЬНЫЕ, ПРИМЕРНЫЕ ИЛИ КОСВЕННЫЕ УБЫТКИ.
+.\" УЩЕРБ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПРИОБРЕТЕНИЕ ТОВАРОВ-ЗАМЕНИТЕЛЕЙ
+.\" ИЛИ УСЛУГИ; ПОТЕРЮ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПЕРЕРЫВ В РАБОТЕ)
+.\" НЕЗАВИСИМО ОТ ПРИЧИН И ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО КОНТРАКТ, СТРОГИЙ
+.\" ОТВЕТСТВЕННОСТИ, ИЛИ ДЕЛИКТА (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНОЕ), ВОЗНИКАЮЩИХ КАКИМ-ЛИБО ОБРАЗОМ
+.\" В СВЯЗИ С ИСПОЛЬЗОВАНИЕМ ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ ВЫ БЫЛИ ПРЕДУПРЕЖДЕНЫ О ВОЗМОЖНОСТИ
+.\" ТАКОГО УЩЕРБА.
 .\"
-.\"     @(#)printcap.5	8.2 (Berkeley) 12/11/93
+.\"     @(#)printcap.5 8.2 (Berkeley) 12/11/93
 .\"
-.Dd October 11, 2000
+.Dd 11 октября 2000 г.
 .Dt PRINTCAP 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm printcap
-.Nd printer capability data base
+.Nd база данных о возможностях принтера
 .Sh SYNOPSIS
 .Nm
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Программа
 .Nm Printcap
-function
-is a simplified version of the
+функция
+представляет собой упрощенную версию функции
 .Xr termcap 5
-data base
-used to describe line printers.
-The spooling system accesses the
+база данных
+используемой для описания линейных принтеров.
+Система спулинга получает доступ к
 .Nm
-file every time it is used, allowing dynamic
-addition and deletion of printers.
-Each entry in the data base
-is used to describe one printer.
-This data base may not be
-substituted for, as is possible for
+при каждом использовании, что позволяет динамически
+добавлять и удалять принтеры.
+Каждая запись в базе данных
+используется для описания одного принтера.
+Эта база данных не может быть
+заменять, как это возможно для
 .Xr termcap 5 ,
-because it may allow accounting to be bypassed.
+поскольку это может позволить обойти учет.
 .Pp
-The default printer is normally
+Обычно по умолчанию используется принтер
 .Em lp ,
-though the environment variable
+хотя переменная окружения
 .Ev PRINTER
-may be used to override this.
-Each spooling utility supports an option,
+может быть использована для отмены этого параметра.
+Каждая утилита спулинга поддерживает свою опцию,
 .Fl P Ar printer ,
-to allow explicit naming of a destination printer.
+позволяющая явно указать принтер назначения.
 .Pp
-Refer to the
-.%T "4.3 BSD Line Printer Spooler Manual"
-for a complete discussion on how to setup the database for a given printer.
-.Sh CAPABILITIES
-Refer to
+См.
+.%T "Руководство по спулеру линейного принтера BSD 4.3"
+для полного обсуждения того, как настроить базу данных для данного принтера.
+.Sh ПОТРЕБИТЕЛЬСКИЕ ВОЗМОЖНОСТИ
+См.
 .Xr termcap 5
-for a description of the file layout.
+для описания компоновки файла.
 .Bl -column Namexxx Typexx "/var/spool/lpdxxxxx"
-.Sy "Name	Type	Default	Description"
-.It "af	str" Ta Dv NULL Ta No "name of accounting file"
-.It "br	num	none	if lp is a tty, set the baud rate"
+.Sy "Имя Тип Описание по умолчанию"
+.It "af str" Ta Dv NULL Ta No "имя файла учета"
+.It "br num none если lp является tty, установите скорость передачи данных"
 .Xr ( ioctl 2
-call)
-.It "cf	str" Ta Dv NULL Ta No "cifplot data filter"
-.It "ct	num	120	TCP connection timeout in seconds"
-.It "df	str" Ta Dv NULL Ta No "tex data filter"
+вызов)
+.It "cf str" Ta Dv NULL Ta No "фильтр данных cifplot"
+.It "ct num 120 Таймаут TCP-соединения в секундах"
+.It "df str" Ta Dv NULL Ta Нет "фильтр данных tex"
 .Tn ( DVI
-format)
-.It "du	num	1	UID to run daemon as"
-.It "ff	str" Ta So Li \ef Sc Ta No "string to send for a form feed"
-.It "fo	bool	false	print a form feed when device is opened"
-.It "gf	str" Ta Dv NULL Ta No "graph data filter"
+формат)
+.It "du num 1 UID для запуска демона"
+.It "ff str" Ta So Li \ef Sc Ta No "строка для отправки формы"
+.It "fo bool false печать формы при открытии устройства"
+.It "gf str" Ta Dv NULL Ta Нет "фильтр графических данных"
 .Xr ( plot 3
-format
-.It "hl	bool	false	print the burst header page last"
-.It "ic	bool	false	driver supports (non standard) ioctl to indent printout"
-.It "if	str" Ta Dv NULL Ta No "name of text filter which does accounting"
-.It "lf	str" Ta Pa /dev/console Ta No "error logging file name"
-.It "lo	str" Ta Pa lock Ta No "name of lock file"
-.It "lp	str" Ta Pa /dev/lp Ta No "device name to open for output, or" Em port Ns @ Ns Em machine No "to open a TCP socket"
-.It "mc	num	0	maximum number of copies which can be requested on"
+формат
+.It "hl bool false печать последней страницы заголовка разрыва"
+.It "ic bool false драйвер поддерживает (нестандартный) ioctl для отступа при распечатке"
+.It "if str" Ta Dv NULL Ta No "имя текстового фильтра, который выполняет учет"
+.It "lf str" Ta Pa /dev/console Ta Нет "имя файла регистрации ошибок"
+.It "lo str" Ta Pa lock Ta Нет "имя файла блокировки"
+.It "lp str" Ta Pa /dev/lp Ta Нет "имя устройства, которое нужно открыть для вывода, или" Em port Ns @ Ns Em machine Нет "для открытия TCP сокета"
+.It "mc num 0 максимальное количество копий, которые могут быть запрошены на"
 .Xr lpr 1 ,
-zero = unlimited
-.It "ms	str" Ta Dv NULL Ta No "if lp is a tty, a comma-separated,"
+ноль = неограниченно
+.It "ms str" Ta Dv NULL Ta Нет "если lp - это tty, то через запятую,"
 .Xr stty 1 Ns -like
-list describing the tty modes
-.It "mx	num	0	maximum file size (in"
+список, описывающий режимы tty
+.It "mx num 0 максимальный размер файла (в"
 .Dv BUFSIZ
-blocks), zero = unlimited
-.It "nd	str" Ta Dv NULL Ta No "next directory for list of queues (unimplemented)"
-.It "nf	str" Ta Dv NULL Ta No "ditroff data filter (device independent troff)"
-.It "of	str" Ta Dv NULL Ta No "name of output filtering program"
-.It "pc	num	200	price per foot or page in hundredths of cents"
-.It "pl	num	66	page length (in lines)"
-.It "pw	num	132	page width (in characters)"
-.It "px	num	0	page width in pixels (horizontal)"
-.It "py	num	0	page length in pixels (vertical)"
-.It "rc	bool	false	when sending to a remote host, resend copies (see below)"
-.It "rf	str" Ta Dv NULL Ta No "filter for printing"
+блоки), ноль = неограниченный
+.It "nd str" Ta Dv NULL Ta No "следующий каталог для списка очередей (не реализовано)"
+.It "nf str" Ta Dv NULL Ta Нет "фильтр данных ditroff (независимый от устройства troff)"
+.It "of str" Ta Dv NULL Ta No "имя программы фильтрации выходных данных"
+.It "pc num 200 цена за фут или страницу в сотых долях цента"
+.It "pl num 66 длина страницы (в строках)"
+.It "pw num 132 ширина страницы (в символах)"
+.It "px num 0 ширина страницы в пикселях (по горизонтали)"
+.It "py num 0 длина страницы в пикселях (по вертикали)"
+.It "rc bool false при отправке на удаленный хост, повторная отправка копий (см. ниже)"
+.It "rf str" Ta Dv NULL Ta No "фильтр для печати"
 .Tn FORTRAN
-style text files
-.It "rg	str" Ta Dv NULL Ta No "restricted group. Only members of group allowed access"
-.It "rm	str" Ta Dv NULL Ta No "machine name for remote printer"
-.It "rp	str" Ta Pa lp Ta No "remote printer name argument"
-.It "rs	bool	false	restrict remote users to those with local accounts"
-.It "rw	bool	false	open the printer device for reading and writing"
-.It "sb	bool	false	short banner (one line only)"
-.It "sc	bool	false	suppress multiple copies"
-.It "sd	str" Ta Pa /var/spool/lpd Ta No "spool directory"
-.It "sf	bool	false	suppress form feeds"
-.It "sh	bool	false	suppress printing of burst page header"
-.It "sr	str" Ta Dv NULL Ta No "file name to hold statistics of each datafile as it is received"
-.It "ss	str" Ta Dv NULL Ta No "file name to hold statistics of each datafile as it is sent"
-.It "st	str" Ta Pa status Ta No "status file name"
-.It "tf	str" Ta Dv NULL Ta No "troff data filter (cat phototypesetter)"
-.It "tr	str" Ta Dv NULL Ta No "trailer string to print when queue empties"
-.It "vf	str" Ta Dv NULL Ta No "raster image filter"
+текстовые файлы
+.It "rg str" Ta Dv NULL Ta No "Ограниченная группа. Доступ разрешен только членам группы"
+.It "rm str" Ta Dv NULL Ta Нет "имя машины для удаленного принтера"
+.It "rp str" Ta Pa lp Ta Нет "аргумент имени удаленного принтера"
+.It "rs bool false Ограничить удаленных пользователей только теми, у кого есть локальные учетные записи"
+.It "rw bool false открыть устройство принтера для чтения и записи"
+.It "sb bool false короткий баннер (только одна строка)"
+.It "sc bool false подавление множественных копий"
+.It "sd str" Ta Pa /var/spool/lpd Ta Нет "каталог спула"
+.It "sf bool false suppress form feeds"
+.It "sh bool false suppress printing of burst page header"
+.It "sr str" Ta Dv NULL Ta Нет "имя файла для хранения статистики каждого файла данных по мере его получения"
+.It "ss str" Ta Dv NULL Ta Нет "имя файла для хранения статистики каждого файла данных по мере его отправки"
+.It "st str" Ta Pa status Ta Нет "имя файла состояния"
+.It "tf str" Ta Dv NULL Ta Нет "фильтр данных troff (cat phototypesetter)"
+.It "tr str" Ta Dv NULL Ta Нет "строка трейлера для печати при опустошении очереди"
+.It "vf str" Ta Dv NULL Ta Нет "фильтр растровых изображений"
 .El
 .Pp
-Each two-letter capability has a human-readable alternate name.
-.Bl -column "Short form" "Long form"
-.Sy "Short form	Long form"
-.It "af	acct.file"
-.It "br	tty.rate"
-.It "cf	filt.cifplot"
-.It "ct	remote.timeout"
-.It "df	filt.dvi"
-.It "du	daemon.user"
-.It "ff	job.formfeed"
-.It "fo	job.topofform"
-.It "gf	filt.plot"
-.It "hl	banner.last"
-.It "if	filt.input"
-.It "lf	spool.log"
-.It "lo	spool.lock"
-.It "lp	tty.device"
-.It "mc	max.copies"
-.It "ms	tty.mode"
-.It "mx	max.blocks"
-.It "nf	filt.ditroff"
-.It "of	filt.output"
-.It "pc	acct.price"
-.It "pl	page.length"
-.It "pw	page.width"
-.It "px	page.pwidth"
-.It "py	page.plength"
-.It "rc	remote.resend_copies"
-.It "rf	filt.fortran"
-.It "rg	daemon.restrictgrp"
-.It "rm	remote.host"
-.It "rp	remote.queue"
-.It "rs	daemon.restricted"
-.It "rw	tty.rw"
-.It "sb	banner.short"
-.It "sc	job.no_copies"
-.It "sd	spool.dir"
-.It "sf	job.no_formfeed"
-.It "sh	banner.disable"
-.It "sr	stat.recv"
-.It "ss	stat.send"
-.It "st	spool.status"
-.It "tf	filt.troff"
-.It "tr	job.trailer"
-.It "vf	filt.raster"
+Каждая двухбуквенная возможность имеет человекочитаемое альтернативное имя.
+.Bl -колонка "Краткая форма" "Длинная форма"
+.Sy "Краткая форма Длинная форма"
+.It "af acct.file"
+.It "br tty.rate"
+.It "cf filt.cifplot"
+.It "ct remote.timeout"
+.It "df filt.dvi"
+.It "du daemon.user"
+.It "ff job.formfeed"
+.It "fo job.topofform"
+.It "gf filt.plot"
+.It "hl banner.last"
+.It "if filt.input"
+.It "lf spool.log"
+.It "lo spool.lock"
+.It "lp tty.device"
+.It "mc max.copies"
+.It "ms tty.mode"
+.It "mx max.blocks"
+.It "nf filt.ditroff"
+.It "of filt.output"
+.It "pc acct.price"
+.It "pl page.length"
+.It "pw page.width"
+.It "px page.pwidth"
+.It "py page.plength"
+.It "rc remote.resend_copies"
+.It "rf filt.fortran"
+.It "rg daemon.restrictgrp"
+.It "rm remote.host"
+.It "rp remote.queue"
+.It "rs daemon.restricted"
+.It "rw tty.rw"
+.It "sb banner.short"
+.It "sc job.no_copies"
+.It "sd spool.dir"
+.It "sf job.no_formfeed"
+.It "sh banner.disable"
+.It "sr stat.recv"
+.It "ss stat.send"
+.It "st spool.status"
+.It "tf filt.troff"
+.It "tr job.trailer"
+.It "vf filt.raster"
 .El
 .Pp
-If the local line printer driver supports indentation, the daemon
-must understand how to invoke it.
-.Sh FILTERS
-The
+Если драйвер локального линейного принтера поддерживает отступы, демон
+должен понимать, как его вызвать.
+.Sh ФИЛЬТРЫ
+Сайт
 .Xr lpd 8
-daemon creates a pipeline of
-.Em filters
-to process files for various printer types.
-The filters selected depend on the flags passed to
+создает конвейер
+фильтров .Em
+для обработки файлов для различных типов принтеров.
+Выбор фильтров зависит от флагов, переданных в
 .Xr lpr 1 .
-The pipeline set up is:
+Конвейер настроен следующим образом:
 .Bd -literal -offset indent
-p	pr | if	regular text + pr(1)
-none	if	regular text
-c	cf	cifplot
-d	df	DVI (tex)
-g	gf	plot(3)
-n	nf	ditroff
-f	rf	Fortran
-t	tf	troff
-v	vf	raster image
+p pr | если обычный текст + pr(1)
+нет, если обычный текст
+c cf cifplot
+d df DVI (tex)
+g gf plot(3)
+n nf ditroff
+f rf Fortran
+t tf troff
+v vf растровое изображение
 .Ed
 .Pp
-The
+Сайт
 .Sy if
-filter is invoked with arguments:
+фильтр вызывается с аргументами:
 .Bd -ragged -offset indent
 .Cm if
 .Op Fl c
-.Fl w Ns Ar width
-.Fl l Ns Ar length
-.Fl i Ns Ar indent
-.Fl n Ar login
+.Fl w Ns Ar ширина
+.Fl l Ns Ar длина
+.Fl i Ns Ar отступ
+.Fl n Ar логин
 .Fl h Ar host acct-file
 .Ed
 .Pp
-The
+Сайт
 .Fl c
-flag is passed only if the
+передается только в том случае, если
 .Fl l
-flag (pass control characters literally)
-is specified to
+флаг (передавать управляющие символы буквально)
+указан в
 .Xr lpr 1 .
-The
+Адрес
 .Ar Width
-function
-and
-.Ar length
-specify the page width and length
-(from
+функция
+и
+длина .Ar
+задают ширину и длину страницы
+(из
 .Cm pw
-and
+и
 .Cm pl
-respectively) in characters.
-The
+соответственно) в символах.
+Сайт
 .Fl n
-and
+и
 .Fl h
-parameters specify the login name and host name of the owner
-of the job respectively.
-The
+указывают имя пользователя и имя хоста владельца
+задания соответственно.
+Параметр
 .Ar Acct-file
-function
-is passed from the
+функция
+передается из файла
 .Cm af
 .Nm
-entry.
+запись.
 .Pp
-If no
-.Cm if
-is specified,
+Если нет
+.Cm, если
+указано,
+.Cm из
+используется вместо него,
+с тем отличием, что
 .Cm of
-is used instead,
-with the distinction that
-.Cm of
-is opened only once,
-while
+открывается только один раз,
+в то время как
 .Cm if
-is opened for every individual job.
-Thus,
+открывается для каждого отдельного задания.
+Таким образом,
 .Cm if
-is better suited to performing accounting.
-The
+лучше подходит для ведения бухгалтерского учета.
+Сайт
 .Cm of
-is only given the
-.Ar width
-and
-.Ar length
-flags.
+дается только
+ширина .Ar
+и
+длина .Ar
+флаги.
 .Pp
-All other filters are called as:
+Все остальные фильтры называются так:
 .Bd -ragged -offset indent
-.Nm filter
-.Fl x Ns Ar width
-.Fl y Ns Ar length
-.Fl n Ar login
+фильтр .Nm
+.Fl x Ns Ar ширина
+.Fl y Ns Ar длина
+.Fl n Ar логин
 .Fl h Ar host acct-file
 .Ed
 .Pp
-where
-.Ar width
-and
-.Ar length
-are represented in pixels,
-specified by the
+где
+.Ar ширина
+и
+длина .Ar
+представлены в пикселях,
+заданные параметром
 .Cm px
-and
+и
 .Cm py
-entries respectively.
+соответственно.
 .Pp
-All filters take
+Все фильтры принимают
 .Em stdin
-as the file,
+в качестве файла,
 .Em stdout
-as the printer,
-may log either to
+в качестве принтера,
+могут вести журнал либо в
 .Em stderr
-or using
+или с помощью
 .Xr syslog 3 ,
-and must not ignore
+и не должен игнорировать
 .Dv SIGINT .
-.Sh REMOTE PRINTING
-When printing to a remote printer using
+.Sh ПЕЧАТЬ НА УДАЛЕННОМ ПРИНТЕРЕ
+При печати на удаленном принтере с помощью
 .Cm rm ,
-it is possible to use either
+можно использовать либо
 .Cm if
-or
+или
 .Cm of .
-If both are specified,
+Если указано и то, и другое,
 .Cm of
-is ignored.
-Both filters behave the same except that they are passed
-different arguments as above.
-Specifically, the output filter is
-terminated and restarted for each file transmitted.
-This is necessary
-in order to pass the resulting size to the remote
+игнорируется.
+Оба фильтра ведут себя одинаково, за исключением того, что им передаются
+различных аргументов, как указано выше.
+В частности, выходной фильтр
+завершается и перезапускается для каждого переданного файла.
+Это необходимо
+для того, чтобы передать результирующий размер на удаленное устройство
 .Xr lpd 8 .
 .Pp
-If the
+Если
 .Fl p
-flag was passed to
+был передан флаг
 .Xr lpr 1 ,
 .Xr pr 1
-is not executed locally, but is requested of the remote
+не выполняется локально, а запрашивается у удаленного
 .Xr lpd 8 .
-Any input filtering via
+Любая фильтрация входных данных через
 .Cm if
-will therefore happen before
+будет происходить до того, как
 .Xr pr 1
-is executed rather than afterwards.
+а не после.
 .Pp
-There are some models of network printers which accept jobs from
+Существуют некоторые модели сетевых принтеров, которые принимают задания от
 .Xr lpd 8 ,
-but they ignore the control file for a job and simply print
-each data file as it arrives at the printer.
-One side-effect of this behavior is that the printer will ignore any request
-for multiple copies as given with the
+но они игнорируют управляющий файл задания и просто печатают
+каждый файл данных по мере его поступления на принтер.
+Одним из побочных эффектов такого поведения является то, что принтер будет игнорировать любой запрос
+на создание нескольких копий, как указано в параметре
 .Fl #
-flag on the
+на
 .Xr lpr 1
-command.
-The
+команды.
+Команда
 .Cm rc
-entry will cause
+вызовет
 .Xr lpd 8
-to resend each data file for each copy that the user
-originally requested.
-Note that the
+повторно отправить каждый файл данных для каждой копии, которую пользователь
+первоначально запрошенной пользователем.
+Обратите внимание, что
 .Cm rc
-entry should only be specified on hosts which send jobs directly to
-the printer.
+следует указывать только на хостах, которые отправляют задания непосредственно на
+принтер.
 .Pp
-If
+Если
 .Cm lp
-is specified as
-.Em port Ns @ Ns Em machine
-(and
+указан как
+.Em порт Ns @ Ns Em машина
+(и
 .Cm rm
-is not in use), print data will be sent directly to the given
-.Em port
-on the given
-.Em machine .
-.Sh TRANSFER STATISTICS
-When a print job is transferred to a remote machine (which might be
-another unix box, or may be a network printer), it may be useful
-to keep statistics on each transfer.
-The
+не используется), данные для печати будут отправляться непосредственно на указанный
+.Em-порт
+на данной
+.Em машине.
+.Sh СТАТИСТИКА ПЕРЕДАЧИ
+Когда задание печати передается на удаленную машину (которая может быть
+другой unix-машиной или сетевым принтером), может оказаться полезным
+вести статистику по каждой передаче.
+Программа
 .Cm sr
-and
+и
 .Cm ss
-options indicate filenames that lpd should use to store such
-statistics.
-A statistics line is written for each datafile of a
-job as the file is successfully transferred.
-The format of the
-line is the same for both the sending and receiving side of a
-transfer.
+указывают имена файлов, которые lpd должен использовать для хранения такой
+статистики.
+Строка статистики записывается для каждого файла данных задания
+задания по мере успешной передачи файла.
+Формат
+одинаков как для передающей, так и для принимающей стороны
+передачи.
 .Pp
-Statistics on datafiles being received would be used on a print
-server, if you are interested in network performance between a
-variety of machines which are sending jobs to that print server.
-The print server could collect statistics on the speed of each
-print job as it arrived on the server.
+Статистика по получаемым файлам данных используется на сервере печати
+если вас интересует производительность сети между
+различными машинами, которые отправляют задания на этот сервер печати.
+Сервер печати может собирать статистику о скорости выполнения каждого
+задания печати по мере его поступления на сервер.
 .Pp
-Statistics on datafiles being sent might be used as a minimal
-accounting record, when you want to know who sent which jobs to a
-remote printer, when they were sent, and how large (in bytes) the
-files were.
-This will not give include any idea of how many pages
-were printed, because there is no standard way to get that information
-back from a remote (network) printer in this case.
+Статистика отправляемых файлов данных может использоваться в качестве минимального
+минимального учета, когда необходимо знать, кто и когда отправил задания на удаленный принтер.
+удаленный принтер, когда они были отправлены и какого размера (в байтах) были файлы.
+файлы.
+Это не даст представления о том, сколько страниц
+было напечатано, потому что не существует стандартного способа получить эту информацию
+от удаленного (сетевого) принтера в этом случае.
 .Sh LOGGING
-Error messages generated by the line printer programs themselves
-(that is, the
+Сообщения об ошибках, генерируемые самими программами линейного принтера
+(т. е.
 .Xr lpd 8
-and related programs)
-are logged by
+и связанными с ними программами)
+регистрируются
 .Xr syslog 3
-using the
+с помощью
 .Dv LPR
-facility.
-Messages printed on
+средства.
+Сообщения, выводимые на
 .Em stderr
-of one of the filters
-are sent to the corresponding
+одного из фильтров
+отправляются в соответствующий
 .Cm lf
-file.
-The filters may, of course, use
+файл.
+Фильтры могут, конечно, использовать
 .Xr syslogd 8
-themselves.
+самостоятельно.
 .Pp
-Error messages sent to the console have a carriage return and a line
-feed appended to them, rather than just a line feed.
-.Sh SEE ALSO
+К сообщениям об ошибках, отправляемым на консоль, добавляется возврат каретки и перевод строки
+к ним добавляется возврат каретки и перевод строки, а не просто перевод строки.
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr lpq 1 ,
 .Xr lpr 1 ,
 .Xr lprm 1 ,
@@ -424,10 +424,13 @@ feed appended to them, rather than just a line feed.
 .Xr lpd 8 ,
 .Xr pac 8
 .Rs
-.%T "4.3 BSD Line Printer Spooler Manual"
+.%T "4.3 Руководство по спулеру линейного принтера BSD"
 .Re
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Сайт
 .Nm
-file format appeared in
+появился в
 .Bx 4.2 .
+
+
+

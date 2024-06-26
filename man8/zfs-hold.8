@@ -33,10 +33,10 @@
 .Dt ZFS-HOLD 8
 .Os
 .
-.Sh NAME
+.Sh ИМЯ
 .Nm zfs-hold
-.Nd hold ZFS snapshots to prevent their removal
-.Sh SYNOPSIS
+.Nd сохраняет снапшоты ZFS, чтобы предотвратить их удаление
+.Sh СИНТАКСИС
 .Nm zfs
 .Cm hold
 .Op Fl r
@@ -50,7 +50,7 @@
 .Op Fl r
 .Ar tag Ar snapshot Ns …
 .
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 .Bl -tag -width ""
 .It Xo
 .Nm zfs
@@ -58,20 +58,20 @@
 .Op Fl r
 .Ar tag Ar snapshot Ns …
 .Xc
-Adds a single reference, named with the
-.Ar tag
-argument, to the specified snapshots.
-Each snapshot has its own tag namespace, and tags must be unique within that
-space.
+Добавляет единственную ссылку, названную с помощью аргумента
+.Ar tag ,
+относящуюся к указанномум снапшоту.
+Каждый снапшот имеет свое собственное пространство имен тегов, и теги должны быть уникальными в пределах этого
+пространства.
 .Pp
-If a hold exists on a snapshot, attempts to destroy that snapshot by using the
+Если для снапшота существует блокировка, пытается уничтожить этот снапшот используя
 .Nm zfs Cm destroy
-command return
+команду, возвращая
 .Sy EBUSY .
 .Bl -tag -width "-r"
 .It Fl r
-Specifies that a hold with the given tag is applied recursively to the snapshots
-of all descendent file systems.
+Указывает, что удержание с данным тегом рекурсивно применяется к снапшотам 
+всех последующих файловых систем.
 .El
 .It Xo
 .Nm zfs
@@ -79,15 +79,15 @@ of all descendent file systems.
 .Op Fl rHp
 .Ar snapshot Ns …
 .Xc
-Lists all existing user references for the given snapshot or snapshots.
+Содержит список всех существующих пользовательских ссылок для данного снапшота или снапшотов.
 .Bl -tag -width "-r"
 .It Fl r
-Lists the holds that are set on the named descendent snapshots, in addition to
-listing the holds on the named snapshot.
+Содержит список удержаний, установленных для именованных снапшотов-потомков, в дополнение к
+списку удержаний для именованного снапшота.
 .It Fl H
-Do not print headers, use tab-delimited output.
+Не печатает заголовки, использует выходные данные, разделенные табуляцией.
 .It Fl p
-Prints holds timestamps as unix epoch timestamps.
+Выдает содержания временных меток в виде временных меток эпохи unix.
 .El
 .It Xo
 .Nm zfs
@@ -95,20 +95,20 @@ Prints holds timestamps as unix epoch timestamps.
 .Op Fl r
 .Ar tag Ar snapshot Ns …
 .Xc
-Removes a single reference, named with the
+Удаляет единственную ссылку, названную с помощью аргумента
 .Ar tag
-argument, from the specified snapshot or snapshots.
-The tag must already exist for each snapshot.
-If a hold exists on a snapshot, attempts to destroy that snapshot by using the
-.Nm zfs Cm destroy
-command return
+из указанного снапшота или снапшотов.
+Для каждого снапшота должен уже существовать тег.
+Если снапшот заблокирован, пытается уничтожить этот снапшот с помощью команды
+.Nm zfs Cm destroy ,
+возвращая
 .Sy EBUSY .
 .Bl -tag -width "-r"
 .It Fl r
-Recursively releases a hold with the given tag on the snapshots of all
-descendent file systems.
+Рекурсивно освобождает блокировку с заданным тегом для снапшотов всех
+последующих файловых систем.
 .El
 .El
 .
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr zfs-destroy 8

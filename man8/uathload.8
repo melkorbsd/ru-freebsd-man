@@ -26,42 +26,41 @@
 .Dd May 11, 2010
 .Dt UATHLOAD 8
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm uathload
-.Nd "firmware loader for Atheros USB wireless driver"
-.Sh SYNOPSIS
+.Nd "загрузчик прошивки для драйвера беспроводной сети Atheros USB"
+.Sh СИНТАКСИС
 .Nm
 .Op Fl v
 .Fl d Ar ugen-device
 .Op Ar firmware-file
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility provides a way to load the firmware for Atheros USB wireless
-devices with AR5005UG and AR5005UX chipsets.
+предоставляет способ загрузки встроенного ПО для беспроводных
+USB-устройств Atheros с чипсетами AR5005UG и AR5005UX.
 .Pp
-The following options are accepted.
+Принимаются следующие параметры.
 .Bl -tag -width ".Fl f Ar file"
 .It Fl d Ar ugen-device
-Use a specific
-.Xr ugen 4
-device.
+Использовать определенное устройство
+.Xr ugen 4 .
 .It Fl v
-Enable debugging messages.
+Включить сообщения отладки.
 .El
 .Pp
-If
-.Ar firmware-file
-is specified
+Если
+.Ar файл прошивки
+указан,
 .Nm
-tries to load it instead of the built-in firmware image.
-.Sh EXAMPLES
-Load the built-in firmware image into a specific
+попытаться загрузить его вместо встроенного образа прошивки.
+.Sh ПРИМЕРЫ
+Загружает образ встроенного программного обеспечения в определенное
 .Xr ugen 4
-device:
+устройство:
 .Pp
 .Dl "uathload -d /dev/ugen0.2"
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr uath 4
-.Sh AUTHORS
-.An Weongyo Jeong
+.Sh АВТОРЫ
+.An Веонге Чжон

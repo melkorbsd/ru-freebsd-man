@@ -30,53 +30,50 @@
 .Dd June 21, 2021
 .Dt BANNER 6
 .Os
-.Sh NAME
-.Nm banner
-.Nd print large banner on printer
-.Sh SYNOPSIS
+.Sh Название
+.Nm Баннер
+.Nd распечатайте большой баннер на принтере
+.Sh Обзор
 .Nm
 .Op Fl d
 .Op Fl t
 .Op Fl w Ar width
-.Ar message ...
-.Sh DESCRIPTION
-.Nm Banner
-prints a large, high quality banner on the standard output.
-If the message is omitted, it prompts for and reads one line of its
-standard input.
+.Ar сообщение ...
+.Sh Описание
+.Nm Баннерпечатает большой баннер высокого качества на стандартном носителе.
+Если сообщение пропущено, оно запрашивает и считывает одну строку из своего содержимого.
+стандартного ввода.
 .Pp
-The output should be printed on paper of the appropriate width,
-with no breaks between the pages.
+Выходные данные должны быть напечатаны на бумаге соответствующей ширины,
+без перерывов между страницами.
 .Pp
-The following options are available:
-.Bl -tag -width indent
+Доступны следующие опции:
+.Bl -tag -width отступ
 .It Fl d
-Enable debug.
+Включает отладку.
 .It Fl t
-Enable trace.
-.It Fl w Ar width
-Change the output from a width of 132 to
-.Ar width ,
-suitable for a narrow terminal.
+Включает трассировку.
+.It Fl w Ar ширина
+Измените ширину выходных данных с 132 на
+.Ar ширина ,
+подходит для узкого терминала.
 .El
-.Sh HISTORY
-The
+.Sh История
 .Nm
-utility first appeared in
+Утилиты впервые появилась в
 .At v6 .
-.Sh AUTHORS
+.Sh Авторы
 .An Mark Horton
-.Sh BUGS
-Several
+.Sh Баги
+Несколько
 .Tn ASCII
-characters are not defined, notably <, >, [, ], \\,
-^, _, {, }, |, and ~.
-Also, the characters ", ', and & are funny looking (but in a useful way.)
+символов не определены, в частности <, >, [, ], \\,
+^, _, {, }, |, и ~.
+Кроме того, символы ", ' и & выглядят забавно (но в то же время полезны).
 .Pp
-The
 .Fl w
-option is implemented by skipping some rows and columns.
-The smaller it gets, the grainier the output.
-Sometimes it runs letters together.
+Опция реализована путем пропуска некоторых строк и столбцов.
+Чем меньше он становится, тем зернистее получается результат.
+Иногда он соединяет буквы вместе.
 .Pp
-Messages are limited to 1024 characters in length.
+Длина сообщений ограничена 1024 символами.

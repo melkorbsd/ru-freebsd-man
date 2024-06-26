@@ -2,219 +2,219 @@
 .\"
 .\" Copyright (c) 2003 Mike Frantzen <frantzen@w4g.org>
 .\"
-.\" Permission to use, copy, modify, and distribute this software for any
-.\" purpose with or without fee is hereby granted, provided that the above
-.\" copyright notice and this permission notice appear in all copies.
+.\" Разрешение на использование, копирование, изменение и распространение данного программного обеспечения для любых
+.\" цели с оплатой или без оплаты, настоящим предоставляется при условии, что вышеуказанное
+.\" уведомление об авторских правах и это уведомление о разрешении будут присутствовать во всех копиях.
 .\"
-.\" THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-.\" WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-.\" MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-.\" ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-.\" WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-.\" ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-.\" OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+.\" ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ "КАК ЕСТЬ", И АВТОР ОТКАЗЫВАЕТСЯ ОТ ВСЕХ ГАРАНТИЙ.
+.\" В ОТНОШЕНИИ ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ВКЛЮЧАЯ ВСЕ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ
+.\" ТОВАРНОГО СОСТОЯНИЯ И ПРИГОДНОСТИ. НИ ПРИ КАКИХ ОБСТОЯТЕЛЬСТВАХ АВТОР НЕ НЕСЕТ ОТВЕТСТВЕННОСТИ ЗА
+.\" ЛЮБЫЕ СПЕЦИАЛЬНЫЕ, ПРЯМЫЕ, КОСВЕННЫЕ ИЛИ ПОСЛЕДУЮЩИЕ УБЫТКИ ИЛИ ЛЮБЫЕ УБЫТКИ
+.\" ВОЗНИКШИЕ В РЕЗУЛЬТАТЕ ПОТЕРИ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ, БУДЬ ТО В
+.\" ПО ДОГОВОРУ, ХАЛАТНОСТИ ИЛИ ДРУГИМ ДЕЛИКТНЫМ ДЕЙСТВИЯМ, ВОЗНИКАЮЩИМ ИЗ
+.\" ИЛИ В СВЯЗИ С ИСПОЛЬЗОВАНИЕМ ИЛИ РАБОТОЙ ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ.
 .\"
-.Dd May 31, 2007
+.Dd 31 мая 2007 г.
 .Dt PF.OS 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm pf.os
-.Nd format of the operating system fingerprints file
-.Sh DESCRIPTION
-The
+Формат .Nd файла отпечатков пальцев операционной системы
+.Sh ОПИСАНИЕ
+Файл
 .Xr pf 4
-firewall and the
+брандмауэр и
 .Xr tcpdump 1
-program can both fingerprint the operating system of hosts that
-originate an IPv4 TCP connection.
-The file consists of newline-separated records, one per fingerprint,
-containing nine colon
+позволяют определить операционную систему узлов, с которых
+создающих IPv4 TCP-соединения.
+Файл состоит из записей, разделенных новой строкой, по одной на отпечаток,
+содержащих девять двоеточий
 .Pq Ql \&:
-separated fields.
-These fields are as follows:
+разделенных полей.
+Эти поля выглядят следующим образом:
 .Pp
 .Bl -tag -width Description -offset indent -compact
-.It window
-The TCP window size.
+.It окно
+Размер окна TCP.
 .It TTL
-The IP time to live.
+Время жизни IP-адреса.
 .It df
-The presence of the IPv4 don't fragment bit.
-.It packet size
-The size of the initial TCP packet.
-.It TCP options
-An ordered list of the TCP options.
+Наличие бита IPv4 don't fragment.
+.It Размер пакета
+Размер начального TCP-пакета.
+.It Опции TCP
+Упорядоченный список опций TCP.
 .It class
-The class of operating system.
-.It version
-The version of the operating system.
+Класс операционной системы.
+.It версия
+Версия операционной системы.
 .It subtype
-The subtype of patchlevel of the operating system.
+Подтип уровня исправления операционной системы.
 .It description
-The overall textual description of the operating system, version and subtype.
+Общее текстовое описание операционной системы, версии и подтипа.
 .El
 .Pp
-The
-.Ar window
-field corresponds to the th->th_win field in the TCP header and is the
-source host's advertised TCP window size.
-It may be between zero and 65,535 inclusive.
-The window size may be given as a multiple of a constant by prepending
-the size with a percent sign
+Окно
+окно .Ar
+соответствует полю th->th_win в заголовке TCP и представляет собой
+объявленный размер окна TCP хоста-источника.
+Он может быть от нуля до 65 535 включительно.
+Размер окна может быть указан как кратное константе, для чего к размеру добавляется
+размер со знаком процента
 .Sq %
-and the value will be used as a modulus.
-Three special values may be used for the window size:
+и это значение будет использовано в качестве модуля.
+Для размера окна можно использовать три специальных значения:
 .Pp
 .Bl -tag -width xxx -offset indent -compact
 .It *
-An asterisk will wildcard the value so any window size will match.
+Звездочка будет иметь подстановочный знак, поэтому подойдет любой размер окна.
 .It S
-Allow any window size which is a multiple of the maximum segment size (MSS).
+Разрешить любой размер окна, кратный максимальному размеру сегмента (MSS).
 .It T
-Allow any window size which is a multiple of the maximum transmission unit
+Разрешить любой размер окна, кратный максимальному размеру блока передачи (MTU).
 (MTU).
 .El
 .Pp
-The
+Адрес
 .Ar ttl
-value is the initial time to live in the IP header.
-The fingerprint code will account for the volatility of the packet's TTL
-as it traverses a network.
+это начальное время жизни в заголовке IP.
+Код отпечатка будет учитывать изменчивость TTL пакета
+по мере прохождения пакета через сеть.
 .Pp
-The
+Сайт
 .Ar df
-bit corresponds to the Don't Fragment bit in an IPv4 header.
-It tells intermediate routers not to fragment the packet and is used for
-path MTU discovery.
-It may be either a zero or a one.
+соответствует биту Don't Fragment в заголовке IPv4.
+Он указывает промежуточным маршрутизаторам не фрагментировать пакет и используется для
+обнаружения MTU пути.
+Он может быть либо нулем, либо единицей.
 .Pp
-The
-.Ar packet size
-is the literal size of the full IP packet and is a function of all of
-the IP and TCP options.
+Адрес
+размер пакета .Ar
+представляет собой буквальный размер полного IP-пакета и является функцией всех
+параметров IP и TCP.
 .Pp
-The
-.Ar TCP options
-field is an ordered list of the individual TCP options that appear in the
-SYN packet.
-Each option is described by a single character separated by a comma and
-certain ones may include a value.
-The options are:
+Адрес
+.Ar Опции TCP
+представляет собой упорядоченный список отдельных опций TCP, которые появляются в пакете
+SYN-пакете.
+Каждая опция описывается одним символом, разделенным запятой, и
+некоторые из них могут включать значение.
+К опциям относятся:
 .Pp
 .Bl -tag -width Description -offset indent -compact
 .It Mnnn
-maximum segment size (MSS) option.
-The value is the maximum packet size of the network link which may
-include the
+опция максимального размера сегмента (MSS).
+Значение представляет собой максимальный размер пакета сетевого канала, который может
+включать
 .Sq %
-modulus or match all MSSes with the
+или соответствовать всем MSS с модулем
 .Sq *
-value.
+значение.
 .It N
-the NOP option (NO Operation).
+опция NOP (NO Operation).
 .It T[0]
-the timestamp option.
-Certain operating systems always start with a zero timestamp in which
-case a zero value is added to the option; otherwise no value is appended.
+параметр временной метки.
+Некоторые операционные системы всегда начинают с нулевой метки времени, в этом случае
+в этом случае к опции добавляется нулевое значение; в противном случае значение не добавляется.
 .It S
-the Selective ACKnowledgement OK (SACKOK) option.
+опция Selective ACKnowledgement OK (SACKOK).
 .It Wnnn
-window scaling option.
-The value is the size of the window scaling which may include the
+опция масштабирования окна.
+Значение представляет собой размер масштабирования окна, который может включать в себя
 .Sq %
-modulus or match all window scalings with the
+или соответствовать всем масштабам окна с помощью параметра
 .Sq *
-value.
+значение.
 .El
 .Pp
-No TCP options in the fingerprint may be given with a single dot
+Ни один параметр TCP в отпечатке пальца не может быть указан с одной точкой
 .Sq \&. .
 .Pp
-An example of OpenBSD's TCP options are:
+Примером опций TCP в OpenBSD являются:
 .Pp
 .Dl M*,N,N,S,N,W0,N,N,T
 .Pp
-The first option
+Первая опция
 .Ar M*
-is the MSS option and will match all values.
-The second and third options
+является опцией MSS и будет соответствовать всем значениям.
+Второй и третий варианты
 .Ar N
-will match two NOPs.
-The fourth option
+будут соответствовать двум NOP.
+Четвертая опция
 .Ar S
-will match the SACKOK option.
-The fifth
+будет соответствовать опции SACKOK.
+Пятый
 .Ar N
-will match another NOP.
-The sixth
+будет соответствовать еще одному NOP.
+Шестой
 .Ar W0
-will match a window scaling option with a zero scaling size.
-The seventh and eighth
+будет соответствовать опции масштабирования окна с нулевым размером масштаба.
+Седьмой и восьмой
 .Ar N
-options will match two NOPs.
-And the ninth and final option
+будут соответствовать двум NOP.
+А девятый и последний параметр
 .Ar T
-will match the timestamp option with any time value.
+будет соответствовать параметру timestamp с любым значением времени.
 .Pp
-The TCP options in a fingerprint will only match packets with the
-exact same TCP options in the same order.
+Опции TCP в отпечатке пальца будут соответствовать только пакетам с
+точно такими же опциями TCP в том же порядке.
 .Pp
-The
-.Ar class
-field is the class, genre or vendor of the operating system.
+Адрес
+класс .Ar
+это класс, жанр или производитель операционной системы.
 .Pp
-The
-.Ar version
-is the version of the operating system.
-It is used to distinguish between different fingerprints of operating
-systems of the same class but different versions.
+Поле
+версия .Ar
+это версия операционной системы.
+Используется для различения отпечатков пальцев операционных систем одного класса, но разных версий.
+систем одного класса, но разных версий.
 .Pp
-The
-.Ar subtype
-is the subtype or patch level of the operating system version.
-It is used to distinguish between different fingerprints of operating
-systems of the same class and same version but slightly different
-patches or tweaking.
+Подтип
+подтип .Ar
+это подтип или уровень исправления версии операционной системы.
+Он используется для различения различных отпечатков пальцев операционных систем
+систем одного класса и одной версии, но слегка отличающихся
+патчей или доработок.
 .Pp
-The
-.Ar description
-is a general description of the operating system, its version,
-patchlevel and any further useful details.
-.Sh EXAMPLES
-The fingerprint of a plain
+Сайт
+описание .Ar
+представляет собой общее описание операционной системы, ее версии,
+уровень исправления и любые другие полезные сведения.
+.Sh ПРИМЕРЫ
+Отпечаток пальца обычного компьютера
 .Ox 3.3
-host is:
+хоста:
 .Bd -literal
   16384:64:1:64:M*,N,N,S,N,W0,N,N,T:OpenBSD:3.3::OpenBSD 3.3
 .Ed
 .Pp
-The fingerprint of an
+Отпечаток пальца
 .Ox 3.3
-host behind a PF scrubbing firewall with a no-df rule would be:
-.Bd -literal
+хоста, находящегося за брандмауэром с PF-скребком и правилом no-df, будет таким:
+.Bd -литеральный
   16384:64:0:64:M*,N,N,S,N,W0,N,N,T:OpenBSD:3.3:!df:OpenBSD 3.3 scrub no-df
 .Ed
 .Pp
-An absolutely braindead embedded operating system fingerprint could be:
-.Bd -literal
+Абсолютно бессмысленный цифровой отпечаток  встроенной операционной системы:
+.Bd -литеральный
   65535:255:0:40:.:DUMMY:1.1:p3:Dummy embedded OS v1.1p3
 .Ed
 .Pp
-The
+Сайт
 .Xr tcpdump 1
-output of
-.Bd -literal
+вывод
+.Bd -литеральный
   # tcpdump -s128 -c1 -nv 'tcp[13] == 2'
   03:13:48.118526 10.0.0.1.3377 > 10.0.0.2.80: S [tcp sum ok] \e
       534596083:534596083(0) win 57344 <mss 1460> (DF) [tos 0x10] \e
       (ttl 64, id 11315, len 44)
 .Ed
 .Pp
-almost translates into the following fingerprint
-.Bd -literal
-  57344:64:1:44:M1460:	exampleOS:1.0::exampleOS 1.0
+почти соответствует следующему цифровому отпечатку 
+.Bd -литеральный
+  57344:64:1:44:M1460: exampleOS:1.0::exampleOS 1.0
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ 
 .Xr tcpdump 1 ,
 .Xr pf 4 ,
 .Xr pf.conf 5 ,

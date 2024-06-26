@@ -1,131 +1,89 @@
-.\" Copyright (c) 2003 Giorgos Keramidas
-.\" All rights reserved.
-.\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
-.\"
-.\" THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
-.\"
-.Dd January 1, 2021
-.Dt GSTAT 8
-.Os
-.Sh NAME
-.Nm gstat
-.Nd print statistics about GEOM disks
-.Sh SYNOPSIS
-.Nm
-.Op Fl abBcdops
-.Op Fl f Ar filter
-.Op Fl I Ar interval
-.Sh DESCRIPTION
-The
-.Nm
-utility can be used to monitor I/O transactions of
-.Xr geom 4
-devices.
+Response preparation time is too long, please simplify the question or use streaming.Xr geom 4
+устройства.
 .Pp
-The options are as follows:
+Возможные опции следующие:
 .Bl -tag -width indent
 .It Fl a
-Only display providers that are at least 0.1% busy.
+Отображать только те провайдеры, которые заняты по меньшей мере на 0.1%.
 .It Fl b
-Batch mode.
-Collect numbers, print and exit.
-Default if stdout is not a tty.
+Пакетный режим.
+Сбор чисел, вывод и выход.
+По умолчанию, если стандартный вывод не является терминалом.
 .It Fl B
-Endless batch mode.
-Same as batch mode, but does not exit after collecting
-the first set of data.
+Бесконечный пакетный режим.
+То же что и пакетный режим, но не выходит после сбора
+первого набора данных.
 .It Fl c
-Enable display of
+Включить отображение
 .Xr geom 4
-consumers too.
-The default is to show statistics only for
+потребителей тоже.
+По умолчанию отображаются статистика только для
 .Xr geom 4
-producers.
+производителей.
 .It Fl C
-CSV output mode.
-Implies endless batch mode, but output is in the form of comma-separated
-values, with ISO 8601-like timestamps.
+Режим вывода CSV.
+Подразумевает бесконечный пакетный режим, но вывод осуществляется в форме значений, разделенных запятыми, с временны́ми метками в формате, похожем на ISO 8601.
 .It Fl d
-Enable display of statistics for delete
+Включить отображение статистики для операций удаления
 .Pq Dv BIO_DELETE
-operations.
+.
 .It Fl f Ar filter
-A regular expression that can be used to only show statistics for some
-devices.
-Only devices with the names matching
+Регулярное выражение, которое может быть использовано для отображения статистики только для некоторых устройств.
+Будут отображены только устройства с именами, совпадающими с
 .Ar filter
-will be displayed.
-The format of the regular expression is described in
+.
+Формат регулярного выражения описан в
 .Xr re_format 7 .
 .It Fl o
-Enable display of statistics for other operations
+Включить отображение статистики для других операций
 .Pq Dv BIO_FLUSH .
 .It Fl s
-Enable blocks' size statistics.
+Включить статистику размеров блоков.
 .It Fl I Ar interval
-Refresh the
+Обновление
 .Nm
-display every
+дисплея каждые
 .Ar interval
-microseconds.
-Adding a suffix of
+микросекунд.
+Добавление суффикса
 .Cm s , ms ,
-or
+или
 .Cm us
-(the default) indicates that the update interval is specified in
-seconds, milliseconds, or microseconds, respectively.
+(по умолчанию) указывает, что интервал обновления задан в
+секундах, миллисекундах или микросекундах соответственно.
 .It Fl p
-Only display physical providers (those with rank of 1).
+Отображать только физические провайдеры (те, у которых ранг равен 1).
 .El
-.Sh INTERACTIVE COMMANDS
-These commands are currently recognized if
+.Sh ИНТЕРАКТИВНЫЕ КОМАНДЫ
+Эти команды в настоящее время распознаются, если
 .Nm
-is not running in batch mode:
+не работает в пакетном режиме:
 .Bl -tag -width indent
 .It Ic <
-Halve the update interval.
+Уменьшить интервал обновления вдвое.
 .It Ic >
-Double the update interval.
+Увеличить интервал обновления вдвое.
 .It Ic c
-Toggle display of
+Переключить отображение
 .Xr geom 4
-consumers.
+потребителей.
 .It Ic f
-Display only devices with the names matching regular expression filter
-(prompt for filter).
+Отображать только устройства с именами, совпадающими с регулярным выражением фильтра
 .It Ic F
-Remove device filter.
+Удалить фильтр устройства.
 .It Ic q
-Quit
+Выйти
 .Nm .
 .El
-.Sh EXIT STATUS
+.Sh СТАТУС ВЫХОДА
 .Ex -std
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr systat 1 ,
 .Xr geom 4 ,
 .Xr iostat 8 ,
 .Xr vmstat 8
-.Sh HISTORY
-A
+.Sh ИСТОРИЯ
+Утилита
 .Nm
-utility appeared in
+появилась в
 .Fx 5.0 .

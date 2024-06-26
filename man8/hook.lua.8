@@ -1,94 +1,88 @@
-.\"
-.\" SPDX-License-Identifier: BSD-2-Clause
-.\"
 .\" Copyright (c) 2018 Kyle Evans <kevans@FreeBSD.org>
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
+.\" Перераспределение и использование в исходном и двоичном формах, с изменениями или без,
+.\" разрешается при условии соблюдения следующих условий:
+.\" 1. Перераспределенный исходный код должен сохранять вышеуказанное уведомление об авторских правах,
+.\"    этот список условий и следующее отказ от ответственности.
+.\" 2. Перераспределенные в двоичной форме данные должны воспроизводить вышеуказанное уведомление об авторских правах,
+.\"    этот список условий и следующее отказ от ответственности в
+.\"    документации и/или других материалах, предоставляемых с распространением.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" ЭТО ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ АВТОРОМ И УЧАСТНИКАМИ "КАК ЕСТЬ" И
+.\" ОТКАЗ ОТ ВСЕХ ЯВНЫХ ИЛИ ПОДРАЗУМЕВАЕМЫХ ГАРАНТИЙ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПОДРАЗУМЕВАЕМЫЕ
+.\" ГАРАНТИИ ТОВАРНОЙ ПРИГОДНОСТИ И ПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ ЦЕЛИ ОТКЛОНЕНЫ. НИ В КОЕМ СЛУЧАЕ АВТОР ИЛИ УЧАСТНИКИ НЕ НЕСУТ
+.\" ОТВЕТСТВЕННОСТИ ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, ОСОБЫЕ, ПРИМЕРНЫЕ ИЛИ ПОСЛЕДОВАТЕЛЬНЫЕ
+.\" УБЫТКИ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПРИОБРЕТЕНИЕ ЗАМЕНЯЮЩИХ ТОВАРОВ ИЛИ УСЛУГ; ПОТЕРЯ ИСПОЛЬЗОВАНИЯ,
+.\" ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПРЕРЫВАНИЕ БИЗНЕСА)
+.\" ОДНАКО ВЫЗВАННЫЕ И ПО ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО В КОНТРАКТЕ, СТРОГОЙ
+.\" ОТВЕТСТВЕННОСТИ ИЛИ ДЕЛИКТЕ (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНЫЙ) ВОЗНИКШИЕ ЛЮБЫМ ОБРАЗОМ
+.\" ИЗ-ЗА ИСПОЛЬЗОВАНИЯ ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ ИЗВЕЩЕН О ВОЗМОЖНОСТИ ТАКОГО
+.\" УЩЕРБА.
 .\"
-.Dd April 28, 2020
+.Dd Апрель 28, 2020
 .Dt HOOK.LUA 8
 .Os
-.Sh NAME
+.Sh НАЗВАНИЕ
 .Nm hook.lua
-.Nd FreeBSD hook module
-.Sh DESCRIPTION
+.Nd FreeBSD hook модули
+.Sh ОПИСАНИЕ
 .Nm
-contains functionality for defining hook types and attaching hooks.
-Hooks are functions used to attach custom behaviors at pre-defined points in
-loader execution.
-These pre-defined points are what we refer to as
-.Dq hook types .
-Hooks may also take an optional data parameter, which may or may not be
-populated by the caller.
+содержит функциональные возможности для определения типов крючков и прикрепления крючков.
+Хуки — это функции, используемые для прикрепления пользовательского поведения в заранее определенных точках.
+выполнение загрузчика.
+Эти предопределенные точки, о которых мы говорим, называются
+.Dq типы хуков .
+Хуки также могут принимать необязательный параметр данных, который может быть или не быть
+заполнен вызывающей стороной.
 .Pp
-Before using the functionality provided by
+Прежде чем использовать функциональность, предоставляемую
 .Nm ,
-it must be included with a statement such as the following:
+ее необходимо включить с помощью такой инструкции, как следующая:
 .Pp
 .Dl local hook = require("hook")
-.Ss Exported functions
-The following functions are exported from
+.Ss Экспортируемые функции
+Следующие функции экспортируются из
 .Nm :
 .Bl -tag -width hook.registerType -offset indent
 .It Fn hook.registerType hooktype
-Adds
+Добавляет
 .Ev hooktype
-as a recognized hook type.
-This allows functions to be added to run when hooks of this type are invoked
-using
+как признанный тип хука.
+Это позволяет добавлять функции для выполнения, когда вызываются хуки данного типа
+с использованием
 .Fn hook.runAll hooktype .
 .It Fn hook.register hooktype hookfunc
-Register
+Регистрирует
 .Ev hookfunc
-to be run when hooks of type
-.Ev hooktype
-are invoked.
-.It Fn hook.runAll hooktype
-Invoke all hooks registered for type
+для выполнения, когда вызываются хуки типа
 .Ev hooktype .
-Hooks are invoked in the order in which they are registered.
+.It Fn hook.runAll hooktype
+Вызывает все зарегистрированные хуки для типа
+.Ev hooktype .
+Хуки вызываются в порядке их регистрации.
 .El
-.Ss Hook Naming Guidelines
-Hook names should consist of the name of the module they are defined in, as well
-as a verb describing when the hook is executed, separated by a period.
-For example,
+.Ss Руководство по именованию хуков
+Имена хуков должны состоять из названия модуля, в котором они определены, а также
+глагола, описывающего, когда хук выполняется, разделенных точкой.
+Например,
 .Dq config.reloaded
-is defined in the
+определен в модуле
 .Xr config.lua 8
-module and run when the configuration is reloaded.
-.Sh EXAMPLES
-To register a hook to be run when configuration is reloaded:
+и выполняется, когда конфигурация перезагружена.
+.Sh ПРИМЕРЫ
+Для регистрации хука, который будет запущен при перезагрузке конфигурации:
 .Pp
 .Bd -literal -offset indent -compact
 local hook = require("hook")
 
 local function configuration_was_reloaded()
-	print("Configuration was reloaded!")
+	print("Конфигурация была перезагружена!")
 end
 
 hook.register("config.reloaded", configuration_was_reloaded)
 .Ed
-.Sh AUTHORS
-The
+.Sh АВТОРЫ
+Файл
 .Nm
-file was originally written by
+был изначально написан
 .An Kyle Evans Aq Mt kevans@FreeBSD.org .

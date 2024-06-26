@@ -25,113 +25,113 @@
 .Dd April 18, 2023
 .Dt TZSETUP 8
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm tzsetup
-.Nd set local timezone
-.Sh SYNOPSIS
+.Nd устанавливает местный часовой пояс
+.Sh СИНТАКСИС
 .Nm
 .Op Fl nrs
 .Op Fl C Ar chroot_directory
 .Op Ar zoneinfo_file | zoneinfo_name
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility reads a database of timezone information and presents a menu
-allowing the user to select a specific zone without knowing the details
-of the database layout.
-The selected zone is installed as the system
-default zone.
-The
+читает информацию о часовых поясах из базы данных и отображает меню,
+позволяющее пользователю выбрать конкретную зону, не зная деталей
+расположения базы данных.
+Выбранная зона устанавливается в качестве системной
+зоны по умолчанию.
+Утилита
 .Nm
-utility also determines whether any adjustment is necessary for systems where
-the hardware clock does not keep UTC.
+также определяет, требуется ли какая-либо настройка для систем, в которых
+аппаратные часы не поддерживают UTC.
 .Pp
-The following options are available:
+Доступны следующие параметры:
 .Bl -tag -offset indent -width Fl
 .It Fl C Ar chroot_directory
-Open all files and directories relative to
+Открыть все файлы и каталоги, относящиеся к
 .Ar chroot_directory .
 .It Fl n
-Do not create or copy files.
+Не создавать и не копировать файлы.
 .It Fl r
-Reinstall the zoneinfo file installed last time.
-The name is obtained from
+Переустановить файл zoneinfo, установленный в последний раз.
+При этом имя получается из
 .Pa /var/db/zoneinfo .
 .It Fl s
-Skip the initial question about adjusting the clock if not set to UTC.
+Пропустить первоначальный вопрос о настройке часов, если они не установлены в UTC.
 .El
 .Pp
-It is possible to short-circuit the menu system by specifying the
-location of a
+Можно отключить вывод меню, указав
+местоположение
 .Ar zoneinfo_file
-or the name of the
+или название
 .Ar zoneinfo_name
-on the command line; this is intended mainly for pre-configured installation
-scripts or people who know which zoneinfo they want to install.
-.Sh TIMEZONE DATABASE
-The contents of the timezone database are indexed by
+в командной строке; это предназначено в основном для предварительно настроенных
+сценариев установки или для людей, которые знают, какой zoneinfo они хотят установить.
+.Sh БАЗА ДАННЫХ ЧАСОВЫХ ПОЯСОВ
+Содержимое базы данных часовых поясов индексируется с помощью
 .Pa /usr/share/zoneinfo/zone1970.tab .
-This file lists, for each timezone data file, the ISO 3166 territory code,
-approximate geographical coordinates (in ISO 6709 format),
-and location within the territory.
+В этом файле для каждого файла данных о часовом поясе указаны код территории по стандарту ISO 3166,
+приблизительные географические координаты (в формате ISO 6709)
+и местоположение в пределах территории.
 .Pp
-The maintainers of the database maintain the following policies:
+Разработчики базы данных придерживаются следующих политик:
 .Bl -enum -offset indent
 .It
-At least one zone for every country or inhabited geographical territory.
+По крайней мере, одна зона для каждой страны или населенной географической территории.
 .It
-One zone for every distinct, documented timezone history since the
-beginning of the
+Один пояс для каждой отдельной, документированной истории часовых поясов с
+начала эпохи
 .Ux
-epoch (January 1, 1970, GMT).
+(1 января 1970 года по Гринвичу).
 .It
-Each zone is named for the most populous city therein.
-(Where possible,
-the database includes pre-1970 history for its city.)
+Каждая зона названа в честь самого густонаселенного города в ней.
+(По возможности,
+база данных включает историю города до 1970 года).
 .El
 .Pp
-The source code to the database
+Исходный код для базы данных
 .Pq Pa /usr/src/contrib/tzdata/[a-z]*
-contains many additional comments and documentation references for the
-historically minded.
-.Sh FILES
+содержит множество дополнительных комментариев и ссылок на документацию для тех,
+кто интересуется историей.
+.Sh ФАЙЛЫ
 .Bl -tag -width ".Pa /usr/share/zoneinfo/zone1970.tab" -compact
 .It Pa /etc/localtime
-current time zone file
+файл текущего часового пояса
 .It Pa /etc/wall_cmos_clock
-see
+смотрите
 .Xr adjkerntz 8
 .It Pa /usr/share/misc/iso3166
-mapping of ISO 3166 territory codes to names
+сопоставление кодов территорий по стандарту ISO 3166 с названиями
 .It Pa /usr/share/zoneinfo
-directory for zoneinfo files
+каталог для файлов zoneinfo
 .It Pa /usr/share/zoneinfo/zone1970.tab
-mapping of timezone file to country and location
+привязка файла часового пояса к стране и местоположению
 .It Pa /var/db/zoneinfo
-saved name of the timezone file installed last
+сохранение имени файла часового пояса, установленного последним
 .El
-.Sh EXAMPLES
-Normal usage, to select the right zoneinfo file via the dialog-based
-user interface:
+.Sh ПРИМЕРЫ
+При обычном использовании, чтобы выбрать нужный файл zoneinfo через диалоговый
+пользовательский интерфейс:
 .Pp
 .Dl # tzsetup
 .Pp
-Install the file
+Установить файл
 .Pa /usr/share/zoneinfo/Australia/Sydney :
 .Pp
 .Dl "# tzsetup /usr/share/zoneinfo/Australia/Sydney"
 .Pp
-Install the zoneinfo file for Australia/Sydney, assumed to be located in
+Установить файл zoneinfo для Australia/Sydney, предположительно расположенный в
 .Pa /usr/share/zoneinfo :
 .Pp
 .Dl "# tzsetup Australia/Sydney"
 .Pp
-After a reinstall of the zoneinfo files, you can reinstall the
-latest installed zoneinfo file (as specified in
-.Pa /var/db/zoneinfo ) :
+После переустановки файлов zoneinfo вы можете переустановить
+последний установленный файл zoneinfo (как указано в
+.Pa /var/db/zoneinfo ):
 .Pp
 .Dl "# tzsetup -r"
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr date 1 ,
 .Xr adjtime 2 ,
 .Xr ctime 3 ,
@@ -140,20 +140,20 @@ latest installed zoneinfo file (as specified in
 .Xr adjkerntz 8 ,
 .Xr zdump 8 ,
 .Xr zic 8
-.Sh DISCLAIMER
-The representation of certain localities as being associated with certain
-countries and/or territories is for the purposes of identification only,
-and does not imply any endorsement or rejection on the part of the
+.Sh ПРЕДУПРЕЖДЕНИЕ
+Представление определенных населенных пунктов как связанных с определенными
+странами и/или территориями предназначено исключительно для целей идентификации
+и не подразумевает какого-либо одобрения или неприятия со стороны проекта
 .Fx
-Project of the territorial claims of any entity.
-.Sh BUGS
-Programs which are already running when
+территориальных претензий любого субъекта.
+.Sh ПРОБЛЕМЫ
+Программы, которые уже запущены, когда
 .Nm
-creates or updates
-.Pa /etc/localtime
-will not reflect the updated timezone.
-When the system is first configured for a non-UTC
-hardware clock, it is necessary to run
+создает или обновляет
+.Pa /etc/localtime ,
+не будут отражать обновленный часовой пояс.
+При первой настройке системы на
+аппаратные часы, отличные от UTC, необходимо запустить
 .Xr adjkerntz 8
-(which normally happens as a part of system startup) in order to update
-the kernel's idea of the correct timezone offset.
+(что обычно происходит при запуске системы), чтобы обновить
+представление ядра о правильном смещении часового пояса.

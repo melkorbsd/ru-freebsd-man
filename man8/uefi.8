@@ -24,46 +24,45 @@
 .Dd August 31, 2023
 .Dt UEFI 8
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm UEFI
-.Nd Unified Extensible Firmware Interface bootstrapping procedures
-.Sh DESCRIPTION
-The
+.Nd процедуры начальной загрузки унифицированного расширяемого интерфейса встроенного ПОbootstrapping procedures
+.Sh ОПИСАНИЕ
+Унифицированный расширяемый микропрограммный интерфейс
 .Nm
-Unified Extensible Firmware Interface provides boot- and run-time services
-to operating systems.
+предоставляет операционным системам службы загрузки и выполнения.
 .Nm
-is a replacement for the legacy BIOS on the i386 and amd64 CPU architectures,
-and is also used on arm, arm64 and riscv architectures.
+является заменой устаревшего BIOS на архитектурах процессоров i386 и amd64,
+а также используется на архитектурах arm, arm64 и riscv.
 .Pp
-The UEFI specification is the successor to the Extensible Firmware Interface
-(EFI) specification.
-The terms UEFI and EFI are often used interchangeably.
+Спецификация UEFI является преемницей спецификации расширяемого встроенного интерфейса (EFI).
+Термины UEFI и EFI часто используются как взаимозаменяемые.
 .Pp
-The
+Процесс загрузки
 .Nm
-boot process loads system bootstrap code located in an EFI System Partition
+загружает системный загрузочный код, расположенный в системном разделе EFI
 (ESP).
-The ESP is a GPT or MBR partition with a specific identifier that contains an
+ESP - это раздел GPT или MBR с определенным идентификатором, который содержит файловую систему FAT
 .Xr msdosfs 5
-FAT file system with a specified file hierarchy.
+с заданной файловой иерархией.
 .Bl -column -offset indent "Partition Scheme" "ESP Identifier"
 .It Sy "Partition Scheme" Ta Sy "ESP Identifier"
 .It GPT Ta C12A7328-F81F-11D2-BA4B-00A0C93EC93B
 .It MBR Ta 0xEF
 .El
 .Pp
-The
+Процесс загрузки
 .Nm
-boot process proceeds as follows:
+происходит следующим образом:
 .Bl -enum -offset indent -compact
 .It
+Прошивка
 .Nm
-firmware runs at power up and searches for an OS loader in the EFI system
-partition.
-The path to the loader may be set by an EFI environment variable managed by
+запускается при включении питания и выполняет поиск загрузчика операционной системы в системном
+разделе EFI.
+Путь к загрузчику может быть задан переменной среды EFI, управляемой
 .Xr efibootmgr 8 .
-If not set, an architecture-specific default is used.
+Если этот параметр не задан, используется значение по умолчанию, зависящее от архитектуры.
 .Bl -column -offset indent "Architecture" "Default Path"
 .It Sy Architecture Ta Sy Default Path
 .It amd64 Ta Pa /EFI/BOOT/BOOTX64.EFI
@@ -73,41 +72,40 @@ If not set, an architecture-specific default is used.
 .It riscv Ta Pa /EFI/BOOT/BOOTRISCV64.EFI
 .El
 .Pp
-The default
+По умолчанию конфигурация загрузки
 .Nm
-boot configuration for
+для
 .Fx
-installs
+устанавливает
 .Pa loader.efi
-in the default path.
+в пути по умолчанию.
 .It
 .Pa loader.efi
-reads boot configuration from
+считывает конфигурацию загрузки из
 .Pa /boot.config
-or
+или
 .Pa /boot/config .
 .It
 .Pa loader.efi
-loads and boots the kernel, as described in
+загружает ядро, как описано в
 .Xr loader.efi 8 .
 .El
 .Pp
-The
 .Xr vt 4
-system console is automatically selected when booting via
+системная консоль автоматически выбирается при загрузке через
 .Nm .
-.Sh FILES
+.Sh ФАЙЛЫ
 .Bl -tag -width /boot/loader -compact
+Начальная загрузка
 .Nm
-bootstrap
 .It Pa /boot/loader.efi
-Final stage bootstrap
+Завершающий этап начальной загрузки
 .It Pa /boot/kernel/kernel
-Default kernel
+Ядро по умолчанию
 .It Pa /boot/kernel.old/kernel
-Typical non-default kernel (optional)
+Типичное ядро, используемое не по умолчанию (необязательно)
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr vt 4 ,
 .Xr boot.config 5 ,
 .Xr msdosfs 5 ,
@@ -118,17 +116,18 @@ Typical non-default kernel (optional)
 .Xr gpart 8 ,
 .Xr loader.efi 8 ,
 .Xr uefisign 8
-.Sh HISTORY
-EFI boot support for the ia64 architecture first appeared in
+.Sh ИСТОРИЯ
+Поддержка загрузки EFI для архитектуры ia64 впервые появилась в
 .Fx 5.0 .
+Поддержка загрузки
 .Nm
-boot support for amd64 first appeared in
+для amd64 впервые появилась в
 .Fx 10.1 ;
-for arm64 in
+для arm64 в
 .Fx 11.0 ;
-for armv6 and armv7 in
+для armv6 и armv7 в
 .Fx 12.0 ;
-and for riscv in
+и для riscv в
 .Fx 13.0 .
-.Sh BUGS
-There is no support for 32-bit i386 booting via UEFI.
+.Sh ПРОБЛЕМЫ
+Поддержка загрузки 32-разрядного i386 через UEFI отсутствует.

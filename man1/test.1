@@ -31,340 +31,340 @@
 .\"
 .\"     @(#)test.1	8.1 (Berkeley) 5/31/93
 .\"
-.Dd October 5, 2016
+.Dd 5 октября, 2016
 .Dt TEST 1
 .Os
-.Sh NAME
+  .Sh ИМЯ
 .Nm test ,
 .Nm \&[
-.Nd condition evaluation utility
-.Sh SYNOPSIS
+.Nd утилита для оценки условий
+  .Sh СИНТАКСИС
 .Nm
-.Ar expression
+.Ar выражение
 .Nm \&[
-.Ar expression Cm \&]
-.Sh DESCRIPTION
-The
+.Ar выражение Cm \&]
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility evaluates the expression and, if it evaluates
-to true, returns a zero (true) exit status; otherwise
-it returns 1 (false).
-If there is no expression,
+оценивает выражение и, если оно оценивается
+как истинное, возвращает нулевой (истинный) статус завершения; в противном случае
+возвращает 1 (ложь).
+Если выражение отсутствует
 .Nm
-also
-returns 1 (false).
+также
+возвращает 1 (ложь).
 .Pp
-All operators and flags are separate arguments to the
+Все операторы и флаги являются отдельными аргументами для
 .Nm
-utility.
+утилиты.
 .Pp
-The following primaries are used to construct expression:
+Для построения выражения используются следующие основные элементы:
 .Bl -tag -width Ar
-.It Fl b Ar file
+.It Fl b Ar файл
+Истина,если
+.Ar файл
+существует и является символьным специальным 
+файлом.
+.It Fl c Ar файл
+Истина,если
+.Ar файл
+существует и является
+символьным специальным файлом.
+.It Fl d Ar файл
 True if
-.Ar file
-exists and is a block special
-file.
-.It Fl c Ar file
-True if
-.Ar file
-exists and is a character
-special file.
-.It Fl d Ar file
-True if
-.Ar file
-exists and is a directory.
-.It Fl e Ar file
-True if
-.Ar file
-exists (regardless of type).
-.It Fl f Ar file
-True if
-.Ar file
-exists and is a regular file.
-.It Fl g Ar file
-True if
-.Ar file
-exists and its set group ID flag
-is set.
-.It Fl h Ar file
-True if
-.Ar file
-exists and is a symbolic link.
-This operator is retained for compatibility with previous versions of
-this program.
-Do not rely on its existence; use
+.Ar файл
+существует и является каталогом.
+.It Fl e Ar файл
+Истина,если
+.Ar файл
+существует (независимо от типа).
+.It Fl f Ar файл
+Истина,если
+.Ar файл
+существует и является обычным файлом.
+.It Fl g Ar файл
+Истина,если
+.Ar файл
+существует и флаг set group ID
+установлен.
+.It Fl h Ar файл
+Истина,если
+.Ar файл
+существует и является символической ссылкой.
+Этот оператор сохранен для совместимости с предыдущими версиями
+этой программы.
+Не полагайтесь на его наличие; используйте
 .Fl L
-instead.
-.It Fl k Ar file
-True if
-.Ar file
-exists and its sticky bit is set.
-.It Fl n Ar string
-True if the length of
-.Ar string
-is nonzero.
-.It Fl p Ar file
-True if
-.Ar file
-is a named pipe
+вместо него.
+.It Fl k Ar файл
+Истина,если
+.Ar файл
+существует и бит установлен.
+.It Fl n Ar строка
+Истина,если длина
+.Ar строка
+не равна нулю.
+.It Fl p Ar файл
+Истина,если
+.Ar файл
+является именованным каналом
 .Pq Tn FIFO .
-.It Fl r Ar file
-True if
-.Ar file
-exists and is readable.
-.It Fl s Ar file
-True if
-.Ar file
-exists and has a size greater
-than zero.
-.It Fl t Ar file_descriptor
-True if the file whose file descriptor number
-is
-.Ar file_descriptor
-is open and is associated with a terminal.
-.It Fl u Ar file
-True if
-.Ar file
-exists and its set user ID flag
-is set.
-.It Fl w Ar file
-True if
-.Ar file
-exists and is writable.
-True
-indicates only that the write flag is on.
-The file is not writable on a read-only file
-system even if this test indicates true.
-.It Fl x Ar file
-True if
-.Ar file
-exists and is executable.
-True
-indicates only that the execute flag is on.
-If
-.Ar file
-is a directory, true indicates that
-.Ar file
-can be searched.
-.It Fl z Ar string
-True if the length of
-.Ar string
-is zero.
-.It Fl L Ar file
-True if
-.Ar file
-exists and is a symbolic link.
-.It Fl O Ar file
-True if
-.Ar file
-exists and its owner matches the effective user id of this process.
-.It Fl G Ar file
-True if
-.Ar file
-exists and its group matches the effective group id of this process.
-.It Fl S Ar file
-True if
-.Ar file
-exists and is a socket.
-.It Ar file1 Fl nt Ar file2
-True if
-.Ar file1
-exists and is newer than
-.Ar file2 .
-.It Ar file1 Fl ot Ar file2
-True if
-.Ar file1
-exists and is older than
-.Ar file2 .
-.It Ar file1 Fl ef Ar file2
-True if
-.Ar file1
-and
-.Ar file2
-exist and refer to the same file.
-.It Ar string
-True if
-.Ar string
-is not the null
-string.
+.It Fl r Ar файл
+Истина,если
+.Ar файл
+существует и доступен для чтения.
+.It Fl s Ar файл
+Истина,если
+.Ar файл
+существует и его размер 
+больше нуля.
+.It Fl t Ar дескриптор файла
+Истина, если файл, соответствующий номеру дескриптора 
+файла
+.Ar дескриптор файла
+открыт и ассоциирован с терминалом.
+.It Fl u Ar файл
+Истина,если
+.Ar файл
+существует и флаг set user ID
+установлен.
+.It Fl w Ar файл
+Истина,если
+.Ar файл
+существует и доступен для записи.
+Значение
+"Истина" указывает только на то, что флаг записи включен.
+Файл не может быть записываемым в системе с доступом только для чтения,
+даже если данный тест возвращает "Истина".
+.It Fl x Ar файл
+Истина,если
+.Ar файл
+существует и доступен для выполнения.
+Значение
+"Истина" указывает только на то, что флаг выполнения включен.
+Если
+.Ar файл
+является каталогом, "Истина" указывает на то, что каталог
+.Ar файл
+может быть просмотрен.
+.It Fl z Ar строка
+Истина,если длина
+.Ar строки
+равна нулю.
+.It Fl L Ar файл
+Истина,если
+.Ar файл
+существует и является символической ссылкой.
+.It Fl O Ar файл
+Истина,если
+.Ar файл
+существует и его владелец совпадает с эффективным идентификатором пользователя этого процесса.
+.It Fl G Ar файл
+Истина,если
+.Ar файл
+существует и его группа совпадает с эффективным идентификатором группы этого процесса.
+.It Fl S Ar файл
+Истина,если
+.Ar файл
+существует и является сокетом.
+.It Ar файл1 Fl nt Ar файл2
+Истина,если
+.Ar файл1
+существует и новее, чем
+.Ar файл2 .
+.It Ar файл1 Fl ot Ar файл2
+Истина,если
+.Ar файл1
+существует и старше, чем
+.Ar файл2 .
+.It Ar файл1 Fl ef Ar файл2
+Истина,если
+.Ar файл1
+и
+.Ar файл2
+существуют и указывают на один и тот же файл.
+.It Ar строка
+Истина,если
+.Ar строка
+не является пустой
+строкой.
 .It Ar s1 Cm = Ar s2
-True if the strings
+Истина,если строки
 .Ar s1
-and
+и
 .Ar s2
-are identical.
+идентичны.
 .It Ar s1 Cm != Ar s2
-True if the strings
+Истина,если строки
 .Ar s1
-and
+и
 .Ar s2
-are not identical.
+не идентичны.
 .It Ar s1 Cm < Ar s2
-True if string
+Истина,если строка
 .Ar s1
-comes before
+предшествует строке
 .Ar s2
-based on the binary value of their characters.
+на основе бинарного значения их символов.
 .It Ar s1 Cm > Ar s2
-True if string
+Истина,если строка
 .Ar s1
-comes after
+следует за строкой
 .Ar s2
-based on the binary value of their characters.
+на основе бинарного значения их символов.
 .It Ar n1 Fl eq Ar n2
-True if the integers
+Истина,если целые числа
 .Ar n1
-and
+и
 .Ar n2
-are algebraically
-equal.
+лгебраически
+равны.
 .It Ar n1 Fl ne Ar n2
-True if the integers
+Истина,если целые числа
 .Ar n1
-and
+и
 .Ar n2
-are not
-algebraically equal.
+не
+алгебраически равны.
 .It Ar n1 Fl gt Ar n2
-True if the integer
+Истина,если целое число
 .Ar n1
-is algebraically
-greater than the integer
+алгебраически
+больше целого числа
 .Ar n2 .
 .It Ar n1 Fl ge Ar n2
-True if the integer
+Истина,если целое число
 .Ar n1
-is algebraically
-greater than or equal to the integer
+алгебраически
+больше или равно целому числу
 .Ar n2 .
 .It Ar n1 Fl lt Ar n2
-True if the integer
+Истина,если целое число
 .Ar n1
-is algebraically less
-than the integer
+алгебраически меньше
+целого числа
 .Ar n2 .
 .It Ar n1 Fl le Ar n2
-True if the integer
+Истина,если целое число
 .Ar n1
-is algebraically less
-than or equal to the integer
+алгебраически меньше или
+равно целому числу
 .Ar n2 .
 .El
 .Pp
-If
+Если
 .Ar file
-is a symbolic link,
+является символической ссылкой,
 .Nm
-will fully dereference it and then evaluate the expression
-against the file referenced, except for the
+полностью разыменует ее, а затем вычислит выражение для файла,
+на который ссылается символическая ссылка, за исключением
 .Fl h
-and
+и
 .Fl L
-primaries.
+примитивов
 .Pp
-These primaries can be combined with the following operators:
+Эти примитивы могут быть объединены с помощью следующих операторов:
 .Bl -tag -width Ar
 .It Cm \&! Ar expression
-True if
+истина,если
 .Ar expression
-is false.
+ложно.
 .It Ar expression1 Fl a Ar expression2
-True if both
+Истина.если и
 .Ar expression1
-and
+и
 .Ar expression2
-are true.
+истинны.
 .It Ar expression1 Fl o Ar expression2
-True if either
+Истина,если либо
 .Ar expression1
-or
+либо
 .Ar expression2
-are true.
+истинны.
 .It Cm \&( Ar expression Cm \&)
-True if expression is true.
+Истина,если выражение истинно.
 .El
 .Pp
-The
+Оператор
 .Fl a
-operator has higher precedence than the
+имеет более высокий приоритет,чем
 .Fl o
-operator.
+оператор.
 .Pp
-Some shells may provide a builtin
+Некоторые оболочки могут предоставлять встроенную 
 .Nm
-command which is similar or identical to this utility.
-Consult the
+команду,которая аналогична или идентична этой утилите.
+Обратитесь к
 .Xr builtin 1
-manual page.
-.Sh GRAMMAR AMBIGUITY
-The
+странице руководства.
+.Sh GНЕОДНАЗНАЧНОСТЬ ГРАММАТИКИ
+Грамматика
 .Nm
-grammar is inherently ambiguous.
-In order to assure a degree of consistency,
-the cases described in the
+по своей природе неодназначна.
+Для обеспечения степени согласованности,
+случаи, описанные в 
 .St -p1003.2 ,
-section D11.2/4.62.4, standard
-are evaluated consistently according to the rules specified in the
-standards document.
-All other cases are subject to the ambiguity in the
-command semantics.
+раздел D11.2/4.62.4, стандарте
+оцениваются последовательно в соответствии с правилами, указанными 
+в документе стандарта.
+Все остальные случаи подвержены неоднозначности 
+в семантике команды.
 .Pp
-In particular, only expressions containing
+В частности, только выражения, содержащие
 .Fl a ,
 .Fl o ,
 .Cm \&(
-or
+или
 .Cm \&)
-can be ambiguous.
-.Sh EXIT STATUS
-The
+могут быть неодназначными.
+.Sh СТАТУС ВЫХОДА
+Утилита
 .Nm
-utility exits with one of the following values:
+завершает работу с одним из следующих значений:
 .Bl -tag -width indent
 .It 0
-expression evaluated to true.
+выражение оценено как истинное.
 .It 1
-expression evaluated to false or expression was
-missing.
+выражение оценено как ложное или выражение 
+отсутствовало.
 .It >1
-An error occurred.
+Произошла ошибка
 .El
-.Sh EXAMPLES
-Implement
+.Sh ПРИМЕРЫ
+Реализуйте
 .Li test FILE1 -nt FILE2
-using only
+используя только
 .Tn POSIX
-functionality:
+функциональность:
 .Pp
 .Dl test -n \&"$(find -L -- FILE1 -prune -newer FILE2 2>/dev/null)\&"
 .Pp
-This can be modified using non-standard
+Это может быть изменено с использованием нестандартных
 .Xr find 1
-primaries like
+первичных значений, таких как
 .Cm -newerca
-to compare other timestamps.
-.Sh COMPATIBILITY
-For compatibility with some other implementations,
-the
+для сравнения других меток времени.
+.Sh СОВМЕСТИМОСТЬ
+Для совместимости с некоторыми другими 
+реализациями,
 .Cm =
-primary can be substituted with
+первичное значение может быть заменено на
 .Cm ==
-with the same meaning.
-.Sh SEE ALSO
+с тем же значением.
+.Sh СМОТРИ ТАКЖЕ
 .Xr builtin 1 ,
 .Xr expr 1 ,
 .Xr find 1 ,
 .Xr sh 1 ,
 .Xr stat 1 ,
 .Xr symlink 7
-.Sh STANDARDS
-The
+.Sh СТАНДАРТЫ
+Утилита
 .Nm
-utility implements a superset of the
+реализует расширенный набор
 .St -p1003.2
-specification.
-The primaries
+спецификаций.
+Первичные значения
 .Cm < ,
 .Cm == ,
 .Cm > ,
@@ -372,23 +372,23 @@ The primaries
 .Fl nt ,
 .Fl ot ,
 .Fl G ,
-and
+и
 .Fl O
-are extensions.
-.Sh HISTORY
-A
+являются расширениями.
+.Sh ИСТОРИЯ
+Утилита
 .Nm
-utility appeared in
+появилась в
 .At v7 .
-.Sh BUGS
-Both sides are always evaluated in
+.Sh БАГИ
+Обе стороны всегда оцениваются в
 .Fl a
-and
+и
 .Fl o .
-For instance, the writable status of
+Например, статус доступности для записи файла
 .Pa file
-will be tested by the following command even though the former expression
-indicated false, which results in a gratuitous access to the file system:
+будет проверен следующей командой, даже если предыдущее выражение было ложным, 
+что приведет к бесполезному доступу к файловой системе:
 .Dl "[ -z abc -a -w file ]"
-To avoid this, write
+Чтобы избежать этого,напишите
 .Dl "[ -z abc ] && [ -w file ]"

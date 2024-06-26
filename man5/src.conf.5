@@ -2,115 +2,115 @@
 .Dd September 4, 2023
 .Dt SRC.CONF 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm src.conf
-.Nd "source build options"
-.Sh DESCRIPTION
-The
+.Nd "параметры сборки исходного кода"
+.Sh ОПИСАНИЕ
+файл
 .Nm
-file contains variables that control what components will be generated during
-the build process of the
+файл содержит переменные, которые управляют тем, какие компоненты будут созданы во время
+процесс сборки
 .Fx
-source tree; see
+исходного дерева; 
 .Xr build 7 .
 .Pp
-The
+файл
 .Nm
-file uses the standard makefile syntax.
-However,
+файл использует стандартный синтаксис make-файла.
+Однако,
 .Nm
-should not specify any dependencies to
+не следует указывать какие-либо зависимости для
 .Xr make 1 .
-Instead,
+Вместо этого,
 .Nm
-is to set
+нужно установить
 .Xr make 1
-variables that control the aspects of how the system builds.
+переменные, которые управляют аспектами построения системы.
 .Pp
-The default location of
+Местоположение по умолчанию
 .Nm
-is
+это
 .Pa /etc/src.conf ,
-though an alternative location can be specified in the
+хотя альтернативное местоположение может быть указано в
 .Xr make 1
-variable
+переменной
 .Va SRCCONF .
-Overriding the location of
+Переопределение местоположения
 .Nm
-may be necessary if the system-wide settings are not suitable
-for a particular build.
-For instance, setting
+может потребоваться, если общесистемные настройки не подходят.
+для конкретной сборки.
+Например, установка
 .Va SRCCONF
-to
+для
 .Pa /dev/null
-effectively resets all build controls to their defaults.
+эффективно сбрасывает все элементы управления сборкой к значениям по умолчанию.
 .Pp
-The only purpose of
+Единственная цель
 .Nm
-is to control the compilation of the
+заключается в контроле за составлением
 .Fx
-source code, which is usually located in
+исходного кода, который обычно находится в
 .Pa /usr/src .
-As a rule, the system administrator creates
+Как правило, системный администратор создает
 .Nm
-when the values of certain control variables need to be changed
-from their defaults.
+когда необходимо изменить значения тех или иных переменных управления
+по сравнению со значениями по умолчанию.
 .Pp
-In addition, control variables can be specified
-for a particular build via the
+Кроме того, можно указать управляющие переменные.
+для конкретной сборки с помощью 
 .Fl D
-option of
+опции
 .Xr make 1
-or in its environment; see
+или в ее среде; 
 .Xr environ 7 .
 .Pp
-The environment of
+Средой сборки 
 .Xr make 1
-for the build can be controlled via the
+можно управлять с помощью
 .Va SRC_ENV_CONF
-variable, which defaults to
+переменной, которая по умолчанию равна
 .Pa /etc/src-env.conf .
-Some examples that may only be set in this file are
+Некоторые примеры, которые можно установить только в этом файле:
 .Va WITH_DIRDEPS_BUILD ,
-and
+и
 .Va WITH_META_MODE ,
-and
+и
 .Va MAKEOBJDIRPREFIX
-as they are environment-only variables.
+являются переменными только среды.
 .Pp
-The values of variables are ignored regardless of their setting;
-even if they would be set to
-.Dq Li FALSE
-or
-.Dq Li NO .
-The presence of an option causes
-it to be honored by
+Значения переменных игнорируются независимо от их установки;
+даже если они будут установлены на
+.Dq Li ЛОЖНЫЙ
+или
+.Dq Li ОТСУТСТВУЕТ .
+Наличие выбора приводит к
+тому, что его следует уважать
 .Xr make 1 .
 .Pp
-This list provides a name and short description for variables
-that can be used for source builds.
+В этом списке указаны имена и краткое описание переменных.
+который можно использовать для сборок исходного кода.
 .Bl -tag -width indent
-.It Va WITHOUT_ACCT
-Do not build process accounting tools such as
-.Xr accton 8
-and
+.It Va БЕЗ УЧЕТА
+Не создавайте инструменты учета процессов, такие как
+.Xr действие 8
+и
 .Xr sa 8 .
 .It Va WITHOUT_ACPI
-Do not build
+Не стройте 
 .Xr acpiconf 8 ,
 .Xr acpidump 8
-and related programs.
+и сопутствующие программы.
 .It Va WITHOUT_APM
-Do not build
+Не стройте 
 .Xr apm 8 ,
 .Xr apmd 8
-and related programs.
+и сопутствующие программы.
 .It Va WITH_ASAN
-Build the base system with Address Sanitizer (ASan) to detect
-memory corruption bugs such as buffer overflows or use-after-free.
-Requires that Clang be used as the base system compiler
-and that the runtime support library is available.
-When set, it enforces these options:
+Создайте базовую систему с помощью Address Sanitizer (ASan) для обнаружения
+ошибки повреждения памяти, такие как переполнение буфера или использование после освобождения.
+Требуется, чтобы Clang использовался в качестве компилятора базовой системы.
+и что доступна библиотека поддержки среды выполнения.
+Если установлено, применяются следующие параметры:
 .Pp
 .Bl -item -compact
 .It
@@ -119,200 +119,200 @@ When set, it enforces these options:
 .Va WITH_LLVM_CXXFILT
 .El
 .It Va WITHOUT_ASSERT_DEBUG
-Compile programs and libraries without the
+Компилируйте программы и библиотеки без
 .Xr assert 3
-checks.
+проверок.
 .It Va WITHOUT_AT
-Do not build
+Не стройте 
 .Xr at 1
-and related utilities.
+и сопутствующие утилиты.
 .It Va WITHOUT_AUDIT
-Do not build audit support into system programs.
+Не встраивайте поддержку аудита в системные программы.
 .It Va WITHOUT_AUTHPF
-Do not build
+Не стройте 
 .Xr authpf 8 .
 .It Va WITHOUT_AUTOFS
-Do not build
+Не стройте 
 .Xr autofs 5
-related programs, libraries, and kernel modules.
+связанные программы, библиотеки и модули ядра.
 .It Va WITHOUT_AUTO_OBJ
-Disable automatic creation of objdirs.
-This is enabled by default if the wanted OBJDIR is writable by the current user.
+Отключите автоматическое создание objdirs.
+Это включено по умолчанию, если текущий пользователь может записать нужный OBJDIR.
 .Pp
-This must be set in the environment, make command line, or
+Это должно быть установлено в среде, командной строке make или
 .Pa /etc/src-env.conf ,
-not
+не
 .Pa /etc/src.conf .
 .It Va WITH_BEARSSL
-Build the BearSSL library.
+Создайте библиотеку BearSSL.
 .Pp
-BearSSL is a tiny SSL library suitable for embedded environments.
-For details see
+BearSSL — это крошечная библиотека SSL, подходящая для встроенных сред.
+Подробности см.
 .Lk https://www.BearSSL.org/
 .Pp
-This library is currently only used to perform
-signature verification and related operations
-for Verified Exec and
+Эта библиотека в настоящее время используется только для выполнения
+проверка подписи и сопутствующие операции
+для проверенных руководителей и
 .Xr loader 8 .
-When set, these options are also in effect:
+Когда установлено, эти параметры также действуют:
 .Pp
 .Bl -inset -compact
 .It Va WITH_LOADER_EFI_SECUREBOOT
-(unless
+(пока не
 .Va WITHOUT_LOADER_EFI_SECUREBOOT
 is set explicitly)
 .It Va WITH_LOADER_VERIEXEC
-(unless
+(пока не
 .Va WITHOUT_LOADER_VERIEXEC
 is set explicitly)
 .It Va WITH_LOADER_VERIEXEC_VECTX
-(unless
+(пока не
 .Va WITHOUT_LOADER_VERIEXEC_VECTX
 is set explicitly)
 .It Va WITH_VERIEXEC
-(unless
+(пока не
 .Va WITHOUT_VERIEXEC
-is set explicitly)
+указано явно)
 .El
 .It Va WITHOUT_BHYVE
-Do not build or install
+Не создавайте и не устанавливайте
 .Xr bhyve 8 ,
-associated utilities, and examples.
+связанные утилиты и примеры.
 .Pp
-This option only affects amd64/amd64.
+Эта опция влияет только на amd64/amd64.
 .It Va WITH_BHYVE_SNAPSHOT
-Include support for save and restore (snapshots) in
+Включите поддержку сохранения и восстановления (снимков) в
 .Xr bhyve 8
-and
+и
 .Xr bhyvectl 8 .
 .Pp
-This option only affects amd64/amd64.
+Эта опция влияет только на amd64/amd64.
 .It Va WITH_BIND_NOW
-Build all binaries with the
+Создайте все двоичные файлы с установленным
 .Dv DF_BIND_NOW
-flag set to indicate that the run-time loader should perform all relocation
-processing at process startup rather than on demand.
-The combination of the
+флагом, указывающим, что загрузчик во время выполнения должен выполнять все перемещения.
+обработка при запуске процесса, а не по требованию.
+Сочетание
 .Va BIND_NOW
-and
+и
 .Va RELRO
-options provide "full" Relocation Read-Only (RELRO) support.
-With full RELRO the entire GOT is made read-only after performing relocation at
-startup, avoiding GOT overwrite attacks.
+Опции обеспечивают «полную» поддержку перемещения только для чтения (RELRO).
+При полном RELRO весь GOT становится доступным только для чтения после выполнения перемещения в
+запуска, избегая атак перезаписи GOT.
 .It Va WITHOUT_BLACKLIST
-Set this if you do not want to build
+Установите это, если вы не хотите строить
 .Xr blacklistd 8
-and
+и
 .Xr blacklistctl 8 .
-When set, these options are also in effect:
+Если они установлены, эти параметры также действуют:
 .Pp
 .Bl -inset -compact
 .It Va WITHOUT_BLACKLIST_SUPPORT
-(unless
+(пока не
 .Va WITH_BLACKLIST_SUPPORT
-is set explicitly)
+устанавливается)
 .El
 .It Va WITHOUT_BLACKLIST_SUPPORT
-Build some programs without
+Создайте небольшую программу
 .Xr libblacklist 3
-support, like
+с поддержкой
 .Xr fingerd 8 ,
 .Xr ftpd 8 ,
-and
+и
 .Xr sshd 8 .
 .It Va WITHOUT_BLUETOOTH
-Do not build Bluetooth related kernel modules, programs and libraries.
+Не создавайте модули ядра, программы и библиотеки, связанные с Bluetooth.
 .It Va WITHOUT_BOOT
-Do not build the boot blocks and loader.
+Не создавайте загрузочные блоки и загрузчик.
 .It Va WITHOUT_BOOTPARAMD
-Do not build or install
+Не создавайте и не устанавливайте
 .Xr bootparamd 8 .
 .It Va WITHOUT_BOOTPD
-Do not build or install
+Не создавайте и не устанавливайте
 .Xr bootpd 8 .
 .It Va WITHOUT_BSDINSTALL
-Do not build
+Не создавайте
 .Xr bsdinstall 8 ,
 .Xr sade 8 ,
-and related programs.
+и связанные с ними программы.
 .It Va WITHOUT_BSD_CPIO
-Do not build the BSD licensed version of cpio based on
+Не создавайте лицензионную версию cpio для BSD на основе
 .Xr libarchive 3 .
 .It Va WITHOUT_BSNMP
-Do not build or install
+Не создавайте и не устанавливайте
 .Xr bsnmpd 1
-and related libraries and data files.
+связанные с ними библиотеки и файлы данных.
 .It Va WITHOUT_BZIP2
-Do not build contributed bzip2 software as a part of the base system.
+Не создавайте добавленное программное обеспечение bzip2 как часть базовой системы.
 .Bf -symbolic
-The option has no effect yet.
+Эта опция пока не вступила в силу.
 .Ef
-When set, these options are also in effect:
+Если эти параметры установлены, они также вступают в силу:
 .Pp
 .Bl -inset -compact
 .It Va WITHOUT_BZIP2_SUPPORT
-(unless
+(если только
 .Va WITH_BZIP2_SUPPORT
-is set explicitly)
+задается явно)
 .El
 .It Va WITHOUT_BZIP2_SUPPORT
-Build some programs without optional bzip2 support.
+Создавайте некоторые программы без дополнительной поддержки bzip2.
 .It Va WITHOUT_CALENDAR
-Do not build
+Не стройте
 .Xr calendar 1 .
 .It Va WITHOUT_CAPSICUM
-This option has no effect.
+Этот параметр не действует.
 .It Va WITHOUT_CAROOT
-Do not add the trusted certificates from the Mozilla NSS bundle to
-base.
+Не добавляйте доверенные сертификаты из пакета Mozilla NSS в
+базу данных.
 .It Va WITHOUT_CASPER
-This option has no effect.
+Этот параметр не действует.
 .It Va WITH_CCACHE_BUILD
-Use
+Воспользуйся
 .Xr ccache 1
-for the build.
-No configuration is required except to install the
+для сборки.
+Никакой настройки не требуется, за исключением установки
 .Sy devel/ccache
-package.
-When using with
+пакета.
+При использовании с
 .Xr distcc 1 ,
-set
+набора
 .Sy CCACHE_PREFIX=/usr/local/bin/distcc .
-The default cache directory of
+Будет использоваться каталог кэша по умолчанию для,
 .Pa $HOME/.ccache
-will be used, which can be overridden by setting
+который можно переопределить, установив 
 .Sy CCACHE_DIR .
-The
+
 .Sy CCACHE_COMPILERCHECK
-option defaults to
+значение параметра по умолчанию
 .Sy content
-when using the in-tree bootstrap compiler,
-and
+при использовании встроенного загрузочного компилятора,
+и
 .Sy mtime
-when using an external compiler.
-The
+при использовании внешнего компилятора.
+
 .Sy CCACHE_CPP2
-option is used for Clang but not GCC.
+параметр используется для Clang, но не для GCC.
 .Pp
-Sharing a cache between multiple work directories requires using a layout
-similar to
+Совместное использование кэша между несколькими рабочими каталогами требует использования макета
+, аналогично
 .Pa /some/prefix/src
 .Pa /some/prefix/obj
-and an environment such as:
+и такая среда, как:
 .Bd -literal -offset indent
 CCACHE_BASEDIR='${SRCTOP:H}' MAKEOBJDIRPREFIX='${SRCTOP:H}/obj'
 .Ed
 .Pp
-See
+дополнительные
 .Xr ccache 1
-for more configuration options.
+параметры конфигурации приведены в разделе.
 .It Va WITHOUT_CCD
-Do not build
+Не стройте
 .Xr geom_ccd 4
-and related utilities.
+ и не подключайте к ним инженерные сети.
 .It Va WITHOUT_CDDL
-Do not build code licensed under Sun's CDDL.
-When set, it enforces these options:
+Не создавайте код, лицензированный на основе CDDL от Sun.
+Если этот параметр установлен, он обеспечивает соблюдение следующих параметров:
 .Pp
 .Bl -item -compact
 .It
@@ -325,8 +325,8 @@ When set, it enforces these options:
 .Va WITHOUT_ZFS
 .El
 .It Va WITHOUT_CLANG
-Do not build the Clang C/C++ compiler during the regular phase of the build.
-When set, it enforces these options:
+Не создавайте компилятор Clang C/C++ во время обычной фазы сборки.
+Если он установлен, он применяет эти параметры:
 .Pp
 .Bl -item -compact
 .It
@@ -339,62 +339,62 @@ When set, it enforces these options:
 .Va WITHOUT_LLVM_COV
 .El
 .Pp
-When set, these options are also in effect:
+Если эти параметры установлены, они также вступают в силу:
 .Pp
 .Bl -inset -compact
 .It Va WITHOUT_LLVM_TARGET_AARCH64
-(unless
+(если
 .Va WITH_LLVM_TARGET_AARCH64
-is set explicitly)
+не задано явно)
 .It Va WITHOUT_LLVM_TARGET_ALL
-(unless
+(если
 .Va WITH_LLVM_TARGET_ALL
-is set explicitly)
+не задано явно)
 .It Va WITHOUT_LLVM_TARGET_ARM
-(unless
+(если
 .Va WITH_LLVM_TARGET_ARM
-is set explicitly)
+не задано явно)
 .It Va WITHOUT_LLVM_TARGET_POWERPC
-(unless
+(если
 .Va WITH_LLVM_TARGET_POWERPC
-is set explicitly)
+не задано явно)
 .It Va WITHOUT_LLVM_TARGET_RISCV
-(unless
+(если
 .Va WITH_LLVM_TARGET_RISCV
-is set explicitly)
+не задано явно)
 .El
 .It Va WITHOUT_CLANG_BOOTSTRAP
-Do not build the Clang C/C++ compiler during the bootstrap phase of
-the build.
-To be able to build the system, either gcc or clang bootstrap must be
-enabled unless an alternate compiler is provided via XCC.
+Не создавайте компилятор Clang C/C++ на этапе начальной
+загрузки.
+Для возможности сборки системы необходимо включить либо gcc, либо clang bootstrap
+, если только альтернативный компилятор не предоставляется через XCC.
 .It Va WITH_CLANG_EXTRAS
-Build additional clang and llvm tools, such as bugpoint and
+Создайте дополнительные инструменты clang и llvm, такие как bigpoint и
 clang-format.
 .It Va WITH_CLANG_FORMAT
-Build clang-format.
+Создайте clang-формат.
 .It Va WITHOUT_CLANG_FULL
-Avoid building the ARCMigrate, Rewriter and StaticAnalyzer components of
-the Clang C/C++ compiler.
+Избегайте создания компонентов ARCMigrate, Rewriter и
+StaticAnalyzer в компиляторе Clang C/C++.
 .It Va WITHOUT_CLEAN
-Do not clean before building world and/or kernel.
+Не выполняйте очистку перед сборкой world и/или kernel.
 .It Va WITHOUT_CPP
-Do not build
+Не создавайт
 .Xr cpp 1 .
 .It Va WITHOUT_CROSS_COMPILER
-Do not build any cross compiler in the cross-tools stage of buildworld.
-When compiling a different version of
+Не создавайте кросс-компилятор на этапе кросс-инструментария build world.
+При компиляции другой версии
 .Fx
-than what is installed on the system, provide an alternate
-compiler with XCC to ensure success.
-When compiling with an identical version of
+чем тот, который установлен в системе, используйте альтернативный
+компилятор с CC для обеспечения успеха.
+При компиляции с идентичной версией
 .Fx
-to the host, this option may be safely used.
-This option may also be safe when the host version of
+для хоста эта опция может быть безопасной.
+Эта опция также может быть безопасной, если версия хоста
 .Fx
-is close to the sources being built, but all bets are off if there have
-been any changes to the toolchain between the versions.
-When set, it enforces these options:
+близка к создаваемым исходным текстам, но все шансы на то
+, что в цепочке инструментов между версиями произошли какие-либо изменения, аннулируются.
+Когда он установлен, он реализует эти параметры:
 .Pp
 .Bl -item -compact
 .It
@@ -405,8 +405,8 @@ When set, it enforces these options:
 .Va WITHOUT_LLD_BOOTSTRAP
 .El
 .It Va WITHOUT_CRYPT
-Do not build any crypto code.
-When set, it enforces these options:
+Не создавайте никакого криптографического кода.
+Если этот параметр установлен, он обеспечивает соблюдение следующих параметров:
 .Pp
 .Bl -item -compact
 .It
@@ -435,430 +435,429 @@ When set, it enforces these options:
 .Va WITHOUT_ZFS
 .El
 .Pp
-When set, these options are also in effect:
+Если эти параметры установлены, они также вступают в силу:
 .Pp
 .Bl -inset -compact
 .It Va WITHOUT_GSSAPI
-(unless
+(если только
 .Va WITH_GSSAPI
-is set explicitly)
+задается явно)
 .El
 .It Va WITH_CTF
-Compile with CTF (Compact C Type Format) data.
-CTF data encapsulates a reduced form of debugging information
-similar to DWARF and the venerable stabs and is required for DTrace.
+Компилируйте с использованием данных CTF (Compact C Type Format).
+Данные CTF содержат сокращенную форму отладочной информации
+, аналогичную DWARF и venerable stabs, и необходимы для трассировки.
 .It Va WITHOUT_CUSE
-Do not build CUSE-related programs and libraries.
+Не создавайте программы и библиотеки, связанные с CUSE.
 .It Va WITHOUT_CXGBETOOL
-Do not build
+Не создавайте
 .Xr cxgbetool 8
 .Pp
-This is a default setting on
+Это настройка по умолчанию в 
 arm/armv7, powerpc/powerpc and riscv/riscv64.
 .It Va WITH_CXGBETOOL
-Build
+создать
 .Xr cxgbetool 8
 .Pp
-This is a default setting on
+Это настройка по умолчанию на
 amd64/amd64, arm64/aarch64, i386/i386, powerpc/powerpc64 and powerpc/powerpc64le.
 .It Va WITHOUT_DEBUG_FILES
-Avoid building or installing standalone debug files for each
-executable binary and shared library.
+Избегайте создания или установки отдельных отладочных файлов для каждого
+исполняемого двоичного файла и общей библиотеки.
 .It Va WITH_DETECT_TZ_CHANGES
-Make the time handling code detect changes to the timezone files.
+Сделайте так, чтобы код обработки времени обнаруживал изменения в файлах часовых поясов.
 .It Va WITHOUT_DIALOG
-Do not build
+не создавать
 .Xr dialog 1 ,
 .Xr dialog 3 ,
 .Xr dpv 1 ,
-and
+и
 .Xr dpv 3 .
-When set, it enforces these options:
+Когда он установлен, он применяет эти параметры:
 .Pp
 .Bl -item -compact
 .It
 .Va WITHOUT_BSDINSTALL
 .El
 .It Va WITHOUT_DICT
-Do not build the Webster dictionary files.
+Не создавайте файлы словаря Webster.
 .It Va WITH_DIRDEPS_BUILD
-This is an alternate build system.
-For details see
+Это альтернативная система сборки.
+Подробности смотрите в разделе
 https://www.crufty.net/sjg/docs/freebsd-meta-mode.htm.
-Build commands can be seen from the top-level with:
+Команды сборки можно увидеть на верхнем уровне с помощью:
 .Dl make show-valid-targets
-The build is driven by dirdeps.mk using
+Построение осуществляется с помощью dirdeps.mk с использованием
 .Va DIRDEPS
-stored in
-Makefile.depend files found in each directory.
+храния в файлах
+Makefile.depend, которые находятся в каждом каталоге.
 .Pp
-The build can be started from anywhere, and behaves the same.
-The initial instance of
+Сборка может быть запущена из любого места и ведет себя одинаково.
+Исходный экземпляр
 .Xr make 1
-recursively reads
+рекурсивно считывает
 .Va DIRDEPS
-from
+от
 .Pa Makefile.depend ,
-computing a graph of tree dependencies from the current origin.
-Setting
+вычисления графики древовидных зависимостей от текущего источника.
+Установка
 .Va NO_DIRDEPS
-skips checking dirdep dependencies and will only build in the current
-and child directories.
+пропускает проверку зависимостей dir dep и выполняет сборку только в текущем
+и дочернем каталогах.
 .Va NO_DIRDEPS_BELOW
-skips building any dirdeps and only build the current directory.
+пропускает создание любых dirdeps и создает только текущий каталог.
 .Pp
-This also utilizes the
+При этом также используется
 .Va WITH_META_MODE
-logic for incremental builds.
+логика для инкрементных сборок.
 .Pp
-The build hides commands executed unless
+Сборка скрывает команды, выполняемые до тех пор, 
 .Va NO_SILENT
-is defined.
+ пока это не определено.
 .Pp
-Note that there is currently no mass install feature for this.
-This build is designed for producing packages, that can then be installed
-on a target system.
+Обратите внимание, что в настоящее время для этого нет функции массовой установки.
+Эта сборка предназначена для создания пакетов, которые затем могут быть установлены
+в целевой системе.
 .Pp
-The implementation in
+Реализация 
 .Fx
-is incomplete.
-Completion would require leaf directories for building each kernel
-and package so that their dependencies can be tracked.
-When set, it enforces these options:
+является неполной.
+Для завершения работы потребуются конечные каталоги для сборки каждого ядра
+и пакета, чтобы можно было отслеживать их зависимости.
+Если этот параметр установлен, он обеспечивает соблюдение следующих параметров:
 .Pp
 .Bl -item -compact
 .It
 .Va WITH_INSTALL_AS_USER
 .El
 .Pp
-When set, these options are also in effect:
+Если эти параметры установлены, они также вступают в силу:
 .Pp
 .Bl -inset -compact
 .It Va WITH_META_ERROR_TARGET
-(unless
+(если только
 .Va WITHOUT_META_ERROR_TARGET
-is set explicitly)
+задается явно)
 .It Va WITH_META_MODE
-(unless
+(если только
 .Va WITHOUT_META_MODE
-is set explicitly)
+задается явно)
 .It Va WITH_STAGING
-(unless
+(если только
 .Va WITHOUT_STAGING
-is set explicitly)
+задается явно)
 .It Va WITH_STAGING_MAN
-(unless
+(если только
 .Va WITHOUT_STAGING_MAN
-is set explicitly)
+задается явно)
 .It Va WITH_STAGING_PROG
-(unless
+(если только
 .Va WITHOUT_STAGING_PROG
-is set explicitly)
+задается явно)
 .It Va WITH_SYSROOT
-(unless
+(если только
 .Va WITHOUT_SYSROOT
-is set explicitly)
+задается явно)
 .El
 .Pp
-This must be set in the environment, make command line, or
+Это должно быть установлено в среде, в командной строке make, или
 .Pa /etc/src-env.conf ,
-not
+нет
 .Pa /etc/src.conf .
 .It Va WITH_DIRDEPS_CACHE
-Cache result of dirdeps.mk which can save significant time
-for subsequent builds.
-Depends on
+Кэшируйте результат dirdeps.mk, что может значительно сэкономить время
+для последующих сборок.
+Зависит от
 .Va WITH_DIRDEPS_BUILD .
 .Pp
-This must be set in the environment, make command line, or
+Это должно быть установлено в среде, в командной строке make или
 .Pa /etc/src-env.conf ,
-not
+нет
 .Pa /etc/src.conf .
 .It Va WITH_DISK_IMAGE_TOOLS_BOOTSTRAP
-Build
+создавать
 .Xr etdump 1 ,
 .Xr makefs 8
-and
+и
 .Xr mkimg 1
-as bootstrap tools.
+как инструменты начальной загрузки.
 .It Va WITHOUT_DMAGENT
-Do not build dma Mail Transport Agent.
+Не создавайте почтовый транспортный агент dma.
 .It Va WITHOUT_DOCCOMPRESS
-Do not install compressed system documentation.
-Only the uncompressed version will be installed.
+Не устанавливайте сжатую системную документацию.
+Будет установлена только несжатая версия.
 .It Va WITHOUT_DTRACE
-Do not build DTrace framework kernel modules, libraries, and user commands.
-When set, it enforces these options:
+Не создавайте модули ядра, библиотеки и пользовательские команды DTrace framework.
+Если параметр установлен, он реализует эти параметры:
 .Pp
 .Bl -item -compact
 .It
 .Va WITHOUT_CTF
 .El
 .It Va WITH_DTRACE_ASAN
-Compile userspace DTrace code (libdtrace, dtrace(1), lockstat(1), plockstat(1))
-with address and undefined behavior sanitizers.
-Requires that Clang be used as the base system compiler
-and that the runtime support library is available.
+Скомпилируйте код DTrace в пользовательском пространстве (libdtrace, dtrace(1), lockstat(1), plockstat(1))
+с исправлением адреса и неопределенного поведения.
+Требуется, чтобы Clang использовался в качестве базового системного компилятора
+и чтобы была доступна библиотека поддержки среды выполнения.
 .It Va WITH_DTRACE_TESTS
-Build and install the DTrace test suite in
+Создайте и установите набор тестов DTrace в
 .Pa /usr/tests/cddl/usr.sbin/dtrace .
-This test suite is considered experimental on architectures other than
-amd64/amd64 and running it may cause system instability.
+Этот набор тестов считается экспериментальным для архитектур, отличных от
+amd64/amd642, и его запуск может привести к нестабильности системы.
 .It Va WITHOUT_DYNAMICROOT
-Set this if you do not want to link
+Установите это значение, если вы не хотите связывать
 .Pa /bin
-and
+и
 .Pa /sbin
-dynamically.
+динамично.
 .It Va WITHOUT_EE
-Do not build and install
+Не создавайте и не устанавливайте
 .Xr edit 1 ,
 .Xr ee 1 ,
-and related programs.
+и связанные с ними программы.
 .It Va WITHOUT_EFI
-Set not to build
+Установлен не для создания
 .Xr efivar 3
-and
+и
 .Xr efivar 8 .
 .Pp
-This is a default setting on
+Это настройка по умолчанию на
 i386/i386, powerpc/powerpc, powerpc/powerpc64, powerpc/powerpc64le and riscv/riscv64.
 .It Va WITH_EFI
-Build
+создавать
 .Xr efivar 3
-and
+и
 .Xr efivar 8 .
 .Pp
-This is a default setting on
+Это настройка по умолчанию на
 amd64/amd64, arm/armv7 and arm64/aarch64.
 .It Va WITHOUT_ELFTOOLCHAIN_BOOTSTRAP
-Do not build ELF Tool Chain tools
+Не создавайте встроенные модули ELF
 (addr2line, nm, size, strings and strip)
-as part of the bootstrap process.
+как часть процесса начальной загрузки.
 .Bf -symbolic
-An alternate bootstrap tool chain must be provided.
+Должна быть предусмотрена альтернативная цепочка инструментов bootstrap.
 .Ef
 .It Va WITHOUT_EXAMPLES
-Avoid installing examples to
+Избегайте установки примеров для
 .Pa /usr/share/examples/ .
 .It Va WITH_EXPERIMENTAL
-Include experimental features in the build.
+Включите в сборку экспериментальные функции.
 .It Va WITH_EXTRA_TCP_STACKS
-Build extra TCP stack modules.
+Создайте дополнительные модули стека TCP.
 .It Va WITHOUT_FDT
-Do not build Flattened Device Tree support as part of the base system.
-This includes the device tree compiler (dtc) and libfdt support library.
+Не создавайте поддержку сглаженного дерева устройств как часть базовой системы.
+Это включает в себя компилятор дерева устройств (dtc) и библиотеку поддержки libfdt.
 .Pp
-This is a default setting on
+Это настройка по умолчанию на
 amd64/amd64 and i386/i386.
 .It Va WITH_FDT
-Build Flattened Device Tree support as part of the base system.
-This includes the device tree compiler (dtc) and libfdt support library.
+Создайте поддержку сглаженного дерева устройств как часть базовой системы.
+Это включает в себя компилятор дерева устройств (dtc) и библиотеку поддержки libfdt.
 .Pp
-This is a default setting on
+Это настройка по умолчанию на
 arm/armv7, arm64/aarch64, powerpc/powerpc, powerpc/powerpc64, powerpc/powerpc64le and riscv/riscv64.
 .It Va WITHOUT_FILE
-Do not build
+Это настройка по умолчанию для
 .Xr file 1
-and related programs.
+и сопутствующих программ.
 .It Va WITHOUT_FINGER
-Do not build or install
+Не создавайте и не устанавливайте
 .Xr finger 1
-and
+и
 .Xr fingerd 8 .
 .It Va WITHOUT_FLOPPY
-Do not build or install programs
-for operating floppy disk driver.
+Не создавайте и не устанавливайте программы
+для работы с драйвером гибких дисков.
 .It Va WITHOUT_FORMAT_EXTENSIONS
-Do not enable
+Не включайте
 .Fl fformat-extensions
-when compiling the kernel.
-Also disables all format checking.
+при компиляции ядра.
+Также отключайте всю проверку формата.
 .It Va WITHOUT_FORTH
-Build bootloaders without Forth support.
+Создайте загрузчики без поддержки Forth.
 .It Va WITHOUT_FP_LIBC
-Build
+Постойте
 .Nm libc
-without floating-point support.
+без поддержки плавающей запятой.
 .It Va WITHOUT_FREEBSD_UPDATE
-Do not build
+Не стойте
 .Xr freebsd-update 8 .
 .It Va WITHOUT_FTP
-Do not build or install
+Не создавайте и не устанавливайте
 .Xr ftp 1
-and
+и
 .Xr ftpd 8 .
 .It Va WITHOUT_GAMES
-Do not build games.
+Не создавайте игры.
 .It Va WITHOUT_GH_BC
-Install the traditional FreeBSD
+Установите традиционную FreeBSD.
 .Xr bc 1
-and
+и
 .Xr dc 1
-programs instead of the enhanced versions.
+программы вместо расширенных версий.
 .It Va WITHOUT_GNU_DIFF
-Do not build GNU
+Не создавайте GNU
 .Xr diff3 1 .
 .It Va WITHOUT_GOOGLETEST
-Neither build nor install
+Не стойте и не устанавливайте
 .Lb libgmock ,
 .Lb libgtest ,
-and dependent tests.
+и зависимые тесты.
 .It Va WITHOUT_GPIO
-Do not build
+Не стройте
 .Xr gpioctl 8
-as part of the base system.
+как часть базовой системы.
 .It Va WITHOUT_GSSAPI
-Do not build libgssapi.
+Не собирайте libgssapi.
 .It Va WITHOUT_HAST
-Do not build
+Не стройте
 .Xr hastd 8
-and related utilities.
+и сопутствующие утилиты.
 .It Va WITH_HESIOD
-Build Hesiod support.
+Создайте поддержку Гесиода.
 .It Va WITHOUT_HTML
-Do not build HTML docs.
+Не создавайте HTML-документы.
 .It Va WITHOUT_HYPERV
-Do not build or install HyperV utilities.
+Не создавайте и не устанавливайте утилиты HyperV.
 .Pp
-This is a default setting on
-arm/armv7, powerpc/powerpc, powerpc/powerpc64, powerpc/powerpc64le and riscv/riscv64.
+Это настройка по умолчанию для
+Arm/armv7, powerpc/powerpc, powerpc/powerpc64, powerpc/powerpc64le и riscv/riscv64.
 .It Va WITH_HYPERV
-Build or install HyperV utilities.
+Создайте или установите утилиты HyperV.
 .Pp
-This is a default setting on
-amd64/amd64, arm64/aarch64 and i386/i386.
+Это настройка по умолчанию для
+amd64/amd64, Arm64/aarch64 и i386/i386.
 .It Va WITHOUT_ICONV
-Do not build iconv as part of libc.
+Не создавайте iconv как часть libc.
 .It Va WITHOUT_INCLUDES
-Do not install header files.
-This option used to be spelled
+Не устанавливайте заголовочные файлы.
+Раньше этот вариант писался
 .Va NO_INCS .
 .Bf -symbolic
-The option does not work for build targets.
+Эта опция не работает для целей сборки.
 .Ef
 .It Va WITHOUT_INET
-Do not build programs and libraries related to IPv4 networking.
-When set, it enforces these options:
+Не создавайте программы и библиотеки, связанные с сетями IPv4.
+Если установлено, применяются следующие параметры:
 .Pp
 .Bl -item -compact
 .It
 .Va WITHOUT_INET_SUPPORT
 .El
 .It Va WITHOUT_INET6
-Do not build
-programs and libraries related to IPv6 networking.
-When set, it enforces these options:
+Не стройте
+программы и библиотеки, связанные с сетями IPv6.
+Если установлено, применяются следующие параметры:
 .Pp
 .Bl -item -compact
 .It
 .Va WITHOUT_INET6_SUPPORT
 .El
 .It Va WITHOUT_INET6_SUPPORT
-Build libraries, programs, and kernel modules without IPv6 support.
+Создавайте библиотеки, программы и модули ядра без поддержки IPv6.
 .It Va WITHOUT_INETD
-Do not build
+Не стройте
 .Xr inetd 8 .
 .It Va WITHOUT_INET_SUPPORT
-Build libraries, programs, and kernel modules without IPv4 support.
+Создавайте библиотеки, программы и модули ядра без поддержки IPv4.
 .It Va WITH_INIT_ALL_PATTERN
-Build the base system or kernel with stack variables initialized to
+Создайте базовую систему или ядро ​​с переменными стека, инициализированными
 .Pq compiler defined
-debugging patterns on function entry.
-This option requires the clang compiler.
+для шаблонов отладки при входе в функцию.
+Для этой опции требуется компилятор clang.
 .It Va WITH_INIT_ALL_ZERO
-Build the base system or kernel with stack variables initialized
-to zero on function entry.
-This option requires that the clang compiler be used.
+Создайте базовую систему или ядро ​​с инициализированными переменными стека
+обнуляется при входе в функцию.
+Эта опция требует использования компилятора clang.
 .It Va WITHOUT_INSTALLLIB
-Set this to not install optional libraries.
-For example, when creating a
+Установите этот параметр, чтобы не устанавливать дополнительные библиотеки.
+Например, при создании
 .Xr nanobsd 8
-image.
+изображения.
 .Bf -symbolic
-The option does not work for build targets.
+Эта опция не работает для целей сборки.
 .Ef
 .It Va WITH_INSTALL_AS_USER
-Make install targets succeed for non-root users by installing
-files with owner and group attributes set to that of the user running
-the
+Обеспечьте успешную установку для пользователей без полномочий root, установив
+файлы с атрибутами владельца и группы, установленными для пользователя, выполняющего
 .Xr make 1
-command.
-The user still must set the
+команды.
+Пользователь по-прежнему должен установить
 .Va DESTDIR
-variable to point to a directory where the user has write permissions.
+переменную так, чтобы она указывала на каталог, в котором у пользователя есть права на запись.
 .It Va WITHOUT_IPFILTER
-Do not build IP Filter package.
+Не создавайте пакет IP-фильтра.
 .It Va WITHOUT_IPFW
-Do not build IPFW tools.
+Не создавайте инструменты IPFW.
 .It Va WITHOUT_IPSEC_SUPPORT
-Do not build the kernel with
+Не собирайте ядро ​​с
 .Xr ipsec 4
-support.
-This option is needed for
+поддержкой.
+Эта опция нужна для
 .Xr ipsec 4
-and
+и
 .Xr tcpmd5 4 .
 .It Va WITHOUT_ISCSI
-Do not build
+Не стройте 
 .Xr iscsid 8
-and related utilities.
+и сопутствующие утилиты.
 .It Va WITHOUT_JAIL
-Do not build tools for the support of jails; e.g.,
+Не создавайте инструменты для поддержки тюрем; например.,
 .Xr jail 8 .
 .It Va WITHOUT_KDUMP
-Do not build
+Не стройте 
 .Xr kdump 1
-and
+и
 .Xr truss 1 .
 .It Va WITHOUT_KERBEROS
-Set this to not build Kerberos 5 (KTH Heimdal).
-When set, these options are also in effect:
+Установите этот параметр, чтобы не создавать Kerberos 5 (KTH Heimdal).
+Если они установлены, эти параметры также действуют:
 .Pp
 .Bl -inset -compact
 .It Va WITHOUT_GSSAPI
-(unless
+(пока не
 .Va WITH_GSSAPI
 is set explicitly)
 .It Va WITHOUT_KERBEROS_SUPPORT
-(unless
+(пока не
 .Va WITH_KERBEROS_SUPPORT
-is set explicitly)
+устанавливается явно)
 .El
 .It Va WITHOUT_KERBEROS_SUPPORT
-Build some programs without Kerberos support, like
+Создайте некоторые программы без поддержки Kerberos, например
 .Xr ssh 1 ,
 .Xr telnet 1 ,
-and
+и
 .Xr sshd 8 .
 .It Va WITH_KERNEL_RETPOLINE
-Enable the "retpoline" mitigation for CVE-2017-5715 in the kernel
-build.
+Включите защиту «retpoline» для CVE-2017-5715 в ядре.
+строить.
 .It Va WITHOUT_KERNEL_SYMBOLS
-Do not install standalone kernel debug symbol files.
-This option has no effect at build time.
+Не устанавливайте отдельные файлы символов отладки ядра.
+Эта опция не имеет эффекта во время сборки.
 .It Va WITHOUT_KVM
-Do not build the
+Не стройте 
 .Nm libkvm
-library as a part of the base system.
+библиотеку как часть базовой системы.
 .Bf -symbolic
-The option has no effect yet.
+Опция пока не действует.
 .Ef
-When set, these options are also in effect:
+Если они установлены, эти параметры также действуют:
 .Pp
 .Bl -inset -compact
 .It Va WITHOUT_KVM_SUPPORT
-(unless
+(пока не 
 .Va WITH_KVM_SUPPORT
-is set explicitly)
+устанавливается явно)
 .El
 .It Va WITHOUT_KVM_SUPPORT
-Build some programs without optional
+Создайте несколько программ без дополнительной
 .Nm libkvm
-support.
+поддержки.
 .It Va WITHOUT_LDNS
-Setting this variable will prevent the LDNS library from being built.
-When set, it enforces these options:
+Установка этой переменной предотвратит сборку библиотеки LDNS.
+Если установлено, применяются следующие параметры:
 .Pp
 .Bl -item -compact
 .It
@@ -867,58 +866,58 @@ When set, it enforces these options:
 .Va WITHOUT_UNBOUND
 .El
 .It Va WITHOUT_LDNS_UTILS
-Setting this variable will prevent building the LDNS utilities
+Установка этой переменной предотвратит создание утилит LDNS.
 .Xr drill 1
-and
+и
 .Xr host 1 .
 .It Va WITHOUT_LEGACY_CONSOLE
-Do not build programs that support a legacy PC console; e.g.,
+Не создавайте программы, поддерживающие устаревшие консоли ПК; например.,
 .Xr kbdcontrol 1
-and
+и
 .Xr vidcontrol 1 .
 .It Va WITHOUT_LIB32
-On 64-bit platforms, do not build 32-bit library set and a
+На 64-битных платформах не создавайте набор 32-битных библиотек и
 .Nm ld-elf32.so.1
-runtime linker.
+компоновщик среды выполнения.
 .Pp
-This is a default setting on
+Это настройка по умолчанию для
 arm/armv7, i386/i386, powerpc/powerpc, powerpc/powerpc64le and riscv/riscv64.
 .It Va WITH_LIB32
-On 64-bit platforms, build the 32-bit library set and a
+На 64-битных платформах соберите набор 32-битных библиотек и
 .Nm ld-elf32.so.1
-runtime linker.
+компоновщик времени выполнения.
 .Pp
-This is a default setting on
+Это настройка по умолчанию для
 amd64/amd64, arm64/aarch64 and powerpc/powerpc64.
 .It Va WITHOUT_LLD
-Do not build LLVM's lld linker.
+Не создавайте компоновщик lld LLVM.
 .It Va WITHOUT_LLDB
-Do not build the LLDB debugger.
+Не создавайте отладчик LLDB. 
 .Pp
-This is a default setting on
+Это настройка по умолчанию для
 arm/armv7 and riscv/riscv64.
 .It Va WITH_LLDB
 Build the LLDB debugger.
 .Pp
-This is a default setting on
+Это настройка по умолчанию для
 amd64/amd64, arm64/aarch64, i386/i386, powerpc/powerpc, powerpc/powerpc64 and powerpc/powerpc64le.
 .It Va WITHOUT_LLD_BOOTSTRAP
-Do not build the LLD linker during the bootstrap phase of
-the build.
-To be able to build the system an alternate linker must be provided via XLD.
+Не создавайте компоновщик LLD на этапе начальной загрузки.
+сборка.
+Чтобы иметь возможность построить систему, необходимо предоставить альтернативный компоновщик через XLD.
 .It Va WITHOUT_LLD_IS_LD
-Do not install a
+Не устанавливайте
 .Pa /usr/bin/ld symlink
-to
+для
 .Pa ld.lld .
-The system will not have a usable tool chain unless a linker is provided
-some other way.
+В системе не будет полезной цепочки инструментов, если не будет предоставлен компоновщик.
+каким-то другим способом.
 .It Va WITH_LLVM_ASSERTIONS
-Enable debugging assertions in LLVM.
+Включите утверждения отладки в LLVM.
 .It Va WITH_LLVM_BINUTILS
-Install LLVM's binutils (without an llvm- prefix),
-instead of ELF Tool Chain's tools.
-This includes
+Установите binutils LLVM (без префикса llvm-),
+вместо инструментов ELF Tool Chain.
+Это включает
 .Xr addr2line 1 ,
 .Xr ar 1 ,
 .Xr nm 1 ,
@@ -926,193 +925,187 @@ This includes
 .Xr ranlib 1 ,
 .Xr readelf 1 ,
 .Xr size 1 ,
-and
+и
 .Xr strip 1 .
 Regardless of this setting, LLVM tools are used for
 .Xr c++filt 1
-and
+и
 .Xr objdump 1 .
 .Xr strings 1
-is always provided by ELF Tool Chain.
+всегда предоставляется ELF Tool Chain.
 .It Va WITHOUT_LLVM_COV
-Do not build the
+Не стройте
 .Xr llvm-cov 1
-tool.
+инструмент.
 .It Va WITHOUT_LLVM_CXXFILT
-Install ELF Tool Chain's cxxfilt as c++filt, instead of LLVM's llvm-cxxfilt.
+Установите cxxfilt ELF Tool Chain как c++filt вместо llvm-cxxfilt LLVM.
 .It Va WITHOUT_LLVM_TARGET_AARCH64
-Do not build LLVM target support for AArch64.
-The
+Не создавайте целевую поддержку LLVM для AArch64.
 .Va LLVM_TARGET_ALL
-option should be used rather than this in most cases.
+В большинстве случаев следует использовать этот вариант, а не этот.
 .It Va WITHOUT_LLVM_TARGET_ALL
-Only build the required LLVM target support.
-This option is preferred to specific target support options.
-When set, these options are also in effect:
+Создайте только необходимую целевую поддержку LLVM.
+Этот вариант предпочтительнее конкретных вариантов целевой поддержки.
+Если они установлены, эти параметры также действуют:
 .Pp
 .Bl -inset -compact
 .It Va WITHOUT_LLVM_TARGET_AARCH64
-(unless
+(пока не
 .Va WITH_LLVM_TARGET_AARCH64
-is set explicitly)
+устанавливается явно)
 .It Va WITHOUT_LLVM_TARGET_ARM
-(unless
+(пока не
 .Va WITH_LLVM_TARGET_ARM
-is set explicitly)
+устанавливается явно)
 .It Va WITHOUT_LLVM_TARGET_POWERPC
-(unless
+(пока не
 .Va WITH_LLVM_TARGET_POWERPC
-is set explicitly)
+устанавливается явно)
 .It Va WITHOUT_LLVM_TARGET_RISCV
-(unless
+(пока не
 .Va WITH_LLVM_TARGET_RISCV
-is set explicitly)
+устанавливается явно)
 .El
 .It Va WITHOUT_LLVM_TARGET_ARM
-Do not build LLVM target support for ARM.
-The
+Не создавайте целевую поддержку LLVM для ARM.
 .Va LLVM_TARGET_ALL
-option should be used rather than this in most cases.
+В большинстве случаев следует использовать этот вариант, а не этот.
 .It Va WITH_LLVM_TARGET_BPF
-Build LLVM target support for BPF.
-The
+Создайте целевую поддержку LLVM для BPF.
 .Va LLVM_TARGET_ALL
-option should be used rather than this in most cases.
+В большинстве случаев следует использовать этот вариант, а не этот.
 .It Va WITH_LLVM_TARGET_MIPS
-Build LLVM target support for MIPS.
-The
+Создайте целевую поддержку LLVM для MIPS.
 .Va LLVM_TARGET_ALL
-option should be used rather than this in most cases.
+В большинстве случаев следует использовать этот вариант, а не этот.
 .It Va WITHOUT_LLVM_TARGET_POWERPC
 Do not build LLVM target support for PowerPC.
-The
+В
 .Va LLVM_TARGET_ALL
-option should be used rather than this in most cases.
+большинстве случаев следует использовать этот вариант, а не этот.
 .It Va WITHOUT_LLVM_TARGET_RISCV
-Do not build LLVM target support for RISC-V.
-The
+Не создавайте целевую поддержку LLVM для RISC-V.
 .Va LLVM_TARGET_ALL
-option should be used rather than this in most cases.
+В большинстве случаев следует использовать этот вариант, а не этот.
 .It Va WITHOUT_LLVM_TARGET_X86
-Do not build LLVM target support for X86.
-The
+Не создавайте целевую поддержку LLVM для X86.
 .Va LLVM_TARGET_ALL
-option should be used rather than this in most cases.
+В большинстве случаев следует использовать этот вариант, а не этот.
 .It Va WITH_LOADER_EFI_SECUREBOOT
-Enable building
+Включите строительство
 .Xr loader 8
-with support for verification based on certificates obtained from UEFI.
+с поддержкой проверки на основе сертификатов, полученных от UEFI.
 .It Va WITHOUT_LOADER_GELI
-Disable inclusion of GELI crypto support in the boot chain binaries.
+Отключите включение поддержки шифрования GELI в двоичные файлы цепочки загрузки.
 .Pp
-This is a default setting on
+Это настройка по умолчанию для
 powerpc/powerpc, powerpc/powerpc64 and powerpc/powerpc64le.
 .It Va WITH_LOADER_GELI
-Build GELI bootloader support.
+Создайте поддержку загрузчика GELI.
 .Pp
-This is a default setting on
+Это настройка по умолчанию для
 amd64/amd64, arm/armv7, arm64/aarch64, i386/i386 and riscv/riscv64.
 .It Va WITHOUT_LOADER_KBOOT
-Do not build kboot, a linuxboot environment loader
+Не создавайте kboot, загрузчик среды Linuxboot.
 .Pp
-This is a default setting on
+Это настройка по умолчанию для
 arm/armv7, i386/i386, powerpc/powerpc, powerpc/powerpc64le and riscv/riscv64.
 .It Va WITH_LOADER_KBOOT
-Build kboot, a linuxboot environment loader
+Создайте kboot, загрузчик среды Linuxboot.
 .Pp
-This is a default setting on
+Это настройка по умолчанию для
 amd64/amd64, arm64/aarch64 and powerpc/powerpc64.
 .It Va WITHOUT_LOADER_LUA
-Do not build LUA bindings for the boot loader.
+Не создавайте привязки LUA для загрузчика.
 .Pp
-This is a default setting on
-powerpc/powerpc, powerpc/powerpc64 and powerpc/powerpc64le.
+Это настройка по умолчанию для
+powerpc/powerpc, powerpc/powerpc64 и powerpc/powerpc64le.
 .It Va WITH_LOADER_LUA
-Build LUA bindings for the boot loader.
+Создайте привязки LUA для загрузчика.
 .Pp
-This is a default setting on
+Это настройка по умолчанию для
 amd64/amd64, arm/armv7, arm64/aarch64, i386/i386 and riscv/riscv64.
 .It Va WITHOUT_LOADER_OFW
-Disable building of openfirmware bootloader components.
+Отключите сборку компонентов загрузчика открытой прошивки.
 .Pp
-This is a default setting on
+Это настройка по умолчанию для
 amd64/amd64, arm/armv7, arm64/aarch64, i386/i386 and riscv/riscv64.
 .It Va WITH_LOADER_OFW
-Build openfirmware bootloader components.
-.Pp
-This is a default setting on
-powerpc/powerpc, powerpc/powerpc64 and powerpc/powerpc64le.
+Создайте компонент загрузчика открытой прошивки.
+.Pps
+Это настройка по умолчанию для
+powerpc/powerpc, powerpc/powerpc64 и powerpc/powerpc64le.
 .It Va WITHOUT_LOADER_UBOOT
-Disable building of ubldr.
+Отключите строительство ул.
 .Pp
-This is a default setting on
+Это настройка по умолчанию для
 amd64/amd64, arm64/aarch64, i386/i386, powerpc/powerpc64le and riscv/riscv64.
 .It Va WITH_LOADER_UBOOT
-Build ubldr.
+Постройте ubldr.
 .Pp
-This is a default setting on
+Это настройка по умолчанию для
 arm/armv7, powerpc/powerpc and powerpc/powerpc64.
 .It Va WITH_LOADER_VERBOSE
-Build with extra verbose debugging in the loader.
-May explode already nearly too large loader over the limit.
-Use with care.
+Сборка с дополнительной подробной отладкой в ​​загрузчике.
+Может взорваться и без того слишком большой погрузчик, превышающий лимит.
+Используйте с осторожностью.
 .It Va WITH_LOADER_VERIEXEC
-Enable building
+Включите строительство
 .Xr loader 8
-with support for verification similar to Verified Exec.
+с поддержкой проверки, аналогичной Verified Exec.
 .Pp
-Depends on
+Зависит от
 .Va WITH_BEARSSL .
-When set, these options are also in effect:
+Если они установлены, эти параметры также действуют:
 .Pp
 .Bl -inset -compact
 .It Va WITH_LOADER_EFI_SECUREBOOT
-(unless
+(пока не
 .Va WITHOUT_LOADER_EFI_SECUREBOOT
-is set explicitly)
+устанавливается явно)
 .It Va WITH_LOADER_VERIEXEC_VECTX
-(unless
+(пока не
 .Va WITHOUT_LOADER_VERIEXEC_VECTX
-is set explicitly)
+устанавливается явно)
 .El
 .It Va WITH_LOADER_VERIEXEC_PASS_MANIFEST
-Enable building
+Включить строительство
 .Xr loader 8
-with support to pass a verified manifest to the kernel.
-The kernel has to be built with a module to parse the manifest.
+с поддержкой передачи проверенного манифеста ядру.
+Ядро должно быть построено с модулем для анализа манифеста.
 .Pp
-Depends on
+Зависит от
 .Va WITH_LOADER_VERIEXEC .
 .It Va WITH_LOADER_VERIEXEC_VECTX
-Enable building
+Включите строительство
 .Xr loader 8
-with support for hashing and verifying kernel and modules as a side effect
-of loading.
+с поддержкой хеширования и проверки ядра и модулей в качестве побочного эффекта
+загрузки.
 .Pp
-Depends on
+Зависит от
 .Va WITH_LOADER_VERIEXEC .
 .It Va WITHOUT_LOADER_ZFS
-Do not build ZFS file system boot loader support.
+Не создавайте поддержку загрузчика файловой системы ZFS.
 .It Va WITHOUT_LOCALES
-Do not build localization files; see
+Не стройте файлы локализации; 
 .Xr locale 1 .
 .It Va WITHOUT_LOCATE
-Do not build
+Не стройте
 .Xr locate 1
-and related programs.
+и сопутствующие программы.
 .It Va WITHOUT_LPR
-Do not build
+Не стройте 
 .Xr lpr 1
-and related programs.
+и сопутствующие программы.
 .It Va WITHOUT_LS_COLORS
-Build
+Стройте
 .Xr ls 1
-without support for colors to distinguish file types.
+без поддержки цветов для различения типов файлов.
 .It Va WITHOUT_MACHDEP_OPTIMIZATIONS
-Prefer machine-independent non-assembler code in libc and libm.
+Предпочитайте машинно-независимый неассемблерный код в libc и libm.
 .It Va WITHOUT_MAIL
-Do not build any mail support (MUA or MTA).
-When set, it enforces these options:
+Не создавайте никакой поддержки почты (MUA или MTA).
+Если установлено, применяются следующие параметры:
 .Pp
 .Bl -item -compact
 .It
@@ -1123,252 +1116,251 @@ When set, it enforces these options:
 .Va WITHOUT_SENDMAIL
 .El
 .It Va WITHOUT_MAILWRAPPER
-Do not build the
+Не стройте 
 .Xr mailwrapper 8
-MTA selector.
+Селектор МТА.
 .It Va WITHOUT_MAKE
-Do not install
+Не устанавливайте
 .Xr make 1
-and related support files.
+и соответствующие файлы поддержки.
 .It Va WITHOUT_MAKE_CHECK_USE_SANDBOX
-Do not execute
+Не выполняйте 
 .Dq Li "make check"
-in limited sandbox mode.
-This option should be paired with
+в ограниченном режиме песочницы.
+Эту опцию следует сочетать с
 .Va WITH_INSTALL_AS_USER
-if executed as an unprivileged user.
-See
+если выполняется от имени непривилегированного пользователя.
+Смотрите
 .Xr tests 7
-for more details.
+больше подробностей.
 .It Va WITH_MALLOC_PRODUCTION
-Disable assertions and statistics gathering in
+Отключить утверждения и сбор статистики в
 .Xr malloc 3 .
-It also defaults the A and J runtime options to off.
+По умолчанию параметры времени выполнения A и J отключены.
 .It Va WITHOUT_MAN
-Do not build manual pages.
-When set, these options are also in effect:
+Не создавайте страницы руководства.
+Если они установлены, эти параметры также действуют:
 .Pp
 .Bl -inset -compact
 .It Va WITHOUT_MAN_UTILS
-(unless
+(пока не 
 .Va WITH_MAN_UTILS
-is set explicitly)
+устанавливается явно)
 .El
 .It Va WITHOUT_MANCOMPRESS
-Do not install compressed man pages.
-Only the uncompressed versions will be installed.
+Не устанавливайте сжатые страницы руководства.
+Будут установлены только несжатые версии.
 .It Va WITH_MANSPLITPKG
-Split man pages into their own packages during make package.
+Разделите страницы руководства на отдельные пакеты во время сборки пакета.
 .It Va WITHOUT_MAN_UTILS
-Do not build utilities for manual pages,
+Не создавайте утилиты для страниц руководства,
 .Xr apropos 1 ,
 .Xr makewhatis 1 ,
 .Xr man 1 ,
 .Xr whatis 1 ,
 .Xr manctl 8 ,
-and related support files.
+и соответствующие файлы поддержки.
 .It Va WITH_META_ERROR_TARGET
-Enable the META_MODE .ERROR target.
+Включите цель META_MODE .ERROR.
 .Pp
-This target will copy the meta file of a failed target
-to
+Эта цель скопирует метафайл неудачной цели.
+для 
 .Va ERROR_LOGDIR
-(default is
+(по умолчанию
 .Ql ${SRCTOP:H}/error )
-to help with failure analysis.
-Depends on
+помочь с анализом отказов.
+Зависит от
 .Va WITH_META_MODE .
-This default when
+Это значение по умолчанию, когда
 .Va WITH_DIRDEPS_BUILD
-is set.
+установлено.
 .Pp
-This must be set in the environment, make command line, or
+Это должно быть установлено в среде, командной строке make или
 .Pa /etc/src-env.conf ,
-not
+не 
 .Pa /etc/src.conf .
 .It Va WITH_META_MODE
-Create
+Создайте 
 .Xr make 1
-meta files when building, which can provide a reliable incremental build when
-using
+мета-файлы при сборке, что может обеспечить надежную инкрементальную сборку при
+с использованием
 .Xr filemon 4 .
-The meta file is created in OBJDIR as
+Метафайл создается в OBJDIR как
 .Pa target.meta .
-These meta files track the command that was executed, its output, and the
-current directory.
-The
+Эти метафайлы отслеживают выполненную команду, ее вывод и
+Текущий каталог.
 .Xr filemon 4
-module is required unless
+модуль необходим, если только
 .Va NO_FILEMON
-is defined.
-When the module is loaded, any files used by the commands executed are
-tracked as dependencies for the target in its meta file.
-The target is considered out-of-date and rebuilt if any of these
-conditions are true compared to the last build:
+определено.
+Когда модуль загружается, все файлы, используемые выполняемыми командами,
+отслеживаются как зависимости для цели в ее метафайле.
+Цель считается устаревшей и перестраивается, если есть что-либо из этого.
+условия верны по сравнению с последней сборкой:
 .Bl -bullet -compact
 .It
-The command to execute changes.
+Команда выполнения изменяется.
 .It
-The current working directory changes.
+Текущий рабочий каталог изменится.
 .It
-The target's meta file is missing.
+Метафайл цели отсутствует.
 .It
-The target's meta file is missing filemon data when filemon is loaded
-and a previous run did not have it loaded.
+В метафайле цели отсутствуют данные filemon при загрузке filemon.
+и при предыдущем запуске он не был загружен.
 .It
-[requires
+[требует
 .Xr filemon 4 ]
-Files read, executed or linked to are newer than the target.
+Файлы, прочитанные, выполненные или связанные с ними, новее целевых.
 .It
-[requires
+[требует
 .Xr filemon 4 ]
-Files read, written, executed or linked are missing.
+Файлы, прочитанные, записанные, выполненные или связанные, отсутствуют.
 .El
-The meta files can also be useful for debugging.
+Метафайлы также могут быть полезны для отладки.
 .Pp
-The build hides commands that are executed unless
+Сборка скрывает команды, которые выполняются
 .Va NO_SILENT
-is defined.
-Errors cause
+если они не определены
+Ошибки вызывают
 .Xr make 1
-to show some of its environment for further debugging.
+чтобы показать часть своего окружения для дальнейшей отладки.
 .Pp
-The build operates as it normally would otherwise.
-This option originally invoked a different build system but that was renamed
-to
+В противном случае сборка работает как обычно.
+Изначально эта опция вызывала другую систему сборки, но она была переименована.
+для 
 .Va WITH_DIRDEPS_BUILD .
 .Pp
-This must be set in the environment, make command line, or
+Это должно быть установлено в среде, командной строке make или
 .Pa /etc/src-env.conf ,
-not
+не 
 .Pa /etc/src.conf .
 .It Va WITHOUT_MLX5TOOL
-Do not build
+Не стройте
 .Xr mlx5tool 8
 .Pp
-This is a default setting on
+Это настройка по умолчанию для
 arm/armv7, powerpc/powerpc and riscv/riscv64.
 .It Va WITH_MLX5TOOL
-Build
+Стройте 
 .Xr mlx5tool 8
 .Pp
-This is a default setting on
+Это настройка по умолчанию для
 amd64/amd64, arm64/aarch64, i386/i386, powerpc/powerpc64 and powerpc/powerpc64le.
 .It Va WITHOUT_NETCAT
-Do not build
+Не стройте 
 .Xr nc 1
-utility.
+утилиты.
 .It Va WITHOUT_NETGRAPH
-Do not build applications to support
+Не создавайте приложения для поддержки
 .Xr netgraph 4 .
-When set, it enforces these options:
+Если установлено, применяются следующие параметры:
 .Pp
 .Bl -item -compact
 .It
 .Va WITHOUT_BLUETOOTH
 .El
 .Pp
-When set, these options are also in effect:
+Если они установлены, эти параметры также действуют:
 .Pp
 .Bl -inset -compact
 .It Va WITHOUT_NETGRAPH_SUPPORT
-(unless
+(пока не 
 .Va WITH_NETGRAPH_SUPPORT
-is set explicitly)
+устанавливается явно)
 .El
 .It Va WITHOUT_NETGRAPH_SUPPORT
-Build libraries, programs, and kernel modules without netgraph support.
+Создавайте библиотеки, программы и модули ядра без поддержки netgraph.
 .It Va WITHOUT_NETLINK
-Do not build
+Не стройте 
 .Xr genl 1
-utility.
+утилиты.
 .It Va WITHOUT_NETLINK_SUPPORT
-Make libraries and programs use rtsock and
+Заставьте библиотеки и программы использовать rtsock и
 .Xr sysctl 3
-interfaces instead of
+интерфейсы вместо
 .Xr snl 3 .
 .It Va WITHOUT_NIS
-Do not build
+Не стройте 
 .Xr NIS 8
-support and related programs.
-If set, you might need to adopt your
+поддержку и сопутствующие программы.
+Если установлено, возможно, вам придется принять
 .Xr nsswitch.conf 5
-and remove
+и удалить
 .Sq nis
-entries.
+записи.
 .It Va WITHOUT_NLS
-Do not build NLS catalogs.
-When set, it enforces these options:
+Не создавайте каталоги NLS.
+Если установлено, применяются следующие параметры:
 .Pp
 .Bl -item -compact
 .It
 .Va WITHOUT_NLS_CATALOGS
 .El
 .It Va WITHOUT_NLS_CATALOGS
-Do not build NLS catalog support for
+Не создавайте поддержку каталога NLS для
 .Xr csh 1 .
 .It Va WITHOUT_NS_CACHING
-Disable name caching in the
+Отключите кэширование имен в
 .Pa nsswitch
-subsystem.
-The generic caching daemon,
+подсистеме.
+Общий демон кэширования,
 .Xr nscd 8 ,
-will not be built either if this option is set.
+также не будет создан, если эта опция установлена.
 .It Va WITHOUT_NTP
-Do not build
+Не стройте 
 .Xr ntpd 8
-and related programs.
+и сопутствующие программы.
 .It Va WITHOUT_NVME
-Do not build nvme related tools and kernel modules.
+Не создавайте инструменты и модули ядра, связанные с nvme.
 .Pp
-This is a default setting on
+Это настройка по умолчанию для
 arm/armv7, powerpc/powerpc and riscv/riscv64.
 .It Va WITH_NVME
-Build nvme related tools and kernel modules.
+Создавайте инструменты, связанные с nvme, и модули ядра.
 .Pp
-This is a default setting on
+Это настройка по умолчанию для
 amd64/amd64, arm64/aarch64, i386/i386, powerpc/powerpc64 and powerpc/powerpc64le.
 .It Va WITHOUT_OFED
-Do not build the
+Не стройте 
 .Dq "OpenFabrics Enterprise Distribution"
-InfiniBand software stack, including kernel modules and userspace libraries.
+Программный стек InfiniBand, включая модули ядра и библиотеки пользовательского пространства.
 .Pp
-This is a default setting on
+Это настройка по умолчанию для
 arm/armv7.
-When set, it enforces these options:
+Если установлено, применяются следующие параметры:
 .Pp
 .Bl -item -compact
 .It
 .Va WITHOUT_OFED_EXTRA
 .El
 .It Va WITH_OFED
-Build the
+Стройте 
 .Dq "OpenFabrics Enterprise Distribution"
-InfiniBand software stack, including kernel modules and userspace libraries.
+Программный стек InfiniBand, включая модули ядра и библиотеки пользовательского пространства.
 .Pp
-This is a default setting on
+Это настройка по умолчанию для
 amd64/amd64, arm64/aarch64, i386/i386, powerpc/powerpc, powerpc/powerpc64, powerpc/powerpc64le and riscv/riscv64.
 .It Va WITH_OFED_EXTRA
-Build the non-essential components of the
+Создайте несущественные компоненты
 .Dq "OpenFabrics Enterprise Distribution"
-Infiniband software stack, mostly examples.
+Программный стек Infiniband, в основном примеры.
 .It Va WITH_OPENLDAP
-Enable building LDAP support for kerberos using an openldap client from ports.
+Включите поддержку LDAP для Kerberos с помощью клиента openldap из портов.
 .It Va WITHOUT_OPENMP
-Do not build LLVM's OpenMP runtime.
+Не создавайте среду выполнения OpenMP LLVM.
 .Pp
-This is a default setting on
+Это настройка по умолчанию для
 arm/armv7 and powerpc/powerpc.
 .It Va WITH_OPENMP
-Build LLVM's OpenMP runtime.
+Создайте среду выполнения OpenMP LLVM.
 .Pp
-This is a default setting on
+Это настройка по умолчанию для
 amd64/amd64, arm64/aarch64, i386/i386, powerpc/powerpc64, powerpc/powerpc64le and riscv/riscv64.
 .It Va WITHOUT_OPENSSH
-Do not build OpenSSH.
+Не создавайте OpenSSH.
 .It Va WITHOUT_OPENSSL
-Do not build OpenSSL.
-When set, it enforces these options:
+Не создавайте OpenSSL.
+Если установлено, применяются следующие параметры:
 .Pp
 .Bl -item -compact
 .It
@@ -1395,154 +1387,154 @@ When set, it enforces these options:
 .Va WITHOUT_ZFS
 .El
 .Pp
-When set, these options are also in effect:
+Если они установлены, эти параметры также действуют:
 .Pp
 .Bl -inset -compact
 .It Va WITHOUT_GSSAPI
-(unless
+(пока не 
 .Va WITH_GSSAPI
-is set explicitly)
+устанавливается явно)
 .El
 .It Va WITHOUT_OPENSSL_KTLS
-Do not include kernel TLS support in OpenSSL.
+Не включайте поддержку TLS ядра в OpenSSL.
 .Pp
-This is a default setting on
+Это настройка по умолчанию для
 arm/armv7, i386/i386, powerpc/powerpc and riscv/riscv64.
 .It Va WITH_OPENSSL_KTLS
-Include kernel TLS support in OpenSSL.
+Включите поддержку TLS ядра в OpenSSL.
 .Pp
-This is a default setting on
+Это настройка по умолчанию для
 amd64/amd64, arm64/aarch64, powerpc/powerpc64 and powerpc/powerpc64le.
 .It Va WITHOUT_PAM
-Do not build PAM library and modules.
+Не создавайте библиотеку и модули PAM.
 .Bf -symbolic
-This option is deprecated and does nothing.
+Эта опция устарела и ничего не делает.
 .Ef
-When set, these options are also in effect:
+Если они установлены, эти параметры также действуют:
 .Pp
 .Bl -inset -compact
 .It Va WITHOUT_PAM_SUPPORT
-(unless
+(пока не 
 .Va WITH_PAM_SUPPORT
-is set explicitly)
+устанавливается явно)
 .El
 .It Va WITHOUT_PAM_SUPPORT
-Build some programs without PAM support, particularly
+Создайте некоторые программы без поддержки PAM, в частности
 .Xr ftpd 8
-and
+и 
 .Xr ppp 8 .
 .It Va WITHOUT_PF
-Do not build PF firewall package.
-When set, it enforces these options:
+Не создавайте пакет брандмауэра PF.
+Если установлено, применяются следующие параметры:
 .Pp
 .Bl -item -compact
 .It
 .Va WITHOUT_AUTHPF
 .El
 .It Va WITHOUT_PIE
-Do not build dynamically linked binaries as
-Position-Independent Executable (PIE).
+Не создавайте динамически связанные двоичные файлы, поскольку
+Независимый от позиции исполняемый файл (PIE).
 .Pp
-This is a default setting on
+Это настройка по умолчанию для
 arm/armv7, i386/i386 and powerpc/powerpc.
 .It Va WITH_PIE
-Build dynamically linked binaries as
-Position-Independent Executable (PIE).
+Создавайте динамически связанные двоичные файлы как
+Независимый от позиции исполняемый файл (PIE).
 .Pp
-This is a default setting on
+Это настройка по умолчанию для
 amd64/amd64, arm64/aarch64, powerpc/powerpc64, powerpc/powerpc64le and riscv/riscv64.
 .It Va WITHOUT_PKGBOOTSTRAP
-Do not build
+Не стройте 
 .Xr pkg 7
-bootstrap tool.
+инструмент начальной загрузки.
 .It Va WITHOUT_PMC
-Do not build
+Не стройте 
 .Xr pmccontrol 8
-and related programs.
+и сопутствующие программы.
 .It Va WITHOUT_PPP
-Do not build
+Не стройте 
 .Xr ppp 8
-and related programs.
+и сопутствующие программы.
 .It Va WITH_PROFILE
-Build profiled libraries for use with
+Создавайте профилированные библиотеки для использования с
 .Xr gprof 8 .
-This option is deprecated and may not be present in a future version of
+Эта опция устарела и может отсутствовать в будущих версиях.
 .Fx .
 .It Va WITHOUT_PTHREADS_ASSERTIONS
-Disable debugging assertions in pthreads library.
+Отключите утверждения отладки в библиотеке pthreads.
 .It Va WITHOUT_QUOTAS
-Do not build
+Не стройте 
 .Xr quota 1
-and related programs.
+и сопутствующие программы.
 .It Va WITHOUT_RADIUS_SUPPORT
-Do not build radius support into various applications, like
+Не встраивайте поддержку радиуса в различные приложения, например
 .Xr pam_radius 8
-and
+и 
 .Xr ppp 8 .
 .It Va WITH_RATELIMIT
-Build the system with rate limit support.
+Создайте систему с поддержкой ограничения скорости.
 .Pp
-This makes
+Это делает
 .Dv SO_MAX_PACING_RATE
-effective in
+эффективным в
 .Xr getsockopt 2 ,
-and
+и 
 .Ar txrlimit
-support in
+поддерживает в
 .Xr ifconfig 8 ,
-by proxy.
+по доверенности.
 .It Va WITHOUT_RBOOTD
-Do not build or install
+Не создавайте и не устанавливайте
 .Xr rbootd 8 .
 .It Va WITHOUT_RELRO
-Do not apply the Relocation Read-Only (RELRO) vulnerability mitigation.
-See also the
+Не применяйте средство устранения уязвимости Relocation Read-Only (RELRO).
+См. также
 .Va BIND_NOW
-option.
+опции.
 .It Va WITH_REPRODUCIBLE_BUILD
-Exclude build metadata (such as the build time, user, or host)
-from the kernel, boot loaders, and uname output, so that builds produce
-bit-for-bit identical output.
+Исключить метаданные сборки (например, время сборки, пользователя или хост)
+из ядра, загрузчиков и вывода uname, так что сборки производят
+побитовый идентичный вывод.
 .It Va WITHOUT_RESCUE
-Do not build
+Не стройте 
 .Xr rescue 8 .
 .It Va WITH_RETPOLINE
-Build the base system with the retpoline speculative execution
-vulnerability mitigation for CVE-2017-5715.
+Постройте базовую систему с помощью спекулятивного выполнения retpoline.
+устранение уязвимости для CVE-2017-5715.
 .It Va WITHOUT_ROUTED
-Do not build
+Не стройте 
 .Xr routed 8
-utility.
+утилиты.
 .It Va WITH_RPCBIND_WARMSTART_SUPPORT
-Build
+Постройте 
 .Xr rpcbind 8
-with warmstart support.
+с поддержкой горячего старта.
 .It Va WITHOUT_SCTP_SUPPORT
-Disable support in the kernel for the
+Отключите поддержку ядра для
 .Xr sctp 4
-Stream Control Transmission Protocol
-loadable kernel module.
+Протокола передачи управления потоком
+загружаемый модуль ядра.
 .It Va WITHOUT_SENDMAIL
-Do not build
+Не стройте 
 .Xr sendmail 8
-and related programs.
+и сопутствующие программы.
 .It Va WITHOUT_SERVICESDB
-Do not install
+Не устанавливайте
 .Pa /var/db/services.db .
 .It Va WITHOUT_SETUID_LOGIN
-Set this to disable the installation of
+Установите этот параметр, чтобы отключить установку
 .Xr login 1
-as a set-user-ID root program.
+чтобы отключить установку корневой программы с установленным идентификатором пользователя.
 .It Va WITHOUT_SHAREDOCS
-Do not build the
+Не стройте 
 .Bx 4.4
-legacy docs.
+устаревшие документы.
 .It Va WITH_SORT_THREADS
-Enable threads in
+Включите потоки в
 .Xr sort 1 .
 .It Va WITHOUT_SOURCELESS
-Do not build kernel modules that include sourceless code (either microcode or native code for host CPU).
-When set, it enforces these options:
+Не создавайте модули ядра, содержащие код без исходного кода (микрокод или собственный код для центрального процессора).
+Если установлено, применяются следующие параметры:
 .Pp
 .Bl -item -compact
 .It
@@ -1551,159 +1543,159 @@ When set, it enforces these options:
 .Va WITHOUT_SOURCELESS_UCODE
 .El
 .It Va WITHOUT_SOURCELESS_HOST
-Do not build kernel modules that include sourceless native code for host CPU.
+Не создавайте модули ядра, содержащие собственный код без исходного кода для ЦП хоста.
 .It Va WITHOUT_SOURCELESS_UCODE
-Do not build kernel modules that include sourceless microcode.
+Не создавайте модули ядра, содержащие микрокод без исходного кода.
 .It Va WITHOUT_SPLIT_KERNEL_DEBUG
-Do not build standalone kernel debug files.
-Debug data (if enabled by the kernel configuration file)
-will be included in the kernel and modules.
-When set, it enforces these options:
+Не создавайте отдельные файлы отладки ядра.
+Данные отладки (если это разрешено файлом конфигурации ядра)
+будет включен в ядро ​​и модули.
+Если установлено, применяются следующие параметры:
 .Pp
 .Bl -item -compact
 .It
 .Va WITHOUT_KERNEL_SYMBOLS
 .El
 .It Va WITHOUT_SSP
-Do not build world with propolice stack smashing protection.
+Не создавайте мир с защитой от разрушения стека прополиса.
 .It Va WITH_STAGING
-Enable staging of files to a stage tree.
-This can be best thought of as auto-install to
+Включите размещение файлов в дереве этапов.
+Лучше всего это можно рассматривать как автоматическую установку
 .Va DESTDIR
-with some extra meta data to ensure dependencies can be tracked.
-Depends on
+с некоторыми дополнительными метаданными, обеспечивающими возможность отслеживания зависимостей.
+Зависит от
 .Va WITH_DIRDEPS_BUILD .
-When set, these options are also in effect:
+Если они установлены, эти параметры также действуют:
 .Pp
 .Bl -inset -compact
 .It Va WITH_STAGING_MAN
-(unless
+(пока не
 .Va WITHOUT_STAGING_MAN
-is set explicitly)
+устанавливается явно)
 .It Va WITH_STAGING_PROG
-(unless
+(пока не
 .Va WITHOUT_STAGING_PROG
-is set explicitly)
+устанавливается явно)
 .El
 .Pp
-This must be set in the environment, make command line, or
+Это должно быть установлено в среде, командной строке make или
 .Pa /etc/src-env.conf ,
-not
+не 
 .Pa /etc/src.conf .
 .It Va WITH_STAGING_MAN
-Enable staging of man pages to stage tree.
+Включайте размещение страниц руководства в дереве создания.
 .It Va WITH_STAGING_PROG
-Enable staging of PROGs to stage tree.
+Включите промежуточное размещение PROG в дереве промежуточного состояния.
 .It Va WITH_STALE_STAGED
-Check staged files are not stale.
+Убедитесь, что подготовленные файлы не устарели.
 .It Va WITHOUT_STATS
-Neither build nor install
+Ни построить, ни установить
 .Lb libstats
-and dependent binaries.
+и зависимые двоичные файлы.
 .It Va WITHOUT_SYSCONS
-Do not build
+Не стройте 
 .Xr syscons 4
-support files such as keyboard maps, fonts, and screen output maps.
+файлы поддержки, такие как раскладки клавиатуры, шрифты и схемы вывода на экран.
 .It Va WITH_SYSROOT
-Enable use of sysroot during build.
-Depends on
+Включить использование sysroot во время сборки.
+Зависит от 
 .Va WITH_DIRDEPS_BUILD .
 .Pp
-This must be set in the environment, make command line, or
+Это должно быть установлено в среде, командной строке make или
 .Pa /etc/src-env.conf ,
-not
+не 
 .Pa /etc/src.conf .
 .It Va WITHOUT_SYSTEM_COMPILER
-Do not opportunistically skip building a cross-compiler during the
-bootstrap phase of the build.
-Normally, if the currently installed compiler matches the planned bootstrap
-compiler type and revision, then it will not be built.
-This does not prevent a compiler from being built for installation though,
-only for building one for the build itself.
-The
+Не пропускайте по желанию сборку кросс-компилятора во время
+этап начальной загрузки сборки.
+Обычно, если текущий установленный компилятор соответствует запланированной начальной загрузке
+тип и ревизию компилятора, то он не будет собран.
+Однако это не мешает сборке компилятора для установки
+только для сборки одного для самой сборки.
+Опция
 .Va WITHOUT_CLANG
-option controls that.
+контролирует это.
 .It Va WITHOUT_SYSTEM_LINKER
-Do not opportunistically skip building a cross-linker during the
-bootstrap phase of the build.
-Normally, if the currently installed linker matches the planned bootstrap
-linker type and revision, then it will not be built.
-This does not prevent a linker from being built for installation though,
-only for building one for the build itself.
-The
+Не упускайте возможность случайно пропустить создание сшивающего агента во время
+этап начальной загрузки сборки.
+Обычно, если текущий установленный компоновщик соответствует запланированному бутстрапу
+тип и ревизию компоновщика, то он не будет собран.
+Однако это не мешает сборке компоновщика для установки.
+только для сборки одного для самой сборки.
+Опция
 .Va WITHOUT_LLD
-option controls that.
+контролирует это.
 .Pp
-This option is only relevant when
+Этот параметр актуален только тогда, когда
 .Va WITH_LLD_BOOTSTRAP
-is set.
+она установлена.
 .It Va WITHOUT_TALK
-Do not build or install
+Не создавайте и не устанавливайте
 .Xr talk 1
-and
+и 
 .Xr talkd 8 .
 .It Va WITHOUT_TCP_WRAPPERS
-Do not build or install
+Не создавайте и не устанавливайте
 .Xr tcpd 8 ,
-and related utilities.
+и сопутствующие утилиты.
 .It Va WITHOUT_TCSH
-Do not build and install
+Не создавайте и не устанавливайте
 .Pa /bin/csh
-(which is
+(который
 .Xr tcsh 1 ) .
 .It Va WITHOUT_TELNET
-Do not build
+Не стройте 
 .Xr telnet 1
-and related programs.
+и сопутствующие программы.
 .It Va WITHOUT_TESTS
-Do not build nor install the
+Не создавайте и не устанавливайте
 .Fx
-Test Suite in
+Тестовый набор в
 .Pa /usr/tests/ .
-See
+Смотрите 
 .Xr tests 7
-for more details.
-This also disables the build of all test-related dependencies, including ATF.
-When set, it enforces these options:
+больше подробностей.
+Это также отключает сборку всех зависимостей, связанных с тестированием, включая ATF.
+Если установлено, применяются следующие параметры:
 .Pp
 .Bl -item -compact
 .It
 .Va WITHOUT_DTRACE_TESTS
 .El
 .Pp
-When set, these options are also in effect:
+Если они установлены, эти параметры также действуют:
 .Pp
 .Bl -inset -compact
 .It Va WITHOUT_GOOGLETEST
-(unless
+(пока не 
 .Va WITH_GOOGLETEST
-is set explicitly)
+устанавливается явно)
 .It Va WITHOUT_TESTS_SUPPORT
-(unless
+(пока не 
 .Va WITH_TESTS_SUPPORT
-is set explicitly)
+устанавливается явно)
 .El
 .It Va WITHOUT_TESTS_SUPPORT
-Disable the build of all test-related dependencies, including ATF.
-When set, it enforces these options:
+Отключите сборку всех зависимостей, связанных с тестированием, включая ATF.
+Если установлено, применяются следующие параметры:
 .Pp
 .Bl -item -compact
 .It
 .Va WITHOUT_GOOGLETEST
 .El
 .It Va WITHOUT_TEXTPROC
-Do not build
-programs used for text processing.
+Не стройте 
+программы, используемые для обработки текста.
 .It Va WITHOUT_TFTP
-Do not build or install
+Не создавайте и не устанавливайте
 .Xr tftp 1
-and
+и 
 .Xr tftpd 8 .
 .It Va WITHOUT_TOOLCHAIN
-Do not install
-programs used for program development,
-compilers, debuggers etc.
-When set, it enforces these options:
+Не устанавливайте
+программы, используемые для разработки программ,
+компиляторы, отладчики и т. д.
+Если установлено, применяются следующие параметры:
 .Pp
 .Bl -item -compact
 .It
@@ -1722,130 +1714,130 @@ When set, it enforces these options:
 .Va WITHOUT_LLVM_COV
 .El
 .It Va WITH_UBSAN
-Build the base system with Undefined Behavior Sanitizer (UBSan) to detect
-various kinds of undefined behavior at runtime.
-Requires that Clang be used as the base system compiler
-and that the runtime support library is available
+Создайте базовую систему с помощью Undefine Behavior Sanitizer (UBSan) для обнаружения
+различные виды неопределенного поведения во время выполнения.
+Требуется, чтобы Clang использовался в качестве компилятора базовой системы.
+и что библиотека поддержки времени выполнения доступна
 .It Va WITHOUT_UNBOUND
-Do not build
+Не стройте 
 .Xr unbound 8
-and related programs.
+и сопутствующие программы.
 .It Va WITHOUT_UNIFIED_OBJDIR
-Use the historical object directory format for
+Используйте формат каталога исторических объектов для
 .Xr build 7
-targets.
-For native-builds and builds done directly in sub-directories the format of
+целей.
+Для собственных сборок и сборок, выполненных непосредственно в подкаталогах, формат
 .Pa ${MAKEOBJDIRPREFIX}/${.CURDIR}
-is used,
-while for cross-builds
+используется формат:
+а для перекрестных сборок
 .Pa ${MAKEOBJDIRPREFIX}/${TARGET}.${TARGET_ARCH}/${.CURDIR}
-is used.
+используется.
 .Pp
-This option is transitional and will be removed in a future version of
+Эта опция является переходной и будет удалена в будущей версии.
 .Fx ,
-at which time
+в какое время
 .Va WITH_UNIFIED_OBJDIR
-will be enabled permanently.
+будет включен постоянно.
 .Pp
-This must be set in the environment, make command line, or
+Это должно быть установлено в среде, командной строке make или
 .Pa /etc/src-env.conf ,
-not
+не 
 .Pa /etc/src.conf .
 .It Va WITHOUT_USB
-Do not build USB-related programs and libraries.
+Не создавайте программы и библиотеки, связанные с USB.
 .It Va WITHOUT_USB_GADGET_EXAMPLES
-Do not build USB gadget kernel modules.
+Не создавайте модули ядра USB-гаджета.
 .It Va WITHOUT_UTMPX
-Do not build user accounting tools such as
+Не создавайте инструменты учета пользователей, такие как
 .Xr last 1 ,
 .Xr users 1 ,
 .Xr who 1 ,
 .Xr ac 8 ,
 .Xr lastlogin 8
-and
+и 
 .Xr utx 8 .
 .It Va WITH_VERIEXEC
-Enable building
+Включите строительство
 .Xr veriexec 8
-which loads the contents of verified manifests into the kernel
-for use by
+которое загружает содержимое проверенных манифестов в ядро
+для использования
 .Xr mac_veriexec 4
 .Pp
-Depends on
+Зависит от
 .Va WITH_BEARSSL .
 .It Va WITHOUT_VI
 Do not build and install vi, view, ex and related programs.
 .It Va WITHOUT_VT
-Do not build
+Не стройте 
 .Xr vt 4
-support files (fonts and keymaps).
+файлы поддержки (шрифты и раскладки клавиатуры).
 .It Va WITHOUT_WARNS
-Set this to not add warning flags to the compiler invocations.
-Useful as a temporary workaround when code enters the tree
-which triggers warnings in environments that differ from the
-original developer.
+Установите этот параметр, чтобы не добавлять флаги предупреждений к вызовам компилятора.
+Полезно в качестве временного обходного пути, когда код попадает в дерево.
+который вызывает предупреждения в средах, отличающихся от
+оригинальный разработчик.
 .It Va WITHOUT_WERROR
 Set this to not treat compiler warnings as errors.
 Useful as a temporary workaround when working on fixing compiler warnings.
 When set, warnings are still printed in the build log but do not fail the build.
 .It Va WITHOUT_WIRELESS
-Do not build programs used for 802.11 wireless networks; especially
+Не создавайте программы, используемые для беспроводных сетей 802.11; особенно
 .Xr wpa_supplicant 8
-and
+и 
 .Xr hostapd 8 .
-When set, these options are also in effect:
+Если они установлены, эти параметры также действуют:
 .Pp
 .Bl -inset -compact
 .It Va WITHOUT_WIRELESS_SUPPORT
-(unless
+(пока не 
 .Va WITH_WIRELESS_SUPPORT
-is set explicitly)
+устанавливается явно)
 .El
 .It Va WITHOUT_WIRELESS_SUPPORT
-Build libraries, programs, and kernel modules without
-802.11 wireless support.
+Создавайте библиотеки, программы и модули ядра без
+Поддержка беспроводной сети 802.11.
 .It Va WITHOUT_WPA_SUPPLICANT_EAPOL
-Build
+Постройте 
 .Xr wpa_supplicant 8
-without support for the IEEE 802.1X protocol and without
-support for EAP-PEAP, EAP-TLS, EAP-LEAP, and EAP-TTLS
-protocols (usable only via 802.1X).
+без поддержки протокола IEEE 802.1X и без
+поддержка EAP-PEAP, EAP-TLS, EAP-LEAP и EAP-TTLS
+протоколы (можно использовать только через 802.1X).
 .It Va WITHOUT_ZFS
-Do not build the ZFS file system kernel module, libraries such as
+Не стройте модуль ядра файловой системы ZFS, такие библиотеки, как
 .Xr libbe 3 ,
-and user commands such as
+и пользовательские команды, такие как
 .Xr zpool 8
-or
+или 
 .Xr zfs 8 .
-Also disable ZFS support in utilities and libraries which implement
-ZFS-specific functionality.
+Также отключите поддержку ZFS в утилитах и ​​библиотеках, реализующих
+Функциональность, специфичная для ZFS.
 .It Va WITHOUT_ZONEINFO
-Do not build the timezone database.
-When set, it enforces these options:
+Не создавайте базу данных часовых поясов.
+Если установлено, применяются следующие параметры:
 .Pp
 .Bl -item -compact
 .It
 .Va WITHOUT_ZONEINFO_LEAPSECONDS_SUPPORT
 .El
 .It Va WITH_ZONEINFO_LEAPSECONDS_SUPPORT
-Build leapsecond information in to the timezone database.
+Внесите информацию о секундах координации в базу данных часовых поясов.
 .El
-.Sh FILES
+.Sh файлы
 .Bl -tag -compact -width Pa
 .It Pa /etc/src.conf
 .It Pa /etc/src-env.conf
 .It Pa /usr/share/mk/bsd.own.mk
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr make 1 ,
 .Xr make.conf 5 ,
 .Xr build 7 ,
 .Xr ports 7
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Файл
 .Nm
-file appeared in
+ появился в
 .Fx 7.0 .
-.Sh AUTHORS
-This manual page was autogenerated by
+.Sh АВТОРЫ
+Эта страница руководства была автоматически создана пользователем
 .An tools/build/options/makeman .

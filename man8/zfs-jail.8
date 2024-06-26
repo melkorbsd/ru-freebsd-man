@@ -40,10 +40,10 @@
 .Dt ZFS-JAIL 8
 .Os
 .
-.Sh NAME
+.Sh ИМЯ
 .Nm zfs-jail
-.Nd attach or detach ZFS filesystem from FreeBSD jail
-.Sh SYNOPSIS
+.Nd подключение или отсоединение файловой системы ZFS от FreeBSD jail
+.Sh СИНТАКСИС
 .Nm zfs Cm jail
 .Ar jailid Ns | Ns Ar jailname
 .Ar filesystem
@@ -51,7 +51,7 @@
 .Ar jailid Ns | Ns Ar jailname
 .Ar filesystem
 .
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 .Bl -tag -width ""
 .It Xo
 .Nm zfs
@@ -59,66 +59,65 @@
 .Ar jailid Ns | Ns Ar jailname
 .Ar filesystem
 .Xc
-Attach the specified
+Прикрепляет указанную
 .Ar filesystem
-to the jail identified by JID
+к jail, указанному с помощью JID
 .Ar jailid
-or name
+или имени
 .Ar jailname .
-From now on this file system tree can be managed from within a jail if the
+Отныне этим деревом файловой системы можно управлять из jail, если свойство
 .Sy jailed
-property has been set.
-To use this functionality, the jail needs the
+установлено.
+Чтобы использовать эту функциональность, jail необходимы параметры
 .Sy allow.mount
-and
-.Sy allow.mount.zfs
-parameters set to
+и
+.Sy allow.mount.zfs ,
+установленные на параметры
 .Sy 1
-and the
+и
 .Sy enforce_statfs
-parameter set to a value lower than
+с меньшим заданным значением, чем
 .Sy 2 .
 .Pp
-You cannot attach a jailed dataset's children to another jail.
-You can also not attach the root file system
-of the jail or any dataset which needs to be mounted before the zfs rc script
-is run inside the jail, as it would be attached unmounted until it is
-mounted from the rc script inside the jail.
+Вы не можете прикрепить дочерние элементы набора данных, содержащегося в jail, к другому jail.
+Вы также не можете подключить корневую файловую систему
+jail или любой другой набор данных, который необходимо смонтировать перед запуском rc-скрипта zfs
+внутри jail, поскольку он будет подключен немонтированным до тех пор, пока не будет
+смонтирован из rc-скрипта внутри jail.
 .Pp
-To allow management of the dataset from within a jail, the
+Чтобы разрешить управление набором данных из jail,  свойство
 .Sy jailed
-property has to be set and the jail needs access to the
-.Pa /dev/zfs
-device.
-The
+должно быть установлено, и jail необходим доступ к устройству
+.Pa /dev/zfs .
+Свойство
 .Sy quota
-property cannot be changed from within a jail.
+не может быть изменено из jail.
 .Pp
-After a dataset is attached to a jail and the
+После того, как набор данных присоединен к jail и свойство
 .Sy jailed
-property is set, a jailed file system cannot be mounted outside the jail,
-since the jail administrator might have set the mount point to an unacceptable
-value.
+установлено, подключенная файловая система не может быть подключена за пределами jail,
+поскольку администратор jail мог установить для точки монтирования неприемлемое
+значение.
 .Pp
-See
+Смотрите
 .Xr jail 8
-for more information on managing jails.
-Jails are a
+для получения дополнительной информации об управлении jail.
+Jails это функции
 .Fx
-feature and are not relevant on other platforms.
+и не актуальны на других платформах.
 .It Xo
 .Nm zfs
 .Cm unjail
 .Ar jailid Ns | Ns Ar jailname
 .Ar filesystem
 .Xc
-Detaches the specified
+Отсоединяет указанную
 .Ar filesystem
-from the jail identified by JID
+от jail, которую опознал JID
 .Ar jailid
-or name
+или имени
 .Ar jailname .
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr zfsprops 7 ,
 .Xr jail 8

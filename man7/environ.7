@@ -30,266 +30,266 @@
 .Dd August 5, 2020
 .Dt ENVIRON 7
 .Os
-.Sh NAME
+.Sh НАИМЕНОВАНИЕ
 .Nm environ
-.Nd user environment
-.Sh SYNOPSIS
+.Nd пользовательская среда
+.Sh СИНОПСИС
 .Ar extern char **environ ;
-.Sh DESCRIPTION
-An array of strings, called the
-.Ar environment
-is made available to each process by
+.Sh ОПИСАНИЕ
+Массив строк, называемый
+.Ar окружающая среда
+предоставляется каждому процессу с помощью
 .Xr execve 2
-when a process begins.
-By convention these strings have the form
+при запуске процесса.
+По условию эти строки имеют вид
 .Va name Ns No = Ns Ar value ,
-and are referred to as
-.Dq environment variables .
-A process can query, update, and delete these strings using the
+и называются
+.Dq переменные окружения.
+Процесс может запрашивать, обновлять и удалять эти строки с помощью команды
 .Xr getenv 3 ,
 .Xr setenv 3 ,
-and
+и
 .Xr unsetenv 3
-functions, respectively.
-The shells also provide commands to manipulate the environment;
-they are described in the respective shell manual pages.
+функции, соответственно.
+Оболочки также предоставляют команды для работы с окружением;
+Они описаны на страницах руководства по соответствующим оболочкам.
 .Pp
-What follows is a list of environment variables typically
-seen on a
+Ниже приведен список переменных окружения, которые обычно
+который обычно встречается в
 .Ux
-system.
-It includes only those variables that a user can expect to see during their
-day-to-day use of the system, and is far from complete.
-Environment variables specific to a particular program or library function
-are documented in the
-.Sx ENVIRONMENT
-section of the appropriate manual page.
-.Sh ENVIRONMENT
+система.
+Он включает только те переменные, которые пользователь может ожидать увидеть во время
+повседневной работе с системой, и он далеко не полный.
+Переменные окружения, специфичные для конкретной программы или библиотечной функции
+документируются в
+.Sx ОКРУЖАЮЩАЯ СРЕДА
+раздел соответствующей страницы руководства.
+.Sh ОКРУЖАЮЩАЯ СРЕДА
 .Bl -tag -width LD_LIBRARY_PATH
 .It Ev BLOCKSIZE
-The size of the block units used by several disk-related commands,
-most notably
+Размер блоков, используемых несколькими командами, связанными с диском,
+прежде всего
 .Xr df 1 ,
 .Xr du 1
-and
+и
 .Xr ls 1 .
 .Ev BLOCKSIZE
-may be specified in units of a byte by specifying a number,
-in units of a kilobyte by specifying a number followed by
+можно указать в единицах байта, указав число,
+в единицах килобайта, указав число, за которым следует
 .Ql K
-or
+или
 .Ql k ,
-in units of a megabyte by specifying a number followed by
+в единицах мегабайта путем указания числа, за которым следует
 .Ql M
-or
+или
 .Ql m ,
-and in units of a gigabyte by specifying a number followed
-by
+и в единицах гигабайта путем указания числа, за которым следует
+по адресу
 .Ql G
-or
+или
 .Ql g .
-Sizes less than 512 bytes or greater than a gigabyte are ignored.
-This variable is processed by the
+Размеры меньше 512 байт или больше гигабайта игнорируются.
+Эта переменная обрабатывается командой
 .Xr getbsize 3
-function.
+функция.
 .It Ev COLUMNS
-The user's preferred width in column positions for the terminal.
-Utilities such as
+Предпочтительная для пользователя ширина столбцов терминала.
+Для этого используются такие утилиты, как
 .Xr ls 1
-and
+и
 .Xr who 1
-use this to format output into columns.
-If unset or empty, utilities will use an
+используется для форматирования вывода в столбцы.
+Если значение не задано или пусто, утилиты будут использовать
 .Xr ioctl 2
-call to ask the terminal driver for the width.
+чтобы запросить ширину у драйвера терминала.
 .It Ev EDITOR
-Default editor name.
+Имя редактора по умолчанию.
 .It Ev EXINIT
-A startup list of commands read by
+Стартовый список команд, считываемый
 .Xr ex 1
-and
+и
 .Xr vi 1 .
 .It Ev HOME
-A user's login directory, set by
+Каталог входа пользователя в систему, задаваемый
 .Xr login 1
-from the password file
+из файла паролей
 .Xr passwd 5 .
 .It Ev LANG
-This variable configures all programs which use
+Эта переменная настраивает все программы, использующие
 .Xr setlocale 3
-to use the specified locale unless the
+использовать указанную локаль, за исключением случаев, когда
 .Ev LC_*
-variables are set.
+переменные не установлены.
 .It Ev LC_ALL
-Overrides the values of
+Переопределяет значения
 .Ev LC_COLLATE ,
 .Ev LC_CTYPE ,
 .Ev LC_MESSAGES ,
 .Ev LC_MONETARY ,
 .Ev LC_NUMERIC ,
 .Ev LC_TIME
-and
+и
 .Ev LANG .
 .It Ev LC_COLLATE
-Locale to be used for ordering of strings.
+Язык, которое будет использоваться для упорядочивания строк.
 .It Ev LC_CTYPE
-Locale to be used for character classification
-(letter, space, digit, etc.) and for interpreting byte sequences as
-multibyte characters.
+Язык, используемое для классификации символов
+(буква, пробел, цифра и т. д.) и для интерпретации последовательностей байтов как
+многобайтовые символы.
 .It Ev LC_MESSAGES
-Locale to be used for diagnostic messages.
+Язык, который будет использоваться для диагностических сообщений.
 .It Ev LC_MONETARY
-Locale to be used for interpreting monetary input
-and formatting output.
+Язык, используемый для интерпретации ввода денежных знаков
+и форматирования выходных данных.
 .It Ev LC_NUMERIC
-Locale to be used for interpreting numeric input and
-formatting output.
+Язык, используемый для интерпретации ввода и форматирования числовых данных
+форматирования вывода.
 .It Ev LC_TIME
-Locale to be used for interpreting dates input and
-for formatting output.
+Язык, используемый для интерпретации вводимых дат и
+для форматирования выходных данных.
 .It Ev MAIL
-The location of the user's
-mailbox instead of the default in /var/mail,
-used by
+Место расположения пользовательского
+почтового ящика вместо используемого по умолчанию /var/mail,
+используемое
 .Xr mail 1 ,
 .Xr sh 1 ,
-and many other mail clients.
+и многих других почтовых клиентов.
 .It Ev MANPATH
-The sequence of directories, separated by colons, searched by
+Последовательность каталогов, разделенных двоеточиями, поиск по которым осуществляется
 .Xr man 1
-when looking for manual pages.
+при поиске страниц руководства.
 .It Ev NLSPATH
-List of directories to be searched for the message catalog referred to by
+Список каталогов для поиска каталога сообщений, на который ссылается
 .Ev LC_MESSAGES .
-See
+Смотреть
 .Xr catopen 3 .
 .It Ev PAGER
-Default paginator program.
-The program specified by this variable is used by
+Программа пагинатора по умолчанию.
+Программа, указанная этой переменной, используется
 .Xr mail 1 ,
 .Xr man 1 ,
 .Xr ftp 1 ,
-etc, to display information which is longer than the current display.
+и т. д. для отображения информации, которая длиннее, чем текущий экран.
 .It Ev PATH
-The sequence of directories, separated by colons, searched by
+Последовательность каталогов, разделенных двоеточиями, поиск по которым осуществляется
 .Xr csh 1 ,
 .Xr sh 1 ,
 .Xr system 3 ,
 .Xr execvp 3 ,
-etc, when looking for an executable file.
+и т.д. при поиске исполняемого файла.
 .Ev PATH
-is set to ``/usr/bin:/bin'' initially by
+первоначально устанавливается в ``/usr/bin:/bin''.
 .Xr login 1 .
 .It Ev POSIXLY_CORRECT
-When set to any value, this environment variable modifies the behaviour
-of certain commands to (mostly) execute in a strictly POSIX-compliant manner.
+При установке любого значения эта переменная окружающая среда изменяет поведение
+определенных команд, чтобы они (в основном) выполнялись строго POSIX-совместимым образом.
 .It Ev PRINTER
-The name of the default printer to be used by
+Имя принтера по умолчанию, который будет использоваться командой
 .Xr lpr 1 ,
 .Xr lpq 1 ,
-and
+и
 .Xr lprm 1 .
 .It Ev PWD
-The current directory pathname.
+Путь к текущему каталогу.
 .It Ev SHELL
-The full pathname of the user's login shell.
+Полный путь к оболочке входа пользователя в систему.
 .It Ev TERM
-The kind of terminal for which output is to be prepared.
-This information is used by commands, such as
+Тип терминала, для которого должен быть подготовлен вывод.
+Эта информация используется такими командами, как
 .Xr nroff 1 Pq Pa ports/textproc/groff
-or
+или
 .Xr plot 1
-which may exploit special terminal capabilities.
-See
+которые могут использовать специальные возможности терминала.
+Смотреть
 .Pa /usr/share/misc/termcap
 .Pq Xr termcap 5
-for a list of terminal types.
+для получения списка типов терминалов.
 .It Ev TERMCAP
-The string describing the terminal in
+Строка, описывающая терминал в
 .Ev TERM ,
-or, if
-it begins with a '/', the name of the termcap file.
-See
+или, если
+она начинается с '/', имя файла termcap.
+Смотреть
 .Ev TERMPATH
-below, and
+ниже, и
 .Xr termcap 5 .
 .It Ev TERMPATH
-A sequence of pathnames of termcap files, separated by colons or spaces,
-which are searched for terminal descriptions in the order listed.
-Having
-no
+Последовательность имен путей к файлам termcap, разделенных двоеточиями или пробелами,
+которые ищутся для описания терминалов в указанном порядке.
+Имея
+не
 .Ev TERMPATH
-is equivalent to a
+эквивалентен
 .Ev TERMPATH
-of
+из
 .Pa $HOME/.termcap:/etc/termcap .
 .Ev TERMPATH
-is ignored if
+игнорируется, если
 .Ev TERMCAP
-contains a full pathname.
+содержит полное имя пути.
 .It Ev TMPDIR
-The directory in which to store temporary files.
-Most applications use either
+Каталог, в котором хранятся временные файлы.
+Большинство приложений используют либо
 .Pa /tmp
-or
+либо
 .Pa /var/tmp .
-Setting this variable will make them use another directory.
+Установка этой переменной заставит их использовать другую директорию.
 .It Ev TZ
-The timezone to use when displaying dates.
-The normal format is a pathname relative to
+Часовой пояс, используемый при отображении дат.
+Обычный формат - это имя пути относительно
 .Pa /usr/share/zoneinfo .
-For example, the command
+Например, команда
 .Pp
 .Dl env TZ=America/Los_Angeles date
 .Pp
-displays the current time in California.
-See
+отображает текущее время в Калифорнии.
+Смотреть
 .Xr tzset 3
-for more information.
+для получения дополнительной информации.
 .It Ev USER
-The login name of the user.
-It is recommended that portable applications use
+Имя пользователя для входа в систему.
+Рекомендуется, чтобы портативные приложения использовали
 .Ev LOGNAME
-instead.
+вместо него.
 .El
 .Pp
-Further names may be placed in the environment by the
-.Ic export
-command and
+Другие имена могут быть помещены в окружающую среду с помощью программы
+.Ic экспорт 
+командой и
 .Ar name=value
-arguments in
+аргументы в
 .Xr sh 1 ,
-or by the
+или с помощью
 .Ic setenv
-command if you use
+если вы используете
 .Xr csh 1 .
-It is unwise to change certain
+Неразумно изменять некоторые
 .Xr sh 1
-variables that are frequently exported by
+переменные, которые часто экспортируются командой
 .Pa .profile
-files, such as
+файлы, такие как
 .Ev MAIL ,
 .Ev PS1 ,
 .Ev PS2 ,
-and
+и
 .Ev IFS ,
-unless you know what you are doing.
+если только вы не знаете, что делаете.
 .Pp
-The current environment variables can be printed with
+Текущие переменные окружающей среды могут быть выведены на печать с помощью команды
 .Xr env 1 ,
 .Xr set 1
-or
+или
 .Xr printenv 1
-in
+в
 .Xr sh 1
-and
+и
 .Xr env 1 ,
 .Xr printenv 1
-or the
+или
 .Cm printenv
-built-in command in
+built-in команда в
 .Xr csh 1 .
-.Sh SEE ALSO
+.Sh СМОТРЕТЬ ТАКЖЕ
 .Xr cd 1 ,
 .Xr csh 1 ,
 .Xr env 1 ,
@@ -307,7 +307,8 @@ built-in command in
 .Xr termcap 3 ,
 .Xr termcap 5
 .Sh HISTORY
-The
+Страница
 .Nm
-manual page appeared in
+руководства появилась в
 .At v7 .
+

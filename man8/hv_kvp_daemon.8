@@ -1,100 +1,99 @@
-.\" Copyright (c) 2014 Microsoft Corp.
-.\" All rights reserved.
+.\" Авторское право (c) 2014 корпорация Майкрософт.
+.\" Все права защищены.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
+.\" Распространение и использование в исходном и двоичном виде, с изменениями или без них,
+.\" разрешается при условии соблюдения следующих условий:
+.\" 1. Распространение исходного кода должно сохранять вышеуказанное уведомление об авторском праве,
+.\"    этот список условий и следующее отказ от гарантий.
+.\" 2. Распространение в двоичной форме должно воспроизводить вышеуказанное уведомление об авторском праве,
+.\"    этот список условий и следующее отказ от гарантий в
+.\"    документации и/или других материалах, прилагаемых к распространению.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" ЭТО ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ АВТОРОМ И УЧАСТНИКАМИ "КАК ЕСТЬ" И
+.\" ВСЯКИЕ ЯВНЫЕ ИЛИ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПОДРАЗУМЕВАЕМЫМИ
+.\" ГАРАНТИЯМИ ТОВАРНОЙ ПРИГОДНОСТИ И ПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ ЦЕЛИ,
+.\" ОТКЛЮЧАЮТСЯ. НИ ПРИ КАКИХ ОБСТОЯТЕЛЬСТВАХ АВТОР ИЛИ УЧАСТНИКИ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ
+.\" ЗА ЛЮБОЙ ПРЯМОЙ, КОСВЕННЫЙ, СЛУЧАЙНЫЙ, ОСОБЫЙ, ПРИМЕРНЫЙ ИЛИ ПОСЛЕДОВАТЕЛЬНЫЙ УЩЕРБ
+.\" (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ЗАТРАТЫ НА ЗАМЕНУ ТОВАРОВ ИЛИ УСЛУГ; ПОТЕРИ
+.\" ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПРЕРЫВАНИЕ БИЗНЕСА)
+.\" ОДНАКО ВЫЗВАННЫЙ И ПО ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО В ДОГОВОРЕ,
+.\" СТРОГОЙ ОТВЕТСТВЕННОСТИ, ИЛИ ДЕЛИКТЕ (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНАЧЕ) ВОЗНИКАЮЩИЙ В ЛЮБОМ СЛУЧАЕ
+.\" ИЗ-ЗА ИСПОЛЬЗОВАНИЯ ЭТОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ УВЕДОМЛЕНИЕ О ВОЗМОЖНОСТИ ТАКОГО УЩЕРБА.
 .\"
 .\" $FreeBSD$
-.Dd October 27, 2014
+.Dd 27 октября 2014 года
 .Dt HV_KVP_DAEMON 8
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm hv_kvp_daemon
-.Nd Hyper-V Key Value Pair Daemon
-.Sh SYNOPSIS
+.Nd Демон пар ключ-значение Hyper-V
+.Sh СИНТАКСИС
 .Nm
 .Op Fl dn
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Демон
 .Nm
-daemon provides the ability to store, retrieve, modify and delete 
-Key Value pairs for
+обеспечивает возможность хранения, извлечения, изменения и удаления 
+
+(Продолжение следует...)Ключевые пары для
 .Fx
-guest partitions running on Hyper-V.
+гостевых разделов, работающих на Hyper-V.
 .Pp
-Hyper-V allows administrators to store custom metadata in the form
-of Key Value pairs inside the
+Hyper-V позволяет администраторам хранить пользовательские метаданные в виде
+ключевых пар внутри
 .Fx
-guest partition.
-Administrators can
-use Windows Powershell scripts to add, read, modify and delete such
-Key Value pairs.
+гостевого раздела.
+Администраторы могут
+использовать скрипты Windows Powershell для добавления, чтения, изменения и удаления таких
+ключевых пар.
 .Pp
-The
+Демон
 .Nm
-accepts Key Value pair management requests from the
+принимает запросы на управление ключевыми парами от
 .Xr hv_utils 4
-driver and performs the actual metadata management on the file-system.
+драйвера и выполняет фактическое управление метаданными в файловой системе.
 .Pp
-The same daemon and driver combination is also used to set and get
-IP addresses from a
+Та же комбинация демона и драйвера также используется для установки и получения
+IP-адресов от
 .Fx
-guest. 
+гостя.
 .Pp
-The set functionality is particularly
-useful when the
+Функционал установки особенно
+полезен, когда
 .Fx
-guest is assigned a static IP address and is failed
-over from one Hyper-V host to another.
-After failover, Hyper-V uses the set IP
-functionality to automatically
-update the
+гостевой раздел назначен статический IP-адрес и он переведен
+с одного хоста Hyper-V на другой.
+После переноса, Hyper-V использует функционал установки IP
+для автоматического
+обновления IP-адреса
 .Fx
-guest's IP address to its original static value.
+гостя до его первоначального статического значения.
 .Pp
-On the other hand, the get IP functionality is used to update the guest IP
-address in the Hyper-V management console window.
+С другой стороны, функционал получения IP используется для обновления гостевого IP-адреса
+в окне консоли управления Hyper-V.
 .Pp
-The options are as follows:
+Опции следующие:
 .Bl -tag -width indent
 .It Fl d
-Run as regular process instead of a daemon for debugging purpose.
+Запускать как обычный процесс вместо демона для отладки.
 .It Fl n
-Generate debugging output.
+Генерировать вывод отладки.
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr hv_vmbus 4 ,
 .Xr hv_utils 4 ,
 .Xr hv_netvsc 4 ,
 .Xr hv_storvsc 4 ,
 .Xr hv_ata_pci_disengage 4 ,
 .Xr hv_kvp 4
-.Sh HISTORY
-Support for Hyper-V in the form of ports was first released in September 2013.
-The daemon was developed through a joint effort between Citrix Inc., 
-Microsoft Corp. and Network Appliance Inc..
-.Sh AUTHORS
+.Sh ИСТОРИЯ
+Поддержка Hyper-V в виде портов была впервые выпущена в сентябре 2013 года.
+Демон был разработан совместными усилиями Citrix Inc.,
+Microsoft Corp. и Network Appliance Inc..
+.Sh АВТОРЫ
 .An -nosplit
+Поддержка
 .Fx
-support for
+для
 .Nm
-was first added by
-.An Microsoft BSD Integration Services Team Aq Mt bsdic@microsoft.com .
+была впервые добавлена командой Microsoft BSD Integration Services Aq Mt bsdic@microsoft.com .

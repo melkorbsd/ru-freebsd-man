@@ -24,48 +24,47 @@
 .Dd April 6, 2022
 .Dt SMBFS 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm smbfs
 .Nd "SMB FS"
-.Sh SYNOPSIS
-To compile this driver into the kernel,
-place the following lines in your
-kernel configuration file:
+.Sh КРАТКИЙ ОБЗОР
+Чтобы скомпилировать этот драйвер в ядро,
+поместите следующие строки в свой
+файл конфигурации ядра:
 .Bd -ragged -offset indent
 .Cd "option NETSMB"
 .Ed
 .Pp
-Alternatively, to load the driver as a
-module at boot time, place the following line in
+Альтернативно, можно загрузить драйвер как
+модуль во время загрузки, поместите следующую строку в
 .Xr loader.conf 5 :
 .Bd -literal -offset indent
 smbfs_load="YES"
 .Ed
-.Sh DESCRIPTION
-The SMB driver is an implementation of the CIFS (Common Internet Filesystem)
-network protocol.
+.Sh ОПИСАНИЕ
+Драйвер SMB является реализацией CIFS (Common Internet Filesystem).
+сетевой протокол.
 .Pp
 .Bf -symbolic
-The
 .Nm
-filesystem driver supports only the obsolete SMBv1 protocol.
+Драйвер файловой системы поддерживает только устаревший протокол SMBv1.
 .Nm
-has known bugs and likely has security vulnerabilities.
+имеющий известные ошибки и, вероятно, имеет уязвимости безопасности
 .Nm
-and userspace counterparts
+и аналоги в пользовательском пространстве
 .Xr smbutil 1
-and
+и
 .Xr mount_smbfs 8
-may be removed from a future version of
+может быть удален из будущей версии
 .Fx .
-Users are advised to evaluate the
+Вместо этого пользователям рекомендуется оценить
 .Pa sysutils/fusefs-smbnetfs
-port instead.
+порт.
 .Ef
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr smbutil 1 ,
 .Xr mount_smbfs 8
-.Sh STANDARDS
+.Sh СТАНДАРТЫ
 .Rs
 .%U https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-cifs/
 .%T Common Internet File System (CIFS) Protocol
@@ -75,22 +74,20 @@ port instead.
 .Pp
 .Rs
 .%U https://tools.ietf.org/html/draft-heizer-cifs-v1-spec-00
-.%T Common Internet File System Protocol (CIFS/1.0)
-.%D June 13, 1996
+.%T Общий протокол файловой системы Интернета (CIFS/1.0)
+.%D 13 июня 1996 года
 .%A I. Heizer
 .%A P. Leach
 .%A D. Perry
 .Re
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
 .Nm
-device driver first appeared in
+драйвер устройства впервые появился в
 .Fx 4.4 .
-.Sh AUTHORS
+.Sh АВТОРЫ
 .An -nosplit
-The
 .Nm
-device driver was written by
-.An Boris Popov Aq Mt bp@FreeBSD.org .
-The manual page was contributed by
-.An Gordon Bergling Aq Mt gbe@FreeBSD.org .
+драйвер устройства был написан
+.An Борис Попов, известный как Mt bp@FreeBSD.org .
+Страница руководства была предоставлена ​​пользователем
+.An Гордон Берглинг, он же Mt gbe@FreeBSD.org .

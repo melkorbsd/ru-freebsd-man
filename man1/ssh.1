@@ -37,10 +37,10 @@
 .Dd $Mdocdate: July 23 2023 $
 .Dt SSH 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm ssh
-.Nd OpenSSH remote login client
-.Sh SYNOPSIS
+.Nd клиент удаленного входа OpenSSH
+.Sh СИНТАКСИС
 .Nm ssh
 .Op Fl 46AaCfGgKkMNnqsTtVvXxYy
 .Op Fl B Ar bind_interface
@@ -67,112 +67,111 @@
 .Op Fl w Ar local_tun Ns Op : Ns Ar remote_tun
 .Ar destination
 .Op Ar command Op Ar argument ...
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 .Nm
-(SSH client) is a program for logging into a remote machine and for
-executing commands on a remote machine.
-It is intended to provide secure encrypted communications between
-two untrusted hosts over an insecure network.
-X11 connections, arbitrary TCP ports and
+(SSH клиент) это программа для входа на удаленную машину и 
+выполнения команд на удаленной машине.
+Она предназначена для обеспечения безопасной шифрованной связи между 
+двумя ненадежными хостами через небезопасную сеть.
+X11 подключения, произвольные TCP-порты и 
 .Ux Ns -domain
-sockets can also be forwarded over the secure channel.
+сокеты домена Unix также могут быть перенаправлены через безопасный канал.
 .Pp
 .Nm
-connects and logs into the specified
+подключается и входит на указанный
 .Ar destination ,
-which may be specified as either
+который может быть указан как
 .Sm off
-.Oo user @ Oc hostname
+.Oo пользователь @ Oc hostname
 .Sm on
-or a URI of the form
+или URI в виде
 .Sm off
-.No ssh:// Oo user @ Oc hostname Op : port .
+.No ssh:// Oo пользователь @ Oc hostname Op : port .
 .Sm on
-The user must prove
-their identity to the remote machine using one of several methods
-(see below).
+Пользователь должен доказать
+свою личность на удаленной машине, используя один из нескольких методов 
+(см. ниже).
 .Pp
-If a
+Если
 .Ar command
-is specified,
-it will be executed on the remote host instead of a login shell.
-A complete command line may be specified as
+указана,
+она будет выполнена на удаленном хосте вместо входа в оболочку.
+Полная командная строка может быть указана как
 .Ar command ,
-or it may have additional arguments.
-If supplied, the arguments will be appended to the command, separated by
-spaces, before it is sent to the server to be executed.
+или она может иметь дополнительные аргументы.
+Если указаны аргументы, они будут добавлены к команде, разделенные
+пробелами, перед отправкой на сервер для выполнения.
 .Pp
-The options are as follows:
+Опции следующие:
 .Pp
 .Bl -tag -width Ds -compact
 .It Fl 4
-Forces
+Принудительное
 .Nm
-to use IPv4 addresses only.
+использование только IPv4-адресов.
 .Pp
 .It Fl 6
-Forces
+Принудаительное
 .Nm
-to use IPv6 addresses only.
+использование только IPv6-адресов.
 .Pp
 .It Fl A
-Enables forwarding of connections from an authentication agent such as
+Включает перенаправление соединений от агента аутентификации, такого как
 .Xr ssh-agent 1 .
-This can also be specified on a per-host basis in a configuration file.
+Это также можно указать для каждого хоста в файле конфигурации.
 .Pp
-Agent forwarding should be enabled with caution.
-Users with the ability to bypass file permissions on the remote host
-(for the agent's
-.Ux Ns -domain
-socket) can access the local agent through the forwarded connection.
-An attacker cannot obtain key material from the agent,
-however they can perform operations on the keys that enable them to
-authenticate using the identities loaded into the agent.
-A safer alternative may be to use a jump host
+Перенаправление агента следует включать осторожно.
+Пользователи с возможностью обойти права доступа к файлам на удаленном хосте
+(для агента
+.Ux Ns -домена
+сокета) могут получить доступ к локальному агенту через перенаправленное соединение.
+Атакующий не может получить материал ключей из агента,
+однако он может выполнять операции с ключами, позволяющие ему аутентифицироваться с использованием идентификаторов, загруженных в агент.
+Более безопасной альтернативой может быть использование прыжкового хоста (см.
 (see
 .Fl J ) .
 .Pp
 .It Fl a
-Disables forwarding of the authentication agent connection.
+Отключает перенаправление соединения агента аутентификации.
 .Pp
 .It Fl B Ar bind_interface
-Bind to the address of
+Привязывает к адресу интерфейса
 .Ar bind_interface
-before attempting to connect to the destination host.
-This is only useful on systems with more than one address.
+перед попыткой подключения к хосту назначения.
+Это полезно только на системах с более чем одним адресом.
 .Pp
 .It Fl b Ar bind_address
-Use
+Использует
 .Ar bind_address
-on the local machine as the source address
-of the connection.
-Only useful on systems with more than one address.
+на локальной машине в качестве исходного адреса 
+соединения.
+Полезно только на системах с более чем одним адресом.
 .Pp
 .It Fl C
-Requests compression of all data (including stdin, stdout, stderr, and
-data for forwarded X11, TCP and
-.Ux Ns -domain
-connections).
-The compression algorithm is the same used by
+Запрашивает сжатие всех данных (включая stdin, stdout, stderr, и
+данные для перенаправленных X11, TCP и
+.Ux Ns -домена
+соединений).
+Алгоритм сжатия такой же, как используется в
 .Xr gzip 1 .
-Compression is desirable on modem lines and other
-slow connections, but will only slow down things on fast networks.
-The default value can be set on a host-by-host basis in the
-configuration files; see the
+Сжатие желательно на модемных линиях и других 
+медленных соединениях, но оно только замедлит работу на быстрых сетях.
+Значение по умолчанию можно установить для каждого хоста в
+файлах конфигурации; см.
 .Cm Compression
-option in
+опцию в
 .Xr ssh_config 5 .
 .Pp
 .It Fl c Ar cipher_spec
-Selects the cipher specification for encrypting the session.
+Выбор спецификации шифрования для шифрования сессии.
 .Ar cipher_spec
-is a comma-separated list of ciphers
-listed in order of preference.
-See the
+это список шифров, разделенных запятыми,
+перечисленных в порядке предпочтения.
+См
 .Cm Ciphers
-keyword in
+ключевое слово в
 .Xr ssh_config 5
-for more information.
+для получения дополнительной информации.
 .Pp
 .It Fl D Xo
 .Sm off
@@ -180,171 +179,171 @@ for more information.
 .Ar port
 .Sm on
 .Xc
-Specifies a local
+Указывает локальный
 .Dq dynamic
-application-level port forwarding.
-This works by allocating a socket to listen to
+порт прикладного уровня для перенаправления.
+Это работает путем выделения сокета для прослушивани
 .Ar port
-on the local side, optionally bound to the specified
+с локальной стороны, опционально привязанного к указанному 
 .Ar bind_address .
-Whenever a connection is made to this port, the
-connection is forwarded over the secure channel, and the application
-protocol is then used to determine where to connect to from the
-remote machine.
-Currently the SOCKS4 and SOCKS5 protocols are supported, and
+Когда соединение устанавливается с этим портом, 
+соединение перенаправляется через безопасный канал, а затем применяется 
+протокол приложения для определения, куда подключаться с 
+удаленной машины.
+В настоящее времяe SOCKS4 и SOCKS5 протоколы поддерживаются,и
 .Nm
-will act as a SOCKS server.
-Only root can forward privileged ports.
-Dynamic port forwardings can also be specified in the configuration file.
+будет действовать как SOCKS сервер.
+Только root может перенаправлять привилегированные порты.
+Динамические переадресации портов также могут быть указаны в файле конфигурации.
 .Pp
-IPv6 addresses can be specified by enclosing the address in square brackets.
-Only the superuser can forward privileged ports.
-By default, the local port is bound in accordance with the
+IPv6 адреса могут быть указаны, заключив адрес в квадратные скобки.
+Только суперпользователь может перенаправлять привилегированные порты.
+По умолчанию локальный порт привязывается в соответствии с
 .Cm GatewayPorts
-setting.
-However, an explicit
+настройкой.
+Однако явно укзанный
 .Ar bind_address
-may be used to bind the connection to a specific address.
+может быть использован для привязки соединения к определенному адресу.
 The
 .Ar bind_address
-of
+со
 .Dq localhost
-indicates that the listening port be bound for local use only, while an
-empty address or
+значением указывает, что прослушивающий порт привязан только для локального использования, в то время как 
+пустой адрес или
 .Sq *
-indicates that the port should be available from all interfaces.
+указывает, что порт должен быть доступен со всех интерфейсов.
 .Pp
 .It Fl E Ar log_file
-Append debug logs to
+Добавляет отладочные журналы в
 .Ar log_file
-instead of standard error.
+вместо стандартного вывода ошибок.
 .Pp
 .It Fl e Ar escape_char
-Sets the escape character for sessions with a pty (default:
+Устанавливает символ экранирования для сеансов с pty (по умолчанию:
 .Ql ~ ) .
-The escape character is only recognized at the beginning of a line.
-The escape character followed by a dot
+Символ экранирования распознается только в начале строки.
+Символ экранирования, за которым следует точка
 .Pq Ql \&.
-closes the connection;
-followed by control-Z suspends the connection;
-and followed by itself sends the escape character once.
-Setting the character to
+закрывает соединение;
+за которым следует control-Z приостанавливает соединение;
+и за которым следует сам символ экранирования отправляет его один раз.
+Установка символа в
 .Dq none
-disables any escapes and makes the session fully transparent.
+отключает любые экранирования и делает сеанс полностью прозрачным.
 .Pp
 .It Fl F Ar configfile
-Specifies an alternative per-user configuration file.
-If a configuration file is given on the command line,
-the system-wide configuration file
+Указывает альтернативный файл конфигурации для каждого пользователя.
+Если файл конфигурации указан в командной строке,
+общесистемный файл конфигурации
 .Pq Pa /etc/ssh/ssh_config
-will be ignored.
-The default for the per-user configuration file is
+будет проигнорирован.
+По умолчанию для файла конфигурации каждого пользователя используется
 .Pa ~/.ssh/config .
-If set to
+Если установлено
 .Dq none ,
-no configuration files will be read.
+файлы конфигурации не будут читаться.
 .Pp
 .It Fl f
-Requests
+Запрашивает у
 .Nm
-to go to background just before command execution.
-This is useful if
+перейти в фоновый режим непосредственно перед выполнением команды.
+Это полезно, если
 .Nm
-is going to ask for passwords or passphrases, but the user
-wants it in the background.
-This implies
+должен запросить пароли или фразы-пароли, но пользователь
+хочет, чтобы это произошло в фоновом режиме.
+Это подразумевает использование
 .Fl n .
-The recommended way to start X11 programs at a remote site is with
-something like
+Рекомендуемый способ запуска программ X11 на удаленном сайте - это 
+что-то вроде
 .Ic ssh -f host xterm .
 .Pp
-If the
+Если
 .Cm ExitOnForwardFailure
-configuration option is set to
+конфигурация установлена в
 .Dq yes ,
-then a client started with
+то клиент, запущенный с
 .Fl f
-will wait for all remote port forwards to be successfully established
-before placing itself in the background.
-Refer to the description of
+будет ждать успешного установления всех удаленных перенаправлений портов 
+перед тем, как перейти в фоновый режим.
+См. описание 
 .Cm ForkAfterAuthentication
-in
+в
 .Xr ssh_config 5
-for details.
+для получения дополнительной информации.
 .Pp
 .It Fl G
-Causes
+Заставляет
 .Nm
-to print its configuration after evaluating
+вывести свою конфигурацию после оценки 
 .Cm Host
-and
+и
 .Cm Match
-blocks and exit.
+блоков и выйти.
 .Pp
 .It Fl g
-Allows remote hosts to connect to local forwarded ports.
-If used on a multiplexed connection, then this option must be specified
-on the master process.
+Позволяет удаленным хостам подключаться к локальным перенаправленным портам.
+Если используется на мультиплексированном соединении, то эта опция должна быть указана на 
+основном процессе.
 .Pp
 .It Fl I Ar pkcs11
-Specify the PKCS#11 shared library
+Указывает PKCS#11 общую библиотеку
 .Nm
-should use to communicate with a PKCS#11 token providing keys for user
-authentication.
+должен использовать для общения с токеном PKCS#11, предоставляющим ключи для 
+аутентификации пользователя.
 .Pp
 .It Fl i Ar identity_file
-Selects a file from which the identity (private key) for
-public key authentication is read.
-You can also specify a public key file to use the corresponding
-private key that is loaded in
+Выбирает файл, из которого считывается идентификатор (личный ключ) для 
+аутентификации по открытому ключу.
+Вы также можете указать файл открытого ключа для использования соответствующего 
+личного ключа, загруженного в 
 .Xr ssh-agent 1
-when the private key file is not present locally.
-The default is
+если файл личного ключа отсутствует локально.
+По умолчанию используются
 .Pa ~/.ssh/id_rsa ,
 .Pa ~/.ssh/id_ecdsa ,
 .Pa ~/.ssh/id_ecdsa_sk ,
 .Pa ~/.ssh/id_ed25519 ,
 .Pa ~/.ssh/id_ed25519_sk
-and
+и
 .Pa ~/.ssh/id_dsa .
-Identity files may also be specified on
-a per-host basis in the configuration file.
-It is possible to have multiple
+Файлы идентификаторов также могут быть указаны на 
+основе хоста в файле конфигурации.
+Можно указать несколько
 .Fl i
-options (and multiple identities specified in
-configuration files).
-If no certificates have been explicitly specified by the
+опций (и несколько идентификаторов, указанных в файлах 
+конфигурации).
+Если сертификаты не были явно указаны
 .Cm CertificateFile
-directive,
+дерективой,
 .Nm
-will also try to load certificate information from the filename obtained
-by appending
+также попытается загрузить информацию о сертификате из файла, полученного
+путем добавления 
 .Pa -cert.pub
-to identity filenames.
+к именам файлов
 .Pp
 .It Fl J Ar destination
-Connect to the target host by first making an
+Подключение к целевому хосту, сначала устанавливая
 .Nm
-connection to the jump host described by
+соединение с промежуточным хостом, описанным в
 .Ar destination
-and then establishing a TCP forwarding to the ultimate destination from
-there.
-Multiple jump hops may be specified separated by comma characters.
-This is a shortcut to specify a
+а затем установление TCP-переадресации к конечному пункту назначения
+оттуда.
+Можно указать несколько промежуточных хостов, разделяя их запятыми.
+Это является сокращением для указания
 .Cm ProxyJump
-configuration directive.
-Note that configuration directives supplied on the command-line generally
-apply to the destination host and not any specified jump hosts.
-Use
+директивы конфигурации.
+Обратите внимание, что директивы конфигурации, указанные в командной строке, обычно 
+применяются к целевому хосту, а не к указанным промежуточным хостам.
+Используйте
 .Pa ~/.ssh/config
-to specify configuration for jump hosts.
+Для указания конфигурации для промежуточных хостов 
 .Pp
 .It Fl K
-Enables GSSAPI-based authentication and forwarding (delegation) of GSSAPI
-credentials to the server.
+Включает аутентификацию на основе GSSAPI и передачу (делегирование)
+учетных данных GSSAPI на сервер
 .Pp
 .It Fl k
-Disables forwarding (delegation) of GSSAPI credentials to the server.
+Отключает передачу (делегирование) учетных данных GSSAPI на сервер.
 .Pp
 .It Fl L Xo
 .Sm off
@@ -368,137 +367,137 @@ Disables forwarding (delegation) of GSSAPI credentials to the server.
 .Ar local_socket : remote_socket
 .Sm on
 .Xc
-Specifies that connections to the given TCP port or Unix socket on the local
-(client) host are to be forwarded to the given host and port, or Unix socket,
-on the remote side.
-This works by allocating a socket to listen to either a TCP
+Указывает, что соединения с заданным TCP-портом или Unix-сокетом на локальном
+(клиентском) хосте должны быть перенаправлены на указанный хост и порт или Unix-сокет
+на удаленной стороне.
+Это работает путем выделения сокета для прослушивания TCP
 .Ar port
-on the local side, optionally bound to the specified
+на локальной стороне, опционально привязанного к указанному
 .Ar bind_address ,
-or to a Unix socket.
-Whenever a connection is made to the local port or socket, the
-connection is forwarded over the secure channel, and a connection is
-made to either
+или к Unix-сокету.
+Когда устанавливается соединение с локальным портом или сокетом, 
+соединение перенаправляется через безопасный канал, и устанавливается 
+соединение с
 .Ar host
-port
+портом
 .Ar hostport ,
-or the Unix socket
+или с Unix-сокетом
 .Ar remote_socket ,
-from the remote machine.
+с удаленной машины.
 .Pp
-Port forwardings can also be specified in the configuration file.
-Only the superuser can forward privileged ports.
-IPv6 addresses can be specified by enclosing the address in square brackets.
+Переадресации портов также могут быть указаны в файле конфигурации.
+Только суперпользователь может перенаправлять привилегированные порты.
+IPv6-адреса могут быть указаны, заключив адрес в квадратные скобки.
 .Pp
-By default, the local port is bound in accordance with the
+По умолчанию локальный порт привязывается в соответствии с
 .Cm GatewayPorts
-setting.
-However, an explicit
+настройкой.
+Однако явно указанный
 .Ar bind_address
-may be used to bind the connection to a specific address.
+может быть использован для привязки соединения к определенному адресу.
 The
 .Ar bind_address
-of
+со значением
 .Dq localhost
-indicates that the listening port be bound for local use only, while an
-empty address or
+указывает, что прослушивающий порт привязан только для локального использования, в то время как
+пустой адрес или
 .Sq *
-indicates that the port should be available from all interfaces.
+указывает, что порт должен быть доступен со всех интерфейсов.
 .Pp
 .It Fl l Ar login_name
-Specifies the user to log in as on the remote machine.
-This also may be specified on a per-host basis in the configuration file.
+Указывает пользователя для входа на удаленной машине.
+Это также может быть указано на основе хоста в файле конфигурации.
 .Pp
 .It Fl M
-Places the
+Помещает
 .Nm
-client into
+клиент в
 .Dq master
-mode for connection sharing.
-Multiple
+режим для общего использования соединения.
+Несколько
 .Fl M
-options places
+опций поммещают
 .Nm
-into
+в
 .Dq master
-mode but with confirmation required using
+режим но требуется подтверждение с помощью 
 .Xr ssh-askpass 1
-before each operation that changes the multiplexing state
-(e.g. opening a new session).
-Refer to the description of
+перед каждой операцией, изменяющей состояние мультиплексирования 
+(например, открытие новой сессии).
+См. описание 
 .Cm ControlMaster
-in
+в
 .Xr ssh_config 5
-for details.
+для получения дополнительной информации.
 .Pp
 .It Fl m Ar mac_spec
-A comma-separated list of MAC (message authentication code) algorithms,
-specified in order of preference.
-See the
+Список алгоритмов MAC (код аутентификации сообщений), разделенных запятыми, 
+указанных в порядке предпочтения.
+См.
 .Cm MACs
-keyword in
+ключевое слово в
 .Xr ssh_config 5
-for more information.
+для получения дополнительной информации.
 .Pp
 .It Fl N
-Do not execute a remote command.
-This is useful for just forwarding ports.
-Refer to the description of
+Не выполнять удаленную команду.
+Это полезно только для перенаправления портов.
+См. описание 
 .Cm SessionType
-in
+в
 .Xr ssh_config 5
-for details.
+для получения дополнительной информации.
 .Pp
 .It Fl n
-Redirects stdin from
+Перенаправляет stdin из 
 .Pa /dev/null
-(actually, prevents reading from stdin).
-This must be used when
+(фактически, предотвращает чтение из stdin).
+Это должно использоваться при 
 .Nm
-is run in the background.
-A common trick is to use this to run X11 programs on a remote machine.
-For example,
+запуске в фоновом режиме.
+Частый трюк - использовать это для запуска программ X11 на удаленной машине.
+Например,
 .Ic ssh -n shadows.cs.hut.fi emacs &
-will start an emacs on shadows.cs.hut.fi, and the X11
-connection will be automatically forwarded over an encrypted channel.
-The
+запустит emacs на shadows.cs.hut.fi, и соединение X11 будет 
+автоматически перенаправлено через зашифрованный канал.
+Программа 
 .Nm
-program will be put in the background.
-(This does not work if
+будет запущена в фоновом режиме.
+(Это не работает, если 
 .Nm
-needs to ask for a password or passphrase; see also the
+должен запросить пароль или фразу-пароль; также см. 
 .Fl f
-option.)
-Refer to the description of
+опцию.)
+См. описание 
 .Cm StdinNull
-in
+в
 .Xr ssh_config 5
-for details.
+для получения дополнительной информации.
 .Pp
 .It Fl O Ar ctl_cmd
-Control an active connection multiplexing master process.
-When the
+Управляет активным процессом мастер-мультиплексирования соединений.
+Когда
 .Fl O
-option is specified, the
+указана опция,
 .Ar ctl_cmd
-argument is interpreted and passed to the master process.
-Valid commands are:
+аргумент интерпретируется и передается процессу-мастеру.
+Допустимые команды:
 .Dq check
-(check that the master process is running),
+(проверить, что процесс-мастер работает),
 .Dq forward
-(request forwardings without command execution),
+(запросить перенаправление без выполнения команды),
 .Dq cancel
-(cancel forwardings),
+(отменить перенаправления),
 .Dq exit
-(request the master to exit), and
+(запросить завершение работы мастера) и
 .Dq stop
-(request the master to stop accepting further multiplexing requests).
+(запросить мастера прекратить принимать дальнейшие запросы на мультиплексирование).
 .Pp
 .It Fl o Ar option
-Can be used to give options in the format used in the configuration file.
-This is useful for specifying options for which there is no separate
-command-line flag.
-For full details of the options listed below, and their possible values, see
+Может использоваться для указания параметров в формате, используемом в файле конфигурации.
+Это полезно для указания параметров, для которых нет отдельного флага 
+командной строки.
+Для полной информации о перечисленных ниже параметрах и их возможных значениях смотрите
 .Xr ssh_config 5 .
 .Pp
 .Bl -tag -width Ds -offset indent -compact
@@ -595,58 +594,58 @@ For full details of the options listed below, and their possible values, see
 .El
 .Pp
 .It Fl P Ar tag
-Specify a tag name that may be used to select configuration in
+Укажите имя тега, которое может использоваться для выбора конфигурации в
 .Xr ssh_config 5 .
-Refer to the
+Смотрите
 .Cm Tag
-and
+и
 .Cm Match
-keywords in
+ключевые слова в
 .Xr ssh_config 5
-for more information.
+для получения дополнительной информации.
 .It Fl p Ar port
-Port to connect to on the remote host.
-This can be specified on a
-per-host basis in the configuration file.
+Порт для подключения к удаленному хосту.
+Это можно указать на основе
+каждого хоста в файле конфигурации.
 .Pp
 .It Fl Q Ar query_option
-Queries for the algorithms supported by one of the following features:
+Запросы для поддерживаемых алгоритмов одной из следующих функций:
 .Ar cipher
-(supported symmetric ciphers),
+(поддерживаемые симметричные шифры),
 .Ar cipher-auth
-(supported symmetric ciphers that support authenticated encryption),
+(поддерживаемые симметричные шифры, поддерживающие аутентификацию),
 .Ar help
-(supported query terms for use with the
+(поддерживаемые термины запросов для использования с
 .Fl Q
-flag),
+флагом),
 .Ar mac
-(supported message integrity codes),
+(поддерживаемые коды целостности сообщений),
 .Ar kex
-(key exchange algorithms),
+(алгоритмы обмена ключами),
 .Ar key
-(key types),
+(типы ключей),
 .Ar key-ca-sign
-(valid CA signature algorithms for certificates),
+(действительные алгоритмы подписи CA для сертификатов),
 .Ar key-cert
-(certificate key types),
+(типы ключей сертификатов),
 .Ar key-plain
-(non-certificate key types),
+(не сертифицированные типы ключей),
 .Ar key-sig
-(all key types and signature algorithms),
+(все типы ключей и алгоритмы подписи),
 .Ar protocol-version
-(supported SSH protocol versions), and
+(поддерживаемые версии протокола SSH) и
 .Ar sig
-(supported signature algorithms).
-Alternatively, any keyword from
+(поддерживаемые алгоритмы подписи).
+В качестве альтернативы любое ключевое слово из
 .Xr ssh_config 5
-or
+или
 .Xr sshd_config 5
-that takes an algorithm list may be used as an alias for the corresponding
+которое принимает список алгоритмов, в качестве псевдонима для соответствующей
 query_option.
 .Pp
 .It Fl q
-Quiet mode.
-Causes most warning and diagnostic messages to be suppressed.
+Тихий режим.
+Причиной большинства предупреждений и диагностических сообщений будет подавляться.
 .Pp
 .It Fl R Xo
 .Sm off
@@ -676,903 +675,903 @@ Causes most warning and diagnostic messages to be suppressed.
 .Ar port
 .Sm on
 .Xc
-Specifies that connections to the given TCP port or Unix socket on the remote
-(server) host are to be forwarded to the local side.
+Указывает, что соединения с заданным TCP-портом или Unix-сокетом на удаленном
+(серверном) хосте должны быть перенаправлены на локальную сторону.
 .Pp
-This works by allocating a socket to listen to either a TCP
+Это работает путем выделения сокета для прослушивания либо TCP, 
 .Ar port
 or to a Unix socket on the remote side.
-Whenever a connection is made to this port or Unix socket, the
-connection is forwarded over the secure channel, and a connection
-is made from the local machine to either an explicit destination specified by
+либо Unix-сокета на удаленной стороне.
+Когда устанавливается соединение с этим портом или Unix-сокетом, 
+соединение перенаправляется через защищенный канал, и устанавливается соединение
+с локальной машиной либо с явно указанным назначением, заданным параметрами
 .Ar host
-port
+порта
 .Ar hostport ,
-or
+или
 .Ar local_socket ,
-or, if no explicit destination was specified,
+или, если явное назначение не было указано,
 .Nm
-will act as a SOCKS 4/5 proxy and forward connections to the destinations
-requested by the remote SOCKS client.
+будет действовать как прокси SOCKS 4/5 и перенаправлять соединения к назначениям, запрошенным
+удаленным клиентом SOCKS.
 .Pp
-Port forwardings can also be specified in the configuration file.
-Privileged ports can be forwarded only when
-logging in as root on the remote machine.
-IPv6 addresses can be specified by enclosing the address in square brackets.
+Перенаправления портов также могут быть указаны в файле конфигурации.
+Привилегированные порты могут быть перенаправлены только 
+при входе в систему под root на удаленной машине.
+IPv6-адреса могут быть указаны, заключив адрес в квадратные скобки.
 .Pp
-By default, TCP listening sockets on the server will be bound to the loopback
-interface only.
-This may be overridden by specifying a
+По умолчанию TCP-слушающие сокеты на сервере будут привязаны только к 
+интерфейсу обратной связи.
+Это может быть изменено путем указания
 .Ar bind_address .
-An empty
+Пустое значение
 .Ar bind_address ,
-or the address
+или адрес
 .Ql * ,
-indicates that the remote socket should listen on all interfaces.
-Specifying a remote
+указывает, что удаленный сокет должен прослушивать все интерфейсы.
+Указание удаленного
 .Ar bind_address
-will only succeed if the server's
+будет успешным только в том случае, если сервера
 .Cm GatewayPorts
-option is enabled (see
+опция включена (см.
 .Xr sshd_config 5 ) .
 .Pp
-If the
+Если
 .Ar port
-argument is
+аргумент это
 .Ql 0 ,
-the listen port will be dynamically allocated on the server and reported
-to the client at run time.
-When used together with
+прослушиваемый порт будет динамически выделен на сервере и сообщен 
+клиенту во время выполнения.
+При использовании вместе с
 .Ic -O forward ,
-the allocated port will be printed to the standard output.
+выделенный порт будет напечатан на стандартный вывод.
 .Pp
 .It Fl S Ar ctl_path
-Specifies the location of a control socket for connection sharing,
-or the string
+Указывает расположение контрольного сокета для совместного использования соединения 
+или строку
 .Dq none
-to disable connection sharing.
-Refer to the description of
+для отключения совместного использования соединения.
+Смотрите описание
 .Cm ControlPath
-and
+и
 .Cm ControlMaster
-in
+в
 .Xr ssh_config 5
-for details.
+для получения дополнительной информации.
 .Pp
 .It Fl s
-May be used to request invocation of a subsystem on the remote system.
-Subsystems facilitate the use of SSH
-as a secure transport for other applications (e.g.\&
+Может использоваться для запроса вызова подсистемы на удаленной системе.
+Подсистемы облегчают использование SSH
+в качестве безопасного транспорта для других приложений (например,\&
 .Xr sftp 1 ) .
-The subsystem is specified as the remote command.
-Refer to the description of
+Подсистема указывается как удаленная команда.
+Смотрите описание 
 .Cm SessionType
-in
+в
 .Xr ssh_config 5
-for details.
+для получения дополнительной информации.
 .Pp
 .It Fl T
-Disable pseudo-terminal allocation.
+Отключить выделение псевдо-терминала.
 .Pp
 .It Fl t
-Force pseudo-terminal allocation.
-This can be used to execute arbitrary
-screen-based programs on a remote machine, which can be very useful,
-e.g. when implementing menu services.
-Multiple
+Принудительное выделение псевдо-терминала.
+Это может использоваться для выполнения произвольных программ на
+основе экрана на удаленной машине, что может быть очень полезно, 
+например, при реализации меню-сервисов.
+Несколько
 .Fl t
-options force tty allocation, even if
+опций принудительно выделяют tty, даже если у
 .Nm
-has no local tty.
+нет локального tty.
 .Pp
 .It Fl V
-Display the version number and exit.
+Отобразить номер версии и выйти.
 .Pp
 .It Fl v
-Verbose mode.
-Causes
+Режим подробного вывода.
+Позволяет
 .Nm
-to print debugging messages about its progress.
-This is helpful in
-debugging connection, authentication, and configuration problems.
-Multiple
+печатать отладочные сообщения о своем выполнении.
+Это полезно при
+отладке проблем соединения, аутентификации и конфигурации.
+Несколько
 .Fl v
-options increase the verbosity.
-The maximum is 3.
+опций увеличивают уровень подробности.
+Максимум-3.
 .Pp
 .It Fl W Ar host : Ns Ar port
-Requests that standard input and output on the client be forwarded to
+Запрашивает перенаправление стандартного ввода и вывода клиента на
 .Ar host
-on
+на
 .Ar port
-over the secure channel.
-Implies
+через защищенный канал.
+Подразумевает
 .Fl N ,
 .Fl T ,
 .Cm ExitOnForwardFailure
-and
+и
 .Cm ClearAllForwardings ,
-though these can be overridden in the configuration file or using
+хотя их можно переопределить в файле конфигурации или с помощью 
 .Fl o
-command line options.
+опций командной строки
 .Pp
 .It Fl w Xo
 .Ar local_tun Ns Op : Ns Ar remote_tun
 .Xc
-Requests
-tunnel
-device forwarding with the specified
+Запрашивает
+перенаправление тунельного
+устройства с указанными
 .Xr tun 4
-devices between the client
+устройствами между клиентом
 .Pq Ar local_tun
-and the server
+и сервером
 .Pq Ar remote_tun .
 .Pp
-The devices may be specified by numerical ID or the keyword
+Устройства могут быть указаны числовым идентификатором или ключевым словом
 .Dq any ,
-which uses the next available tunnel device.
-If
+которое использует следующее доступное туннельное устройство.
+Если
 .Ar remote_tun
-is not specified, it defaults to
+не указано, по умолчанию используется
 .Dq any .
-See also the
+Смотрите также
 .Cm Tunnel
-and
+и
 .Cm TunnelDevice
-directives in
+директивы в
 .Xr ssh_config 5 .
 .Pp
-If the
+Если
 .Cm Tunnel
-directive is unset, it will be set to the default tunnel mode, which is
+директива не установлена, она будет установлена в режим туннеля по умолчанию, который является 
 .Dq point-to-point .
-If a different
+Если требуется другой
 .Cm Tunnel
-forwarding mode it desired, then it should be specified before
+режим перенаправления туннеля, он должен быть указан до 
 .Fl w .
 .Pp
 .It Fl X
-Enables X11 forwarding.
-This can also be specified on a per-host basis in a configuration file.
+Включает перенаправление X11.
+Это также может быть указано на основе каждого хоста в файле конфигурации.
 .Pp
-X11 forwarding should be enabled with caution.
-Users with the ability to bypass file permissions on the remote host
-(for the user's X authorization database)
-can access the local X11 display through the forwarded connection.
-An attacker may then be able to perform activities such as keystroke monitoring.
+Перенаправление X11 следует активировать осторожно.
+Пользователи с возможностью обойти права доступа к файлам на удаленном хосте
+(для базы данных авторизации X пользователя)
+могут получить доступ к локальному дисплею X11 через перенаправленное соединение.
+Злоумышленник может затем выполнять действия, такие как мониторинг нажатий клавиш.
 .Pp
-For this reason, X11 forwarding is subjected to X11 SECURITY extension
-restrictions by default.
-Refer to the
+По этой причине перенаправление X11 подвергается ограничениям 
+расширения X11 SECURITY по умолчанию.
+См.
 .Nm
 .Fl Y
-option and the
+опцию и
 .Cm ForwardX11Trusted
-directive in
+директиву в
 .Xr ssh_config 5
-for more information.
+для получения дополнительной информации.
 .Pp
 .It Fl x
-Disables X11 forwarding.
+Отключает перенаправление X11.
 .Pp
 .It Fl Y
-Enables trusted X11 forwarding.
-Trusted X11 forwardings are not subjected to the X11 SECURITY extension
-controls.
+Включает доверенное перенаправление X11.
+Доверенные перенаправления X11 не подвергаются 
+контролю расширения X11 SECURITY.
 .Pp
 .It Fl y
-Send log information using the
+Отправляет информацию журнала с использованием
 .Xr syslog 3
-system module.
-By default this information is sent to stderr.
+модуля системы.
+По умолчанию эта информация отправляется в stderr.
 .El
 .Pp
 .Nm
-may additionally obtain configuration data from
-a per-user configuration file and a system-wide configuration file.
-The file format and configuration options are described in
+может дополнительно получать данные конфигурации из
+файла конфигурации для каждого пользователя и файла конфигурации системы.
+Формат файла и параметры конфигурации описаны в
 .Xr ssh_config 5 .
-.Sh AUTHENTICATION
-The OpenSSH SSH client supports SSH protocol 2.
+.Sh АУТЕНТИФИКАЦИЯ
+Клиент SSH OpenSSH поддерживает протокол SSH 2.
 .Pp
-The methods available for authentication are:
-GSSAPI-based authentication,
-host-based authentication,
-public key authentication,
-keyboard-interactive authentication,
-and password authentication.
-Authentication methods are tried in the order specified above,
-though
+Доступные методы аутентификации:
+аутентификация на основе GSSAPI,
+аутентификация на основе хоста,
+аутентификация с использованием открытого ключа,
+интерактивная аутентификация по паролю,
+и аутентификация по паролю.
+Методы аутентификации пробуются в указанном выше порядке,
+хотя
 .Cm PreferredAuthentications
-can be used to change the default order.
+может использоваться для изменения порядка по умолчанию.
 .Pp
-Host-based authentication works as follows:
-If the machine the user logs in from is listed in
+Аутентификация на основе хоста работает следующим образом:
+Если машина, с которой пользователь входит в систему, указана в
 .Pa /etc/hosts.equiv
-or
+или
 .Pa /etc/shosts.equiv
-on the remote machine, the user is non-root and the user names are
-the same on both sides, or if the files
+на удаленной машине, пользователь не является root и имена пользователей
+совпадают на обеих сторонах, или если файлы
 .Pa ~/.rhosts
-or
+или
 .Pa ~/.shosts
-exist in the user's home directory on the
-remote machine and contain a line containing the name of the client
-machine and the name of the user on that machine, the user is
-considered for login.
-Additionally, the server
-.Em must
-be able to verify the client's
-host key (see the description of
+существуют в домашнем каталоге пользователя на
+удаленной машине и содержат строку с именем клиентской
+машины и именем пользователя на этой машине, пользователь рассматривается
+для входа в систему.
+Кроме того, сервер
+.Em должен
+быть способен проверить 
+хост-ключ клиента (см. описание
 .Pa /etc/ssh/ssh_known_hosts
-and
+и
 .Pa ~/.ssh/known_hosts ,
-below)
-for login to be permitted.
-This authentication method closes security holes due to IP
-spoofing, DNS spoofing, and routing spoofing.
-[Note to the administrator:
+ниже)
+для разрешения входа.
+Этот метод аутентификации закрывает уязвимости из-за IP-подделки,
+DNS-подделки и маршрутизации подделки.
+[Примечание для администратора:
 .Pa /etc/hosts.equiv ,
 .Pa ~/.rhosts ,
-and the rlogin/rsh protocol in general, are inherently insecure and should be
-disabled if security is desired.]
+и протокол rlogin/rsh в целом, по своей природе небезопасны и должны быть
+отключены, если требуется безопасность.]
 .Pp
-Public key authentication works as follows:
-The scheme is based on public-key cryptography,
-using cryptosystems
-where encryption and decryption are done using separate keys,
-and it is unfeasible to derive the decryption key from the encryption key.
-The idea is that each user creates a public/private
-key pair for authentication purposes.
-The server knows the public key, and only the user knows the private key.
+Аутентификация с использованием открытого ключа работает следующим образом:
+Схема основана на криптографии с открытым ключом,
+используя криптосистемы,
+где шифрование и дешифрование выполняются с использованием разных ключей,
+и невозможно вывести ключ дешифрования из ключа шифрования.
+Идея заключается в том, что каждый пользователь создает публичный/частный
+ключевую пару для целей аутентификации.
+Сервер знает открытый ключ, и только пользователь знает частный ключ.
 .Nm
-implements public key authentication protocol automatically,
-using one of the DSA, ECDSA, Ed25519 or RSA algorithms.
-The HISTORY section of
+автоматически реализует протокол аутентификации с открытым ключом,
+используя один из алгоритмов DSA, ECDSA, Ed25519 или RSA.
+Раздел ИСТОРИЯ в
 .Xr ssl 8
-contains a brief discussion of the DSA and RSA algorithms.
+содержит краткое обсуждение алгоритмов DSA и RSA.
 .Pp
-The file
+Файл
 .Pa ~/.ssh/authorized_keys
-lists the public keys that are permitted for logging in.
-When the user logs in, the
+содержит список публичных ключей, разрешенных для входа в систему.
+Когда пользователь входит в систему,
 .Nm
-program tells the server which key pair it would like to use for
-authentication.
-The client proves that it has access to the private key
-and the server checks that the corresponding public key
-is authorized to accept the account.
+программа сообщает серверу, какую пару ключей он хотел бы использовать для
+аутентификации.
+Клиент доказывает, что у него есть доступ к частному ключу,
+и сервер проверяет, что соответствующий открытый ключ
+авторизован для принятия учетной записи.
 .Pp
-The server may inform the client of errors that prevented public key
-authentication from succeeding after authentication completes using a
-different method.
-These may be viewed by increasing the
+Сервер может сообщить клиенту об ошибках, которые препятствовали успешной аутентификации 
+с открытым ключом после завершения аутентификации с использованием 
+другого метода.
+Их можно просмотреть, увеличив уровень журналирования 
 .Cm LogLevel
-to
+до
 .Cm DEBUG
-or higher (e.g. by using the
+или выше (например, используя 
 .Fl v
-flag).
+флаг).
 .Pp
-The user creates their key pair by running
+Пользователь создает свою пару ключей, запустив
 .Xr ssh-keygen 1 .
-This stores the private key in
+Это сохраняет частный ключ в
 .Pa ~/.ssh/id_dsa
 (DSA),
 .Pa ~/.ssh/id_ecdsa
 (ECDSA),
 .Pa ~/.ssh/id_ecdsa_sk
-(authenticator-hosted ECDSA),
+(сервер-хранимый ECDSA),
 .Pa ~/.ssh/id_ed25519
 (Ed25519),
 .Pa ~/.ssh/id_ed25519_sk
-(authenticator-hosted Ed25519),
-or
+(сервер-хранимый Ed25519),
+и
 .Pa ~/.ssh/id_rsa
 (RSA)
-and stores the public key in
+и сохраняет открытый ключ в
 .Pa ~/.ssh/id_dsa.pub
 (DSA),
 .Pa ~/.ssh/id_ecdsa.pub
 (ECDSA),
 .Pa ~/.ssh/id_ecdsa_sk.pub
-(authenticator-hosted ECDSA),
+(сервер-хранимый ECDSA),
 .Pa ~/.ssh/id_ed25519.pub
 (Ed25519),
 .Pa ~/.ssh/id_ed25519_sk.pub
-(authenticator-hosted Ed25519),
-or
+(сервер-хранимый Ed25519),
+или
 .Pa ~/.ssh/id_rsa.pub
 (RSA)
-in the user's home directory.
-The user should then copy the public key
-to
+в домашнем каталоге пользователя.
+Затем пользователь должен скопировать открытый ключ
+в
 .Pa ~/.ssh/authorized_keys
-in their home directory on the remote machine.
-The
+в своем домашнем каталоге на удаленной машине.
+Файл
 .Pa authorized_keys
-file corresponds to the conventional
+соответствует обычному 
 .Pa ~/.rhosts
-file, and has one key
-per line, though the lines can be very long.
-After this, the user can log in without giving the password.
+файлу, и содержит один ключ
+на строку, хотя строки могут быть очень длинными.
+После этого пользователь может войти без ввода пароля.
 .Pp
-A variation on public key authentication
-is available in the form of certificate authentication:
-instead of a set of public/private keys,
-signed certificates are used.
-This has the advantage that a single trusted certification authority
-can be used in place of many public/private keys.
-See the CERTIFICATES section of
+Вариант аутентификации с использованием открытого ключа
+доступен в виде аутентификации по сертификату:
+вместо набора открытых/закрытых ключей
+используются подписанные сертификаты.
+Это имеет преимущество того, что один доверенный орган сертификации
+может быть использован вместо множества открытых/закрытых ключей.
+См. CERTIFICATES раздел в
 .Xr ssh-keygen 1
-for more information.
+для получения дополнительной информации.
 .Pp
-The most convenient way to use public key or certificate authentication
-may be with an authentication agent.
-See
+Наиболее удобным способом использования аутентификации с открытым ключом или сертификатом
+может быть использование агента аутентификации. 
+См.
 .Xr ssh-agent 1
-and (optionally) the
+и (по желанию)
 .Cm AddKeysToAgent
-directive in
+директиву в
 .Xr ssh_config 5
-for more information.
+для получения дополнительной информации.
 .Pp
-Keyboard-interactive authentication works as follows:
-The server sends an arbitrary
+Аутентификация с интерактивным вводом с клавиатуры работает следующим образом: 
+сервер отправляет произвольный
 .Qq challenge
-text and prompts for a response, possibly multiple times.
-Examples of keyboard-interactive authentication include
+запрашивает ответ, возможно, несколько раз. 
+Примеры аутентификации с интерактивным вводом включают
 .Bx
-Authentication (see
+аутентификацию (см.
 .Xr login.conf 5 )
-and PAM (some
+и PAM (некоторые
 .Pf non- Ox
-systems).
+сиситемы).
 .Pp
-Finally, if other authentication methods fail,
+Наконец, если другие методы аутентификации не удалось использовать
 .Nm
-prompts the user for a password.
-The password is sent to the remote
-host for checking; however, since all communications are encrypted,
-the password cannot be seen by someone listening on the network.
+запрашивает у пользователя пароль. 
+Пароль отправляется на удаленный 
+хост для проверки; однако, поскольку все коммуникации зашифрованы, 
+пароль не может быть прочитан кем-то, кто прослушивает сеть.
 .Pp
 .Nm
-automatically maintains and checks a database containing
-identification for all hosts it has ever been used with.
-Host keys are stored in
+автоматически поддерживает и проверяет базу данных, содержащую
+идентификацию всех хостов, с которыми он когда-либо использовался.
+Ключи хостов хранятся в
 .Pa ~/.ssh/known_hosts
-in the user's home directory.
-Additionally, the file
+в домашнем каталоге пользователя.
+Кроме того, файл 
 .Pa /etc/ssh/ssh_known_hosts
-is automatically checked for known hosts.
-Any new hosts are automatically added to the user's file.
-If a host's identification ever changes,
+автоматически проверяется на известные хосты.
+Новые хосты автоматически добавляются в файл пользователя. 
+Если идентификация хоста когда-либо изменится,
 .Nm
-warns about this and disables password authentication to prevent
-server spoofing or man-in-the-middle attacks,
-which could otherwise be used to circumvent the encryption.
-The
+предупреждает об этом и отключает аутентификацию по паролю для предотвращения подделки
+сервера или атак типа man-in-the-middle, 
+которые могли бы быть использованы для обхода шифрования.
+Опция
 .Cm StrictHostKeyChecking
-option can be used to control logins to machines whose
-host key is not known or has changed.
+может использоваться для контроля входа на машины, ключ 
+хоста которых неизвестен или изменился.
 .Pp
-When the user's identity has been accepted by the server, the server
-either executes the given command in a non-interactive session or,
-if no command has been specified, logs into the machine and gives
-the user a normal shell as an interactive session.
-All communication with
-the remote command or shell will be automatically encrypted.
+Когда идентификация пользователя была принята сервером, сервер 
+либо выполняет указанную команду в неинтерактивном сеансе, либо,
+если команда не была указана, выполняет вход на машину и предоставляет
+пользователю обычную оболочку в интерактивном сеансе. 
+Вся связь с 
+удаленной командой или оболочкой будет автоматически зашифрована.
 .Pp
-If an interactive session is requested,
+Если запрашивается интерактивный сеанс,
 .Nm
-by default will only request a pseudo-terminal (pty) for interactive
-sessions when the client has one.
-The flags
+по умолчанию будет запрашивать псевдотерминал (pty) для интерактивных
+сеансов только в том случае,если он есть у клиента.
+Флаги
 .Fl T
-and
+и
 .Fl t
-can be used to override this behaviour.
+могут использоваться для изменения этого поведения.
 .Pp
-If a pseudo-terminal has been allocated, the
-user may use the escape characters noted below.
+Если псевдотерминал был выделен, 
+пользователь может использовать символы экранирования, перечисленные ниже.
 .Pp
-If no pseudo-terminal has been allocated,
-the session is transparent and can be used to reliably transfer binary data.
-On most systems, setting the escape character to
+Если псевдотерминал не был выделен,
+сеанс является прозрачным и может использоваться для надежной передачи двоичных данных.
+На большинстве систем установка символа экранирования на
 .Dq none
-will also make the session transparent even if a tty is used.
+также делает сеанс прозрачным, даже если используется tty.
 .Pp
-The session terminates when the command or shell on the remote
-machine exits and all X11 and TCP connections have been closed.
-.Sh ESCAPE CHARACTERS
-When a pseudo-terminal has been requested,
+Сеанс завершается, когда команда или оболочка на удаленной 
+машине завершается, и все соединения X11 и TCP закрыты.
+.Sh ЭКРАНИРОВАНИЕ СИМВОЛОВ
+Когда запрошен псевдотерминал,
 .Nm
-supports a number of functions through the use of an escape character.
+поддерживает ряд функций с помощью символа экранирования.
 .Pp
-A single tilde character can be sent as
+Один символ тильды может быть отправлен как
 .Ic ~~
-or by following the tilde by a character other than those described below.
-The escape character must always follow a newline to be interpreted as
-special.
-The escape character can be changed in configuration files using the
+или после тильды следует символ, отличный от описанных ниже.
+Символ экранирования должен всегда следовать за символом новой строки, чтобы быть интерпретированным как специальный.
+Символ экранирования можно изменить в конфигурационных файлах с помощью
 .Cm EscapeChar
-configuration directive or on the command line by the
+директивы или в командной строке с помощью
 .Fl e
-option.
+опции.
 .Pp
-The supported escapes (assuming the default
+Поддерживаемые экранирования (при условии, что используется значение по умолчанию
 .Ql ~ )
-are:
+включают:
 .Bl -tag -width Ds
 .It Cm ~.
-Disconnect.
+Отключение.
 .It Cm ~^Z
-Background
+Фоновый режим
 .Nm .
 .It Cm ~#
-List forwarded connections.
+Список перенаправленных соединений.
 .It Cm ~&
-Background
+Фоновый режим
 .Nm
-at logout when waiting for forwarded connection / X11 sessions to terminate.
+при выходе, когда ожидается завершение перенаправленного соединения / сеансов X11.
 .It Cm ~?
-Display a list of escape characters.
+Показать список символов экранирования.
 .It Cm ~B
-Send a BREAK to the remote system
-(only useful if the peer supports it).
+Отправить BREAK на удаленную систему
+(полезно только при поддержке партнером).
 .It Cm ~C
-Open command line.
-Currently this allows the addition of port forwardings using the
+Открыть командную строку.
+В настоящее время это позволяет добавлять перенаправления портов с использованием 
 .Fl L ,
 .Fl R
-and
+и
 .Fl D
-options (see above).
-It also allows the cancellation of existing port-forwardings
-with
+опций (см.выше).
+Также это позволяет отменять существующие перенаправления портов
+с помощью
 .Sm off
 .Fl KL Oo Ar bind_address : Oc Ar port
 .Sm on
-for local,
+для локальных,
 .Sm off
 .Fl KR Oo Ar bind_address : Oc Ar port
 .Sm on
-for remote and
+для удаленных и
 .Sm off
 .Fl KD Oo Ar bind_address : Oc Ar port
 .Sm on
-for dynamic port-forwardings.
+для динамических перенаправлений портов.
 .Ic !\& Ns Ar command
-allows the user to execute a local command if the
+позволяет пользователю выполнить локальную команду, если
 .Ic PermitLocalCommand
-option is enabled in
+опция включена в
 .Xr ssh_config 5 .
-Basic help is available, using the
+Базовая справка доступна с использованием 
 .Fl h
-option.
+опции.
 .It Cm ~R
-Request rekeying of the connection
-(only useful if the peer supports it).
+Запрос на повторное установление соединения
+(полезно только если пир поддерживает это).
 .It Cm ~V
-Decrease the verbosity
+Уменьшить подробность
 .Pq Ic LogLevel
-when errors are being written to stderr.
+когда ошибки записываются в stderr.
 .It Cm ~v
-Increase the verbosity
+Увеличить подробность
 .Pq Ic LogLevel
-when errors are being written to stderr.
+когда ошибки записываются в stderr.
 .El
-.Sh TCP FORWARDING
-Forwarding of arbitrary TCP connections over a secure channel
-can be specified either on the command line or in a configuration file.
-One possible application of TCP forwarding is a secure connection to a
-mail server; another is going through firewalls.
+.Sh TCP ПЕРЕАДРЕСАЦИЯ
+Переадресация произвольных TCP-соединений через защищенный канал
+может быть указана как в командной строке, так и в файле конфигурации.
+Одним из возможных применений переадресации TCP является безопасное соединение с
+почтовым сервером; другим является прохождение через брандмауэры.
 .Pp
-In the example below, we look at encrypting communication for an IRC client,
-even though the IRC server it connects to does not directly
-support encrypted communication.
-This works as follows:
-the user connects to the remote host using
+В приведенном ниже примере мы рассматриваем шифрование коммуникации для клиента IRC,
+даже если сервер IRC, к которому он подключается, не 
+поддерживает прямого шифрования.
+Это работает следующим образом:
+пользователь подключается к удаленному хосту, используя
 .Nm ,
-specifying the ports to be used to forward the connection.
-After that it is possible to start the program locally,
-and
+указывая порты, которые будут использоваться для перенаправления соединения.
+После этого можно запустить программу локально,
+и
 .Nm
-will encrypt and forward the connection to the remote server.
+зашифрует и перенаправит соединение на удаленный сервер.
 .Pp
-The following example tunnels an IRC session from the client
-to an IRC server at
+Следующий пример создает туннель для сеанса IRC от клиента
+к серверу IRC на
 .Dq server.example.com ,
-joining channel
+присоединяясь к каналу
 .Dq #users ,
-nickname
+с никнеймом
 .Dq pinky ,
-using the standard IRC port, 6667:
+используя стандартный IRC порт, 6667:
 .Bd -literal -offset 4n
 $ ssh -f -L 6667:localhost:6667 server.example.com sleep 10
 $ irc -c '#users' pinky IRC/127.0.0.1
 .Ed
 .Pp
-The
+Опция
 .Fl f
-option backgrounds
+фоновая
 .Nm
-and the remote command
+и удаленная команда
 .Dq sleep 10
-is specified to allow an amount of time
-(10 seconds, in the example)
-to start the program which is going to use the tunnel.
-If no connections are made within the time specified,
+указана для того, чтобы предоставить время
+(10 секунд в примере)
+для запуска программы, которая будет использовать туннель. 
+Если соединения не устанавливаются в указанное время,
 .Nm
-will exit.
-.Sh X11 FORWARDING
-If the
+завершит работу.
+.Sh X11 ПЕРЕАДРЕСАЦИЯ
+Если
 .Cm ForwardX11
-variable is set to
+переменная установлена в
 .Dq yes
-(or see the description of the
+(или смотрите описание из
 .Fl X ,
 .Fl x ,
-and
+и
 .Fl Y
-options above)
-and the user is using X11 (the
+опций выше)
+и пользователь использует X11 (окружение
 .Ev DISPLAY
-environment variable is set), the connection to the X11 display is
-automatically forwarded to the remote side in such a way that any X11
-programs started from the shell (or command) will go through the
-encrypted channel, and the connection to the real X server will be made
-from the local machine.
-The user should not manually set
+переменной установлено), то соединение с дисплеем X11 
+автоматически перенаправляется на удаленную сторону таким образом, что любые программы X11,
+запущенные из оболочки (или команды), проходят через 
+зашифрованный канал, и соединение с реальным X-сервером будет установлено
+с локальной машины. 
+Пользователь не должен вручную устанавливать
 .Ev DISPLAY .
-Forwarding of X11 connections can be
-configured on the command line or in configuration files.
+Перенаправление соединений X11 можно 
+настроить через командную строку или в конфигурационных файлах.
 .Pp
-The
+Значение
 .Ev DISPLAY
-value set by
+установленное
 .Nm
-will point to the server machine, but with a display number greater than zero.
-This is normal, and happens because
+будет указывать на серверную машину, но с номером дисплея больше нуля.
+Это нормально, потому что
 .Nm
-creates a
+создает
 .Dq proxy
-X server on the server machine for forwarding the
-connections over the encrypted channel.
+сервер X на серверной машине для перенаправления 
+соединений по зашифрованному каналу.
 .Pp
 .Nm
-will also automatically set up Xauthority data on the server machine.
-For this purpose, it will generate a random authorization cookie,
-store it in Xauthority on the server, and verify that any forwarded
-connections carry this cookie and replace it by the real cookie when
-the connection is opened.
-The real authentication cookie is never
-sent to the server machine (and no cookies are sent in the plain).
+также автоматически настроит данные Xauthority на серверной машине. 
+Для этого он сгенерирует случайный авторизационный файл cookie, 
+сохранит его в Xauthority на сервере и проверит, что все перенаправленные 
+соединения содержат этот файл cookie и заменит его на реальный cookie при 
+открытии соединения.
+Реальный аутентификационный файл cookie никогда 
+не отправляется на серверную машину (и никакие файлы cookie не отправляются в открытом виде).
 .Pp
-If the
+Если
 .Cm ForwardAgent
-variable is set to
+переменная установлена
 .Dq yes
-(or see the description of the
+(или смотрите описание из
 .Fl A
-and
+и
 .Fl a
-options above) and
-the user is using an authentication agent, the connection to the agent
-is automatically forwarded to the remote side.
-.Sh VERIFYING HOST KEYS
-When connecting to a server for the first time,
-a fingerprint of the server's public key is presented to the user
-(unless the option
+опций выше) и
+пользователь использует агент аутентификации, соединение с агентом
+автоматически перенаправляется на удаленную сторону.
+.Sh ПРОВЕРКА КЛЮЧЕЙ ХОСТА
+При первом подключении к серверу 
+пользователю представляется отпечаток открытого ключа сервера 
+(только если опция
 .Cm StrictHostKeyChecking
-has been disabled).
-Fingerprints can be determined using
+не отключена).
+Отпечатки могут быть определены с помощью
 .Xr ssh-keygen 1 :
 .Pp
 .Dl $ ssh-keygen -l -f /etc/ssh/ssh_host_rsa_key
 .Pp
-If the fingerprint is already known, it can be matched
-and the key can be accepted or rejected.
-If only legacy (MD5) fingerprints for the server are available, the
+Если отпечаток уже известен, его можно сопоставить, 
+и ключ можно принять или отклонить.
+Если доступны только устаревшие (MD5) отпечатки для сервера
 .Xr ssh-keygen 1
 .Fl E
-option may be used to downgrade the fingerprint algorithm to match.
+опцию можно использовать для снижения уровня алгоритма отпечатка.
 .Pp
-Because of the difficulty of comparing host keys
-just by looking at fingerprint strings,
-there is also support to compare host keys visually,
-using
-.Em random art .
-By setting the
+Из-за сложности сравнения ключей хоста
+только по отпечаткам строк
+также есть поддержка визуального сравнения ключей хоста
+с помощью
+.Em случайного искусства .
+Установив
 .Cm VisualHostKey
-option to
+опцию в
 .Dq yes ,
-a small ASCII graphic gets displayed on every login to a server, no matter
-if the session itself is interactive or not.
-By learning the pattern a known server produces, a user can easily
-find out that the host key has changed when a completely different pattern
-is displayed.
-Because these patterns are not unambiguous however, a pattern that looks
-similar to the pattern remembered only gives a good probability that the
-host key is the same, not guaranteed proof.
+на каждом входе на сервер отображается небольшая графика ASCII, независимо
+от того, интерактивна ли сама сессия или нет. 
+Изучив шаблон известного сервера, пользователь легко
+может выяснить, что ключ хоста изменился, когда отображается совершенно 
+другой шаблон.
+Однако поскольку эти шаблоны неоднозначны, шаблон, который выглядит
+похожим на запомненный шаблон, дает лишь хорошую вероятность того, что
+ключ хоста тот же самый, но не гарантированное доказательство.
 .Pp
-To get a listing of the fingerprints along with their random art for
-all known hosts, the following command line can be used:
+Для получения списка отпечатков вместе с их "случайным искусством" для
+всех известных хостов можно использовать следующую командную строку:
 .Pp
 .Dl $ ssh-keygen -lv -f ~/.ssh/known_hosts
 .Pp
-If the fingerprint is unknown,
-an alternative method of verification is available:
-SSH fingerprints verified by DNS.
-An additional resource record (RR),
+Если отпечаток неизвестен, 
+доступен альтернативный метод проверки:
+SSH проверенные через DNS.
+Дополнительный ресурсный запись (RR),
 SSHFP,
-is added to a zonefile
-and the connecting client is able to match the fingerprint
-with that of the key presented.
+добавляется в файл зоны,
+и подключающийся клиент способен сопоставить отпечаток 
+с представленным ключом
 .Pp
-In this example, we are connecting a client to a server,
+В этом примере мы подключаем клиента к серверу 
 .Dq host.example.com .
-The SSHFP resource records should first be added to the zonefile for
+Сначала ресурсные записи SSHFP должны быть добавлены в файл зоны для 
 host.example.com:
 .Bd -literal -offset indent
 $ ssh-keygen -r host.example.com.
 .Ed
 .Pp
-The output lines will have to be added to the zonefile.
-To check that the zone is answering fingerprint queries:
+Строки вывода должны быть добавлены в файл зоны
+Чтобы проверить, отвечает ли зона на запросы отпечатков: 
 .Pp
 .Dl $ dig -t SSHFP host.example.com
 .Pp
-Finally the client connects:
+Наконец, клиент подключается:
 .Bd -literal -offset indent
 $ ssh -o "VerifyHostKeyDNS ask" host.example.com
 [...]
-Matching host key fingerprint found in DNS.
-Are you sure you want to continue connecting (yes/no)?
+Найден совпадающий отпечаток ключа хоста в DNS
+ Вы уверены, что хотите продолжить подключение (да/нет\)?
 .Ed
 .Pp
-See the
+Смотрите
 .Cm VerifyHostKeyDNS
-option in
+опцию в
 .Xr ssh_config 5
-for more information.
-.Sh SSH-BASED VIRTUAL PRIVATE NETWORKS
+для получения дополнительной информации.
+.Sh SSH-BASED ВИРТУАЛЬНЫЕ ЧАСТНЫЕ СЕТИ
 .Nm
-contains support for Virtual Private Network (VPN) tunnelling
-using the
+поддерживает туннелирование по виртуальной частной сети (VPN) 
+с использованием
 .Xr tun 4
-network pseudo-device,
-allowing two networks to be joined securely.
-The
+network псевдоустройства
+позволяющего безопасно соединять две сети.
+Параметр
 .Xr sshd_config 5
-configuration option
+конфигурации опции
 .Cm PermitTunnel
-controls whether the server supports this,
-and at what level (layer 2 or 3 traffic).
+определяет,поддерживает ли сервер это
+и на каком уровне (уровень трафика 2 или 3).
 .Pp
-The following example would connect client network 10.0.50.0/24
-with remote network 10.0.99.0/24 using a point-to-point connection
-from 10.1.1.1 to 10.1.1.2,
-provided that the SSH server running on the gateway to the remote network,
-at 192.168.1.15, allows it.
+В следующем примере будет установлено соединение клиентской сети 10.0.50.0/24
+с удаленной сетью 10.0.99.0/24 с использованием точечного соединения 
+от 10.1.1.1 to 10.1.1.2,
+при условии, что SSH-сервер, работающий на шлюзе к удаленной сети 
+на 192.168.1.15, разрешает это.
 .Pp
-On the client:
+На клиенте:
 .Bd -literal -offset indent
 # ssh -f -w 0:1 192.168.1.15 true
 # ifconfig tun0 10.1.1.1 10.1.1.2 netmask 255.255.255.252
 # route add 10.0.99.0/24 10.1.1.2
 .Ed
 .Pp
-On the server:
+на сервере:
 .Bd -literal -offset indent
 # ifconfig tun1 10.1.1.2 10.1.1.1 netmask 255.255.255.252
 # route add 10.0.50.0/24 10.1.1.1
 .Ed
 .Pp
-Client access may be more finely tuned via the
+Доступ клиента может быть более тонко настроен через 
 .Pa /root/.ssh/authorized_keys
-file (see below) and the
+файл (см.ниже) и
 .Cm PermitRootLogin
-server option.
-The following entry would permit connections on
+опцию сервера.
+Следующая запись разрешит подключения на
 .Xr tun 4
-device 1 from user
+устройстве 1 от пользователя
 .Dq jane
-and on tun device 2 from user
+и на tun устройстве 2 от пользователя
 .Dq john ,
-if
+Если
 .Cm PermitRootLogin
-is set to
+установлен как
 .Dq forced-commands-only :
 .Bd -literal -offset 2n
 tunnel="1",command="sh /etc/netstart tun1" ssh-rsa ... jane
 tunnel="2",command="sh /etc/netstart tun2" ssh-rsa ... john
 .Ed
 .Pp
-Since an SSH-based setup entails a fair amount of overhead,
-it may be more suited to temporary setups,
-such as for wireless VPNs.
-More permanent VPNs are better provided by tools such as
+Поскольку настройка на основе SSH требует значительных накладных расходов,
+она может быть более подходящей для временных настроек,
+таких как беспроводные VPN.
+Более постоянные VPN лучше предоставляются с помощью инструментов типа
 .Xr ipsecctl 8
-and
+и
 .Xr isakmpd 8 .
 .Sh ENVIRONMENT
 .Nm
-will normally set the following environment variables:
+обычно устанавливается следующим образом:
 .Bl -tag -width "SSH_ORIGINAL_COMMAND"
 .It Ev DISPLAY
-The
+Переменная
 .Ev DISPLAY
-variable indicates the location of the X11 server.
-It is automatically set by
+указывает местоположение сервера X11.
+Она автоматически устанавливается
 .Nm
-to point to a value of the form
+чтобы указывать значение в виде
 .Dq hostname:n ,
-where
+где
 .Dq hostname
-indicates the host where the shell runs, and
+указывает на хост, где запущен shell, а
 .Sq n
-is an integer \*(Ge 1.
+целое число \*(Ge 1.
 .Nm
-uses this special value to forward X11 connections over the secure
-channel.
-The user should normally not set
+использует эту специальную переменную для перенаправления соединений X11 через защищенный 
+канал.
+Пользователь обычно не должен устанавливать
 .Ev DISPLAY
-explicitly, as that
-will render the X11 connection insecure (and will require the user to
-manually copy any required authorization cookies).
+явно, так как
+это сделает соединение X11 небезопасным (и потребует от пользователя
+вручную копировать необходимые файлы авторизации).
 .It Ev HOME
-Set to the path of the user's home directory.
+Устанавливается в путь к домашнему каталогу пользователя.
 .It Ev LOGNAME
-Synonym for
+Синоним для
 .Ev USER ;
-set for compatibility with systems that use this variable.
+установлен для совместимости с системами, использующими эту переменную.
 .It Ev MAIL
-Set to the path of the user's mailbox.
+Устанавливается в путь к почтовому ящику пользователя.
 .It Ev PATH
-Set to the default
+Устанавливается по умолчанию
 .Ev PATH ,
-as specified when compiling
+как указано при компиляции
 .Nm .
 .It Ev SSH_ASKPASS
-If
+Если
 .Nm
-needs a passphrase, it will read the passphrase from the current
-terminal if it was run from a terminal.
-If
+требуется пароль, он будет считывать пароль с текущего
+терминала, если был запущен из терминала.
+Если
 .Nm
-does not have a terminal associated with it but
+нет ассоциированного с ним терминала, но
 .Ev DISPLAY
-and
+и
 .Ev SSH_ASKPASS
-are set, it will execute the program specified by
+установлены, он выполнит программу, указанную в
 .Ev SSH_ASKPASS
-and open an X11 window to read the passphrase.
-This is particularly useful when calling
+и откроет окно X11 для ввода пароля.
+Это особенно полезно при вызове
 .Nm
-from a
+из
 .Pa .xsession
-or related script.
-(Note that on some machines it
-may be necessary to redirect the input from
+или сопутствующего скрипта.
+(Обратите внимание, что на некоторых машинах
+может потребоваться перенаправление ввода с
 .Pa /dev/null
-to make this work.)
+для корректной работы.)
 .It Ev SSH_ASKPASS_REQUIRE
-Allows further control over the use of an askpass program.
-If this variable is set to
+Позволяет дополнительно контролировать использование программы askpass.
+Если эта переменная установлена в
 .Dq never
-then
+то
 .Nm
-will never attempt to use one.
-If it is set to
+никогда не будет пытаться использовать ее.
+Если она установлена в
 .Dq prefer ,
-then
+то
 .Nm
-will prefer to use the askpass program instead of the TTY when requesting
-passwords.
-Finally, if the variable is set to
+предпочтет использовать программу askpass вместо TTY при запросе 
+паролей.
+Наконец, если переменная установлена в
 .Dq force ,
-then the askpass program will be used for all passphrase input regardless
-of whether
+то программа askpass будет использоваться для всех запросов пароля независимо
+от того,
 .Ev DISPLAY
-is set.
+установлен ли.
 .It Ev SSH_AUTH_SOCK
-Identifies the path of a
+Определяет путь к 
 .Ux Ns -domain
-socket used to communicate with the agent.
+сокету, используемому для общения с агентом.
 .It Ev SSH_CONNECTION
-Identifies the client and server ends of the connection.
-The variable contains
-four space-separated values: client IP address, client port number,
-server IP address, and server port number.
+Идентифицирует клиентский и серверный концы соединения.
+Переменная содержит 
+четыре значения, разделенных пробелами: IP-адрес клиента, номер порта клиента,
+IP-адрес сервера и номер порта сервера.
 .It Ev SSH_ORIGINAL_COMMAND
-This variable contains the original command line if a forced command
-is executed.
-It can be used to extract the original arguments.
+Эта переменная содержит оригинальную командную строку, если
+выполнена принудительная команда.
+Ее можно использовать для извлечения оригинальных аргументов.
 .It Ev SSH_TTY
-This is set to the name of the tty (path to the device) associated
-with the current shell or command.
-If the current session has no tty,
-this variable is not set.
+Устанавливается в имя tty (путь к устройству), связанное 
+с текущим оболочкой или командой.
+Если текущий сеанс не имеет tty,
+эта переменная не устанавливается.
 .It Ev SSH_TUNNEL
-Optionally set by
+По желанию устанавливается
 .Xr sshd 8
-to contain the interface names assigned if tunnel forwarding was
-requested by the client.
+для содержания имен интерфейсов, назначенных, если было 
+запрошено туннельное перенаправление клиентом.
 .It Ev SSH_USER_AUTH
-Optionally set by
+По желанию устанавливается
 .Xr sshd 8 ,
-this variable may contain a pathname to a file that lists the authentication
-methods successfully used when the session was established, including any
-public keys that were used.
+эта переменная может содержать путь к файлу, в котором перечислены успешно использованные 
+методы аутентификации при установлении сеанса, включая любые
+использованные открытые ключи.
 .It Ev TZ
-This variable is set to indicate the present time zone if it
-was set when the daemon was started (i.e. the daemon passes the value
-on to new connections).
+Эта переменная устанавливается для указания текущего часового пояса, если он 
+был установлен при запуске демона (т.е. демон передает значение
+новым соединениям).
 .It Ev USER
-Set to the name of the user logging in.
+Устанавливается в имя пользователя, входящего в систему.
 .El
 .Pp
-Additionally,
+Кроме того,
 .Nm
-reads
+читает
 .Pa ~/.ssh/environment ,
-and adds lines of the format
+и добавляет строки формата
 .Dq VARNAME=value
-to the environment if the file exists and users are allowed to
-change their environment.
-For more information, see the
+в окружение, если файл существует и пользователям разрешено 
+изменять свое окружение.
+Для получения дополнительной информации смотрите 
 .Cm PermitUserEnvironment
-option in
+опцию в
 .Xr sshd_config 5 .
 .Sh FILES
 .Bl -tag -width Ds -compact
 .It Pa ~/.rhosts
-This file is used for host-based authentication (see above).
-On some machines this file may need to be
-world-readable if the user's home directory is on an NFS partition,
-because
+Этот файл используется для аутентификации на основе хоста (см. выше).
+На некоторых машинах этот файл может потребоваться сделать доступным для 
+чтения всем, если домашний каталог пользователя находится на разделе NFS,
+потому что
 .Xr sshd 8
-reads it as root.
-Additionally, this file must be owned by the user,
-and must not have write permissions for anyone else.
-The recommended
-permission for most machines is read/write for the user, and not
-accessible by others.
+читает его как root.
+Кроме того, этот файл должен принадлежать пользователю 
+и не иметь прав на запись для других.
+Рекомендуемое
+разрешение для большинства машин - чтение/запись для пользователя и
+недоступность для других.
 .Pp
 .It Pa ~/.shosts
-This file is used in exactly the same way as
+Этот файл используется точно так же, как и
 .Pa .rhosts ,
-but allows host-based authentication without permitting login with
+но позволяет аутентификацию на основе хоста без разрешения входа с помощью
 rlogin/rsh.
 .Pp
 .It Pa ~/.ssh/
-This directory is the default location for all user-specific configuration
-and authentication information.
-There is no general requirement to keep the entire contents of this directory
-secret, but the recommended permissions are read/write/execute for the user,
-and not accessible by others.
+Этот каталог является местом по умолчанию для всей пользовательской конфигурации 
+и информации об аутентификации.
+Общее требование к хранению всего содержимого этого каталога в тайне 
+отсутствует, но рекомендуемые разрешения - чтение/запись/выполнение для пользователя
+и недоступность для других.
 .Pp
 .It Pa ~/.ssh/authorized_keys
-Lists the public keys (DSA, ECDSA, Ed25519, RSA)
-that can be used for logging in as this user.
-The format of this file is described in the
+Перечисляет открытые ключи (DSA, ECDSA, Ed25519, RSA)
+которые могут быть использованы для входа в систему под этим пользователем.
+Формат этого файла описан в 
 .Xr sshd 8
-manual page.
-This file is not highly sensitive, but the recommended
-permissions are read/write for the user, and not accessible by others.
+странице руководства.
+Этот файл не является высокочувствительным, но рекомендуемые 
+разрешения - чтение/запись для пользователя и недоступность для других.
 .Pp
 .It Pa ~/.ssh/config
-This is the per-user configuration file.
-The file format and configuration options are described in
+Это файл конфигурации для каждого пользователя.
+Формат файла и параметры конфигурации описаны в
 .Xr ssh_config 5 .
-Because of the potential for abuse, this file must have strict permissions:
-read/write for the user, and not writable by others.
+Из-за потенциальной возможности злоупотребления данными, этот файл должен иметь строгие права доступа:
+чтение/запись для пользователя и недоступность для записи другими.
 .Pp
 .It Pa ~/.ssh/environment
-Contains additional definitions for environment variables; see
+Содержит дополнительные определения переменных окружения; см.
 .Sx ENVIRONMENT ,
-above.
+выше.
 .Pp
 .It Pa ~/.ssh/id_dsa
 .It Pa ~/.ssh/id_ecdsa
@@ -1580,15 +1579,15 @@ above.
 .It Pa ~/.ssh/id_ed25519
 .It Pa ~/.ssh/id_ed25519_sk
 .It Pa ~/.ssh/id_rsa
-Contains the private key for authentication.
-These files
-contain sensitive data and should be readable by the user but not
-accessible by others (read/write/execute).
+Содержат закрытый ключ для аутентификации.
+Эти файлы 
+содержат чувствительные данные и должны быть доступны только для чтения пользователем, но не
+доступны для других (чтение/запись/выполнение).
 .Nm
-will simply ignore a private key file if it is accessible by others.
-It is possible to specify a passphrase when
-generating the key which will be used to encrypt the
-sensitive part of this file using AES-128.
+просто проигнорирует файл закрытого ключа, если он доступен для других.
+При генерации ключа можно указать пароль, 
+который будет использоваться для шифрования
+чувствительной части этого файла с помощью AES-128.
 .Pp
 .It Pa ~/.ssh/id_dsa.pub
 .It Pa ~/.ssh/id_ecdsa.pub
@@ -1596,39 +1595,39 @@ sensitive part of this file using AES-128.
 .It Pa ~/.ssh/id_ed25519.pub
 .It Pa ~/.ssh/id_ed25519_sk.pub
 .It Pa ~/.ssh/id_rsa.pub
-Contains the public key for authentication.
-These files are not
-sensitive and can (but need not) be readable by anyone.
+Содержат открытый ключ для аутентификации.
+Эти файлы не являются
+чувствительными и могут (но не обязательно) быть доступными для чтения любым пользователем.
 .Pp
 .It Pa ~/.ssh/known_hosts
-Contains a list of host keys for all hosts the user has logged into
-that are not already in the systemwide list of known host keys.
-See
+Содержит список ключей хостов для всех хостов, в которые пользователь вошел и которые еще
+не находятся в системном списке известных ключей хостов.
+Смотрите
 .Xr sshd 8
-for further details of the format of this file.
+для более подробной информации о формате этого файла.
 .Pp
 .It Pa ~/.ssh/rc
-Commands in this file are executed by
+Команды в этом файле выполняются
 .Nm
-when the user logs in, just before the user's shell (or command) is
-started.
-See the
+при входе пользователя, непосредственно перед запуском оболочки
+пользователя (или команды).
+См.
 .Xr sshd 8
-manual page for more information.
+на странице руководства для доп.информации.
 .Pp
 .It Pa /etc/hosts.equiv
-This file is for host-based authentication (see above).
-It should only be writable by root.
+Этот файл предназначен для аутентификации на основе хоста (см. выше).
+Он должен быть доступен только для записи root.
 .Pp
 .It Pa /etc/shosts.equiv
-This file is used in exactly the same way as
+Этот файл используется точно так же, как и
 .Pa hosts.equiv ,
-but allows host-based authentication without permitting login with
+но позволяет аутентификацию на основе хоста без разрешения входа через
 rlogin/rsh.
 .Pp
 .It Pa /etc/ssh/ssh_config
-Systemwide configuration file.
-The file format and configuration options are described in
+Файл конфигурации для всей системы.
+Формат файла и параметры конфигурации описаны в
 .Xr ssh_config 5 .
 .Pp
 .It Pa /etc/ssh/ssh_host_key
@@ -1636,32 +1635,32 @@ The file format and configuration options are described in
 .It Pa /etc/ssh/ssh_host_ecdsa_key
 .It Pa /etc/ssh/ssh_host_ed25519_key
 .It Pa /etc/ssh/ssh_host_rsa_key
-These files contain the private parts of the host keys
-and are used for host-based authentication.
+Эти файлы содержат закрытые части ключей хостов
+и используются для аутентификации на основе хоста.
 .Pp
 .It Pa /etc/ssh/ssh_known_hosts
-Systemwide list of known host keys.
-This file should be prepared by the
-system administrator to contain the public host keys of all machines in the
-organization.
-It should be world-readable.
-See
+Системный список известных ключей хостов.
+Этот файл должен быть подготовлен администратором 
+системы для содержания публичных ключей хостов всех машин в
+организации.
+Он должен быть доступен для чтения всем.
+См.
 .Xr sshd 8
-for further details of the format of this file.
+для более подробной информации о формате этого файла.
 .Pp
 .It Pa /etc/ssh/sshrc
-Commands in this file are executed by
+Команды в этом файле выполняются
 .Nm
-when the user logs in, just before the user's shell (or command) is started.
-See the
+при входе пользователя, непосредственно перед запуском оболочки пользователя (или команды).
+См.
 .Xr sshd 8
-manual page for more information.
+на странице руководоства для доп.информации.
 .El
 .Sh EXIT STATUS
 .Nm
-exits with the exit status of the remote command or with 255
-if an error occurred.
-.Sh SEE ALSO
+выходит с кодом завершения удаленной команды или с  255
+если произошла ошибка.
+.Sh СМ.ТАКЖЕ
 .Xr scp 1 ,
 .Xr sftp 1 ,
 .Xr ssh-add 1 ,
@@ -1672,125 +1671,125 @@ if an error occurred.
 .Xr ssh_config 5 ,
 .Xr ssh-keysign 8 ,
 .Xr sshd 8
-.Sh STANDARDS
+.Sh СТАНДАРТЫ
 .Rs
 .%A S. Lehtinen
 .%A C. Lonvick
-.%D January 2006
+.%D Январь 2006
 .%R RFC 4250
-.%T The Secure Shell (SSH) Protocol Assigned Numbers
+.%T TПротокол безопасной оболочки (SSH) Назначенные номера
 .Re
 .Pp
 .Rs
 .%A T. Ylonen
 .%A C. Lonvick
-.%D January 2006
+.%D Январь 2006
 .%R RFC 4251
-.%T The Secure Shell (SSH) Protocol Architecture
+.%T Архитектура протокола безопасной оболочки (SSH)
 .Re
 .Pp
 .Rs
 .%A T. Ylonen
 .%A C. Lonvick
-.%D January 2006
+.%D Январь 2006
 .%R RFC 4252
-.%T The Secure Shell (SSH) Authentication Protocol
+.%T Протокол аутентификации безопасной оболочки (SSH)
 .Re
 .Pp
 .Rs
 .%A T. Ylonen
 .%A C. Lonvick
-.%D January 2006
+.%D Январь 2006
 .%R RFC 4253
-.%T The Secure Shell (SSH) Transport Layer Protocol
+.%T Протокол транспортного уровня безопасной оболочки (SSH)
 .Re
 .Pp
 .Rs
 .%A T. Ylonen
 .%A C. Lonvick
-.%D January 2006
+.%D Январь 2006
 .%R RFC 4254
-.%T The Secure Shell (SSH) Connection Protocol
+.%T Протокол соединения безопасной оболочки (SSH)
 .Re
 .Pp
 .Rs
 .%A J. Schlyter
 .%A W. Griffin
-.%D January 2006
+.%D Январь 2006
 .%R RFC 4255
-.%T Using DNS to Securely Publish Secure Shell (SSH) Key Fingerprints
+.%T Использование DNS для безопасной публикации отпечатков ключей безопасной оболочки (SSH)
 .Re
 .Pp
 .Rs
 .%A F. Cusack
 .%A M. Forssen
-.%D January 2006
+.%D Январь 2006
 .%R RFC 4256
-.%T Generic Message Exchange Authentication for the Secure Shell Protocol (SSH)
+.%T Общий протокол аутентификации обмена сообщениями для протокола безопасной оболочки (SSH)
 .Re
 .Pp
 .Rs
 .%A J. Galbraith
 .%A P. Remaker
-.%D January 2006
+.%D Январь 2006
 .%R RFC 4335
-.%T The Secure Shell (SSH) Session Channel Break Extension
+.%T Расширение канала сеанса безопасной оболочки (SSH)
 .Re
 .Pp
 .Rs
 .%A M. Bellare
 .%A T. Kohno
 .%A C. Namprempre
-.%D January 2006
+.%D Январь 2006
 .%R RFC 4344
-.%T The Secure Shell (SSH) Transport Layer Encryption Modes
+.%T Режимы шифрования транспортного уровня безопасной оболочки (SSH)
 .Re
 .Pp
 .Rs
 .%A B. Harris
-.%D January 2006
+.%D Январь 2006
 .%R RFC 4345
-.%T Improved Arcfour Modes for the Secure Shell (SSH) Transport Layer Protocol
+.%T Улучшенные режимы Arcfour для протокола транспортного уровня безопасной оболочки (SSH)
 .Re
 .Pp
 .Rs
 .%A M. Friedl
 .%A N. Provos
 .%A W. Simpson
-.%D March 2006
+.%D Март 2006
 .%R RFC 4419
-.%T Diffie-Hellman Group Exchange for the Secure Shell (SSH) Transport Layer Protocol
+.%T Обмен группы Диффи-Хеллмана для протокола транспортного уровня безопасной оболочки (SSH)
 .Re
 .Pp
 .Rs
 .%A J. Galbraith
 .%A R. Thayer
-.%D November 2006
+.%D Ноябрь 2006
 .%R RFC 4716
-.%T The Secure Shell (SSH) Public Key File Format
+.%T Формат файла открытого ключа безопасной оболочки (SSH)
 .Re
 .Pp
 .Rs
 .%A D. Stebila
 .%A J. Green
-.%D December 2009
+.%D Декабрь 2009
 .%R RFC 5656
-.%T Elliptic Curve Algorithm Integration in the Secure Shell Transport Layer
+.%T Интеграция алгоритма эллиптической кривой в транспортный уровень Secure Shell
 .Re
 .Pp
 .Rs
 .%A A. Perrig
 .%A D. Song
 .%D 1999
-.%O International Workshop on Cryptographic Techniques and E-Commerce (CrypTEC '99)
-.%T Hash Visualization: a New Technique to improve Real-World Security
+.%O Международный семинар по криптографическим методам и электронной коммерции (CrypTEC '99)
+.%T Визуализация хэшей: новый метод повышения безопасности в реальном мире
 .Re
-.Sh AUTHORS
-OpenSSH is a derivative of the original and free
-ssh 1.2.12 release by Tatu Ylonen.
-Aaron Campbell, Bob Beck, Markus Friedl, Niels Provos,
-Theo de Raadt and Dug Song
-removed many bugs, re-added newer features and
-created OpenSSH.
-Markus Friedl contributed the support for SSH
-protocol versions 1.5 and 2.0.
+.Sh АВТОРЫ
+OpenSSH является производным от оригинального и бесплатного 
+ssh 1.2.12 выпуска Тату Илонена.
+Аарон Кэмпбелл, Боб Бек, Маркус Фридл, Нильс Провос,
+Тео де Раадт и Даг Сонг
+устранили множество ошибок, добавили новые функции и
+создали OpenSSH.
+Маркус Фридл внёс вклад в поддержку 
+протоколов SSH версий 1.5 и 2.0.

@@ -14,56 +14,57 @@
 .\" WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 .\" ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 .\" OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-.Dd January 26, 2007
+.Dd Январь 26, 2007
 .Dt ZNEW 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm znew
-.Nd convert compressed files to gzipped files
-.Sh SYNOPSIS
+.Nd преобразовывает сжатые файлы в gzipped файлы.
+.Sh СИНТАКСИС
 .Nm
 .Op Fl ftv9K
 .Ar
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility uncompresses files compressed by
+распаковывает файлы, сжатые с помощью
 .Xr compress 1
-and recompresses them with
+и снова сжимает их с помощью 
 .Xr gzip 1 .
 .Pp
-The options are as follows:
+Параметры представляют из себя следующее:
 .Bl -tag -width Ds
 .It Fl f
-Overwrite existing
+Переписывает существующие файлы
 .Sq .gz
-files.
-Unless this option is specified,
+.
+Пока этот параметр не будет указан,
 .Nm
-refuses to overwrite existing files.
+отказывается переписывать существующие файлы.
 .It Fl t
-Test integrity of the gzipped file before deleting the original file.
-If the integrity check fails, the original
+Проверяет целостность gzip файла перед удалением оригинального файла.
+Если файл не проходит проверку на целостность, то оригинальный файл
 .Sq .Z
-file is not removed.
+не убирают.
 .It Fl v
-Print a report specifying the achieved compression ratios.
+Печатает отчет, указывая достигнутые степени сжатия.
 .It Fl 9
-Use the -9 mode of
+Использует -9 режим файла
 .Xr gzip 1 ,
-achieving better compression at the cost of slower execution.
+достигая лучшего сжатия за счет медленного выполнения.
 .It Fl K
-Keep the original
+Оставляет оригинальный файл
 .Sq .Z
-file if it uses less disk blocks than the gzipped one.
-A disk block is 1024 bytes.
+если он занимает меньше дисковых блоков, чем сжатый gzip файл.
+Блок диска
+Дисковый блок составляет 1024 байт.
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr gzip 1
-.Sh CAVEATS
+.Sh ПРЕДОСТЕРЕЖЕНИЯ
 The
 .Nm
-utility tries to maintain the file mode of the original file.
-If the original file is not writable, it is not able to do that and
+утилита пытается сохранить режим исходного файла.
+Если исходный файл не может быть записан, то утилита не сможет сохранить режим исходного файла и
 .Nm
-will print a warning.
+отправит предупреждение.

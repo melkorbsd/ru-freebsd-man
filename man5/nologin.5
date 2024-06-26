@@ -1,95 +1,100 @@
-.\" Copyright (c) 1993
-.\"	The Regents of the University of California.  All rights reserved.
+.\" Авторское право (c) 1993
+.\"	Регенты Калифорнийского университета.  Все права защищены.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
-.\" 3. Neither the name of the University nor the names of its contributors
-.\"    may be used to endorse or promote products derived from this software
-.\"    without specific prior written permission.
+.\" Распространение и использование в исходных и двоичных формах, с модификацией или без
+.\" модификацией, разрешается при соблюдении следующих условий
+.\" соблюдены:
+.\" 1. Перераспределение исходного кода должно сохранять вышеуказанное уведомление об авторских правах
+.\" уведомление об авторских правах, этот список условий и следующий отказ от ответственности.
+.\" 2. Перераспределение в двоичной форме должно воспроизводить вышеуказанное уведомление об авторских правах
+.\" уведомление об авторских правах, этот список условий и следующий отказ от ответственности в
+.\" документации и/или других материалах, поставляемых вместе с дистрибутивом.
+.\" 3. Ни название Университета, ни имена его соавторов
+.\" не могут быть использованы для поддержки или продвижения продуктов, созданных на основе этого программного обеспечения
+.\" без специального предварительного письменного разрешения.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ РЕГЕНТАМИ И РАЗРАБОТЧИКАМИ "КАК ЕСТЬ" И
+.\" ЛЮБЫЕ ЯВНЫЕ ИЛИ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ
+.\" ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ТОВАРНОГО СОСТОЯНИЯ И ПРИГОДНОСТИ ДЛЯ КОНКРЕТНОЙ ЦЕЛИ
+.\" НЕ ПРИНИМАЮТСЯ.  НИ ПРИ КАКИХ ОБСТОЯТЕЛЬСТВАХ РЕГЕНТЫ ИЛИ ВКЛАДЧИКИ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ
+.\" ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, СПЕЦИАЛЬНЫЕ, ПРИМЕРНЫЕ ИЛИ КОСВЕННЫЕ УБЫТКИ.
+.\" УЩЕРБ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПРИОБРЕТЕНИЕ ТОВАРОВ-ЗАМЕНИТЕЛЕЙ
+.\" ИЛИ УСЛУГИ; ПОТЕРЮ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПЕРЕРЫВ В РАБОТЕ)
+.\" НЕЗАВИСИМО ОТ ПРИЧИН И ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО КОНТРАКТ, СТРОГИЙ
+.\" ОТВЕТСТВЕННОСТИ, ИЛИ ДЕЛИКТА (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНОЕ), ВОЗНИКАЮЩИХ КАКИМ-ЛИБО ОБРАЗОМ
+.\" В СВЯЗИ С ИСПОЛЬЗОВАНИЕМ ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ ВЫ БЫЛИ ПРЕДУПРЕЖДЕНЫ О ВОЗМОЖНОСТИ
+.\" ТАКОГО УЩЕРБА.
 .\"
-.\"     @(#)nologin.8	8.1 (Berkeley) 6/19/93
+.\"     @(#)nologin.8 8.1 (Berkeley) 6/19/93
 .\"
-.Dd May 10, 2007
+.Dd 10 мая 2007 г.
 .Dt NOLOGIN 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm nologin
-.Nd disallow logins
-.Sh DESCRIPTION
-Programs such as
+.Nd запрет входа в систему
+.Sh ОПИСАНИЕ
+Такие программы, как
 .Xr login 1
-disallow logins if the
+запрещает вход в систему, если
 .Nm
-file exists.
-The programs display the contents of
+существует.
+Эти программы отображают содержимое
 .Nm
-to the user if possible and interrupt the login sequence.
-This makes it simple to temporarily prevent incoming logins systemwide.
+пользователю, если это возможно, и прерывают последовательность входа в систему.
+Это позволяет временно предотвратить вход в систему в масштабах всей системы.
 .Pp
-To disable logins on a per-account basis,
-investigate
+Запрет входа в систему для каждой учетной записи,
+изучите
 .Xr nologin 8 .
-.Sh SECURITY
+.Sh БЕЗОПАСНОСТЬ
 The
 .Nm
-file is ignored for user root by default.
-.Sh IMPLEMENTATION NOTES
+по умолчанию игнорируется для пользователя root.
+.Sh УКАЗАНИЯ ПО ВЗАИМОДЕЙСТВИЮ
 The
 .Nm
-feature is implemented through
+реализуется через
 .Xr login.conf 5 ,
-which allows to change the pathname of the
-file and to extend the list of users
-exempt from temporary login restriction.
+который позволяет изменять путь к
+файла и расширить список пользователей
+освобожденных от временного ограничения на вход.
 .Pp
-PAM-aware programs can be selectively configured to respect
+Программы, поддерживающие PAM, могут быть выборочно настроены на соблюдение
 .Nm
-using the
+с помощью
 .Xr pam_nologin 8
-module via
+через модуль
 .Xr pam.conf 5 .
 .Pp
 The
 .Nm
-file will be removed at system boot if it resides in
+будет удален при загрузке системы, если он находится в
 .Pa /var/run
-and
+и
 .Va cleanvar_enable
-is set to
+установлено значение
 .Dq Li YES
-in
+в
 .Xr rc.conf 5 ,
-which is default.
-Therefore system reboot can effectively re-enable logins.
-.Sh FILES
+которое используется по умолчанию.
+Поэтому перезагрузка системы может эффективно восстановить вход в систему.
+.Sh ФАЙЛЫ
 .Bl -tag -width ".Pa /var/run/nologin" -compact
 .It Pa /var/run/nologin
-default location of
+расположение по умолчанию
 .Nm
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr login 1 ,
-.Xr login.conf 5 ,
+.Xr login.conf 5,
 .Xr pam.conf 5 ,
 .Xr rc.conf 5 ,
 .Xr nologin 8 ,
 .Xr pam_nologin 8 ,
 .Xr shutdown 8
+
+
+
+
+ 
