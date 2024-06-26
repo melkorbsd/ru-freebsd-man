@@ -1,86 +1,88 @@
-.\" Copyright (c) 1983, 1991, 1993
-.\"	The Regents of the University of California.  All rights reserved.
+.\" Авторское право (c) 1983, 1991, 1993
+.\"	Регенты Калифорнийского университета.  Все права защищены.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
-.\" 3. Neither the name of the University nor the names of its contributors
-.\"    may be used to endorse or promote products derived from this software
-.\"    without specific prior written permission.
+.\" Распространение и использование в исходных и двоичных формах, с модификацией или без
+.\" модификацией, разрешается при соблюдении следующих условий
+.\" соблюдены:
+.\" 1. Перераспределение исходного кода должно сохранять вышеуказанное уведомление об авторских правах
+.\" уведомление об авторских правах, этот список условий и следующий отказ от ответственности.
+.\" 2. Перераспределение в двоичной форме должно воспроизводить вышеуказанное уведомление об авторских правах
+.\" уведомление об авторских правах, этот список условий и следующий отказ от ответственности в
+.\" документации и/или других материалах, поставляемых вместе с дистрибутивом.
+.\" 3. Ни название Университета, ни имена его соавторов
+.\" не могут быть использованы для поддержки или продвижения продуктов, созданных на основе этого программного обеспечения
+.\" без специального предварительного письменного разрешения.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ РЕГЕНТАМИ И РАЗРАБОТЧИКАМИ "КАК ЕСТЬ" И
+.\" ЛЮБЫЕ ЯВНЫЕ ИЛИ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ
+.\" ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ТОВАРНОГО СОСТОЯНИЯ И ПРИГОДНОСТИ ДЛЯ КОНКРЕТНОЙ ЦЕЛИ
+.\" НЕ ПРИНИМАЮТСЯ.  НИ ПРИ КАКИХ ОБСТОЯТЕЛЬСТВАХ РЕГЕНТЫ ИЛИ ВКЛАДЧИКИ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ
+.\" ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, СПЕЦИАЛЬНЫЕ, ПРИМЕРНЫЕ ИЛИ КОСВЕННЫЕ УБЫТКИ.
+.\" УЩЕРБ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПРИОБРЕТЕНИЕ ТОВАРОВ-ЗАМЕНИТЕЛЕЙ
+.\" ИЛИ УСЛУГИ; ПОТЕРЮ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПЕРЕРЫВ В РАБОТЕ)
+.\" НЕЗАВИСИМО ОТ ПРИЧИН И ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО КОНТРАКТ, СТРОГИЙ
+.\" ОТВЕТСТВЕННОСТИ, ИЛИ ДЕЛИКТА (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНОЕ), ВОЗНИКАЮЩИХ КАКИМ-ЛИБО ОБРАЗОМ
+.\" В СВЯЗИ С ИСПОЛЬЗОВАНИЕМ ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ ВЫ БЫЛИ ПРЕДУПРЕЖДЕНЫ О ВОЗМОЖНОСТИ
+.\" ТАКОГО УЩЕРБА.
 .\"
-.\"     @(#)protocols.5	8.1 (Berkeley) 6/5/93
+.\"     @(#)protocols.5 8.1 (Berkeley) 6/5/93
 .\"
-.Dd December 7, 2020
+.Dd 7 декабря 2020 г.
 .Dt PROTOCOLS 5
 .Os
-.Sh NAME
-.Nm protocols
-.Nd protocol name data base
-.Sh DESCRIPTION
-The
+.Sh ИМЯ
+.Nm протоколы
+База данных имен протоколов .Nd
+.Sh ОПИСАНИЕ
+Сайт
 .Nm
-file contains information regarding the assigned protocol numbers
-used by IPv4 and IPv6 to identify the next level protocol.
-For each protocol a single line should be present
-with the following information:
-.Bd -unfilled -offset indent
-official protocol name
-protocol number
-aliases
+содержит информацию о присвоенных номерах протоколов
+используемых в протоколах IPv4 и IPv6 для идентификации протокола следующего уровня.
+Для каждого протокола должна присутствовать одна строка
+со следующей информацией:
+.Bd -незаполненный -отступ
+официальное имя протокола
+номер протокола
+псевдонимы
 .Ed
 .Pp
-Items are separated by any number of blanks and/or
-tab characters.
-A ``#'' indicates the beginning of
-a comment; characters up to the end of the line are
-not interpreted by routines which search the file.
+Элементы разделяются любым количеством пробелов и/или
+символами табуляции.
+Символ ``#'' указывает на начало
+комментария; символы до конца строки
+не интерпретируются программами поиска в файле.
 .Pp
-Protocol names may contain any printable
-character other than a field delimiter, newline,
-or comment character.
-.Sh FILES
+Имена протоколов могут содержать любой печатаемый
+любой печатный символ, кроме разделителя полей, новой строки,
+или символа комментария.
+.Sh ФАЙЛЫ
 .Bl -tag -width /etc/protocols -compact
 .It Pa /etc/protocols
 The
 .Nm
-file resides in
+находится в
 .Pa /etc .
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr getprotoent 3
 .Rs
 .%R RFC 2780
-.%D March 2000
+.%D Март 2000 г.
 .%T "IANA Allocation Guidelines For Values In the \
-Internet Protocol and Related Headers"
+Интернет-протокола и связанных с ним заголовков"
 .Re
 .Rs
 .%R RFC 5237
-.%D February 2008
-.%T "IANA Allocation Guidelines for the Protocol Field"
+.%D Февраль 2008 г.
+.%T "Руководство по распределению IANA для поля протокола"
 .Re
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Сайт
 .Nm
-file format appeared in
+появился в
 .Bx 4.2 ,
-describing the "known protocols used in the DARPA Internet".
-.Sh BUGS
-A name server should be used instead of a static file.
+в котором описывались "известные протоколы, используемые в Интернете DARPA".
+ОШИБКИ .Sh
+Вместо статического файла следует использовать сервер имен.
+
+

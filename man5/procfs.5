@@ -1,291 +1,291 @@
-.\" Written by Garrett Wollman
-.\" This file is in the public domain.
+.\" Автор: Гаррет Воллман
+.\" Этот файл является общественным достоянием.
 .\"
-.Dd April 10, 2023
+.Dd 10 апреля 2023 г.
 .Dt PROCFS 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm procfs
-.Nd process file system
+.Nd файловая система процесса
 .Sh SYNOPSIS
-.Bd -literal
-proc		/proc	procfs	rw 0 0
+.Bd -литеральный
+proc /proc procfs rw 0 0
 .Ed
-.Sh DESCRIPTION
-.Bf -symbolic
-This functionality is deprecated.
-Users are advised to use
+ОПИСАНИЕ .Sh
+.Bf -символьный
+Эта функциональность устарела.
+Пользователям рекомендуется использовать
 .Xr libprocstat 3
-and
+и
 .Xr kvm 3
-instead.
+вместо них.
 .Ef
 .Pp
-The process file system, or
+Файловая система процесса, или
 .Nm ,
-implements a view of the system process table inside the file system.
-It is normally mounted on
+реализует представление таблицы системных процессов внутри файловой системы.
+Обычно она монтируется в
 .Pa /proc .
 .Pp
-The
+Сайт
 .Nm
-provides a two-level view of process space, unlike the previous
+обеспечивает двухуровневое представление пространства процессов, в отличие от предыдущей версии
 .Fx 1.1
 .Nm
-implementation.
-At the highest level, processes themselves are named, according to
-their process ids in decimal, with no leading zeros.
-There is also a
-special node called
+реализации.
+На самом высоком уровне именуются сами процессы в соответствии с
+их идентификаторы процессов в десятичном исчислении без ведущих нулей.
+Существует также
+специальный узел под названием
 .Pa curproc
-which always refers to the process making the lookup request.
+который всегда ссылается на процесс, выполняющий запрос поиска.
 .Pp
-Each node is a directory which contains the following entries:
+Каждый узел представляет собой каталог, содержащий следующие записи:
 .Bl -tag -width status
 .It Pa dbregs
-The debug registers as defined by
+Отладочные регистры, определенные
 .Dv "struct dbregs"
-in
+в
 .In machine/reg.h .
 .Pa dbregs
-is currently only implemented on the i386 architecture.
+в настоящее время реализована только на архитектуре i386.
 .It Pa etype
-The type of the executable referenced by the
-.Pa file
-entry.
-.It Pa file
-A symbolic link to the file from which the process text was read.
-This can be used to gain access to the process' symbol table,
-or to start another copy of the process.
-If the file cannot be found, the link target is
-.Ql unknown .
+Тип исполняемого файла, на который ссылается файл
+файл .Pa
+запись.
+Файл .It Pa
+Символическая ссылка на файл, из которого был прочитан текст процесса.
+Она может быть использована для получения доступа к таблице символов процесса,
+или для запуска другой копии процесса.
+Если файл не удается найти, целью ссылки будет
+.Ql неизвестно .
 .It Pa fpregs
-The floating point registers as defined by
+Регистры с плавающей точкой, как определено в
 .Dv "struct fpregs"
-in
+в
 .In machine/reg.h .
 .Pa fpregs
-is only implemented on machines which have distinct general
-purpose and floating point register sets.
+реализуется только на машинах, имеющих отдельные наборы регистров общего
+назначения и наборы регистров с плавающей запятой.
 .It Pa map
-A collection of lines describing the memory regions of the process,
-where each line contains the following fields:
+Набор строк, описывающих области памяти процесса,
+где каждая строка содержит следующие поля:
 .Bl -tag -compact -width private-resident
 .It start-address
-The starting address for the region (inclusive).
+Начальный адрес региона (включительно).
 .It end-address
-The ending address for the region (exclusive).
+Конечный адрес региона (включительно).
 .It resident
-The number of resident pages.
+Количество резидентных страниц.
 .It private-resident
-The number of resident pages that were private to the process.
+Количество резидентных страниц, которые были приватными для процесса.
 .It obj
-The virtual address of the
+Виртуальный адрес
 .Vt struct vm_object
-kernel data structure describing the memory region.
+Структура данных ядра, описывающая область памяти.
 .It access
-A three character string comprising the characters
+Трехсимвольная строка, состоящая из символов
 .Sq r ,
 .Sq w
-and
+и
 .Sq x ,
-denoting read, write, and execute permissions respectively.
-The lack of a permission is represented by
+обозначающие разрешения на чтение, запись и выполнение соответственно.
+Отсутствие разрешения представлено
 .Sq - .
 .It ref_count
-The number of references to the region.
+Количество ссылок на регион.
 .It shadow_count
-The number of VM objects that this region is a shadow for.
+Количество объектов VM, для которых этот регион является тенью.
 .It flags
-The flags for the object, see the flags named
+Флаги для объекта, см. флаги с именем
 .Sy OBJ_*
-in
+в
 .In vm/vm_object.h .
 .It copy-on-write
-Whether the region is copy-on-write.
-One of:
+Является ли регион копируемым при записи.
+Одно из:
 .Bl -tag -compact -width NCOW
 .It COW
-A copy-on-write region.
+Регион с функцией копирования при записи.
 .It NCOW
-A non-copy-on-write region.
+Область без копирования при записи.
 .El
 .It needs-copy
-Whether the region needs a copy.
-One of:
+Нужна ли региону копия.
+Одно из:
 .Bl -tag -compact -width NNC
 .It NC
-The region needs a copy.
+Региону требуется копия.
 .It NNC
-The region does not need a copy.
+Региону не нужна копия.
 .El
-.It type
-The type of the region.
-One of:
+.It тип
+Тип региона.
+Один из:
 .Bl -tag -compact -width unknown
 .It dead
-A region associated with a dead VM object.
+Регион, связанный с мертвым объектом VM.
 .It device
-A region backed by device memory.
+Регион, основанный на памяти устройства.
 .It none
-A region not backed by anything.
+Регион, не поддерживаемый ничем.
 .It phys
-A region backed by physical memory.
+Регион, поддерживаемый физической памятью.
 .It swap
-A region backed by swap.
+Регион, поддерживаемый свопом.
 .It unknown
-A region of unknown type.
+Регион неизвестного типа.
 .It vnode
-A region backed by a file.
+Регион, поддерживаемый файлом.
 .El
 .It fullpath
-The path to the file backing the memory region, or
+Путь к файлу, поддерживающему регион памяти, или
 .Sq -
-if there is no such file.
+если такой файл отсутствует.
 .It cred
-One of:
+Одно из:
 .Bl -tag -compact -width NCH
 .It CH
-The region is being charged to the user specified in the
+Регион оплачивается пользователем, указанным в параметре
 .Sq charged-uid
-field.
+поле.
 .It NCH
-The region is not being charged to any user.
+Регион не начисляется ни одному пользователю.
 .El
 .It charged-uid
-The UID of the user being charged, or -1 if no user is being charged.
+UID пользователя, с которого взимается плата, или -1, если плата не взимается.
 .El
 .It Pa mem
-The complete virtual memory image of the process.
-Only those address which exist in the process can be accessed.
-Reads and writes to this file modify the process.
-Writes to the text segment remain private to the process.
+Полный образ виртуальной памяти процесса.
+Доступны только те адреса, которые существуют в процессе.
+Чтение и запись в этот файл изменяют процесс.
+Записи в текстовый сегмент остаются приватными для процесса.
 .It Pa note
-Used for sending signals to the process.
-Not implemented.
+Используется для отправки сигналов процессу.
+Не реализовано.
 .It Pa notepg
-Used for sending signal to the process group.
-Not implemented.
+Используется для отправки сигнала группе процессов.
+Не реализовано.
 .It Pa osrel
-Allows read and write of the kernel osrel value assigned to the process.
-It affects the compatibility shims that are turned on and off
-depending on the value.
-Initial process value is read from the ABI note tag in the executed ELF image,
-and is zero if the tag not supported by binary format or was not found.
+Позволяет читать и записывать значение osrel ядра, присвоенное процессу.
+Оно влияет на шиммы совместимости, которые включаются и выключаются
+в зависимости от значения.
+Начальное значение процесса считывается из тега ABI note в исполняемом ELF-образе,
+и равно нулю, если тег не поддерживается двоичным форматом или не был найден.
 .It Pa regs
-Allows read and write access to the process' register set.
-This file contains a binary data structure
+Позволяет читать и записывать набор регистров процесса.
+Этот файл содержит двоичную структуру данных
 .Dv "struct regs"
-defined in
+определенная в
 .In machine/reg.h .
 .Pa regs
-can only be written when the process is stopped.
+может быть записана только после остановки процесса.
 .It Pa rlimit
-This is a read-only file containing the process current and maximum
-limits.
-Each line is of the format
+Это файл, доступный только для чтения, содержащий текущий и максимальный
+пределы.
+Каждая строка имеет формат
 .Ar rlimit current max ,
-with -1
-indicating infinity.
+с -1
+означает бесконечность.
 .It Pa status
-The process status.
-This file is read-only and returns a single line containing
-multiple space-separated fields as follows:
+Статус процесса.
+Этот файл доступен только для чтения и возвращает одну строку, содержащую
+несколько полей, разделенных пробелами, как показано ниже:
 .Pp
 .Bl -bullet -compact
 .It
-command name
+имя команды
 .It
-process id
+идентификатор процесса
 .It
-parent process id
+идентификатор родительского процесса
 .It
-process group id
+идентификатор группы процессов
 .It
-session id
+идентификатор сессии
 .It
-device name
-of the controlling terminal, or
-a minus sign
+имя устройства
+управляющего терминала, или
+знак минус
 .Pq Dq -
-if there is no controlling terminal.
+если управляющий терминал отсутствует.
 .It
-a list of process flags:
+список флагов процесса:
 .Dv ctty
-if there is a controlling terminal,
+если есть управляющий терминал,
 .Dv sldr
-if the process is a session leader,
+если процесс является лидером сеанса,
 .Dv noflags
-if neither of the other two flags are set.
+если ни один из двух других флагов не установлен.
 .It
-the process start time in seconds and microseconds,
-comma separated.
+время запуска процесса в секундах и микросекундах,
+через запятую.
 .It
-the user time in seconds and microseconds,
-comma separated.
+время пользователя в секундах и микросекундах,
+через запятую.
 .It
-the system time in seconds and microseconds,
-comma separated.
+системное время в секундах и микросекундах,
+через запятую.
 .It
-the wait channel message
+сообщение канала ожидания
 .It
-the process credentials consisting of
-the effective user id
-and the list of groups (whose first member
-is the effective group id)
-all comma separated.
+учетные данные процесса, состоящие из
+идентификатора действительного пользователя
+и списка групп (первый член которого
+является идентификатор эффективной группы)
+все через запятую.
 .It
-the hostname of the jail in which the process runs, or
+имя хоста тюрьмы, в которой выполняется процесс, или
 .Ql -
-to indicate that the process is not running within a jail.
+чтобы указать, что процесс выполняется не в тюрьме.
 .El
 .El
 .Pp
-Each node is owned by the process's user, and belongs to that user's
-primary group.
-.Sh FILES
+Каждый узел принадлежит пользователю процесса и входит в его
+основной группе.
+.Sh ФАЙЛЫ
 .Bl -tag -width /proc/curproc/XXXXXXX -compact
 .It Pa /proc
-normal mount point for the
+обычная точка монтирования для
 .Nm .
 .It Pa /proc/pid
-directory containing process information for process
+каталог, содержащий информацию о процессе
 .Pa pid .
 .It Pa /proc/curproc
-directory containing process information for the current process
+каталог, содержащий информацию о текущем процессе
 .It Pa /proc/curproc/cmdline
-the process executable name
+имя исполняемого файла процесса
 .It Pa /proc/curproc/etype
-executable type
+тип исполняемого файла
 .It Pa /proc/curproc/file
-executable image
+образ исполняемого файла
 .It Pa /proc/curproc/fpregs
-the process floating point register set
+набор регистров процесса с плавающей запятой
 .It Pa /proc/curproc/map
-virtual memory map of the process
+карта виртуальной памяти процесса
 .It Pa /proc/curproc/mem
-the complete virtual address space of the process
+полное виртуальное адресное пространство процесса
 .It Pa /proc/curproc/note
-used for signaling the process
+используется для сигнализации процесса
 .It Pa /proc/curproc/notepg
-used for signaling the process group
+используется для сигнализации о группе процессов
 .It Pa /proc/curproc/osrel
-the process osrel value
+значение процесса osrel
 .It Pa /proc/curproc/regs
-the process register set
+набор регистров процесса
 .It Pa /proc/curproc/rlimit
-the process current and maximum rlimit
+текущее и максимальное ограничение процесса
 .It Pa /proc/curproc/status
-the process' current status
+текущий статус процесса
 .El
-.Sh EXAMPLES
-To mount a
+.Sh ПРИМЕРЫ
+Чтобы смонтировать
 .Nm
-file system on
+файловую систему на
 .Pa /proc :
 .Pp
 .Dl "mount -t procfs proc /proc"
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr procstat 1 ,
 .Xr mount 2 ,
 .Xr sigaction 2 ,
@@ -293,12 +293,14 @@ file system on
 .Xr kvm 3 ,
 .Xr libprocstat 3 ,
 .Xr pseudofs 9
-.Sh AUTHORS
+.Sh АВТОРЫ
 .An -nosplit
-This manual page written by
-.An Garrett Wollman ,
-based on the description
-provided by
-.An Jan-Simon Pendry ,
-and revamped later by
-.An Mike Pritchard .
+Эта страница руководства написана
+.An Гарреттом Вольманом ,
+на основе описания,
+предоставленного
+.An Яном-Саймоном Пендри ,
+и позднее переработана
+.An Майком Причардом .
+
+

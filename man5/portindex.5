@@ -1,98 +1,100 @@
 .\"
-.\" Copyright (c) 2004 Paul Armstrong
+.\" Copyright (c) 2004 Пол Армстронг
 .\" Copyright (c) 2009 Thomas Abthorpe
 .\"
-.\" All rights reserved.
+.\" Все права защищены.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\" notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\" notice, this list of conditions and the following disclaimer in the
-.\" documentation and/or other materials provided with the distribution.
+.\" Распространение и использование в исходных и двоичных формах, с или без
+.\" модификации, разрешены при соблюдении следующих условий
+.\" соблюдены:
+.\" 1. Перераспределение исходного кода должно сохранять вышеуказанное уведомление об авторских правах
+.\" уведомление об авторских правах, этот список условий и следующий отказ от ответственности.
+.\" 2. Перераспределение в двоичной форме должно воспроизводить вышеуказанное уведомление об авторских правах
+.\" уведомление об авторских правах, этот список условий и следующий отказ от ответственности в
+.\" документации и/или других материалах, поставляемых вместе с дистрибутивом.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE DEVELOPERS ``AS IS'' AND ANY EXPRESS OR
-.\" IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-.\" OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-.\" IN NO EVENT SHALL THE DEVELOPERS BE LIABLE FOR ANY DIRECT, INDIRECT,
-.\" INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-.\" NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-.\" DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-.\" THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-.\" (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-.\" THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+.\" ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ РАЗРАБОТЧИКАМИ ``КАК ЕСТЬ`` И ЛЮБЫЕ ЯВНЫЕ ИЛИ
+.\" ПОДРАЗУМЕВАЕМЫХ ГАРАНТИЙ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПОДРАЗУМЕВАЕМЫМИ ГАРАНТИЯМИ
+.\" ТОВАРНОГО СОСТОЯНИЯ И ПРИГОДНОСТИ ДЛЯ КОНКРЕТНОЙ ЦЕЛИ, НЕ ПРИНИМАЮТСЯ.
+.\" НИ ПРИ КАКИХ ОБСТОЯТЕЛЬСТВАХ РАЗРАБОТЧИКИ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ,
+.\" СЛУЧАЙНЫЕ, СПЕЦИАЛЬНЫЕ, ОБРАЗЦОВЫЕ ИЛИ КОСВЕННЫЕ УБЫТКИ (ВКЛЮЧАЯ, НО
+.\" НЕ ОГРАНИЧИВАЯСЬ, ПРИОБРЕТЕНИЕ ТОВАРОВ ИЛИ УСЛУГ, ЗАМЕНЯЮЩИХ ИХ; ПОТЕРЮ ИСПОЛЬЗОВАНИЯ,
+.\" ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПЕРЕРЫВА В РАБОТЕ), КАКИМИ БЫ ПРИЧИНАМИ ОНИ НИ БЫЛИ ВЫЗВАНЫ И ПО ЛЮБОМУ
+.\" ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО ДОГОВОР, СТРОГАЯ ОТВЕТСТВЕННОСТЬ ИЛИ ПРАВОНАРУШЕНИЕ
+.\" (ВКЛЮЧАЯ НЕБРЕЖНОСТЬ ИЛИ ИНОЕ), ВОЗНИКАЮЩИХ В РЕЗУЛЬТАТЕ ИСПОЛЬЗОВАНИЯ
+.\" ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ ВЫ БЫЛИ ПРЕДУПРЕЖДЕНЫ О ВОЗМОЖНОСТИ ТАКОГО УЩЕРБА.
 .\"
-.Dd October 14, 2012
+.Dd 14 октября 2012 г.
 .Dt PORTINDEX 5
 .Os
-.Sh NAME
-.Nm INDEX
-.Nd "File containing information about the state of the ports tree"
-.Sh DESCRIPTION
-The port index file in
+.Sh ИМЯ
+.Nm ИНДЕКС
+.Nd "Файл, содержащий информацию о состоянии дерева портов"
+.Sh ОПИСАНИЕ
+Файл индекса портов в
 .Pa /usr/ports
-contains various bits of information about the ports tree.
-Each major branch of
+содержит различные биты информации о дереве портов.
+Каждая основная ветвь
 .Fx
-has a separate index file, named
+есть отдельный индексный файл, названный
 .Dq INDEX- Ns Ar N ,
-where
+где
 .Ar N
-is the major version number of the
+это номер основной версии
 .Fx
-branch, i.e.:
+ветви, т.е:
 .Pa INDEX-7 ,
-or
+или
 .Pa INDEX-8 .
-.Bl -tag -width XXXXXXXXXX
+.Bl -tag -width XXXXXXXXXXXX
 .It Cm \&name
-The name of the package.
+Имя пакета.
 .It Cm \&path
-The path to the port directory.
+Путь к директории порта.
 .It Cm \&install prefix
-The default install prefix.
+Префикс установки по умолчанию.
 .It Cm \&short description
-A short description.
-.It Cm \&full description
-The path to the full description.
+Краткое описание.
+.It Cm \&полное описание
+Путь к полному описанию.
 .It Cm \&maintainer email
-The email address of the maintainer.
+Адрес электронной почты сопровождающего.
 .It Cm \&index
-The categories this port is part of.
+Категории, в которые входит этот порт.
 .It Cm \&build dependencies
-Ports required to be installed prior to building this port.
+Порты, которые должны быть установлены перед сборкой этого порта.
 .It Cm \&run dependencies
-Ports required to be installed for this port to run.
+Порты, которые должны быть установлены для запуска этого порта.
 .It Cm \&website
-The project website for the port.
+Веб-сайт проекта для данного порта.
 .It Cm \&e-deps
-Ports that may be required to extract this port.
+Порты, которые могут потребоваться для извлечения этого порта.
 .It Cm \&p-deps
-Ports that may be required to patch this port.
+Порты, которые могут потребоваться для исправления этого порта.
 .It Cm \&f-deps
-Ports that may be required to fetch this port.
+Порты, которые могут потребоваться для извлечения этого порта.
 .El
-.Sh FILES
+.Sh ФАЙЛЫ
 .Bl -tag -width /usr/ports/INDEX-8XX
 .It Pa /usr/ports/INDEX- Ns Ar N
-where
+где
 .Ar N
-is the major version number of the
+это номер основной версии
 .Fx
-branch.
+ветви.
 .El
-.Sh EXAMPLES
+.Sh ПРИМЕРЫ
 .Bd -literal
-vim-6.3.15|/usr/ports/editors/vim|/usr/local|Vi "workalike", with many additional features|/usr/ports/editors/vim/pkg-descr|obrien@FreeBSD.org|editors|libiconv-1.9.2_1|libiconv-1.9.2_1|http://www.vim.org/|||
+vim-6.3.15|/usr/ports/editors/vim|/usr/local|Vi "workalike", с множеством дополнительных возможностей|/usr/ports/editors/vim/pkg-descr|obrien@FreeBSD.org|editors|libiconv-1.9.2_1|libiconv-1.9.2_1|http://www.vim.org/|||||
 .Ed
-.Sh SEE ALSO
-.Xr build 7 ,
-.Xr ports 7
-.Sh AUTHORS
+.Sh СМОТРИТЕ ТАКЖЕ 
+.Xr сборка 7 ,
+.Xr порты 7
+.Sh АВТОРЫ
 .An -nosplit
-This manual page was written by
-.An Paul Armstrong
-and
-.An Thomas Abthorpe Aq Mt tabthorpe@FreeBSD.org .
+Эта страница руководства была написана
+.An Пол Армстронг
+и
+.An Томас Эбторп Aq Mt tabthorpe@FreeBSD.org .
+
+

@@ -1,131 +1,133 @@
 .\"
 .\" Copyright (c) 2019 M. Warner Losh <imp@FreeBSD.org>
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
+.\" Распространение и использование в исходных и двоичных формах, с или без
+.\" разрешены при соблюдении следующих условий
+.\" соблюдаются:
+.\" 1. Перераспределение исходного кода должно сохранять вышеуказанное уведомление об авторских правах
+.\" уведомление об авторских правах, этот список условий и следующий отказ от ответственности.
+.\" 2. Перераспределение в двоичной форме должно воспроизводить вышеуказанное уведомление об авторских правах
+.\" уведомление об авторских правах, этот список условий и следующий отказ от ответственности в
+.\" документации и/или других материалах, поставляемых вместе с дистрибутивом.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ АВТОРОМ И РАЗРАБОТЧИКАМИ "КАК ЕСТЬ" И
+.\" ЛЮБЫЕ ЯВНЫЕ ИЛИ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ
+.\" ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ТОВАРНОГО СОСТОЯНИЯ И ПРИГОДНОСТИ ДЛЯ КОНКРЕТНОЙ ЦЕЛИ
+.\" НЕ ПРИНИМАЮТСЯ.  НИ ПРИ КАКИХ ОБСТОЯТЕЛЬСТВАХ АВТОР ИЛИ СОАВТОРЫ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ
+.\" ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, СПЕЦИАЛЬНЫЕ, ПРИМЕРНЫЕ ИЛИ КОСВЕННЫЕ УБЫТКИ.
+.\" УЩЕРБ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПРИОБРЕТЕНИЕ ТОВАРОВ-ЗАМЕНИТЕЛЕЙ
+.\" ИЛИ УСЛУГИ; ПОТЕРЮ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПЕРЕРЫВ В РАБОТЕ)
+.\" НЕЗАВИСИМО ОТ ПРИЧИН И ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО КОНТРАКТ, СТРОГИЙ
+.\" ОТВЕТСТВЕННОСТИ, ИЛИ ДЕЛИКТА (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНОЕ), ВОЗНИКАЮЩИХ КАКИМ-ЛИБО ОБРАЗОМ
+.\" В СВЯЗИ С ИСПОЛЬЗОВАНИЕМ ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ ВЫ БЫЛИ ПРЕДУПРЕЖДЕНЫ О ВОЗМОЖНОСТИ
+.\" ТАКОГО УЩЕРБА.
 .\"
-.Dd November 23, 2021
+.Dd 23 ноября 2021 г.
 .Dt OS-RELEASE 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm os-release
-.Nd file describing the current OS and some of its attributes
-.Sh DESCRIPTION
-The
+Файл .Nd с описанием текущей ОС и некоторых ее атрибутов
+ОПИСАНИЕ .Sh
+Файл
 .Nm
-file is a new-line separated list of key value pairs.
-The syntax of this file is a reduced
+представляет собой список пар ключ-значение, разделенных новой строкой.
+Синтаксис этого файла представляет собой сокращенный вариант
 .Xr sh 1
-variable assignment with the
-following restrictions:
+назначение переменной с
+следующими ограничениями:
 .Bl -bullet
 .It
-Strings cannot be concatenated together
+Строки нельзя конкатенировать вместе
 .It
-No variable expansion is done
+Расширение переменных не производится
 .It
-All shell special characters must be quoted as documented in
+Все специальные символы оболочки должны быть заключены в кавычки, как описано в
 .Xr sh 1
 .It
-Variable assignments must be included inside of double quotes
-if they contain characters outside of A-Z, a-z and 0-9
+Назначения переменных должны быть заключены в двойные кавычки
+если они содержат символы за пределами A-Z, a-z и 0-9.
 .It
-All strings should be UTF-8 format
+Все строки должны быть в формате UTF-8
 .It
-Non-printable characters should not be used in the strings
+Непечатаемые символы не должны использоваться в строках
 .El
 .Pp
-Lines starting with the character
+Строки, начинающиеся с символа
 .Ql #
-are ignored as comments.
-.Sh VARIABLES
-The following variables are defined by the standard.
+игнорируются как комментарии.
+ПЕРЕМЕННЫЕ .Sh
+Стандартом определены следующие переменные.
 .Bl -tag -width XXXXXXXXXX -compact
-.It Dv NAME
-A string describing the preferred OS name.
+.It Dv ИМЯ
+Строка, описывающая предпочтительное имя ОС.
 .It Dv VERSION
-Version string for the OS, in its usual and customary format.
+Строка версии ОС в обычном и привычном формате.
 .It Dv ID
-Lower case version of the name with only a-z, 0-9,
+Версия имени в нижнем регистре, содержащая только буквы a-z, 0-9,
 .Ql \&. ,
 .Ql - ,
-and
+и
 .Ql _ .
 .It Dv VERSION_ID
-Lower case version of the version with only a-z, 0-9,
+Версия в нижнем регистре, содержащая только a-z, 0-9,
 .Ql \&. ,
 .Ql - ,
-and
+и
 .Ql _ .
 .It Dv PRETTY_NAME
-A pretty version of the name presented to the user.
-May contain release information.
+Красивая версия имени, представляемая пользователю.
+Может содержать информацию о выпуске.
 .It Dv ANSI_COLOR
-Suggested color presentation for the OS.
-This string should be suitable for inclusion within an ESC [ m ANSI/ECMA-48
-escape sequence to render the OS in its preferred color.
-This variable is optional.
+Предлагаемое цветовое представление для ОС.
+Эта строка должна быть пригодна для включения в последовательность ESC [ m ANSI/ECMA-48
+для отображения ОС в предпочтительном цвете.
+Эта переменная является необязательной.
 .It Dv CPE_NAME
-A CPE name for the operating system.
-This field shall follow the NIST Common Platform Enumeration specification.
+Имя CPE для операционной системы.
+Это поле должно соответствовать спецификации NIST Common Platform Enumeration.
 .It Dv HOME_URL
 .It Dv SUPPORT_URL
 .It Dv BUG_REPORT_URL
 .It Dv PRIVACY_POLICY_URL
-Links on the internet, in RFC 3986 format for different aspects of this OS.
-These variables are optional.
+Ссылки в Интернете в формате RFC 3986, касающиеся различных аспектов этой ОС.
+Эти переменные являются необязательными.
 .It Dv BUILD_ID
-A string identifying the build.
-This variable is optional.
+Строка, идентифицирующая сборку.
+Эта переменная необязательна.
 .It Dv VARIANT
-A string describing the variant of this operating system.
-This variable is optional.
+Строка, описывающая вариант данной операционной системы.
+Эта переменная необязательна.
 .It Dv VARIANT_ID
-Lower case version of the variant with only a-z, 0-9,
+Версия варианта в нижнем регистре, содержащая только буквы a-z, 0-9,
 .Ql \&. ,
 .Ql - ,
-and
+и
 .Ql _ .
-This variable is optional.
+Эта переменная является необязательной.
 .El
 .Pp
-All other variables have no standard-defined meaning.
-.Sh FILES
+Все остальные переменные не имеют стандартного значения.
+.Sh ФАЙЛЫ
 .Bl -tag -width XXXXXXXXXX -compact
 .It Pa /etc/os-release
-Symbolic link to actual
+Символическая ссылка на фактический
 .Pa os-release
-file.
+файл.
 .It Pa /var/run/os-release
-Generated os-release file describing the currently running system.
+Сгенерированный файл os-release, описывающий текущую работающую систему.
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Bl -tag -width XXXXXXXXXX -compact
-.It CPE Specification
+.It Спецификация CPE
 .Lk https://csrc.nist.gov/projects/security-content-automation-protocol/scap-specifications/cpe
 .It RFC 3986
 .Lk https://tools.ietf.org/html/rfc3986
 .It os-release Specification
 .Lk https://www.linux.org/docs/man5/os-release.html
 .El
-.Sh HISTORY
-This file first appeared in
+.Sh ИСТОРИЯ
+Этот файл впервые появился в
 .Fx 13.0 .
+
+
