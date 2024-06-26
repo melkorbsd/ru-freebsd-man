@@ -1,7 +1,6 @@
 .\" Авторское право  (c) 2013-2016 Девин Теске
 .\" Все права защищены.
-.\"
-Разрешение на распространение и использование в исходной и бинарной формах,
+.\" Разрешение на распространение и использование в исходной и бинарной формах,
 .\" с изменениями или без них, разрешается при условии соблюдения следующих условий:
 .\" 1. Распространение исходного кода должно сохранять приведенное выше уведомление о копирайте,
 .\"    этот список условий и следующий отказ от ответственности.
@@ -60,24 +59,24 @@
 имеет два основных режима обработки входных данных.
 .Pp
 Стандартный режим ввода, без
-.Ql Fl m,
+.Ql Fl m ,
 .Nm
 считывает байты из стандартного ввода.
 Должна быть предоставлена метка для данных.
 .Pp
 Второстепенный режим ввода, с
-.Ql Fl m,
+.Ql Fl m ,
 .Nm
 считывает несколько путей
-.Pq до 2047 или Dq ARG_MAX/2-1,
+.Pq до 2047 или Dq ARG_MAX/2-1 ,
 последовательно.
 .Pp
 Данные, считанные в любом из режимов, либо удаляются
 .Pq по умолчанию,
 либо отправляются в запущенный экземпляр программы, указанный через
-.Ql Fl x Ar cmd,
+.Ql Fl x Ar cmd ,
 или отправляются в уникальный файл, указанный через
-.Ql Fl o Ar file.
+.Ql Fl o Ar file .
 .Pp
 С
 .Ql Fl m
@@ -86,10 +85,10 @@
 .Xr dialog 3
 .Pq по умолчанию,
 .Xr dialog 1
-.Pq см. Ql Fl D,
+.Pq см. Ql Fl D ,
 или вместо этого
 .Xr Xdialog 1 Pq Pa ports/x11/xdialog
-.Pq см. Ql Fl X.
+.Pq см. Ql Fl X .
 .Pp
 Доступны следующие параметры:
 .Bl -tag -width "-b backtitle"
@@ -102,15 +101,15 @@
 .Ar backtitle
 на фоне, в верхнем левом углу, за виджетом диалога.
 При использовании
-.Xr Xdialog 1 Pq Pa ports/x11/xdialog,
+.Xr Xdialog 1 Pq Pa ports/x11/xdialog ,
 это отображается внутри окна
 .Pq в верхней части,
 за которым следует разделительная линия.
 .It Fl D
 Не использовать стандартный интерфейс
-.Xr dialog 3,
+.Xr dialog 3 ,
 а вместо этого запустить экземпляр
-.Xr dialog 1.
+.Xr dialog 1 .
 Путь к
 .Xr dialog 1
 берется из переменной окружения
@@ -129,18 +128,18 @@
 Игнорируется при использовании
 .Ql Fl D
 или
-.Ql Fl X,
+.Ql Fl X ,
 которые не имеют возможности отображать строку состояния
 .Pq содержащую информацию о байтах/скорости/потоках.
 Значение по умолчанию
-.Dq Li %'10lli bytes read @ %'9.1f bytes/sec. [%i/%i busy/wait].
+.Dq Li %'10lli bytes read @ %'9.1f bytes/sec. [%i/%i busy/wait] .
 Этот формат используется при обработке более чем одного файла.
 .It Fl i Ar format
 Настроить строку формата для одного файла, используемую для обновления строки состояния.
 Игнорируется при использовании
 .Ql Fl D
 или
-.Ql Fl X,
+.Ql Fl X ,
 которые не имеют возможности отображать строку состояния
 .Pq содержащую информацию о байтах/скорости/потоках.
 Значение по умолчанию
@@ -175,14 +174,14 @@
 Максимальное значение 10.
 .It Fl o Ar file
 Вывести данные в
-.Ar file.
+.Ar file .
 Первое вхождение
 .Ql %s
 .Pq если таковое имеется
 в
 .Ql Ar file
 будет заменено на текст
-.Ar label.
+.Ar label .
 .It Fl P Ar size
 Размер мини-индикатора прогресса.
 Если отрицательный, не отображать мини-индикаторы прогресса
@@ -210,7 +209,7 @@
 Обратите внимание, что если вы используете эту опцию одновременно с
 .Ql Fl X
 и
-.Ql Fl b Ar backtitle,
+.Ql Fl b Ar backtitle ,
 то
 .Ar backtitle
 и
@@ -222,7 +221,7 @@
 .Ar num
 раз в секунду.
 Значение по умолчанию
-.Ql Li 2.
+.Ql Li 2 .
 Значение
 .Ql Li 0
 отключает обновления строки состояния.
@@ -230,21 +229,21 @@
 Игнорируется при использовании
 .Ql Fl D
 или
-.Ql Fl X,
+.Ql Fl X ,
 которые не имеют возможности отображать строку состояния
 .Pq содержащую информацию о байтах/скорости/потоках.
 .It Fl w
 Широкий режим.
 Позволяет длинным аргументам
-.Ar text,
+.Ar text ,
 используемым с
 .Ql Fl p
 и
-.Ql Fl a,
+.Ql Fl a ,
 увеличивать ширину диалога.
 Приглашения, шире максимальной ширины, будут переноситься на новую строку
 если не используется
-.Xr Xdialog 1 Pq Pa ports/x11/xdialog;
+.Xr Xdialog 1 Pq Pa ports/x11/xdialog ;
 см. раздел BUGS ниже.
 .It Fl X
 Включить режим X11, используя
@@ -252,7 +251,7 @@
 вместо
 .Xr dialog 1
 или
-.Xr dialog 3.
+.Xr dialog 3 .
 .It Fl x Ar cmd
 Выполнить
 .Ar cmd
@@ -262,7 +261,7 @@
 .Ar cmd
 на стандартном вводе.
 С
-.Ql Fl m,
+.Ql Fl m ,
 .Ar cmd
 выполняется один раз для каждого
 .Ar path
@@ -273,7 +272,7 @@
 в
 .Ql Ar cmd
 будет заменено на текст
-.Ar label.
+.Ar label .
 .El
 .Sh ОКРУЖЕНИЕ
 Следующие переменные окружения упоминаются в
@@ -285,36 +284,36 @@
 .Pq требуется Ql Fl D
 или
 .Xr Xdialog 1 Pq Pa ports/x11/xdialog
-.Pq требуется Ql Fl X;
+.Pq требуется Ql Fl X ;
 по умолчанию это либо
 .Ql dialog
 .Pq для Ql Fl D
 или
 .Ql Xdialog
-.Pq для Ql Fl X.
+.Pq для Ql Fl X .
 .It Ev DIALOGRC
 Если установлено и не NULL, путь к файлу
-.Ql .dialogrc.
+.Ql .dialogrc .
 .It Ev HOME
 Если
 .Ql Ev $DIALOGRC
 не установлено или NULL, используется как префикс к
 .Ql .dialogrc
-.Pq т.е., Ql $HOME/.dialogrc.
+.Pq т.е., Ql $HOME/.dialogrc .
 .It Ev USE_COLOR
 Если установлено и NULL, отключает использование цвета при использовании
-.Xr dialog 1.
+.Xr dialog 1 .
 Не применяется к
-.Xr Xdialog 1 Pq Pa ports/x11/xdialog.
+.Xr Xdialog 1 Pq Pa ports/x11/xdialog .
 .El
 .Sh ЗАВИСИМОСТИ
 Если используется
-.Ql Fl D,
+.Ql Fl D ,
 .Xr dialog 1
 необходим.
 .Pp
 Если используется
-.Ql Fl X,
+.Ql Fl X ,
 .Xr Xdialog 1 Pq Pa ports/x11/xdialog
 необходим.
 .Sh ФАЙЛЫ
@@ -339,13 +338,13 @@ time yes | dpv -Nl 500000000:yes
 .Ed
 .Pp
 Пример, показывающий, как быстро передается файл с использованием
-.Xr nc 1:
+.Xr nc 1 :
 .Bd -literal -offset indent
 dpv -x "nc -w 1 somewhere.com 3000" -m label file
 .Ed
 .Pp
 Похожий пример, передача файла из другого процесса и передача ожидаемого размера в
-.Nm:
+.Nm :
 .Bd -literal -offset indent
 cat file | dpv -x "nc -w 1 somewhere.com 3000" 12345:label
 .Ed
@@ -371,25 +370,25 @@ dpv -o /dev/ada0 -m label disk-image.img
 dpv -o /dev/md42 "Zeroing md42" < /dev/zero
 .Ed
 .Sh сМ. ТАКЖЕ
-.Xr dialog 1,
-.Xr sh 1,
-.Xr Xdialog 1 Pq Pa ports/x11/xdialog,
+.Xr dialog 1 ,
+.Xr sh 1 ,
+.Xr Xdialog 1 Pq Pa ports/x11/xdialog ,
 .Xr dialog 3
 .Sh ИСТОРИЯ
 Утилита
 .Nm
 впервые появилась в
-.Fx 10.2.
+.Fx 10.2 .
 .Sh АВТОРЫ
 .An Девин Теске Aq dteske@FreeBSD.org
 .Sh ОШИБКИ
-.Xr Xdialog 1 Pq Pa ports/x11/xdialog,
+.Xr Xdialog 1 Pq Pa ports/x11/xdialog ,
 когда указаны оба
 .Ql Fl -title Ar title
 .Pq см. выше Ql Fl t Ar title
 и
 .Ql Fl -backtitle Ar backtitle
-.Pq см. выше Ql Fl b Ar backtitle,
+.Pq см. выше Ql Fl b Ar backtitle ,
 отображает backtitle вместо title и наоборот.
 .Pp
 .Xr Xdialog 1 Pq Pa ports/x11/xdialog
@@ -397,7 +396,7 @@ dpv -o /dev/md42 "Zeroing md42" < /dev/zero
 Это известная проблема с виджетом
 .Ql --gauge
 в
-.Xr Xdialog 1 Pq Pa ports/x11/xdialog.
+.Xr Xdialog 1 Pq Pa ports/x11/xdialog .
 .Pp
 .Xr dialog 1
 не отображает первый символ после серии экранированных последовательностей escape
@@ -407,7 +406,7 @@ dpv -o /dev/md42 "Zeroing md42" < /dev/zero
 и не влияет на
 .Xr dialog 3
 или
-.Xr Xdialog 1 Pq Pa ports/x11/xdialog.
+.Xr Xdialog 1 Pq Pa ports/x11/xdialog .
 .Pp
 Если ваше приложение игнорирует
 .Ev USE_COLOR
@@ -427,10 +426,10 @@ dpv -o /dev/md42 "Zeroing md42" < /dev/zero
 .Xr unsetenv 1
 .Xr [ csh 1 ]
 чтобы сбросить
-.Ev USE_COLOR,
+.Ev USE_COLOR ,
 что позволяет интерпретировать цветные последовательности.
 Это не влияет на
-.Xr Xdialog 1 Pq Pa ports/x11/xdialog,
+.Xr Xdialog 1 Pq Pa ports/x11/xdialog ,
 который отображает цветные escape-последовательности как обычный текст.
 См.
 .Do
