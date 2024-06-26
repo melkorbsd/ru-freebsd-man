@@ -25,160 +25,160 @@
 .Dd October 30, 1999
 .Dt RADIUS.CONF 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm radius.conf
-.Nd RADIUS client configuration file
-.Sh SYNOPSIS
+.Nd Файл конфигурации клиента RADIUS
+.Sh КРАТКИЙ ОБЗОР
 .Pa /etc/radius.conf
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 .Nm
-contains the information necessary to configure the RADIUS client
-library.
-It is parsed by
+содержит информацию, необходимую для настройки клиентской 
+библиотеки RADIUS.
+Он анализируется с помощью
 .Xr rad_config 3 .
-The file contains one or more lines of text, each describing a
-single RADIUS server which will be used by the library.
-Leading
-white space is ignored, as are empty lines and lines containing
-only comments.
+Файл содержит одну или несколько строк текста, каждая из которых описывает отдельный сервер RADIUS, 
+который будет использоваться библиотекой.
+Пробелы в начале текста игнорируются, как и пустые строки, а также строки, 
+содержащие
+только комментарии.
 .Pp
-A RADIUS server is described by three to seven fields on a line:
+RADIUS-сервер описывается тремя-семью полями в строке:
 .Pp
 .Bl -item -offset indent -compact
 .It
-Service type
+Тип услуги
 .It
-Server host
+Хост сервера
 .It
-Shared secret
+Общий секрет
 .It
-Timeout
+Перерыв
 .It
-Retries
+Повторные попытки
 .It
-Dead time
+Мертвое время
 .It
-Bind address
+Привязать адрес
 .El
 .Pp
-The fields are separated by white space.
-The
+Поля разделены пробелом.
+То
 .Ql #
-character at the beginning of a field begins a comment, which extends
-to the end of the line.
-A field may be enclosed in double quotes,
-in which case it may contain white space and/or begin with the
+с символа в начале поля начинается комментарий, 
+который продолжается до конца строки.
+Поле может быть заключено в двойные кавычки, 
+в этом случае оно может содержать пробел и/или начинаться с
 .Ql #
-character.
-Within a quoted string, the double quote character can
-be represented by
+символа.
+Внутри заключенной в кавычки строки символ двойной кавычки может быть 
+представлен следующим образом
 .Ql \e\&" ,
-and the backslash can be represented by
+а обратная косая черта может быть представлена следующим образом
 .Ql \e\e .
-No other escape sequences are supported.
+o поддерживаются и другие управляющие последовательности.
 .Pp
-The first field gives the service type, either
+В первом поле указывается тип услуги, либо
 .Ql auth
-for RADIUS authentication or
+для проверки подлинности RADIUS или
 .Ql acct
-for RADIUS accounting.
-If a single server provides both services, two
-lines are required in the file.
-Earlier versions of this file did
-not include a service type.
-For backward compatibility, if the first
-field is not
+для учета RADIUS.
+Если оба сервиса предоставляются на одном сервере, 
+в файле требуются две строки.
+В более ранних версиях этого файла 
+тип сервиса не указывался.
+Для обеспечения обратной совместимости, 
+если первое поле не указано
 .Ql auth
-or
+или
 .Ql acct
-the library behaves as if
+библиотека ведет себя так, как если бы
 .Ql auth
-were specified, and interprets the fields in the line as if they
-were fields two through five.
+были указаны, и интерпретирует поля в строке так, 
+как если бы они были полями со второго по пятый.
 .Pp
-The second field specifies
-the server host, either as a fully qualified domain name or as a
-dotted-quad IP address.
-The host may optionally be followed by a
+Во втором поле указывается хост сервера, 
+либо в виде полного доменного имени, 
+либо в виде четырехзначного IP-адреса.
+За хостом может дополнительно следовать
 .Ql \&:
-and a numeric port number, without intervening white space.
-If the
-port specification is omitted, it defaults to the
+и цифровой номер порта, без пробелов.
+Если спецификация порта не указана, 
+по умолчанию используется
 .Ql radius
-or
+или
 .Ql radacct
-service in the
+сервис в файле 
 .Pa /etc/services
-file for service types
+для типов сервисов
 .Ql auth
-and
+и
 .Ql acct ,
-respectively.
-If no such entry is present, the standard ports 1812 and 1813 are
-used.
+соответственно.
+Если такой записи нет, используются стандартные порты 1812 и 1813.
+
 .Pp
-The third field contains the shared secret, which should be known
-only to the client and server hosts.
-It is an arbitrary string of
-characters, though it must be enclosed in double quotes if it
-contains white space.
-The shared secret may be
-any length, but the RADIUS protocol uses only the first 128
-characters.
-N.B., some popular RADIUS servers have bugs which
-prevent them from working properly with secrets longer than 16
-characters.
+Третье поле содержит общий секрет, 
+который должен быть известен только хостам клиента и сервера.
+Это произвольная строка символов, 
+хотя она должна быть заключена в двойные кавычки, 
+если содержит пробелы.
+Общий секрет может быть любой длины, 
+но протокол RADIUS использует только первые 128 символов.
+Примечание: на некоторых популярных серверах RADIUS есть ошибки, 
+которые мешают им корректно работать с секретами длиной более 16 символов.
+
+
 .Pp
-The fourth field contains a decimal integer specifying the timeout in
-seconds for receiving a valid reply from the server.
-If this field
-is omitted, it defaults to 3 seconds.
+Четвертое поле содержит десятичное целое число, указывающее время ожидания в
+секундах для получения корректного ответа от сервера.
+Если это поле
+опущено, то по умолчанию оно равно 3 секундам.
 .Pp
-The fifth field contains a decimal integer specifying the maximum
-number of attempts that will be made to authenticate with the server
-before giving up.
-If omitted, it defaults to 3 attempts.
-Note,
-this is the total number of attempts and not the number of retries.
+Пятое поле содержит десятичное целое число, указывающее максимальное
+количество попыток, которые будут предприняты для аутентификации на сервере
+перед отказом.
+Если это значение опущено, по умолчанию используется значение 3 попытки.
+Обратите внимание,
+что это общее количество попыток, а не количество повторных попыток.
 .Pp
-The sixth field contains a decimal integer specifying a time interval
-in seconds when the server will not requested if it was inaccessible
-on the last try. 0 means ask always.
+Шестое поле содержит десятичное целое число, указывающее интервал времени
+в секундах, когда сервер не будет запрашиваться, если он был недоступен
+при последней попытке. 0 означает "запрашивать всегда".
 .Pp
-The seventh field contains an IP address on multihomed host. All
-requests will be binded to this IP.
+Седьмое поле содержит IP-адрес хоста с несколькими доменами. Все
+запросы будут привязаны к этому IP-адресу.
 .Pp
-Up to 10 RADIUS servers may be specified for each service type.
-The servers are tried in
-round-robin fashion, until a valid response is received or the
-maximum number of tries has been reached for all servers.
+Для каждого типа сервиса может быть указано до 10 RADIUS-серверов.
+Серверы проверяются
+циклически, пока не будет получен корректный ответ или
+не будет достигнуто максимальное количество попыток для всех серверов.
 .Pp
-The standard location for this file is
+Стандартным расположением для этого файла является
 .Pa /etc/radius.conf .
-But an alternate pathname may be specified in the call to
+Но при вызове функции может быть указан альтернативный путь к
 .Xr rad_config 3 .
-Since the file contains sensitive information in the form of the
-shared secrets, it should not be readable except by root.
+Поскольку файл содержит конфиденциальную информацию в виде
+общих секретов, он не должен быть доступен для чтения никому, кроме пользователя root.
 .Sh FILES
 .Bl -tag -width Pa
 .It Pa /etc/radius.conf
 .El
-.Sh EXAMPLES
+.Sh ПРИМЕРЫ
 .Bd -literal
-# A simple entry using all the defaults:
-acct  radius1.domain.com  OurLittleSecret
+# Простая запись с использованием всех параметров по умолчанию:
+согласно   radius1.domain.com  Нашему маленькому секрету
 
-# A server still using the obsolete RADIUS port, with increased
-# timeout and maximum tries:
+# Сервер, все еще использующий устаревший порт RADIUS, с увеличенным
+# временем и максимальное количество попыток:
 auth  auth.domain.com:1645  "I can't see you"  5  4
 
-# As above but set dead time and bind address
+# Как указано выше, но установите время ожидания и привяжите адрес 
 auth  auth.domain.com:1645  "I can't see you"  5  4  60  192.168.1.8
 
-# A server specified by its IP address:
+# Сервер, указанный по его IP-адресу:
 auth  192.168.27.81  $X*#..38947ax-+=
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr libradius 3
 .Rs
 .%A C. Rigney, et al
@@ -190,9 +190,9 @@ auth  192.168.27.81  $X*#..38947ax-+=
 .%T RADIUS Accounting
 .%O RFC 2139
 .Re
-.Sh AUTHORS
-This documentation was written by
+.Sh АВТОРЫ
+Эта документация была написана
 .An John Polstra ,
-and donated to the
+и пожертвован в фонд
 .Fx
-project by Juniper Networks, Inc.
+проект компании Juniper Networks, Inc.
