@@ -1,45 +1,45 @@
 .\" Copyright (c) 1983, 1990, 1993
 .\"	The Regents of the University of California.  All rights reserved.
 .\"
-.\" Распространение и использование в исходной и двоичной формах, с или без
-.\" модификация допускаются при соблюдении следующих условий
-.\" которые встретились:
-.\" 1. При повторном распространении исходного кода необходимо сохранять вышеуказанные авторские права.
-.\" обратите внимание на этот список условий и следующий отказ от ответственности.
-.\" 2. При распространении в двоичной форме необходимо воспроизводить вышеуказанные авторские права.
-.\" обратите внимание, этот список условий и следующий отказ от ответственности в
-.\" документация и/или другие материалы, прилагаемые к дистрибутиву.
-.\" 3.Ни название университета, ни имена его сотрудников.
-.\" может использоваться для одобрения или продвижения продуктов, созданных на основе этого программного обеспечения.
-.\" без специального предварительного письменного разрешения.
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
+.\" 3. Neither the name of the University nor the names of its contributors
+.\"    may be used to endorse or promote products derived from this software
+.\"    without specific prior written permission.
 .\"
-.\" ЭТО ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ РЕГЕНТАМИ И УЧАСТНИКАМИ «КАК ЕСТЬ» И
-.» ЛЮБЫЕ ЯВНЫЕ ИЛИ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ,
-.» ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ТОВАРНОЙ ГОДНОСТИ И ПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ ЦЕЛИ
-.\" ОТКАЗЫВАЮТСЯ. НИ ПРИ КАКИХ ОБСТОЯТЕЛЬСТВАХ РЕГЕНТЫ ИЛИ УЧАСТНИКИ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ
-.» ДЛЯ ЛЮБЫХ ПРЯМЫХ, КОСВЕННЫХ, СЛУЧАЙНЫХ, ОСОБЫХ, ПРИМЕРНЫХ ИЛИ КОСВЕННЫХ
-.» УЩЕРБ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ), ПРИОБРЕТЕНИЕ ТОВАРА-ЗАМЕНИТЕЛЯ
-.» ИЛИ УСЛУГ; ПОТЕРЯ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПРЕРЫВАНИЕ БИЗНЕСА)
-.» ОДНАКО ПРИЧИНЕННАЯ И ПО ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БЫ В ДОГОВОРЕ, СТРОГОЕ
-.» ОТВЕТСТВЕННОСТЬ ИЛИ ПРАВОНАРУШЕНИЕ (ВКЛЮЧАЯ НЕБРЕЖНОСТЬ ИЛИ ДРУГИЕ ОБРАЗЫ), ВОЗНИКАЮЩИЕ ЛЮБЫМ ОБРАЗОМ
-.» ОТКАЗАТЬСЯ ОТ ИСПОЛЬЗОВАНИЯ ЭТОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ УВЕДОМЛЕНЫ О ВОЗМОЖНОСТИ
-.\" ТАКОЙ УЩЕРБ.
+.\" THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+.\" SUCH DAMAGE.
 .\"
 .\"     @(#)apply.1	8.2 (Berkeley) 4/4/94
 .\"
 .Dd 28 января 2022 г.
 .Dt APPLY 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm apply
 .Nd применить команду к набору аргументов
-.Sh SYNOPSIS
+.Sh СИНТАКСИС
 .Nm
 .Op Fl a Ar c
 .Op Fl d
 .Op Cm - Ns Ar #
 .Ar command argument ...
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 The
 .Nm
 утилита запускает названный
@@ -92,7 +92,7 @@ the
 Отображать команды, которые должны были быть выполнены, но не выполнять их на самом деле.
 казнить их.
 .El
-.Sh ENVIRONMENT
+.Sh СРЕДА
 Следующая переменная среды влияет на выполнение
 .Nm :
 .Bl -tag -width SHELL
@@ -100,12 +100,12 @@ the
 Путь к используемой оболочке.
 Если эта переменная не определена, используется оболочка Bourne.
 .El
-.Sh FILES
+.Sh ФАЙЛЫ
 .Bl -tag -width /bin/sh -compact
 .It Pa /bin/sh
 оболочка по умолчанию
 .El
-.Sh EXAMPLES
+.Sh ПРИМЕРЫ
 .Bl -tag -width apply -compact
 .It Li "apply echo *"
 похож на
@@ -120,14 +120,14 @@ runs
 связывает все файлы в текущем каталоге с каталогом
 .Pa /usr/joe .
 .El
-.Sh HISTORY
+.Sh ИСТОРИЯ
 The
 .Nm
 команда появилась в
 .Bx 4.2 .
-.Sh AUTHORS
+.Sh АВТОРЫ
 .An Rob Pike
-.Sh BUGS
+.Sh ОШИБКИ
 Метасимволы оболочки в
 .Ar command
 может иметь странные последствия; лучше всего заключить сложное

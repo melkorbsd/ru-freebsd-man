@@ -3,31 +3,31 @@
 .\" Copyright (C) Lucent Technologies 1997
 .\" All Rights Reserved
 .\"
-.\" Разрешение на использование, копирование, изменение и распространение этого программного обеспечения и
-.\" его документация для любых целей и бесплатно настоящим
-.\" разрешено при условии, что указанное выше уведомление об авторских правах присутствует во всех
-.\" копирует и это, и уведомление об авторских правах, и это
-.\" Уведомление о разрешении и отказ от гарантийных обязательств приведены в сопроводительном документе.
-.\" документации и что имя Lucent Technologies или любое из
-.\" его объекты не могут быть использованы в рекламе или рекламных целях, касающихся
-.\" распространению программного обеспечения без конкретных, написанных заранее
-.\" разрешение.
+.\" Permission to use, copy, modify, and distribute this software and
+.\" its documentation for any purpose and without fee is hereby
+.\" granted, provided that the above copyright notice appear in all
+.\" copies and that both that the copyright notice and this
+.\" permission notice and warranty disclaimer appear in supporting
+.\" documentation, and that the name Lucent Technologies or any of
+.\" its entities not be used in advertising or publicity pertaining
+.\" to distribution of the software without specific, written prior
+.\" permission.
 .\"
-.» LUCENT ОТКАЗЫВАЕТСЯ ОТ ВСЕХ ГАРАНТИЙ В ОТНОШЕНИИ ЭТОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ,
-.» ВКЛЮЧАЯ ВСЕ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ТОВАРНОЙ ПРИГОДНОСТИ И ПРИГОДНОСТИ.
-.» НИ ПРИ КАКИХ ОБСТОЯТЕЛЬСТВАХ LUCENT ИЛИ ЛЮБЫЕ ЕЕ ПРЕДПРИЯТИЯ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ ЗА ЛЮБЫЕ
-.\" ОСОБЫЕ, КОСВЕННЫЕ ИЛИ КОСВЕННЫЕ УБЫТКИ ИЛИ ЛЮБЫЕ УБЫТКИ
-.» КАКИЕ-ЛИБО ВЗВАННЫЕ В РЕЗУЛЬТАТЕ ПОТЕРИ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ, БЫЛО
-.» В ДЕЙСТВИЯХ ПО ДОГОВОРУ, НЕБРЕЖНОСТИ ИЛИ ДРУГИХ ВРЕДНЫХ ДЕЙСТВИЯХ,
-.» ВОЗНИКАЮЩИЕ В РЕЗУЛЬТАТЕ ИЛИ В СВЯЗИ С ИСПОЛЬЗОВАНИЕМ ИЛИ ВЫПОЛНЕНИЕМ
-.\" ЭТО ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ.
+.\" LUCENT DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE,
+.\" INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS.
+.\" IN NO EVENT SHALL LUCENT OR ANY OF ITS ENTITIES BE LIABLE FOR ANY
+.\" SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+.\" WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER
+.\" IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,
+.\" ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
+.\" THIS SOFTWARE.
 .Dd 30 июля 2021 г.
 .Dt AWK 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm awk
 .Nd pattern-directed scanning and processing language
-.Sh SYNOPSIS
+.Sh СИНТАКСИС
 .Nm awk
 .Op Fl safe
 .Op Fl version
@@ -36,7 +36,7 @@
 .Op Fl v Ar var Ns = Ns Ar value
 .Op Ar prog | Fl f Ar progfile
 .Ar
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 .Nm
 сканирует каждый вход
 .Ar file
@@ -249,14 +249,14 @@
 .Sm off
 .Ar array Ic \&[ Ar expression Ic \&]
 .Sm on
-.No # delete an array element
+.No # удалить элемент массива
 .Xc
 .It Xo Ic delete Ar array
-.No # delete all elements of array
+.No # удалить все элементы массива
 .Xc
 .It Xo Ic exit
 .Op Ar expression
-.No # exit immediately; status is Ar expression
+.No # немедленно выйти; статус — это выражение Ar
 .Xc
 .El
 .Pp
@@ -434,7 +434,7 @@ The
 .It Va SUBSEP
 Разделяет несколько индексов (по умолчанию 034).
 .El
-.Sh FUNCTIONS
+.Sh ФУНКЦИИ
 Язык awk имеет множество встроенных функций:
 арифметика, строка, ввод/вывод, общие сведения и битовые операции.
 .Pp
@@ -718,13 +718,13 @@ The
 .It Fn rshift x n
 Возвращает целочисленный аргумент x, сдвинутый на n бит вправо.
 .El
-.Sh EXIT STATUS
+.Sh ВОЗВРАЩАЕМОЕ ЗНАЧЕНИЕ
 .Ex -std awk
 .Pp
 Но учтите, что
 .Ic exit
 выражение может изменить статус выхода.
-.Sh EXAMPLES
+.Sh ПРИМЕРЫ
 Вывести строки длиной более 72 символов:
 .Pp
 .Dl length($0) > 72
@@ -761,7 +761,7 @@ BEGIN { # Simulate echo(1)
 .Bd -literal -offset indent
 { print "error!" > "/dev/stderr" }
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr cut 1 ,
 .Xr lex 1 ,
 .Xr printf 1 ,
@@ -776,7 +776,7 @@ BEGIN { # Simulate echo(1)
 .%D 1988
 .%O ISBN 0-201-07981-X
 .Re
-.Sh STANDARDS
+.Sh СТАНДАРТЫ
 The
 .Nm
 утилита соответствует требованиям
@@ -795,7 +795,7 @@ The
 .Cm fflush , compl , and , or ,
 .Cm xor , lshift , rshift ,
 являются расширениями этой спецификации.
-.Sh HISTORY
+.Sh ИСТОРИЯ
 An
 .Nm
 утилита появилась в
@@ -809,7 +809,7 @@ An
 .Pp
 Правила области видимости для переменных в функциях — это лажа;
 синтаксис хуже.
-.Sh DEPRECATED BEHAVIOR
+.Sh УСТАРЕВШЕЕ ПОВЕДЕНИЕ
 Один True Awk принял
 .Fl F Ar t
 означать то же самое, что и

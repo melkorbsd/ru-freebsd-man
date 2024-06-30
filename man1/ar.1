@@ -1,34 +1,34 @@
 .\" Copyright (c) 2007 Joseph Koshy.  All rights reserved.
 .\"
-.\" Распространение и использование в исходной и двоичной формах, с или без
-.\" изменения разрешены при соблюдении следующих условий
-.\" которые встретились:
-.\" 1. При повторном распространении исходного кода необходимо сохранять вышеуказанные авторские права.
-.\" обратите внимание на этот список условий и следующий отказ от ответственности.
-.\" 2. При распространении в двоичной форме необходимо воспроизводить вышеуказанные авторские права.
-.\" обратите внимание, этот список условий и следующий отказ от ответственности в
-.\" документация и/или другие материалы, прилагаемые к дистрибутиву.
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
 .\"
-.\" Это программное обеспечение предоставляется Джозефом Коши «как есть» и
-.\" любые явные или подразумеваемые гарантии, включая, помимо прочего,
-.\" подразумеваемые гарантии коммерческой ценности и пригодности для определенной цели.
-..» отклоняются. Иосиф Коши ни при каких обстоятельствах не несет ответственности
-.\" для любых прямых, косвенных, случайных, особых, образцовых или косвенных
-.\" ущерб (включая, помимо прочего, закупку товаров-заменителей
-.\" или услуг; потеря возможности использования, данных или прибыли; или приостановка деятельности)
-.\" однако вызвано и по любой теории ответственности, будь то в договоре, строгом
-.\" ответственность или правонарушение (включая халатность или иное), возникающие каким-либо образом
-.\" отказаться от использования этого программного обеспечения, даже если будет сообщено о возможности
-.\" такой ущерб.
+.\" This software is provided by Joseph Koshy ``as is'' and
+.\" any express or implied warranties, including, but not limited to, the
+.\" implied warranties of merchantability and fitness for a particular purpose
+.\" are disclaimed.  in no event shall Joseph Koshy be liable
+.\" for any direct, indirect, incidental, special, exemplary, or consequential
+.\" damages (including, but not limited to, procurement of substitute goods
+.\" or services; loss of use, data, or profits; or business interruption)
+.\" however caused and on any theory of liability, whether in contract, strict
+.\" liability, or tort (including negligence or otherwise) arising in any way
+.\" out of the use of this software, even if advised of the possibility of
+.\" such damage.
 .\"
 .Dd 3 января 2022 г.
 .Dt AR 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm ar ,
 .Nm ranlib
 .Nd manage archives
-.Sh SYNOPSIS
+.Sh СИНТАКСИС
 .Nm
 .Fl d
 .Op Fl T
@@ -114,7 +114,7 @@
 .Op Fl D
 .Op Fl U
 .Ar archive ...
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 The
 .Nm
 утилита создает и поддерживает группы файлов, объединенные в
@@ -148,7 +148,7 @@ The
 .Nm ranlib
 утилита используется для добавления таблицы символов архива
 в существующий архив
-.Sh OPTIONS
+.Sh ПАРАМЕТРЫ
 The
 .Nm
 утилита поддерживает следующие опции:
@@ -520,7 +520,7 @@ The
 .Ic directory
 команда.
 .El
-.Sh EXAMPLES
+.Sh ПРИМЕРЫ
 Чтобы создать новый архив
 .Pa ex.a
 содержащий три файла
@@ -561,16 +561,16 @@ addmod ex1.o ex2.o	 * add modules
 save			 * save pending changes
 end			 * exit the utility
 .Ed
-.Sh DIAGNOSTICS
+.Sh ДИАГНОСТИКА
 .Ex -std
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr ld 1 ,
 .Xr archive 3 ,
 .Xr elf 3 ,
 .Xr strftime 3 ,
 .Xr strmode 3 ,
 .Xr ar 5
-.Sh STANDARDS COMPLIANCE
+.Sh СООТВЕТСТВИЕ СТАНДАРТАМ
 The
 .Nm
 поддержка утилитой
@@ -591,7 +591,7 @@ The
 .Fl T
 варианты считаются соответствующими
 .St -p1003.2 .
-.Sh HISTORY
+.Sh ИСТОРИЯ
 An
 .Nm
 Команда впервые появилась в AT&T UNIX версии 1.

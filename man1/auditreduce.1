@@ -25,13 +25,13 @@
 .\" IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 .\" POSSIBILITY OF SUCH DAMAGE.
 .\"
-.Dd February 20, 2020
+.Dd 20 февраля 2020 г.
 .Dt AUDITREDUCE 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm auditreduce
 .Nd "select records from audit trail files"
-.Sh SYNOPSIS
+.Sh СИНТАКСИС
 .Nm
 .Op Fl A
 .Op Fl a Ar YYYYMMDD Ns Op Ar HH Ns Op Ar MM Ns Op Ar SS
@@ -49,95 +49,94 @@
 .Op Fl v
 .Op Fl z Ar zone
 .Op Ar
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 The
 .Nm
-utility selects records from the audit trail files based on the specified
-criteria.
-Matching audit records are printed to the standard output in
-their raw binary form.
-If no
+Утилита выбирает записи из файлов контрольного журнала на основе заданного
+критерии.
+Соответствующие записи аудита выводятся на стандартный вывод в
+их сырая двоичная форма.
+Если нет
 .Ar file
-argument is specified, the standard input is used
-by default.
-Use the
+аргумент указан, используется стандартный ввод
+по умолчанию.
+Использовать
 .Xr praudit 1
-utility to print the selected audit records in human-readable form.
+утилита для печати выбранных записей аудита в удобочитаемой форме.
 .Pp
-The options are as follows:
+Возможные варианты:
 .Bl -tag -width indent
 .It Fl A
-Select all records.
+Выбрать все записи.
 .It Fl a Ar YYYYMMDD Ns Op Ar HH Ns Op Ar MM Ns Op Ar SS
-Select records that occurred after or on the given datetime.
+Выберите записи, которые произошли после или в указанную дату и время.
 .It Fl b Ar YYYYMMDD Ns Op Ar HH Ns Op Ar MM Ns Op Ar SS
-Select records that occurred before the given datetime.
+Выберите записи, произошедшие до заданной даты и времени.
 .It Fl c Ar flags
-Select records matching the given audit classes specified as a comma
-separated list of audit flags.
-See
+Выберите записи, соответствующие заданным классам аудита, указанным через запятую.
+отдельный список флагов аудита.
+Видеть
 .Xr audit_control 5
-for a description of audit flags.
+для описания флагов аудита.
 .It Fl d Ar YYYYMMDD
-Select records that occurred on a given date.
-This option cannot be used with
+Выберите записи, произошедшие в определенную дату.
+Эту опцию нельзя использовать с
 .Fl a
-or
+или
 .Fl b .
 .It Fl e Ar euid
-Select records with the given effective user ID or name.
+Выберите записи с данным эффективным идентификатором или именем пользователя.
 .It Fl f Ar egid
-Select records with the given effective group ID or name.
+Выберите записи с данным эффективным идентификатором или именем группы.
 .It Fl g Ar rgid
-Select records with the given real group ID or name.
+Выберите записи с заданным реальным идентификатором или именем группы.
 .It Fl j Ar id
-Select records having a subject token with matching ID, where ID is a process ID.
+Выберите записи, имеющие токен субъекта с совпадающим идентификатором, где идентификатор — это идентификатор процесса.
 .It Fl m Ar event
-Select records with the given event name or number. This option can
-be used more then once to select records of multiple event types.
-See
+Выберите записи с заданным именем или номером события. Этот вариант может
+использоваться более одного раза для выбора записей нескольких типов событий.
+Смотреть
 .Xr audit_event 5
-for a description of audit event names and numbers.
+для описания названий и номеров событий аудита.
 .It Fl o Ar object Ns = Ns Ar value
 .Bl -tag -width ".Cm msgqid"
-.It Cm file
-Select records containing path tokens, where the pathname matches
-one of the comma delimited extended regular expression contained in
-given specification.
-Regular expressions which are prefixed with a tilde
+.It Cm fil
+Выберите записи, содержащие токены пути, где имя пути совпадает.
+одно из расширенных регулярных выражений, разделенных запятыми, содержащихся в
+данную спецификацию.
+Регулярные выражения с префиксом тайдлы
 .Pq Ql ~
-are excluded
-from the search results.
-These extended regular expressions are processed from left to right,
-and a path will either be selected or deslected based on the first match.
+исключены
+из результатов поиска.
+Эти расширенные регулярные выражения обрабатываются слева направо.
+и путь будет либо выбран, либо отменен на основе первого совпадения.
 .Pp
-Since commas are used to delimit the regular expressions, a backslash
+Поскольку для разделения регулярных выражений используются запятые, обратная косая черта
 .Pq Ql \e
-character should be used to escape the comma if it is a part of the search
-pattern.
+символ следует использовать для выхода запятой, если он является частью поиска
+шаблон.
 .It Cm msgqid
-Select records containing the given message queue ID.
+Выберите записи, содержащие данный идентификатор очереди сообщений.
 .It Cm pid
-Select records containing the given process ID.
+Выберите записи, содержащие данный идентификатор процесса.
 .It Cm semid
-Select records containing the given semaphore ID.
+Выберите записи, содержащие данный идентификатор семафора.
 .It Cm shmid
-Select records containing the given shared memory ID.
+Выберите записи, содержащие данный идентификатор общей памяти.
 .El
 .It Fl r Ar ruid
-Select records with the given real user ID or name.
+Выберите записи с заданным реальным идентификатором или именем пользователя.
 .It Fl u Ar auid
-Select records with the given audit ID.
+Выберите записи с данным идентификатором аудита.
 .It Fl v
-Invert sense of matching, to select records that do not match.
+Инвертировать смысл совпадения, чтобы выбрать несовпадающие записи.
 .It Fl z Ar zone
-Select records from the given zone(s).
+Выберите записи из данной зоны
 .Ar zone
-is a glob for zones to match.
+это glob для соответствующих зон.
 .El
-.Sh EXAMPLES
-To select all records associated with effective user ID root from the audit
-log
+.Sh ПРИМЕРЫ
+Чтобы выбрать все записи, связанные с эффективным корневым идентификатором пользователя, из аудита
 .Pa /var/audit/20031016184719.20031017122634 :
 .Bd -literal -offset indent
 auditreduce -e root \e
@@ -152,12 +151,12 @@ auditreduce -m AUE_SETLOGIN \e
     /var/audit/20031016184719.20031017122634
 .Ed
 .Pp
-Output from the above command lines will typically be piped to a new trail
-file, or via standard output to the
+Вывод из приведенных выше командных строк обычно передается по новому маршруту.
+файл или через стандартный вывод в
 .Xr praudit 1
-command.
+команда.
 .Pp
-Select all records containing a path token where the pathname contains
+Выберите все записи, содержащие токен пути, где путь содержит
 .Pa /etc/master.passwd :
 .Bd -literal -offset indent
 auditreduce -o file="/etc/master.passwd" \e
@@ -178,23 +177,23 @@ except for
 auditreduce -o file="~/dev/ttyp2,/dev/tty[a-zA-Z][0-9]+" \e
     /var/audit/20031016184719.20031017122634
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr praudit 1 ,
 .Xr audit_control 5 ,
 .Xr audit_event 5
-.Sh HISTORY
-The OpenBSM implementation was created by McAfee Research, the security
-division of McAfee Inc., under contract to Apple Computer Inc.\& in 2004.
-It was subsequently adopted by the TrustedBSD Project as the foundation for
-the OpenBSM distribution.
+.Sh ИСТОРИЯ
+Реализация OpenBSM была создана McAfee Research, специалистом по безопасности.
+подразделение McAfee Inc. по контракту с Apple Computer Inc.\& в 2004 г.
+Впоследствии он был принят проектом TrustedBSD в качестве основы для
+дистрибутив OpenBSM.
 .Sh AUTHORS
 .An -nosplit
-This software was created by McAfee Research, the security research division
-of McAfee, Inc., under contract to Apple Computer Inc.
-Additional authors include
+Это программное обеспечение было создано McAfee Research, подразделением исследований в области безопасности.
+McAfee, Inc. по контракту с Apple Computer Inc.
+Дополнительные авторы включают
 .An Wayne Salamon ,
 .An Robert Watson ,
 and SPARTA Inc.
 .Pp
-The Basic Security Module (BSM) interface to audit records and audit event
-stream format were defined by Sun Microsystems.
+Интерфейс базового модуля безопасности (BSM) для аудита записей и событий аудита.
+формат потока был определен Sun Microsystems.
