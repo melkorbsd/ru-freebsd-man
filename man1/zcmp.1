@@ -19,49 +19,49 @@
 .\" Sponsored in part by the Defense Advanced Research Projects
 .\" Agency (DARPA) and Air Force Research Laboratory, Air Force
 .\" Materiel Command, USAF, under agreement number F39502-99-1-0512.
-.Dd May 23, 2011
+.Dd Май 23, 2011
 .Dt ZDIFF 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm zcmp ,
 .Nm zdiff
-.Nd compare compressed files
-.Sh SYNOPSIS
+.Nd сравнение сжатых файлов
+.Sh СИНТАКСИС
 .Nm zcmp
-.Op Ar options
-.Ar file
-.Op Ar file2
+.Op Ar параметры
+.Ar файл
+.Op Ar файл2
 .Nm zdiff
-.Op Ar options
-.Ar file
-.Op Ar file2
-.Sh DESCRIPTION
+.Op Ar параметры
+.Ar файл
+.Op Ar файл2
+.Sh ОПИСАНИЕ
 .Nm zcmp
-and
+и
 .Nm zdiff
-are filters that invoke
+это фильтры, которые вызывают
 .Xr cmp 1
-or
+и
 .Xr diff 1
-respectively to compare compressed files.
-Any
-.Ar options
-that are specified are passed to
+соответственно для сравнения сжатых файлов.
+Все указанные
+.Ar параметры
+передаются в
 .Xr cmp 1
-or
+или
 .Xr diff 1 .
 .Pp
-If only
-.Ar file1
-is specified, it is compared against a file with the same name, but
-with the extension removed.
-When both
-.Ar file1
-or
-.Ar file2
-are specified, either file may be compressed.
+Если только
+.Ar файл1
+указан, то он сравнивается с файлом с таким же именем, 
+но с удаленным расширением.
+Когда указаны оба файла
+.Ar файл1
+или
+.Ar файл2
+любой из этих файлов может быть сжат.
 .Pp
-Extensions handled by
+Расширения, обрабатываемые с помощью
 .Xr gzip 1 :
 .Bl -bullet -compact
 .It
@@ -74,7 +74,7 @@ taz,
 tgz.
 .El
 .Pp
-Extensions handled by
+Расширения, обрабатываемые с помощью
 .Xr bzip2 1 :
 .Bl -bullet -compact
 .It
@@ -87,7 +87,7 @@ tbz,
 tbz2.
 .El
 .Pp
-Extensions handled by
+Расширения, обрабатываемые с помощью
 .Xr xz 1 :
 .Bl -bullet -compact
 .It
@@ -99,42 +99,42 @@ tlz,
 .It
 txz.
 .El
-.Sh ENVIRONMENT
+.Sh ОКРУЖАЮЩАЯ СРЕДА
 .Bl -tag -width "TMPDIR"
 .It Ev TMPDIR
-Directory in which to place temporary files.
-If unset,
+Это каталог, в котором размещаются временные файлы.
+Если параметр не задан, то 
 .Pa /tmp
-is used.
+используется.
 .El
-.Sh FILES
-.Bl -tag -width "/tmp/zdiff.XXXXXXXXXX" -compact
+.Sh ФАЙЛЫ
+.Bl -tag -width "/tmp/zdiff.XXXXXXXXXX" -плотный
 .It Pa /tmp/zcmp.XXXXXXXXXX
-Temporary file for
+Временный файл для
 .Nm zcmp .
 .It Pa /tmp/zdiff.XXXXXXXXXX
-Temporary file for
+Временный файл для
 .Nm zdiff .
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr bzip2 1 ,
 .Xr cmp 1 ,
 .Xr diff 1 ,
 .Xr gzip 1 ,
 .Xr xz 1
-.Sh CAVEATS
+.Sh ПРЕДОСТЕРЕЖЕНИЯ
 .Nm zcmp
-and
+и
 .Nm zdiff
-rely solely on the file extension to determine what is, or is not,
-a compressed file.
-Consequently, the following are not supported as arguments:
+полагаются только на расширение файла, чтобы определить, сжатый ли этот файл 
+или нет. 
+Следовательно, следующие не поддерживаются в качестве аргументов:
 .Bl -dash
 .It
-directories
+каталоги
 .It
-device special files
+специальные файлы для устройств
 .It
-filenames indicating the standard input
+имена файлов, указывающие на стандартный ввод
 .Pq Dq \-
 .El

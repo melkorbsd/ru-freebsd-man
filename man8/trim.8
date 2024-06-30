@@ -26,10 +26,10 @@
 .Dd January 18, 2019
 .Dt TRIM 8
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm trim
-.Nd erase device blocks that have no needed contents
-.Sh SYNOPSIS
+.Nd удаляет блоки устройства, которые не содержат необходимого содержимого
+.Sh СИНТАКСИС
 .Nm
 .Op Fl Nfqv
 .Fl [ [lo] Xo
@@ -44,26 +44,26 @@
 .Op Fl r Ar rfile
 .Ek
 .Ar device ...
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility erases specified region of the device.
-It is mostly relevant for storage that implement trim (like flash based,
-or thinly provisioned storage).
-.Sy All erased data is lost.
+стирает указанную область устройства.
+В основном это актуально для хранилищ, в которых реализована функция trim (например, на основе флэш-памяти
+или хранилища с тонкой настройкой).
+.Sy Все удаленные данные будут потеряны.
 .Pp
-The following options are available:
+Доступны следующие параметры:
 .Bl -tag -width indent
 .It Fl N
-Do not actually erase anything but show what it would do (dry run).
-Implies
+На самом деле ничего не стирает, но показывает, что будет сделано (пробный запуск).
+Подразумевает
 .Fl v .
-This is the default.
-Overrides
+Это значение используется по умолчанию.
+Переопределяет
 .Fl f .
 .It Fl f
-Perform the operation.
-Overrides
+Выполняет операцию.
+Переопределяет
 .Fl N .
 .It Fl l Xo
 .Sm off
@@ -77,91 +77,91 @@ Overrides
 .Op Cm K | k | M | m | G | g | T | t
 .Sm on
 .Xc
-Specify the length
-.Fl l
-of the region to trim or its offset
+Указывает длину области
+.Fl l ,
+подлежащей обрезке, или ее смещению
 .Fl o
-from the beginning of the device.
-.Sy The whole device is erased by default
-unless one or both of these options are presented.
+с самого начала работы устройства.
+.Sy По умолчанию все данные с устройства удаляются ,
+если не указан один или оба этих параметра.
 .Pp
-The argument may be suffixed with one of
+В качестве суффикса к аргументу может быть добавлен один из
 .Cm K ,
 .Cm M ,
 .Cm G
-or
+или
 .Cm T
-(either upper or lower case) to indicate a multiple of
-Kilobytes, Megabytes, Gigabytes or Terabytes
-respectively.
+(прописными или строчными буквами) для обозначения кратности
+Килобайт, Мегабайт, Гигабайт или Терабайт
+соответственно.
 .It Fl q
-Do not output anything except of possible error messages (quiet mode).
-Overrides
+Не выводит ничего, кроме возможных сообщений об ошибках (тихий режим).
+Переопределяет
 .Fl v .
 .It Fl r Ar rfile
-Uses the length of given
+Использует длину заданного
 .Ar rfile
-as length of the region to erase.
-.Sy The whole device is erased by default.
+как длину области, которую нужно стереть.
+.Sy По умолчанию все данные с устройства удаляются.
 .It Fl v
-Show offset and length of actual region being erased, in bytes.
+Показывает смещение и длину фактической удаляемой области в байтах.
 .El
 .Pp
-Later options override previous ones.
+Более поздние параметры переопределяют предыдущие.
 .Pp
-Note that actual success of the operation depends of underlying
-device driver such as
+Обратите внимание, что фактический успех операции зависит от базового
+драйвера устройства, такого как
 .Xr ada 4 ,
 .Xr da 4
-and others.
-Refer to corresponding manual pages for detail on possible caveats
-in low level support for ATA TRIM or SCSI UNMAP commands.
-.Sh EXIT STATUS
+и других.
+Обратитесь к соответствующим страницам руководства для получения подробной информации о возможных недостатках
+в низкоуровневой поддержке команд ATA TRIM или SCSI UNMAP.
+.Sh ВОЗВРАЩАЕМОЕ ЗНАЧЕНИЕ
 .Ex -std
-If the final erase operation fails for an argument, the
+Если окончательная операция удаления завершается неудачей для аргумента, то утилита
 .Nm
-utility returns exit code 1.
-It can also return one of the exit codes defined in
+возвращает код выхода 1.
+Она также может возвращать один из кодов выхода, определенных в
 .Xr sysexits 3 ,
-as follows:
+следующим образом:
 .Bl -tag -width ".Dv EX_UNAVAILABLE"
 .It Dv EX_USAGE
-The specified offset or length of the region is incorrect.
+Указанное смещение или длина области неверны.
 .It Dv EX_OSERR
-There is no enough memory to proceed.
+Для продолжения работы недостаточно памяти.
 .It Dv EX_NOINPUT
-The specified
+Указанный
 .Ar rfile
-cannot be opened (perhaps, it does not exist).
+не может быть открыт (возможно, его просто не существует).
 .It Dv EX_IOERR
-The specified
+Не удается определить размер указанного
 .Ar rfile
-cannot be examined for its size due to some system input/output error.
+из-за какой-либо системной ошибки ввода/вывода.
 .It Dv EX_DATAERR
-The specified
+Указанный
 .Ar rfile
-is not regular file, directory nor special device, so its size
-cannot be examined.
+не является обычным файлом, каталогом или специальным устройством, поэтому его размер
+невозможно определить.
 .It Dv EX_UNAVAILABLE
-The specified
+Указанный
 .Ar rfile
-is special device file not supporting DIOCGMEDIASIZE
+это специальный файл устройства, не поддерживающий DIOCGMEDIASIZE
 .Xr ioctl 2
-(probably not a disk), so its size cannot be examined.
+(вероятно, это не диск), поэтому его размер невозможно определить.
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr ioctl 2 ,
 .Xr sysexits 3 ,
 .Xr ada 4 ,
 .Xr da 4 ,
 .Xr nda 4
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Утилита
 .Nm
-utility first appeared in
+впервые появилась в
 .Fx 12.1 .
-.Sh AUTHORS
-The
+.Sh АВТОРЫ
+Утилита
 .Nm
-utility was written by
-.An Eugene Grosbein Aq Mt eugen@FreeBSD.org .
+была написана
+.An Юджином Гросбейном Aq Mt eugen@FreeBSD.org .

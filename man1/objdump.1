@@ -1,12 +1,12 @@
-.\" Man page generated from reStructuredText.
+.\" Справочная страница создана на основе reStructuredText.
 .
 .
 .nr rst2man-indent-level 0
 .
 .de1 rstReportMargin
 \\$1 \\n[an-margin]
-level \\n[rst2man-indent-level]
-level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+уровень \\n[rst2man-indent-level]
+предел уровня: \\n[rst2man-indent\\n[rst2man-indent-level]]
 -
 \\n[rst2man-indent0]
 \\n[rst2man-indent1]
@@ -21,324 +21,324 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 ..
 .de UNINDENT
 . RE
-.\" indent \\n[an-margin]
-.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.\" отступ \\n[an-margin]
+.\" старый: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .nr rst2man-indent-level -1
-.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.\" новый: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
 .TH "LLVM-OBJDUMP" "1" "2023-05-24" "16" "LLVM"
-.SH NAME
-llvm-objdump \- LLVM's object file dumper
-.SH SYNOPSIS
+.SH НАЗВАНИЕ
+llvm-objdump \- LLVM's загрузчик объектных файлов
+.SH СИНТАКСИС
 .sp
 \fBllvm\-objdump\fP [\fIcommands\fP] [\fIoptions\fP] [\fIfilenames...\fP]
-.SH DESCRIPTION
+.SH ОПИСАНИЕ
 .sp
-The \fBllvm\-objdump\fP utility prints the contents of object files and
-final linked images named on the command line. If no file name is specified,
-\fBllvm\-objdump\fP will attempt to read from \fIa.out\fP\&. If \fI\-\fP is used as a
-file name, \fBllvm\-objdump\fP will process a file on its standard input
-stream.
-.SH COMMANDS
+Утилита \fBllvm\-objdump\fP выводит содержимое объектных файлов и
+конечных связанных изображений, названных в командной строке. Если имя файла не указано,
+\fBllvm\-objdump\fP will attempt to read from \fIa.out\fP\&. If \fI\-\fP используется в качестве
+имени файла, \fBllvm\-objdump\fP будет обрабатывать файл в своем стандартном входном
+потоке.
+.SH КОМАНДЫ
 .sp
-At least one of the following commands are required, and some commands can be
-combined with other commands:
+Требуется выполнить по крайней мере одну из следующих команд, и некоторые команды можно
+комбинировать с другими:
 .INDENT 0.0
 .TP
 .B \-a, \-\-archive\-headers
-Display the information contained within an archive\(aqs headers.
+Отображает информацию, содержащуюся в заголовках archive\(aqs.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-d, \-\-disassemble
-Disassemble all executable sections found in the input files. On some
-architectures (AArch64, PPC64, x86), all known instructions are disassembled by
-default. On the others, \fI\%\-\-mcpu\fP or \fI\%\-\-mattr\fP is needed to
-enable some instruction sets. Disabled instructions are displayed as
+Дизассемблирует все исполняемые разделы, найденные во входных файлах. На некоторых
+архитектурах (AArch64, PPC64, x86) все известные инструкции по
+умолчанию дизассемблированы. На других, \fI\%\-\-mcpu\fP или \fI\%\-\-mattr\fP необходим для
+включения некоторых наборов инструкций. Отключенные инструкции отображаются как
 \fB<unknown>\fP\&.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-D, \-\-disassemble\-all
-Disassemble all sections found in the input files.
+Дизассемблирует все разделы, найденные во входных файлах.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-disassemble\-symbols=<symbol1[,symbol2,...]>
-Disassemble only the specified symbols. Takes demangled symbol names when
-\fI\%\-\-demangle\fP is specified, otherwise takes mangled symbol names.
-Implies \fI\%\-\-disassemble\fP\&.
+Дизассемблирует только указанные символы. Принимает измененные названия символов, когда
+\fI\%\-\-demangle\fP указан, в противном случае используются искаженные имена символов.
+Подразумевает \fI\%\-\-disassemble\fP\&.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-dwarf=<value>
-Dump the specified DWARF debug sections. The supported values are:
+Сбрасывает указанные разделы отладки DWARF. Поддерживаемые значения:
 .sp
 \fIframes\fP \- .debug_frame
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-f, \-\-file\-headers
-Display the contents of the overall file header.
+Отображает содержимое общего заголовочного файла.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-fault\-map\-section
-Display the content of the fault map section.
+Отображает содержимое раздела карты неисправностей.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-h, \-\-headers, \-\-section\-headers
-Display summaries of the headers for each section.
+Отображает сводку заголовков для каждого раздела.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-help
-Display usage information and exit. Does not stack with other commands.
+Отображает информацию об испльзовании и выходит. Не совмещается с другими командами.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-p, \-\-private\-headers
-Display format\-specific file headers.
+Отображает заголовки файлов format\-specific.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-r, \-\-reloc
-Display the relocation entries in the file.
+Отображает записи о перемещениях в файле.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-R, \-\-dynamic\-reloc
-Display the dynamic relocation entries in the file.
+Отображает записи о динамическом перемещении в файле.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-raw\-clang\-ast
-Dump the raw binary contents of the clang AST section.
+Сбрасывает необработанное двоичное содержимое раздела clang AST.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-s, \-\-full\-contents
-Display the contents of each section.
+Отображает содержимое каждого раздела.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-t, \-\-syms
-Display the symbol table.
+Отображает таблицу символов.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-T, \-\-dynamic\-syms
-Display the contents of the dynamic symbol table.
+Отображает содержимое динамиеской таблицы символов.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-u, \-\-unwind\-info
-Display the unwind info of the input(s).
+Отображает информацию о исключениях входа(ов).
 .sp
-This operation is only currently supported for COFF and Mach\-O object files.
+В настоящее время эта операция поддерживается только для объектных файлов COFF и Mach\-O.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-v, \-\-version
-Display the version of the \fBllvm\-objdump\fP executable. Does not stack
-with other commands.
+Отображает версию исполняемого файла \fBllvm\-objdump\fP. Не совмещается
+с другими командами.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-x, \-\-all\-headers
-Display all available header information. Equivalent to specifying
+Отображает всю доступную информацию о заголовке. Эквивалентно указанию
 \fI\%\-\-archive\-headers\fP, \fI\%\-\-file\-headers\fP,
 \fI\%\-\-private\-headers\fP, \fI\%\-\-reloc\fP, \fI\%\-\-section\-headers\fP,
-and \fI\%\-\-syms\fP\&.
+и \fI\%\-\-syms\fP\&.
 .UNINDENT
-.SH OPTIONS
+.SH ОПЦИИ
 .sp
-\fBllvm\-objdump\fP supports the following options:
+\fBllvm\-objdump\fP поддерживает следующие опции:
 .INDENT 0.0
 .TP
 .B \-\-adjust\-vma=<offset>
-Increase the displayed address in disassembly or section header printing by
-the specified offset.
+Увеличьте отображаемый адрес при дизассемблировании или печати заголовка раздела на
+указанное смещение.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-arch\-name=<string>
-Specify the target architecture when disassembling. Use \fI\%\-\-version\fP
-for a list of available targets.
+Указывает целевую архитектуру при дизассемблировании. Используйте \fI\%\-\-version\fP
+для получения списка доступных целей.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-build\-id=<string>
-Look up the object using the given build ID, specified as a hexadecimal
-string. The found object is handled as if it were an input filename.
+Находит объект, используя указанный идентификатор сборки, указанный в виде шестнадцатеричной
+строки. Найденный объект обрабатывается так, как если бы это было входное имя файла.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-C, \-\-demangle
-Demangle symbol names in the output.
+Изменяет порядок имен символов в выходных данных.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-debug\-file\-directory <path>
-Provide a path to a directory with a \fI\&.build\-id\fP subdirectory to search for
-debug information for stripped binaries. Multiple instances of this argument
-are searched in the order given.
+Указыает путь к директории с поддиректорией \fI\&.build\-id\fP для поиска
+отладочной информации для удаленных двоичных файлов. Выполняет поиск нескольких экземпляров этого аргумента
+в указанном порядке.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-debuginfod, \-\-no\-debuginfod
-Whether or not to try debuginfod lookups for debug binaries. Unless specified,
-debuginfod is only enabled if libcurl was compiled in (\fBLLVM_ENABLE_CURL\fP)
-and at least one server URL was provided by the environment variable
+Следует ли использовать debuginfod для поиска двоичных файлов отладки. Если не указано,
+debuginfod включается только в том случае, если libcurl был скомпилирован в (\fBLLVM_ENABLE_CURL\fP)
+и хотя бы один URL-адрес сервера был указан в переменной окружения.
 \fBDEBUGINFOD_URLS\fP\&.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-debug\-vars=<format>
-Print the locations (in registers or memory) of source\-level variables
-alongside disassembly. \fBformat\fP may be \fBunicode\fP or \fBascii\fP, defaulting
-to \fBunicode\fP if omitted.
+Выводит местоположения (в регистрах или в памяти) о переменных source\-level
+наряду с дизассемблированием. \fBformat\fP может быть \fBunicode\fP или \fBascii\fP, по умолчанию
+используется \fBunicode\fP, если он опущен.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-debug\-vars\-indent=<width>
-Distance to indent the source\-level variable display, relative to the start
-of the disassembly. Defaults to 52 characters.
+Расстояние до отступа от отображения source\-level переменной, относительно начала
+дизассемблирования. Значение по умолчанию равно 52 символам.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-j, \-\-section=<section1[,section2,...]>
-Perform commands on the specified sections only. For Mach\-O use
-\fIsegment,section\fP to specify the section name.
+Выполняет команды только в указанных разделах. Для Mach\-O использует
+\fIsegment,section\fP чтобы указать название раздела.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-l, \-\-line\-numbers
-When disassembling, display source line numbers. Implies
+При дизассемблировании, отображает номера исходных строк. Подразумевает
 \fI\%\-\-disassemble\fP\&.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-M, \-\-disassembler\-options=<opt1[,opt2,...]>
-Pass target\-specific disassembler options. Available options:
+Передает target\-specific опции дизассемблера. Доступные опции:
 .INDENT 7.0
 .IP \(bu 2
-\fBreg\-names\-std\fP: ARM only (default). Print in ARM \(aqs instruction set documentation, with r13/r14/r15 replaced by sp/lr/pc.
+\fBreg\-names\-std\fP: только ARM (по умолчанию). Выводит в ARM \(aqs документацию по набору инструкций, заменив r13/r14/r15  на sp/lr/pc.
 .IP \(bu 2
-\fBreg\-names\-raw\fP: ARM only. Use r followed by the register number.
+\fBreg\-names\-raw\fP: только ARM. Использует r, за которым следует регистрационный номер.
 .IP \(bu 2
-\fBno\-aliases\fP: AArch64 and RISC\-V only. Print raw instruction mnemonic instead of pseudo instruction mnemonic.
+\fBno\-aliases\fP: только AArch64 и RISC\-V. Выводит исходную мнемоническую инструкцию вместо псевдомнемонческой инструкции.
 .IP \(bu 2
-\fBnumeric\fP: RISC\-V only. Print raw register names instead of ABI mnemonic. (e.g. print x1 instead of ra)
+\fBnumeric\fP: только RISC\-V. Выводит необработанные имена регистров вместо мнемонических символов ABI. (например, выводится x1 вместо ra)
 .IP \(bu 2
-\fBatt\fP: x86 only (default). Print in the AT&T syntax.
+\fBatt\fP: только x86 (по умолчанию). Выводит в соответствии с синтаксисом AT&T.
 .IP \(bu 2
-\fBintel\fP: x86 only. Print in the intel syntax.
+\fBintel\fP: только x86. Выводит в соответствии с синтаксисом Intel.
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-mcpu=<cpu\-name>
-Target a specific CPU type for disassembly. Specify \fB\-\-mcpu=help\fP to display
-available CPUs.
+Выбирает определенный тип ЦПУ для дизассемблирования. Введите \fB\-\-mcpu=help\fP для отображения
+доступных ЦПУ.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-mattr=<a1,+a2,\-a3,...>
-Enable/disable target\-specific attributes. Specify \fB\-\-mattr=help\fP to display
-the available attributes.
+Разрешает/блокирует атрибуты target\-specific. Введите \fB\-\-mattr=help\fP для отображения
+доступных атрибутов.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-no\-leading\-addr, \-\-no\-addresses
-When disassembling, do not print leading addresses for instructions or inline
-relocations.
+При дизассемблировании не выводит начальные адреса для инструкций или встроенных
+релокаций.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-no\-print\-imm\-hex
-Do not use hex format for immediate values in disassembly output.
+Не использьзует шестнадцатеричный формат для непосредственных значений в выходных данных дизассемблирования.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-no\-show\-raw\-insn
-When disassembling, do not print the raw bytes of each instruction.
+При дизассемблировании не печатает необработанные байты каждой инструкции.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-offloading
-Display the content of the LLVM offloading section.
+Отображает содержимое раздела выгрузки LLVM.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-prefix=<prefix>
-When disassembling with the \fI\%\-\-source\fP option, prepend \fBprefix\fP to
-absolute paths.
+При дизассемблировании с помощью опции \fI\%\-\-source\fP, добавляет \fBprefix\fP к
+абсолютным путям.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-prefix\-strip=<level>
-When disassembling with the \fI\%\-\-source\fP option, strip out \fBlevel\fP
-initial directories from absolute paths. This option has no effect without
+При дизассемблировании с помощью опции \fI\%\-\-source\fP, удаляет начальные директории \fBlevel\fP
+из абсолютных путей. Эта опция не действует без
 \fI\%\-\-prefix\fP\&.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-print\-imm\-hex
-Use hex format when printing immediate values in disassembly output (default).
+Использует шестнадцатеричный формат при выводе непосредственных значений в выходах дизассемблирования (по умолчанию).
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-S, \-\-source
-When disassembling, display source interleaved with the disassembly. Implies
+При дизассемблировании средство отображения чередуется с дизассемблированием. Подразумевает
 \fI\%\-\-disassemble\fP\&.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-show\-all\-symbols
-Show all symbols during disassembly, even if multiple symbols are defined at
-the same location.
+Отображать все символы во время дизассемблирования, даже если в
+одном и том же месте задано несколько символов.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-show\-lma
-Display the LMA column when dumping ELF section headers. Defaults to off
-unless any section has different VMA and LMAs.
+Отображает столбец LMA при выводе заголовков разделов ELF. По принимает умолчанию значение выкл.,
+если только в каком-либо разделе нет разных VMA и LMA адресов.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-start\-address=<address>
-When disassembling, only disassemble from the specified address.
+При дизассемблировании выполняет дизассемблирование только по указанному адресу.
 .sp
-When printing relocations, only print the relocations patching offsets from at least \fBaddress\fP\&.
+При отображении перемещений, отображает только те перемещения, которые содержат исправления смещений, по крайней мере, из \fBaddress\fP\&.
 .sp
-When printing symbols, only print symbols with a value of at least \fBaddress\fP\&.
+При отображении символов, отображает только символы со значением не менее \fBaddress\fP\&.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-stop\-address=<address>
-When disassembling, only disassemble up to, but not including the specified address.
+При дизассемблировании, дизассемблирует только до указанного адреса, но не включая его.
 .sp
-When printing relocations, only print the relocations patching offsets up to \fBaddress\fP\&.
+При отображении перемещений печатает только смещения с исправлениями перемещений вплоть до \fBaddress\fP\&.
 .sp
-When printing symbols, only print symbols with a value up to \fBaddress\fP\&.
+При отображении символов отображает только символы со значением до \fBaddress\fP\&.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-symbolize\-operands
-When disassembling, symbolize a branch target operand to print a label instead of a real address.
+При дизассемблировании обозначает целевой операнд ветви, чтобы вывести метку вместо реального адреса.
 .sp
-When printing a PC\-relative global symbol reference, print it as an offset from the leading symbol.
+При отображении ссылки на глобальный символ PC\-relative , отображает его со смещением от начального символа.
 .sp
-When a bb\-address\-map section is present (i.e., the object file is built with \fB\-fbasic\-block\-sections=labels\fP), labels are retrieved from that section instead.
+Когда присутствует раздел bb\-address\-map (т.е. объектный файл создается с помощью \fB\-fbasic\-block\-sections=labels\fP), метки извлекаются из этого раздела.
 .sp
-Only works with PowerPC objects or X86 linked images.
+Работает только с объектами PowerPC или изображениями, связанными с X86.
 .INDENT 7.0
 .TP
-.B Example:
-A non\-symbolized branch instruction with a local target and pc\-relative memory access like
+.B Пример:
+non\-symbolized инструкция перехода  с локальной целью и pc\-relative доступом к памяти, подобным
 .UNINDENT
 .INDENT 7.0
 .INDENT 3.5
@@ -352,7 +352,7 @@ jge 0x20117e <_start+0x25>
 .UNINDENT
 .UNINDENT
 .sp
-might become
+может стать
 .INDENT 7.0
 .INDENT 3.5
 .sp
@@ -369,210 +369,210 @@ might become
 .INDENT 0.0
 .TP
 .B \-\-triple=<string>
-Target triple to disassemble for, see \fB\-\-version\fP for available targets.
+Целевой триплет для дизассемблирования, доступные цели смотрите в \fB\-\-version\fP.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-w, \-\-wide
-Ignored for compatibility with GNU objdump.
+Игнорируется для обеспечения совместимости с GNU objdump.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-x86\-asm\-syntax=<style>
-Deprecated.
-When used with \fI\%\-\-disassemble\fP, choose style of code to emit from
-X86 backend. Supported values are:
+Депрекация.
+При использовании с \fI\%\-\-disassemble\fP выберите стиль кода, который будет генерироваться из
+Серверной части X86. Поддерживаемыми значениями являются:
 .INDENT 7.0
 .INDENT 3.5
 .INDENT 0.0
 .TP
 .B att
-AT&T\-style assembly
+AT&T\-style сборка
 .UNINDENT
 .INDENT 0.0
 .TP
 .B intel
-Intel\-style assembly
+Intel\-style сборка
 .UNINDENT
 .UNINDENT
 .UNINDENT
 .sp
-The default disassembly style is \fBatt\fP\&.
+Стиль дизассемблирования по умолчанию - \fBatt\fP\&.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-z, \-\-disassemble\-zeroes
-Do not skip blocks of zeroes when disassembling.
+Не пропускает блоки нулей при дизассемблировании.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B @<FILE>
-Read command\-line options and commands from response file \fI<FILE>\fP\&.
+Считывает опции и команды command\-line из файла ответов \fI<ФАЙЛ>\fP\&.
 .UNINDENT
-.SH MACH-O ONLY OPTIONS AND COMMANDS
+.SH MACH-O ТОЛЬКО ОПЦИИ И КОМАНДЫ
 .INDENT 0.0
 .TP
 .B \-\-arch=<architecture>
-Specify the architecture to disassemble. see \fB\-\-version\fP for available
-architectures.
+Указывает архитектуру для дизассемблирования. Смотрите в \fB\-\-version\fP доступные 
+архитектуры.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-archive\-member\-offsets
-Print the offset to each archive member for Mach\-O archives (requires
+Выводит смещение для каждого элемента архива для Mach\-O архивов (требуется
 \fI\%\-\-archive\-headers\fP).
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-bind
-Display binding info
+Отображает информацию о привязке
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-data\-in\-code
-Display the data in code table.
+Отображает данные в кодовой таблице.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-dis\-symname=<name>
-Disassemble just the specified symbol\(aqs instructions.
+Дизассемблирует только указанный символ\(aqs инструкции.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-chained\-fixups
-Print chained fixup information.
+Отображает связанную информация об исправлении ошибок.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-dyld\-info
-Print bind and rebase information used by dyld to resolve external
-references in a final linked binary.
+Отображает информацию о привязке и перебазировании, используемую dyld для разрешения внешних
+ссылок в конечном связанном двоичном файле.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-dylibs\-used
-Display the shared libraries used for linked files.
+Отображает общие библиотеки, используемые для связанных файлов.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-dsym=<string>
-Use .dSYM file for debug info.
+Используйте файл .dSYM для получения отладочной информации.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-dylib\-id
-Display the shared library\(aqs ID for dylib files.
+Отображает ID общей библиотеки\(aqs) для файлов dylib.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-exports\-trie
-Display exported symbols.
+Отображает экспортированные символов.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-function\-starts [=<addrs|names|both>]
-Print the function starts table for Mach\-O objects. Either \fBaddrs\fP
-(default) to print only the addresses of functions, \fBnames\fP to print only
-the names of the functions (when available), or \fBboth\fP to print the
-names beside the addresses.
+Выводит таблицу запуска функций для объектов Mach\-O. Либо \fBaddrs\fP
+(по умолчанию) для вывода только адресов функций, \fBnames\fP для вывода только
+названий функций (если они доступны) или \fBboth\fP для вывода
+названий рядом с адресами.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-g
-Print line information from debug info if available.
+Отображает информацию о строке из отладочной информации, если таковая имеется.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-full\-leading\-addr
-Print the full leading address when disassembling.
+Выводит полный начальный адрес при дизассемблировании.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-indirect\-symbols
-Display the indirect symbol table.
+Отображает таблицу косвенных символов.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-info\-plist
-Display the info plist section as strings.
+Отображает информацию о разделе info plist в виде строк.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-lazy\-bind
-Display lazy binding info.
+Отображать информацию о отложенной привязке.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-link\-opt\-hints
-Display the linker optimization hints.
+Отобразите подсказки по оптимизации компоновщика.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-m, \-\-macho
-Use Mach\-O specific object file parser. Commands and other options may behave
-differently when used with \fB\-\-macho\fP\&.
+Использует специальный синтаксический анализатор объектных файлов Mach\-O. Команды и другие параметры могут вести
+себя по-разному при использовании с \fB\-\-macho\fP\&.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-no\-leading\-headers
-Do not print any leading headers.
+Не выводит никакие начальные заголовки.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-no\-symbolic\-operands
-Do not print symbolic operands when disassembling.
+Не выводит символьные операнды при дизассемблировании.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-non\-verbose
-Display the information for Mach\-O objects in non\-verbose or numeric form.
+Отображает информацию для оюъектов Mach\-O в non\-verbose или числовой форме
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-objc\-meta\-data
-Display the Objective\-C runtime meta data.
+Отображает метаданные Objective\-C.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-private\-header
-Display only the first format specific file header.
+Отображает только первый заголовок файла, относящегося к конкретному формату.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-rebase
-Display rebasing information.
+Отображает информацию о перебазировании.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-rpaths
-Display runtime search paths for the binary.
+Отображение пути поиска двоичного файла во время выполнения.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-universal\-headers
-Display universal headers.
+Отображает универсальные заголовки.
 .UNINDENT
 .INDENT 0.0
 .TP
 .B \-\-weak\-bind
-Display weak binding information.
+Отображать информацию о слабом связывании.
 .UNINDENT
-.SH XCOFF ONLY OPTIONS AND COMMANDS
+.SH XCOFF ТОЛЬКО ОПЦИИ И КОМАНДЫ
 .INDENT 0.0
 .TP
 .B \-\-symbol\-description
-Add symbol description to disassembly output.
+Добавляет описание символа в выходные данные для дизассемблирования.
 .UNINDENT
-.SH BUGS
+.SH БАГИ
 .sp
-To report bugs, please visit <\fI\%https://github.com/llvm/llvm\-project/labels/tools:llvm\-objdump/\fP>.
-.SH SEE ALSO
+Чтобы сообщить об ошибках, пожалуйста, посетите <\fI\%https://github.com/llvm/llvm\-project/labels/tools:llvm\-objdump/\fP>.
+.SH СМОТРИТЕ ТАКЖЕ
 .sp
 \fBllvm\-nm(1)\fP, \fBllvm\-otool(1)\fP, \fBllvm\-readelf(1)\fP,
 \fBllvm\-readobj(1)\fP
-.SH AUTHOR
-Maintained by the LLVM Team (https://llvm.org/).
-.SH COPYRIGHT
+.SH АВТОР
+Поддерживается LLVM Team (https://llvm.org/).
+.SH АВТОРСКОЕ ПРАВО
 2003-2023, LLVM Project
-.\" Generated by docutils manpage writer.
+.\" Сгенерировано с помощью docutils manpage writer.
 .

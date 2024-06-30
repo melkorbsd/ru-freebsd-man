@@ -27,50 +27,50 @@
 .Dd February 14, 2023
 .Dt TARFS 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm tarfs
-.Nd tarball filesystem
-.Sh SYNOPSIS
-To compile this driver into the kernel, place the following line in
-your kernel configuration file:
+.Nd архивная файловая система
+.Sh КРАТКИЙ ОБЗОР
+Чтобы скомпилировать этот драйвер в ядро, поместите следующую строку в
+файл конфигурации вашего ядра:
 .Bd -ragged -offset indent
-.Cd "options TARFS"
+.Cd "параметры TARFS"
 .Ed
 .Pp
-Alternatively, to load the driver as a module at boot time, place the
-following line in
+Альтернативно, чтобы загрузить драйвер как модуль во время загрузки, поместите
+следующую строку в
 .Xr loader.conf 5 :
 .Bd -literal -offset indent
 tarfs_load="YES"
 .Ed
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+драйвер 
 .Nm
-driver implements a read-only filesystem backed by a
+реализует файловую систему только для чтения, поддерживаемую
 .Xr tar 5
-file.
-Currently, only POSIX archives, optionally compressed with
-.Xr zstd 1 ,
-are supported.
+файл.
+В настоящее время доступны только POSIX-архивы, опционально поддерживается сжатие с помощью
+.Xr индикатора знака 1,
+
 .Pp
-The preferred I/O size for
+Предпочтительный размер ввода-вывода для
 .Nm
-filesystems can be adjusted using the
+файловой системы можно настроить с помощью
 .Va vfs.tarfs.ioshift
-sysctl setting and tunable.
-Setting it to 0 will reset it to its default value.
-Note that changes to this setting only apply to filesystems mounted
-after the change.
-.Sh DIAGNOSTICS
-If enabled by the
+sysctl и настройки.
+Установка значения 0 вернет его к значению по умолчанию.
+Обратите внимание, что изменения этого параметра применяются только к смонтированным файловым системам.
+после изменения.
+.Sh ДИАГНОСТИКА
+Если включена
 .Dv TARFS_DEBUG
-kernel option, the
+опция ядра,
 .Va vfs.tarfs.debug
-sysctl setting can be used to control debugging output from the
+Параметр sysctl можно использовать для управления выводом отладки из
 .Nm
-driver.
-Debugging output for individual sections of the driver can be enabled
-by adding together the relevant values from the table below.
+драйвера.
+Можно включить отладочный вывод для отдельных разделов драйвера
+путем сложения соответствующих значений из таблицы ниже.
 .Bl -column Value Description
 .It 0x01 Ta Memory allocations
 .It 0x02 Ta Checksum calculations
@@ -83,22 +83,22 @@ by adding together the relevant values from the table below.
 .It 0x100 Ta Sparse file mapping
 .It 0x200 Ta Bounce buffer usage
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr tar 1 ,
 .Xr zstd 1 ,
 .Xr fstab 5 ,
 .Xr tar 5 ,
 .Xr mount 8 ,
 .Xr sysctl 8
-.Sh HISTORY
+.Sh ИСТОРИЯ
 .An -nosplit
-The
+драйвер 
 .Nm
-driver was developed by
+был разработан
 .An Stephen J. Kiernan Aq Mt stevek@FreeBSD.org
-and
+и
 .An Dag-Erling Smørgrav Aq Mt des@FreeBSD.org
-for Juniper Networks and Klara Systems.
-This manual page was written by
+для Juniper Networks и Klara Systems.
+Эта страница руководства была написана
 .An Dag-Erling Smørgrav Aq Mt des@FreeBSD.org
-for Juniper Networks and Klara Systems.
+для Juniper Networks и Klara Systems.

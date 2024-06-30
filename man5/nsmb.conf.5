@@ -1,45 +1,45 @@
-.\" Copyright (c) 2003
-.\" Originally written by Sergey A. Osokin
-.\" Rewritten by Tom Rhodes
+.\" Авторское право (c) 2003
+.\" Автор Сергей А. Осокин
+.\" Переписано Томом Родсом
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
+.\" Распространение и использование в исходных и двоичных формах, с модификацией или без
+.\" модификацией, разрешены при условии, что следующие условия
+.\" соблюдены:
+.\" 1. Перераспределение исходного кода должно сохранять вышеуказанное уведомление об авторских правах
+.\" уведомление об авторских правах, этот список условий и следующий отказ от ответственности.
+.\" 2. Перераспределение в двоичной форме должно воспроизводить вышеуказанное уведомление об авторских правах
+.\" уведомление об авторских правах, этот список условий и следующий отказ от ответственности в
+.\" документации и/или других материалах, поставляемых вместе с дистрибутивом.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ АВТОРОМ ``КАК ЕСТЬ`` И
+.\" ЛЮБЫЕ ЯВНЫЕ ИЛИ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ
+.\" ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ТОВАРНОГО СОСТОЯНИЯ И ПРИГОДНОСТИ ДЛЯ КОНКРЕТНОЙ ЦЕЛИ
+.\" НЕ ПРИНИМАЮТСЯ.  НИ ПРИ КАКИХ ОБСТОЯТЕЛЬСТВАХ АВТОР НЕ НЕСЕТ ОТВЕТСТВЕННОСТИ
+.\" ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, СПЕЦИАЛЬНЫЕ, ПРИМЕРНЫЕ ИЛИ КОСВЕННЫЕ УБЫТКИ.
+.\" УЩЕРБ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПРИОБРЕТЕНИЕ ТОВАРОВ-ЗАМЕНИТЕЛЕЙ
+.\" ИЛИ УСЛУГИ; ПОТЕРЮ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПЕРЕРЫВ В РАБОТЕ)
+.\" НЕЗАВИСИМО ОТ ПРИЧИН И ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО КОНТРАКТ, СТРОГИЙ
+.\" ОТВЕТСТВЕННОСТИ, ИЛИ ДЕЛИКТА (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНОЕ), ВОЗНИКАЮЩИХ КАКИМ-ЛИБО ОБРАЗОМ
+.\" В СВЯЗИ С ИСПОЛЬЗОВАНИЕМ ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ ВЫ БЫЛИ ПРЕДУПРЕЖДЕНЫ О ВОЗМОЖНОСТИ
+.\" ТАКОГО УЩЕРБА.
 .\"
-.Dd November 2, 2018
+.Dd 2 ноября 2018 г.
 .Dt NSMB.CONF 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm nsmb.conf
-.Nd configuration file for
+Файл конфигурации .Nd для
 .Tn SMB
-requests
-.Sh DESCRIPTION
-The
+запросов
+.Sh ОПИСАНИЕ
+Файл
 .Nm
-file contains information about the computers, users, and shares
-or mount points for the
+содержит информацию о компьютерах, пользователях и общих ресурсах
+или точках монтирования для
 .Tn SMB
-network protocol.
+сетевого протокола.
 .Pp
-The configuration files are loaded in the following order:
+Файлы конфигурации загружаются в следующем порядке:
 .Pp
 .Bl -enum -offset indent -width "" -compact
 .It
@@ -48,41 +48,41 @@ The configuration files are loaded in the following order:
 .Pa /etc/nsmb.conf
 .El
 .Pp
-As a result,
+В результате,
 .Pa /etc/nsmb.conf
-settings
-override those in
+настройки
+переопределяют настройки в
 .Pa ~/.nsmbrc .
 .Pp
-The configuration hierarchy is made up of several sections,
-each section containing a few or several lines of parameters
-and their assigned values.
-Each of these sections must begin with a section name enclosed within
-square brackets, similar to:
+Иерархия конфигурации состоит из нескольких секций,
+каждая из которых содержит несколько или несколько строк параметров
+и присвоенные им значения.
+Каждая из этих секций должна начинаться с имени секции, заключенного в
+квадратных скобках, например:
 .Pp
-.D1 Bq Ar section_name
+.D1 Bq Ar имя_раздела
 .Pp
-The end of each section is marked by either the start of a new section,
-or by the abrupt ending of the file, commonly referred to as the
+Конец каждой секции отмечается либо началом новой секции,
+либо резким завершением файла, обычно называемым
 .Tn EOF .
-Each section may contain zero or more parameters such as:
+Каждая секция может содержать ноль или более параметров, например:
 .Pp
-.D1 Bq Ar section_name
-.D1 Ar key Ns = Ns Ar value
+.D1 Bq Ar Имя_секции
+.D1 Ar ключ Ns = Ns Ar значение
 .Pp
-where
-.Ar key
-represents a parameter name, and
-.Ar value
-would be the parameter's assigned value.
+где
+ключ .Ar
+представляет собой имя параметра, а
+значение .Ar
+будет назначенным значением параметра.
 .Pp
-The
+Сайт
 .Tn SMB
-library uses the following information for section names:
+использует следующую информацию для имен секций:
 .Pp
 .Bl -tag -width indent -compact
 .It Ic A)
-.Bq Li default
+.Bq Li по умолчанию
 .It Ic B)
 .Bq Ar SERVER
 .It Ic C)
@@ -91,75 +91,75 @@ library uses the following information for section names:
 .Op Ar SERVER : Ns Ar USER : Ns Ar SHARE
 .El
 .Pp
-Possible keywords may include:
+Возможные ключевые слова могут включать:
 .Bl -column ".Va retry_count" ".Sy Section"
-.It Sy "Keyword	Section	Comment"
-.It Sy "	A B C D"
-.It Va addr        Ta "- + - -" Ta "IP address of SMB server"
-.It Va charsets    Ta "- + + +" Ta "local:remote charset pair"
-.It Va nbns        Ta "+ + - -" Ta "address of NetBIOS name server (WINS)"
-.It Va nbscope     Ta "+ + - -" Ta "NetBIOS scope"
-.It Va nbtimeout   Ta "+ + - -" Ta "timeout for NetBIOS name servers"
-.It Va password    Ta "- - + +" Ta "plain text or simple encrypted password used to access the given share"
-.It Va retry_count Ta "+ + - -" Ta "number of retries before connection is marked as broken"
-.It Va timeout     Ta "+ + - -" Ta "SMB request timeout"
-.It Va workgroup   Ta "+ + + +" Ta "workgroup name"
+.It Sy "Комментарий раздела ключевых слов"
+.It Sy " A B C D"
+.It Va addr Ta "- + - -" Ta "IP-адрес SMB-сервера"
+.It Va charsets Ta "- + + +" Ta "пара локальный:удаленный charset"
+.It Va nbns Ta "+ + - -" Ta "адрес сервера имен NetBIOS (WINS)"
+.It Va nbscope Ta "+ + - - -" Ta "область действия NetBIOS"
+.It Va nbtimeout Ta "+ + - -" Ta "таймаут для серверов имен NetBIOS"
+.It Va password Ta "- - + + +" Ta "простой текстовый или простой зашифрованный пароль, используемый для доступа к данному ресурсу"
+.It Va retry_count Ta "+ + - -" Ta "количество повторных попыток перед тем, как соединение будет отмечено как разорванное"
+.It Va timeout Ta "+ + - - -" Ta "таймаут SMB-запроса"
+.It Va workgroup Ta "+ + + +" Ta "имя рабочей группы"
 .El
-.Sh FILES
+.Sh ФАЙЛЫ
 .Bl -tag -width ".Pa /etc/nsmb.conf"
 .It Pa /etc/nsmb.conf
-The default remote mount-point configuration file.
+Файл конфигурации удаленной точки монтирования по умолчанию.
 .It Pa ~/.nsmbrc
-The user specific remote mount-point configuration file.
+Конфигурационный файл удаленной точки монтирования для конкретного пользователя.
 .El
-.Sh EXAMPLES
-What follows is a sample configuration file which may,
-or may not match your environment:
+.Sh ПРИМЕРЫ
+Ниже приведен пример файла конфигурации, который может,
+или не соответствовать вашей среде:
 .Bd -literal -offset indent
-# Configuration file for example.com
-[default]
+# Конфигурационный файл для example.com
+[по умолчанию]
 workgroup=SALES
-# The 'FSERVER' is an NT server.
+# 'FSERVER' - это сервер NT.
 [FSERVER]
 charsets=koi8-r:cp866
 addr=fserv.example.com
-# User specific data for FSERVER
+# Данные пользователя для FSERVER
 [FSERVER:MYUSER]
 password=$$16144562c293a0314e6e1
 .Ed
 .Pp
-All lines which begin with the
+Все строки, начинающиеся с
 .Ql #
-character are comments and will not be parsed.
-The
-.Dq Li default
-section describes the default workgroup or domain, in this case
+являются комментариями и не будут разобраны.
+По умолчанию
+.Dq Li по умолчанию
+описывает рабочую группу или домен по умолчанию, в данном случае
 .Dq Li SALES .
-The next section depicted here as
+Следующий раздел, изображенный здесь как
 .Dq Li FSERVER ,
-defines a server section and then assigns it a charset which is only
-required when Cyrillic characters are not used.
-The hostname value,
+определяет раздел сервера, а затем назначает ему кодовую гарнитуру, которая требуется только в том случае.
+требуется только в том случае, если не используются кириллические символы.
+Значение имени хоста,
 .Dq Li fserv.example.com ,
-is also assigned in this section.
+также присваивается в этом разделе.
 .Dq Li FSERVER:USER ,
-defines the user settings and is useful for saving the password used
-during a specific connection.
-The password may be plaintext or obfuscated using simple encryption.
-The simple encrypted password starts with the `$$1' symbols.
-Warning: the encryption function is very weak and intended only to hide
-clear text passwords.
-If the use of simple encryption is desired, the following command may be
-used on a password:
+определяет настройки пользователя и полезен для сохранения пароля, используемого
+во время конкретного соединения.
+Пароль может быть открытым текстом или зашифрованным с помощью простого шифрования.
+Простой зашифрованный пароль начинается с символов `$$1'.
+Внимание: функция шифрования очень слабая и предназначена только для сокрытия
+паролей с открытым текстом.
+Если необходимо использовать простое шифрование, можно выполнить следующую команду
+использовать следующую команду для пароля:
 .Bd -literal -offset indent
 smbutil crypt
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ 
 .Xr smbutil 1 ,
 .Xr mount_smbfs 8
-.Sh AUTHORS
-This manual page was written by
+Авторы .Sh
+Эта страница руководства была написана
 .An -nosplit
-.An Sergey Osokin Aq Mt osa@FreeBSD.org
-and
-.An Tom Rhodes Aq Mt trhodes@FreeBSD.org .
+.An Сергей Осокин Aq Mt osa@FreeBSD.org
+и
+.An Том Родс Aq Mt trhodes@FreeBSD.org .

@@ -28,58 +28,58 @@
 .Dd December 27, 2016
 .Dt TAR 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm tar
-.Nd format of tape archive files
-.Sh DESCRIPTION
-The
+.Nd формат файлов ленточного архива
+.Sh ОПИСАНИЕ
+Формат
 .Nm
-archive format collects any number of files, directories, and other
-file system objects (symbolic links, device nodes, etc.) into a single
-stream of bytes.
-The format was originally designed to be used with
-tape drives that operate with fixed-size blocks, but is widely used as
-a general packaging mechanism.
-.Ss General Format
-A
+архива собирает любое количество файлов, каталогов и других файлов.
+объекты файловой системы (символические ссылки, узлы устройств и т. д.) в единый
+поток байтов.
+Изначально формат был разработан для использования с
+ленточные накопители, работающие с блоками фиксированного размера, но широко используемые в качестве
+общий механизм упаковки.
+.Ss Общий формат
+Архив
 .Nm
-archive consists of a series of 512-byte records.
-Each file system object requires a header record which stores basic metadata
-(pathname, owner, permissions, etc.) and zero or more records containing any
-file data.
-The end of the archive is indicated by two records consisting
-entirely of zero bytes.
+состоит из серии записей по 512 байт.
+Каждому объекту файловой системы требуется запись заголовка, в которой хранятся основные метаданные.
+(путь, владелец, разрешения и т. д.) и ноль или более записей, содержащих какие-либо
+данные файла.
+Конец архива обозначается двумя записями, состоящими из
+полностью из нулевых байтов.
 .Pp
-For compatibility with tape drives that use fixed block sizes,
-programs that read or write tar files always read or write a fixed
-number of records with each I/O operation.
-These
-.Dq blocks
-are always a multiple of the record size.
-The maximum block size supported by early
-implementations was 10240 bytes or 20 records.
-This is still the default for most implementations
-although block sizes of 1MiB (2048 records) or larger are
-commonly used with modern high-speed tape drives.
-(Note: the terms
-.Dq block
-and
-.Dq record
-here are not entirely standard; this document follows the
-convention established by John Gilmore in documenting
+Для совместимости со стримерами, использующими фиксированные размеры блоков,
+программы, которые читают или записывают файлы tar, всегда читают или записывают фиксированную
+количество записей при каждой операции ввода-вывода.
+Эти
+.Dq блоки
+всегда кратны размеру записи.
+Максимальный размер блока, поддерживаемый ранними
+реализации составляло 10240 байт или 20 записей.
+Это по-прежнему значение по умолчанию для большинства реализаций.
+хотя размеры блоков 1 МБ (2048 записей) или больше
+обычно используется с современными высокоскоростными ленточными накопителями.
+(Примечание:
+.Dq блок терминов
+и
+.Dq запись
+здесь не совсем стандартные; этот документ соответствует
+соглашению, установленному John Gilmore для документации
 .Nm pdtar . )
-.Ss Old-Style Archive Format
-The original tar archive format has been extended many times to
-include additional information that various implementors found
-necessary.
-This section describes the variant implemented by the tar command
-included in
+.Ss Формат архива старого образца
+Исходный формат архива tar многократно расширялся до
+включать дополнительную информацию, найденную различными разработчиками
+необходимый.
+В этом разделе описывается вариант, реализованный командой tar.
+включен в
 .At v7 ,
-which seems to be the earliest widely-used version of the tar program.
+это, по-видимому, самая ранняя широко используемая версия программы tar.
 .Pp
-The header record for an old-style
+Заголовок записи для старого стиля
 .Nm
-archive consists of the following:
+архив состоит из следующего:
 .Bd -literal -offset indent
 struct header_old_tar {
 	char name[100];
@@ -94,107 +94,107 @@ struct header_old_tar {
 	char pad[255];
 };
 .Ed
-All unused bytes in the header record are filled with nulls.
+Все неиспользуемые байты в записи заголовка заполняются нулями.
 .Bl -tag -width indent
-.It Va name
-Pathname, stored as a null-terminated string.
-Early tar implementations only stored regular files (including
-hardlinks to those files).
-One common early convention used a trailing "/" character to indicate
-a directory name, allowing directory permissions and owner information
-to be archived and restored.
+.It Va имя
+Путь, сохраненный в виде строки с нулевым завершением.
+Ранние реализации tar хранили только обычные файлы (включая
+жесткие ссылки на эти файлы).
+В одном из ранних соглашений использовался завершающий символ «/» для обозначения
+имя каталога, предоставляющее права доступа к каталогу и информацию о владельце
+быть заархивированы и восстановлены.
 .It Va mode
-File mode, stored as an octal number in ASCII.
+Режим файла, хранящийся в виде восьмеричного числа в формате ASCII.
 .It Va uid , Va gid
-User id and group id of owner, as octal numbers in ASCII.
+Идентификатор пользователя и идентификатор группы владельца в виде восьмеричных чисел в формате ASCII.
 .It Va size
-Size of file, as octal number in ASCII.
-For regular files only, this indicates the amount of data
-that follows the header.
-In particular, this field was ignored by early tar implementations
-when extracting hardlinks.
-Modern writers should always store a zero length for hardlink entries.
-.It Va mtime
-Modification time of file, as an octal number in ASCII.
-This indicates the number of seconds since the start of the epoch,
+Размер файла в восьмеричном формате ASCII.
+Только для обычных файлов это указывает на объем данных.
+это следует за заголовком.
+В частности, это поле игнорировалось в ранних реализациях tar.
+при извлечении жестких ссылок.
+Современные авторы должны всегда сохранять нулевую длину для записей жестких ссылок.
+.It Va время
+Время модификации файла в восьмеричном формате ASCII.
+Это указывает количество секунд с начала эпохи,
 00:00:00 UTC January 1, 1970.
-Note that negative values should be avoided
-here, as they are handled inconsistently.
-.It Va checksum
-Header checksum, stored as an octal number in ASCII.
-To compute the checksum, set the checksum field to all spaces,
-then sum all bytes in the header using unsigned arithmetic.
-This field should be stored as six octal digits followed by a null and a space
-character.
-Note that many early implementations of tar used signed arithmetic
-for the checksum field, which can cause interoperability problems
-when transferring archives between systems.
-Modern robust readers compute the checksum both ways and accept the
-header if either computation matches.
-.It Va linkflag , Va linkname
-In order to preserve hardlinks and conserve tape, a file
-with multiple links is only written to the archive the first
-time it is encountered.
-The next time it is encountered, the
-.Va linkflag
-is set to an ASCII
+Обратите внимание, что следует избегать отрицательных значений
+здесь, поскольку они обрабатываются непоследовательно.
+.It Va контрольная сумма
+Контрольная сумма заголовка, хранящаяся в виде восьмеричного числа в формате ASCII.
+Чтобы вычислить контрольную сумму, установите в поле контрольной суммы все пробелы.
+затем просуммируйте все байты в заголовке, используя беззнаковую арифметику.
+Это поле должно храниться в виде шести восьмеричных цифр, за которыми следует ноль и пробел.
+характер.
+Обратите внимание, что во многих ранних реализациях tar использовалась знаковая арифметика.
+для поля контрольной суммы, что может вызвать проблемы совместимости
+при переносе архивов между системами.
+Современные надежные считыватели вычисляют контрольную сумму обоими способами и принимают
+заголовок, если любое из вычислений совпадает.
+.It Va флаг ссылки , Va имя ссылки
+Чтобы сохранить жесткие ссылки и сэкономить ленту, файл
+при нескольких ссылках в архив записывается только первая
+время, когда оно встречается.
+В следующий раз, когда он встретится,
+.Va флаг ссылки
+установлен в ASCII
 .Sq 1
-and the
-.Va linkname
-field holds the first name under which this file appears.
+и
+.Va имя ссылки
+Поле содержит первое имя, под которым отображается этот файл.
 (Note that regular files have a null value in the
-.Va linkflag
+.Va флаг ссылки
 field.)
 .El
 .Pp
-Early tar implementations varied in how they terminated these fields.
-The tar command in
+Ранние реализации tar различались по способу закрытия этих полей.
+Команда tar в
 .At v7
-used the following conventions (this is also documented in early BSD manpages):
-the pathname must be null-terminated;
-the mode, uid, and gid fields must end in a space and a null byte;
-the size and mtime fields must end in a space;
-the checksum is terminated by a null and a space.
-Early implementations filled the numeric fields with leading spaces.
-This seems to have been common practice until the
+использовали следующие соглашения (это также описано в ранних справочных страницах BSD):
+путь должен заканчиваться нулем;
+поля mode, uid и gid должны заканчиваться пробелом и нулевым байтом;
+поля size и mtime должны заканчиваться пробелом;
+контрольная сумма заканчивается нулем и пробелом.
+Ранние реализации заполняли числовые поля начальными пробелами.
+Похоже, это была обычная практика до тех пор, пока
 .St -p1003.1-88
-standard was released.
-For best portability, modern implementations should fill the numeric
-fields with leading zeros.
+стандарт был выпущен.
+Для лучшей переносимости современные реализации должны заполнять числовые значения.
+поля с ведущими нулями.
 .Ss Pre-POSIX Archives
-An early draft of
+Ранний проект
 .St -p1003.1-88
-served as the basis for John Gilmore's
+послужил основой для Джона Гилмора
 .Nm pdtar
-program and many system implementations from the late 1980s
-and early 1990s.
-These archives generally follow the POSIX ustar
-format described below with the following variations:
+программа и многие реализации систем конца 1980-х годов
+и начале 1990-х годов.
+Эти архивы обычно соответствуют стандарту POSIX.
+описанный ниже формат со следующими вариациями:
 .Bl -bullet -compact -width indent
 .It
-The magic value consists of the five characters
+Магическое значение состоит из пяти символов,
 .Dq ustar
-followed by a space.
-The version field contains a space character followed by a null.
+за которыми следует пробел.
+Поле версии содержит пробел, за которым следует ноль.
 .It
-The numeric fields are generally filled with leading spaces
-(not leading zeros as recommended in the final standard).
+Числовые поля обычно заполняются пробелами.
+(без ведущих нулей, как рекомендовано в окончательной версии стандарта).
 .It
-The prefix field is often not used, limiting pathnames to
-the 100 characters of old-style archives.
+Поле префикса часто не используется, ограничивая имена путей
+100 знаков из архивов старого образца.
 .El
-.Ss POSIX ustar Archives
+.Ss POSIX ustar Архивы
 .St -p1003.1-88
-defined a standard tar file format to be read and written
-by compliant implementations of
+определение стандартного формата файла tar для чтения и записи
+посредством совместимых реализаций
 .Xr tar 1 .
-This format is often called the
+Этот формат часто называют
 .Dq ustar
-format, after the magic value used
-in the header.
+формат после используемого магического значения
+в заголовке.
 (The name is an acronym for
 .Dq Unix Standard TAR . )
-It extends the historic format with new fields:
+Он расширяет исторический формат новыми полями:
 .Bd -literal -offset indent
 struct header_posix_ustar {
 	char name[100];
@@ -217,337 +217,335 @@ struct header_posix_ustar {
 };
 .Ed
 .Bl -tag -width indent
-.It Va typeflag
-Type of entry.
-POSIX extended the earlier
-.Va linkflag
-field with several new type values:
+.It Va шрифтовой флаг
+Тип входа.
+POSIX расширил предыдущее
+.Va флаг ссылки
+поле с несколькими значениями нового типа:
 .Bl -tag -width indent -compact
 .It Dq 0
-Regular file.
-NUL should be treated as a synonym, for compatibility purposes.
+Обычный файл.
+В целях совместимости NUL следует рассматривать как синоним.
 .It Dq 1
-Hard link.
+Жесткая ссылка.
 .It Dq 2
-Symbolic link.
+Символическая ссылка.
 .It Dq 3
-Character device node.
+Узел символьного устройства.
 .It Dq 4
-Block device node.
+Узел блочного устройства.
 .It Dq 5
-Directory.
+Справочник
 .It Dq 6
-FIFO node.
+Узел FIFO.
 .It Dq 7
-Reserved.
+Сдержанный.
 .It Other
-A POSIX-compliant implementation must treat any unrecognized typeflag value
-as a regular file.
-In particular, writers should ensure that all entries
-have a valid filename so that they can be restored by readers that do not
-support the corresponding extension.
-Uppercase letters "A" through "Z" are reserved for custom extensions.
-Note that sockets and whiteout entries are not archivable.
+Реализация, совместимая с POSIX, должна обрабатывать любое нераспознанное значение флага типа.
+как обычный файл.
+В частности, авторы должны гарантировать, что все записи
+иметь допустимое имя файла, чтобы его могли восстановить читатели, которые этого не делают.
+поддерживать соответствующее расширение.
+Прописные буквы от «A» до «Z» зарезервированы для пользовательских расширений.
+Обратите внимание, что сокеты и записи белого цвета не подлежат архивированию.
 .El
-It is worth noting that the
-.Va size
-field, in particular, has different meanings depending on the type.
-For regular files, of course, it indicates the amount of data
-following the header.
-For directories, it may be used to indicate the total size of all
-files in the directory, for use by operating systems that pre-allocate
-directory space.
-For all other types, it should be set to zero by writers and ignored
-by readers.
-.It Va magic
-Contains the magic value
+Стоит отметить, что
+.Va размер
+поля, в частности, имеет разные значения в зависимости от типа.
+Для обычных файлов, конечно, указывается объём данных
+следуя за заголовком.
+Для каталогов его можно использовать для указания общего размера всех
+файлы в каталоге для использования операционными системами, которые предварительно выделяют
+пространство каталогов.
+Для всех других типов авторы должны устанавливать его равным нулю и игнорировать.
+читателями.
+.It Va Магическое поле
+Содержит магическое значение
 .Dq ustar
-followed by a NUL byte to indicate that this is a POSIX standard archive.
-Full compliance requires the uname and gname fields be properly set.
-.It Va version
-Version.
-This should be
+за которым следует NUL-байт, указывающий, что это стандартный архив POSIX.
+Полное соответствие требует правильной установки полей uname и gname.
+.It Va версия
+Вариант.
+Это должно быть
 .Dq 00
-(two copies of the ASCII digit zero) for POSIX standard archives.
+(две копии цифры нуля ASCII) для стандартных архивов POSIX.
 .It Va uname , Va gname
-User and group names, as null-terminated ASCII strings.
-These should be used in preference to the uid/gid values
-when they are set and the corresponding names exist on
-the system.
-.It Va devmajor , Va devminor
-Major and minor numbers for character device or block device entry.
-.It Va name , Va prefix
-If the pathname is too long to fit in the 100 bytes provided by the standard
-format, it can be split at any
+Имена пользователей и групп в виде строк ASCII с нулевым завершением.
+Их следует использовать вместо значений uid/gid.
+когда они установлены и соответствующие имена существуют на
+система.
+.It Va главный разработчик , Va разработчик
+Старшие и младшие номера для символьного устройства или ввода блочного устройства.
+.It Va имя , Va префикс
+Если путь слишком длинный и не помещается в 100 байт, предусмотренных стандартом
+формате, его можно разделить в любом месте
 .Pa /
-character with the first portion going into the prefix field.
-If the prefix field is not empty, the reader will prepend
-the prefix value and a
+символ, первая часть которого входит в поле префикса.
+Если поле префикса не пусто, программа чтения добавит
+значение префикса и
 .Pa /
-character to the regular name field to obtain the full pathname.
-The standard does not require a trailing
+символ в обычное поле имени, чтобы получить полный путь.
+Стандарт не требует завершающего
 .Pa /
-character on directory names, though most implementations still
-include this for compatibility reasons.
+символа в именах каталогов, хотя большинство реализаций по-прежнему
+включает это из соображений совместимости.
 .El
 .Pp
-Note that all unused bytes must be set to
-.Dv NUL .
+Обратите внимание, что все неиспользуемые байты должны быть установлены на
+.Dv НОЛЬ .
 .Pp
-Field termination is specified slightly differently by POSIX
-than by previous implementations.
-The
+Завершение поля определяется в POSIX несколько иначе
+чем в предыдущих реализациях.
 .Va magic ,
 .Va uname ,
-and
+и
 .Va gname
-fields must have a trailing
+поля должны иметь завершающий символ
 .Dv NUL .
-The
 .Va pathname ,
 .Va linkname ,
-and
+и
 .Va prefix
-fields must have a trailing
+поля должны иметь завершающий символ
 .Dv NUL
-unless they fill the entire field.
-(In particular, it is possible to store a 256-character pathname if it
-happens to have a
+
+если они не заполняют все поле.
+(В частности, можно сохранить 256-значное имя пути, если оно
+случайно есть
 .Pa /
-as the 156th character.)
-POSIX requires numeric fields to be zero-padded in the front, and requires
-them to be terminated with either space or
-.Dv NUL
-characters.
+как 156-й символ.)
+POSIX требует, чтобы числовые поля дополнялись нулями спереди, и
+их следует заканчивать пробелом или
+.Dv НОЛЬ
+символом.
 .Pp
-Currently, most tar implementations comply with the ustar
-format, occasionally extending it by adding new fields to the
-blank area at the end of the header record.
+В настоящее время большинство реализаций tar соответствуют требованиям ustar.
+формат, иногда расширяя его, добавляя новые поля в
+пустая область в конце записи заголовка.
 .Ss Numeric Extensions
-There have been several attempts to extend the range of sizes
-or times supported by modifying how numbers are stored in the
-header.
+Было несколько попыток расширить диапазон размеров.
+или время поддерживается путем изменения способа хранения чисел в
+заголовок.
 .Pp
-One obvious extension to increase the size of files is to
-eliminate the terminating characters from the various
-numeric fields.
-For example, the standard only allows the size field to contain
-11 octal digits, reserving the twelfth byte for a trailing
-NUL character.
-Allowing 12 octal digits allows file sizes up to 64 GB.
+Одним из очевидных расширений для увеличения размера файлов является
+удалить конечные символы из различных
+числовые поля.
+Например, стандарт позволяет поле размера содержать только
+11 восьмеричных цифр, двенадцатый байт резервируется для завершающего числа.
+NUL-символ.
+Разрешение 12 восьмеричных цифр позволяет использовать файлы размером до 64 ГБ.
 .Pp
-Another extension, utilized by GNU tar, star, and other newer
+Еще одно расширение, используемое GNU tar, star и другими новыми версиями
 .Nm
-implementations, permits binary numbers in the standard numeric fields.
-This is flagged by setting the high bit of the first byte.
-The remainder of the field is treated as a signed twos-complement
-value.
-This permits 95-bit values for the length and time fields
-and 63-bit values for the uid, gid, and device numbers.
-In particular, this provides a consistent way to handle
-negative time values.
-GNU tar supports this extension for the
-length, mtime, ctime, and atime fields.
-Joerg Schilling's star program and the libarchive library support
-this extension for all numeric fields.
-Note that this extension is largely obsoleted by the extended
-attribute record provided by the pax interchange format.
+реализации допускает использование двоичных чисел в стандартных числовых полях.
+Это отмечается установкой старшего бита первого байта.
+Оставшаяся часть поля рассматривается как знаковое дополнение до двух
+значений.
+Это позволяет использовать 95-битные значения для полей длины и времени.
+и 63-битные значения для uid, gid и номеров устройств.
+В частности, это обеспечивает последовательный способ обработки
+отрицательные значения времени.
+GNU tar поддерживает это расширение для
+Поля length, mtime, ctime и atime.
+Звездная программа Йорга Шиллинга и поддержка библиотеки лиархива
+это расширение для всех числовых полей.
+Обратите внимание, что это расширение в значительной степени устарело по сравнению с расширенным
+запись атрибута, предоставляемая форматом обмена pax.
 .Pp
-Another early GNU extension allowed base-64 values rather than octal.
-This extension was short-lived and is no longer supported by any
-implementation.
+Другое раннее расширение GNU позволяло использовать значения в формате Base64, а не в восьмеричном формате.
+Это расширение просуществовало недолго и больше не поддерживается никем.
+выполнение.
 .Ss Pax Interchange Format
-There are many attributes that cannot be portably stored in a
-POSIX ustar archive.
+Существует множество атрибутов, которые невозможно перенести в
+устарный архив POSIX.
 .St -p1003.1-2001
-defined a
+определил
 .Dq pax interchange format
-that uses two new types of entries to hold text-formatted
-metadata that applies to following entries.
-Note that a pax interchange format archive is a ustar archive in every
-respect.
-The new data is stored in ustar-compatible archive entries that use the
+что использует два новых типа записей для хранения текстовых данных
+метаданные, которые применяются к следующим записям.
+Обратите внимание, что архив формата pax interchange представляет собой архив ustar в каждом
+уважать.
+Новые данные сохраняются в архивных записях, совместимых с ustar, которые используют
 .Dq x
-or
+или
 .Dq g
-typeflag.
-In particular, older implementations that do not fully support these
-extensions will extract the metadata into regular files, where the
-metadata can be examined as necessary.
+типфлаг.
+В частности, старые реализации, которые не полностью поддерживают эти
+расширения извлекут метаданные в обычные файлы, где
+метаданные могут быть проверены по мере необходимости.
 .Pp
-An entry in a pax interchange format archive consists of one or
-two standard ustar entries, each with its own header and data.
-The first optional entry stores the extended attributes
-for the following entry.
-This optional first entry has an "x" typeflag and a size field that
-indicates the total size of the extended attributes.
-The extended attributes themselves are stored as a series of text-format
-lines encoded in the portable UTF-8 encoding.
-Each line consists of a decimal number, a space, a key string, an equals
-sign, a value string, and a new line.
-The decimal number indicates the length of the entire line, including the
-initial length field and the trailing newline.
-An example of such a field is:
+Запись в архиве формата обмена pax состоит из одного или
+две стандартные записи ustar, каждая со своим заголовком и данными.
+Первая необязательная запись хранит расширенные атрибуты.
+для следующей записи.
+Эта необязательная первая запись имеет флаг типа «x» и поле размера, которое
+указывает общий размер расширенных атрибутов.
+Сами расширенные атрибуты хранятся в виде серии текстовых форматов
+строки, закодированные в переносимой кодировке UTF-8.
+Каждая строка состоит из десятичного числа, пробела, ключевой строки, знака равенства,
+строки значения и новой строки.
+Десятичное число указывает длину всей строки, включая
+поле начальной длины и конечная новая строка.
+Пример такого поля:
 .Dl 25 ctime=1084839148.1212\en
-Keys in all lowercase are standard keys.
-Vendors can add their own keys by prefixing them with an all uppercase
-vendor name and a period.
-Note that, unlike the historic header, numeric values are stored using
-decimal, not octal.
-A description of some common keys follows:
+Клавиши, написанные строчными буквами, являются стандартными клавишами.
+Продавцы могут добавлять свои собственные ключи, добавляя к ним заглавные буквы.
+имя поставщика и период.
+Обратите внимание, что, в отличие от исторического заголовка, числовые значения сохраняются с использованием
+десятичное, а не восьмеричное.
+Ниже приводится описание некоторых общих ключей:
 .Bl -tag -width indent
 .It Cm atime , Cm ctime , Cm mtime
-File access, inode change, and modification times.
-These fields can be negative or include a decimal point and a fractional value.
+Доступ к файлу, изменение индексного дескриптора и время модификации.
+Эти поля могут быть отрицательными или содержать десятичную точку и дробное значение.
 .It Cm hdrcharset
-The character set used by the pax extension values.
-By default, all textual values in the pax extended attributes
-are assumed to be in UTF-8, including pathnames, user names,
-and group names.
-In some cases, it is not possible to translate local
-conventions into UTF-8.
-If this key is present and the value is the six-character ASCII string
+Набор символов, используемый значениями расширения pax.
+По умолчанию все текстовые значения в расширенных атрибутах pax
+предполагаются в формате UTF-8, включая имена путей, имена пользователей,
+и названия групп.
+В некоторых случаях невозможно перевести локальный
+соглашения в UTF-8.
+Если этот ключ присутствует и значение представляет собой шестисимвольную строку ASCII
 .Dq BINARY ,
-then all textual values are assumed to be in a platform-dependent
-multi-byte encoding.
-Note that there are only two valid values for this key:
-.Dq BINARY
-or
+тогда предполагается, что все текстовые значения находятся в зависимости от платформы.
+многобайтовое кодирование.
+Обратите внимание, что для этого ключа существует только два допустимых значения:
+.Dq BINARY ,
+или
 .Dq ISO-IR\ 10646\ 2000\ UTF-8 .
-No other values are permitted by the standard, and
-the latter value should generally not be used as it is the
-default when this key is not specified.
-In particular, this flag should not be used as a general
-mechanism to allow filenames to be stored in arbitrary
-encodings.
+Никакие другие значения стандартом не допускаются, и
+последнее значение обычно не следует использовать, поскольку оно является
+по умолчанию, если этот ключ не указан.
+В частности, этот флаг не следует использовать в качестве общего
+механизм, позволяющий хранить имена файлов в произвольных
+кодировки.
 .It Cm uname , Cm uid , Cm gname , Cm gid
-User name, group name, and numeric UID and GID values.
-The user name and group name stored here are encoded in UTF8
-and can thus include non-ASCII characters.
-The UID and GID fields can be of arbitrary length.
-.It Cm linkpath
-The full path of the linked-to file.
-Note that this is encoded in UTF8 and can thus include non-ASCII characters.
-.It Cm path
-The full pathname of the entry.
-Note that this is encoded in UTF8 and can thus include non-ASCII characters.
-.It Cm realtime.* , Cm security.*
-These keys are reserved and may be used for future standardization.
-.It Cm size
-The size of the file.
-Note that there is no length limit on this field, allowing conforming
-archives to store files much larger than the historic 8GB limit.
+Имя пользователя, имя группы и числовые значения UID и GID.
+Имя пользователя и имя группы, хранящиеся здесь, закодированы в UTF8.
+и, таким образом, может включать символы, отличные от ASCII.
+Поля UID и GID могут иметь произвольную длину.
+.It Cm путь к ссылке
+Полный путь к связанному файлу.
+Обратите внимание, что он закодирован в UTF8 и поэтому может включать символы, отличные от ASCII.
+.It Cm путь
+Полный путь записи.
+Обратите внимание, что он закодирован в UTF8 и поэтому может включать символы, отличные от ASCII.
+.It Cm в реальном времени.* , Cm безопасность.*
+Эти ключи зарезервированы и могут использоваться для будущей стандартизации.
+.It Cm размер
+Размер файла.
+Обратите внимание, что для этого поля нет ограничений по длине, что позволяет
+архивы для хранения файлов, размер которых намного превышает исторический предел в 8 ГБ.
 .It Cm SCHILY.*
-Vendor-specific attributes used by Joerg Schilling's
+Атрибуты, специфичные для поставщика, используемые Йоргом Шиллингом
 .Nm star
-implementation.
+выполнены.
 .It Cm SCHILY.acl.access , Cm SCHILY.acl.default , Cm SCHILY.acl.ace
-Stores the access, default and NFSv4 ACLs as textual strings in a format
-that is an extension of the format specified by POSIX.1e draft 17.
-In particular, each user or group access specification can include
-an additional colon-separated field with the numeric UID or GID.
-This allows ACLs to be restored on systems that may not have complete
-user or group information available (such as when NIS/YP or LDAP services
-are temporarily unavailable).
+Сохраняет списки доступа, списки управления доступом по умолчанию и списки управления доступом NFSv4 в виде текстовых строк в формате
+это расширение формата, указанного в проекте POSIX.1e 17.
+В частности, каждая спецификация доступа пользователя или группы может включать
+дополнительное поле, разделенное двоеточиями, с числовым UID или GID.
+Это позволяет восстанавливать списки ACL в системах, которые могут быть неполными.
+доступна информация о пользователе или группе (например, когда службы NIS/YP или LDAP
+временно недоступны).
 .It Cm SCHILY.devminor , Cm SCHILY.devmajor
-The full minor and major numbers for device nodes.
+Полные младшие и старшие номера узлов устройств.
 .It Cm SCHILY.fflags
-The file flags.
+Флаги файла.
 .It Cm SCHILY.realsize
-The full size of the file on disk.
+Полный размер файла на диске.
 XXX explain? XXX
 .It Cm SCHILY.dev , Cm SCHILY.ino , Cm SCHILY.nlinks
-The device number, inode number, and link count for the entry.
-In particular, note that a pax interchange format archive using Joerg
-Schilling's
+Номер устройства, номер индексного дескриптора и количество ссылок для записи.
+В частности, обратите внимание, что архив формата обмена pax с использованием Joerg
+Шиллинга
 .Cm SCHILY.*
-extensions can store all of the data from
+расширения могут хранить все данные из
 .Va struct stat .
-.It Cm LIBARCHIVE.*
-Vendor-specific attributes used by the
-.Nm libarchive
-library and programs that use it.
-.It Cm LIBARCHIVE.creationtime
-The time when the file was created.
-(This should not be confused with the POSIX
+.It Cm АРХИВ БИБЛИОТЕКИ.*
+Атрибутов, специфичных для поставщика, используемые
+.Nm архив библиотеки
+библиотеку и программы, которые ее используют.
+.It Cm АРХИВ БИБЛИОТЕКИ.creationtime
+Время создания файла.
+(Это не следует путать с POSIX
 .Dq ctime
-attribute, which refers to the time when the file
-metadata was last changed.)
-.It Cm LIBARCHIVE.xattr . Ns Ar namespace . Ns Ar key
-Libarchive stores POSIX.1e-style extended attributes using
-keys of this form.
-The
-.Ar key
-value is URL-encoded:
-All non-ASCII characters and the two special characters
+атрибут, который относится к времени, когда файл
+метаданные были изменены в последний раз.)
+.It Cm АРХИВ БИБЛИОТЕКИ.xattr . Ns Ar пространство имен . Ns Ar  ключ
+архив библиотеки хранит расширенные атрибуты в стиле POSIX.1e, используя
+ключи этой формы.
+.Ar  ключ
+Значение ключа имеет кодировку URL-адреса:
+
+Все символы, отличные от ASCII, и два специальных символа.
 .Dq =
-and
+и
 .Dq %
-are encoded as
+кодируются как
 .Dq %
-followed by two uppercase hexadecimal digits.
-The value of this key is the extended attribute value
-encoded in base 64.
-XXX Detail the base-64 format here XXX
+за которыми следуют две шестнадцатеричные цифры в верхнем регистре.
+Значение этого ключа является значением расширенного атрибута
+закодировано в базе 64.
+XXX Подробно о формате base-64 здесь XXX
 .It Cm VENDOR.*
-XXX document other vendor-specific extensions XXX
+XXX документирует другие расширения, специфичные для конкретного поставщика XXX
 .El
 .Pp
-Any values stored in an extended attribute override the corresponding
-values in the regular tar header.
-Note that compliant readers should ignore the regular fields when they
-are overridden.
-This is important, as existing archivers are known to store non-compliant
-values in the standard header fields in this situation.
-There are no limits on length for any of these fields.
-In particular, numeric fields can be arbitrarily large.
-All text fields are encoded in UTF8.
-Compliant writers should store only portable 7-bit ASCII characters in
-the standard ustar header and use extended
-attributes whenever a text value contains non-ASCII characters.
+Любые значения, хранящиеся в расширенном атрибуте, переопределяют соответствующие значения.
+значения в обычном заголовке tar.
+Обратите внимание, что читатели, соответствующие требованиям, должны игнорировать обычные поля, когда они
+переопределены.
+Это важно, поскольку известно, что существующие архиваторы хранят несовместимые файлы
+значения в стандартных полях заголовка в этой ситуации.
+Для любого из этих полей нет ограничений по длине.
+В частности, числовые поля могут быть сколь угодно большими.
+Все текстовые поля кодируются в UTF8.
+Совместимые устройства записи должны хранить в файлах только переносимые 7-битные символы ASCII.
+стандартный заголовок ustar и используйте расширенный
+атрибуты всякий раз, когда текстовое значение содержит символы, отличные от ASCII.
 .Pp
-In addition to the
+В добавок к
 .Cm x
-entry described above, the pax interchange format
-also supports a
+записи, описанной выше, формат обмена pax
+также поддерживает
 .Cm g
-entry.
-The
+вступление.
 .Cm g
-entry is identical in format, but specifies attributes that serve as
-defaults for all subsequent archive entries.
-The
+запись идентична по формату, но определяет атрибуты, которые служат
+значенем по умолчанию для всех последующих записей архива.
+запись
 .Cm g
-entry is not widely used.
+широко не используется.
 .Pp
-Besides the new
+Помимо нового
 .Cm x
-and
+и
 .Cm g
-entries, the pax interchange format has a few other minor variations
-from the earlier ustar format.
-The most troubling one is that hardlinks are permitted to have
-data following them.
-This allows readers to restore any hardlink to a file without
-having to rewind the archive to find an earlier entry.
-However, it creates complications for robust readers, as it is no longer
-clear whether or not they should ignore the size field for hardlink entries.
-.Ss GNU Tar Archives
-The GNU tar program started with a pre-POSIX format similar to that
-described earlier and has extended it using several different mechanisms:
-It added new fields to the empty space in the header (some of which was later
-used by POSIX for conflicting purposes);
-it allowed the header to be continued over multiple records;
-and it defined new entries that modify following entries
-(similar in principle to the
+записей, формат обмена pax имеет несколько других незначительных изменений
+из более раннего формата ustar.
+Самым тревожным является то, что жестким ссылкам разрешено иметь
+данные, следующие за ними.
+Это позволяет читателям восстановить любую жесткую ссылку на файл без
+приходится перематывать архив, чтобы найти более раннюю запись.
+Однако это создает сложности для опытных читателей, поскольку больше не является
+ясно, должны ли они игнорировать поле размера для записей жесткой ссылки.
+.Ss GNU Tar Архивы 
+Программа GNU tar начиналась с формата до POSIX, подобного этому
+описанный ранее, и расширил его, используя несколько различных механизмов:
+К пустому месту в заголовке были добавлены новые поля (некоторые из которых были позже
+используется POSIX для противоречивых целей);
+это позволяло продолжать заголовок в нескольких записях;
+и он определил новые записи, которые изменяют следующие записи
+(по принципу аналогично
 .Cm x
-entry described above, but each GNU special entry is single-purpose,
-unlike the general-purpose
+описанную выше запись, но каждая специальная запись GNU имеет одноцелевое назначение,
+в отличие от универсального
 .Cm x
-entry).
-As a result, GNU tar archives are not POSIX compatible, although
-more lenient POSIX-compliant readers can successfully extract most
-GNU tar archives.
+входа).
+В результате архивы tar GNU несовместимы с POSIX, хотя
+более мягкие POSIX-совместимые читатели могут успешно извлечь большую часть
+GNU tar-архивы.
 .Bd -literal -offset indent
 struct header_gnu_tar {
 	char name[100];
@@ -580,124 +578,125 @@ struct header_gnu_tar {
 };
 .Ed
 .Bl -tag -width indent
-.It Va typeflag
-GNU tar uses the following special entry types, in addition to
-those defined by POSIX:
+.It Va шрифтовой флаг
+GNU tar использует следующие специальные типы записей в дополнение к
+определенные POSIX:
 .Bl -tag -width indent
 .It "7"
-GNU tar treats type "7" records identically to type "0" records,
-except on one obscure RTOS where they are used to indicate the
-pre-allocation of a contiguous file on disk.
+GNU tar обрабатывает записи типа «7» идентично записям типа «0»
+за исключением одной малоизвестной ОСРВ, где они используются для обозначения
+предварительное выделение непрерывного файла на диске.
 .It "D"
-This indicates a directory entry.
-Unlike the POSIX-standard "5"
-typeflag, the header is followed by data records listing the names
-of files in this directory.
-Each name is preceded by an ASCII "Y"
-if the file is stored in this archive or "N" if the file is not
-stored in this archive.
-Each name is terminated with a null, and
-an extra null marks the end of the name list.
-The purpose of this
-entry is to support incremental backups; a program restoring from
-such an archive may wish to delete files on disk that did not exist
-in the directory when the archive was made.
+Это указывает на запись каталога.
+В отличие от стандарта POSIX «5»
+шрифтовой флаг, за заголовком следуют записи данных, в которых перечислены имена
+файлов в этом каталоге.
+Каждому имени предшествует ASCII «Y».
+если файл хранится в этом архиве или "N", если файл не хранится
+хранится в этом архиве.
+Каждое имя заканчивается нулем, и
+дополнительный нуль отмечает конец списка имен.
+Цель этого
+запись предназначена для поддержки инкрементального резервного копирования; программа восстанавливающая из
+такой архив может захотеть удалить файлы на диске, которых не существовало
+в каталоге, в котором был создан архив.
 .Pp
-Note that the "D" typeflag specifically violates POSIX, which requires
-that unrecognized typeflags be restored as normal files.
-In this case, restoring the "D" entry as a file could interfere
-with subsequent creation of the like-named directory.
+Обратите внимание, что флаг типа «D» явно нарушает POSIX, который требует
+чтобы нераспознанные флаги типов были восстановлены как обычные файлы.
+В этом случае восстановление записи «D» в виде файла может помешать
+с последующим созданием одноименного каталога.
 .It "K"
-The data for this entry is a long linkname for the following regular entry.
+Данные для этой записи представляют собой длинное имя ссылки для следующей обычной записи.
 .It "L"
-The data for this entry is a long pathname for the following regular entry.
+Данные для этой записи представляют собой длинный путь к следующей обычной записи.
 .It "M"
-This is a continuation of the last file on the previous volume.
-GNU multi-volume archives guarantee that each volume begins with a valid
-entry header.
-To ensure this, a file may be split, with part stored at the end of one volume,
-and part stored at the beginning of the next volume.
-The "M" typeflag indicates that this entry continues an existing file.
-Such entries can only occur as the first or second entry
-in an archive (the latter only if the first entry is a volume label).
-The
+Это продолжение последнего файла предыдущего
+тома.
+Многотомные архивы GNU гарантируют, что каждый том начинается с действительного имени.
+заголовок записи.
+Для этого файл можно разделить, сохранив часть в конце одного тома.
+и часть сохраняется в начале следующего тома.
+Флаг типа «M» указывает, что эта запись продолжает существующий файл.
+Такие записи могут встречаться только как первая или вторая запись.
+в архиве (последнее только в том случае, если первая запись является меткой тома).
+Поле 
 .Va size
-field specifies the size of this entry.
-The
+определяет размер этой записи.
+Поле
 .Va offset
-field at bytes 369-380 specifies the offset where this file fragment
-begins.
-The
+в байтах 369–380 указывает смещение, где находится этот фрагмент файла.
+Поле
 .Va realsize
-field specifies the total size of the file (which must equal
+указывает общий размер файла (который должен быть равен
 .Va size
-plus
+
+плюс
 .Va offset ) .
-When extracting, GNU tar checks that the header file name is the one it is
-expecting, that the header offset is in the correct sequence, and that
-the sum of offset and size is equal to realsize.
+При извлечении GNU tar проверяет, соответствует ли имя файла заголовка тому, какое оно есть
+ожидая, что смещение заголовка находится в правильной последовательности и что
+сумма смещения и размера равна реальному размеру.
 .It "N"
-Type "N" records are no longer generated by GNU tar.
-They contained a
-list of files to be renamed or symlinked after extraction; this was
-originally used to support long names.
-The contents of this record
-are a text description of the operations to be done, in the form
+Записи типа «N» больше не генерируются GNU tar.
+Они содержали
+список файлов, которые необходимо переименовать или создать символическую ссылку после извлечения; это было
+первоначально использовался для поддержки длинных имен.
+Содержание этой записи
+представляют собой текстовое описание операций, которые необходимо выполнить, в виде
 .Dq Rename %s to %s\en
-or
+или
 .Dq Symlink %s to %s\en ;
-in either case, both
-filenames are escaped using K&R C syntax.
-Due to security concerns, "N" records are now generally ignored
-when reading archives.
+в любом случае оба
+имена файлов экранируются с использованием синтаксиса K&R C.
+Из соображений безопасности записи «N» теперь обычно игнорируются
+при чтении архивов.
 .It "S"
-This is a
-.Dq sparse
-regular file.
-Sparse files are stored as a series of fragments.
-The header contains a list of fragment offset/length pairs.
-If more than four such entries are required, the header is
-extended as necessary with
-.Dq extra
-header extensions (an older format that is no longer used), or
-.Dq sparse
-extensions.
+Это
+.Dq редкий
+обычный файл.
+Разреженные файлы хранятся в виде серии фрагментов.
+Заголовок содержит список пар смещения/длины фрагмента.
+Если требуется более четырех таких записей, заголовок
+продлевается по мере необходимости с
+.Dq дополнительный
+расширения заголовков (старый формат, который больше не используется) или
+.Dq редкий
+расширения.
 .It "V"
-The
+Поле
 .Va name
-field should be interpreted as a tape/volume header name.
-This entry should generally be ignored on extraction.
+следует интерпретировать как имя заголовка ленты/тома.
+Эту запись обычно следует игнорировать при извлечении.
 .El
-.It Va magic
-The magic field holds the five characters
+.It Va Магическое поле
+Магическое поле содержит пять символов
 .Dq ustar
-followed by a space.
-Note that POSIX ustar archives have a trailing null.
+за которыми следует пробел.
+Обратите внимание, что архивы ustar POSIX имеют завершающий нуль.
 .It Va version
-The version field holds a space character followed by a null.
-Note that POSIX ustar archives use two copies of the ASCII digit
+Поле версии содержит пробел, за которым следует ноль.
+Обратите внимание, что архивы ustar POSIX используют две копии цифры ASCII.
 .Dq 0 .
 .It Va atime , Va ctime
-The time the file was last accessed and the time of
-last change of file information, stored in octal as with
-.Va mtime .
-.It Va longnames
-This field is apparently no longer used.
+Время последнего доступа к файлу и время
+последнего изменения информации о файле, хранящееся в восьмеричном формате, как и в случае
+.Va время .
+.It Va длинные имена
+Это поле, видимо, больше не используется.
 .It Sparse Va offset / Va numbytes
-Each such structure specifies a single fragment of a sparse
-file.
-The two fields store values as octal numbers.
-The fragments are each padded to a multiple of 512 bytes
-in the archive.
-On extraction, the list of fragments is collected from the
-header (including any extension headers), and the data
-is then read and written to the file at appropriate offsets.
-.It Va isextended
-If this is set to non-zero, the header will be followed by additional
-.Dq sparse header
-records.
-Each such record contains information about as many as 21 additional
-sparse blocks as shown here:
+Каждая такая структура определяет один фрагмент разреженного
+файл.
+В этих двух полях значения хранятся в виде восьмеричных чисел.
+Каждый фрагмент дополняется до размера, кратного 512 байтам
+в архиве.
+При извлечении список фрагментов собирается из файла
+заголовок (включая любые заголовки расширений), а данные
+затем читается и записывается в файл с соответствующими смещениями.
+.It Va расширение
+Если для этого параметра установлено значение, отличное от нуля, за заголовком будет следовать дополнительные
+.Dq разделенные заголовоки
+записи.
+Каждая такая запись содержит информацию о 21 дополнительном
+редкие блоки, как показано здесь:
 .Bd -literal -offset indent
 struct gnu_sparse_header {
 	struct {
@@ -708,242 +707,242 @@ struct gnu_sparse_header {
 	char    padding[7];
 };
 .Ed
-.It Va realsize
-A binary representation of the file's complete size, with a much larger range
-than the POSIX file size.
-In particular, with
+.It Va реальный размер
+Двоичное представление полного размера файла с гораздо большим диапазоном.
+чем размер файла POSIX.
+В частности, с
 .Cm M
-type files, the current entry is only a portion of the file.
-In that case, the POSIX size field will indicate the size of this
-entry; the
-.Va realsize
-field will indicate the total size of the file.
+type-файлами, текущая запись представляет собой только часть файла.
+В этом случае поле размера POSIX будет указывать размер этого файла.
+вход; 
+.Va реальный размер
+В поле будет указан общий размер файла.
 .El
 .Ss GNU tar pax archives
-GNU tar 1.14 (XXX check this XXX) and later will write
-pax interchange format archives when you specify the
+GNU tar 1.14 (XXX проверьте этот XXX) и позже напишу
+pax в формате обмена файлами при указании.
 .Fl -posix
-flag.
-This format follows the pax interchange format closely,
-using some
+флага.
+Этот формат точно соответствует формату обмена pax,
+используя некоторые
 .Cm SCHILY
-tags and introducing new keywords to store sparse file information.
-There have been three iterations of the sparse file support, referred to
-as
+теги и введение новых ключевых слов для хранения разреженной информации о файлах.
+Было три версии поддержки разреженных файлов, называемых
+как
 .Dq 0.0 ,
 .Dq 0.1 ,
-and
+и
 .Dq 1.0 .
 .Bl -tag -width indent
 .It Cm GNU.sparse.numblocks , Cm GNU.sparse.offset , Cm GNU.sparse.numbytes , Cm  GNU.sparse.size
-The
+Формат
 .Dq 0.0
-format used an initial
+использовал начальный
 .Cm GNU.sparse.numblocks
-attribute to indicate the number of blocks in the file, a pair of
+атрибут для указания количества блоков в файле, пара
 .Cm GNU.sparse.offset
-and
+и
 .Cm GNU.sparse.numbytes
-to indicate the offset and size of each block,
-and a single
+для указания смещения и размера каждого блока,
+и один
 .Cm GNU.sparse.size
-to indicate the full size of the file.
-This is not the same as the size in the tar header because the
-latter value does not include the size of any holes.
-This format required that the order of attributes be preserved and
-relied on readers accepting multiple appearances of the same attribute
-names, which is not officially permitted by the standards.
+чтобы указать полный размер файла.
+Это не то же самое, что размер в заголовке tar, поскольку
+последнее значение не включает размер каких-либо отверстий.
+Этот формат требовал сохранения порядка атрибутов и
+полагался на то, что читатели принимают несколько упоминаний одного и того же атрибута
+имена, что официально не разрешено стандартами.
 .It Cm GNU.sparse.map
-The
+Формат
 .Dq 0.1
-format used a single attribute that stored a comma-separated
-list of decimal numbers.
-Each pair of numbers indicated the offset and size, respectively,
-of a block of data.
-This does not work well if the archive is extracted by an archiver
-that does not recognize this extension, since many pax implementations
-simply discard unrecognized attributes.
+использовал один атрибут, в котором хранились разделенные запятыми
+список десятичных чисел.
+Каждая пара цифр обозначала смещение и размер соответственно.
+блока данных.
+Это не работает, если архив распакован архиватором.
+который не распознает это расширение, поскольку многие реализации pax
+просто отбросьте нераспознанные атрибуты.
 .It Cm GNU.sparse.major , Cm GNU.sparse.minor , Cm GNU.sparse.name , Cm GNU.sparse.realsize
-The
+Формат
 .Dq 1.0
-format stores the sparse block map in one or more 512-byte blocks
-prepended to the file data in the entry body.
-The pax attributes indicate the existence of this map
-(via the
+хранит разреженную карту блоков в одном или нескольких блоках по 512 байт.
+добавляется к данным файла в теле записи.
+Атрибуты pax указывают на существование этой карты
+(через
 .Cm GNU.sparse.major
-and
+и
 .Cm GNU.sparse.minor
-fields)
-and the full size of the file.
-The
+поля)
+и полный размер файла.
+содержит
 .Cm GNU.sparse.name
-holds the true name of the file.
-To avoid confusion, the name stored in the regular tar header
-is a modified name so that extraction errors will be apparent
-to users.
+ истинное имя файла.
+Во избежание путаницы имя хранится в обычном заголовке tar.
+это измененное имя, чтобы ошибки извлечения были очевидны.
+пользователям.
 .El
 .Ss Solaris Tar
-XXX More Details Needed XXX
+XXX Требуется дополнительная информация XXX
 .Pp
-Solaris tar (beginning with SunOS XXX 5.7 ?? XXX) supports an
+Solaris tar (начиная с SunOS XXX 5.7 ?? XXX) поддерживает
 .Dq extended
-format that is fundamentally similar to pax interchange format,
-with the following differences:
+формат, который принципиально похож на формат обмена pax,
+со следующими отличиями:
 .Bl -bullet -compact -width indent
 .It
-Extended attributes are stored in an entry whose type is
+Расширенные атрибуты хранятся в записи типа
 .Cm X ,
-not
+нет
 .Cm x ,
-as used by pax interchange format.
-The detailed format of this entry appears to be the same
-as detailed above for the
+как используется в формате обмена pax.
+Подробный формат этой записи выглядит таким же
+как подробно описано выше для
 .Cm x
-entry.
+входа.
 .It
-An additional
+Вдобавок
 .Cm A
-header is used to store an ACL for the following regular entry.
-The body of this entry contains a seven-digit octal number
-followed by a zero byte, followed by the
-textual ACL description.
-The octal value is the number of ACL entries
-plus a constant that indicates the ACL type: 01000000
-for POSIX.1e ACLs and 03000000 for NFSv4 ACLs.
+заголовок используется для хранения ACL для следующей обычной записи.
+Тело этой записи содержит семизначное восьмеричное число.
+за которым следует нулевой байт, за которым следует
+текстовое описание ACL.
+Восьмеричное значение — это количество записей ACL.
+плюс константа, указывающая тип ACL: 01000000
+для списков ACL POSIX.1e и 03000000 для списков ACL NFSv4.
 .El
 .Ss AIX Tar
-XXX More details needed XXX
+XXX Требуется дополнительная информация XXX
 .Pp
-AIX Tar uses a ustar-formatted header with the type
+AIX Tar использует заголовок в формате ustar с типом
 .Cm A
-for storing coded ACL information.
-Unlike the Solaris format, AIX tar writes this header after the
-regular file body to which it applies.
-The pathname in this header is either
+для хранения закодированной информации ACL.
+В отличие от формата Solaris, tar AIX записывает этот заголовок после
+обычное тело файла, к которому оно применяется.
+Путь в этом заголовке либо
 .Cm NFS4
-or
+или
 .Cm AIXC
-to indicate the type of ACL stored.
-The actual ACL is stored in platform-specific binary format.
+для указания типа сохраненного ACL.
+Фактический список ACL хранится в двоичном формате, зависящем от платформы.
 .Ss Mac OS X Tar
-The tar distributed with Apple's Mac OS X stores most regular files
-as two separate files in the tar archive.
-The two files have the same name except that the first
-one has
+В tar, поставляемом с Mac OS X от Apple, хранится большинство обычных файлов
+как два отдельных файла в tar-архиве.
+Эти два файла имеют одинаковое имя, за исключением того, что первый
+надо
 .Dq ._
-prepended to the last path element.
-This special file stores an AppleDouble-encoded
-binary blob with additional metadata about the second file,
-including ACL, extended attributes, and resources.
-To recreate the original file on disk, each
-separate file can be extracted and the Mac OS X
+добавляется к последнему элементу пути.
+В этом специальном файле хранится файл, закодированный AppleDouble.
+двоичный объект с дополнительными метаданными о втором файле,
+включая ACL, расширенные атрибуты и ресурсы.
+Чтобы воссоздать исходный файл на диске, каждый
+отдельный файл может быть извлечен и Mac OS X
 .Fn copyfile
-function can be used to unpack the separate
-metadata file and apply it to th regular file.
-Conversely, the same function provides a
+функцию можно использовать для распаковки отдельных
+метаданных и примените его к обычному файлу.
+И наоборот, та же функция обеспечивает
 .Dq pack
-option to encode the extended metadata from
-a file into a separate file whose contents
-can then be put into a tar archive.
+возможность кодировать расширенные метаданные из
+файл в отдельный файл, содержимое которого
+затем можно поместить в tar-архив.
 .Pp
-Note that the Apple extended attributes interact
-badly with long filenames.
-Since each file is stored with the full name,
-a separate set of extensions needs to be included
-in the archive for each one, doubling the overhead
-required for files with long names.
+Обратите внимание, что расширенные атрибуты Apple взаимодействуют
+плохо с длинными именами файлов.
+Поскольку каждый файл сохраняется под полным именем,
+необходимо включить отдельный набор расширений
+в архиве для каждого, удваивая накладные расходы
+требуется для файлов с длинными именами.
 .Ss Summary of tar type codes
-The following list is a condensed summary of the type codes
-used in tar header records generated by different tar implementations.
-More details about specific implementations can be found above:
+Следующий список представляет собой сокращенное описание кодов типов
+используется в записях заголовков tar, созданных различными реализациями tar.
+Более подробную информацию о конкретных реализациях можно найти выше:
 .Bl -tag -compact -width XXX
 .It NUL
-Early tar programs stored a zero byte for regular files.
+Ранние программы tar хранили нулевой байт для обычных файлов.
 .It Cm 0
-POSIX standard type code for a regular file.
+Код стандартного типа POSIX для обычного файла.
 .It Cm 1
-POSIX standard type code for a hard link description.
+Код стандартного типа POSIX для описания жесткой ссылки.
 .It Cm 2
-POSIX standard type code for a symbolic link description.
+Код стандартного типа POSIX для описания символической ссылки.
 .It Cm 3
-POSIX standard type code for a character device node.
+Код стандартного типа POSIX для узла символьного устройства.
 .It Cm 4
-POSIX standard type code for a block device node.
+Код стандартного типа POSIX для узла блочного устройства.
 .It Cm 5
-POSIX standard type code for a directory.
+Код стандартного типа POSIX для каталога.
 .It Cm 6
-POSIX standard type code for a FIFO.
+Стандартный код типа POSIX для FIFO.
 .It Cm 7
-POSIX reserved.
+POSIX зарезервирован.
 .It Cm 7
-GNU tar used for pre-allocated files on some systems.
+GNU tar используется для предварительно выделенных файлов в некоторых системах.
 .It Cm A
-Solaris tar ACL description stored prior to a regular file header.
+Описание Solaris tar ACL хранится перед обычным заголовком файла.
 .It Cm A
-AIX tar ACL description stored after the file body.
+Описание ACL tar AIX, хранящееся после тела файла.
 .It Cm D
-GNU tar directory dump.
+Дамп каталога tar GNU.
 .It Cm K
-GNU tar long linkname for the following header.
+Длинное имя ссылки GNU tar для следующего заголовка.
 .It Cm L
-GNU tar long pathname for the following header.
+Длинный путь GNU tar для следующего заголовка.
 .It Cm M
-GNU tar multivolume marker, indicating the file is a continuation of a file from the previous volume.
+Многотомный маркер GNU tar, указывающий, что файл является продолжением файла из предыдущего тома.
 .It Cm N
-GNU tar long filename support.
-Deprecated.
+Поддержка длинных имен файлов GNU tar.
+Устарело.
 .It Cm S
-GNU tar sparse regular file.
+GNU tar разреженный обычный файл.
 .It Cm V
-GNU tar tape/volume header name.
+Имя заголовка ленты/тома GNU tar.
 .It Cm X
-Solaris tar general-purpose extension header.
+Заголовок расширения общего назначения Solaris tar.
 .It Cm g
-POSIX pax interchange format global extensions.
+Глобальные расширения формата обмена POSIX pax.
 .It Cm x
-POSIX pax interchange format per-file extensions.
+Расширения каждого файла в формате обмена POSIX pax.
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr ar 1 ,
 .Xr pax 1 ,
 .Xr tar 1
-.Sh STANDARDS
-The
+.Sh СТАНДАРТЫ
+Утилита 
 .Nm tar
-utility is no longer a part of POSIX or the Single Unix Standard.
-It last appeared in
+больше не является частью POSIX или единого стандарта Unix.
+Последний раз оно появлялось в
 .St -susv2 .
-It has been supplanted in subsequent standards by
+В последующих стандартах он был заменен на
 .Xr pax 1 .
-The ustar format is currently part of the specification for the
+Формат ustar в настоящее время является частью спецификации
 .Xr pax 1
-utility.
-The pax interchange file format is new with
+утилиты.
+Формат файла обмена pax является новым с
 .St -p1003.1-2001 .
-.Sh HISTORY
-A
+.Sh ИСТОРИЯ
+Команда 
 .Nm tar
-command appeared in Seventh Edition Unix, which was released in January, 1979.
-It replaced the
+появилась в седьмом издании Unix, выпущенном в январе 1979 года.
+Он заменил
 .Nm tp
-program from Fourth Edition Unix which in turn replaced the
+программа из четвертого издания Unix, которая, в свою очередь, заменила
 .Nm tap
-program from First Edition Unix.
-John Gilmore's
+программа из первого издания Unix.
+Джона Гилмора
 .Nm pdtar
-public-domain implementation (circa 1987) was highly influential
-and formed the basis of
+внедрение общественного достояния (около 1987 г.) оказало большое влияние
+и легли в основу
 .Nm GNU tar
-(circa 1988).
-Joerg Shilling's
+(около 1988 г.).
+Йорг Шиллинг
 .Nm star
-archiver is another open-source (CDDL) archiver (originally developed
-circa 1985) which features complete support for pax interchange
-format.
+archiver — еще один архиватор с открытым исходным кодом (CDDL) (первоначально разработанный
+около 1985 г.), который обеспечивает полную поддержку обмена пассажирами.
+формат.
 .Pp
-This documentation was written as part of the
+Эта документация была написана как часть
 .Nm libarchive
-and
+и
 .Nm bsdtar
-project by
+проект
 .An Tim Kientzle Aq kientzle@FreeBSD.org .

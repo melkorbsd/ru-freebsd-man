@@ -1,23 +1,23 @@
 '\" t
 .\" $Id: dialog.1,v 1.226 2021/01/17 17:25:01 tom Exp $
-.\" Copyright 2005-2020,2021  Thomas E. Dickey
+.\" Авторское право 2005-2020,2021 Томас Э. Дики
 .\"
-.\" This program is free software; you can redistribute it and/or modify
-.\" it under the terms of the GNU Lesser General Public License, version 2.1
-.\" as published by the Free Software Foundation.
+.\" Эта программа является свободным программным обеспечением; вы можете распространять и/или модифицировать
+.\" её на условиях GNU Lesser General Public License, версии 2.1,
+.\" опубликованной в Фонде свободного программного обеспечения.
 .\"
-.\" This program is distributed in the hope that it will be useful, but
-.\" WITHOUT ANY WARRANTY; without even the implied warranty of
-.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-.\" Lesser General Public License for more details.
+.\" Эта программа распространяется в надежде, что она будет полезной,
+.\" но БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ; даже без подразумеваемой гарантии
+.\" КОММЕРЧЕСКОЙ ЦЕННОСТИ или ПРИГОДНОСТИ ДЛЯ КОНКРЕТНОЙ ЦЕЛИ. См. GNU
+.\" Lesser General Public License для более детальной информации.
 .\"
-.\" You should have received a copy of the GNU Lesser General Public
-.\" License along with this program; if not, write to
-.\"	Free Software Foundation, Inc.
-.\"	51 Franklin St., Fifth Floor
-.\"	Boston, MA 02110, USA.
+.\" Вы должны были получить копию GNU Lesser General Public License
+.\" вместе с этой программой; если нет, напишите в
+.\" Фонд свободного программного обеспечения, Inc.
+.\" Улица Франклина, 51, пятый этаж
+.\" Бостон, Массачусетс, 02110, США.
 .\"
-.\" definitions for renaming
+.\" определения для переименования
 .ds p dialog
 .ds l dialog
 .ds L Dialog
@@ -38,7 +38,7 @@
 .ft R
 .RE
 ..
-.\" Bulleted paragraph
+.\" Нумерованный абзац
 .de bP
 .ie n  .IP \(bu 4
 .el    .IP \(bu 2
@@ -49,9 +49,9 @@
 .el       .ds '' ''
 .
 .TH \*D 1 "" "$Date: 2021/01/17 17:25:01 $"
-.SH NAME
-dialog \- display dialog boxes from shell scripts
-.SH SYNOPSIS
+.SH НАЗВАНИЕ
+dialog - отображение диалоговых окон из сценариев оболочки
+.SH СИНТАКСИС
 \fB\*p \-\-clear\fP
 .br
 .BI "\*p \-\-create\-rc " file
@@ -61,12 +61,12 @@ dialog \- display dialog boxes from shell scripts
 \fB\*p\fP
 \fIcommon-options\fP
 \fIbox-options\fP
-.SH DESCRIPTION
+.SH ОПИСАНИЕ
 \fB\*L\fP
-is a program that will let you present a variety of questions or
-display messages using dialog boxes from a shell script.
-These types of dialog boxes are implemented
-(though not all are necessarily compiled into \fB\*p\fR):
+это программа, которая позволяет вам представлять различные вопросы или
+отображать сообщения с помощью диалоговых окон из сценария оболочки.
+Такие типы диалоговых окон реализованы
+(хотя не все обязательно скомпилированы в \fB\*p\fR):
 .RS
 .LP
 .nh
@@ -85,7 +85,7 @@ These types of dialog boxes are implemented
 .BR menu ", "
 .BR mixedform ", "
 .BR mixedgauge ", "
-.BR msgbox " (message), "
+.BR msgbox " (сообщение), "
 .BR passwordbox ", "
 .BR passwordform ", "
 .BR pause ", "
@@ -98,119 +98,119 @@ These types of dialog boxes are implemented
 .BR tailboxbg ", "
 .BR textbox ", "
 .BR timebox ", "
-.BR treeview ", and "
-.BR yesno " (yes/no)."
+.BR treeview ", и "
+.BR yesno " (да/нет)."
 .ad
 .RE
 .PP
-You can put more than one dialog box into a script:
+Вы можете поместить более одного диалогового окна в сценарий:
 .bP
-Use the "\fB\-\-and\-widget\fP" token to force \fB\*p\fP to proceed to the next
-dialog unless you have pressed ESC to cancel, or
+Используйте токен "\fB\-\-and\-widget\fP" чтобы заставить \fB\*p\fP перейти к следующему
+диалогу, если вы не нажали ESC для отмены, или
 .bP
-Simply add the tokens for the next dialog box, making a chain.
-\*L stops chaining when the return code from a dialog is nonzero,
-e.g., Cancel or No (see DIAGNOSTICS).
+Просто добавьте токены для следующего диалогового окна, создавая цепочку.
+\*L прекращает цепочку, когда возвращаемый код из диалога отличен от нуля,
+например, Отмена или Нет (см. ДИАГНОСТИКУ).
 .PP
-Some widgets, e.g., checklist, will write text to \fB\*p\fP's output.
-Normally that is the standard error, but there are options for
-changing this:
+Некоторые виджеты, например, checklist, будут писать текст в вывод \fB\*p\fP.
+Обычно это стандартная ошибка, но есть параметры для
+изменения этого:
 \*(``\fB\-\-output\-fd\fP\*('',
-\*(``\fB\-\-stderr\fP\*('' and
+\*(``\fB\-\-stderr\fP\*('' и
 \*(``\fB\-\-stdout\fP\*(''.
-No text is written if the Cancel button (or ESC) is pressed;
-\fB\*p\fP exits immediately in that case.
+Текст не пишется, если нажата кнопка Отмена (или ESC);
+\fB\*p\fP немедленно выходит в этом случае.
 .
 .\" ************************************************************************
-.SH OPTIONS
-All options begin with \*(``\fB--\fP\*(''
-(two ASCII hyphens,
-for the benefit of those using systems with deranged locale support).
+.Sh ПАРАМЕТРЫ
+Все параметры начинаются с \*(``\fB--\fP\*(''
+(две ASCII тире,
+для тех, кто использует системы с неправильной поддержкой локалей).
 .PP
-A \*(``\fB--\fP\*('' by itself is used as an escape,
-i.e., the next token on the command-line is not treated as an option.
+Опция \*(``\fB--\fP\*('' сама по себе используется как escape,
+то есть следующий токен в командной строке не обрабатывается как опция.
 .RS
 .B \*p --title -- --Not an option
 .RE
 .PP
-When a common (e.g., non-widget) option is repeated,
-the last found is the one that is used.
-Boolean options are handled specially so they can be cancelled,
-by adding (or omitting) a \*(``no\*('' modifier
-after the leading \*(``\fB--\fP\*(''.
-For instance, \fB\-\-no-shadow\fP is documented here,
-but \fB\-\-shadow\fP also is accepted.
+Когда обычная (например, не виджет) опция повторяется,
+используется последняя найденная.
+параметры типа boolean обрабатываются особо, так что их можно отменить,
+добавив (или убрав) модификатор \*(``no\*(''
+после ведущего \*(``\fB--\fP\*(''.
+Например, \fB\-\-no-shadow\fP здесь описан,
+но \fB\-\-shadow\fP также принимается.
 .PP
-The \*(``\fB\-\-args\fP\*('' option tells \fB\*p\fP to list the command-line
-parameters to the standard error.
-This is useful when debugging complex scripts using
-the \*(``\fB--\fP\*('' and \*(``\fB\-\-file\fP\*('',
-since the command-line may be rewritten as these are expanded.
+Опция \*(``\fB\-\-args\fP\*('' говорит \fB\*p\fP выводить параметры командной строки
+на стандартную ошибку.
+Это полезно при отладке сложных сценариев с использованием
+\*(``\fB--\fP\*('' и \*(``\fB\-\-file\fP\*('',
+поскольку командная строка может быть переписана при их расширении.
 .PP
-The \*(``\fB\-\-file\fP\*('' option tells \fB\*p\fP to read parameters from
-the file named as its value.
+Опция \*(``\fB\-\-file\fP\*('' говорит \fB\*p\fP читать параметры из
+файла, указанного в её значении.
 .RS
 .B \*p --file \fIparameterfile
 .RE
 .PP
-Blanks not within double-quotes are discarded
-(use backslashes to quote single characters).
-The result is inserted into the command-line,
-replacing \*(``\fB\-\-file\fP\*('' and its option value.
-Interpretation of the command-line resumes from that point.
-If \fIparameterfile\fP begins with \*(``&\*('', \fB\*p\fP
-interprets the following text as a file descriptor number
-rather than a filename.
+Пробелы вне двойных кавычек игнорируются
+(используйте обратные слэши для цитирования отдельных символов).
+Результат вставляется в командную строку,
+заменяя \*(``\fB\-\-file\fP\*('' и его значение параметры.
+Интерпретация командной строки возобновляется с этого момента.
+Если \fIparameterfile\fP начинается с \*(``&\*('', \fB\*p\fP
+интерпретирует следующий текст как номер файлового дескриптора
+вместо имени файла.
 .PP
-Most widgets accept \fIheight\fP and \fIwidth\fP parameters,
-which can be used to automatically size the widget to accommodate
-multi-line message \fIprompt\fP values:
+Большинство виджетов принимают параметры \fIheight\fP и \fIwidth\fP,
+которые можно использовать для автоматической настройки размера виджета для размещения
+многострочного сообщения \fIprompt\fP:
 .bP
-If the parameter is negative,
-\fB\*l\fP uses the screen's size.
+Если параметр отрицательный,
+\fB\*l\fP использует размер экрана.
 .bP
-If the parameter is zero,
-\fB\*l\fP uses minimum size for the widget to display the \fIprompt\fP
-and data.
+Если параметр нулевой,
+\fB\*l\fP использует минимальный размер для отображения \fIprompt\fP
+и данных.
 .bP
-Otherwise, \fB\*l\fP uses the given size for the widget.
+В противном случае, \fB\*l\fP использует заданный размер для виджета.
 .
-.SS \fBCommon Options\fP
-Most of the common options are reset before processing each widget.
+.SS \fBОбщие параметры\fP
+Большинство общих опций сбрасываются перед обработкой каждого виджета.
 .
 .IP "\fB--ascii-lines
-Rather than draw graphics lines around boxes,
-draw ASCII \*(``+\*('' and \*(``-\*('' in the same place.
-See also \*(``\fB\-\-no\-lines\fR\*(''.
+Вместо отрисовки графических линий вокруг коробок,
+рисует ASCII \*(``+\*('' и \*(``-\*('' на том же месте.
+см. также \*(``\fB\-\-no\-lines\fR\*(''.
 .
 .IP "\fB--aspect \fIratio"
-This gives you some control over the box dimensions when using auto
-sizing (specifying 0 for height and width).
-It represents width / height.
-The default is 9, which means 9 characters wide to every 1 line high.
+Это дает вам некоторый контроль над размерами коробки при использовании автоматической настройки
+размеров (указание 0 для высоты и ширины).
+Оно представляет ширину / высоту.
+По умолчанию это 9, что означает 9 символов в ширину на каждую строку в высоту.
 .
 .IP "\fB--backtitle \fIbacktitle"
-Specifies a
+Указывает строку
 \fIbacktitle\fP
-string to be displayed on the backdrop, at the top of the screen.
+для отображения на фоне, в верхней части экрана.
 .
 .IP "\fB--begin \fIy x"
-Specify the position of the upper left corner of a dialog box on the screen.
+Укажите позицию верхнего левого угла диалогового окна на экране.
 .
 .IP "\fB--cancel-label \fIstring"
-Override the label used for \*(``Cancel\*('' buttons.
+Заменяет метку, используемую для кнопок \*(``Отмена\*(''.
 .
 .IP "\fB--clear"
-Clears the widget screen, keeping only the screen_color background.
-Use this when you combine widgets
-with \*(``\fB\-\-and\-widget\fR\*('' to erase the
-contents of a previous widget on the screen, so it won't be seen
-under the contents of a following widget.
-Understand this as the complement of \*(``\fB\-\-keep\-window\fR\*(''.
-To compare the effects, use these:
+Очищает экран виджета, оставляя только фоновый цвет экрана.
+Используйте это, когда вы комбинируете виджеты
+с \*(``\fB\-\-and\-widget\fR\*('' для стирания
+содержимого предыдущего виджета на экране, чтобы оно не было видно
+под содержимым следующего виджета.
+Понимайте это как дополнение к \*(``\fB\-\-keep\-window\fR\*(''.
+Для сравнения эффектов, используйте эти:
 .
 .ES
-All three widgets visible, staircase effect, ordered 1,2,3:
+Все три виджета видны, эффект лестницы, упорядоченные 1,2,3:
 .Ex
 \*p \e
                                --begin 2 2 --yesno "" 0 0 \e
@@ -219,7 +219,7 @@ All three widgets visible, staircase effect, ordered 1,2,3:
 .Ee
 .
 .ES
-Only the last widget is left visible:
+Остается видимым только последний виджет:
 .Ex
 \*p \e
                  --clear       --begin 2 2 --yesno "" 0 0 \e
@@ -228,7 +228,7 @@ Only the last widget is left visible:
 .Ee
 .
 .ES
-All three widgets visible, staircase effect, ordered 3,2,1:
+Все три виджета видны, эффект лестницы, упорядоченные 3,2,1:
 .Ex
 \*p \e
                  --keep-window --begin 2 2 --yesno "" 0 0 \e
@@ -237,7 +237,7 @@ All three widgets visible, staircase effect, ordered 3,2,1:
 .Ee
 .
 .ES
-First and third widget visible, staircase effect, ordered 3,1:
+Видны первый и третий виджет, эффект лестницы, упорядоченные 3,1:
 .Ex
 \*p \e
                  --keep-window --begin 2 2 --yesno "" 0 0 \e
@@ -245,1214 +245,1184 @@ First and third widget visible, staircase effect, ordered 3,1:
     --and-widget               --begin 6 6 --yesno "" 0 0
 .Ee
 .IP
-Note, if you want to restore original console colors and send your
-cursor home after the dialog program has exited, use the \fBclear\fR\ (1)
-command.
-Conversely, if you want to clear the screen and send your cursor to
-the lower left after the \fB\*p\fP program has exited, use the
-\fB\-\-erase\-on\-exit\fR\ option.
+Обратите внимание, если вы хотите восстановить оригинальные цвета консоли и отправить ваш
+курсор домой после выхода из программы диалога, используйте команду \fBclear\fR\ (1)
+Напротив, если вы хотите очистить экран и отправить ваш курсор в нижний левый угол после выхода из
+программы \fB\*p\fP, используйте
+\fB\-\-erase\-on\-exit\fR\ опцию.
 .
 .IP "\fB--colors"
-Interpret embedded \*(``\eZ\*('' sequences in the dialog text
-by the following character,
-which tells \fB\*p\fP to set colors or video attributes:
+Интерпретирует встроенные последовательности \*(``\eZ\*('' в тексте диалога
+по следующему символу,
+который говорит \fB\*p\fP установить цвета или видеоатрибуты:
 .RS
 .bP
-0 through 7 are the ANSI color numbers used in curses:
-black,
-red,
-green,
-yellow,
-blue,
-magenta,
-cyan and
-white respectively.
+0 до 7 - это номера цветов ANSI, используемые в curses:
+черный,
+красный,
+зеленый,
+желтый,
+синий,
+пурпурный,
+голубой и
+белый соответственно.
 .bP
-Bold is set by 'b', reset by 'B'.
+Жирный задается 'b', сбрасывается 'B'.
 .bP
-Reverse is set by 'r', reset by 'R'.
+Реверс задается 'r', сбрасывается 'R'.
 .bP
-Underline is set by 'u', reset by 'U'.
+Подчеркивание задается 'u', сбрасывается 'U'.
 .bP
-The settings are cumulative, e.g., \*(``\eZb\eZ1\*('' makes the following text
-bold (perhaps bright) red.
+Настройки накапливаются, например, \*(``\eZb\eZ1\*('' делает следующий текст
+жирным (возможно ярким) красным.
 .bP
-Restore normal settings with \*(``\eZn\*(''.
+Восстановите обычные настройки с \*(``\eZn\*(''.
 .RE
 .
 .IP "\fB--column-separator \fIstring"
-Tell \fB\*p\fP to split data for radio/checkboxes and menus on the
-occurrences of the given string, and to align the split data into columns.
+Говорит \fB\*p\fP разделить данные для радио/флажков и меню на
+вхождения данной строки и выровнять разделенные данные в столбцы.
 .
 .IP "\fB--cr-wrap"
-Interpret embedded newlines in the dialog text as a newline on the screen.
-Otherwise, \fB\*p\fR will only wrap lines
-where needed to fit inside the text box.
+Интерпретирует встроенные переводы строки в тексте диалога как перевод строки на экране.
+В противном случае, \fB\*p\fR будет только переносить строки
+где это необходимо, чтобы они поместились внутри текстового поля.
 .IP
-Even though you can control line breaks with this,
-\fB\*L\fR will still wrap any lines that are too long for the width of the box.
-Without cr-wrap, the layout of your text may be formatted to look nice
-in the source code of your script without affecting the way it will
-look in the dialog.
+Хотя вы можете контролировать переносы строк с помощью этого,
+\fB\*L\fR все равно будет переносить любые строки, которые слишком длинные для ширины коробки.
+Без cr-wrap расположение вашего текста может быть отформатировано так, чтобы выглядеть красиво
+в исходном коде вашего сценария, не влияя на то, как он будет
+выглядеть в диалоге.
 .IP
-The \fIcr\-wrap\fP feature is implemented subject to these conditions:
+Функция \fIcr\-wrap\fP реализована с учетом этих условий:
 .RS
 .bP
-the string contains \*(``\en\*('' and the \fB\-\-no\-nl\-expand\fP option is
-not used, or
+строка содержит \*(``\en\*('' и опция \fB\-\-no\-nl\-expand\fP не
+используется, или
 .bP
-the \fB\-\-trim\fP option is used.
+опция \fB\-\-trim\fP используется.
 .RE
 .IP
-For more information, see \fBWhitespace Options\fP.
+Для более подробной информации см. \fBпараметры пробелов\fP.
 .
 .IP "\fB--create-rc \fIfile"
-When
+Когда
 \fB\*p\fP
-supports run-time configuration,
-this can be used to dump a sample configuration file to the file specified
-by
-.IR file "."
+поддерживает конфигурацию в реальном времени,
+это может быть использовано для создания образца файла конфигурации в указанном
+файле
+.IR файл "."
 .
 .IP "\fB--cursor-off-label"
-Place the terminal cursor at the end of a button instead of on the
-first character of the button label.
-This is useful to reduce visual confusion when the cursor coloration
-interacts poorly with the button-label text colors.
+Размещает курсор терминала в конце кнопки вместо
+первого символа метки кнопки.
+Это полезно для уменьшения визуальной путаницы, когда цвета курсора
+плохо взаимодействуют с цветами текста метки кнопки.
 .
 .IP "\fB--date-format \fIformat"
-If the host provides \fBstrftime\fP,
-this option allows you to specify the format of the date printed for
-the \fB\-\-calendar\fP widget.
-The time of day (hour, minute, second) are the current local time.
+Если хост предоставляет \fBstrftime\fP,
+эта опция позволяет вам указать формат даты, печатаемой для
+виджета \fB\-\-calendar\fP.
+Время суток (час, минута, секунда) - это текущее местное время.
 .
 .IP "\fB--defaultno"
-Make the default value of the
+Устанавливает значение по умолчанию для
 \fByes/no\fP
-box a
+окна в
 .BR No .
-Likewise, treat the default button of widgets that provide
-\*(``OK\*('' and \*(``Cancel\*(''
-as a \fICancel\fP.
-If \*(``\fB\-\-no\-cancel\fP\*('' or \*(``\fB\-\-visit\-items\fP\*('' are given
-those options overrides this,
-making the default button always \*(``Yes\*(''
-(internally the same as \*(``OK\*('').
+Точно так же, обрабатывает кнопку по умолчанию виджетов, которые предоставляют
+\*(``OK\*('' и \*(``Отмена\*(''
+как \fICancel\fP.
+Если даны \*(``\fB\-\-no\-cancel\fP\*('' или \*(``\fB\-\-visit\-items\fP\*(''
+эти параметры переопределяют это,
+делая кнопку по умолчанию всегда \*(``Да\*(''
+(внутренне то же самое, что \*(``OK\*('').
 .
 .IP "\fB--default-button \fIstring"
-Set the default (preselected) button in a widget.
-By preselecting a button,
-a script makes it possible for the user to simply press \fIEnter\fP
-to proceed through a dialog with minimum interaction.
+Устанавливает кнопку по умолчанию (предвыбранную) в виджете.
+Предвыбор кнопки,
+сценарий делает возможным для пользователя просто нажать \fIEnter\fP
+для продолжения диалога с минимальным взаимодействием.
 .IP
-The option's value is the name of the button:
+Значение параметры - это имя кнопки:
 .IR ok ,
 .IR yes ,
 .IR cancel ,
 .IR no ,
-.IR help "\ or"
+.IR help "\ или"
 .IR extra .
 .IP
-Normally the first button in each widget is the default.
-The first button shown is determined by the widget
-together with the \*(``\fB\-\-no\-ok\fP\*(''
-and \*(``\fB\-\-no\-cancel\fP\*('' options.
-If this option is not given, there is no default button assigned.
+Обычно первая кнопка в каждом виджете является кнопкой по умолчанию.
+Первая показанная кнопка определяется виджетом
+совместно с опциями \*(``\fB\-\-no\-ok\fP\*(''
+и \*(``\fB\-\-no\-cancel\fP\*(''.
+Если эта опция не дана, кнопка по умолчанию не назначается.
 .
 .IP "\fB--default-item \fIstring"
-Set the default item in a checklist, form or menu box.
-Normally the first item in the box is the default.
+Устанавливает элемент по умолчанию в чеклисте, форме или меню.
+Обычно первый элемент в окне является элементом по умолчанию.
 .
 .IP "\fB--erase-on-exit"
-When \fB\*p\fP exits, remove the dialog widget, erasing the entire
-screen to its native background color, and place the terminal cursor
-at the lower left corner.
+Когда \fB\*p\fP выходит, удаляет виджет диалога, стирая весь
+экран до его натурального фонового цвета и помещая курсор терминала
+в нижний левый угол.
 .
 .IP "\fB--exit-label \fIstring"
-Override the label used for \*(``EXIT\*('' buttons.
+Заменяет метку, используемую для кнопок \*(``ВЫХОД\*(''.
 .
 .IP "\fB--extra-button"
-Show an extra button, between \*(``OK\*('' and \*(``Cancel\*('' buttons.
+Показывает дополнительную кнопку, между кнопками \*(``OK\*('' и \*(``Отмена\*(''.
 .
 .IP "\fB--extra-label \fIstring"
-Override the label used for \*(``Extra\*('' buttons.
-Note: for inputmenu widgets, this defaults to \*(``Rename\*(''.
+Заменяет метку, используемую для кнопок \*(``Дополнительно\*(''.
+Примечание: для виджетов inputmenu это по умолчанию \*(``Переименовать\*(''.
 .
 .IP "\fB--help"
-Prints the help message to the standard output and exits.
-The help message is also printed if no options are given,
-or if an unrecognized option is given.
+Печатает справочное сообщение в стандартный вывод и выходит.
+Справочное сообщение также печатается, если не даны параметры,
+или если дана нераспознанная опция.
 .
 .IP "\fB--help-button"
-Show a help-button after \*(``OK\*('' and \*(``Cancel\*('' buttons
-in boxes which have a list of tagged items
-(i.e., checklist, radiolist, menu, and treeview boxes).
+Показывает кнопку справки после кнопок \*(``OK\*('' и \*(``Отмена\*(''
+в коробках, которые имеют список меченных элементов
+(т.е., checklist, radiolist, menu и treeview коробки).
 .IP
-On exit, the return status indicates that the Help button was pressed.
-\fB\*L\fP also writes a message to its output
-after the token \*(``HELP\*('':
+При выходе статус возврата указывает, что кнопка Справки была нажата.
+\fB\*L\fP также пишет сообщение в свой вывод
+после токена \*(``HELP\*('':
 .RS
 .bP
-If "\fB\-\-item\-help\fR" is also given, the item-help text is written.
+Если дана также "\fB\-\-item\-help\fR", печатается текст справки по элементу.
 .bP
-Otherwise, the item's tag (the first field) is written.
+В противном случае пишется тег элемента (первое поле).
 .RE
 .IP
-.IP
-You can use the \fB\-\-help\-tags\fP option and/or set the DIALOG_ITEM_HELP
-environment variable to modify these messages and exit-status.
-.IP
-This option can be applied to other widgets,
-which have an \*(``OK\*('' button,
-whether or not the \*(``Cancel\*('' button is used.
-The return status and output are not treated specially for the other widgets;
-the help-button is just an extra button.
+Эта опция может быть применена к другим виджетам,
+которые имеют кнопку \*(``OK\*('',
+независимо от того, используется ли кнопка \*(``Отмена\*(''.
+Статус возврата и вывод не обрабатываются специально для других виджетов;
+кнопка справки - это просто дополнительная кнопка.
 .
 .IP "\fB--help-label \fIstring"
-Override the label used for \*(``Help\*('' buttons.
+Заменяет метку, используемую для кнопок \*(``Справка\*(''.
 .
 .IP "\fB--help-status"
-If the help-button is selected,
-writes the checklist, radiolist or form information
-after the item-help \*(``HELP\*('' information.
-This can be used to reconstruct the state of a checklist after processing
-the help request.
+Если выбрана кнопка справки,
+пишет информацию checklist, radiolist или формы
+после информации справки по элементу \*(``HELP\*(''.
+Это может быть использовано для восстановления состояния checklist после обработки
+запроса справки.
 .
 .IP "\fB--help-tags"
-Modify the messages written on exit for \fB\-\-help\-button\fP
-by making them always just the item's tag.
-This does not affect the exit status code.
+Модифицирует сообщения, написанные при выходе для \fB\-\-help\-button\fP,
+делая их всегда просто тегом элемента.
+Это не влияет на код статуса выхода.
 .
 .IP "\fB--hfile \fIfilename"
-Display the given file using a textbox when the user presses F1.
+Отображает данный файл с помощью текстбокса, когда пользователь нажимает F1.
 .
 .IP "\fB--hline \fIstring"
-Display the given string centered at the bottom of the widget.
+Отображает данную строку, центрированную в нижней части виджета.
 .
 .IP "\fB--ignore"
-Ignore options that \fB\*p\fP does not recognize.
-Some well-known ones such as \*(``\fB\-\-icon\fP\*('' are ignored anyway,
-but this is a better choice for compatibility with other implementations.
+Игнорирует параметры, которые \fB\*p\fP не распознает.
+Некоторые хорошо известные, такие как \*(``\fB\-\-icon\fP\*('', игнорируются в любом случае,
+но это лучший выбор для совместимости с другими реализациями.
 .
 .IP "\fB--input-fd \fIfd"
-Read keyboard input from the given file descriptor.
-Most \fB\*p\fR scripts read from the standard input,
-but the gauge widget reads a pipe (which is always standard input).
-Some configurations do not work properly when
-\fB\*p\fP tries to reopen the terminal.
-Use this option (with appropriate juggling of file-descriptors)
-if your script must work in that type of environment.
+Читает ввод с клавиатуры из данного файлового дескриптора.
+Большинство сценариев \fB\*p\fR читают из стандартного ввода,
+но виджет gauge читает из трубы (которая всегда является стандартным вводом).
+Некоторые конфигурации не работают должным образом, когда
+\fB\*p\fP пытается переоткрыть терминал.
+Используйте эту опцию (с соответствующей перестановкой файловых дескрипторов)
+если ваш сценарий должен работать в таком типе окружения.
 .
 .IP "\fB--insecure"
-Makes the password widget friendlier but less secure,
-by echoing asterisks for each character.
+Делает виджет пароля дружелюбнее, но менее безопасным,
+отображая звездочки за каждый символ.
 .
 .IP "\fB--iso-week"
-Set the starting point for the week-number
-shown in the \*(``\fB\-\-calendar\fP\*('' option
-according to ISO-8601, which starts numbering
-with the first week which includes a Thursday in January.
+Устанавливает точку начала нумерации недели
+показанной в параметры \*(``\fB\-\-calendar\fP\*('')
+согласно ISO-8601, которая начинает нумерацию
+с первой недели, которая включает в себя четверг в январе.
 .
 .IP "\fB--item-help"
-Interpret the tags data for checklist, radiolist and menu boxes
-adding a column which is displayed in the bottom line of the
-screen, for the currently selected item.
+Интерпретирует данные тегов для checklist, radiolist и меню
+добавляя столбец, который отображается в нижней строке
+экрана для текущего выбранного элемента.
 .
 .IP "\fB--keep-tite"
-When built with \fBncurses\fP,
-\fB\*p\fP normally checks to see if it is running in an \fBxterm\fP,
-and in that case tries to suppress the initialization strings that
-would make it switch to the alternate screen.
-Switching between the normal and alternate screens
-is visually distracting in a script which runs \fB\*p\fP
-several times.
-Use this option to allow \fB\*p\fP to use those initialization strings.
+Когда собрана с \fBncurses\fP,
+\fB\*p\fP обычно проверяет, работает ли она в \fBxterm\fP,
+и в этом случае пытается подавить инициализирующие строки, которые
+заставили бы ее переключиться на альтернативный экран.
+Переключение между нормальным и альтернативным экранами
+визуально отвлекает в сценарии, который запускает \fB\*p\fP
+несколько раз.
+Используйте эту опцию, чтобы разрешить \fB\*p\fP использовать эти инициализирующие строки.
 .
 .IP "\fB--keep-window"
-Normally when \fB\*p\fR performs several \fBtailboxbg\fR widgets
-connected by \*(``\fB\-\-and\-widget\fR\*('',
-it clears the old widget from the screen by painting over it.
-Use this option to suppress that repainting.
+Обычно, когда \fB\*p\fR выполняет несколько виджетов \fBtailboxbg\fR,
+соединенных с помощью \*(``\fB\-\-and\-widget\fR\*('',
+она очищает старый виджет с экрана, закрашивая его.
+Используйте эту опцию, чтобы подавить эту перекраску.
 .IP
-At exit, \fB\*p\fR repaints all of the widgets which have been
-marked with \*(``\fB\-\-keep\-window\fR\*('',
-even if they are not \fBtailboxbg\fR widgets.
-That causes them to be repainted in reverse order.
-See the discussion of the \*(``\fB\-\-clear\fR\*('' option for examples.
+При выходе \fB\*p\fR перекрашивает все виджеты, которые были
+отмечены с помощью \*(``\fB\-\-keep\-window\fR\*('',
+даже если это не виджеты \fBtailboxbg\fR.
+Это заставляет их перерисовываться в обратном порядке.
+Смотрите обсуждение параметры \*(``\fB\-\-clear\fR\*('' для примеров.
 .
 .IP "\fB--last-key"
-At exit, report the last key which the user entered.
-This is the curses key code rather than a symbol or literal character,
-and is only reported for keys which are bound to an action.
-It can be used by scripts to distinguish between two keys which are
-bound to the same action.
+При выходе сообщает последнюю клавишу, которую ввел пользователь.
+Это код клавиши curses, а не символ или буквальный символ,
+и сообщается только для клавиш, которые привязаны к действию.
+Это может быть использовано скриптами для различения двух клавиш, которые
+привязаны к одному и тому же действию.
 .
 .IP "\fB--max-input \fIsize"
-Limit input strings to the given size.
-If not specified, the limit is 2048.
+Ограничивает вводимые строки данной величиной.
+Если не указано, лимит составляет 2048.
 .
 .IP "\fB--no-cancel"
-Suppress the \*(``Cancel\*('' button in checklist, inputbox and menu box modes.
-A script can still test if the user pressed the ESC key to cancel to quit.
+Подавляет кнопку \*(``Отмена\*('' в режимах checklist, inputbox и menu box.
+Сценарий все равно может проверить, нажал ли пользователь клавишу ESC для отмены выхода.
 .
 .IP "\fB--no-collapse"
-Normally \fB\*p\fR converts tabs to spaces and reduces multiple
-spaces to a single space for text which is displayed in a message boxes, etc.
-Use this option to disable that feature.
-Note that \fB\*p\fR will still wrap text,
-subject to the \*(``\fB\-\-cr\-wrap\fR\*(''
-and \*(``\fB\-\-trim\fR\*('' options.
+Обычно \fB\*p\fR преобразует табуляции в пробелы и сокращает несколько
+пробелов до одного пробела для текста, который отображается в сообщениях и т. д.
+Используйте эту опцию, чтобы отключить эту функцию.
+Обратите внимание, что \fB\*p\fR все равно будет переносить текст,
+с учетом опций \*(``\fB\-\-cr\-wrap\fR\*('')
+и \*(``\fB\-\-trim\fR\*(''.
 .IP
-The \fIno\-collapse\fP feature is implemented subject to these conditions:
+Функция \fIno\-collapse\fP реализована с учетом этих условий:
 .RS
 .bP
-the string contains \*(``\en\*('' and the \fB\-\-no\-nl\-expand\fP option is
-not used, or
+строка содержит \*(``\en\*('' и опция \fB\-\-no\-nl\-expand\fP не
+используется, или
 .bP
-the \fB\-\-trim\fP option is not used.
+опция \fB\-\-trim\fP не используется.
 .RE
 .IP
-For more information, see \fBWhitespace Options\fP.
+Для более подробной информации см. \fBпараметры пробелов\fP.
 .
+
+
 .IP "\fB\-\-no\-hot\-list"
-Tells
+Сообщает
 \fB\*p\fP
-to suppress the hotkey feature for lists, e.g., the checkbox, menus.
+о необходимости отключения функции горячих клавиш для списков, например, для флажков, меню.
 .IP
-Normally, the first uppercase character of a list entry will be highlighted,
-and typing that character will move the focus to that entry.
-This option suppresses both the highlighting and the movement.
+Обычно первая заглавная буква в элементе списка выделяется,
+и нажатие этой буквы перемещает фокус на данный элемент.
+Эта опция отключает как выделение, так и перемещение.
 .IP
-Hotkeys for buttons (\*(``OK\*('' , \*(``Cancel\*('', etc.) are unaffected.
+Горячие клавиши для кнопок (\*(``OK\*('' , \*(``Cancel\*('', и т.д.) не затрагиваются.
 .
 .IP "\fB--no-items"
-Some widgets (checklist, inputmenu, radiolist, menu) display a list
-with two columns (a \*(``tag\*('' and \*(``item\*('',
-i.e., \*(``description\*('').
-This option tells \fB\*p\fP to read shorter rows,
-omitting the \*(``item\*('' part of the list.
-This is occasionally useful, e.g., if the tags provide enough information.
+Некоторые виджеты (список с флажками, ввод с меню, радиосписок, меню) отображают список
+с двумя колонками (\*(``тег\*('' и \*(``элемент\*('',
+т.е. \*(``описание\*('').
+Эта опция позволяет \fB\*p\fP читать более короткие строки,
+пропуская часть списка \*(``элемент\*(''.
+Это иногда полезно, например, если теги предоставляют достаточно информации.
 .IP
-See also \fB\-\-no\-tags\fP.
-If both options are given, this one is ignored.
+см. также \fB\-\-no\-tags\fP.
+Если обе параметры указаны, эта игнорируется.
 .
 .IP "\fB--no-kill"
-Tells
+Сообщает
 \fB\*p\fP
-to put the
+что
 \fBtailboxbg\fP
-box in the background,
-printing its process id to \fB\*p\fP's output.
-SIGHUP is disabled for the background process.
+окно будет работать в фоновом режиме,
+выводя его идентификатор процесса в выходные данные \fB\*p\fP.
+SIGHUP отключен для фонового процесса.
 .
 .IP "\fB--no-label \fIstring"
-Override the label used for \*(``No\*('' buttons.
+Заменяет метку, используемую для кнопок \*(``No\*(''.
 .
 .IP "\fB--no-lines
-Rather than draw lines around boxes, draw spaces in the same place.
-See also \*(``\fB\-\-ascii\-lines\fR\*(''.
+Вместо рисования линий вокруг окон рисует пробелы на их месте.
+см. также \*(``\fB\-\-ascii\-lines\fR\*(''.
 .
 .IP "\fB--no-mouse
-Do not enable the mouse.
+Не включать поддержку мыши.
 .
 .IP "\fB--no-nl-expand
-Do not convert \*(``\en\*('' substrings of the message/prompt text into
-literal newlines.
+Не преобразовывать подстроки \*(``\en\*('' в тексте сообщения/приглашения в
+буквальные переводы строк.
 .IP
-The \fIno\-nl\-expand\fP feature is used only if
-the string contains \*(``\en\*('' so that there is something to convert.
+Опция \fIno\-nl\-expand\fP используется только если
+в строке есть \*(``\en\*('', так что есть что преобразовывать.
 .IP
-For more information, see \fBWhitespace Options\fP.
+Для получения дополнительной информации смотрите \fBWhitespace Options\fP.
 .
 .IP "\fB--no-ok"
-Suppress the \*(``OK\*('' button, so that it is not displayed.
-A script can still test if the user pressed
-the \*(``Enter\*('' key to accept the data:
+Скрывает кнопку \*(``OK\*('', так что она не отображается.
+Скрипт все еще может проверить, нажал ли пользователь
+клавишу \*(``Enter\*('' для подтверждения данных:
 .RS
 .bP
-The \*(``Enter\*('' key is always handled as the \*(``OK\*('' button
-when the \fB\-\-no\-ok\fP option is used.
-That is, by default it is bound to the \fILEAVE\fP virtual key.
+Клавиша \*(``Enter\*('' всегда обрабатывается как кнопка \*(``OK\*(''
+при использовании параметры \fB\-\-no\-ok\fP.
+По умолчанию она связана с виртуальной клавишей \fILEAVE\fP.
 .IP
-When \fB\-\-no\-ok\fP is not used,
-you can use the the \fITab\fP key to move the cursor through the
-fields and buttons on the widget.
-In that case, the \*(``Enter\*('' key activates the current button
-if the cursor is positioned on a button.
+Когда \fB\-\-no\-ok\fP не используется,
+можно использовать клавишу \fITab\fP для перемещения курсора по
+полям и кнопкам виджета.
+В этом случае клавиша \*(``Enter\*('' активирует текущую кнопку,
+если курсор находится на кнопке.
 .bP
-To provide for the case where you want to activate a button
-when using \fB\-\-no\-ok\fP,
-there is another virtual key \fILEAVE\fP,
-which activates the current button.
-By default, \fB^D\fP (EOF) is bound to that key.
+Чтобы предусмотреть случай, когда вы хотите активировать кнопку
+при использовании \fB\-\-no\-ok\fP,
+есть другая виртуальная клавиша \fILEAVE\fP,
+которая активирует текущую кнопку.
+По умолчанию \fB^D\fP (EOF) привязан к этой клавише.
 .RE
 .
 .IP "\fB--no-shadow"
-Suppress shadows that would be drawn to the right and bottom of each dialog box.
+Скрывает тени, которые были бы нарисованы справа и снизу каждого диалогового окна.
 .
 .IP "\fB--no-tags"
-Some widgets (checklist, inputmenu, radiolist, menu) display a list
-with two columns (a \*(``tag\*('' and \*(``description\*('').
-The tag is useful for scripting, but may not help the user.
-The \fB\-\-no\-tags\fP option (from Xdialog) may be used to suppress the
-column of tags from the display.
-Unlike the \fB\-\-no\-items\fP option,
-this does not affect the data which is read from the script.
+Некоторые виджеты (список с флажками, ввод с меню, радиосписок, меню) отображают список
+с двумя колонками (\*(``тег\*('' и \*(``описание\*('').
+Тег полезен для скриптов, но может не помоь пользователю.
+Опция \fB\-\-no\-tags\fP (из Xdialog) может быть использована для скрытия
+колонки тегов на экране.
+В отличие от параметры \fB\-\-no\-items\fP,
+она не влияет на данные, которые читаются из скрипта.
 .IP
-Xdialog does not display the tag column for the analogous buildlist
-and treeview widgets; \fB\*p\fP does the same.
+Xdialog не отображает колонку тегов для аналогичных виджетов buildlist
+и treeview; \fB\*p\fP делает то же самое.
 .IP
-Normally \fB\*p\fP allows you to quickly move to entries on the displayed list,
-by matching a single character to the first character of the tag.
-When the \fB\-\-no\-tags\fP option is given, \fB\*p\fP matches against
-the first character of the description.
-In either case, the matchable character is highlighted.
+Обычно \fB\*p\fP позволяет быстро перейти к записям на отображаемом списке,
+сопоставляя один символ с первым символом тега.
+Когда задана опция \fB\-\-no\-tags\fP, \fB\*p\fP сопоставляет против
+первого символа описания.
+В любом случае, сопоставляемый символ выделяется.
 .
 .IP "\fB--ok-label \fIstring"
-Override the label used for \*(``OK\*('' buttons.
+Заменяет метку, используемую для кнопок \*(``OK\*(''.
 .
 .IP "\fB--output-fd \fIfd"
-Direct output to the given file descriptor.
-Most \fB\*p\fR scripts write to the standard error,
-but error messages may also be written there, depending on your script.
+Перенаправляет вывод на указанный файловый дескриптор.
+Большинство скриптов \fB\*p\fR записывают в стандартную ошибку,
+но сообщения об ошибках также могут быть там записаны, в зависимости от вашего скрипта.
 .
 .IP "\fB--separator \fIstring"
 .IP "\fB--output-separator \fIstring"
-Specify a string that will separate the output on \fB\*p\fP's output from
-checklists, rather than a newline (for \fB\-\-separate\-output\fP) or a space.
-This applies to other widgets such as forms and editboxes which normally
-use a newline.
+Указывает строку, которая будет разделять вывод на выходе \fB\*p\fP от
+списков, скорее чем новая строка (для \fB\-\-separate\-output\fP) или пробел.
+Это относится к другим виджетам, таким как формы и редактирование текста, которые обычно
+используют новую строку.
 .
 .IP "\fB--print-maxsize"
-Print the maximum size of dialog boxes, i.e., the screen size,
-to \fB\*p\fP's output.
-This may be used alone, without other options.
+Печатает максимальный размер диалоговых окон, т.е. размер экрана,
+на выходе \fB\*p\fP.
+Эта опция может использоваться самостоятельно, без других опций.
 .
 .IP "\fB--print-size"
-Prints the size of each dialog box to \fB\*p\fP's output
-when the box is initialized.
+Печатает размер каждого диалогового окна на выходе \fB\*p\fP
+когда окно инициализируется.
 .
 .IP "\fB--print-text-only \fIstring [ height [ width ] ]"
-Prints the string as it would be wrapped in a message box
-to \fB\*p\fP's output.
+Печатает строку, как если бы она была обёрнута в окно сообщения
+на выходе \fB\*p\fP.
 .IP
-Because the optional \fIheight\fP and \fIwidth\fP default to zero,
-if they are omitted, \fB\*p\fP autosizes according to the screen dimensions.
+Поскольку необязательные параметры \fIheight\fP и \fIwidth\fP по умолчанию равны нулю,
+если они опущены, \fB\*p\fP автоматически подбирает размер в соответствии с размерами экрана.
 .
 .IP "\fB--print-text-size \fIstring [ height [ width ] ]"
-Prints the size of the string as it would be wrapped in a message box,
-to \fB\*p\fP's output,
-as
+Печатает размер строки, как если бы она была обёрнута в окно сообщения,
+на выходе \fB\*p\fP,
+как
 .Ex
 height width
 .Ee
 .IP
-Because the optional \fIheight\fP and \fIwidth\fP parameters default to zero,
-if they are omitted, \fB\*p\fP autosizes according to the screen dimensions.
+Поскольку необязательные параметры \fIheight\fP и \fIwidth\fP по умолчанию равны нулю,
+если они опущены, \fB\*p\fP автоматически подбирает размер в соответствии с размерами экрана.
 .
 .IP "\fB--print-version"
-Prints \fB\*p\fR's version to \fB\*p\fP's output.
-This may be used alone, without other options.
-It does not cause \fB\*l\fP to exit by itself.
+Печатает версию \fB\*p\fR на выходе \fB\*p\fP.
+Эта опция может использоваться самостоятельно, без других опций.
+Она не заставляет \fB\*l\fP завершить работу самостоятельно.
 .
 .IP "\fB--quoted"
-Normally \fB\*p\fP quotes the strings returned by checklist's
-as well as the item-help text.
-Use this option to quote all string results as needed
-(i.e., if the string contains whitespace or a single or double-quote character).
+Обычно \fB\*p\fP заключает в кавычки строки, возвращаемые списком с флажками
+и текстом помощи к элементам.
+Используйте эту опцию, чтобы заключать в кавычки все результаты строк по мере необходимости
+(т.е., если строка содержит пробелы или символы одинарной или двойной кавычки).
 .
 .IP "\fB--reorder"
-By default, the buildlist widget uses the same order for the output (right)
-list as for the input (left).
-Use this option to tell \fB\*p\fP to use the order
-in which a user adds selections to the output list.
+По умолчанию виджет buildlist использует тот же порядок для выходного (правого)
+списка, что и для входного (левого).
+Используйте эту опцию, чтобы сообщить \fB\*p\fP использовать порядок,
+в котором пользователь добавляет выборы в выходной список.
 .
 .IP "\fB--scrollbar"
-For widgets holding a scrollable set of data,
-draw a scrollbar on its right-margin.
-This does not respond to the mouse.
+Для виджетов, содержащих прокручиваемый набор данных,
+рисует полосу прокрутки на правом краю.
+Она не реагирует на мышь.
 .
 .IP "\fB--separate-output"
-For certain widgets (buildlist, checklist, treeview),
-output result one line at a time, with no quoting.
-This facilitates parsing by another program.
+Для некоторых виджетов (buildlist, список с флажками, treeview),
+выводит результат по одной строке за раз, без кавычек.
+Это облегчает разбор другой программой.
 .
 .IP "\fB--separate-widget \fIstring"
-Specify a string that will separate the output on \fB\*p\fP's output from
-each widget.
-This is used to simplify parsing the result of a dialog with several widgets.
-If this option is not given,
-the default separator string is a tab character.
+Указывает строку, которая будет разделять вывод на выходе \fB\*p\fP от
+каждого виджета.
+Это используется для упрощения разбора результата диалога с несколькими виджетами.
+Если эта опция не задана,
+строка-разделитель по умолчанию — символ табуляции.
 .
 .IP "\fB--single-quoted"
-Use single-quoting as needed (and no quotes if unneeded) for the
-output of checklist's as well as the item-help text.
+Использует одинарные кавычки по мере необходимости (и без кавычек, если это не нужно) для
+вывода списка с флажками, а также текста помощи к элементам.
 .IP
-If this option is not set, \fB\*p\fP may use double quotes around each item.
-In either case,
-\fB\*p\fP adds backslashes to make the output useful in shell scripts.
+Если эта опция не установлена, \fB\*p\fP может использовать двойные кавычки вокруг каждого элемента.
+В любом случае,
+\fB\*p\fP добавляет обратные косые черты, чтобы сделать вывод полезным в скриптах.
 .IP
-Single quotes would be needed if
-the string contains whitespace or a single or double-quote character.
+Одинарные кавычки необходимы, если
+строка содержит пробелы или символы одинарной или двойной кавычки.
 .
 .IP "\fB--size-err"
-Check the resulting size of a dialog box before trying to use it,
-printing the resulting size if it is larger than the screen.
-(This option is obsolete, since all new-window calls are checked).
+Проверяет результирующий размер диалогового окна перед его использованием,
+печатая результирующий размер, если он больше размера экрана.
+(Эта опция устарела, поскольку все вызовы нового окна проверяются).
 .
 .IP "\fB--sleep \fIsecs"
-Sleep (delay) for the given number of seconds after processing a dialog box.
+Задерживает (приостанавливает) на заданное количество секунд после обработки диалогового окна.
 .
 .IP "\fB--stderr"
-Direct output to the standard error.
-This is the default, since curses normally writes screen updates to
-the standard output.
+Перенаправляет вывод на стандартную ошибку.
+Это значение по умолчанию, поскольку библиотека curses обычно записывает обновления экрана в
+стандартный вывод.
 .
 .IP "\fB--stdout"
-Direct output to the standard output.
-This option is provided for compatibility with Xdialog,
-however using it in portable scripts is not recommended,
-since curses normally writes its screen updates to the standard output.
-If you use this option, \fB\*p\fR attempts to reopen the terminal
-so it can write to the display.
-Depending on the platform and your environment, that may fail.
+Перенаправляет вывод на стандартный вывод.
+Эта опция предоставляется для совместимости с Xdialog,
+однако использование её в переносимых скриптах не рекомендуется,
+поскольку curses обычно записывает свои обновления экрана в стандартный вывод.
+Если вы используете эту опцию, \fB\*p\fR пытается повторно открыть терминал,
+чтобы иметь возможность писать на дисплей.
+В зависимости от платформы и вашей среды это может не удаться.
 .
 .IP "\fB--tab-correct"
-Convert each tab character to one or more spaces
-(for the \fBtextbox\fP widget; otherwise to a single space).
-Otherwise, tabs are rendered according to the curses library's interpretation.
-The \fB\-\-no\-collapse\fP option disables tab expansion.
+Преобразует каждый символ табуляции в один или несколько пробелов
+(для виджета \fBtextbox\fP; в противном случае в один пробел).
+В противном случае табуляции отображаются в соответствии с интерпретацией библиотеки curses.
+Опция \fB\-\-no\-collapse\fP отключает расширение табуляции.
 .
 .IP "\fB--tab-len \fIn"
-Specify the number of spaces that a tab character occupies if the
-\*(``\fB\-\-tab\-correct\fP\*('' option is given.
-The default is 8.
-This option is only effective for the \fBtextbox\fP widget.
+Указывает количество пробелов, которое занимает символ табуляции, если задана
+\*(``\fB\-\-tab\-correct\fP\*('' опция.
+Значение по умолчанию — 8.
+Эта опция действует только для виджета \fBtextbox\fP.
 .
 .IP "\fB--time-format \fIformat"
-If the host provides \fBstrftime\fP,
-this option allows you to specify the format of the time printed for
-the \fB\-\-timebox\fP widget.
-The day, month, year values in this case are for the current local time.
+Если хост предоставляет \fBstrftime\fP,
+эта опция позволяет вам указать формат времени, печатаемого для
+виджета \fB\-\-timebox\fP.
+Значения дня, месяца, года в этом случае соответствуют текущему местному времени.
 .
 .IP "\fB--timeout \fIsecs"
-Timeout if no user response within the given number of seconds.
-A timeout of zero seconds is ignored.
+Тайм-аут, если пользователь не отвечает в течение заданного количества секунд.
+Тайм-аут в ноль секунд игнорируется.
 .IP
-Normally a timeout causes an ESC character to be entered in the current widget,
-cancelling it.
-Other widgets may still be on the screen;
-these are not cancelled.
-Set the \fBDIALOG_TIMEOUT\fP environment variable to tell \fB\*l\fP to
-directly exit instead, i.e., cancelling all widgets on the screen.
+Обычно тайм-аут приводит к вводу символа ESC в текущий виджет,
+отменяя его.
+Другие виджеты могут оставаться на экране;
+они не отменяются.
+Установите переменную окружения \fBDIALOG_TIMEOUT\fP, чтобы сообщить \fB\*l\fP,
+что нужно немедленно выйти, т.е., отменить все виджеты на экране.
 .IP
-This option is ignored by the \*(``\fB\-\-pause\fP\*('' widget.
-It is also overridden
-if the background \*(``\fB\-\-tailboxbg\fP\*('' option is used
-to set up multiple concurrent widgets.
+Эта опция игнорируется виджетом \*(``\fB\-\-pause\fP\*(''.
+Она также переопределяется,
+если используется фоновая опция \*(``\fB\-\-tailboxbg\fP\*('',
+чтобы настроить несколько параллельных виджетов.
 .
 .IP "\fB--title \fItitle"
-Specifies a
+Указывает
 \fItitle\fP
-string to be displayed at the top of the dialog box.
+строку, которая будет отображаться в верхней части диалогового окна.
 .
 .IP "\fB--trace \fIfilename"
-logs the command-line parameters,
-keystrokes and other information to the given file.
-If \fB\*l\fP reads a configure file, it is logged as well.
-Piped input to the \fIgauge\fP widget is logged.
-Use control/T to log a picture of the current dialog window.
+регистрирует параметры командной строки,
+нажатия клавиш и другую информацию в указанный файл.
+Если \fB\*l\fP читает конфигурационный файл, он также регистрируется.
+Ввод в виджет \fIgauge\fP регистрируется.
+Используйте control/T для регистрации изображения текущего диалогового окна.
 .IP
-The \fB\*p\fR program handles some command-line parameters specially,
-and removes them from the parameter list as they are processed.
-For example, if the first option is \fB\-\-trace\fP,
-then that is processed (and removed) before \fB\*p\fR initializes the display.
+Программа \fB\*p\fR особо обрабатывает некоторые параметры командной строки,
+удаляя их из списка параметров по мере их обработки.
+Например, если первая опция \fB\-\-trace\fP,
+то она обрабатывается (и удаляется) до того, как \fB\*p\fR инициализирует дисплей.
 .
 .IP "\fB--week-start \fIday"
-sets the starting day for the week,
-used in the \*(``\fB\-\-calendar\fP\*('' option.
-The \fIday\fP parameter can be
+устанавливает начальный день недели,
+используемый в параметры \*(``\fB\-\-calendar\fP\*(''.
+Параметр \fIday\fP может быть
 .RS
 .bP
-a number (0 to 6, Sunday through Saturday using POSIX) or
+числом (от 0 до 6, воскресенье через субботу по POSIX) или
 .bP
-the special value \*(``locale\*('' (this works with systems using glibc,
-providing an extension to the \fBlocale\fP command,
-the \fBfirst_weekday\fP value).
+специальным значением \*(``locale\*('' (это работает с системами, использующими glibc,
+предоставляя расширение для команды \fBlocale\fP,
+значение \fBfirst_weekday\fP).
 .bP
-a string matching one of the abbreviations for the day of the week
-shown in the \fBcalendar\fP widget, e.g., \*(``Mo\*('' for \*(``Monday\*(''.
+строкой, соответствующей одному из сокращений для дня недели
+показано в виджете \fBcalendar\fP, например, \*(``Пн\*('' для \*(``понедельника\*(''.
 .RE
 .
 .IP "\fB--trim"
-eliminate leading blanks,
-trim literal newlines and repeated blanks from message text.
+устраняет ведущие пробелы,
+усекает буквальные переводы строк и повторяющиеся пробелы из текста сообщения.
 .IP
-The \fItrim\fP feature is implemented subject to these conditions:
+Опция \fItrim\fP реализуется при соблюдении следующих условий:
 .RS
 .bP
-the string does not contain \*(``\en\*('' or
+строка не содержит \*(``\en\*('' или
 .bP
-the \fB\-\-no\-nl\-expand\fP option is used.
+используется опция \fB\-\-no\-nl\-expand\fP.
 .RE
 .IP
-For more information, see \fBWhitespace Options\fP.
+Для получения дополнительной информации смотрите \fBWhitespace Options\fP.
 .
 .IP
-See also the \*(``\fB\-\-cr\-wrap\fR\*(''
-and \*(``\fB\-\-no\-collapse\fR\*('' options.
+см. также \*(``\fB\-\-cr\-wrap\fR\*(''
+и \*(``\fB\-\-no\-collapse\fR\*('' параметры.
 .
 .IP "\fB--version"
-Prints \fB\*p\fR's version to the standard output, and exits.
-See also \*(``\fB\-\-print\-version\fP\*(''.
+Печатает версию \fB\*p\fR на стандартный вывод и завершает работу.
+см. также \*(``\fB\-\-print\-version\fP\*(''.
 .
 .IP "\fB--visit-items"
-Modify the tab-traversal of checklist, radiolist, menubox and inputmenu
-to include the list of items as one of the states.
-This is useful as a visual aid,
-i.e., the cursor position helps some users.
+Изменяет переход по вкладкам списка с флажками, радиосписка, меню и ввода с меню
+для включения списка элементов как одного из состояний.
+Это полезно в качестве визуальной помощи,
+т.е. позиция курсора помогает некоторым пользователям.
 .IP
-When this option is given, the cursor is initially placed on the list.
-Abbreviations (the first letter of the tag) apply to the list items.
-If you tab to the button row, abbreviations apply to the buttons.
+Когда эта опция задана, курсор изначально помещается на список.
+Сокращения (первая буква тега) применяются к элементам списка.
+Если вы переключитесь на строку кнопок, сокращения применяются к кнопкам.
 .
 .IP "\fB--yes-label \fIstring"
-Override the label used for \*(``Yes\*('' buttons.
+Заменяет метку, используемую для кнопок \*(``Yes\*(''.
 .
 .\" ************************************************************************
 .SS Box Options
-All dialog boxes have at least three parameters:
+Все диалоговые окна имеют по крайней мере три параметра:
 .TP 7
 \fItext\fP
-the caption or contents of the box.
+заголовок или содержимое окна.
 .TP 7
 \fIheight\fP
-the height of the dialog box.
+высота диалогового окна.
 .TP 7
 \fIwidth\fP
-the width of the dialog box.
+ширина диалогового окна.
 .PP
-Other parameters depend on the box type.
-.
+Другие параметры зависят от типа окна.
 .
 .IP "\fB\-\-buildlist \fItext height width list-height \fR[ \fItag item status \fR] \fI..."
-A \fBbuildlist\fP dialog displays two lists, side-by-side.
-The list on the left shows unselected items.
-The list on the right shows selected items.
-As items are selected or unselected, they move between the lists.
+Диалог \fBbuildlist\fP отображает два списка, рядом друг с другом.
+Список слева показывает невыбранные элементы.
+Список справа показывает выбранные элементы.
+По мере выбора или отмены выбора элементы перемещаются между списками.
 .IP
-Use a carriage return or the \*(``OK\*('' button to accept the current value
-in the selected-window and exit.
-The results are written using the order displayed in the selected-window.
+Используйте возврат каретки или кнопку \*(``OK\*('' для принятия текущего значения
+в выбранном окне и выхода.
+Результаты записываются в порядке, показанном в выбранном окне.
 .IP
-The initial on/off state of each entry is specified by
+Начальное состояние включения/выключения каждой записи указывается
 .IR status "."
 .IP
-The dialog behaves like a \fBmenu\fP, using the \fB\-\-visit\-items\fP
-to control whether the cursor is allowed to visit the lists directly.
+Диалог ведет себя как \fBmenu\fP, используя \fB\-\-visit\-items\fP
+для контроля того, разрешено ли курсору посещать списки напрямую.
 .RS
 .bP
-If \fB\-\-visit\-items\fP is not given,
-tab-traversal uses two states (OK/Cancel).
+Если \fB\-\-visit\-items\fP не задан,
+переключение вкладок использует два состояния (OK/Отмена).
 .bP
-If \fB\-\-visit\-items\fP is given,
-tab-traversal uses four states (Left/Right/OK/Cancel).
+Если \fB\-\-visit\-items\fP задан,
+переключение вкладок использует четыре состояния (Лево/Право/OK/Отмена).
 .RE
 .IP
-Whether or not \fB\-\-visit\-items\fP is given,
-it is possible to move the highlight between the two lists using
-the default \*(``^\*('' (left-column) and \*(``$\*('' (right-column) keys.
+Независимо от того, задан ли \fB\-\-visit\-items\fP,
+можно перемещать выделение между двумя списками, используя
+стандартные клавиши \*(``^\*('' (левая колонка) и \*(``$\*('' (правая колонка).
 .IP
-On exit, a list of the \fItag\fP
-strings of those entries that are turned on
-will be printed on \fB\*p\fP's output.
+При выходе список строк \fItag\fP
+тех записей, которые включены,
+будет напечатан на выходе \fB\*p\fP.
 .IP
-If the "\fB\-\-separate\-output\fP" option is not given,
-the strings will be quoted as needed
-to make it simple for scripts to separate them.
-By default, this uses double-quotes, as needed.
-See the \*(``\fB\-\-single\-quoted\fP\*('' option,
-which modifies the quoting behavior.
+Если опция "\fB\-\-separate\-output\fP" не задана,
+строки будут заключены в кавычки по мере необходимости,
+чтобы скрипты могли их легко разделить.
+По умолчанию используются двойные кавычки, по мере необходимости.
+Смотрите опцию \*(``\fB\-\-single\-quoted\fP\*('',
+которая изменяет поведение кавычек.
 .
 .IP "\fB--calendar \fItext height width day month year"
-A \fBcalendar\fP box displays
-month, day and year in separately adjustable windows.
-If the values for day, month or year are missing or negative,
-the current date's corresponding values are used.
-You can increment or decrement any of those using the
-left-, up-, right-, and down-arrows.
-Use vi-style h, j, k and l for moving around the array of days in a month.
-Use tab or backtab to move between windows.
-If the year is given as zero, the current date is used as an initial value.
+Диалог \fBcalendar\fP отображает
+месяц, день и год в отдельно настраиваемых окнах.
+Если значения для дня, месяца или года отсутствуют или отрицательны,
+используются соответствующие значения текущей даты.
+Вы можете увеличивать или уменьшать любое из этих значений, используя
+стрелки влево, вверх, вправо и вниз.
+Используйте стиль vi h, j, k и l для перемещения по массиву дней в месяце.
+Используйте tab или backtab для перемещения между окнами.
+Если год задан нулем, в качестве начального значения используется текущая дата.
 .IP
-On exit, the date is printed in the form day/month/year.
-The format can be overridden using the \fB\-\-date\-format\fP option.
+При выходе дата печатается в форме день/месяц/год.
+Формат может быть изменен с помощью параметры \fB\-\-date\-format\fP.
 .
 .IP "\fB\-\-checklist \fItext height width list-height \fR[ \fItag item status \fR] \fI..."
-A \fBchecklist\fP box is similar to a \fBmenu\fP box;
-there are multiple entries presented in the form of a menu.
-Another difference is
-that you can indicate which entry is currently selected, by setting its
-.IR status " to " on "."
-Instead of choosing
-one entry among the entries, each entry can be turned on or off by the user.
-The initial on/off state of each entry is specified by
+Диалог \fBchecklist\fP похож на диалог \fBmenu\fP;
+представлены множество записей в форме меню.
+Другое отличие заключается в том,
+что вы можете указать, какая запись в данный момент выбрана, установив ее
+.IR status " в " on "."
+Вместо выбора
+одной записи среди записей, каждую запись можно включить или выключить пользователем.
+Начальное состояние включения/выключения каждой записи указывается
 .IR status "."
 .IP
-On exit, a list of the \fItag\fP
-strings of those entries that are turned on
-will be printed on \fB\*p\fP's output.
+При выходе список строк \fItag\fP
+тех записей, которые включены,
+будет напечатан на выходе \fB\*p\fP.
 .IP
-If the \*(``\fB\-\-separate\-output\fP\*('' option is not given,
-the strings will be quoted as needed
-to make it simple for scripts to separate them.
-By default, this uses double-quotes (as needed).
-See the \*(``\fB\-\-single\-quoted\fP\*('' option,
-which modifies the quoting behavior.
+Если опция \*(``\fB\-\-separate\-output\fP\*('' не задана,
+строки будут заключены в кавычки по мере необходимости,
+чтобы скрипты могли их легко разделить.
+По умолчанию используются двойные кавычки (по мере необходимости).
+Смотрите опцию \*(``\fB\-\-single\-quoted\fP\*('',
+которая изменяет поведение кавычек.
 .
 .IP "\fB\-\-dselect \fIfilepath height width\fR"
-The directory-selection dialog displays a text-entry window
-in which you can type a directory,
-and above that a windows with directory names.
+Диалог выбора директории отображает окно ввода текста,
+в котором вы можете ввести директорию,
+и выше этого окна — окно с именами директорий.
 .IP
-Here
+Здесь
 \fBfilepath\fP
-can be a filepath in which case the directory window
-will display the contents of the path and the text-entry window will contain
-the preselected directory.
+может быть путем к файлу, в этом случае окно директорий
+покажет содержимое пути, а окно ввода текста будет содержать
+предварительно выбранную директорию.
 .IP
-Use tab or arrow keys to move between the windows.
-Within the directory window, use the up/down arrow keys
-to scroll the current selection.
-Use the space-bar to copy the current selection into the text-entry
-window.
+Используйте клавиши tab или стрелки для перемещения между окнами.
+В окне директорий используйте клавиши вверх/вниз
+для прокрутки текущего выбора.
+Используйте пробел для копирования текущего выбора в окно ввода текста.
 .IP
-Typing any printable characters switches focus to the text-entry window,
-entering that character as well as scrolling the directory
-window to the closest match.
+Ввод любых печатных символов переключает фокус на окно ввода текста,
+вводя этот символ, а также прокручивая окно директорий к наиболее подходящему совпадению.
 .IP
-Use a carriage return or the \*(``OK\*('' button to accept the current value
-in the text-entry window and exit.
+Используйте возврат каретки или кнопку \*(``OK\*('' для принятия текущего значения
+в окне ввода текста и выхода.
 .IP
-On exit, the contents of the text-entry window are written
-to \fB\*p\fP's output.
+При выходе содержимое окна ввода текста записывается
+на выходе \fB\*p\fP.
 .
 .IP "\fB\-\-editbox \fIfilepath height width\fR"
-The edit-box dialog displays a copy of the file.
-You may edit it using
-the \fIbackspace\fP, \fIdelete\fP and cursor keys
-to correct typing errors.
-It also recognizes pageup/pagedown.
-Unlike the \fB\-\-inputbox\fP,
-you must tab to the \*(``OK\*('' or \*(``Cancel\*('' buttons
-to close the dialog.
-Pressing the \*(``Enter\*('' key within the box will split
-the corresponding line.
+Диалог редактирования отображает копию файла.
+Вы можете редактировать его, используя
+клавиши \fIbackspace\fP, \fIdelete\fP и курсорные клавиши
+для исправления ошибок при вводе.
+Он также распознает клавиши pageup/pagedown.
+В отличие от \fB\-\-inputbox\fP,
+вы должны переключиться на кнопки \*(``OK\*('' или \*(``Отмена\*(''
+для закрытия диалога.
+Нажатие клавиши \*(``Enter\*('' внутри окна разделит
+соответствующую строку.
 .IP
-On exit, the contents of the edit window are written to \fB\*p\fP's output.
-.
+При выходе содержимое окна редактирования записывается на выходе \fB\*p\fP.
 .nf
 .IP "\fB\-\-form \fItext height width formheight \fR[ \fIlabel y x item y x flen ilen \fR] \fI..."
 .fi
-The \fBform\fP dialog displays a form consisting of labels and fields,
-which are positioned on a scrollable window by coordinates given in the script.
-The field length \fIflen\fR and input-length \fIilen\fR tell how long
-the field can be.
-The former defines the length shown for a selected field,
-while the latter defines the permissible length of the data entered in the
-field.
+Диалог \fBform\fP отображает форму, состоящую из меток и полей,
+которые размещаются в прокручиваемом окне по координатам, указанным в скрипте.
+Длина поля \fIflen\fR и длина ввода \fIilen\fR указывают, какой длины может быть поле.
+Первое определяет длину, отображаемую для выбранного поля,
+в то время как второе определяет допустимую длину введенных в поле данных.
 .RS
 .bP
-If \fIflen\fR is zero, the corresponding field cannot be altered.
-and the contents of the field determine the displayed-length.
+Если \fIflen\fR равно нулю, соответствующее поле изменять нельзя.
+и содержимое поля определяет отображаемую длину.
 .bP
-If \fIflen\fR is negative, the corresponding field cannot be altered,
-and the negated value of \fIflen\fR is used as the displayed-length.
+Если \fIflen\fR отрицательно, соответствующее поле изменять нельзя,
+и используется отрицательное значение \fIflen\fR как отображаемая длина.
 .bP
-If \fIilen\fR is zero, it is set to \fIflen\fR.
+Если \fIilen\fR равно нулю, оно устанавливается равным \fIflen\fR.
 .RE
 .IP
-Use up/down arrows (or control/N, control/P) to move between fields.
-Use tab to move between windows.
+Используйте стрелки вверх/вниз (или control/N, control/P) для перемещения между полями.
+Используйте tab для перемещения между окнами.
 .IP
-On exit, the contents of the form-fields are written to \fB\*p\fP's output,
-each field separated by a newline.
-The text used to fill non-editable fields
-(\fIflen\fR is zero or negative)
-is not written out.
-.
+При выходе содержимое полей формы записывается в выходные данные \fB\*p\fP,
+каждое поле разделено новой строкой.
+Текст, используемый для заполнения неизменяемых полей
+(\fIflen\fR равно нулю или отрицательно)
+не выводится.
 .
 .IP "\fB\-\-fselect \fIfilepath height width\fR"
-The \fBfselect\fP (file-selection) dialog displays a text-entry window
-in which you can type a filename (or directory),
-and above that two windows with directory names and filenames.
+Диалог \fBfselect\fP (выбор файла) отображает окно ввода текста,
+в котором вы можете ввести имя файла (или директории),
+и выше этого два окна с именами директорий и файлами.
 .IP
-Here
+Здесь
 \fBfilepath\fP
-can be a filepath in which case the file and directory windows
-will display the contents of the path and the text-entry window will contain
-the preselected filename.
+может быть путем к файлу, в этом случае окна файла и директории
+будут отображать содержимое пути, а окно ввода текста будет содержать
+предварительно выбранное имя файла.
 .IP
-Use tab or arrow keys to move between the windows.
-Within the directory or filename windows, use the up/down arrow keys
-to scroll the current selection.
-Use the space-bar to copy the current selection into the text-entry
-window.
+Используйте tab или стрелки для перемещения между окнами.
+В окнах директории или файла используйте стрелки вверх/вниз
+для прокрутки текущего выбора.
+Используйте пробел для копирования текущего выбора в окно ввода текста.
 .IP
-Typing any printable characters switches focus to the text-entry window,
-entering that character as well as scrolling the directory and filename
-windows to the closest match.
+Ввод любых печатных символов переключает фокус на окно ввода текста,
+вводя этот символ, а также прокручивая окна директории и файла к ближайшему совпадению.
 .IP
-Typing the space character forces \fB\*p\fP to complete the current
-name (up to the point where there may be a match against more than one
-entry).
+Ввод пробела заставляет \fB\*p\fP завершить текущее
+имя (до того момента, когда может быть совпадение более чем с одной
+записью).
 .IP
-Use a carriage return or the \*(``OK\*('' button to accept the current value
-in the text-entry window and exit.
+Используйте возврат каретки или кнопку \*(``OK\*('' для принятия текущего значения
+в окне ввода текста и выхода.
 .IP
-On exit, the contents of the text-entry window are written
-to \fB\*p\fP's output.
-.
+При выходе содержимое окна ввода текста записывается
+в выходные данные \fB\*p\fP.
 .
 .IP "\fB\-\-gauge \fItext height width [percent]\fR"
-A
 \fBgauge\fP
-box displays a meter along the bottom of the box.
-The meter indicates the percentage.
-New percentages are read from
-standard input, one integer per line.
-The meter is updated
-to reflect each new percentage.
-If the standard input reads the string \*(``XXX\*('',
-then the first line following is taken as an integer percentage,
-then subsequent lines up to another \*(``XXX\*('' are used for a new prompt.
-The gauge exits when EOF is reached on the standard input.
+окно отображает метр внизу окна.
+Метр показывает процентное соотношение.
+Новые проценты считываются из
+стандартного ввода, одно целое число на строку.
+Метр обновляется
+чтобы отражать каждый новый процент.
+Если стандартный ввод читает строку \*(``XXX\*('',
+то первая строка после этого принимается как процентное значение,
+затем последующие строки до другого \*(``XXX\*('' используются для нового приглашения.
+Индикатор выходит, когда на стандартном вводе достигается EOF.
 .IP
-The \fIpercent\fR value denotes the initial percentage shown in the meter.
-If not specified, it is zero.
+Значение \fIpercent\fR обозначает начальный процент, показанный на метре.
+Если не указано, оно равно нулю.
 .IP
-On exit, no text is written to \fB\*p\fP's output.
-The widget accepts no input, so the exit status is always OK.
-.
+При выходе текст не записывается в выходные данные \fB\*p\fP.
+Виджет не принимает входные данные, поэтому статус выхода всегда OK.
 .
 .IP "\fB--infobox \fItext height width"
-An \fBinfo\fP box is basically a \fBmessage\fP box.
-However, in this case, \fB\*p\fP
-will exit immediately after displaying the message to the user.
-The screen is not cleared when \fB\*p\fP
-exits, so that the message will remain on the screen until the calling
-shell script clears it later.
-This is useful when you want to inform
-the user that some operations are carrying on that may require some
-time to finish.
+\fBinfo\fP окно по сути является \fBmessage\fP окном.
+Однако в этом случае \fB\*p\fP
+немедленно выходит после отображения сообщения пользователю.
+Экран не очищается, когда \fB\*p\fP
+выходит, так что сообщение останется на экране до тех пор, пока вызывающий
+скрипт оболочки не очистит его позже.
+Это полезно, когда вы хотите информировать
+пользователя о том, что некоторые операции продолжаются, и они могут потребовать некоторого
+времени для завершения.
 .IP
-On exit, no text is written to \fB\*p\fP's output.
-An OK exit status is returned.
-.
+При выходе текст не записывается в выходные данные \fB\*p\fP.
+Возвращается статус выхода OK.
 .
 .IP "\fB--inputbox \fItext height width [init]"
-An
 \fBinput\fP
-box is useful when you want to ask questions that
-require the user to input a string as the answer.
-If init is supplied
-it is used to initialize the input string.
-When entering the string,
-the \fIbackspace\fP, \fIdelete\fP and cursor keys
-can be used to correct typing errors.
-If the input string is longer than
-can fit in the dialog box, the input field will be scrolled.
+окно полезно, когда вы хотите задать вопросы, которые
+требуют от пользователя ввода строки в качестве ответа.
+Если init предоставлено,
+он используется для инициализации входной строки.
+При вводе строки,
+можно использовать клавиши \fIbackspace\fP, \fIdelete\fP и курсорные клавиши
+для исправления ошибок при наборе.
+Если входная строка длиннее,
+чем может поместиться в диалоговом окне, поле ввода будет прокручиваться.
 .IP
-On exit, the input string will be printed on \fB\*p\fP's output.
-.
+При выходе входная строка будет напечатана на выходе \fB\*p\fP.
 .
 .IP "\fB\-\-inputmenu \fItext height width menu-height \fR[ \fItag item \fR] \fI..."
-An \fBinputmenu\fP box is very similar to an ordinary \fBmenu\fP box.
-There are only a few differences between them:
+\fBinputmenu\fP окно очень похоже на обычное \fBmenu\fP окно.
+Между ними всего несколько различий:
 .RS
 .TP 4
 1.
-The entries are not automatically centered but left adjusted.
+Записи не центрируются автоматически, а выравниваются по левому краю.
 .TP
 2.
-An extra button (called \fIRename\/\fP) is implied to rename
-the current item when it is pressed.
+Дополнительная кнопка (называемая \fIRename\/\fP) подразумевается для переименования
+текущего элемента, когда она нажата.
 .TP
 3.
-It is possible to rename the current entry by pressing the
-\fIRename\fP
-button.
-Then \fB\*p\fP will write the following on \fB\*p\fP's output.
+Возможно переименовать текущую запись, нажав кнопку
+\fIRename\fP.
+Тогда \fB\*p\fP напишет следующее в выходных данных \fB\*p\fP.
 .IP
 RENAMED <tag> <item>
 .RE
 .
-.
 .IP "\fB\-\-menu \fItext height width menu-height \fR[ \fItag item \fR] \fI..."
-As its name suggests, a
-\fBmenu\fP
-box is a dialog box that can be used to present a list of choices in
-the form of a menu for the user to choose.
-Choices are displayed in the order given.
-Each menu entry consists of a \fItag\fP string and an \fIitem\fP string.
-The \fItag\fP
-gives the entry a name to distinguish it from the other entries in the
-menu.
-The \fIitem\fP is a short description of the option that the entry represents.
-The user can move between the menu entries by pressing the
-cursor keys, the first letter of the \fItag\fP
-as a hot-key, or the number keys \fI1\fP through \fI9\fP.
-There are \fImenu-height\fP
-entries displayed in the menu at one time, but the menu will be
-scrolled if there are more entries than that.
+Как следует из названия, \fBmenu\fP
+окно — это диалоговое окно, которое можно использовать для представления списка выбора в
+форме меню для пользователя.
+Выборы отображаются в данном порядке.
+Каждая запись в меню состоит из строки \fItag\fP и строки \fIitem\fP.
+\fItag\fP
+дает записи имя, чтобы отличить ее от других записей в
+меню.
+\fIitem\fP — это краткое описание параметры, которую представляет запись.
+Пользователь может перемещаться между записями меню, нажимая
+курсорные клавиши, первую букву \fItag\fP
+как горячую клавишу или цифровые клавиши \fI1\fP до \fI9\fP.
+В меню одновременно отображается \fImenu-height\fP
+записей, но меню будет прокручиваться, если записей больше, чем это.
 .IP
-On exit the \fItag\fP
-of the chosen menu entry will be printed on \fB\*p\fP's output.
-If the \*(``\fB\-\-help\-button\fR\*('' option is given, the corresponding help
-text will be printed if the user selects the help button.
+При выходе \fItag\fP
+выбранной записи меню будет напечатан на выходе \fB\*p\fP.
+Если задана опция \*(``\fB\-\-help\-button\fR\*(''), соответствующий текст помощи
+будет напечатан, если пользователь выберет кнопку помощи.
 .
 .nf
 .IP "\fB\-\-mixedform \fItext height width formheight \fR[ \fIlabel y x item y x flen ilen itype \fR] \fI..."
 .fi
-The \fBmixedform\fP dialog displays a form consisting of labels and fields,
-much like the \fB\-\-form\fP dialog.
-It differs by adding a field-type parameter to each field's description.
-Each bit in the type denotes an attribute of the field:
+Диалог \fBmixedform\fP отображает форму, состоящую из меток и полей,
+похожую на диалог \fB\-\-form\fP.
+Он отличается добавлением параметра типа поля к описанию каждого поля.
+Каждый бит в типе обозначает атрибут поля:
 .RS
 .TP 5
 1
-hidden, e.g., a password field.
+скрытое, например, поле для пароля.
 .TP 5
 2
-readonly, e.g., a label.
+только для чтения, например, метка.
 .RE
 .
 .IP "\fB\-\-mixedgauge \fItext height width percent \fR[ \fItag1 item1 \fR] \fI..."
-A \fBmixedgauge\fP box displays a meter along the bottom of the box.
-The meter indicates the percentage.
+\fBmixedgauge\fP окно отображает метр внизу окна.
+Метр показывает процентное соотношение.
 .IP
-It also displays a list of the \fItag\/\fP- and \fIitem\/\fP-values at the
-top of the box.
-See \*l(3) for the tag values.
+Также отображает список значений \fItag\/\fP- и \fIitem\/\fP- в
+верхней части окна.
+Смотрите \*l(3) для значений тегов.
 .IP
-The \fItext\fP is shown as a caption between the list and meter.
-The \fIpercent\fR value denotes the initial percentage shown in the meter.
+\fItext\fP показан как подпись между списком и метром.
+Значение \fIpercent\fR обозначает начальный процент, показанный на метре.
 .IP
-No provision is made for reading data from the standard input as \fB\-\-gauge\fP
-does.
+Не предусмотрена возможность чтения данных со стандартного ввода, как это делает \fB\-\-gauge\fP.
 .IP
-On exit, no text is written to \fB\*p\fP's output.
-The widget accepts no input, so the exit status is always OK.
+При выходе текст не записывается в выходные данные \fB\*p\fP.
+Виджет не принимает входные данные, поэтому статус выхода всегда OK.
 .
 .IP "\fB--msgbox \fItext height width"
-A \fBmessage\fP box is very similar to a \fByes/no\fP box.
-The only difference between a \fBmessage\fP box and a \fByes/no\fP
-box is that a \fBmessage\fP box has only a single \fBOK\fP button.
-You can use this dialog box to display any message you like.
-After reading the message, the user can press the \fIENTER\fP key so that
-\fB\*p\fP will exit and the calling shell script can continue its operation.
+\fBmessage\fP окно очень похоже на \fByes/no\fP окно.
+Единственное отличие между \fBmessage\fP окном и \fByes/no\fP
+окном заключается в том, что \fBmessage\fP окно имеет только одну кнопку \fBOK\fP.
+Вы можете использовать это диалоговое окно, чтобы отобразить любое сообщение, которое вам нравится.
+После прочтения сообщения пользователь может нажать клавишу \fIENTER\fP, чтобы
+\fB\*p\fP вышел, и вызывающий скрипт оболочки мог продолжить свою операцию.
 .IP
-If the message is too large for the space,
-\fB\*p\fP may allow you to scroll it,
-provided that the underlying curses implementation is capable enough.
-In this case, a percentage is shown in the base of the widget.
+Если сообщение слишком велико для пространства,
+\fB\*p\fP может позволить вам прокрутить его,
+если базовая реализация curses достаточно способна.
+В этом случае процент отображается в основании виджета.
 .IP
-On exit, no text is written to \fB\*p\fP's output.
-Only an \*(``OK\*('' button is provided for input,
-but an ESC exit status may be returned.
+При выходе текст не записывается в выходные данные \fB\*p\fP.
+Предоставляется только кнопка \*(``OK\*('' для ввода,
+но может быть возвращен статус выхода ESC.
 .
 .IP "\fB\-\-pause \fItext height width seconds\fR"
-A
 \fBpause\fP
-box displays a meter along the bottom of the box.
-The meter indicates how many seconds remain until the end of the pause.
-The pause exits when timeout is reached
-or the user presses the OK button
-(status OK)
-or the user presses the CANCEL button
-or Esc key.
+окно отображает метр внизу окна.
+Метр показывает, сколько секунд осталось до конца паузы.
+Пауза завершается, когда достигается тайм-аут
+или пользователь нажимает кнопку OK
+(статус OK)
+или пользователь нажимает кнопку ОТМЕНА
+или клавишу Esc.
 .IP "\fB--passwordbox \fItext height width [init]"
-A \fBpassword\fP box is similar to an input box,
-except that the text the user enters is not displayed.
-This is useful when prompting for passwords or other
-sensitive information.
-Be aware that if anything is passed in \*(``init\*('', it
-will be visible in the system's process table to casual snoopers.
-Also, it
-is very confusing to the user to provide them with a default password they
-cannot see.
-For these reasons, using \*(``init\*('' is highly discouraged.
-See \*(``\fB\-\-insecure\fP\*('' if you do not care about your password.
+\fBpassword\fP окно похоже на окно ввода,
+за исключением того, что текст, который вводит пользователь, не отображается.
+Это полезно, когда запрашивают пароли или другую
+чувствительную информацию.
+Имейте в виду, что если что-то передается в \*(``init\*(''), это
+будет видно в таблице процессов системы для случайных наблюдателей.
+Также это
+очень сбивает с толку пользователя, предоставляя им стандартный пароль, который они
+не могут видеть.
+По этим причинам использование \*(``init\*('') крайне не рекомендуется.
+Смотрите \*(``\fB\-\-insecure\fP\*(''), если вам все равно на ваш пароль.
 .IP
-On exit, the input string will be printed on \fB\*p\fP's output.
-.
+При выходе входная строка будет напечатана на выходе \fB\*p\fP.
 .
 .nf
 .IP "\fB\-\-passwordform \fItext height width formheight \fR[ \fIlabel y x item y x flen ilen \fR] \fI..."
 .fi
-This is identical to \fB\-\-form\fP except that all text fields are
-treated as \fBpassword\fP widgets rather than \fBinputbox\fP widgets.
+Это идентично \fB\-\-form\fP, за исключением того, что все текстовые поля обрабатываются как
+\fBpassword\fP виджеты, а не как \fBinputbox\fP виджеты.
 .
 .
 .IP "\fB--prgbox \fItext command height width"
 .IP "\fB--prgbox \fIcommand height width"
-A \fBprgbox\fP is very similar to a \fBprogrambox\fP.
+\fBprgbox\fP очень похож на \fBprogrambox\fP.
 .IP
-This dialog box is used to display the output of a command that is
-specified as an argument to \fBprgbox\fP.
+Это диалоговое окно используется для отображения вывода команды, которая
+указана в качестве аргумента \fBprgbox\fP.
 .IP
-After the command completes, the user can press the \fIENTER\fP key so that
-\fB\*l\fP will exit and the calling shell script can continue its operation.
+После завершения команды пользователь может нажать клавишу \fIENTER\fP, чтобы
+\fB\*l\fP вышел, и вызывающий скрипт оболочки мог продолжить свою операцию.
 .IP
-If four parameters are given, it displays the text under the title,
-delineated from the scrolling file's contents.
-If only three parameters are given, this text is omitted.
+Если заданы четыре параметра, отображается текст под заголовком,
+отделенный от содержимого прокручиваемого файла.
+Если задано только три параметра, этот текст опускается.
 .
 .
 .IP "\fB--programbox \fItext height width"
 .IP "\fB--programbox \fIheight width"
-A \fBprogrambox\fP is very similar to a \fBprogressbox\fP.
-The only difference between a \fBprogram\fP box and a \fBprogress\fP
-box is that a \fBprogram\fP box displays an \fBOK\fP button
-(but only after the command completes).
+\fBprogrambox\fP очень похож на \fBprogressbox\fP.
+Единственное отличие между \fBprogram\fP окном и \fBprogress\fP
+окном заключается в том, что \fBprogram\fP окно отображает кнопку \fBOK\fP
+(но только после завершения команды).
 .IP
-This dialog box is used to display the piped output of a command.
-After the command completes, the user can press the \fIENTER\fP key so that
-\fB\*l\fP will exit and the calling shell script can continue its operation.
+Это диалоговое окно используется для отображения конвейерного вывода команды.
+После завершения команды пользователь может нажать клавишу \fIENTER\fP, чтобы
+\fB\*l\fP вышел, и вызывающий скрипт оболочки мог продолжить свою операцию.
 .IP
-If three parameters are given, it displays the text under the title,
-delineated from the scrolling file's contents.
-If only two parameters are given, this text is omitted.
+Если заданы три параметра, отображается текст под заголовком,
+отделенный от содержимого прокручиваемого файла.
+Если задано только два параметра, этот текст опускается.
 .
 .
 .IP "\fB--progressbox \fItext height width"
 .IP "\fB--progressbox \fIheight width"
-A \fBprogressbox\fP is similar to an \fBtailbox\fP,
-except that
+\fBprogressbox\fP похож на \fBtailbox\fP,
+за исключением того, что
 .RS
 .TP 3
-a) rather than displaying the contents of a file,
-it displays the piped output of a command and
+a) вместо отображения содержимого файла,
+он отображает конвейерный вывод команды и
 .TP 3
-b) it will exit when it reaches the end of the file
-(there is no \*(``OK\*('' button).
+b) он завершается, когда достигает конца файла
+(кнопка \*(``OK\*('' отсутствует).
 .RE
 .IP
-If three parameters are given, it displays the text under the title,
-delineated from the scrolling file's contents.
-If only two parameters are given, this text is omitted.
+Если заданы три параметра, отображается текст под заголовком,
+отделенный от содержимого прокручиваемого файла.
+Если задано только два параметра, этот текст опускается.
 .
 .
 .IP "\fB\-\-radiolist \fItext height width list-height \fR [ \fItag item status \fR] \fI..."
-A \fBradiolist\fP box is similar to a \fBmenu\fP box.
-The only difference is
-that you can indicate which entry is currently selected, by setting its
-.IR status " to " on "."
+\fBradiolist\fP окно похоже на \fBmenu\fP окно.
+Единственное отличие заключается
+в том, что вы можете указать, какая запись в данный момент выбрана, установив ее
+.IR status " в " on "."
 .IP
-On exit, the tag of the selected item is written to \fB\*p\fP's output.
-.
+При выходе тег выбранного элемента записывается в выходные данные \fB\*p\fP.
 .
 .nf
 .IP "\fB--rangebox \fItext height width min-value max-value default-value"
 .fi
-Allow the user to select from a range of values, e.g., using a slider.
-The dialog shows the current value as a bar (like the gauge dialog).
-Tabs or arrow keys move the cursor between the buttons and the value.
-When the cursor is on the value,
-you can edit it by:
+Позволяет пользователю выбрать из диапазона значений, например, используя ползунок.
+Диалог показывает текущее значение в виде полосы (как диалог индикатора).
+Клавиши tab или стрелки перемещают курсор между кнопками и значением.
+Когда курсор находится на значении,
+вы можете редактировать его следующим образом:
 .RS
 .TP 5
-left/right cursor movement to select a digit to modify
+движение курсора влево/вправо для выбора цифры для изменения
 .TP 5
 +/-
-characters to increment/decrement the digit by one
+символы для увеличения/уменьшения цифры на один
 .TP 5
-0 through 9
-to set the digit to the given value
+0 до 9
+для установки цифры в заданное значение
 .RE
 .IP
-Some keys are also recognized in all cursor positions:
+Некоторые клавиши также распознаются во всех позициях курсора:
 .RS
 .TP 5
 home/end
-set the value to its maximum or minimum
+устанавливает значение на его максимум или минимум
 .TP 5
 pageup/pagedown
-increment the value so that the slider moves by one column
+увеличивает значение так, чтобы ползунок переместился на один столбец
 .RE
 .
 .
 .IP "\fB--tailbox \fIfile height width"
-Display text from a file in a dialog box,
-as in a \*(``tail -f\*('' command.
-Scroll left/right using vi-style 'h' and 'l', or arrow-keys.
-A '0' resets the scrolling.
+Отображает текст из файла в диалоговом окне,
+как в команде \*(``tail -f\*('').
+Прокрутка влево/вправо используя стиль vi 'h' и 'l', или стрелки.
+'0' сбрасывает прокрутку.
 .IP
-On exit, no text is written to \fB\*p\fP's output.
-Only an \*(``OK\*('' button is provided for input,
-but an ESC exit status may be returned.
+При выходе текст не записывается в выходные данные \fB\*p\fP.
+Предоставляется только кнопка \*(``OK\*('' для ввода,
+но может быть возвращен статус выхода ESC.
 .
 .
 .IP "\fB--tailboxbg \fIfile height width"
-Display text from a file in a dialog box as a background task,
-as in a \*(``tail -f &\*('' command.
-Scroll left/right using vi-style 'h' and 'l', or arrow-keys.
-A '0' resets the scrolling.
+Отображает текст из файла в диалоговом окне как фоновая задача,
+как в команде \*(``tail -f &\*('').
+Прокрутка влево/вправо используя стиль vi 'h' и 'l', или стрелки.
+'0' сбрасывает прокрутку.
 .IP
-\*L treats the background task specially if there are other
-widgets (\fB\-\-and\-widget\fP) on the screen concurrently.
-Until those widgets are closed (e.g., an \*(``OK\*(''),
-\fB\*p\fP will perform all of the tailboxbg widgets in the same process,
-polling for updates.
-You may use a tab to traverse between the widgets on the screen,
-and close them individually, e.g., by pressing \fIENTER\fP.
-Once the non-tailboxbg widgets are closed,
-\fB\*p\fP forks a copy of itself into the background,
-and prints its process id if the \*(``\fB\-\-no\-kill\fP\*('' option
-is given.
+\*L особенно обрабатывает фоновую задачу, если на экране одновременно есть другие
+виджеты (\fB\-\-and\-widget\fP).
+Пока эти виджеты не закрыты (например, \*(``OK\*(''),
+\fB\*p\fP будет выполнять все виджеты tailboxbg в одном процессе,
+опрашивая обновления.
+Вы можете использовать tab для переключения между виджетами на экране,
+и закрыть их по отдельности, например, нажав \fIENTER\fP.
+Как только виджеты, отличные от tailboxbg, закрыты,
+\fB\*p\fP создает копию себя в фоновом режиме,
+и печатает его идентификатор процесса, если задана опция \*(``\fB\-\-no\-kill\fP\*('').
 .IP
-On exit, no text is written to \fB\*p\fP's output.
-Only an \*(``EXIT\*('' button is provided for input,
-but an ESC exit status may be returned.
+При выходе текст не записывается в выходные данные \fB\*p\fP.
+Предоставляется только кнопка \*(``EXIT\*('' для ввода,
+но может быть возвращен статус выхода ESC.
 .IP
-NOTE:
-Older versions of \fB\*p\fP forked immediately and attempted to
-update the screen individually.
-Besides being bad for performance,
-it was unworkable.
-Some older scripts may not work properly with the polled scheme.
+ПРИМЕЧАНИЕ:
+Старые версии \fB\*p\fP сразу создавали форк и пытались
+обновить экран индивидуально.
+Помимо плохой производительности,
+это было непрактично.
+Некоторые старые скрипты могут не работать должным образом с опрошенной схемой.
 .
 .
 .IP "\fB--textbox \fIfile height width"
-A
 \fBtext\fP
-box lets you display the contents of a text file in a dialog box.
-It is like a simple text file viewer.
-The user can move through the file by using the
-cursor, page-up, page-down
-and \fIHOME/END\fR keys available on most keyboards.
-If the lines are too long to be displayed in the box,
-the \fILEFT/RIGHT\fP
-keys can be used to scroll the text region horizontally.
-You may also use vi-style keys h, j, k, and l in place of the cursor keys,
-and B or N in place of the page-up and page-down keys.
-Scroll up/down using vi-style 'k' and 'j', or arrow-keys.
-Scroll left/right using vi-style 'h' and 'l', or arrow-keys.
-A '0' resets the left/right scrolling.
-For more convenience,
-vi-style forward and backward searching functions are also provided.
+окно позволяет отобразить содержимое текстового файла в диалоговом окне.
+Это как простой просмотрщик текстовых файлов.
+Пользователь может перемещаться по файлу, используя
+курсор, page-up, page-down
+и клавиши \fIHOME/END\fR, доступные на большинстве клавиатур.
+Если строки слишком длинные для отображения в окне,
+клавиши \fILEFT/RIGHT\fP
+можно использовать для горизонтальной прокрутки текстовой области.
+Вы также можете использовать клавиши vi стиля h, j, k и l вместо курсорных клавиш,
+и B или N вместо клавиш page-up и page-down.
+Прокрутка вверх/вниз используя стиль vi 'k' и 'j', или стрелки.
+Прокрутка влево/вправо используя стиль vi 'h' и 'l', или стрелки.
+'0' сбрасывает горизонтальную прокрутку.
+Для большего удобства,
+также предоставляются функции поиска вперед и назад в стиле vi.
 .IP
-On exit, no text is written to \fB\*p\fP's output.
-Only an \*(``EXIT\*('' button is provided for input,
-but an ESC exit status may be returned.
+При выходе текст не записывается в выходные данные \fB\*p\fP.
+Предоставляется только кнопка \*(``EXIT\*('' для ввода,
+но может быть возвращен статус выхода ESC.
 .
 .
 .IP "\fB--timebox \fItext height [width hour minute second]"
-A dialog is displayed which allows you to select hour, minute and second.
-If the values for hour, minute or second are missing or negative,
-the current date's corresponding values are used.
-You can increment or decrement any of those using the
-left-, up-, right- and down-arrows.
-Use tab or backtab to move between windows.
+Диалог отображается, позволяя выбрать час, минуту и секунду.
+Если значения для часа, минуты или секунды отсутствуют или отрицательны,
+используются соответствующие значения текущей даты.
+Вы можете увеличивать или уменьшать любое из этих значений, используя
+стрелки влево, вверх, вправо и вниз.
+Используйте tab или backtab для перемещения между окнами.
 .IP
-On exit, the result is printed in the form hour:minute:second.
-The format can be overridden using the \fB\-\-time\-format\fP option.
+При выходе результат печатается в форме час:минута:секунда.
+Формат может быть изменен с помощью параметры \fB\-\-time\-format\fP.
 .
 .
 .IP "\fB\-\-treeview \fItext height width list-height \fR[ \fItag item status depth \fR] \fI..."
-Display data organized as a tree.
-Each group of data contains a tag,
-the text to display for the item,
-its status (\*(``on\*('' or \*(``off\*('')
-and the depth of the item in the tree.
+Отображает данные, организованные как дерево.
+Каждая группа данных содержит тег,
+текст для отображения элемента,
+его статус (\*(``on\*('' или \*(``off\*('')
+и глубину элемента в дереве.
 .IP
-Only one item can be selected (like the \fBradiolist\fP).
-The tag is not displayed.
+Выбрать можно только один элемент (как в \fBradiolist\fP).
+Тег не отображается.
 .IP
-On exit, the tag of the selected item is written to \fB\*p\fP's output.
+При выходе тег выбранного элемента записывается в выходные данные \fB\*p\fP.
 .
 .
 .IP "\fB--yesno \fItext height width"
-A \fByes/no\fP dialog box of
-size \fIheight\fP rows by \fIwidth\fP columns will be displayed.
-The string specified by
+Диалоговое окно \fByes/no\fP размером
+\fIheight\fP строк на \fIwidth\fP столбцов будет отображаться.
+Строка, указанная \fItext\fP,
+отображается внутри диалогового окна.
+Если эта строка слишком длинная, чтобы поместиться
+в одну строку, она будет автоматически разделена на несколько строк в
+подходящих местах.
+Строка
 \fItext\fP
-is displayed inside the dialog box.
-If this string is too long to fit
-in one line, it will be automatically divided into multiple lines at
-appropriate places.
-The
-\fItext\fP
-string can also contain the sub-string
+также может содержать подстроку
 .RI """" \en """"
-or newline characters
+или символы новой строки
 .RI ` \en '
-to control line breaking explicitly.
-This dialog box is useful for
-asking questions that require the user to answer either yes or no.
-The dialog box has a
+для явного управления разрывом строк.
+Это диалоговое окно полезно для
+задания вопросов, требующих от пользователя ответа либо да, либо нет.
+Диалоговое окно имеет кнопку
 \fBYes\fP
-button and a
-\fBNo\fP
-button, in which the user can switch between by pressing the
-.IR TAB " key."
+и кнопку
+\fBNo\fP, между которыми пользователь может переключаться, нажимая
+.IR TAB " клавишу."
 .IP
-On exit, no text is written to \fB\*p\fP's output.
-In addition to the \*(``Yes\*('' and \*(``No\*('' exit codes (see DIAGNOSTICS)
-an ESC exit status may be returned.
+При выходе текст не записывается в выходные данные \fB\*p\fP.
+Помимо кодов выхода \*(``Yes\*('' и \*(``No\*('' (см. ДИАГНОСТИКУ)
+может быть возвращен статус выхода ESC.
 .IP
-The codes used for \*(``Yes\*('' and \*(``No\*(''
-match those used for \*(``OK\*('' and \*(``Cancel\*('',
-internally no distinction is made.
+Коды, используемые для \*(``Yes\*('' и \*(``No\*(''
+соответствуют тем, которые используются для \*(``OK\*('' и \*(``Cancel\*('',
+внутри не делается различий.
 .
 .\" ************************************************************************
 .SS "Obsolete Options"
-.\" from cdialog 0.9a (Pako)
+.\" от cdialog 0.9a (Pako)
 .IP "\fB--beep"
-This was used to tell the original cdialog that it should make a beep
-when the separate processes of the tailboxbg widget would repaint the screen.
+Это использовалось, чтобы сказать оригинальному cdialog, что он должен издать звуковой сигнал
+когда отдельные процессы виджета tailboxbg перерисовывали экран.
 .
-.\" from cdialog 0.9a (Pako)
+.\" от cdialog 0.9a (Pako)
 .IP "\fB--beep-after"
-Beep after a user has completed a widget by pressing one of the buttons.
+Звуковой сигнал после того, как пользователь завершил работу с виджетом, нажав одну из кнопок.
 .
 .\" ************************************************************************
 .SS "Whitespace Options"
 .PP
-These options can be used to transform whitespace (space, tab, newline)
-as dialog reads the script:
+Эти параметры можно использовать для преобразования пробелов (пробел, табуляция, новая строка)
+пока dialog читает скрипт:
 .RS
 .BR --cr-wrap ,
 .BR --no-collapse ,
-.BR --no-nl-expand ", and"
+.BR --no-nl-expand ", и"
 .B --trim
 .RE
 .PP
-The options are not independent:
+параметры не независимы:
 .bP
-\fB\*L\fP checks if the script contains at least one \*(``\en\*(''
-and (unless \fB\-\-no\-nl\-expand\fP is set) will ignore the
-\fB\-\-no\-collapse\fP and \fB\-\-trim\fP options.
+\fB\*L\fP проверяет, содержит ли скрипт хотя бы один \*(``\en\*(''
+и (если не установлен \fB\-\-no\-nl\-expand\fP) игнорирует
+\fB\-\-no\-collapse\fP и \fB\-\-trim\fP параметры.
 .bP
-After checking for \*(``\en\*('' and the \fB\-\-no\-nl\-expand\fP option,
-\fB\*l\fP handles the \fB\-\-trim\fP option.
+После проверки на \*(``\en\*('' и опцию \fB\-\-no\-nl\-expand\fP,
+\fB\*l\fP обрабатывает опцию \fB\-\-trim\fP.
 .IP
-If the \fB\-\-trim\fP option takes effect,
-then \fB\*l\fP ignores \fB\-\-no\-collapse\fP.
-It changes sequences of tabs, spaces
-(and newlines unless \fB\-cr\-wrap\fP is set) to a single space.
+Если опция \fB\-\-trim\fP вступает в силу,
+то \fB\*l\fP игнорирует \fB\-\-no\-collapse\fP.
+Он превращает последовательности табуляций, пробелов
+(и новых строк, если не установлен \fB\-cr\-wrap\fP) в один пробел.
 .bP
-If neither the \*(``\en\*('' or \fB\-\-trim\fP cases apply,
-\fB\*l\fP checks \fB\-\-no\-collapse\fP to decide whether to reduce
-sequences of tabs and spaces to a single space.
+Если случаи с \*(``\en\*('' или \fB\-\-trim\fP не применяются,
+\fB\*l\fP проверяет \fB\-\-no\-collapse\fP, чтобы решить, следует ли уменьшить
+последовательности табуляций и пробелов до одного пробела.
 .IP
-In this case, \fB\*l\fP ignores \fB\-\-cr\-wrap\fP and does not modify newlines.
+В этом случае \fB\*l\fP игнорирует \fB\-\-cr\-wrap\fP и не изменяет новые строки.
 .PP
-Taking those dependencies into account,
-here is a table summarizing the behavior
-for the various combinations of options.
-The table assumes that the script contains at least one \*(``\en\*(''
-when the \fB\-\-no\-nl\-expand\fP option is not set.
+Учитывая эти зависимости,
+вот таблица, которая резюмирует поведение
+для различных комбинаций опций.
+В таблице предполагается, что скрипт содержит хотя бы один \*(``\en\*('')
+когда опция \fB\-\-no\-nl\-expand\fP не установлена.
 .na
 .RS 5
 .TS
@@ -1464,155 +1434,155 @@ lw4 lw4 lw4 lw4 lw29.
 cr-/no-/no-/trim/Result
 wrap/collapse/nl-expand
 no/no/no/no/T{
-Convert tab to space.
-Convert newline to space.
-Convert \*(``\en\*('' to newline.
+Преобразовать табуляцию в пробел.
+Преобразовать новую строку в пробел.
+Преобразовать \*(``\en\*('' в новую строку.
 T}
 no/no/no/yes/T{
-Convert tab to space.
-Convert newline to space.
-Convert \*(``\en\*('' to newline.
+Преобразовать табуляцию в пробел.
+Преобразовать новую строку в пробел.
+Преобразовать \*(``\en\*('' в новую строку.
 T}
 no/no/yes/no/T{
-Convert tab to space.
-Do not convert newline to space.
-Convert multiple-space to single.
-Show \*(``\en\*('' literally.
+Преобразовать табуляцию в пробел.
+Не преобразовывать новую строку в пробел.
+Преобразовать множественный пробел в один.
+Показывать \*(``\en\*('' буквально.
 T}
 no/no/yes/yes/T{
-Convert tab to space.
-Convert multiple-space to single.
-Convert newline to space.
-Show \*(``\en\*('' literally.
+Преобразовать табуляцию в пробел.
+Преобразовать множественный пробел в один.
+Преобразовать новую строку в пробел.
+Показывать \*(``\en\*('' буквально.
 T}
 no/yes/no/no/T{
-Convert newline to space.
-Convert \*(``\en\*('' to newline.
+Преобразовать новую строку в пробел.
+Преобразовать \*(``\en\*('' в новую строку.
 T}
 no/yes/no/yes/T{
-Convert newline to space.
-Convert \*(``\en\*('' to newline.
+Преобразовать новую строку в пробел.
+Преобразовать \*(``\en\*('' в новую строку.
 T}
 no/yes/yes/no/T{
-Do not convert newline to space.
-Do not reduce multiple blanks.
-Show \*(``\en\*('' literally.
+Не преобразовывать новую строку в пробел.
+Не уменьшать множественные пробелы.
+Показывать \*(``\en\*('' буквально.
 T}
 no/yes/yes/yes/T{
-Convert multiple-space to single.
-Convert newline to space.
-Show \*(``\en\*('' literally.
+Преобразовать множественный пробел в один.
+Преобразовать новую строку в пробел.
+Показывать \*(``\en\*('' буквально.
 T}
 yes/no/no/no/T{
-Convert tab to space.
-Wrap on newline.
-Convert \*(``\en\*('' to newline.
+Преобразовать табуляцию в пробел.
+Перенос по новой строке.
+Преобразовать \*(``\en\*('' в новую строку.
 T}
 yes/no/no/yes/T{
-Convert tab to space.
-Wrap on newline.
-Convert \*(``\en\*('' to newline.
+Преобразовать табуляцию в пробел.
+Перенос по новой строке.
+Преобразовать \*(``\en\*('' в новую строку.
 T}
 yes/no/yes/no/T{
-Convert tab to space.
-Do not convert newline to space.
-Convert multiple-space to single.
-Show \*(``\en\*('' literally.
+Преобразовать табуляцию в пробел.
+Не преобразовывать новую строку в пробел.
+Преобразовать множественный пробел в один.
+Показывать \*(``\en\*('' буквально.
 T}
 yes/no/yes/yes/T{
-Convert tab to space.
-Convert multiple-space to single.
-Wrap on newline.
-Show \*(``\en\*('' literally.
+Преобразовать табуляцию в пробел.
+Преобразовать множественный пробел в один.
+Перенос по новой строке.
+Показывать \*(``\en\*('' буквально.
 T}
 yes/yes/no/no/T{
-Wrap on newline.
-Convert \*(``\en\*('' to newline.
+Перенос по новой строке.
+Преобразовать \*(``\en\*('' в новую строку.
 T}
 yes/yes/no/yes/T{
-Wrap on newline.
-Convert \*(``\en\*('' to newline.
+Перенос по новой строке.
+Преобразовать \*(``\en\*('' в новую строку.
 T}
 yes/yes/yes/no/T{
-Do not convert newline to space.
-Do not reduce multiple blanks.
-Show \*(``\en\*('' literally.
+Не преобразовывать новую строку в пробел.
+Не уменьшать множественные пробелы.
+Показывать \*(``\en\*('' буквально.
 T}
 yes/yes/yes/yes/T{
-Convert multiple-space to single.
-Wrap on newline.
-Show \*(``\en\*('' literally.
+Преобразовать множественный пробел в один.
+Перенос по новой строке.
+Показывать \*(``\en\*('' буквально.
 T}
 .TE
 .RE
 .ad
 .
 .\" ************************************************************************
-.SH "RUN-TIME CONFIGURATION"
+.SH "КОНФИГУРАЦИЯ ВО ВРЕМЯ РАБОТЫ"
 .TP 4
 1.
-Create a sample configuration file by typing:
+Создайте образец файла конфигурации, набрав:
 .LP
 .Ex
 \*p \-\-create\-rc \fIfile\fP
 .Ee
 .TP 4
 2.
-At start,
+При запуске,
 \fB\*p\fP
-determines the settings to use as follows:
+определяет настройки следующим образом:
 .RS
 .TP 4
 a)
-if environment variable
-\fBDIALOGRC\fP
-is set, its value determines the name of the configuration file.
+если установлена переменная окружения
+\fBDIALOGRC\fP,
+её значение определяет имя файла конфигурации.
 .TP 4
 b)
-if the file in (a) is not found, use the file
+если файл в (a) не найден, используется файл
 \fI$HOME/.dialogrc\fP
-as the configuration file.
+как файл конфигурации.
 .TP 4
 c)
-if the file in (b) is not found, try using the GLOBALRC file determined at
-compile-time, i.e., \fI/etc/dialogrc\fP.
+если файл в (b) не найден, попробуйте использовать файл GLOBALRC, определенный
+во время компиляции, т.е., \fI/etc/dialogrc\fP.
 .TP 4
 d)
-if the file in (c) is not found, use compiled in defaults.
+если файл в (c) не найден, используйте встроенные значения по умолчанию.
 .RE
 .TP 4
 3.
-Edit the sample configuration file and copy it to some place that
+Отредактируйте образец файла конфигурации и скопируйте его в место, которое
 \fB\*p\fP
-can find, as stated in step 2 above.
+может найти, как указано на шаге 2 выше.
 .
 .\" ************************************************************************
-.SH "KEY BINDINGS"
-You can override or add to key bindings in \fB\*p\fP
-by adding to the configuration file.
-\fB\*L\fP's \fBbindkey\fP command maps single keys to its internal coding.
+.SH "НАЗНАЧЕНИЕ КЛАВИШ"
+Вы можете переопределить или добавить привязки клавиш в \fB\*p\fP,
+добавив их в файл конфигурации.
+Команда \fB\*L\fP \fBbindkey\fP связывает отдельные клавиши с их внутренним кодированием.
 .Ex
 bindkey \fIwidget\fP \fIcurses_key\fP \fIdialog_key\fP
 .Ee
 .PP
-The \fIwidget\fP name can be \*(``*\*('' (all widgets), or
-specific widgets such as \fBtextbox\fP.
-Specific widget bindings override the \*(``*\*('' bindings.
-User-defined bindings override the built-in bindings.
+Имя \fIwidget\fP может быть \*(``*\*('' (все виджеты), или
+конкретные виджеты, такие как \fBtextbox\fP.
+Привязки конкретного виджета переопределяют привязки \*(``*\*(''.
+Привязки, определенные пользователем, переопределяют встроенные привязки.
 .PP
-The \fIcurses_key\fP can be expressed in different forms:
+\fIcurses_key\fP может быть выражен в разных формах:
 .bP
-It may be any of the names derived from
-\fBcurses.h\fP, e.g., \*(``HELP\*('' from \*(``KEY_HELP\*(''.
+Это может быть любое из имен, производных от
+\fBcurses.h\fP, например, \*(``HELP\*('' из \*(``KEY_HELP\*(''.
 .bP
-\fB\*L\fP also recognizes ANSI control characters
-such as \*(``^A\*('', \*(``^?\*('',
-as well as C1-controls such as \*(``~A\*('' and \*(``~?\*(''.
+\fB\*L\fP также распознает символы управления ANSI,
+такие как \*(``^A\*('', \*(``^?\*('',
+а также управляющие символы C1, такие как \*(``~A\*('' и \*(``~?\*(''.
 .bP
-Finally, \fB\*l\fP allows backslash escapes as in C.
-Those can be octal character values such as \*(``\\033\*(''
-(the ASCII escape character),
-or the characters listed in this table:
+Наконец, \fB\*l\fP допускает управляющие последовательности как в C.
+Это могут быть восьмеричные значения символов, такие как \*(``\\033\*('')
+(символ управления ASCII),
+или символы, перечисленные в этой таблице:
 .RS 10
 .TS
 tab(/) ;
@@ -1633,15 +1603,15 @@ _
 .TE
 .RE
 .PP
-\fB\*L\fP's internal keycode names correspond to the
-\fBDLG_KEYS_ENUM\fP type in
-\fBdlg_keys.h\fP, e.g., \*(``HELP\*('' from \*(``DLGK_HELP\*(''.
-.SS Widget Names
+Внутренние имена кодов клавиш \fB\*L\fP соответствуют типу
+\fBDLG_KEYS_ENUM\fP в
+\fBdlg_keys.h\fP, например, \*(``HELP\*('' из \*(``DLGK_HELP\*(''.
+.SS Имена виджетов
 .PP
-Some widgets (such as the formbox) have an area where fields can be edited.
-Those are managed in a subwindow of the widget, and
-may have separate keybindings from the main widget
-because the subwindows are registered using a different name.
+Некоторые виджеты (например, форма) имеют область, где можно редактировать поля.
+Они управляются в подокне виджета и
+могут иметь отдельные привязки клавиш от основного виджета,
+потому что подокна регистрируются под другим именем.
 .RS 5
 .TS
 tab(/) ;
@@ -1668,9 +1638,9 @@ _
 .TE
 .RE
 .PP
-Some widgets are actually other widgets,
-using internal settings to modify the behavior.
-Those use the same widget name as the actual widget:
+Некоторые виджеты на самом деле являются другими виджетами,
+использующими внутренние настройки для изменения поведения.
+Они используют то же имя виджета, что и фактический виджет:
 .RS 5
 .TS
 tab(/) ;
@@ -1690,27 +1660,27 @@ tailboxbg/tailbox
 _
 .TE
 .RE
-.SS Built-in Bindings
-This manual page does not list the key bindings for each widget,
-because that detailed information can be obtained by running \fB\*p\fP.
-If you have set the \fB\-\-trace\fP option,
-\fB\*p\fP writes the key-binding information for each widget
-as it is registered.
-.SS Example
-Normally \fB\*p\fP uses different keys for navigating between the buttons
-and editing part of a dialog versus navigating within the editing part.
-That is, tab (and back-tab) traverse buttons
-(or between buttons and the editing part),
-while arrow keys traverse fields within the editing part.
-Tabs are also recognized as a special case for traversing between
-widgets, e.g., when using multiple tailboxbg widgets.
+.SS Встроенные привязки
+Эта страница руководства не перечисляет привязки клавиш для каждого виджета,
+потому что эту подробную информацию можно получить, запустив \fB\*p\fP.
+Если вы установили опцию \fB\-\-trace\fP,
+\fB\*p\fP записывает информацию о привязке клавиш для каждого виджета
+при его регистрации.
+.SS Пример
+Обычно \fB\*p\fP использует разные клавиши для навигации между кнопками
+и редактируемой частью диалога в сравнении с навигацией внутри редактируемой части.
+То есть, tab (и back-tab) переключают кнопки
+(или между кнопками и редактируемой частью),
+в то время как стрелочные клавиши переключают поля внутри редактируемой части.
+Tab также распознается как особый случай для переключения между
+виджетами, например, при использовании нескольких виджетов tailboxbg.
 .PP
-Some users may wish to use the same key for traversing within the
-editing part as for traversing between buttons.
-The form widget is written to support this sort of redefinition of
-the keys, by adding a special group in \fBdlgk_keys.h\fP
-for \*(``form\*('' (left/right/next/prev).
-Here is an example binding demonstrating how to do this:
+Некоторые пользователи могут захотеть использовать ту же клавишу для навигации внутри
+редактируемой части, как и для переключения между кнопками.
+Виджет формы написан так, чтобы поддерживать такое переопределение
+клавиш, добавляя специальную группу в \fBdlgk_keys.h\fP
+для \*(``form\*('' (left/right/next/prev).
+Вот пример привязки, демонстрирующей, как это сделать:
 .Ex
 bindkey formfield TAB  form_NEXT
 bindkey formbox   TAB  form_NEXT
@@ -1718,26 +1688,26 @@ bindkey formfield BTAB form_prev
 bindkey formbox   BTAB form_prev
 .Ee
 .PP
-That type of redefinition would not be useful in other widgets,
-e.g., calendar, due to the potentially large number of fields to traverse.
+Такое переопределение не будет полезно в других виджетах,
+например, calendar, из-за потенциально большого количества полей для переключения.
 .
 .\" ************************************************************************
-.SH ENVIRONMENT
+.SH СРЕДА
 .TP 15
 \fBDIALOGOPTS\fP
-Define this variable to apply any of the common options to each widget.
-Most of the common options are reset before processing each widget.
-If you set the options in this environment variable,
-they are applied to \fB\*p\fP's state after the reset.
-As in the \*(``\fB\-\-file\fP\*('' option,
-double-quotes and backslashes are interpreted.
+Определите эту переменную, чтобы применить любые общие параметры ко всем виджетам.
+Большинство общих опций сбрасываются перед обработкой каждого виджета.
+Если вы установите параметры в этой переменной окружения,
+они будут применены к состоянию \fB\*p\fP после сброса.
+Как в параметры \*(``\fB\-\-file\fP\*(''),
+двойные кавычки и обратные слэши интерпретируются.
 .IP
-The \*(``\fB\-\-file\fP\*('' option is not considered a common option
-(so you cannot embed it within this environment variable).
+Опция \*(``\fB\-\-file\fP\*('' не считается общей опцией
+(поэтому вы не можете включить её в эту переменную окружения).
 .TP 15
 \fBDIALOGRC\fP
-Define this variable if you want to specify the name of the configuration file
-to use.
+Определите эту переменную, если вы хотите указать имя файла конфигурации
+для использования.
 .TP 15
 \fBDIALOG_CANCEL\fP
 .TP 15
@@ -1754,111 +1724,110 @@ to use.
 \fBDIALOG_TIMEOUT\fP
 .TP 15
 \fBDIALOG_OK\fP
-Define any of these variables to change the exit code on
+Определите любую из этих переменных, чтобы изменить КОД ЗАВЕРШЕНИЯ на
 .RS
 .bP
-Cancel (1),
+Отмена (1),
 .bP
-error (\-1),
+ошибка (\-1),
 .bP
 ESC (255),
 .bP
-Extra (3),
+Дополнительно (3),
 .bP
-Help (2),
+Помощь (2),
 .bP
-Help with \fB\-\-item\-help\fP (2),
+Помощь с \fB\-\-item\-help\fP (2),
 .bP
-Timeout (5), or
+Тайм-аут (5), или
 .bP
 OK (0).
 .RE
 .IP
-Normally shell scripts cannot distinguish between \-1 and 255.
+Обычно скрипты оболочки не могут различить \-1 и 255.
 .TP 15
 \fBDIALOG_TTY\fP
-Set this variable to \*(``1\*('' to provide compatibility with older versions
-of \fB\*p\fP which assumed that if the script redirects the standard output,
-that the \*(``\fB\-\-stdout\fP\*('' option was given.
-.SH FILES
+Установите эту переменную в \*(``1\*('' для обеспечения совместимости со старыми версиями
+\fB\*p\fP, которые предполагали, что если скрипт перенаправляет стандартный вывод,
+то дана опция \*(``\fB\-\-stdout\fP\*('').
+.SH ФАЙЛЫ
 .TP 20
 \fI$HOME/.dialogrc\fP
-default configuration file
-.SH EXAMPLES
-The \fB\*p\fP sources contain several samples
-of how to use the different box options and how they look.
-Just take a look into the directory \fBsamples/\fP of the source.
-.SH DIAGNOSTICS
-Exit status is subject to being overridden by environment variables.
-The default values and corresponding environment variables
-that can override them are:
+файл конфигурации по умолчанию
+.SH ПРИМЕРЫ
+Исходные коды \fB\*p\fP содержат несколько примеров
+использования различных опций окна и того, как они выглядят.
+Просто посмотрите в каталог \fBsamples/\fP исходников.
+.SH ДИАГНОСТИКА
+Статус выхода подлежит изменению с помощью переменных окружения.
+Стандартные значения и соответствующие переменные окружения,
+которые могут их переопределить, это:
 .TP 5
 0
-if the \fBYES\fP or \fBOK\fP button is pressed (DIALOG_OK).
+если нажата кнопка \fBYES\fP или \fBOK\fP (DIALOG_OK).
 .TP 5
 1
-if the
-.BR No " or " Cancel
-button is pressed (DIALOG_CANCEL).
+если нажата
+.BR кнопка " No " или " Cancel "
+(DIALOG_CANCEL).
 .TP 5
 2
-if the
+если нажата кнопка
 .B Help
-button is pressed (DIALOG_HELP),
+(DIALOG_HELP),
 .br
-except as noted below about DIALOG_ITEM_HELP.
+кроме как отмечено ниже о DIALOG_ITEM_HELP.
 .TP 5
 3
-if the
+если нажата кнопка
 .B Extra
-button is pressed (DIALOG_EXTRA).
+(DIALOG_EXTRA).
 .TP 5
 4
-if the
-.B Help
-button is pressed,
+если нажата кнопка
+.B Help,
 .br
-and the \fB\-\-item\-help\fP option is set
+и установлена опция \fB\-\-item\-help\fP
 .br
-and the DIALOG_ITEM_HELP environment variable is set to 4.
+и переменная окружения DIALOG_ITEM_HELP установлена в 4.
 .IP
-While any of the exit-codes can be overridden using environment variables,
-this special case was introduced in 2004 to simplify compatibility.
-\fB\*L\fP uses DIALOG_ITEM_HELP(4) internally,
-but unless the environment variable is also set,
-it changes that to DIALOG_HELP(2) on exit.
+Хотя любой из кодов выхода может быть переопределен с помощью переменных окружения,
+этот специальный случай был введен в 2004 году для упрощения совместимости.
+\fB\*L\fP использует DIALOG_ITEM_HELP(4) внутренне,
+но если переменная окружения также не установлена,
+она изменяет это на DIALOG_HELP(2) при выходе.
 .TP 5
 5
-if a timeout expires and the \fBDIALOG_TIMEOUT\fP variable is set to 5.
+если истекает тайм-аут и переменная \fBDIALOG_TIMEOUT\fP установлена в 5.
 .TP 5
 \-1
-if errors occur inside \fB\*p\fP (DIALOG_ERROR)
-or \fB\*p\fP exits because the \fIESC\fP key (DIALOG_ESC) was pressed.
+если внутри \fB\*p\fP происходят ошибки (DIALOG_ERROR)
+или \fB\*p\fP выходит, потому что нажата клавиша \fIESC\fP (DIALOG_ESC).
 .
 .\" ************************************************************************
-.SH PORTABILITY
-\fB\*L\fP works with X/Open curses.
-However, some implementations have deficiencies:
+.SH ПЕРЕНОСИМОСТЬ
+\fB\*L\fP работает с X/Open curses.
+Однако некоторые реализации имеют недостатки:
 .RS 3
 .bP
-HPUX curses (and perhaps others) do not open the terminal properly for
-the \fInewterm\fP function.
-This interferes with \fB\*p\fP's \fB\-\-input\-fd\fP option,
-by preventing cursor-keys and similar escape sequences from being recognized.
+HPUX curses (и, возможно, другие) не открывают терминал должным образом для
+функции \fInewterm\fP.
+Это мешает параметры \fB\*p\fP \fB\-\-input\-fd\fP,
+препятствуя распознаванию клавиш курсора и аналогичных управляющих последовательностей.
 .bP
-NetBSD 5.1 curses has incomplete support for wide-characters.
-\fB\*p\fP will build, but not all examples display properly.
+NetBSD 5.1 curses имеет неполную поддержку широких символов.
+\fB\*p\fP будет собираться, но не все примеры будут отображаться должным образом.
 .RE
 .\" ************************************************************************
-.SH COMPATIBILITY
-You may want to write scripts which run with
-other \fB\*l\fP \*(``clones\*(''.
-.SS Original Dialog
-First, there is the \*(``original\*('' \fB\*p\fP program to consider
-(versions 0.3 to 0.9).
-It had some misspelled (or inconsistent) options.
-The \fB\*p\fP program maps those deprecated options to the preferred ones.
-They include:
+.SH СОВМЕСТИМОСТЬ
+Вы можете захотеть написать скрипты, которые работают с
+другими \fB\*l\fP \*(``клонами\*('').
+.SS Оригинальный Dialog
+Во-первых, есть \*(``оригинальная\*('' программа \fB\*p\fP, которую следует учитывать
+(версии 0.3 до 0.9).
+Она имела некоторые ошибочно написанные (или несогласованные) параметры.
+Программа \fB\*p\fP сопоставляет эти устаревшие параметры с предпочтительными.
+К ним относятся:
 .RS
 .TS
 tab(/) ;
@@ -1866,18 +1835,18 @@ lI lI
 _ _
 l l.
 Option/Treatment
-\fB\-\-beep\-after\fP/ignored
-\fB\-\-guage\fP/mapped to \fB\-\-gauge\fP
+\fB\-\-beep\-after\fP/игнорируется
+\fB\-\-guage\fP/преобразуется в \fB\-\-gauge\fP
 _
 .TE
 .RE
 .SS Xdialog
-This is an X application, rather than a terminal program.
-With some care, it is possible to write useful scripts that work
-with both \fBXdialog\fP and \fB\*p\fP.
+Это X-приложение, а не терминальная программа.
+С некоторой осторожностью возможно написать полезные скрипты, которые работают
+и с \fBXdialog\fP, и с \fB\*p\fP.
 .PP
-The \fB\*p\fP program ignores these options which are recognized
-by \fBXdialog\fP:
+Программа \fB\*p\fP игнорирует эти параметры, которые распознаются
+\fBXdialog\fP:
 .RS
 .TS
 tab(/) ;
@@ -1885,93 +1854,92 @@ lI lI
 _ _
 l l.
 Option/Treatment
-\fB\-\-allow\-close\fP/ignored
-\fB\-\-auto\-placement\fP/ignored
-\fB\-\-fixed\-font\fP/ignored
-\fB\-\-icon\fP/ignored
-\fB\-\-keep\-colors\fP/ignored
-\fB\-\-no\-close\fP/ignored
-\fB\-\-no\-cr\-wrap\fP/ignored
-\fB\-\-screen\-center\fP/ignored
-\fB\-\-separator\fP/mapped to \fB\-\-separate\-output\fP
-\fB\-\-smooth\fP/ignored
-\fB\-\-under\-mouse\fP/ignored
-\fB\-\-wmclass\fP/ignored
+\fB\-\-allow\-close\fP/игнорируется
+\fB\-\-auto\-placement\fP/игнорируется
+\fB\-\-fixed\-font\fP/игнорируется
+\fB\-\-icon\fP/игнорируется
+\fB\-\-keep\-colors\fP/игнорируется
+\fB\-\-no\-close\fP/игнорируется
+\fB\-\-no\-cr\-wrap\fP/игнорируется
+\fB\-\-screen\-center\fP/игнорируется
+\fB\-\-separator\fP/преобразуется в \fB\-\-separate\-output\fP
+\fB\-\-smooth\fP/игнорируется
+\fB\-\-under\-mouse\fP/игнорируется
+\fB\-\-wmclass\fP/игнорируется
 _
 .TE
 .RE
 .PP
-\fBXdialog\fP's manpage has a section discussing its compatibility
-with \fB\*p\fP.
-There are some differences not shown in the manpage.
-For example, the html documentation states
+Страница руководства \fBXdialog\fP содержит раздел, обсуждающий её совместимость
+с \fB\*p\fP.
+Существуют некоторые различия, не показанные в руководстве.
+Например, документация в HTML утверждает
 .RS
 .PP
-Note: former Xdialog releases used the \*(``\en\*('' (line feed) as a
-results separator for the checklist widget;
-this has been changed to \*(``/\*('' in Xdialog v1.5.0
-to make it compatible with (c)dialog.
-In your old scripts using the Xdialog checklist, you
-will then have to add the \fB\-\-separate\-output\fP option before the
-\fB\-\-checklist\fP one.
+Примечание: предыдущие версии Xdialog использовали \*(``\en\*('' (перевод строки) в качестве
+разделителя результатов для виджета checklist;
+это было изменено на \*(``/\*('' в Xdialog v1.5.0
+для совместимости с (c)dialog.
+В ваших старых скриптах, использующих checklist Xdialog, вы
+тогда должны добавить опцию \fB\-\-separate\-output\fP перед
+опцией \fB\-\-checklist\fP.
 .RE
 .PP
-\fB\*L\fP has not used a different separator;
-the difference was likely due to confusion regarding some script.
+\fB\*L\fP не использовал другой разделитель;
+различие, вероятно, было связано с путаницей относительно некоторого скрипта.
 .SS Whiptail
-Then there is \fBwhiptail\fP.
-For practical purposes, it is maintained by Debian
-(very little work is done by its upstream developers).
-Its documentation (README.whiptail) claims
+Затем есть \fBwhiptail\fP.
+На практике его поддерживает Debian
+(очень мало работы проводится его первоначальными разработчиками).
+Его документация (README.whiptail) утверждает
 .Ex
-whiptail(1) is a lightweight replacement for \*p(1),
-to provide dialog boxes for shell scripts.
-It is built on the
-newt windowing library rather than the ncurses library, allowing
-it to be smaller in embedded environments such as installers,
-rescue disks, etc.
+whiptail(1) — это легковесная замена для \*p(1),
+чтобы предоставить диалоговые окна для скриптов оболочки.
+Он построен на
+библиотеке окон newt, а не на библиотеке ncurses, что позволяет
+сделать его меньше во встроенных средах, таких как установщики,
+спасательные диски и т. д.
 
-whiptail is designed to be drop-in compatible with \*p, but
-has less features: some dialog boxes are not implemented, such
-as tailbox, timebox, calendarbox, etc.
+whiptail предназначен для замены \*p, но
+имеет меньше функций: некоторые диалоговые окна не реализованы, такие
+как tailbox, timebox, calendarbox и т. д.
 .Ee
 .PP
-Comparing actual sizes (Debian testing, 2007/1/10):
-The total of sizes for \fBwhiptail\fP,
-the newt, popt and slang libraries is 757\ KB.
-The comparable number for \fB\*p\fP (counting ncurses) is 520\ KB.
-Disregard the first paragraph.
+Сравнивая фактические размеры (тестирование Debian, 2007/1/10):
+Общий размер для \fBwhiptail\fP,
+библиотек newt, popt и slang составляет 757\ KB.
+Соответствующее число для \fB\*p\fP (с учетом ncurses) составляет 520\ KB.
+Игнорируйте первый абзац.
 .PP
-The second paragraph is misleading, since \fBwhiptail\fP
-also does not work for common options of \fB\*p\fP,
-such as the gauge box.
-\fBwhiptail\fP is less compatible with \fB\*p\fP than the
-original mid-1990s dialog 0.4 program.
+Второй абзац вводит в заблуждение, поскольку \fBwhiptail\fP
+также не работает для общих опций \fB\*p\fP,
+таких как индикатор.
+\fBwhiptail\fP менее совместим с \fB\*p\fP, чем
+оригинальная программа dialog середины 1990-х годов версии 0.4.
 .PP
-\fBwhiptail\fP's manpage borrows features from \fB\*p\fP, e.g.,
-but oddly cites only \fB\*p\fP versions up to 0.4 (1994) as a source.
-That is, its manpage refers to features which
-were borrowed from more recent versions of \fB\*p\fP, e.g.,
+Страница руководства \fBwhiptail\fP заимствует функции из \fB\*p\fP, например,
+но странно цитирует только версии \fB\*p\fP до 0.4 (1994) в качестве источника.
+То есть, его страница руководства ссылается на функции, которые
+были заимствованы из более поздних версий \fB\*p\fP, например,
 .bP
-\fB\-\-gauge\fP (from 0.5)
+\fB\-\-gauge\fP (из 0.5)
 .bP
-\fB\-\-passwordbox\fP (from Debian changes in 1999),
+\fB\-\-passwordbox\fP (из изменений Debian в 1999 году),
 .bP
-\fB\-\-default\-item\fP (from \fB\*p\fP 2000/02/22),
+\fB\-\-default\-item\fP (из \fB\*p\fP 2000/02/22),
 .bP
-\fB\-\-output\-fd\fP (from \fB\*p\fP 2002/08/14).
+\fB\-\-output\-fd\fP (из \fB\*p\fP 2002/08/14).
 .PP
-Somewhat humorously, one may note that the \fBpopt\fP feature
-(undocumented in its manpage)
-of using a \*(``--\*('' as an escape was documented in \fB\*p\fP's manpage about
-a year before it was mentioned in \fBwhiptail\fP's manpage.
-\fBwhiptail\fP's manpage incorrectly attributes that to \fBgetopt\fP
-(and is inaccurate anyway).
+С некоторой долей юмора можно отметить, что функция \fBpopt\fP
+(не задокументированная в его странице руководства)
+использования \*(``--\*('' в качестве escape была задокументирована в странице руководства \fB\*p\fP примерно за год до того, как она упомянута в странице руководства \fBwhiptail\fP.
+Страница руководства \fBwhiptail\fP неверно приписывает это \fBgetopt\fP
+(и в любом случае неточно).
 .PP
-Debian uses \fBwhiptail\fP for the official \fB\*p\fP variation.
+Debian использует \fBwhiptail\fP для официальной вариации \fB\*p\fP.
 .PP
-The \fB\*p\fP program ignores or maps these options which are recognized
-by \fBwhiptail\fP:
+Программа \fB\*p\fP игнорирует или сопоставляет эти параметры, которые распознаются
+\fBwhiptail\fP:
 .RS
 .TS
 tab(/) ;
@@ -1979,63 +1947,63 @@ lI lI
 _ _
 l l.
 Option/Treatment
-\fB\-\-cancel\-button\fP/mapped to \fB\-\-cancel\-label\fP
-\fB\-\-fb\fP/ignored
-\fB\-\-fullbutton\fP/ignored
-\fB\-\-no\-button\fP/mapped to \fB\-\-no\-label\fP
-\fB\-\-nocancel\fP/mapped to \fB\-\-no\-cancel\fP
-\fB\-\-noitem\fP/mapped to \fB\-\-no\-items\fP
-\fB\-\-notags\fP/mapped to \fB\-\-no\-tags\fP
-\fB\-\-ok\-button\fP/mapped to \fB\-\-ok\-label\fP
-\fB\-\-scrolltext\fP/mapped to \fB\-\-scrollbar\fP
-\fB\-\-topleft\fP/mapped to \fB\-\-begin 0 0\fP
-\fB\-\-yes\-button\fP/mapped to \fB\-\-yes\-label\fP
+\fB\-\-cancel\-button\fP/сопоставляется с \fB\-\-cancel\-label\fP
+\fB\-\-fb\fP/игнорируется
+\fB\-\-fullbutton\fP/игнорируется
+\fB\-\-no\-button\fP/сопоставляется с \fB\-\-no\-label\fP
+\fB\-\-nocancel\fP/сопоставляется с \fB\-\-no\-cancel\fP
+\fB\-\-noitem\fP/сопоставляется с \fB\-\-no\-items\fP
+\fB\-\-notags\fP/сопоставляется с \fB\-\-no\-tags\fP
+\fB\-\-ok\-button\fP/сопоставляется с \fB\-\-ok\-label\fP
+\fB\-\-scrolltext\fP/сопоставляется с \fB\-\-scrollbar\fP
+\fB\-\-topleft\fP/сопоставляется с \fB\-\-begin 0 0\fP
+\fB\-\-yes\-button\fP/сопоставляется с \fB\-\-yes\-label\fP
 _
 .TE
 .RE
 .LP
-There are visual differences which are not addressed by command-line options:
+Существуют визуальные различия, которые не учитываются опциями командной строки:
 .bP
-\fB\*p\fP centers lists within the window.
-\fBwhiptail\fP typically puts lists against the left margin.
+\fB\*p\fP центрирует списки в окне.
+\fBwhiptail\fP обычно размещает списки у левого края.
 .bP
-\fBwhiptail\fP uses angle brackets (\*(``<\*('' and \*(``>\*('')
-for marking buttons.
-\fB\*p\fP uses square brackets.
+\fBwhiptail\fP использует угловые скобки (\*(``<\*('' и \*(``>\*('')
+для обозначения кнопок.
+\fB\*p\fP использует квадратные скобки.
 .bP
-\fBwhiptail\fP marks the limits of subtitles with vertical bars.
-\fB\*p\fP does not mark the limits.
+\fBwhiptail\fP обозначает границы подзаголовков вертикальными полосами.
+\fB\*p\fP не обозначает границы.
 .bP
-\fBwhiptail\fP attempts to mark the top/bottom cells of a scrollbar
-with up/down arrows.
-When it cannot do this,
-it fills those cells with the background color
-of the scrollbar and confusing the user.
-\fB\*p\fP uses the entire scrollbar space,
-thereby getting better resolution.
+\fBwhiptail\fP пытается обозначить верхние/нижние ячейки полосы прокрутки
+стрелками вверх/вниз.
+Когда это невозможно,
+он заполняет эти ячейки цветом фона
+полосы прокрутки и сбивает пользователя с толку.
+\fB\*p\fP использует весь пространство полосы прокрутки,
+тем самым получая лучшее разрешение.
 .\" ************************************************************************
-.SH BUGS
-Perhaps.
-.SH AUTHOR
+.SH ОШИБКИ
+Возможно.
+.SH АВТОР
 .LP
-Thomas E.\& Dickey (updates for 0.9b and beyond)
-.SH CONTRIBUTORS
-Kiran Cherupally \(en the mixed form and mixed gauge widgets.
+Томас Е.\& Дики (обновления с 0.9b и выше)
+.SH УЧАСТНИКИ
+Киран Черупалли \(en виджеты смешанной формы и смешанного индикатора.
 .LP
-Tobias C.\& Rittweiler
+Тобиас C.\& Риттвейлер
 .LP
-Valery Reznic \(en the form and progressbox widgets.
+Валерий Резник \(en виджеты формы и прогрессбокса.
 .LP
-Yura Kalinichenko adapted the gauge widget as \*(``pause\*(''.
+Юра Калиниченко адаптировал виджет индикатора как \*(``pause\*(''.
 .PP
-This is a rewrite (except as needed to provide compatibility)
-of the earlier version of \fB\*p 0.9a\fP,
-which lists as authors:
+Это переписывание (за исключением случаев, необходимых для обеспечения совместимости)
+ранней версии \fB\*p 0.9a\fP,
+которая перечисляет в качестве авторов:
 .bP
-Savio Lam \(en version 0.3, \*(``dialog\*(''
+Савио Лам \(en версия 0.3, \*(``dialog\*('')
 .bP
-Stuart Herbert \(en patch for version 0.4
+Стюарт Герберт \(en патч для версии 0.4
 .bP
-Marc Ewing \(en the gauge widget.
+Марк Юинг \(en виджет индикатора.
 .bP
-Pasquale De Marco \*(``Pako\*('' \(en version 0.9a, \*(``cdialog\*(''
+Паскуале Де Марко \*(``Pako\*('' \(en версия 0.9a, \*(``cdialog\*('')

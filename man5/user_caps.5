@@ -51,331 +51,331 @@
 .ie n  .IP \(bu 4
 .el    .IP \(bu 2
 ..
-.SH NAME
-user_caps \- user-defined terminfo capabilities
-.SH SYNOPSIS
+.SH ИМЯ
+user_caps \- user-defined terminfo capabilities 
+.SH КРАТКОЕ ОПИСАНИЕ
 .B tic -x, infocmp -x
-.SH DESCRIPTION
-.SS Background
+.SH ОПИСАНИЕ
+.СС История
+.PP 
+До ncurses 5.0, 
+базы данных terminfo использовали \fIfixed repertoire\fP терминалов 
+возможности, разработанные для базы данных терминалов SVr2 в 1984 году, 
+и поэтапно расширенные через SVr4 (1989), 
+и стандартизирован в Единой спецификации Unix, начиная с 1995 года.
 .PP
-Before ncurses 5.0,
-terminfo databases used a \fIfixed repertoire\fP of terminal
-capabilities designed for the SVr2 terminal database in 1984,
-and extended in stages through SVr4 (1989),
-and standardized in the Single Unix Specification beginning in 1995.
-.PP
-Most of the \fIextensions\fP in this fixed repertoire were additions
-to the tables of boolean, numeric and string capabilities.
-Rather than change the meaning of an existing capability, a new name was added.
-The terminfo database uses a binary format; binary compatibility was
-ensured by using a header which gave the number of items in the
-tables for each type of capability.
-The standardization was incomplete:
-.bP
-The \fIbinary format\fP itself is not described
-in the X/Open Curses documentation.
-Only the \fIsource format\fP is described.
+Большинство расширений \fIextensions\fP в этом фиксированном наборе были дополнениями 
+к таблицам логических, числовых и строковых возможностей.
+Вместо того чтобы изменять значение существующей возможности, было добавлено новое название.
+База данных terminfo использует двоичный формат; двоичная совместимость была 
+обеспечена использованием заголовка, который указывал количество элементов в 
+таблицах для каждого типа возможностей.
+Стандартизация была неполной: 
+.bP 
+Сам формат \fIbinary\fP не описан 
+в документации X/Open Curses .
+Описан только формат \fIsource\fP.
+.IP 
+Разработчики библиотеки полагаются на документацию SVr4,
+и реверс-инжиниринг скомпилированных файлов terminfo в соответствии с двоичным форматом.
+.bP 
+В большинстве реализаций отсутствует стандарт для двоичного формата. 
+копирует двоичный формат SVr2, который использует 16-разрядные целые числа со знаком, 
+и ограничен записями размером 4096 байт.
 .IP
-Library developers rely upon the SVr4 documentation,
-and reverse-engineering the compiled terminfo files to match the binary format.
-.bP
-Lacking a standard for the binary format, most implementations
-copy the SVr2 binary format, which uses 16-bit signed integers,
-and is limited to 4096-byte entries.
+Формат не может представлять очень большие цифровые возможности, 
+также он не может представлять большое количество специальных определений клавиатуры.
+.bP 
+Таблицы названий возможностей различаются в разных реализациях.
+.IP 
+Хотя они \fImay \ fP предоставляют все стандартные названия возможностей, 
+положение в таблицах отличается, потому что некоторые функции добавлялись по мере необходимости, 
+в то время как другие были добавлены (не по порядку) в соответствии с X / Open Curses.
 .IP
-The format cannot represent very large numeric capabilities,
-nor can it represent large numbers of special keyboard definitions.
-.bP
-The tables of capability names differ between implementations.
+Хотя набор предопределенных возможностей ncurses наиболее близок к Solaris, 
+База данных terminfo Solaris имеет несколько отличий от 
+списка, опубликованного X / Open Curses .
+Например, ncurses могут быть сконфигурированы с таблицами, которые соответствуют 
+терминальным базам данных для AIX, HP-UX или OSF/1, 
+а не конфигурации, подобной Solaris по умолчанию.
+.bP 
+В SVr4 curses и ncurses 
+база данных терминала определяется во время компиляции с использованием текстового файла 
+в котором перечислены различные возможности терминала.
 .IP
-Although they \fImay\fP provide all of the standard capability names,
-the position in the tables differs because some features were added as needed,
-while others were added (out of order) to comply with X/Open Curses.
-.IP
-While ncurses' repertoire of predefined capabilities is closest to Solaris,
-Solaris's terminfo database has a few differences from
-the list published by X/Open Curses.
-For example, ncurses can be configured with tables which match the
-terminal databases for AIX, HP-UX or OSF/1,
-rather than the default Solaris-like configuration.
-.bP
-In SVr4 curses and ncurses,
-the terminal database is defined at compile-time using a text file
-which lists the different terminal capabilities.
-.IP
-In principle, the text-file can be extended,
-but doing this requires recompiling and reinstalling the library.
-The text-file used in ncurses for terminal capabilities includes
-details for various systems past the documented X/Open Curses features.
-For example, ncurses supports these capabilities in each configuration:
+В принципе, текстовый файл можно расширить, 
+но для этого требуется перекомпиляция и переустановка библиотеки.
+Текстовый файл, используемый в ncurses для описания возможностей терминала, включает 
+подробную информацию о различных системах, помимо документированных функций X / Open Curses.
+Например, ncurses поддерживает эти возможности в каждой конфигурации:
 .RS 8
-.TP 5
-memory_lock
+.TP 5 
+memory_lock 
 (meml)
-lock memory above cursor
-.TP 5
-memory_unlock
+заблокируйте память над курсором 
+.TP 5 
+memory_unlock 
 (memu)
-unlock memory
+разблокируйте память 
 .TP 5
 box_chars_1
-(box1)
-box characters primary set
-.RE
+(вставка 1) 
+Основной набор символов box 
+.RE 
 .IP
-The memory lock/unlock capabilities were included because they were used
-in the X11R6 terminal description for \fBxterm\fP.
-The \fIbox1\fP capability is used in tic to help with terminal descriptions
-written for AIX. 
+Возможности блокировки / разблокировки памяти были включены, потому что они использовались 
+в описании терминала X11R6 для \fBxterm\fP.
+Функция \fIbox1\fP используется в tic для облегчения работы с описаниями терминалов 
+написана для AIX. 
+.PP 
+В 1990-х годах некоторые пользователи неохотно использовали terminfo 
+несмотря на его преимущества в производительности по сравнению с termcap:
+.bP 
+Фиксированный набор не позволял пользователям добавлять функции 
+для непредвиденных улучшений терминала 
+(или требовал от них повторного использования существующих возможностей в качестве обходного пути).
+.bP 
+Также упоминалось ограничение на 16-разрядные целые числа со знаком.
+Поскольку termcap хранит все в виде строки, 
+это могло представлять большие числа.
+.PP 
+Хотя расширяемость termcap использовалась редко.
+(на самом деле эту функцию никогда не использовал \fIspeaker\fP), 
+в критике был смысл.
+на ncurses 5.0 предоставляется способ обнаружения нестандартных возможностей,
+определить их
+тип и, при необходимости, сохранять и извлекать их таким образом, что не мешали
+с другими приложениями.
+Они называются \fIuser-defined capabilities\fP потому что нет
+необходимые изменения в заранее определенные имена инструментов возможности.
 .PP
-During the 1990s, some users were reluctant to use terminfo
-in spite of its performance advantages over termcap:
-.bP
-The fixed repertoire prevented users from adding features
-for unanticipated terminal improvements
-(or required them to reuse existing capabilities as a workaround).
-.bP
-The limitation to 16-bit signed integers was also mentioned.
-Because termcap stores everything as a string,
-it could represent larger numbers.
+Утилиты ncurses \fBtic\fP и \fBinfocmp\fP имеют параметр командной строки 
+\*(`\-x\*(" для управления тем, используются ли нестандартные возможности 
+хранятся или извлекаются.
+Библиотечная функция \fBuse_extended_names\fP 
+предоставляется для той же цели.
 .PP
-Although termcap's extensibility was rarely used
-(it was never the \fIspeaker\fP who had actually used the feature),
-the criticism had a point.
-ncurses 5.0 provided a way to detect nonstandard capabilities,
-determine their
-type and optionally store and retrieve them in a way which did not interfere
-with other applications.
-These are referred to as \fIuser-defined capabilities\fP because no
-modifications to the toolset's predefined capability names are needed.
-.PP
-The ncurses utilities \fBtic\fP and \fBinfocmp\fP have a command-line
-option \*(``\-x\*('' to control whether the nonstandard capabilities
-are stored or retrieved.
-A library function \fBuse_extended_names\fP
-is provided for the same purpose.
-.PP
-When compiling a terminal database, if \*(``\-x\*('' is set,
-\fBtic\fP will store a user-defined capability if the capability name is not
-one of the predefined names.
-.PP
-Because ncurses provides a termcap library interface,
-these user-defined capabilities may be visible to termcap applications:
-.bP
-The termcap interface (like all implementations of termcap)
-requires that the capability names are 2-characters.
+При составлении базы данных терминалов, если \*(`\-Х\*(" выставляется,
+\fBtic\fP для хранения пользовательских возможностей, если имя функции не
+одно из предопределенных имен.
+.PP 
+Поскольку ncurses предоставляет интерфейс библиотеки termcap, 
+эти пользовательские возможности могут быть видны приложениям termcap:
+.bP 
+Интерфейс termcap (как и все реализации termcap)
+требуется, чтобы имена возможностей состояли из 2 символов.
 .IP
-When the capability is simple enough for use in a termcap application,
-it is provided as a 2-character name.
+Если функция достаточно проста для использования в приложении termcap, 
+она предоставляется в виде имени из 2 символов.
 .bP
-There are other
-user-defined capabilities which refer to features not usable in termcap,
-e.g., parameterized strings that use more than two parameters
-or use more than the trivial expression support provided by termcap.
-For these, the terminfo database should have only capability names with
-3 or more characters.
-.bP
-Some terminals can send distinct strings for special keys (cursor-,
-keypad- or function-keys) depending on modifier keys (shift, control, etc.).
-While terminfo and termcap have a set of 60 predefined function-key names,
-to which a series of keys can be assigned,
-that is insufficient for more than a dozen keys multiplied by more than
-a couple of modifier combinations.
-The ncurses database uses a convention based on \fBxterm\fP to
-provide extended special-key names.
-.IP
-Fitting that into termcap's limitation of 2-character names
-would be pointless.
-These extended keys are available only with terminfo.
-.SS Recognized capabilities
+Существуют и другие 
+определяемые пользователем возможности, которые относятся к функциям, недоступным в termcap, 
+например, параметризованные строки, которые используют более двух параметров 
+или используют больше, чем поддержку тривиальных выражений, предоставляемую termcap.
+Для этого в базе данных terminfo должны быть только имена возможностей, состоящие из
+3 или более символов.
+.bP 
+Некоторые терминалы могут отправлять отдельные строки для специальных клавиш (cursor-, 
+keypad- или function-keys) в зависимости от клавиш-модификаторов (shift, control и т.д.).
+В то время как terminfo и termcap имеют набор из 60 предопределенных имен функциональных клавиш, 
+которым может быть назначена серия клавиш, 
+этого недостаточно для более чем дюжины клавиш, умноженных более чем на 
+пара комбинаций модификаторов.
+База данных ncurses использует соглашение, основанное на \fBxterm\fP, для 
+предоставления расширенных имен специальных ключей.
+.IP 
+Вписывать это в ограничение termcap на имена из 2 символов 
+было бы бессмысленно.
+Эти расширенные ключи доступны только с помощью terminfo.
+.SS Распознает возможности 
 .PP
-The ncurses library uses the user-definable capabilities.
-While the terminfo database may have other extensions,
-ncurses makes explicit checks for these:
+Библиотека ncurses использует определяемые пользователем возможности.
+Хотя база данных terminfo может иметь другие расширения, 
+ncurses выполняет явные проверки для них:
 .RS 3
 .TP 3
 AX
-\fIboolean\fP, asserts that the terminal interprets SGR 39 and SGR 49
-by resetting the foreground and background color, respectively, to the default.
+\fIboolean\fP, утверждает, что терминал интерпретирует SGR 39 и SGR 49
+путем сброса цвета переднего плана и фона соответственно на значения по умолчанию.
 .IP
-This is a feature recognized by the \fBscreen\fP program as well.
+Эта функция также распознается программой \fBscreen\fP.
 .TP 3
 E3
-\fIstring\fP, tells how to clear the terminal's scrollback buffer.
-When present, the \fBclear\fP(1) program sends this before clearing
-the terminal.
+\fIstring\fP сообщает, как очистить буфер обратной прокрутки терминала.
+При наличии программа \fBclear\fP(1) отправляет это сообщение перед очисткой 
+терминал.
 .IP
-The command \*(``\fBtput clear\fP\*('' does the same thing.
+Команда \*(`\fBtput очистить\fP\*(" выполняет то же самое.
 .TP 3
-RGB
-\fIboolean\fP, \fInumber\fP \fBor\fP \fIstring\fP,
-to assert that the
-\fBset_a_foreground\fP and
-\fBset_a_background\fP capabilities correspond to \fIdirect colors\fP,
-using an RGB (red/green/blue) convention.
-This capability allows the \fBcolor_content\fP function to
-return appropriate values without requiring the application
-to initialize colors using \fBinit_color\fP.
+RGB 
+\fIboolean\fP, \fInumber\fP \fBor\fP \fIstring\fP, 
+утверждать, что 
+Возможности \fBset_a_foreground\fP и 
+\fBset_a_background\fP соответствуют \fIdirect colors\fP, 
+использование соглашения RGB (красный / зеленый / синий).
+Эта возможность позволяет функции \fBcolor_content\fP 
+возвращать соответствующие значения, не требуя от приложения 
+инициализировать цвета с помощью \fBinit_color\fP.
 .IP
-The capability type determines the values which ncurses sees:
+Тип возможности определяет значения, которые видит ncurses:
 .RS 3
 .TP 3
-\fIboolean\fP
-implies that the number of bits for red, green and blue are the same.
-Using the maximum number of colors,
-ncurses adds two, divides that sum by three, and assigns the result
-to red, green and blue in that order.
+\fIboolean\fP 
+подразумевает, что количество битов для красного, зеленого и синего одинаково.
+Используя максимальное количество цветов, 
+ncurses добавляет два, делит эту сумму на три и присваивает результат 
+красному, зеленому и синему в указанном порядке.
 .IP
-If the number of bits needed for the number of colors is not a multiple
-of three, the blue (and green) components lose in comparison to red.
+Если количество битов, необходимых для определения количества цветов, не кратно
+из трех компонентов синий (и зеленый) проигрывают красному.
 .TP 3
-\fInumber\fP
-tells ncurses what result to add to red, green and blue.
-If ncurses runs out of bits,
-blue (and green) lose just as in the \fIboolean\fP case.
+\fInumber\fP 
+сообщает ncurses, какой результат добавить к красному, зеленому и синему.
+Если в ncurses заканчиваются биты, 
+синий (и зеленый) проигрывают так же, как в случае \fIboolean\fP.
 .TP 3
-\fIstring\fP
-explicitly list the number of bits used for red, green and blue components
-as a slash-separated list of decimal integers.
-.RE
+\fIstring\fP 
+явно укажите количество битов, используемых для красного, зеленого и синего компонентов 
+в виде списка целых десятичных чисел, разделенных косой чертой.
+.RE 
+.IP 
+Поскольку используется несколько кодировок RGB, 
+приложения, которые делают предположения о количестве битов на цвет 
+, вряд ли будут работать надежно.
+В качестве тривиального случая, например, можно было бы определить \fBRGB#1\fP 
+для представления стандартных восьми цветов ANSI, т. Е. по одному биту на цвет.
+.TP 3
+U8 
+\fInumber \fP, 
+утверждает, что ncurses должен использовать значения Unicode для символов линейного рисования, 
+и что он должен игнорировать возможности альтернативного набора символов 
+когда локаль использует кодировку UTF-8.
+Для получения дополнительной информации смотрите Обсуждение 
+\fBNCURSES_NO_UTF8_ACS\fP в \fBncurses\fP(3X).
 .IP
-Because there are several RGB encodings in use,
-applications which make assumptions about the number of bits per color
-are unlikely to work reliably.
-As a trivial case, for example, one could define \fBRGB#1\fP
-to represent the standard eight ANSI colors, i.e., one bit per color.
-.TP 3
-U8
-\fInumber\fP,
-asserts that ncurses must use Unicode values for line-drawing characters,
-and that it should ignore the alternate character set capabilities
-when the locale uses UTF-8 encoding.
-For more information, see the discussion of
-\fBNCURSES_NO_UTF8_ACS\fP in \fBncurses\fP(3X).
-.IP
-Set this capability to a nonzero value to enable it.
+Установите для этой возможности ненулевое значение, чтобы включить ее.
 .TP 3
 XM
-\fIstring\fP,
-override ncurses's built-in string which
-enables/disables \fBxterm\fP mouse mode.
+\fIstring\fP, 
+переопределите встроенную строку ncurses, которая 
+включает / отключает режим мыши \fBxterm \fP.
+.IP 
+ncurses отправляет последовательность символов на терминал для инициализации режима мыши,
+и когда пользователь нажимает кнопки мыши или (в определенных режимах) перемещает 
+мышь, обрабатывает символы, отправленные терминалом обратно, чтобы сообщить ему, что 
+было сделано с помощью мыши.
 .IP
-ncurses sends a character sequence to the terminal to initialize mouse mode,
-and when the user clicks the mouse buttons or (in certain modes) moves the
-mouse, handles the characters sent back by the terminal to tell it what
-was done with the mouse.
+Протокол мыши включается, когда 
+параметр \fImask\fP, передаваемый в функции \fBmousemask\fP, отличен от нуля.
+По умолчанию ncurses обрабатывает ответы для протокола мыши X11 xterm.
+Он также знает о протоколе мыши \ fISGR 1006 \ fP xterm, 
+но ему нужно сказать, чтобы он обращал внимание именно на это.
+Он не сможет угадать, какой режим используется, 
+поскольку ответы достаточно похожи, что приведет только к путанице.
 .IP
-The mouse protocol is enabled when
-the \fImask\fP passed in the \fBmousemask\fP function is nonzero.
-By default, ncurses handles the responses for the X11 xterm mouse protocol.
-It also knows about the \fISGR 1006\fP xterm mouse protocol,
-but must to be told to look for this specifically.
-It will not be able to guess which mode is used,
-because the responses are enough alike that only confusion would result.
+Возможность \fBXM \ fP имеет единственный параметр.
+Если ненулевое значение, протокол мыши должен быть включен.
+Если нулевое значение, протокол мыши должен быть отключен.
+ncurses проверяет эту возможность, если она присутствует, 
+чтобы увидеть, используется ли протокол 1006.
+Если это так, он ожидает, что в ответах будет использоваться протокол xterm mouse \fISGR 1006 \fP.
 .IP
-The \fBXM\fP capability has a single parameter.
-If nonzero, the mouse protocol should be enabled.
-If zero, the mouse protocol should be disabled.
-ncurses inspects this capability if it is present,
-to see whether the 1006 protocol is used.
-If so, it expects the responses to use the \fISGR 1006\fP xterm mouse protocol.
+Протокол xterm mouse используется другими эмуляторами терминала.
+База данных терминала использует строительные блоки для различных xterm mouse 
+протоколы, которые могут использоваться в настраиваемых описаниях терминалов.
 .IP
-The xterm mouse protocol is used by other terminal emulators.
-The terminal database uses building-blocks for the various xterm mouse
-protocols which can be used in customized terminal descriptions.
+Строительные блоки базы данных терминала для этой мыши
+функция также имеет экспериментальную возможность \fIxm\fP.
+Функция \*(`xm\*(" описывает реакцию мыши.
+В настоящее время нет интерпретатора, который использовал бы эту информацию 
+чтобы сделать поддержку мыши полностью управляемой данными.
 .IP
-The terminal database building blocks for this mouse
-feature also have an experimental capability \fIxm\fP.
-The \*(``xm\*('' capability describes the mouse response.
-Currently there is no interpreter which would use this
-information to make the mouse support completely data-driven.
-.IP
-\fIxm\fP shows the format of the mouse responses.
-In this experimental capability, the parameters are
+\fIxm\fP показывает формат ответов мыши.
+В этой экспериментальной возможности параметры следующие 
 .RS 5
 .TP 5
-.I p1
-y-ordinate
+.I p1 
+y-ордината 
 .TP 5
 .I p2
-x-ordinate
+x-ордината 
 .TP 5
-.I p3
-button
+.I p3 
+кнопка 
 .TP 5
-.I p4
-state, e.g., pressed or released
+.I p4 
+состояние, например, нажата или отпущена 
 .TP 5
-.I p5
-y-ordinate starting region
+.I p5 
+начальная область по оси y 
 .TP 5
 .I p6
-x-ordinate starting region
+начальная область по x-ординате 
 .TP 5
-.I p7
-y-ordinate ending region
+.I p7 
+конечная область по y-ординате 
 .TP 5
 .I p8
-x-ordinate ending region
-.RE
+область окончания x-ординаты 
+.RE 
 .IP
-Here are examples from the terminal database for the most commonly used
-xterm mouse protocols:
-.IP
-.nf
-  xterm+x11mouse|X11 xterm mouse protocol,
-          kmous=\\E[M, XM=\\E[?1000%?%p1%{1}%=%th%el%;,
-          xm=\\E[M
-             %?%p4%t%p3%e%{3}%;%'\ '%+%c
-             %p2%'!'%+%c
-             %p1%'!'%+%c,
+Вот примеры из базы данных терминала для наиболее часто используемых 
+протоколов xterm mouse:
+.IP 
+.nf 
+ протокол мыши xterm+ x11mouse|X11 xterm, 
+ kmous=\\E[M, XM=\\E[?1000%?%p1%{1}%=%th%el%;,
+ xm=\\E[M 
+ %?%p4%t%p3%e%{3}%;%'\ '%+% c 
+%p2%'!'%+%c 
+ %p1%'!'%+%c,
 
-  xterm+sm+1006|xterm SGR-mouse,
-          kmous=\\E[<, XM=\\E[?1006;1000%?%p1%{1}%=%th%el%;,
-          xm=\\E[<%i%p3%d;
-             %p1%d;
-             %p2%d;
-             %?%p4%tM%em%;,
-.fi
+ xterm+sm+1006|xterm SGR-мышь, 
+ kmous=\\E[<, XM=\\E[?1006;1000%?%p1%{1}%=%th%el%;,
+ xm=\\E[<%i%p3%d;
+ %p1%d;
+ %p2%d;
+ %?%p4%tM%em%;, 
+.fi 
 .
-.SS Extended key-definitions
+.SS Расширенные определения ключей 
 .PP
-Several terminals provide the ability to send distinct strings for
-combinations of modified special keys.
-There is no standard for what those keys can send.
-.PP
-Since 1999, \fBxterm\fP has supported
-\fIshift\fP, \fIcontrol\fP, \fIalt\fP, and \fImeta\fP modifiers which produce
-distinct special-key strings.
-In a terminal description, ncurses has no special knowledge of the
-modifiers used.
-Applications can use the \fInaming convention\fP established for \fBxterm\fP
-to find these special keys in the terminal description.
-.PP
-Starting with the curses convention that \fIkey names\fP begin with \*(``k\*(''
-and that shifted special keys are an uppercase name,
-ncurses' terminal database defines these names to which a suffix is added:
+Несколько терминалов предоставляют возможность отправлять отдельные строки для 
+комбинаций модифицированных специальных клавиш.
+Не существует стандарта для того, что могут отправлять эти клавиши.
+.PP 
+С 1999 года \fBxterm\fP поддерживает
+Модификаторы \fIshift\fP, \fIcontrol\fP, \fIalt\fP и \fImeta\fP, которые создают 
+отдельные строки со специальными ключами.
+В описании терминала ncurses не имеет специальных знаний об используемых модификаторах 
+.
+Приложения могут использовать соглашение \fInaming\fP, установленное для \fBxterm\fP 
+чтобы найти эти специальные ключи в описании терминала.
+.PP 
+Исходя из соглашения curses о том, что имена ключей \ fP начинаются с \*(`k \*(" 
+и что сдвинутые специальные клавиши - это имена в верхнем регистре, 
+база данных терминалов ncurses определяет эти имена, к которым добавляется суффикс:
 .RS 5
-.TS
-tab(/) ;
+.TS 
+вкладка(/) ;
 l l .
 \fIName\fR/\fIDescription\fR
 _
-kDC/special form of kdch1 (delete character)
-kDN/special form of kcud1 (cursor down)
-kEND/special form of kend (End)
-kHOM/special form of khome (Home)
-kLFT/special form of kcub1 (cursor-left or cursor-back)
-kNXT/special form of knext (Next, or Page-Down)
-kPRV/special form of kprev (Prev, or Page-Up)
-kRIT/special form of kcuf1 (cursor-right, or cursor-forward)
-kUP/special form of kcuu1 (cursor-up)
-.TE
+kDC/специальная форма kdch1 (символ удаления)
+kDN/специальная форма kcud1 (курсор вниз)
+kEND/специальная форма kend (Конец)
+kHOM/специальная форма khome (Дом)
+kLFT/специальная форма kcub1 (курсор-влево или курсор-назад)
+kNXT/специальная форма knext (следующая или постраничная)
+kPRV/специальная форма kprev (Предыдущая или постраничная)
+kRIT/ специальная форма kcuf1 (перемещение курсора вправо или вперед)
+kUP/специальная форма kcuu1 (курсор вверх)
+.TE 
 .RE
 .PP
-These are the suffixes used to denote the modifiers:
+Это суффиксы, используемые для обозначения модификаторов:
 .RS 5
-.TS
+.TS 
 tab(/) ;
 l l .
 \fIValue\fR/\fIDescription\fR
@@ -383,7 +383,7 @@ _
 2/Shift
 3/Alt
 4/Shift + Alt
-5/Control
+5/Контроль
 6/Shift + Control
 7/Alt + Control
 8/Shift + Alt + Control
@@ -394,46 +394,46 @@ _
 13/Meta + Ctrl
 14/Meta + Ctrl + Shift
 15/Meta + Ctrl + Alt
-16/Meta + Ctrl + Alt + Shift
-.TE
-.RE
+16/Meta + Ctrl + Alt + Shift 
+.TE 
+.RE 
 .PP
-None of these are predefined; terminal descriptions can refer to \fInames\fP
-which ncurses will allocate at runtime to \fIkey-codes\fP.
-To use these keys in an ncurses program, an application could do this:
-.bP
-using a list of extended key \fInames\fP,
-ask \fBtigetstr\fP(3X) for their values, and
-.bP
-given the list of values,
-ask \fBkey_defined\fP(3X) for the \fIkey-code\fP which
-would be returned for those keys by \fBwgetch\fP(3X).
+Ничто из этого не предопределено; описания терминалов могут относиться к \fInames\fP 
+которые ncurses будут выделять во время выполнения в \fIkey-codes\fP .
+Чтобы использовать эти ключи в программе ncurses, приложение могло бы сделать это:
+.bP 
+используя список расширенных ключей \fInames\fP, 
+запросите у \fBtigetstr\fP(3X) их значения и 
+.bP 
+учитывая список значений, 
+запросите \fBkey_defined\fP(3X) для получения \fIkey-кода\fP, который 
+был бы возвращен для этих ключей с помощью \fBwgetch\fP(3X).
+.PP 
+.\" 
+.SH ПЕРЕНОСИМОСТЬ 
 .PP
+Функция расширения \*(`\-x\*(" \fBtic\fP и \fBinfocmp\fP 
+была принята в NetBSD curses.
+Эта реализация хранит пользовательские возможности, 
+но сама по себе эти возможности не использует.
 .\"
-.SH PORTABILITY
-.PP
-The \*(``\-x\*('' extension feature of \fBtic\fP and \fBinfocmp\fP
-has been adopted in NetBSD curses.
-That implementation stores user-defined capabilities,
-but makes no use of these capabilities itself.
-.\"
-.SH SEE ALSO
-.PP
-\fBinfocmp\fR(1M),
+.SH СМОТРИТЕ ТАКЖЕ 
+.PP 
+\fBinfocmp\fR(1M), 
 \fBtic\fR(1M).
 .PP
-The terminal database section
-.I "NCURSES USER-DEFINABLE CAPABILITIES"
-summarizes commonly-used user-defined capabilities
-which are used in the terminal descriptions.
-Some of those features are mentioned in \fBscreen\fR(1) or \fBtmux\fR(1).
+Раздел базы данных терминала
+.I "NCURSES ПРЕДОСТАВЛЯЕТ ВОЗМОЖНОСТИ, ОПРЕДЕЛЯЕМЫЕ ПОЛЬЗОВАТЕЛЕМ"
+обобщены часто используемые пользовательские возможности 
+которые используются в описаниях терминалов.
+Некоторые из этих функций упоминаются в \fBscreen\fR(1) или \fBtmux\fR(1).
 .PP
-.I "XTerm Control Sequences"
-provides further information on the \fBxterm\fP features
-which are used in these extended capabilities.
+.I "Управляющие последовательности XTerm"
+предоставляет дополнительную информацию о функциях \fBxterm\fP 
+которые используются в этих расширенных возможностях.
 .\"
-.SH AUTHORS
-.PP
-Thomas E. Dickey
-.br
-beginning with ncurses 5.0 (1999)
+.SH АВТОРЫ
+.PP 
+Томас Э. Дики 
+.br 
+начиная с ncurses 5.0 (1999)

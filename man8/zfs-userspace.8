@@ -33,10 +33,10 @@
 .Dt ZFS-USERSPACE 8
 .Os
 .
-.Sh NAME
+.Sh ИМЯ
 .Nm zfs-userspace
-.Nd display space and quotas of ZFS dataset
-.Sh SYNOPSIS
+.Nd пространство для отображения и квоты набора данных ZFS
+.Sh СИНТАКСИС
 .Nm zfs
 .Cm userspace
 .Op Fl Hinp
@@ -61,7 +61,7 @@
 .Oo Fl S Ar field Oc Ns …
 .Ar filesystem Ns | Ns Ar snapshot Ns | Ns Ar path
 .
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 .Bl -tag -width ""
 .It Xo
 .Nm zfs
@@ -73,76 +73,73 @@
 .Oo Fl t Ar type Ns Oo , Ns Ar type Oc Ns … Oc
 .Ar filesystem Ns | Ns Ar snapshot Ns | Ns Ar path
 .Xc
-Displays space consumed by, and quotas on, each user in the specified
-filesystem,
-snapshot, or path.
-If a path is given, the filesystem that contains that path will be used.
-This corresponds to the
+Отображает пространство, занимаемое каждым пользователем, и квоты для него в указанной
+файловой системе,
+снапшоте или пути.
+Если указан путь, будет использоваться файловая система, содержащая этот путь.
+Это соответствует свойствам
 .Sy userused@ Ns Em user ,
 .Sy userobjused@ Ns Em user ,
 .Sy userquota@ Ns Em user ,
-and
-.Sy userobjquota@ Ns Em user
-properties.
+и
+.Sy userobjquota@ Ns Em user .
 .Bl -tag -width "-S field"
 .It Fl H
-Do not print headers, use tab-delimited output.
+Не печатает заголовки, использует выходные данные, разделенные табуляцией.
 .It Fl S Ar field
-Sort by this field in reverse order.
-See
+Выполняет сортировку по этому полю в обратном порядке.
+Смотрите
 .Fl s .
 .It Fl i
-Translate SID to POSIX ID.
-The POSIX ID may be ephemeral if no mapping exists.
-Normal POSIX interfaces
-.Pq like Xr stat 2 , Nm ls Fl l
-perform this translation, so the
+Преобразуйте SID в POSIX ID.
+POSIX ID может быть недолговечным, если не существует сопоставления.
+Обычные интерфейсы POSIX
+.Pq, такие как Xr stat 2 , Nm ls Fl l , выполняют это преобразование, поэтому параметр
 .Fl i
-option allows the output from
+позволяет выводить данные из
 .Nm zfs Cm userspace
-to be compared directly with those utilities.
-However,
+для непосредственного сравнения с этими утилитами.
+Однако,
 .Fl i
-may lead to confusion if some files were created by an SMB user before a
-SMB-to-POSIX name mapping was established.
-In such a case, some files will be owned by the SMB entity and some by the POSIX
-entity.
-However, the
+может привести к путанице, если некоторые файлы были созданы пользователем SMB до того как было установлено сопоставление имен SMB с POSIX.
+В таком случае некоторые файлы будут принадлежать объекту SMB, а некоторые
+- объекту POSIX.
+Однако, параметр
 .Fl i
-option will report that the POSIX entity has the total usage and quota for both.
+сообщит, что объект POSIX имеет общее использование и квоту для обоих.
 .It Fl n
-Print numeric ID instead of user/group name.
+Выводит числовой идентификатор вместо имени пользователя/группы.
 .It Fl o Ar field Ns Oo , Ns Ar field Oc Ns …
-Display only the specified fields from the following set:
+Отображает только указанные поля из следующего набора:
 .Sy type ,
 .Sy name ,
 .Sy used ,
 .Sy quota .
-The default is to display all fields.
+По умолчанию отображаются все поля.
 .It Fl p
-Use exact
-.Pq parsable
-numeric output.
+Использует точный
+.Pq поддающийся разбору
+числовой вывод.
 .It Fl s Ar field
-Sort output by this field.
-The
+Сортирует выходные данные по этому полю.
+Флаги
 .Fl s
-and
+и
 .Fl S
-flags may be specified multiple times to sort first by one field, then by
-another.
-The default is
+могут быть заданы несколько раз для сортировки сначала по одному полю, затем по
+другому.
+По умолчанию это
 .Fl s Sy type Fl s Sy name .
 .It Fl t Ar type Ns Oo , Ns Ar type Oc Ns …
-Print only the specified types from the following set:
+Выводит только указанные типы из следующего набора:
 .Sy all ,
 .Sy posixuser ,
 .Sy smbuser ,
 .Sy posixgroup ,
 .Sy smbgroup .
-The default is
+По умолчанию это
 .Fl t Sy posixuser , Ns Sy smbuser .
-The default can be changed to include group types.
+Значение по умолчанию можно изменить, включив в него типы групп.
 .El
 .It Xo
 .Nm zfs
@@ -154,11 +151,11 @@ The default can be changed to include group types.
 .Oo Fl t Ar type Ns Oo , Ns Ar type Oc Ns … Oc
 .Ar filesystem Ns | Ns Ar snapshot
 .Xc
-Displays space consumed by, and quotas on, each group in the specified
-filesystem or snapshot.
-This subcommand is identical to
+Отображает пространство, занимаемое каждой группой в указанной
+файловой системе или снапшоте, и установленные для нее квоты.
+Эта подкоманда идентична
 .Cm userspace ,
-except that the default types to display are
+за исключением того, что по умолчанию отображаются следующие типы
 .Fl t Sy posixgroup , Ns Sy smbgroup .
 .It Xo
 .Nm zfs
@@ -169,20 +166,20 @@ except that the default types to display are
 .Oo Fl S Ar field Oc Ns …
 .Ar filesystem Ns | Ns Ar snapshot Ns | Ns Ar path
 .Xc
-Displays space consumed by, and quotas on, each project in the specified
-filesystem or snapshot.
-This subcommand is identical to
+Отображает пространство, занимаемое каждым проектом в указанной
+файловой системе или снапшоте, и установленные для него квоты.
+Эта подкоманда идентична
 .Cm userspace ,
-except that the project identifier is a numeral, not a name.
-So need neither the option
+за исключением того, что идентификатор проекта - это цифра, а не название.
+Так что не нужен ни тот, ни другой параметр
 .Fl i
-for SID to POSIX ID nor
+для преобразования SID в POSIX ID ни
 .Fl n
-for numeric ID, nor
+для числового идентификатора, ни
 .Fl t
-for types.
+для типов.
 .El
 .
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr zfsprops 7 ,
 .Xr zfs-set 8

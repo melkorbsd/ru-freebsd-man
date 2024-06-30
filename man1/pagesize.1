@@ -1,53 +1,52 @@
 .\" Copyright (c) 1983, 1990, 1993
-.\"	The Regents of the University of California.  All rights reserved.
+.\"	Ректоры Калифорнийского университета. Все права защищены.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
-.\" 3. Neither the name of the University nor the names of its contributors
-.\"    may be used to endorse or promote products derived from this software
-.\"    without specific prior written permission.
+.\" Распространение и использование в исходном коде и двоичной форме, с использованием или без использования
+.\" модификаций, если следующие условия
+.\" соблюдаются:
+.\" 1. При распространении исходного кода должно сохраняться вышеуказанное уведомление
+.\"    об авторских правах, этот список условий и следующий дисклеймер.
+.\" 2. При распространиении в двоичной форме должно воспроизводиться уведомление об авторских правах,
+.\"    этот список условий и следующий ниже отказ от ответственности в
+.\"    документации и/или других материалах, поставляемых с дистрибутивом.
+.\" 3. Ни название университета, ни имена его участников не могут быть использованы для
+.\"    поддержки или продвижения продуктов, созданных на основе данного программного обеспечения,
+.\"    без специального предварительного письменного согласия.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ ПРАВООБЛАДАТЕЛЯМИ И СОАВТОРАМИ ``КАК ЕСТЬ'', И 
+.\" МЫ ОТКАЗЫВАЕМСЯ ОТ ЛЮБЫХ ПОДРАЗУМЕВАЕМЫХ ОБЯЗАТЕЛЬСТВ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, 
+.\" ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ТОВАРНОЙ ПРИГОДНОСТИ И НЕПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ
+.\" ЦЕЛИ. НИ В КОЕМ СЛУЧАЕ ПРАВООБЛАДАТЕЛИ ИЛИ СОВАТОРЫ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ
+.\" ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, ОСОБЫЕ, ПОКАЗАТЕЛЬНЫЕ ИЛИ ЛОГИЧЕСКИ ВЫТЕКАЮЩИЕ
+.\" УБЫТКИ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ ИМИ, ПРИОБРЕТЕНИЕ ЗАМЕНЯЮЩИХ ТОВАРОВ ИЛИ УСЛУГ;
+.\" ПОТЕРЮ ВОЗМОЖНОСТИ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПРЕКРАЩЕНИЕ ДЕЯТЕЛЬНОСТИ)
+.\" НЕЗАВИСИМО ОТ ПРИЧИНЕННОГО УЩЕРБА И НА ОСНОВАНИИ ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО В РАМКАХ КОНТРАКТА, 
+.\" ПРЯМОЙ ОТВЕТСТВЕННОСТИ ИЛИ ДЕЛИКТА (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНОЕ), ВОЗНИКШЕГО КАКИМ-ЛИБО ОБРАЗОМ
+.\" В РЕЗУЛЬТАТЕ ИСПОЛЬЗОВАНИЯ ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ ВЫ БЫЛИ ОСВЕДОМЛЕНЫ О ВОЗМОЖНОСТИ
+.\" ТАКОГО УЩЕРБА.
 .\"
 .\"	@(#)pagesize.1	8.1 (Berkeley) 6/6/93
 .\"
-.Dd June 6, 1993
+.Dd 6 июня, 1993 год
 .Dt PAGESIZE 1
 .Os
-.Sh NAME
+.Sh НАЗВАНИЕ
 .Nm pagesize
 .Nd print system page size
-.Sh SYNOPSIS
+.Sh СИНТАКСИС
 .Nm
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility prints the size of a page of memory in bytes, as
-returned by
+выводит размер страницы памяти в байтах,
+возвращаемый
 .Xr getpagesize 3 .
-This program is useful in constructing portable
-shell scripts.
-.Sh SEE ALSO
+Эта программа полезна при создании переносимых
+shell-скриптов.
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr getpagesize 3
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Команда
 .Nm
-command
-appeared in
+появилась в
 .Bx 4.2 .

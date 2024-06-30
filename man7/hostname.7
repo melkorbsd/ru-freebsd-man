@@ -30,58 +30,57 @@
 .Dd December 25, 2013
 .Dt HOSTNAME 7
 .Os
-.Sh NAME
-.Nm hostname
-.Nd host name resolution description
-.Sh DESCRIPTION
-Hostnames are domains, where a domain is a hierarchical, dot-separated
-list of subdomains; for example, the machine monet, in the Berkeley
-subdomain of the EDU subdomain of the Internet would be represented as
+.Sh Название
+.Nm имя хоста
+.Nd описание разрешений имени хоста
+.Sh Описание
+Имена хостов - это домены, где домен представляет собой иерархическую структуру, разделенную точками
+список поддоменов; например, машина monet, в Беркли
+поддомен EDU, поддомен Интернета, будет представлен в виде
 .Pp
 .Dl monet.Berkeley.EDU
 .Pp
-(with no trailing dot).
+(без завершающей точки).
 .Pp
-Hostnames are often used with network client and server programs,
-which must generally translate the name to an address for use.
-(This function is generally performed by the library routine
+Имена хостов часто используются в сетевых клиентских и серверных программах,
+который, как правило, должен преобразовывать название в адрес для использования.
+(Эта функция обычно выполняется библиотечной подпрограммой
 .Xr gethostbyname 3 . )
-Hostnames are resolved by the Internet name resolver in the following
-fashion.
+Имена хостов обрабатываются средством распознавания интернет-имен следующим образом.
 .Pp
-If the name consists of a single component, i.e., contains no dot,
-and if the environment variable
+Если имя состоит из одного компонента, т.е. не содержит точки,
+и если переменная окружения
 .Dq Ev HOSTALIASES
-is set to the name of a file,
-that file is searched for any string matching the input hostname.
-The file should consist of lines made up of two white-space separated strings,
-the first of which is the hostname alias,
-and the second of which is the complete hostname
-to be substituted for that alias.
-If a case-insensitive match is found between the hostname to be resolved
-and the first field of a line in the file, the substituted name is looked
-up with no further processing.
+задается как имя файла,
+в этом файле выполняется поиск любой строки, соответствующей введенному имени хоста.
+Файл должен состоять из строк, состоящих из двух строк, разделенных пробелами,
+первым из которых является псевдоним имени хоста,
+и второе из них - это полное имя хоста
+который будет заменен на этот псевдоним.
+Если найдено совпадение между именами хостов без учета регистра, которое необходимо устранить
+и в первом поле строки в файле просматривается подставленное имя
+завершается без дальнейшей обработки.
 .Pp
-If the input name ends with a trailing dot,
-the trailing dot is removed,
-and the remaining name is looked up with no further processing.
+Если входное имя заканчивается точкой в конце,
+конечная точка удаляется,
+а оставшееся имя просматривается без дальнейшей обработки.
 .Pp
-If the input name does not end with a trailing dot, it is looked up
-by searching through a list of domains until a match is found.
-The default search list includes first the local domain,
-then its parent domains with at least 2 name components (longest first).
-For example,
-in the domain CS.Berkeley.EDU, the name lithium.CChem will be checked first
-as lithium.CChem.CS.Berkeley.EDU and then as lithium.CChem.Berkeley.EDU.
-Lithium.CChem.EDU will not be tried, as there is only one component
-remaining from the local domain.
-The search path can be changed from the default
-by a system-wide configuration file (see
+Если входное имя не заканчивается точкой в конце, выполняется поиск по нему
+просматривая список доменов до тех пор, пока не будет найдено совпадение.
+Список поиска по умолчанию включает в себя сначала локальный домен,
+затем следуют его родительские домены, содержащие как минимум 2 компонента имен (сначала самые длинные).
+Например,
+В домене CS.Berkeley.EDU, название lithium.CChem будет проверен в первую очередьт
+так lithium.CChem.CS.Berkeley.EDU а затема,как lithium.CChem.Berkeley.EDU.
+Lithium.CChem.EDU не будет опробован, так как есть только один компонент
+оставшийся от локального домена.
+Путь поиска может быть изменен по сравнению с заданным по умолчанию
+с помощью общесистемного конфигурационного файла (см.
 .Xr resolver 5 ) .
-.Sh SEE ALSO
+.Sh Смотрите также
 .Xr gethostbyname 3 ,
 .Xr resolver 5
-.Sh HISTORY
-.Nm Hostname
-appeared in
+.Sh История
+.Nm Имя хоста
+появился в
 .Bx 4.2 .

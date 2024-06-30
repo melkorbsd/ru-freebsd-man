@@ -1,336 +1,336 @@
 .\"-
 .\" Copyright (c) 1980, 1990, 1991, 1993, 1994
-.\"	The Regents of the University of California.  All rights reserved.
+.\"	Ректоры Калифорнийского университета. Все права защищены.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
-.\" 3. Neither the name of the University nor the names of its contributors
-.\"    may be used to endorse or promote products derived from this software
-.\"    without specific prior written permission.
+.\" Распространение и использование в исходном коде и двоичной форме, с использованием или без использования
+.\" модификаций, если следующие условия
+.\" соблюдаются:
+.\" 1. При распространении исходного кода должно сохраняться вышеуказанное уведомление
+.\"    об авторских правах, этот список условий и следующий дисклеймер.
+.\" 2. При распространиении в двоичной форме должно воспроизводиться уведомление об авторских правах,
+.\"    этот список условий и следующий ниже отказ от ответственности в
+.\"    документации и/или других материалах, поставляемых с дистрибутивом.
+.\" 3. Ни название университета, ни имена его участников не могут быть использованы для
+.\"    поддержки или продвижения продуктов, созданных на основе данного программного обеспечения,
+.\"    без специального предварительного письменного согласия.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ APPLE И СОАВТОРАМИ ``КАК ЕСТЬ'', И 
+.\" МЫ ОТКАЗЫВАЕМСЯ ОТ ЛЮБЫХ ПОДРАЗУМЕВАЕМЫХ ОБЯЗАТЕЛЬСТВ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, 
+.\" ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ТОВАРНОЙ ПРИГОДНОСТИ И НЕПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ
+.\" ЦЕЛИ. НИ В КОЕМ СЛУЧАЕ ПРАВООБЛАДАТЕЛИ ИЛИ СОВАТОРЫ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ
+.\" ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, ОСОБЫЕ, ПОКАЗАТЕЛЬНЫЕ ИЛИ ЛОГИЧЕСКИ ВЫТЕКАЮЩИЕ
+.\" УБЫТКИ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ ИМИ, ПРИОБРЕТЕНИЕ ЗАМЕНЯЮЩИХ ТОВАРОВ ИЛИ УСЛУГ;
+.\" ПОТЕРЮ ВОЗМОЖНОСТИ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПРЕКРАЩЕНИЕ ДЕЯТЕЛЬНОСТИ)
+.\" НЕЗАВИСИМО ОТ ПРИЧИНЕННОГО УЩЕРБА И НА ОСНОВАНИИ ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО В РАМКАХ КОНТРАКТА, 
+.\" ПРЯМОЙ ОТВЕТСТВЕННОСТИ ИЛИ ДЕЛИКТА (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНОЕ), ВОЗНИКШЕГО КАКИМ-ЛИБО ОБРАЗОМ
+.\" В РЕЗУЛЬТАТЕ ИСПОЛЬЗОВАНИЯ ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ ВЫ БЫЛИ ОСВЕДОМЛЕНЫ О ВОЗМОЖНОСТИ
+.\" ТАКОГО УЩЕРБА.
 .\"
 .\"     @(#)ps.1	8.3 (Berkeley) 4/18/94
 .\"
-.Dd August 24, 2023
+.Dd 24 августа, 2023 год
 .Dt PS 1
 .Os
-.Sh NAME
+.Sh НАЗВАНИЕ
 .Nm ps
 .Nd process status
-.Sh SYNOPSIS
+.Sh СИНТАКСИС
 .Nm
 .Op Fl -libxo
 .Op Fl aCcdefHhjlmrSTuvwXxZ
-.Op Fl O Ar fmt | Fl o Ar fmt
+.Op Fl O Ar утилита_форматирования_текста | Fl o Ar утилита_форматирования_текста
 .Op Fl D Ar up | down | both
-.Op Fl G Ar gid Ns Op , Ns Ar gid Ns Ar ...
-.Op Fl J Ar jid Ns Op , Ns Ar jid Ns Ar ...
-.Op Fl M Ar core
-.Op Fl N Ar system
-.Op Fl p Ar pid Ns Op , Ns Ar pid Ns Ar ...
-.Op Fl t Ar tty Ns Op , Ns Ar tty Ns Ar ...
-.Op Fl U Ar user Ns Op , Ns Ar user Ns Ar ...
+.Op Fl G Ar идентификатор_группы Ns Op , Ns Ar идентификатор_группы Ns Ar ...
+.Op Fl J Ar идентификатор_задачи Ns Op , Ns Ar идентификатор задачи Ns Ar ...
+.Op Fl M Ar ядро
+.Op Fl N Ar система
+.Op Fl p Ar идентификатор_процесса Ns Op , Ns Ar идентификатор_процесса Ns Ar ...
+.Op Fl t Ar терминал Ns Op , Ns Ar терминал Ns Ar ...
+.Op Fl U Ar пользователь Ns Op , Ns Ar пользователь Ns Ar ...
 .Nm
 .Op Fl -libxo
 .Fl L
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита 
 .Nm
-utility
-displays a header line, followed by lines containing information about
-all of your
-processes that have controlling terminals.
-If the
+отображает 
+заголовочную строку, за которой следуют строки с информацией обо
+всех ваших 
+процессах, имеющих управляющие терминалы. 
+Если опция
 .Fl x
-options is specified,
+указана,
 .Nm
-will also display processes that do not have controlling terminals.
+также покажет процессы, не имеющие управляющих терминалов.
 .Pp
-A different set of processes can be selected for display by using any
-combination of the
+Для отображения можно выбрать другой набор процессов, используя любую 
+комбинацию
 .Fl a , G , J , p , T , t ,
-and
+и
 .Fl U
-options.
-If more than one of these options are given, then
+опций.
+Если задано более одной из этих опций, то
 .Nm
-will select all processes which are matched by at least one of the
-given options.
+выберет все процессы, которые соответствуют хотя бы одному из 
+указанных параметров.
 .Pp
-For the processes which have been selected for display,
+Для процессов, выбранных для отображения,
 .Nm
-will usually display one line per process.
-The
+обычно отображает одну строку на процесс.
+Опция
 .Fl H
-option may result in multiple output lines (one line per thread) for
-some processes.
-By default all of these output lines are sorted first by controlling
-terminal, then by process ID.
-The
+может привести к выводу нескольких строк (по одной строке на поток) для 
+некоторых процессов. 
+По умолчанию все эти строки вывода сортируются сначала по управляющему
+терминалу, затем по ID процесса.
+Опции
 .Fl m , r , u ,
-and
+и
 .Fl v
-options will change the sort order.
-If more than one sorting option was given, then the selected processes
-will be sorted by the last sorting option which was specified.
+изменяют порядок сортировки.
+Если было указано более одной опции сортировки, то выбранные процессы
+будут отсортированы по последней опции сортировки, которая будет указана.
 .Pp
-For the processes which have been selected for display, the information
-to display is selected based on a set of keywords (see the
+Для процессов, выбранных для отображения, информация 
+для отображения выбирается на основе набора ключевых слов (смотрите
 .Fl L , O ,
-and
+и
 .Fl o
-options).
-The default output format includes, for each process, the process' ID,
-controlling terminal, state, CPU time (including both user and system time)
-and associated command.
+опции).
+Формат вывода по умолчанию включает для каждого процесса ID процесса,
+управляющий терминал, состояние, время ЦПУ (включая как пользовательское, так и системное время) 
+и ассоциированную команду.
 .Pp
-If the
+Если процесс
 .Nm
-process is associated with a terminal, the default output width is that of the
-terminal; otherwise the output width is unlimited.
-See also the
+ассоциирован с терминалом, ширина вывода по умолчанию соответствует ширине 
+терминала; в противном случае ширина вывода не ограничена.
+Смотрите также
 .Fl w
-option.
+опцию.
 .Pp
-The options are as follows:
+Поддерживаемые опции:
 .Bl -tag -width indent
 .It Fl -libxo
-Generate output via
+Генерирует вывод через
 .Xr libxo 3
-in a selection of different human and machine readable formats.
-See
+в различных форматах, удобных для чтения людьми и машинами.
+Смотрите
 .Xr xo_parse_args 3
-for details on command line arguments.
+для получения подробной информации об аргументах командной строки.
 .It Fl a
-Display information about other users' processes as well as your own.
-If the
+Отображает информацию о процессах других пользователей, а также о своих.
+Если sysctl
 .Va security.bsd.see_other_uids
-sysctl is set to zero, this option is honored only if the UID of the user is 0.
+установлен в ноль, эта опция учитывается только если UID пользователя равен 0.
 .It Fl c
-Change the
+Изменяет вывод столбца
 .Dq command
-column output to just contain the executable name,
-rather than the full command line.
+так, чтобы он содержал только имя исполняемого файла,
+а не полную командную строку.
 .It Fl C
-Change the way the CPU percentage is calculated by using a
+Изменяет способ расчета процентного соотношения ЦПУ, используя
 .Dq raw
-CPU calculation that ignores
+расчет ЦПУ, который игнорирует
 .Dq resident
-time (this normally has
-no effect).
+время (обычно это не имеет
+эффекта).
 .It Fl d
-Arrange processes into descendancy order and prefix each command with
-indentation text showing sibling and parent/child relationships as a tree.
-If either of the
+Упорядочивает процессы в порядке наследования и добавляет перед каждой командой текст с
+отступом, показывающим отношения между родственными, а также родительскими и дочерними процессами в виде дерева.
+Если также используются опции
 .Fl m
-and
+и
 .Fl r
-options are also used, they control how sibling processes are sorted
-relative to each other.
-Note that this option has no effect if the
+они управляют порядком сортировки родственных процессов 
+относительно друг друга.
+ Обратите внимание, что эта опция не действует, если столбец 
 .Dq command
-column is not the last column displayed.
+не является последним отображаемым столбцом.
 .It Fl D
-Expand the list of selected processes based on the process tree.
+Расширяет список выбранных процессов на основе дерева процессов.
 .Dq UP
-will add the ancestor processes,
+добавляе процессы-предки,
 .Dq DOWN
-will add the descendant processes, and
+добавляет процессы-потомки, и
 .Dq BOTH
-will add both the ancestor and the descendant processes.
+добавляет и предков, и потомков.
 .Fl D
-does not imply
+не подразумевает
 .Fl d ,
-but works well with it.
+но хорошо работает с ним.
 .It Fl e
-Display the environment as well.
+Отображает также окружение.
 .It Fl f
-Show command-line and environment information about swapped out processes.
-This option is honored only if the UID of the user is 0.
+Показать информацию о командной строке и окружении для процессов, которые были выгружены.
+Эта опция действует только если ID пользователя равен 0.
 .It Fl G
-Display information about processes which are running with the specified
-real group IDs.
+Отображает информацию о процессах, которые выполняются с указанными 
+реальными ID групп.
 .It Fl H
-Show all of the threads associated with each process.
+Показывает все потоки, связанные с каждым процессом.
 .It Fl h
-Repeat the information header as often as necessary to guarantee one
-header per page of information.
+Повторяет заголовок информации столько раз, сколько необходимо, чтобы гарантировать один 
+заголовок на страницу информации.
 .It Fl j
-Print information associated with the following keywords:
+Выводит информации о процессах, соответствующих указанным идентификаторам
 .Cm user , pid , ppid , pgid , sid , jobc , state , tt , time ,
-and
+и
 .Cm command .
 .It Fl J
-Display information about processes which match the specified jail IDs.
-This may be either the
+Отображает информацию о процессах, соответствующих указанным ID джэйла
+Это может быть либо
 .Cm jid
-or
+или
 .Cm name
-of the jail.
-Use
+джэйла.
+Используйте
 .Fl J
 .Sy 0
-to display only host processes.
-This flag implies
+для отображения только процессов хоста.
+Этот флаг по умолчанию подразумевает
 .Fl x
-by default.
+по умолчанию
 .It Fl L
-List the set of keywords available for the
+Преречисляет список доступных ключевых слов для опций
 .Fl O
-and
+и
 .Fl o
-options.
+опций.
 .It Fl l
-Display information associated with the following keywords:
+Отображает информацию, связанную со следующими ключевыми словами:
 .Cm uid , pid , ppid , cpu , pri , nice , vsz , rss , mwchan , state ,
 .Cm tt , time ,
-and
+и
 .Cm command .
 .It Fl M
-Extract values associated with the name list from the specified core
-instead of the currently running system.
+Извлекает значения, связанные со списком имен из указанного ядра,
+вместо текущей работающей системы.
 .It Fl m
-Sort by memory usage, instead of the combination of controlling
-terminal and process ID.
+Сортирует по использованию памяти, вместо комбинации управляющего
+терминала и ID процесса.
 .It Fl N
-Extract the name list from the specified system instead of the default,
-which is the kernel image the system has booted from.
+Извлекает список имен из указанной системы вместо стандартной,
+которая является образом ядра, с которого система была загружена.
 .It Fl O
-Add the information associated with the space or comma separated list
-of keywords specified, after the process ID,
-in the default information
-display.
-Keywords may be appended with an equals
+Добавляет информацию, связанную с разделённым пробелом или запятой
+списком ключевых слов, указанным после ID процесса,
+в стандартное отображение 
+информации.
+Ключевые слова могут быть дополнены знаком равенства
 .Pq Ql =
-sign and a string.
-This causes the printed header to use the specified string instead of
-the standard header.
+и строкой.
+Это заставляет печатаемый заголовок использовать указанную строку вместо
+стандартного заголовка.
 .It Fl o
-Display information associated with the space or comma separated
-list of keywords specified.
-The last keyword in the list may be appended with an equals
+Отображает информацию, связанную с указанным списком ключевых слов,
+разделённым пробелом или запятой.
+Последнее ключевое слово в списке может быть дополнено знаком равенства
 .Pq Ql =
-sign and a string that spans the rest of the argument, and can contain
-space and comma characters.
-This causes the printed header to use the specified string instead of
-the standard header.
-Multiple keywords may also be given in the form of more than one
+и строкой, которая охватывает остальную часть аргумента и может содержать
+пробелы и запятые.
+Это заставляет печатаемый заголовок использовать указанную строку вместо
+стандартного заголовка.
+Несколько ключевых слов также могут быть указаны в форме более чем одной
 .Fl o
-option.
-So the header texts for multiple keywords can be changed.
-If all keywords have empty header texts, no header line is written.
+опции.
+Таким образом, тексты заголовков для нескольких ключевых слов могут быть изменены.
+Если все ключевые слова имеют пустые тексты заголовков, то строка заголовка не пишется.
 .It Fl p
-Display information about processes which match the specified process IDs.
+Отображает информацию о процессах, соответствующих указанным ID процессов.
 .It Fl r
-Sort by current CPU usage, instead of the combination of controlling
-terminal and process ID.
+Сортирует по текущему использованию ЦПУ, вместо комбинации управляющего
+терминала и ID процесса.
 .It Fl S
-Change the way the process times, namely cputime, systime, and usertime,
-are calculated by summing all exited children to their parent process.
+Изменяет способ расчёта времени процессов, а именно время_цпу, системное_время и время_пользователя,
+путём суммирования всех завершённых дочерних процессов к их родительскому процессу.
 .It Fl T
-Display information about processes attached to the device associated
-with the standard input.
+Отображает информацию о процессах, прикреплённых к устройству, связанному
+со стандартным вводом.
 .It Fl t
-Display information about processes attached to the specified terminal
-devices.
-Full pathnames, as well as abbreviations (see explanation of the
-.Cm tt
-keyword) can be specified.
+Отображает информацию о процессах, прикреплённых к указанным терминальным
+устройствам.
+Полные пути, а также сокращения (смотрите объяснение ключевого слова
+.Cm tt )
+Могут быть указаны.
 .It Fl U
-Display the processes belonging to the specified usernames.
+Отображает процессы, принадлежащие указанным именам пользователя.
 .It Fl u
-Display information associated with the following keywords:
+Отображает информацию, связанную со следующими ключевыми словами:
 .Cm user , pid , %cpu , %mem , vsz , rss , tt , state , start , time ,
-and
+и
 .Cm command .
-The
+Опция
 .Fl u
-option implies the
+подразумевает
 .Fl r
-option.
+опцию.
 .It Fl v
-Display information associated with the following keywords:
+Отображает информацию, связанную со следующими ключевыми словами:
 .Cm pid , state , time , sl , re , pagein , vsz , rss , lim , tsiz ,
 .Cm %cpu , %mem ,
-and
+и
 .Cm command .
-The
+Опция
 .Fl v
-option implies the
+подразумевает
 .Fl m
-option.
+опцию.
 .It Fl w
-Use at least 132 columns to display information, instead of the default which
-is the window size if
+Используйте по крайней мере 132 столбца для отображения информации, вместо стандартного, который
+является размером окна, если
 .Nm
-is associated with a terminal.
-If the
+ассоциирован с терминалом.
+Если опция
 .Fl w
-option is specified more than once,
+указана более одного раза,
 .Nm
-will use as many columns as necessary without regard for the window size.
-Note that this option has no effect if the
+будет использовать столько столбцов, сколько необходимо, без учёта размера окна.
+Обратите внимание, что эта опция не имеет эффекта, если столбец
 .Dq command
-column is not the last column displayed.
+не является последним отображаемым столбцом.
 .It Fl X
-When displaying processes matched by other options, skip any processes
-which do not have a controlling terminal.
-This is the default behaviour.
+При отображении процессов, соответствующих другим опциям, пропускает любые процессы,
+которые не имеют управляющего терминала.
+Это стандартное поведение.
 .It Fl x
-When displaying processes matched by other options, include processes
-which do not have a controlling terminal.
-This is the opposite of the
+При отображении процессов, соответствующих другим опциям, включает процессы,
+которые не имеют управляющего терминала.
+Это противоположно
 .Fl X
-option.
-If both
+опции.
+Если обе опции
 .Fl X
-and
+и
 .Fl x
-are specified in the same command, then
+указаны в одной команде, то
 .Nm
-will use the one which was specified last.
+использует ту, которая была указана последней.
 .It Fl Z
-Add
+Добавляет метку
 .Xr mac 4
-label to the list of keywords for which
+в список ключевых слов, для которых
 .Nm
-will display information.
+будет отображать информацию.
 .El
 .Pp
-A complete list of the available keywords are listed below.
-Some of these keywords are further specified as follows:
+Полный список доступных ключевых слов приведен ниже.
+Некоторые из этих ключевых слов дополнительно уточняются следующим образом:
 .Bl -tag -width lockname
 .It Cm %cpu
-The CPU utilization of the process; this is a decaying average over up to
-a minute of previous (real) time.
-Since the time base over which this is computed varies (since processes may
-be very young) it is possible for the sum of all
+Использование ЦПУ процессом; это среднее значение с точностью до
+минуты за предыдущее (реальное) время.
+Поскольку временная база, на основе которой это вычисляется, варьируется (поскольку процессы могут
+быть очень молодыми), возможно, что сумма всех полей
 .Cm %cpu
-fields to exceed 100%.
+может превышать 100%.
 .It Cm %mem
-The percentage of real memory used by this process.
+Процент реальной памяти, используемой этим процессом.
 .It Cm class
-Login class associated with the process.
+Класс входа, связанный с процессом.
 .It Cm flags
-The flags associated with the process as in
-the include file
+Флаги, связанные с процессом, как в
+файле
 .In sys/proc.h :
 .Bl -column P_SINGLE_BOUNDARY 0x40000000
 .It Dv "P_ADVLOCK" Ta No "0x00001" Ta "Process may hold a POSIX advisory lock"
@@ -366,10 +366,10 @@ the include file
 .It Dv "P_PPTRACE" Ta No "0x80000000" Ta "Vforked child issued ptrace(PT_TRACEME)"
 .El
 .It Cm flags2
-The flags kept in
+Флаги, хранящиеся в
 .Va p_flag2
-associated with the process as in
-the include file
+ассоциированы с процессом, как во
+включаемом файле
 .In sys/proc.h :
 .Bl -column P2_INHERIT_PROTECTED 0x00000001
 .It Dv "P2_INHERIT_PROTECTED" Ta No "0x00000001" Ta "New children get P_PROTECTED"
@@ -379,399 +379,399 @@ the include file
 .It Dv "P2_PTRACE_FSTP" Ta No "0x00000010" Ta "SIGSTOP from PT_ATTACH not yet handled"
 .El
 .It Cm label
-The MAC label of the process.
+Метка мандатного управления доступом процесса.
 .It Cm lim
-The soft limit on memory used, specified via a call to
+Мягкий лимит на использованную память, задается через вызов
 .Xr setrlimit 2 .
 .It Cm lstart
-The exact time the command started, using the
+Точное время начала команды, используя формат
 .Ql %c
-format described in
+описанный в
 .Xr strftime 3 .
 .It Cm lockname
-The name of the lock that the process is currently blocked on.
-If the name is invalid or unknown, then
+Имя блокировки, на которой в данный момент заблокирован процесс.
+Если имя недействительно или неизвестно, тогда
 .Dq ???\&
-is displayed.
+отображается.
 .It Cm logname
-The login name associated with the session the process is in (see
+Имя пользователя, связанное с сессией, в которой находится процесс (смотрите
 .Xr getlogin 2 ) .
 .It Cm mwchan
-The event name if the process is blocked normally, or the lock name if
-the process is blocked on a lock.
-See the wchan and lockname keywords
-for details.
+Имя события, если процесс заблокирован обычным образом, или имя блокировки, если
+процесс заблокирован на блокировке.
+Смотрите ключевые слова wchan и lockname
+для для получения подробной информации.
 .It Cm nice
-The process scheduling increment (see
+Приращение планирования процесса (смотрите
 .Xr setpriority 2 ) .
 .It Cm rss
-the real memory (resident set) size of the process (in 1024 byte units).
+реальный размер памяти (набор резидентов) процесса (в единицах 1024 байт).
 .It Cm start
-The time the command started.
-If the command started less than 24 hours ago, the start time is
-displayed using the
-.Dq Li %H:%M
-format described in
+Время начала команды.
+Если команда была запущена менее 24 часов назад, время начала отображается используя,
+формат
+.Dq Li %H:%M ,
+описанный в
 .Xr strftime 3 .
-If the command started less than 7 days ago, the start time is
-displayed using the
+Если команда была запущена менее 7 дней назад, время начала 
+отображается, используя
 .Dq Li %a%H
-format.
-Otherwise, the start time is displayed using the
+формат.
+В противном случае, время начала отображается, используя
 .Dq Li %e%b%y
-format.
+формат.
 .It Cm state
-The state is given by a sequence of characters, for example,
+Состояние обозначается последовательностью символов, например,
 .Dq Li RWNA .
-The first character indicates the run state of the process:
+Первый символ указывает состояние выполнения процесса:
 .Pp
 .Bl -tag -width indent -compact
 .It Li D
-Marks a process in disk (or other short term, uninterruptible) wait.
+обозначает процесс, находящийся в дисковом (или другом кратковременном, непрерывном) режиме ожидания.
 .It Li I
-Marks a process that is idle (sleeping for longer than about 20 seconds).
+Обозначает процесс в режиме ожидания (спящий более чем 20 секунд).
 .It Li L
-Marks a process that is waiting to acquire a lock.
+Обозначает процесс, ожидающий получения блокировки.
 .It Li R
-Marks a runnable process.
+Обозначает исполняемый процесс.
 .It Li S
-Marks a process that is sleeping for less than about 20 seconds.
+Обозначает процесс, который спит менее 20 секунд.
 .It Li T
-Marks a stopped process.
+Обозначает остановленный процесс.
 .It Li W
-Marks an idle interrupt thread.
+Обозначает простаивающий поток прерывания.
 .It Li Z
-Marks a dead process (a
+Обозначает мертвый процесс (так называемый
 .Dq zombie ) .
 .El
 .Pp
-Additional characters after these, if any, indicate additional state
-information:
+Дополнительные символы после этих, если они есть, указывают дополнительную
+информацию о состоянии:
 .Pp
 .Bl -tag -width indent -compact
 .It Li +
-The process is in the foreground process group of its control terminal.
+Процесс находится в группе процессов переднего плана своего управляющего терминала.
 .It Li <
-The process has raised CPU scheduling priority.
+Процесс получил повышенный приоритет планирования ЦПУ.
 .It Li C
-The process is in
+Процесс находится в режиме возможностей
 .Xr capsicum 4
-capability mode.
+режиме возможностей.
 .It Li E
-The process is trying to exit.
+Процесс пытается завершиться.
 .It Li J
-Marks a process which is in
+Обозначает процесс, который находится в
 .Xr jail 2 .
-The hostname of the prison can be found in
+Имя хоста джэйла можно найти в
 .Pa /proc/ Ns Ao Ar pid Ac Ns Pa /status .
 .It Li L
-The process has pages locked in core (for example, for raw I/O).
+У процесса есть страницы, заблокированные в ядре (например, для сырого ввода/вывода).
 .It Li N
-The process has reduced CPU scheduling priority (see
+У процесса снижен приоритет планирования ЦПУ (смотрите
 .Xr setpriority 2 ) .
 .It Li s
-The process is a session leader.
+Процесс является лидером сессии.
 .It Li V
-The process' parent is suspended during a
+Родительский процесс приостановлен во время выполнения
 .Xr vfork 2 ,
-waiting for the process to exec or exit.
+ожидая выполнения exec или выхода процесса.
 .It Li W
-The process is swapped out.
+Процесс выгружен из памяти.
 .It Li X
-The process is being traced or debugged.
+Процесс отслеживается или отлаживается.
 .El
 .It Cm tt
-An abbreviation for the pathname of the controlling terminal, if any.
-The abbreviation consists of the three letters following
+Сокращение для полного пути управляющего терминала, если таковой имеется.
+Сокращение состоит из трех букв, следующих за
 .Pa /dev/tty ,
-or, for pseudo-terminals, the corresponding entry in
+или, для псевдотерминалов, соответствующей записи в
 .Pa /dev/pts .
-This is followed by a
+За этим следует
+.Ql - ,
+если процесс больше не может достичь этого
+управляющего терминала (то есть, он был отозван).
+Тег
 .Ql -
-if the process can no longer reach that
-controlling terminal (i.e., it has been revoked).
-A
-.Ql -
-without a preceding two letter abbreviation or pseudo-terminal device number
-indicates a process which never had a controlling terminal.
-The full pathname of the controlling terminal is available via the
+без предшествующего двухбуквенного сокращения или номера устройства псевдотерминала
+указывает на процесс, который никогда не имел управляющего терминала.
+Полный имя пути управляющего терминала доступен через
 .Cm tty
-keyword.
+ключевое слово.
 .It Cm wchan
-The event (an address in the system) on which a process waits.
-When printed numerically, the initial part of the address is
-trimmed off and the result is printed in hex, for example, 0x80324000 prints
-as 324000.
+Событие (адрес в системе), на котором процесс ожидает.
+При численном выводе начальная часть адреса отсекается,
+и результат выводится в шестнадцатеричном формате, например, 0x80324000 выводится
+как 324000.
 .El
 .Pp
-When printing using the command keyword, a process that has exited and
-has a parent that has not yet waited for the process (in other words, a zombie)
-is listed as
+При выводе с использованием ключевого слова command, процесс, который завершился и
+имеет родителя, который еще не ожидал этот процесс (другими словами, зомби),
+перечисляется как
 .Dq Li <defunct> ,
-and a process which is blocked while trying
-to exit is listed as
+и процесс, который блокируется при попытке
+выхода, перечисляется как
 .Dq Li <exiting> .
-If the arguments cannot be located (usually because it has not been set, as is
-the case of system processes and/or kernel threads) the command name is printed
-within square brackets.
-The
+Если аргументы не могут быть найдены (обычно потому, что они не были установлены, как это
+бывает с системными процессами и/или потоками ядра), имя команды выводится
+в квадратных скобках.
+Утилита
 .Nm
-utility first tries to obtain the arguments cached by the kernel (if they were
-shorter than the value of the
+сначала пытается получить аргументы, кэшированные ядром (если они были
+короче значения
 .Va kern.ps_arg_cache_limit
 sysctl).
-The process can change the arguments shown with
+Процесс может изменить аргументы, показанные с помощью
 .Xr setproctitle 3 .
-Otherwise,
+В противном случае,
 .Nm
-makes an educated guess as to the file name and arguments given when the
-process was created by examining memory or the swap area.
-The method is inherently somewhat unreliable and in any event a process
-is entitled to destroy this information.
-The ucomm (accounting) keyword can, however, be depended on.
-If the arguments are unavailable or do not agree with the ucomm keyword,
-the value for the ucomm keyword is appended to the arguments in parentheses.
-.Sh KEYWORDS
-The following is a complete list of the available keywords and their
-meanings.
-Several of them have aliases (keywords which are synonyms).
+делает обоснованное предположение о названии файла и аргументах, заданных при
+создании процесса путём анализа памяти или области подкачки.
+Этот метод по своей сути несколько ненадёжен, и в любом случае процесс
+имеет право уничтожить эту информацию.
+На ключевое слово ucomm (учёт), однако, можно полагаться.
+Если аргументы недоступны или не согласуются с ключевым словом ucomm,
+то значение для ключевого слова ucomm добавляется к аргументам в скобках.
+.Sh КЛЮЧЕВЫЕ СЛОВА
+Ниже приведён полный список доступных ключевых слов и их 
+значений.
+Некоторые из них имеют алиасы (синонимы ключевых слов).
 .Pp
 .Bl -tag -width ".Cm sigignore" -compact
 .It Cm %cpu
-percentage CPU usage (alias
+процентное использование ЦПУ (алиас
 .Cm pcpu )
 .It Cm %mem
 percentage memory usage (alias
 .Cm pmem )
 .It Cm acflag
-accounting flag (alias
+процентное использование памяти (алиас
 .Cm acflg )
 .It Cm args
-command and arguments
+команда и аргументы
 .It Cm class
-login class
+класс логина
 .It Cm comm
-command
+команда
 .It Cm command
-command and arguments
+команда и аргументы
 .It Cm cow
-number of copy-on-write faults
+количество ошибок копирования при записи
 .It Cm cpu
-The processor number on which the process is executing (visible only on SMP
-systems).
+номер процессора, на котором выполняется процесс (виден только на СМП 
+системах)
 .It Cm dsiz
-data size (in Kbytes)
+размер данных (в килобайтах)
 .It Cm emul
-system-call emulation environment (ABI)
+среда эмуляции системных вызовов (ABI)
 .It Cm etime
-elapsed running time, format
+прошедшее время выполнения, формат
 .Do
 .Op days- Ns
 .Op hours\&: Ns
-minutes:seconds
+минуты:секунды
 .Dc
 .It Cm etimes
-elapsed running time, in decimal integer seconds
+прошедшее время выполнения, в целых десятичных секундах
 .It Cm fib
-default FIB number, see
+стандартный номер FIB, смотрите
 .Xr setfib 1
 .It Cm flags
-the process flags, in hexadecimal (alias
+флаги процесса, в шестнадцатеричном формате (алиас
 .Cm f )
 .It Cm flags2
-the additional set of process flags, in hexadecimal (alias
+дополнительный набор флагов процесса, в шестнадцатеричном формате (алиас
 .Cm f2 )
 .It Cm gid
-effective group ID (alias
+эффективный ID группы (алиас
 .Cm egid )
 .It Cm group
-group name (from egid) (alias
+название группы (из egid) (алиас
 .Cm egroup )
 .It Cm inblk
-total blocks read (alias
+общее количество прочитанных блоков (алиас
 .Cm inblock )
 .It Cm jail
-jail name
+имя джэйла
 .It Cm jid
-jail ID
+ID джэйла
 .It Cm jobc
-job control count
+счётчик управления заданиями
 .It Cm ktrace
-tracing flags
+флаги трассировки
 .It Cm label
-MAC label
+метка мандатного контроля доступа
 .It Cm lim
-memoryuse limit
+ограничение использования памяти
 .It Cm lockname
-lock currently blocked on (as a symbolic name)
+lимя блокировки, на которой в данный момент происходит блокирование (как символическое имя)
 .It Cm logname
-login name of user who started the session
+логин пользователя, начавшего сессию
 .It Cm lstart
-time started
+время начала
 .It Cm lwp
-thread (light-weight process) ID (alias
+ID потока (легковесного процесса) (алиас
 .Cm tid )
 .It Cm majflt
-total page faults
+общее количество ошибок страниц
 .It Cm minflt
-total page reclaims
+общее количество восстановлений страниц
 .It Cm msgrcv
-total messages received (reads from pipes/sockets)
+общее количество полученных сообщений (чтения из пайпов/сокетов)
 .It Cm msgsnd
-total messages sent (writes on pipes/sockets)
+общее количество отправленных сообщений (записи в пайпы/сокеты)
 .It Cm mwchan
-wait channel or lock currently blocked on
+канал ожидания или блокировка, на которой в данный момент происходит блокирование
 .It Cm nice
-nice value (alias
+значение nice (алиас
 .Cm ni )
 .It Cm nivcsw
-total involuntary context switches
+общее количество недобровольных переключений контекста
 .It Cm nlwp
-number of threads (light-weight processes) tied to a process
+количество потоков (легковесных процессов), связанных с процессом
 .It Cm nsigs
-total signals taken (alias
+общее количество принятых сигналов (алиас
 .Cm nsignals )
 .It Cm nswap
-total swaps in/out
+общее количество операций свопинга ввода/вывода
 .It Cm nvcsw
-total voluntary context switches
+общее количество добровольных переключений контекста
 .It Cm nwchan
-wait channel (as an address)
+канал ожидания (как адрес)
 .It Cm oublk
-total blocks written (alias
+общее количество записанных блоков (алиас
 .Cm oublock )
 .It Cm paddr
-process pointer
+указатель на процесс
 .It Cm pagein
 pageins (same as majflt)
 .It Cm pgid
-process group number
+номер группы процессов
 .It Cm pid
-process ID
+ID процесса
 .It Cm ppid
-parent process ID
+ID родительского процесса
 .It Cm pri
-scheduling priority
+приоритет планирования
 .It Cm re
-core residency time (in seconds; 127 = infinity)
+время пребывания в ядре (в секундах; 127 = бесконечность)
 .It Cm rgid
-real group ID
+реальный ID группы
 .It Cm rgroup
-group name (from rgid)
+название группы (из rgid)
 .It Cm rss
-resident set size
+размер резидентного набора
 .It Cm rtprio
-realtime priority (see
+приоритет в реальном времени (смотрите
 .Xr rtprio 1)
 .It Cm ruid
-real user ID
+реальный ID пользователя
 .It Cm ruser
-user name (from ruid)
+имя пользователя (из ruid)
 .It Cm sid
-session ID
+ID сессии
 .It Cm sig
-pending signals (alias
+ожидающие сигналы (алиас
 .Cm pending )
 .It Cm sigcatch
-caught signals (alias
+перехваченные сигналы (алиас
 .Cm caught )
 .It Cm sigignore
-ignored signals (alias
+игнорируемые сигналы (алиас
 .Cm ignored )
 .It Cm sigmask
-blocked signals (alias
+заблокированные сигналы (алиас
 .Cm blocked )
 .It Cm sl
-sleep time (in seconds; 127 = infinity)
+время сна (в секундах; 127 = бесконечность)
 .It Cm ssiz
-stack size (in Kbytes)
+размер стека (в килобайтах)
 .It Cm start
-time started
+время начала
 .It Cm state
-symbolic process state (alias
+символическое состояние процесса (алиас
 .Cm stat )
 .It Cm svgid
-saved gid from a setgid executable
+сохранённый ID группы из исполняемого файла с setgid
 .It Cm svuid
-saved UID from a setuid executable
+сохранённый ID пользователя из исполняемого файла с setuid
 .It Cm systime
-accumulated system CPU time
+накопленное системное время ЦПУ
 .It Cm tdaddr
-thread address
+адрес потока
 .It Cm tdname
-thread name
+название потока
 .It Cm tdev
-control terminal device number
+номер устройства управляющего терминала
 .It Cm time
-accumulated CPU time, user + system (alias
+накопленное время ЦПУ, пользовательское + системное (алиас
 .Cm cputime )
 .It Cm tpgid
-control terminal process group ID
+ID группы процессов управляющего терминала
 .It Cm tracer
-tracer process ID
+ID процесса трассировщика
 .\".It Cm trss
 .\"text resident set size (in Kbytes)
 .It Cm tsid
-control terminal session ID
+ID сессии управляющего терминала
 .It Cm tsiz
-text size (in Kbytes)
+размер текста (в килобайтах)
 .It Cm tt
-control terminal name (two letter abbreviation)
+имя управляющего терминала (аббревиатура из двух букв)
 .It Cm tty
-full name of control terminal
+полное имя управляющего терминала
 .It Cm ucomm
-name to be used for accounting
+имя, используемое для учёта
 .It Cm uid
-effective user ID (alias
+эффективный ID пользователя (алиас
 .Cm euid )
 .It Cm upr
-scheduling priority on return from system call (alias
+приоритет планирования при возврате из системного вызова (алиас
 .Cm usrpri )
 .It Cm uprocp
-process pointer
+указатель процесса
 .It Cm user
-user name (from UID)
+имя пользователя (из ID пользователя)
 .It Cm usertime
-accumulated user CPU time
+накопленное пользовательское время ЦПУ
 .It Cm vmaddr
-vmspace pointer
+указатель на пространство виртуальной памяти
 .It Cm vsz
-virtual size in Kbytes (alias
+виртуальный размер в килобайтах (алиас
 .Cm vsize )
 .It Cm wchan
-wait channel (as a symbolic name)
+канал ожидания (в символическом имени)
 .It Cm xstat
-exit or stop status (valid only for stopped or zombie process)
+статус выхода или остановки (действителен только для остановленных или зомби-процессов)
 .El
 .Pp
-Note that the
+Обратите внимание, что столбец
 .Cm pending
-column displays bitmask of signals pending in the process queue when
+отображает битовую маску сигналов, ожидающих в очереди процесса, когда опция
 .Fl H
-option is not specified, otherwise the per-thread queue of pending signals
-is shown.
-.Sh ENVIRONMENT
-The following environment variables affect the execution of
+не указана, в противном случае очередь ожидающих сигналов для каждого потока
+показывается.
+.Sh ОКРУЖЕНИЕ
+Следующие переменные окружения влияют на выполнение
 .Nm :
 .Bl -tag -width ".Ev COLUMNS"
 .It Ev COLUMNS
-If set, specifies the user's preferred output width in column positions.
-By default,
+Если установлено, указывает предпочтительную ширину вывода пользователя в позициях столбцов.
+По умолчанию,
 .Nm
-attempts to automatically determine the terminal width.
+пытается автоматически определить ширину терминала.
 .El
 .Sh FILES
 .Bl -tag -width ".Pa /boot/kernel/kernel" -compact
 .It Pa /boot/kernel/kernel
-default system namelist
+стандартный список имен системы
 .El
-.Sh EXIT STATUS
+.Sh СТАТУС ЗАВЕРШЕНИЯ
 .Ex -std
-.Sh EXAMPLES
-Display information on all system processes:
+.Sh ПРИМЕРЫ
+Отображение информации обо всех системных процессах:
 .Pp
 .Dl $ ps -auxw
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr kill 1 ,
 .Xr pgrep 1 ,
 .Xr pkill 1 ,
@@ -786,29 +786,29 @@ Display information on all system processes:
 .Xr pstat 8 ,
 .Xr sysctl 8 ,
 .Xr mutex 9
-.Sh STANDARDS
-For historical reasons, the
+.Sh СТАНДАРТЫ
+По историческим причинам, утилита
 .Nm
-utility under
+в
 .Fx
-supports a different set of options from what is described by
+поддерживает другой набор опций, отличный от описанного в
 .St -p1003.2 ,
-and what is supported on
+и от того, что поддерживается в
 .No non- Ns Bx
-operating systems.
-.Sh HISTORY
-The
+операционных системах.
+.Sh ИСТОРИЯ
+Команда
 .Nm
-command appeared in
+появилась в 
 .At v3
-in section 8 of the manual.
-.Sh BUGS
-Since
+в 8 разделе мануала.
+.Sh БАГИ
+Поскольку
 .Nm
-cannot run faster than the system and is run as any other scheduled
-process, the information it displays can never be exact.
+не может работать быстрее системы и выполняется как любой другой запланированный
+процесс, информация, которую он отображает, никогда не может быть точной.
 .Pp
-The
+Утилита
 .Nm
-utility does not correctly display argument lists containing multibyte
-characters.
+некорректно отображает списки аргументов, содержащих многобайтовые
+символы.

@@ -12,28 +12,28 @@
 .\"
 .\"     @(#)vidcontrol.1
 .\"
-.Dd April 6, 2022
+.Dd Апрель 6, 2022
 .Dt VIDCONTROL 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm vidcontrol
-.Nd system console control and configuration utility
-.Sh SYNOPSIS
+.Nd утилита управления и настройки системной консоли 
+.Sh СИНТАКСИС
 .Nm
 .Op Fl CdHLPpx
-.Op Fl b Ar color
-.Op Fl c Ar appearance
-.Op Fl E Ar emulator
+.Op Fl b Ar цвет
+.Op Fl c Ar внешний вид
+.Op Fl E Ar эмулятор
 .Oo
 .Fl f
 .Oo
-.Op Ar size
-.Ar file
+.Op Ar размер
+.Ar файла
 .Oc
 .Oc
-.Op Fl g Ar geometry
-.Op Fl h Ar size
-.Op Fl i Cm active | adapter | mode
+.Op Fl g Ar геометрия
+.Op Fl h Ar размер
+.Op Fl i Cm активный | адаптер | режим
 .Op Fl l Ar screen_map
 .Op Fl M Ar char
 .Op Fl m Cm on | off
@@ -42,29 +42,27 @@
 .Op Fl s Ar number
 .Op Fl T Cm xterm | cons25
 .Op Fl t Ar N | Cm off
-.Op Ar mode
+.Op Ar режим
 .Op Ar foreground Op Ar background
 .Op Cm show
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility is used to set various options for the
+используется для установки различных параметров для консольного драйвера
 .Xr syscons 4
-or
+или
 .Xr vt 4
-console driver,
-such as video mode, colors, cursor shape, screen output map, font, and screen
-saver timeout.
-Only a small subset of options is supported by
+,
+таких как видеорежим, цвета, курсор форма, карта вывода на экран, шрифт и время ожидания экранной заставки.
+Только небольшое количество параметров поддерживается
 .Xr vt 4 .
-Unsupported options lead to error messages, typically including
-the text "Inappropriate ioctl for device".
+Неподдерживаемые параметры приводят к появлению сообщений об ошибках, обычно содержащих текст "Неподходящий ioctl для устройства".
 .Pp
-The following command line options are supported:
+Поддерживаются следующие параметры командной строки:
 .Bl -tag -width indent
 .It Ar mode
-Select a new video mode.
-The modes currently recognized are:
+Выбрать новый видеорежим.
+В настоящее время распознаются следующие режимы:
 .Ar 80x25 ,
 .Ar 80x30 ,
 .Ar 80x43 ,
@@ -94,373 +92,367 @@ The modes currently recognized are:
 .\"The graphic mode
 .\".Ar VGA_320x200
 .\"and
-The raster text mode
+Режим растрового текста
 .Ar VESA_800x600
-can also be chosen.
-Alternatively, a mode can be specified with its number by using a mode name of
-the form
+может тоже быть выбран.
+В качестве альтернативы, режим можно указать с его номером, используя название режима
+в форме
 .Li MODE_ Ns Aq Ar NUMBER .
-A list of valid mode numbers can be obtained with the
-.Fl i Cm mode
-option.
-See
-.Sx Video Mode Support
-below.
-.It Ar foreground Op Ar background
-Change colors when displaying text.
-Specify the foreground color
+Список допустимых номеров режимов можно получить с помощью параметра
+.Режим Fl i Cm
+.
+Просматривать
+.Sx Поддержка видеорежима
+приведена ниже.
+.It Ar передний план вместо фона
+Изменять цвета при отображении текста.
+Укажзывать цвет переднего плана
 (e.g.,
 .Dq vidcontrol white ) ,
-or both a foreground and background colors
+или как цвета переднего плана, так и фона
 (e.g.,
 .Dq vidcontrol yellow blue ) .
-Use the
+Использовать
 .Cm show
-command below to see available colors.
+нажматием кнопки ниже, чтобы просмотреть доступные цвета.
 .It Cm show
-See the supported colors on a given platform.
+Просматривает, какие цвета поддерживаются на данной платформе.
 .It Fl b Ar color
-Set border color to
+Устанавливает цвет границы равным
 .Ar color .
-This option may not be always supported by the video driver.
+Возможно, эта опция не всегда поддерживается видеодрайвером.
 .It Fl C
-Clear the history buffer.
+Очищать буфер истории.
 .It Fl c Ar setting Ns Op , Ns Ar setting ...
-Change the cursor appearance.
-The change is specified by a non-empty comma-separated list of
+Изменять внешний вид курсора.
+Изменение задается непустым списком параметров, разделенных запятыми.
 .Ar setting Ns s .
-Each
+каждый
 .Ar setting
-overrides or modifies previous ones in left to right order.
+переопределяет или изменяет предыдущие в порядке слева направо.
 .Pp
-The following override
+Следующее переопределение
 .Ar setting Ns s
-are available:
+доступны:
 .Bl -tag -width indent
-.It Cm normal
-Set to a block covering 1 character cell,
-with a configuration-dependent coloring
-that should be at worst inverse video.
-.It Cm destructive
-Set to a blinking sub-block with
-.Cm height
-scanlines starting at
-.Cm base .
-The name
-.Dq destructive
-is bad for backwards compatibility.
-This
-.Ar setting
-should not force destructiveness,
-and it now only gives destructiveness in some
-configurations (typically for hardware cursors
-in text mode).
-Blinking limits destructiveness.
-This
-.Ar setting
-should now be spelled
+.It Cm Нормальные
+Устанавливать в блок, занимающий ячейку размером в 1 символ, с зависящей от конфигурации раскраской, которая в худшем случае должна быть обратной видео.
+.It Cm деструктивные
+Установлен мигающий подблок с
+.Cm высотой
+строк сканирования начиная с
+.Cm основания .
+Название
+.Dq деструктивный
+плохо влияет на обратную совместимость. 
+не следует форсировать деструктивность,
+и теперь это дает деструктивность только в некоторых
+конфигурациях (обычно для аппаратных курсоров
+в текстовом режиме).
+Мигание ограничивает деструктивность.
+Эта
+.Ar настройка
+теперь должно быть написано по буквам
 .Cm normal , Ns Cm blink , Ns Cm noblock .
-A non-blinking destructive cursor would be unusable,
-so old versions of
+Немигающий деструктивный курсор был бы непригоден для использования,
+поэтому старые версии
 .Nm
-did not support it,
-and this version does not have an override for it.
-.It Cm base Ns = Ns Ar value , Cm height Ns = Ns Ar value
-Set the specified scanline parameters.
-These parameters are only active in
+не поддерживается,
+и в этой версии для него нет переопределения.
+It Cm base Ns = Ns Ar-значение , Cm height Ns = Ns Ar-значение
+Установите указанные параметры линии развертки.
+Эти параметры активны только в
 .Cm noblock
-mode.
-.Cm value
-is an integer in any base supported by
+режим.
+.Cm значение
+является целым числом в любой базе, поддерживаемой
 .Xr strtol 3 .
-Setting
-.Cm height
-to 0 turns off the cursor in
+Настраивание
+.Cm роста
+до значения 0 отключает курсор
 .Cm noblock
-mode.
-Negative
-.Ar value Ns s
-are silently ignored.
-Positive
-.Ar value Ns s
-are clamped to fit in the character cell when the cursor is drawn.
+режим.
+Негативные
+.Ar значения Ns s
+игнорируются.
+Позитивные
+.Ar значения Ns s
+зажимаются так, чтобы они помещались в ячейку символа при наведении курсора.
 .El
 .Pp
-The following modifier
+Следующие настройки 
 .Ar setting Ns s
-are available:
+доступны:
 .Bl -tag -width indent
 .It Cm blink , noblink
-Set or clear the blinking attribute.
-This is not quite backwards compatible.
-In old versions of
-.Nm , Cm blink
-was an override to a blinking block.
+Устанавливать или снимите мигающий атрибут.
+Это не совсем совместимо с предыдущими версиями.
+В старых версиях
+.Nm , Cm blinkмигание
+было заменено на блокировку мигания.
 .It Cm block , noblock
-Set or clear the
+Устанавливать или очищать атрибут
 .Cm block
-attribute.
-This attribute is the inverse of the flag
+.
+Этот атрибут является обратным по отношению к флагу
 .Dv CONS_CHAR_CURSOR
-in the implementation.
-It deactivates the scanline parameters,
-and expresses a preference for using a
-simpler method of implementation.
-Its inverse does the opposite.
-When the scanline parameters give a full block,
-this attribute reduces to a method selection bit.
-The
+в реализации.
+Он отключает параметры скана линии
+и выражает предпочтение использованию более
+простого метода реализации.
+Его обратное значение приводит к обратному результату.
+Когда параметры scanline задают полный блок,
+этот атрибут уменьшается до бита выбора метода.
+Метод
 .Cm block
-method tends to give better coloring.
+, как правило, дает лучшую окраску.
 .It Cm hidden , nohidden
-Set or clear the hidden attribute.
+Устанавливать или снимите скрытый атрибут.
 .El
 .Pp
-The following (non-sticky) flags control application of the
+Следующие (не прилипающие) флаги управляют применением
 .Ar setting Ns s :
 .Bl -tag -width indent
 .It Cm charcolors
-Apply
+Применять к
 .Cm base
-and
+и
 .Cm height
-to the (character) cursor's list of preferred colors instead of its shape.
-Beware that the color numbers are raw VGA palette indexes,
-not ANSI color numbers.
-The indexes are reduced mod 8, 16 or 256,
-or ignored,
-depending on the video mode and renderer.
+к списку предпочтительных цветов курсора (символа), а не к его форме.
+Обратите внимание, что номера цветов являются необработанными индексами палитры VGA,
+а не номерами цветов ANSI.
+Индексы уменьшаются до 8, 16 или 256
+или игнорируются,
+в зависимости от видеорежима и средства визуализации.
 .It Cm mousecolors
-Colors for the mouse cursor in graphics mode.
-Like
+Цвета для курсора мыши в графическом режиме.
+Как
 .Cm charcolors ,
-except there is no preference or sequence;
+за исключением того, что здесь нет никаких предпочтений или последовательности;
 .Cm base
 gives the mouse border color and
 .Cm height
-gives the mouse interior color.
 Together with
 .Cm charcolors ,
-this gives 2 selection bits which select between
-only 3 of 4 sub-destinations of the 4 destinations selected by
+это дает 2 бита выбора, которые выбирают
+только между 3 из 4 подпунктов назначения из 4 пунктов назначения, выбранных пользователем.
 .Cm default
-and
+и
 .Cm local
 (by ignoring
 .Cm mousecolors
 if
 .Cm charcolors
 is also set).
-.It Cm default
-Apply the changes to the default settings and then to the active settings,
-instead of only to the active settings.
-Together with
+.It Cm по умолчанию
+Примените изменения к настройкам по умолчанию, а затем к активным настройкам,
+а не только к активным настройкам.
+Вместе с
 .Cm local ,
-this gives 2 selection bits which select between 4 destinations.
+Предлагать 2 бита выбора, которые выбирают между 4 пунктами назначения.
 .It Cm shapeonly
-Ignore any changes to the
-.Cm block
-and
-.Cm hidden
-attributes.
+Игнорировать любые изменения в
+.Cm блоке
+и
+.Cm скрытых
+атрибутах.
 .It Cm local
-Apply the changes to the current vty.
-The default is to apply them to a global place
-and copy from there to all vtys.
+Применять изменения к текущему vty.
+По умолчанию они применяются к глобальному местоположению
+и копируются оттуда во все vty.
 .It Cm reset
-Reset everything.
-The default is to not reset.
-When the
+Сбрасывать все настройки.
+По умолчанию сброс не выполняется.
+Когда параметр
 .Cm local
-parameter is specified, the current local settings are reset
-to default local settings.
-Otherwise, the current global settings are reset to default
-global settings and then copied to the current and default
-settings for all vtys.
+указан, текущие локальные настройки сбрасываются
+на локальные настройки по умолчанию.
+В противном случае текущие глобальные настройки сбрасываются на
+глобальные настройки по умолчанию, а затем копируются на текущие настройки и
+настройки по умолчанию для всех vtys.
 .It Cm show
-Show the current changes.
+Показывать текущие изменения.
 .El
 .It Fl d
-Print out current output screen map.
+Выносить текущую карту выходного экрана.
 .It Fl E Ar emulator
-Set the terminal emulator to
+Устанавливать эмулятор терминала в
 .Ar emulator .
 .It Fl e
-Show the active and available terminal emulators.
+Показывать активные и доступные эмуляторы терминала.
 .It Xo
 .Fl f
 .Oo
-.Op Ar size
-.Ar file
+.Op Ar размер
+.Ar файл
 .Oc
 .Xc
 Load font
-.Ar file
+.Ar файл
 for
-.Ar size
-(currently, only
+.Ar размер
+(в настоящее время только
 .Cm 8x8 ,
 .Cm 8x14
-or
+или
 .Cm 8x16 ) .
-The font file can be either uuencoded or in raw binary format.
-You can also use the menu-driven
+Файл шрифта может быть как в формате uuencoded, так и в необработанном двоичном формате.
+Вы можете также использовать меню, управляемое командой
 .Xr vidfont 1
-command to load the font of your choice.
+для загрузки шрифта по вашему выбору.
 .Pp
-.Ar Size
-may be omitted, in this case
+.Ar Размер
+может быть опущен в данном случае
 .Nm
-will try to guess it from the size of font file.
+попытаемся угадать это по размеру файла шрифта.
 .Pp
-When using
+Когда используется
 .Xr vt 4
-both
-.Ar size
-and
-.Ar file
-can be omitted, and the default font will be loaded.
+и
+.Ar размер
+и
+.Ar файл
+могут быть опущены и загружен будет шрифт по умолчанию.
 .Pp
-Note that older video cards, such as MDA and CGA, do not support
-software font.
-See also
-.Sx Video Mode Support
-and
-.Sx EXAMPLES
-below and the man page for either
+Обратите внимание, что старые видеокарты, такие как MDA и CGA, не поддерживают
+программный шрифт.
+См. также
+.Sx Поддержка видеорежима
+и
+.Sx ПРИМЕРЫ
+находится ниже и на справочной странице для любого из 
 .Xr syscons 4
-or
+или
 .Xr vt 4
-(depending on which driver you use).
+(в зависимости от того, какой драйвер вы используете).
 .It Fl g Ar geometry
-Set the
-.Ar geometry
-of the text mode for the modes with selectable
-geometry.
-Currently only raster modes, such as
+См.
+.Ar геометрию
+текстового режима для режимов с возможностью выбора
+геометрии.
+В настоящее время доступны только растровые режимы, такие как
 .Ar VESA_800x600 ,
-support this option.
-See also
-.Sx Video Mode Support
-and
-.Sx EXAMPLES
-below.
+поддержитвает этот параметр.
+См. также
+.Sx Поддержка видеорежима
+и
+.Sx ПРИМЕРЫ
+ниже.
 .It Fl h Ar size
-Set the size of the history (scrollback) buffer to
-.Ar size
-lines.
+Установите размер буфера истории (обратной прокрутки) равным 
+.Ar размеру
+строк.
 .It Fl i Cm active
-Shows the active vty number.
+Показывает активный номер vty.
 .It Fl i Cm adapter
-Shows info about the current video adapter.
+Показывает информацию о текущем видеоадаптере.
 .It Fl i Cm mode
-Shows the possible video modes with the current video hardware.
+Показывает возможные режимы видеосъемки с использованием текущего видеооборудования.
 .It Fl l Ar screen_map
-Install screen output map file from
+Устанавливает файл карты вывода на экран из
 .Ar screen_map .
-See also
+См. также
 .Xr syscons 4
-or
+или
 .Xr vt 4
-(depending on which driver you use).
+(в зависимости от того, какой драйвер вы используете).
 .It Fl L
-Install default screen output map.
+Устанавливает карту вывода на экран по умолчанию.
 .It Fl M Ar char
-Sets the base character used to render the mouse pointer to
+Устанавливает базовый символ, используемый для отображения указателя мыши в
 .Ar char .
 .It Fl m Cm on | off
-Switch the mouse pointer
+Меняет указатель мыши
 .Cm on
-or
+или
 .Cm off .
-Used together with the
+Используется вместе с
 .Xr moused 8
-daemon for text mode cut & paste functionality.
+для вырезания и вставки текста в текстовом режиме.
 .It Fl p
-Capture the current contents of the video buffer corresponding
-to the terminal device referred to by standard input.
-The
+Захватывает текущее содержимое видеобуфера, соответствующего 
+устройству, на которое ссылается стандартный ввод.
+Утилита
 .Nm
-utility writes contents of the video buffer to the standard
-output in a raw binary format.
-For details about that
-format see
-.Sx Format of Video Buffer Dump
-below.
-Supported only with
+записывает содержимое видеобуфера в стандартный
+вывод в необработанном двоичном формате.
+Подробнее об этом
+формате смотрите в 
+.Sx Формат дампа видеобуфера
+ниже.
+Поддерживается только с
 .Xr syscons 4 .
 .It Fl P
-Same as
+Тот же, что и
 .Fl p ,
-but dump contents of the video buffer in a plain text format
-ignoring nonprintable characters and information about text
-attributes.
-Supported only with
+но содержимое видеобуфера выводится в обычном текстовом формате, игнорируя непечатаемые символы и информацию об
+атрибутах текста.
+Поддерживается только с
 .Xr syscons 4 .
 .It Fl H
-When used with
+Когда используется с
 .Fl p
-or
+или
 .Fl P ,
 it instructs
 .Nm
-to dump full history buffer instead of visible portion of
-the video buffer only.
+чтобы сбросить весь буфер истории, а не только видимую часть
+видеобуфера.
 .It Fl r Ar foreground background
-Change reverse mode colors to
-.Ar foreground
-and
-.Ar background .
+Изменяет цвета в обратном режиме на
+.Ar передний план
+и
+.Ar задний план .
 .It Fl S Cm on | off
-Turn vty switching on or off.
-When vty switching is off,
-attempts to switch to a different virtual terminal will fail.
-(The default is to permit vty switching.)
-This protection can be easily bypassed when the kernel is compiled with
-the
+Включает или выключает функцию vty.
+Если функция vty выключена, то все
+попытки переключиться на другой виртуальный терминал завершатся неудачей.
+(По умолчанию разрешено переключение на vty.)
+Эту защиту можно легко обойти, если ядро скомпилировано с
+использованием параметра
 .Dv DDB
-option.
-However, you probably should not compile the kernel debugger on a box which
-is supposed to be physically secure.
+.
+Однако вам, вероятно, не следует компилировать отладчик ядра на сервере, который
+должен быть физически защищен.
 .It Fl s Ar number
-Set the active vty to
-.Ar number .
+Устанавливает активный vty на
+.Ar номер .
 .It Fl T Cm xterm | cons25
-Switch between xterm and cons25 style terminal emulation.
+Переключается между стилями эмуляцией терминала xterm и cons25.
 .It Fl t Ar N | Cm off
-Set the screensaver timeout to
+Устанавливает перерыв экранной заставки на
 .Ar N
-seconds, or turns it
+секунд или выключает ее
 .Cm off .
 .It Fl x
-Use hexadecimal digits for output.
+Для вывода использует шестнадцатеричные цифры.
 .El
 .Ss Video Mode Support
-Note that not all modes listed above may be supported by the video
-hardware.
-You can verify which mode is supported by the video hardware, using the
+Обратите внимание, что не все режимы, перечисленные выше, могут поддерживаться
+видеооборудованием.
+Вы можете проверить, какой режим поддерживается видеооборудованием, используя параметр
 .Fl i Cm mode
-option.
+.
 .Pp
-The VESA BIOS support must be linked to the kernel
-or loaded as a KLD module if you wish to use VESA video modes
-or 132 column modes
-(see
+Поддержка VESA BIOS должна быть подключена к ядру
+или загружена в виде модуля KLD, если вы хотите использовать видеорежимы VESA
+или режимы с 132 столбцами
+(см.
 .Xr vga 4 ) .
 .Pp
-You need to compile your kernel with the
+Вам необходимо скомпилировать свое ядро с помощью параметра
 .Ar VGA_WIDTH90
-option if you wish to use VGA 90 column modes
-(see
+если вы хотите использовать режимы VGA с 90 колонками
+(см.
 .Xr vga 4 ) .
 .Pp
-Video modes other than 25 and 30 line modes may require specific size of font.
-Use
+Видеорежимы, отличные от режимов с 25 и 30 строками, могут потребовать определенный размер шрифта.
+Воспользуйтесь параметром 
 .Fl f
-option above to load a font file to the kernel.
-If the required size of font has not been loaded to the kernel,
+выше, чтобы загрузить файл шрифта в ядро.
+Если необходимый размер шрифта не был загружен в ядро,
 .Nm
-will fail if the user attempts to set a new video mode.
+произойдет сбой, если пользователь попытается установить новый видеорежим.
 .Pp
 .Bl -column "25 line modes" "8x16 (VGA), 8x14 (EGA)" -compact
 .Sy Modes Ta Sy Font size
@@ -471,49 +463,47 @@ will fail if the user attempts to set a new video mode.
 .No 60 line modes Ta 8x8
 .El
 .Pp
-It is better to always load all three sizes (8x8, 8x14 and 8x16)
-of the same font.
+Лучше всегда загружать все три размера (8x8, 8x14 и 8x16)
+одного и того же шрифта.
 .Pp
-You may set variables in
+Вы можете задать переменные в
 .Pa /etc/rc.conf
 or
 .Pa /etc/rc.conf.local
-so that desired font files will be automatically loaded
-when the system starts up.
-See below.
+таким образом, нужные файлы шрифтов будут автоматически загружены
+при запуске системы.
+Смотреть ниже.
 .Pp
-If you want to use any of the raster text modes you need to recompile your
-kernel with the
-.Dv SC_PIXEL_MODE
-option.
-See
+Если вы хотите использовать любой из режимов растрового текста, вам необходимо перекомпилировать ваше ядро с помощью параметра
+.Dv SC_PIXEL_MODE.
+См.
 .Xr syscons 4
-or
+или
 .Xr vt 4
-(depending on which driver you use)
-for more details on this kernel option.
-.Ss Format of Video Buffer Dump
-The
+(в зависимости от того, какой драйвер вы используете)
+для получения более подробной информации об этом параметре ядра.
+.Ss Формат дампа видеобуфера
+Утилита
 .Nm
-utility uses the
+использует
 .Xr syscons 4
 .\" is it supported on vt(4)???
-or
+или
 .Xr vt 4
 .Dv CONS_SCRSHOT
 .Xr ioctl 2
-to capture the current contents of the video buffer.
-The
+для захвата текущего содержимого видеобуфера.
+Утилита
 .Nm
-utility writes version and additional information to the standard
-output, followed by the contents of the video buffer.
+записывает версию и дополнительную информацию в стандартный
+вывод, за которым следует содержимое видеобуфера.
 .Pp
-VGA video memory is typically arranged in two byte tuples,
-one per character position.
-In each tuple, the first byte will be the character code,
-and the second byte is the character's color attribute.
+видеопамять VGA обычно состоит из двух байтовых кортежей,
+по одному на позицию символа.
+В каждом кортеже первый байт будет кодом символа,
+а второй байт - атрибутом цвета символа.
 .Pp
-The VGA color attribute byte looks like this:
+Байт атрибута цвета VGA выглядит следующим образом:
 .Bl -column "X:X" "<00000000>" "width" "bright foreground color"
 .Sy "bits#		width	meaning"
 .Li "7	<X0000000>	1	character blinking"
@@ -522,63 +512,63 @@ The VGA color attribute byte looks like this:
 .Li "2:0	<00000XXX>	3	foreground color"
 .El
 .Pp
-Here is a list of the three bit wide base colors:
+Вот список базовых цветов шириной в три бита:
 .Pp
 .Bl -hang -offset indent -compact
 .It 0
-Black
+Черный
 .It 1
-Blue
+Синий
 .It 2
-Green
+Зеленый
 .It 3
-Cyan
+Голубой
 .It 4
-Red
+Красный
 .It 5
-Magenta
+Пурпурный
 .It 6
-Brown
+Коричневый
 .It 7
-Light Grey
+Светло-серый
 .El
 .Pp
-Base colors with bit 3 (the bright foreground flag) set:
+Базовые цвета с установленным битом 3 (флаг яркого переднего плана):
 .Pp
 .Bl -hang -offset indent -compact
 .It 0
-Dark Grey
+Темно-серый
 .It 1
-Light Blue
+Светло-синий
 .It 2
-Light Green
+Светло-зеленый
 .It 3
-Light Cyan
+Светло-голубой
 .It 4
-Light Red
+Светло-красный
 .It 5
-Light Magenta
+Светло-пурпурный
 .It 6
-Yellow
+Желтый
 .It 7
-White
+Белый
 .El
 .Pp
-For example, the two bytes
+Например два байта
 .Pp
 .Dl "65 158"
 .Pp
-specify an uppercase A (character code 65), blinking
-(bit 7 set) in yellow (bits 3:0) on a blue background
+указывают заглавную букву A (код символа 65), мигающую
+(установлен бит 7) желтым цветом (биты 3:0) на синем фоне
 (bits 6:4).
 .Pp
-The
+Выходные данные
 .Nm
-output contains a small header which includes additional
-information which may be useful to utilities processing
-the output.
+содержат небольшой заголовок, который содержит дополнительную
+информацию, которая может быть полезна утилитам, обрабатывающим
+выходные данные.
 .Pp
-The first 10 bytes are always arranged as follows:
+Первые 10 байт всегда располагаются следующим образом:
 .Bl -column "Byte range" "Contents" -offset indent
 .It Sy "Byte Range	Contents"
 .It "1 - 8	Literal text" Dq Li SCRSHOT_
@@ -586,7 +576,7 @@ The first 10 bytes are always arranged as follows:
 .It "10	Remaining number of bytes in the header"
 .El
 .Pp
-Subsequent bytes depend on the version number.
+Последующие байты зависят от номера версии.
 .Bl -column "Version" "13 and up" -offset indent
 .It Sy "Version	Byte	Meaning"
 .It "1	11	Terminal width, in characters"
@@ -604,110 +594,108 @@ So a dump of an 80x25 screen would start (in hex)
           |              `--------- File format version 1
           `------------------------ Literal "SCRSHOT_"
 .Ed
-.Sh VIDEO OUTPUT CONFIGURATION
+.Sh КОНФИГУРАЦИЯ ВИДЕОВЫХОДА
 .Ss Boot Time Configuration
-You may set the following variables in
+Вы можете установить следующие переменные в
 .Pa /etc/rc.conf
-or
+или
 .Pa /etc/rc.conf.local
-in order to configure the video output at boot time.
+чтобы настроить видеовыход во время загрузки.
 .Pp
 .Bl -tag -width foo_bar_var -compact
 .It Ar blanktime
-Sets the timeout value for the
+Устанавливает значение паузы для параметра
 .Fl t
-option.
+.
 .It Ar font8x16 , font8x14 , font8x8
-Specifies font files for the
+Определяет файлы шрифтов для параметра
 .Fl f
-option.
+.
 .It Ar scrnmap
-Specifies a screen output map file for the
+Определяет файл карты вывода на экран для параметра
 .Fl l
-option.
+.
 .El
 .Pp
-See
+См.
 .Xr rc.conf 5
-for more details.
+для получения более подробной информации.
 .Ss Driver Configuration
-The video card driver may let you change default configuration
-options, such as the default font, so that you do not need to set up
-the options at boot time.
-See video card driver manuals, (e.g.,
+Драйвер видеокарты может позволить вам изменить параметры конфигурации
+по умолчанию, такие как шрифт по умолчанию, так что вам не нужно будет настраивать
+параметры во время загрузки.
+Смотрите руководства по драйверам видеокарт (напр.,
 .Xr vga 4 )
-for details.
-.Sh FILES
+для деталей
+.Sh ФАЙЛЫ
 .Bl -tag -width /usr/share/syscons/scrnmaps/foo-bar -compact
 .It Pa /usr/share/syscons/fonts/*
 .It Pa /usr/share/vt/fonts/*
-font files.
+файлы шрифтов.
 .It Pa /usr/share/syscons/scrnmaps/*
-screen output map files (relevant for
+файлы карт вывода на экран (соответствующие только для
 .Xr syscons 4
-only).
+).
 .El
-.Sh EXAMPLES
-If you want to load
+.Sh ПРИМЕРЫ
+Если вы хотите загрузить
 .Pa /usr/share/syscons/fonts/iso-8x16.fnt
-to the kernel, run
+к ядру, запустите
 .Nm
 as:
 .Pp
 .Dl vidcontrol -f 8x16 /usr/share/syscons/fonts/iso-8x16.fnt
 .Pp
-So long as the font file is in
+До тех пор, пока файл шрифта находится в
 .Pa /usr/share/syscons/fonts
-(if using syscons) or
+(при использовании системы syscons) или
 .Pa /usr/share/vt/fonts
-(if using vt),
-you may abbreviate the file name as
+(при использовании vt),
+вы можете сократить имя файла как
 .Pa iso-8x16 :
 .Pp
 .Dl vidcontrol -f 8x16 iso-8x16
 .Pp
-Furthermore, you can also omit font size
+Кроме того, вы также можете не указывать размер шрифта
 .Dq Li 8x16 :
 .Pp
 .Dl vidcontrol -f iso-8x16
 .Pp
-Moreover, the suffix specifying the font size can also be omitted; in
-this case,
+Кроме того, суффикс, указывающий размер шрифта, также может быть опущен; в
+этом случае,
 .Nm
-will use the size of the currently displayed font to construct the
-suffix:
+будет использовать размер отображаемого в данный момент шрифта для создания
+суффикса:
 .Pp
 .Dl vidcontrol -f iso
 .Pp
-Likewise, you can also abbreviate the screen output map file name for
-the
+Аналогичным образом, вы также можете сократить имя файла карты, выводимой на экран, для параметра
 .Fl l
-option if the file is found in
+если файл найден в
 .Pa /usr/share/syscons/scrnmaps .
 .Pp
 .Dl vidcontrol -l iso-8859-1_to_cp437
 .Pp
-The above command will load
+Приведенная выше команда загрузит
 .Pa /usr/share/syscons/scrnmaps/iso-8859-1_to_cp437.scm .
 .Pp
-The following command will set-up a 100x37 raster text mode (useful for
-some LCD models):
+Следующая команда настроит режим растрового текста размером 100х37 (полезно для
+некоторых моделей ЖК-дисплеев).:
 .Pp
 .Dl vidcontrol -g 100x37 VESA_800x600
 .Pp
-The following command will capture the contents of the first virtual
-terminal video buffer, and redirect the output to the
+Следующая команда захватит содержимое первого
+видеобуфера виртуального терминала и перенаправит выходные данные в
 .Pa shot.scr
-file:
+файл:
 .Pp
 .Dl vidcontrol -p < /dev/ttyv0 > shot.scr
 .Pp
-The following command will dump contents of the fourth virtual terminal
-video buffer
-to the standard output in the human readable format:
+Следующая команда преобразует содержимое четвертого видеобуфера виртуального терминала
+в стандартный вывод в удобочитаемом формате:
 .Pp
 .Dl vidcontrol -P < /dev/ttyv3
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr kbdcontrol 1 ,
 .Xr vidfont 1 ,
 .Xr keyboard 4 ,
@@ -720,18 +708,18 @@ to the standard output in the human readable format:
 .Xr moused 8 ,
 .Xr watch 8
 .Pp
-The various
+Различные утилиты
 .Pa scr2*
-utilities in the
+в
 .Pa graphics
-and
+и
 .Pa textproc
-categories of the
+категориях
 .Em "Ports Collection" .
-.Sh AUTHORS
+.Sh АВТОРЫ
 .An S\(/oren Schmidt Aq Mt sos@FreeBSD.org
-.An Sascha Wildner Aq Mt saw@online.de
-.Sh CONTRIBUTORS
+.An Саша Вильднер Aq Mt saw@online.de
+.Sh УЧАСТНИКИ
 .An -split
-.An Maxim Sobolev Aq Mt sobomax@FreeBSD.org
-.An Nik Clayton Aq Mt nik@FreeBSD.org
+.An Максим Соболев  Aq Mt sobomax@FreeBSD.org
+.An Ник Клейтон Aq Mt nik@FreeBSD.org

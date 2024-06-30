@@ -1,49 +1,49 @@
 .\"
-.Dd September 27, 1991
+.Dd 27 сентября 1991 г.
 .Dt PBM 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm pbm
-.Nd portable bitmap file format
-.Sh DESCRIPTION
-The portable bitmap format is a lowest common denominator monochrome
-file format.
-It was originally designed to make it reasonable to mail bitmaps
-between different types of machines using the typical stupid network
-mailers we have today.
-Now it serves as the common language of a large family of bitmap
-conversion filters.
-The definition is as follows:
+Формат переносимых растровых файлов .Nd
+ОПИСАНИЕ .Sh
+Портативный растровый формат - это монохромный формат с наименьшим общим знаменателем
+формат монохромных файлов.
+Изначально он был разработан для того, чтобы сделать разумной пересылку растровых изображений
+между различными типами машин с помощью простых сетевых
+почтовых программ, которые мы имеем сегодня.
+Сейчас он служит общим языком для большого семейства фильтров преобразования растровых изображений
+фильтров преобразования.
+Определение выглядит следующим образом:
 .Pp
-.Bl -bullet -compact
+.Bl - пуля - компактный
 .It
-A "magic number" for identifying the file type.
-A pbm file's magic number is the two characters "P1".
+"Магическое число" для идентификации типа файла.
+Магический номер файла pbm - это два символа "P1".
 .It
-Whitespace (blanks, TABs, CRs, LFs).
+Пробел (пробелы, TAB, CR, LF).
 .It
-A width, formatted as ASCII characters in decimal.
+Ширина, отформатированная как символы ASCII в десятичном формате.
 .It
-Whitespace.
+Пробел.
 .It
-A height, again in ASCII decimal.
+Высота, опять же в десятичном формате ASCII.
 .It
-Whitespace.
+Пробел.
 .It
-Width * height bits, each either '1' or '0', starting at the top-left
-corner of the bitmap, proceeding in normal English reading order.
+Биты ширины * высоты, каждый из которых либо '1', либо '0', начиная с левого верхнего
+левого верхнего угла растрового изображения, в обычном английском порядке чтения.
 .It
-The character '1' means black, '0' means white.
+Символ '1' означает черный цвет, '0' - белый.
 .It
-Whitespace in the bits section is ignored.
+Пробелы в секции битов игнорируются.
 .It
-Characters from a "#" to the next end-of-line are ignored (comments).
+Символы от "#" до следующего конца строки игнорируются (комментарии).
 .It
-No line should be longer than 70 characters.
+Ни одна строка не должна быть длиннее 70 символов.
 .El
 .Pp
-Here is an example of a small bitmap in this format:
-.Bd -literal
+Вот пример небольшого растрового изображения в этом формате:
+.Bd -литеральный
 P1
 # feep.pbm
 24 7
@@ -56,31 +56,33 @@ P1
 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 .Ed
 .Pp
-Programs that read this format should be as lenient as possible,
-accepting anything that looks remotely like a bitmap.
+Программы, читающие этот формат, должны быть максимально снисходительными,
+принимая все, что хоть отдаленно похоже на растровое изображение.
 .Pp
-There is also a variant on the format, available
-by setting the RAWBITS option at compile time.
-This variant is
-different in the following ways:
+Существует также вариант формата, доступный
+путем установки опции RAWBITS во время компиляции.
+Этот вариант
+отличается следующим образом:
 .Pp
 .Bl -bullet -compact
 .It
-The "magic number" is "P4" instead of "P1".
+"Магическое число" - "P4" вместо "P1".
 .It
-The bits are stored eight per byte, high bit first low bit last.
+Биты хранятся по восемь в байте, старший бит первый, младший - последний.
 .It
-No whitespace is allowed in the bits section, and only a single character
-of whitespace (typically a newline) is allowed after the height.
+В секции битов не допускаются пробельные символы, и только один символ
+после высоты допускается только один символ (обычно новая строка).
 .It
-The files are eight times smaller and many times faster to read and write.
+Файлы в восемь раз меньше и во много раз быстрее читаются и записываются.
 .El
-.Sh AUTHORS
-Copyright (C) 1989, 1991 by
+.Sh АВТОРЫ
+Авторские права (C) 1989, 1991 гг.
 .An Jef Poskanzer .
-.\" Permission to use, copy, modify, and distribute this software and its
-.\" documentation for any purpose and without fee is hereby granted, provided
-.\" that the above copyright notice appear in all copies and that both that
-.\" copyright notice and this permission notice appear in supporting
-.\" documentation.  This software is provided "as is" without express or
-.\" implied warranty.
+.\" Разрешение на использование, копирование, изменение и распространение данного программного обеспечения и его
+.\" документацию для любых целей и без взимания платы, настоящим предоставляется при условии
+.\" что вышеупомянутое уведомление об авторских правах появляется во всех копиях и что как это
+.\" уведомление об авторских правах, и это уведомление о разрешении появляются в поддерживающей
+.\" документации.  Данное программное обеспечение предоставляется "как есть" без явных или
+.\" подразумеваемых гарантий.
+
+

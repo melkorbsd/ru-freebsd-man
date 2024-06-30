@@ -14,38 +14,39 @@
 .\" WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 .\" ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 .\" OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-.Dd January 26, 2007
+.Dd Январь 26, 2007
 .Dt ZFORCE 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm zforce
-.Nd force gzip files to have a .gz suffix
-.Sh SYNOPSIS
+.Nd обязывает файлы gzip иметь суффикс .gz 
+.Sh СИНТАКСИС
 .Nm zforce
 .Ar
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+
 .Nm
-utility renames
+Утилита переименовывает файлы
 .Xr gzip 1
-files to have a
+с суффиксом
 .Sq .gz
-suffix, so that
+таким образом, что формат
 .Xr gzip 1
-will not compress them twice.
-This can be useful if file names were truncated during a file transfer.
-Files that have an existing
+не будет сжимать файлы дважды.
+Это может быть полезно, если имена файлов были усечены при передаче файлов.
+
+Файлы, у которых есть суффикс
 .Sq .gz ,
 .Sq -gz ,
 .Sq _gz ,
 .Sq .tgz
-or
+или
 .Sq .taz
-suffix, or that have not been compressed by
+или файлы, которые не были сжаты с помощью
 .Xr gzip 1 ,
-are ignored.
-.Sh SEE ALSO
+игнорируются
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr gzip 1
-.Sh CAVEATS
+.Sh ПРЕДОСТЕРЕЖЕНИЯ
 .Nm
-overwrites existing files without warning.
+переписывает существующие файлы без предупреждения.

@@ -1,48 +1,48 @@
 .\"
-.\" Copyright (c) 2009 Hudson River Trading LLC
-.\" Written by: George V. Neville-Neil <gnn@FreeBSD.org>
-.\" All rights reserved.
+.\" Copyright (c) 2009 ООО "Hudson River Trading"
+.\" Автор: Джордж В. Невилл-Нил <gnn@FreeBSD.org>
+.\" Все права защищены.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
+.\" Распространение и использование в исходном коде и двоичной форме, с использованием или без использования
+.\" модификаций, если следующие условия
+.\" соблюдаются:
+.\" 1. При распространении исходного кода должно сохраняться вышеуказанное уведомление
+.\"    об авторских правах, этот список условий и следующий дисклеймер.
+.\" 2. При распространиении в двоичной форме должно воспроизводиться уведомление об авторских правах,
+.\"    этот список условий и следующий ниже отказ от ответственности в
+.\"    документации и/или других материалах, поставляемых с дистрибутивом.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ ПРАВООБЛАДАТЕЛЯМИ И СОАВТОРАМИ ``КАК ЕСТЬ'', И 
+.\" МЫ ОТКАЗЫВАЕМСЯ ОТ ЛЮБЫХ ПОДРАЗУМЕВАЕМЫХ ОБЯЗАТЕЛЬСТВ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, 
+.\" ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ТОВАРНОЙ ПРИГОДНОСТИ И НЕПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ
+.\" ЦЕЛИ. НИ В КОЕМ СЛУЧАЕ ПРАВООБЛАДАТЕЛИ ИЛИ СОВАТОРЫ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ
+.\" ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, ОСОБЫЕ, ПОКАЗАТЕЛЬНЫЕ ИЛИ ЛОГИЧЕСКИ ВЫТЕКАЮЩИЕ
+.\" УБЫТКИ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ ИМИ, ПРИОБРЕТЕНИЕ ЗАМЕНЯЮЩИХ ТОВАРОВ ИЛИ УСЛУГ;
+.\" ПОТЕРЮ ВОЗМОЖНОСТИ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПРЕКРАЩЕНИЕ ДЕЯТЕЛЬНОСТИ)
+.\" НЕЗАВИСИМО ОТ ПРИЧИНЕННОГО УЩЕРБА И НА ОСНОВАНИИ ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО В РАМКАХ КОНТРАКТА, 
+.\" ПРЯМОЙ ОТВЕТСТВЕННОСТИ ИЛИ ДЕЛИКТА (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНОЕ), ВОЗНИКШЕГО КАКИМ-ЛИБО ОБРАЗОМ
+.\" В РЕЗУЛЬТАТЕ ИСПОЛЬЗОВАНИЯ ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ ВЫ БЫЛИ ОСВЕДОМЛЕНЫ О ВОЗМОЖНОСТИ
+.\" ТАКОГО УЩЕРБА.
 .\"
-.Dd May 12, 2009
+.Dd 12 мая, 2009 год 
 .Dt PERROR 1
 .Os
-.Sh NAME
+.Sh НАЗВАНИЕ
 .Nm perror
 .Nd "print an error number as a string"
-.Sh SYNOPSIS
+.Sh СИНТАКСИС
 .Nm
-.Ar number
-.Sh DESCRIPTION
-The
+.Ar номер
+.Sh ОПИСАНИЕ
+Программа
 .Nm
-program takes a raw errno value and prints it as a string.
-.Sh SEE ALSO
+принимает необработанное значение номера ошибки и выводит его в виде строки.
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr perror 3
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Программа
 .Nm
-program first appeared in
+впервые появилась в
 .Fx 8.0 .
-.Sh AUTHORS
-.An George V. Neville-Neil
+.Sh АВТОРЫ
+.An Джордж В. Невилл-Нил

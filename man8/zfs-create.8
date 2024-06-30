@@ -29,14 +29,14 @@
 .\" Copyright 2018 Nexenta Systems, Inc.
 .\" Copyright 2019 Joyent, Inc.
 .\"
-.Dd March 16, 2022
+.Dd Март 16, 2022
 .Dt ZFS-CREATE 8
 .Os
 .
-.Sh NAME
+.Sh ИМЯ
 .Nm zfs-create
-.Nd create ZFS dataset
-.Sh SYNOPSIS
+.Nd создает набор данных ZFS
+.Sh СИНТАКСИС
 .Nm zfs
 .Cm create
 .Op Fl Pnpuv
@@ -49,7 +49,7 @@
 .Oo Fl o Ar property Ns = Ns Ar value Oc Ns …
 .Fl V Ar size Ar volume
 .
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 .Bl -tag -width ""
 .It Xo
 .Nm zfs
@@ -58,77 +58,74 @@
 .Oo Fl o Ar property Ns = Ns Ar value Oc Ns …
 .Ar filesystem
 .Xc
-Creates a new ZFS file system.
-The file system is automatically mounted according to the
+Создает новую файловую систему ZFS.
+Файловая система автоматически монтируется в соответствии с
 .Sy mountpoint
-property inherited from the parent, unless the
+свойством, унаследованным от родителя, за исключением случаев, когда используется
 .Fl u
-option is used.
+опция.
 .Bl -tag -width "-o"
 .It Fl o Ar property Ns = Ns Ar value
-Sets the specified property as if the command
+Устанавливает указанное свойство так, как если бы команда
 .Nm zfs Cm set Ar property Ns = Ns Ar value
-was invoked at the same time the dataset was created.
-Any editable ZFS property can also be set at creation time.
-Multiple
+была вызвана одновременно с созданием набора данных.
+Любое редактируемое свойство ZFS также может быть установлено во время создания.
+Множество параметров
 .Fl o
-options can be specified.
-An error results if the same property is specified in multiple
+может быть указано.
+Возникает ошибка, если одно и то же свойство указано в нескольких
 .Fl o
-options.
+опциях.
 .It Fl p
-Creates all the non-existing parent datasets.
-Datasets created in this manner are automatically mounted according to the
-.Sy mountpoint
-property inherited from their parent.
-Any property specified on the command line using the
+Создает все несуществующие родительские наборы данных.
+Наборы данных, созданные таким образом, автоматически монтируются в соответствии со свойствами
+.Sy mountpoint ,
+унаследованными от их родителей.
+Любое свойство, указанное в командной строке с помощью параметра
 .Fl o
-option is ignored.
-If the target filesystem already exists, the operation completes successfully.
+игнорируется.
+Если целевая файловая система уже существует, операция завершается успешно.
 .It Fl n
-Do a dry-run
+Проводит пробный запуск создания
 .Pq Qq No-op
-creation.
-No datasets will be created.
-This is useful in conjunction with the
+.
+Наборы данных создаваться не будут.
+Это полезно в сочетании с флагами
 .Fl v
-or
+или
 .Fl P
-flags to validate properties that are passed via
+для проверки свойств, передаваемых через параметры
 .Fl o
-options and those implied by other options.
-The actual dataset creation can still fail due to insufficient privileges or
-available capacity.
+и те, которые подразумеваются другими параметрами.
+Фактическое создание набора данных все еще может завершиться ошибкой из-за недостаточных привилегий или
+доступной емкости.
 .It Fl P
-Print machine-parsable verbose information about the created dataset.
-Each line of output contains a key and one or two values, all separated by tabs.
-The
+Подробная информация о созданном наборе данных, пригодная для машинного анализа.
+Каждая строка выходных данных содержит ключ и одно или два значения, разделенные символами табуляции.
+Ключи
 .Sy create_ancestors
-and
+и
 .Sy create
-keys have
+имеют
 .Em filesystem
-as their only value.
-The
+как их единственное значение.
 .Sy create_ancestors
-key only appears if the
-.Fl p
-option is used.
-The
+ключ появляется только в том случае, если используется параметр
+.Fl p .
+Ключ
 .Sy property
-key has two values, a property name that property's value.
-The
+имеет два значения: имя свойства и значение этого свойства.
+Ключ
 .Sy property
-key may appear zero or more times, once for each property that will be set local
-to
+может отображаться ноль или более раз, по одному разу для каждого свойства, которое будет установлено локально
+в
 .Em filesystem
-due to the use of the
-.Fl o
-option.
+в связи с использованием параметра
+.Fl o .
 .It Fl u
-Do not mount the newly created file system.
+Не монтирует вновь созданную файловую систему.
 .It Fl v
-Print verbose information about the created dataset.
+Выводит подробную информацию о созданном наборе данных.
 .El
 .It Xo
 .Nm zfs
@@ -138,128 +135,125 @@ Print verbose information about the created dataset.
 .Oo Fl o Ar property Ns = Ns Ar value Oc Ns …
 .Fl V Ar size Ar volume
 .Xc
-Creates a volume of the given size.
-The volume is exported as a block device in
+Создает том заданного размера.
+Том экспортируется как блочное устройство в
 .Pa /dev/zvol/path ,
-where
+где
 .Em path
-is the name of the volume in the ZFS namespace.
-The size represents the logical size as exported by the device.
-By default, a reservation of equal size is created.
+это имя тома в пространстве имен ZFS.
+Размер представляет собой логический размер, экспортируемый устройством.
+По умолчанию создается резервирование такого же размера.
 .Pp
 .Ar size
-is automatically rounded up to the nearest multiple of the
+автоматически округляется в большую сторону до ближайшего значения, кратного
 .Sy blocksize .
 .Bl -tag -width "-b"
 .It Fl b Ar blocksize
-Equivalent to
+Эквивалентно
 .Fl o Sy volblocksize Ns = Ns Ar blocksize .
-If this option is specified in conjunction with
+Если этот параметр указан в сочетании с
 .Fl o Sy volblocksize ,
-the resulting behavior is undefined.
+результирующее поведение не определено.
 .It Fl o Ar property Ns = Ns Ar value
-Sets the specified property as if the
+Устанавливает указанное свойство таким образом, как если бы
 .Nm zfs Cm set Ar property Ns = Ns Ar value
-command was invoked at the same time the dataset was created.
-Any editable ZFS property can also be set at creation time.
-Multiple
+команда была вызвана одновременно с созданием набора данных.
+Любое редактируемое свойство ZFS также может быть задано во время создания.
+Множество параметров
 .Fl o
-options can be specified.
-An error results if the same property is specified in multiple
-.Fl o
-options.
+может быть указано.
+Возникает ошибка, если одно и то же свойство указано в нескольких параметрах
+.Fl o .
 .It Fl p
-Creates all the non-existing parent datasets.
-Datasets created in this manner are automatically mounted according to the
-.Sy mountpoint
-property inherited from their parent.
-Any property specified on the command line using the
+Создает все несуществующие родительские наборы данных.
+Наборы данных, созданные таким образом, автоматически монтируются в соответствии со свойством
+.Sy mountpoint ,
+унаследованное от родительского элемента.
+Любое свойство, указанное в командной строке с помощью параметра
 .Fl o
-option is ignored.
-If the target filesystem already exists, the operation completes successfully.
+игнорируется.
+Если целевая файловая система уже существует, операция завершается успешно.
 .It Fl s
-Creates a sparse volume with no reservation.
-See
+Создает разреженный том без резервирования.
+Смотрите
 .Sy volsize
-in the
+в
 .Em Native Properties
-section of
+разделе из
 .Xr zfsprops 7
-for more information about sparse volumes.
+для получения дополнительной информации о разреженных томах.
 .It Fl n
-Do a dry-run
-.Pq Qq No-op
-creation.
-No datasets will be created.
-This is useful in conjunction with the
+Проводит пробный запуск создания
+.Pq Qq No-op .
+Наборы данных создаваться не будут.
+Это полезно в сочетании с флагами
 .Fl v
-or
+или
 .Fl P
-flags to validate properties that are passed via
+для проверки свойств, передаваемых через параметры
 .Fl o
-options and those implied by other options.
-The actual dataset creation can still fail due to insufficient privileges or
-available capacity.
+и те, которые подразумеваются другими параметрами.
+Фактическое создание набора данных все еще может завершиться ошибкой из-за недостаточных привилегий или
+доступной емкости.
 .It Fl P
-Print machine-parsable verbose information about the created dataset.
-Each line of output contains a key and one or two values, all separated by tabs.
-The
+Подробная информация о созданном наборе данных, пригодная для машинного анализа.
+Каждая строка выходных данных содержит ключ и одно или два значения, разделенные символами табуляции.
+Ключи
 .Sy create_ancestors
-and
+и
 .Sy create
-keys have
+имеют
 .Em volume
-as their only value.
-The
+как их единственное значение.
+Ключ
 .Sy create_ancestors
-key only appears if the
-.Fl p
-option is used.
-The
+появляется только в том случае, если используется опция
+.Fl p .
+Ключ
 .Sy property
-key has two values, a property name that property's value.
-The
+имеет два значения: имя свойства и значение этого свойства.
+Ключ
 .Sy property
-key may appear zero or more times, once for each property that will be set local
-to
+может отображаться ноль или более раз, по одному разу для каждого свойства, которое будет установлено локально
+в
 .Em volume
-due to the use of the
+в связи с использованием параметров
 .Fl b
-or
-.Fl o
-options, as well as
+или
+.Fl o ,
+а также
 .Sy refreservation
-if the volume is not sparse.
+если объем не является разреженным.
 .It Fl v
-Print verbose information about the created dataset.
+Выводит подробную информацию о созданном наборе данных.
 .El
 .El
 .Ss ZFS for Swap
-Swapping to a ZFS volume is prone to deadlock and not recommended.
-See OpenZFS FAQ.
+Замена на том ZFS может привести к взаимоблокировке и не рекомендуется.
+Смотрите часто задаваемые вопросы по OpenZFS.
 .Pp
-Swapping to a file on a ZFS filesystem is not supported.
+Замена на файл в файловой системе ZFS не поддерживается.
 .
-.Sh EXAMPLES
+.Sh ПРИМЕРЫ
 .\" These are, respectively, examples 1, 10 from zfs.8
 .\" Make sure to update them bidirectionally
-.Ss Example 1 : No Creating a ZFS File System Hierarchy
-The following commands create a file system named
+.Ss Пример 1 : No Creating a ZFS File System Hierarchy
+Следующие команды создают файловую систему с именем
 .Ar pool/home
-and a file system named
+и файловую система с именем
 .Ar pool/home/bob .
-The mount point
+Точка монтирования
 .Pa /export/home
-is set for the parent file system, and is automatically inherited by the child
-file system.
+устанавливается для родительской файловой системы и автоматически наследуется дочерней
+файловой системой.
 .Dl # Nm zfs Cm create Ar pool/home
 .Dl # Nm zfs Cm set Sy mountpoint Ns = Ns Ar /export/home pool/home
 .Dl # Nm zfs Cm create Ar pool/home/bob
 .
-.Ss Example 2 : No Promoting a ZFS Clone
-The following commands illustrate how to test out changes to a file system, and
-then replace the original file system with the changed one, using clones, clone
-promotion, and renaming:
+.Ss Пример 2 : No Promoting a ZFS Clone
+Следующие команды иллюстрируют, как протестировать изменения в файловой системе, а
+затем заменить исходную файловую систему на измененную, используя клоны,
+продвижение клонов и переименование:
 .Bd -literal -compact -offset Ds
 .No # Nm zfs Cm create Ar pool/project/production
   populate /pool/project/production with data
@@ -273,7 +267,7 @@ promotion, and renaming:
 .No # Nm zfs Cm destroy Ar pool/project/legacy
 .Ed
 .
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr zfs-destroy 8 ,
 .Xr zfs-list 8 ,
 .Xr zpool-create 8

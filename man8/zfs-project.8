@@ -29,14 +29,14 @@
 .\" Copyright 2018 Nexenta Systems, Inc.
 .\" Copyright 2019 Joyent, Inc.
 .\"
-.Dd May 27, 2021
+.Dd Май 27, 2021
 .Dt ZFS-PROJECT 8
 .Os
 .
-.Sh NAME
+.Sh ИМЯ
 .Nm zfs-project
-.Nd manage projects in ZFS filesystem
-.Sh SYNOPSIS
+.Nd управление проектами в файловой системе ZFS
+.Sh СИНТАКСИС
 .Nm zfs
 .Cm project
 .Oo Fl d Ns | Ns Fl r Ns Oc
@@ -59,7 +59,7 @@
 .Oo Fl rs Ns Oc
 .Ar file Ns | Ns Ar directory Ns …
 .
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 .Bl -tag -width ""
 .It Xo
 .Nm zfs
@@ -67,12 +67,12 @@
 .Oo Fl d Ns | Ns Fl r Ns Oc
 .Ar file Ns | Ns Ar directory Ns …
 .Xc
-List project identifier (ID) and inherit flag of files and directories.
+Перечислите идентификатор проекта (ID) и флаг наследования файлов и каталогов.
 .Bl -tag -width "-d"
 .It Fl d
-Show the directory project ID and inherit flag, not its children.
+Показывать идентификатор проекта каталога и флаг наследования, а не его дочерние элементы.
 .It Fl r
-List subdirectories recursively.
+Рекурсивно перечислять подкаталоги.
 .El
 .It Xo
 .Nm zfs
@@ -81,13 +81,13 @@ List subdirectories recursively.
 .Oo Fl kr Ns Oc
 .Ar file Ns | Ns Ar directory Ns …
 .Xc
-Clear project inherit flag and/or ID on the files and directories.
+Снимите флажок наследования проекта и/или идентификатор для файлов и каталогов.
 .Bl -tag -width "-k"
 .It Fl k
-Keep the project ID unchanged.
-If not specified, the project ID will be reset to zero.
+Оставьте идентификатор проекта неизменным.
+Если он не указан, идентификатор проекта будет обнулен.
 .It Fl r
-Clear subdirectories' flags recursively.
+Рекурсивно очищайте флаги подкаталогов.
 .El
 .It Xo
 .Nm zfs
@@ -98,22 +98,22 @@ Clear subdirectories' flags recursively.
 .Op Fl p Ar id
 .Ar file Ns | Ns Ar directory Ns …
 .Xc
-Check project ID and inherit flag on the files and directories:
-report entries without the project inherit flag, or with project IDs different
-from the
-target directory's project ID or the one specified with
+Установите флажок project ID и inherit для файлов и каталогов:
+укажите записи без флажка project inherit или с идентификаторами проектов, отличающимися
+от идентификатора
+проекта в целевой директории или от того, который указан с помощью
 .Fl p .
 .Bl -tag -width "-p id"
 .It Fl 0
-Delimit filenames with a NUL byte instead of newline, don't output diagnoses.
+Разделяйте имена файлов нулевым байтом вместо новой строки, не выводите диагнозы.
 .It Fl d
-Check the directory project ID and inherit flag, not its children.
+Проверьте идентификатор проекта каталога и флаг inherit, а не его дочерние элементы.
 .It Fl p Ar id
-Compare to
+По сравнению с
 .Ar id
-instead of the target files and directories' project IDs.
+вместо идентификаторов проекта целевых файлов и каталогов.
 .It Fl r
-Check subdirectories recursively.
+Рекурсивно проверяйте подкаталоги.
 .El
 .It Xo
 .Nm zfs
@@ -122,21 +122,21 @@ Check subdirectories recursively.
 .Oo Fl rs Ns Oc
 .Ar file Ns | Ns Ar directory Ns …
 .Xc
-Set project ID and/or inherit flag on the files and directories.
+Установите идентификатор проекта и/или флаг наследования для файлов и каталогов.
 .Bl -tag -width "-p id"
 .It Fl p Ar id
-Set the project ID to the given value.
+Установите для идентификатора проекта заданное значение.
 .It Fl r
-Set on subdirectories recursively.
+Устанавливается в подкаталогах рекурсивно.
 .It Fl s
-Set project inherit flag on the given files and directories.
-This is usually used for setting up tree quotas with
+Установите флажок project inherit для заданных файлов и каталогов.
+Обычно используется для настройки квот дерева с
 .Fl r .
-In that case, the directory's project ID
-will be set for all its descendants, unless specified explicitly with
+В этом случае идентификатор проекта каталога
+будет установлен для всех его потомков, если только он явно не указан с помощью
 .Fl p .
 .El
 .El
 .
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr zfs-projectspace 8

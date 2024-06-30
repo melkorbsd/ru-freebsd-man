@@ -1,131 +1,126 @@
-.\" Copyright (c) 2007, 2008 Marcel Moolenaar
-.\" All rights reserved.
+.\" Авторские права (c) 2007, 2008 Марсель Муленар
+.\" Все права защищены.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
+.\" Распространение и использование в исходных и бинарных формах, с изменениями или без,
+.\" разрешено при условии соблюдения следующих условий:
+.\" 1. Перераспределения исходного кода должны сохранять вышеуказанное уведомление об авторском праве,
+.\"    этот список условий и следующее отказ от ответственности.
+.\" 2. Перераспределения в бинарной форме должны воспроизводить вышеуказанное уведомление об авторском праве,
+.\"    этот список условий и следующее отказ от ответственности в
+.\"    документации и/или других материалах, поставляемых с распространением.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE AUTHORS AND CONTRIBUTORS ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHORS OR CONTRIBUTORS BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" ЭТО ПО ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ АВТОРАМИ И УЧАСТНИКАМИ "КАК ЕСТЬ" И
+.\" ЛЮБЫЕ ЯВНЫЕ ИЛИ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПОДРАЗУМЕВАЕМЫМИ ГАРАНТИЯМИ
+.\" ТОВАРНОСТИ И ПРИГОДНОСТИ ДЛЯ КОНКРЕТНОЙ ЦЕЛИ ОТКАЗЫВАЮТСЯ. НИ В КОЕМ СЛУЧАЕ АВТОРЫ ИЛИ УЧАСТНИКИ НЕ НЕСУТ
+.\" ОТВЕТСТВЕННОСТЬ ЗА ЛЮБОЙ ПРЯМОЙ, КОСВЕННЫЙ, СЛУЧАЙНЫЙ, ОСОБЫЙ, ПРИМЕРНЫЙ ИЛИ КОСВЕННЫЙ УЩЕРБ
+.\" (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПО ЗАМЕЩЕНИЮ ТОВАРОВ ИЛИ УСЛУГ; ПОТЕРЮ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПРЕРЫВАНИЕ БИЗНЕСА)
+.\" ТЕМ НЕ МЕНЕЕ ВЫЗВАННО И НА ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО В КОНТРАКТЕ, СТРОГОЙ ОТВЕТСТВЕННОСТИ,
+.\" ИЛИ ДЕЛИКТ (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНАЧЕ) ВОЗНИКАЮЩИМ В ЛЮБОМ СПОСОБЕ
+.\" ВНЕ ИСПОЛЬЗОВАНИЯ ЭТОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ БЫЛО ПРЕДУПРЕЖДЕНИЕ О ВОЗМОЖНОСТИ ТАКОГО УЩЕРБА.
 .\"
-.Dd July 26, 2023
+.Dd 26 июля 2023 года
 .Dt GPART 8
 .Os
-.Sh NAME
+.Sh НАЗВАНИЕ
 .Nm gpart
-.Nd "control utility for the disk partitioning GEOM class"
-.Sh SYNOPSIS
-.\" ==== ADD ====
+.Nd "утилита управления разделением диска для класса GEOM"
+.Sh СИНТАКСИС
+.\" ==== ДОБАВИТЬ ====
 .Nm
 .Cm add
-.Fl t Ar type
-.Op Fl a Ar alignment
-.Op Fl b Ar start
-.Op Fl s Ar size
-.Op Fl i Ar index
-.Op Fl l Ar label
-.Op Fl f Ar flags
+.Fl t Ar тип
+.Op Fl a Ar выравнивание
+.Op Fl b Ar начало
+.Op Fl s Ar размер.Op Fl i Ar index
+.Op Fl l Ar метка
+.Op Fl f Ar флаги
 .Ar geom
-.\" ==== BACKUP ====
+.\" ==== РЕЗЕРВНОЕ КОПИРОВАНИЕ ====
 .Nm
 .Cm backup
 .Ar geom
-.\" ==== BOOTCODE ====
+.\" ==== ЗАГРУЗОЧНЫЙ КОД ====
 .Nm
 .Cm bootcode
 .Op Fl N
-.Op Fl b Ar bootcode
-.Op Fl p Ar partcode Fl i Ar index
-.Op Fl f Ar flags
+.Op Fl b Ar загрузочный_код
+.Op Fl p Ar часть_кода Fl i Ar index
+.Op Fl f Ar флаги
 .Ar geom
-.\" ==== COMMIT ====
+.\" ==== ПОДТВЕРЖДЕНИЕ ====
 .Nm
 .Cm commit
 .Ar geom
-.\" ==== CREATE ====
+.\" ==== СОЗДАНИЕ ====
 .Nm
 .Cm create
-.Fl s Ar scheme
-.Op Fl n Ar entries
-.Op Fl f Ar flags
-.Ar provider
-.\" ==== DELETE ====
+.Fl s Ar схема
+.Op Fl n Ar вводы
+.Op Fl f Ar флаги
+.Ar провайдер
+.\" ==== УДАЛЕНИЕ ====
 .Nm
 .Cm delete
 .Fl i Ar index
-.Op Fl f Ar flags
+.Op Fl f Ar флаги
 .Ar geom
-.\" ==== DESTROY ====
+.\" ==== УНИЧТОЖЕНИЕ ====
 .Nm
 .Cm destroy
 .Op Fl F
-.Op Fl f Ar flags
+.Op Fl f Ar флаги
 .Ar geom
-.\" ==== MODIFY ====
+.\" ==== ИЗМЕНЕНИЕ ====
 .Nm
 .Cm modify
 .Fl i Ar index
-.Op Fl l Ar label
-.Op Fl t Ar type
-.Op Fl f Ar flags
+.Op Fl l Ar метка
+.Op Fl t Ar тип
+.Op Fl f Ar флаги
 .Ar geom
-.\" ==== RECOVER ====
+.\" ==== ВОССТАНОВЛЕНИЕ ====
 .Nm
 .Cm recover
-.Op Fl f Ar flags
+.Op Fl f Ar флаги
 .Ar geom
-.\" ==== RESIZE ====
+.\" ==== ИЗМЕНЕНИЕ РАЗМЕРА ====
 .Nm
 .Cm resize
 .Fl i Ar index
-.Op Fl a Ar alignment
-.Op Fl s Ar size
-.Op Fl f Ar flags
+.Op Fl a Ar выравнивание
+.Op Fl s Ar размер
+.Op Fl f Ar флаги
 .Ar geom
-.\" ==== RESTORE ====
+.\" ==== ВОССТАНОВЛЕНИЕ ИЗ РЕЗЕРВНОЙ КОПИИ ====
 .Nm
 .Cm restore
 .Op Fl lF
-.Op Fl f Ar flags
-.Ar provider
+.Op Fl f Ar флаги
+.Ar провайдер
 .Op Ar ...
-.\" ==== SET ====
+.\" ==== УСТАНОВКА ====
 .Nm
 .Cm set
-.Fl a Ar attrib
+.Fl a Ar атрибут
 .Fl i Ar index
-.Op Fl f Ar flags
+.Op Fl f Ar флаги
 .Ar geom
-.\" ==== SHOW ====
+.\" ==== ПОКАЗАТЬ ====
 .Nm
 .Cm show
 .Op Fl l | r
 .Op Fl p
 .Op Ar geom ...
-.\" ==== UNDO ====
+.\" ==== ОТМЕНА ====
 .Nm
 .Cm undo
 .Ar geom
-.\" ==== UNSET ====
+.\" ==== СНЯТИЕ УСТАНОВКИ ====
 .Nm
 .Cm unset
-.Fl a Ar attrib
+.Fl a Ar атрибут
 .Fl i Ar index
-.Op Fl f Ar flags
+.Op Fl f Ar флаги
 .Ar geom
 .\"
 .Nm
@@ -136,1293 +131,1252 @@
 .Cm load
 .Nm
 .Cm unload
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 The
 .Nm
-utility is used to partition GEOM providers, normally disks.
-The first argument is the action to be taken:
-.Bl -tag -width ".Cm bootcode"
-.\" ==== ADD ====
+утилита используется для разбиения на разделы GEOM провайдеров, обычно дисков.
+Первый аргумент - это действие, которое должно быть выполнено:
+.Bl -tag -width ".Cm загрузочный_код"
+.\" ==== ДОБАВЛЕНИЕ ====
 .It Cm add
-Add a new partition to the partitioning scheme given by
+Добавление нового раздела в схему разбиения, указанную
 .Ar geom .
-The partition type must be specified with
-.Fl t Ar type .
-The partition's location, size, and other attributes will be calculated
-automatically if the corresponding options are not specified.
+Тип раздела должен быть указан с помощью
+.Fl t Ar тип .
+Местоположение раздела, размер и другие атрибуты будут рассчитаныАвтоматически, если соответствующие опции не указаны.
 .Pp
-The
+Команда
 .Cm add
-command accepts these options:
+принимает следующие опции:
 .Bl -tag -width 12n
 .It Fl a Ar alignment
-If specified, then the
+Если указано, то утилита
 .Nm
-utility tries to align
+пытается выровнять
 .Ar start
-offset and partition
+смещение и размер раздела
 .Ar size
-to be multiple of
+чтобы они были кратны
 .Ar alignment
-value.
+значению.
 .It Fl b Ar start
-The logical block address where the partition will begin.
-An SI unit suffix is allowed.
+Логический блочный адрес, где раздел будет начинаться.
+Допускается использование суффикса единицы измерения СИ.
 .It Fl f Ar flags
-Additional operational flags.
-See the section entitled
+Дополнительные операционные флаги.
+Смотрите раздел под названием
 .Sx "OPERATIONAL FLAGS"
-below for a discussion
-about its use.
+ниже для обсуждения
+его использования.
 .It Fl i Ar index
-The index in the partition table at which the new partition is to be
-placed.
-The index determines the name of the device special file used
-to represent the partition.
+Индекс в таблице разделов, на котором новый раздел должен быть
+размещен.
+Индекс определяет имя специального файла устройства, используемого
+для представления раздела.
 .It Fl l Ar label
-The label attached to the partition.
-This option is only valid when used on partitioning schemes that support
-partition labels.
+Метка, прикрепленная к разделу.
+Эта опция действительна только при использовании на схемах разделения, которые поддерживают
+метки разделов.
 .It Fl s Ar size
-Create a partition of size
+Создать раздел размера
 .Ar size .
-An SI unit suffix is allowed.
+Допускается использование суффикса единицы измерения СИ.
 .It Fl t Ar type
-Create a partition of type
+Создать раздел типа
 .Ar type .
-Partition types are discussed below in the section entitled
+Типы разделов обсуждаются ниже в разделе под названием
 .Sx "PARTITION TYPES" .
 .El
-.\" ==== BACKUP ====
+.\" ==== РЕЗЕРВНОЕ КОПИРОВАНИЕ ====
 .It Cm backup
-Dump a partition table to standard output in a special format used by the
+Выгрузить таблицу разделов в стандартный вывод в специальном формате, используемом действием
 .Cm restore
-action.
-.\" ==== BOOTCODE ====
+.
+.\" ==== ЗАГРУЗОЧНЫЙ КОД ====
 .It Cm bootcode
-Embed bootstrap code into the partitioning scheme's metadata on the
+Внедрить загрузочный код в метаданные схемы разделения на
 .Ar geom
-(using
+(используя
 .Fl b Ar bootcode )
-or write bootstrap code into a partition (using
+или записать загрузочный код в раздел (используя
 .Fl p Ar partcode
-and
-.Fl i Ar index ) .
+и
+.Fl i Ar index ).
 .Pp
-The
+Команда
 .Cm bootcode
-command accepts these options:
+принимает следующие опции:
 .Bl -tag -width 10n
 .It Fl N
-Do not preserve the Volume Serial Number for MBR.
-MBR bootcode contains Volume Serial Number by default, and
+Не сохранять серийный номер тома для MBR.
+MBR загрузочный код по умолчанию содержит серийный номер тома, и
+
 .Nm
-tries to preserve it when installing new bootstrap code.
-This option skips preservation to help with some versions of
+пытается сохранить его при установке нового загрузочного кода.
+Эта опция пропускает сохранение, чтобы помочь с некоторыми версиями
 .Xr boot0cfg 8
-that do not support Volume Serial Number.
+которые не поддерживают серийный номер тома.
 .It Fl b Ar bootcode
-Embed bootstrap code from the file
+Внедрить загрузочный код из файла
 .Ar bootcode
-into the partitioning scheme's metadata for
-.Ar geom .
-Not all partitioning schemes have embedded bootstrap code, so the
+в метаданные схемы разбиения для
+.Ar geom.
+Не все схемы разбиения имеют встроенный загрузочный код, поэтому опция
 .Fl b Ar bootcode
-option is scheme-specific in nature (see the section entitled
+специфична для схемы (см. раздел под названием
 .Sx BOOTSTRAPPING
-below).
-The
+ниже).
+Файл
 .Ar bootcode
-file must match the partitioning scheme's requirements for file content
-and size.
+должен соответствовать требованиям схемы разбиения к содержанию и размеру файла.
 .It Fl f Ar flags
-Additional operational flags.
-See the section entitled
-.Sx "OPERATIONAL FLAGS"
-below for a discussion
-about its use.
+Дополнительные операционные флаги.
+Смотрите раздел под названием
+.Sx "ОПЕРАЦИОННЫЕ ФЛАГИ"
+ниже для обсуждения
+их использования.
 .It Fl i Ar index
-Specify the target partition for
-.Fl p Ar partcode .
+Укажите целевой раздел для
+.Fl p Ar partcode.
 .It Fl p Ar partcode
-Write the bootstrap code from the file
+Записать загрузочный код из файла
 .Ar partcode
-into the
+в указанный
 .Ar geom
-partition specified by
-.Fl i Ar index .
-The size of the file must be smaller than the size of the partition.
+раздел, определенный с помощью
+.Fl i Ar index.
+Размер файла должен быть меньше размера раздела.
 .El
 .\" ==== COMMIT ====
 .It Cm commit
-Commit any pending changes for geom
-.Ar geom .
-All actions are committed by default and will not result in
-pending changes.
-Actions can be modified with the
-.Fl f Ar flags
-option so that they are not committed, but become pending.
-Pending changes are reflected by the geom and the
-.Nm
-utility, but they are not actually written to disk.
-The
+Подтвердите любые ожидаемые изменения для geom
+.Ar geom.
+Все действия по умолчанию подтверждаются и не приведут к
+ожидающим изменениям.
+Действия могут быть изменены с помощью опции
+.Fl f Ar flags,
+так что они не подтверждаются, а становятся ожидающими.
+Ожидающие изменения отражаются geom и утилитой
+.Nm,
+но они на самом деле не записываются на диск.
+Действие
 .Cm commit
-action will write all pending changes to disk.
+запишет все ожидающие изменения на диск.
 .\" ==== CREATE ====
 .It Cm create
-Create a new partitioning scheme on a provider given by
-.Ar provider .
-The scheme to use must be specified with the
-.Fl s Ar scheme
-option.
+Создать новую схему разбиения на устройство, предоставленное
+.Ar provider.
+Схему, которую нужно использовать, следует указать с помощью опции
+.Fl s Ar scheme.
 .Pp
-The
-.Cm create
-command accepts these options:
+The.Cm create
+команда принимает следующие опции:
 .Bl -tag -width 10n
 .It Fl f Ar flags
-Additional operational flags.
-See the section entitled
-.Sx "OPERATIONAL FLAGS"
-below for a discussion
-about its use.
+Дополнительные операционные флаги.
+Смотрите раздел под названием
+.Sx "ОПЕРАЦИОННЫЕ ФЛАГИ"
+ниже для обсуждения
+их использования.
 .It Fl n Ar entries
-The number of entries in the partition table.
-Every partitioning scheme has a minimum and maximum number of entries.
-This option allows tables to be created with a number of entries
-that is within the limits.
-Some schemes have a maximum equal to the minimum and some schemes have
-a maximum large enough to be considered unlimited.
-By default, partition tables are created with the minimum number of
-entries.
+Количество записей в таблице разделов.
+Каждая схема разбиения имеет минимальное и максимальное число записей.
+Эта опция позволяет создавать таблицы с количеством записей,
+которое находится в пределах лимитов.
+Некоторые схемы имеют максимум равный минимуму, а некоторые схемы имеют
+максимум достаточно велик, чтобы считаться неограниченным.
+По умолчанию, таблицы разделов создаются с минимальным числом
+записей.
 .It Fl s Ar scheme
-Specify the partitioning scheme to use.
-The kernel must have support for a particular scheme before
-that scheme can be used to partition a disk.
+Указать схему разбиения для использования.
+Ядро должно иметь поддержку определённой схемы перед
+тем как эта схема может быть использована для разбиения диска.
 .El
 .\" ==== DELETE ====
 .It Cm delete
-Delete a partition from geom
+Удалить раздел из geom
 .Ar geom
-and further identified by the
+и дополнительно идентифицированный опцией
 .Fl i Ar index
-option.
-The partition cannot be actively used by the kernel.
+.
+Раздел не может быть активно использован ядром.
 .Pp
-The
+Команда
 .Cm delete
-command accepts these options:
+принимает следующие опции:
 .Bl -tag -width 10n
 .It Fl f Ar flags
-Additional operational flags.
-See the section entitled
-.Sx "OPERATIONAL FLAGS"
-below for a discussion
-about its use.
+Дополнительные операционные флаги.
+Смотрите раздел под названием
+.Sx "ОПЕРАЦИОННЫЕ ФЛАГИ"
+ниже для обсуждения
+их использования.
 .It Fl i Ar index
-Specifies the index of the partition to be deleted.
+Указывает индекс раздела, который будет удалён.
 .El
 .\" ==== DESTROY ====
 .It Cm destroy
-Destroy the partitioning scheme as implemented by geom
+Уничтожить схему разбиения, реализованную в geom
 .Ar geom .
 .Pp
-The
+Команда
 .Cm destroy
-command accepts these options:
+принимает следующие опции:
 .Bl -tag -width 10n
 .It Fl F
-Forced destroying of the partition table even if it is not empty.
+Принудительное уничтожение таблицы разделов даже если она не пуста.
 .It Fl f Ar flags
-Additional operational flags.
-See the section entitled
-.Sx "OPERATIONAL FLAGS"
-below for a discussion
-about its use.
-.El
-.\" ==== MODIFY ====
+Дополнительные операционные флаги.
+Смотрите раздел под названием
+.Sx "ОПЕРАЦИОННЫЕ ФЛАГИ"
+ниже для обсуждения.El
+.\" ==== ИЗМЕНИТЬ ====
 .It Cm modify
-Modify a partition from geom
+Изменить раздел в geom
 .Ar geom
-and further identified by the
+идентифицируемый дополнительно с помощью опции
 .Fl i Ar index
-option.
-Only the type and/or label of the partition can be modified.
-Not all partitioning schemes support labels and it is invalid to
-try to change a partition label in such cases.
+.
+Можно изменить только тип и/или метку раздела.
+Не все схемы разбиения поддерживают метки, и попытка
+изменить метку раздела в таких случаях недопустима.
 .Pp
-The
+Команда
 .Cm modify
-command accepts these options:
+принимает следующие опции:
 .Bl -tag -width 10n
 .It Fl f Ar flags
-Additional operational flags.
-See the section entitled
-.Sx "OPERATIONAL FLAGS"
-below for a discussion
-about its use.
+Дополнительные операционные флаги.
+Смотрите раздел
+.Sx "ОПЕРАЦИОННЫЕ ФЛАГИ"
+ниже для обсуждения
+их использования.
 .It Fl i Ar index
-Specifies the index of the partition to be modified.
+Указывает индекс изменяемого раздела.
 .It Fl l Ar label
-Change the partition label to
+Изменить метку раздела на
 .Ar label .
 .It Fl t Ar type
-Change the partition type to
+Изменить тип раздела на
 .Ar type .
 .El
-.\" ==== RECOVER ====
+.\" ==== ВОССТАНОВИТЬ ====
 .It Cm recover
-Recover a corrupt partition's scheme metadata on the geom
+Восстановить метаданные схемы поврежденного раздела на geom
 .Ar geom .
-See the section entitled
-.Sx RECOVERING
-below for the additional information.
+Смотрите раздел
+.Sx ВОССТАНОВЛЕНИЕ
+ниже для дополнительной информации.
 .Pp
-The
+Команда
 .Cm recover
-command accepts these options:
+принимает следующие опции:
 .Bl -tag -width 10n
 .It Fl f Ar flags
-Additional operational flags.
-See the section entitled
-.Sx "OPERATIONAL FLAGS"
-below for a discussion
-about its use.
+Дополнительные операционные флаги.
+Смотрите раздел
+.Sx "ОПЕРАЦИОННЫЕ ФЛАГИ"
+ниже для обсуждения
+их использования.
 .El
-.\" ==== RESIZE ====
+.\" ==== ИЗМЕНИТЬ РАЗМЕР ====
 .It Cm resize
-Resize a partition from geom
+Изменить размер раздела в geom
 .Ar geom
-and further identified by the
+идентифицируемый дополнительно с помощью опции
 .Fl i Ar index
-option.
-If the new size is not specified it is automatically calculated
-to be the maximum available from
+.
+Если новый размер не указан, он автоматически рассчитывается
+как максимально доступный из
 .Ar geom .
 .Pp
-The
+Команда
 .Cm resize
-command accepts these options:
+принимает следующие опции:
 .Bl -tag -width 12n
 .It Fl a Ar alignment
-If specified, then the
+Если указано, то утилита
 .Nm
-utility tries to align partition
+пытается выравнивать размер раздела
 .Ar size
-to be a multiple of the
+чтобы он был кратен значению
 .Ar alignment
-value.
+.
 .It Fl f Ar flags
-Additional operational flags.
-See the section entitled
-.Sx "OPERATIONAL FLAGS"
-below for a discussion
-about its use.
+Дополнительные операционные флаги.
+Смотрите раздел
+.Sx "ОПЕРАЦИОННЫЕ ФЛАГИ"
+ниже для обсуждения
+их использования.
 .It Fl i Ar index
-Specifies the index of the partition to be resized.
+Указывает индекс раздела, который нужно изменить.
 .It Fl s Ar size
-Specifies the new size of the partition, in logical blocks.
-An SI unit suffix is allowed.
+Указывает новый размер раздела в логических блоках.
+Допускается использование суффикса единицы измерения СИ.
 .El
-.\" ==== RESTORE ====
+.\" ==== ВОССТАНОВЛЕНИЕ ====
 .It Cm restore
-Restore the partition table from a backup previously created by the
+Восстановление таблицы разделов из ранее созданной резервной копии
 .Cm backup
-action and read from standard input.
-Only the partition table is restored.
-This action does not affect the content of partitions.
-After restoring the partition table and writing bootcode if needed,
-user data must be restored from backup.
+и чтение со стандартного ввода.
+Восстанавливается только таблица разделов.
+Это действие не затрагивает содержимое разделов.
+После восстановления таблицы разделов и при необходимости записи загрузочного кода,
+пользовательские данные должны быть восстановлены из резервной копии.
 .Pp
-The
+Команда
 .Cm restore
-command accepts these options:
+принимает следующие опции:
 .Bl -tag -width 10n
 .It Fl F
-Destroy partition table on the given
+Уничтожить таблицу разделов на указанном
 .Ar provider
-before doing restore.
+перед началом восстановления.
 .It Fl f Ar flags
-Additional operational flags.
-See the section entitled
-.Sx "OPERATIONAL FLAGS"
-below for a discussion
-about its use.
+Дополнительные операционные флаги.
+Смотрите раздел
+.Sx "ОПЕРАЦИОННЫЕ ФЛАГИ"
+ниже для обсуждения
+их использования.
 .It Fl l
-Restore partition labels for partitioning schemes that support them.
+Восстановить метки разделов для схем разбиения, которые их поддерживают.
 .El
-.\" ==== SET ====
+.\" ==== УСТАНОВИТЬ ====
 .It Cm set
-Set the named attribute on the partition entry.
-See the section entitled
-.Sx ATTRIBUTES
-below for a list of available attributes.
+Установить указанный атрибут на записи раздела.
+Смотрите раздел
+.Sx АТРИБУТЫ
+ниже для списка доступных атрибутов.
 .Pp
-The
+Команда
 .Cm set
-command accepts these options:
+принимает следующие опции:
 .Bl -tag -width 10n
 .It Fl a Ar attrib
-Specifies the attribute to set.
+Указывает атрибут для установки.
 .It Fl f Ar flags
-Additional operational flags.
-See the section entitled
-.Sx "OPERATIONAL FLAGS"
-below for a discussion
-about its use.
+Дополнительные операционные флаги.
+Смотрите раздел
+.Sx "ОПЕРАЦИОННЫЕ ФЛАГИ"
+ниже для обсуждения
+их использования.
 .It Fl i Ar index
-Specifies the index of the partition on which the attribute will be set.
+Указывает индекс раздела, на котором будет установлен атрибут.
 .El
-.\" ==== SHOW ====
+.\" ==== ПОКАЗАТЬ ====
 .It Cm show
-Show current partition information for the specified geoms, or all
-geoms if none are specified.
-The default output includes the logical starting block of each
-partition, the partition size in blocks, the partition index number,
-the partition type, and a human readable partition size.
-Block sizes and locations are based on the device's Sectorsize
-as shown by
+Показать текущую информацию о разделах для указанных geom или всех
+geom, если они не указаны.
+Вывод по умолчанию включает логический начальный блок каждогоразмер раздела в блоках, индексный номер раздела,
+тип раздела и размер раздела, понятный человеку.
+Размеры блоков и их расположение основаны на размере сектора устройства,
+как показано командой
 .Cm gpart list .
 .Pp
-The
+Команда
 .Cm show
-command accepts these options:
+принимает следующие опции:
 .Bl -tag -width 10n
 .It Fl l
-For partitioning schemes that support partition labels, print them
-instead of partition type.
+Для схем разделения, которые поддерживают метки разделов, выводят их
+вместо типа раздела.
 .It Fl p
-Show provider names instead of partition indexes.
+Показывает имена провайдеров вместо индексов разделов.
 .It Fl r
-Show raw partition type instead of symbolic name.
+Показывает сырой тип раздела вместо символического названия.
 .El
 .\" ==== UNDO ====
 .It Cm undo
-Revert any pending changes for geom
+Отменяет все ожидающие изменения для geom
 .Ar geom .
-This action is the opposite of the
+Это действие противоположно действию
 .Cm commit
-action and can be used to undo any changes that have not been committed.
+и может быть использовано для отмены любых изменений, которые не были подтверждены.
 .\" ==== UNSET ====
 .It Cm unset
-Clear the named attribute on the partition entry.
-See the section entitled
+Очищает указанный атрибут в записи раздела.
+Смотрите раздел
 .Sx ATTRIBUTES
-below for a list of available attributes.
+ниже для списка доступных атрибутов.
 .Pp
-The
+Команда
 .Cm unset
-command accepts these options:
+принимает следующие опции:
 .Bl -tag -width 10n
 .It Fl a Ar attrib
-Specifies the attribute to clear.
+Указывает атрибут для очистки.
 .It Fl f Ar flags
-Additional operational flags.
-See the section entitled
+Дополнительные операционные флаги.
+Смотрите раздел
 .Sx "OPERATIONAL FLAGS"
-below for a discussion
-about its use.
+ниже для обсуждения
+их использования.
 .It Fl i Ar index
-Specifies the index of the partition on which the attribute will be cleared.
+Указывает индекс раздела, на котором будет очищен атрибут.
 .El
 .It Cm list
-See
+Смотрите
 .Xr geom 8 .
 .It Cm status
-See
+Смотрите
 .Xr geom 8 .
 .It Cm load
-See
+Смотрите
 .Xr geom 8 .
 .It Cm unload
-See
+Смотрите
 .Xr geom 8 .
 .El
 .Sh PARTITIONING SCHEMES
-Several partitioning schemes are supported by the
+Утилита
 .Nm
-utility:
+поддерживает несколько схем разделения:
 .Bl -tag -width ".Cm BSD64"
 .It Cm APM
-Apple Partition Map, used by PowerPC(R) Macintosh(R) computers.
-Requires the
+Карта разделов Apple, используемая компьютерами Macintosh(R) с PowerPC(R).
+Требуется опция ядра
 .Cd GEOM_PART_APM
-kernel option.
 .It Cm BSD
-Traditional BSD
+Традиционный BSD
 .Xr disklabel 8 ,
-usually used to subdivide MBR partitions.
+обычно используется для разделения MBR-разделов.
 .Po
-This scheme can also be used as the sole partitioning method, without
-an MBR.
-Partition editing tools from other operating systems often do not
-understand the bare disklabel partition layout, so this is sometimes
-called
-.Dq dangerously dedicated .
+Эта схема также может быть использована в качестве единственного метода разбиения на разделы, без
+использования MBR.
+Инструменты для редактирования разделов с других операционных систем зачастую не
+понимают логику работы с разделами только с disklabel, поэтому это иногда
+называется
+.Dq опасно посвященным (dangerously dedicated).
 .Pc
-Requires the
-.Cm GEOM_PART_BSD
-kernel option.
+Требуется опция ядра
+.Cm GEOM_PART_BSD.
 .It Cm BSD64
-64-bit implementation of BSD disklabel used in
+64-битная реализация disklabel BSD, используемая в
 .Dx
-to subdivide MBR
-or GPT partitions.
-Requires the
-.Cm GEOM_PART_BSD64
-kernel option.
+для разделения MBR
+или разделов GPT.
+Требуется опция ядра
+.Cm GEOM_PART_BSD64.
 .It Cm LDM
-The Logical Disk Manager is an implementation of volume manager for
+Логический дисковый менеджер - это реализация менеджера томов для
 Microsoft Windows NT.
-Requires the
-.Cd GEOM_PART_LDM
-kernel option.
+Требуется опция ядра
+.Cd GEOM_PART_LDM.
 .It Cm GPT
-GUID Partition Table is used on Intel-based Macintosh computers and
-gradually replacing MBR on most PCs and other systems.
-Requires the
-.Cm GEOM_PART_GPT
-kernel option.
+Таблица разделов GUID используется на компьютерах Macintosh на базе Intel и
+постепенно заменяет MBR на большинстве ПК и других системах.
+Требуется опция ядра
+.Cm GEOM_PART_GPT.
 .It Cm MBR
-Master Boot Record is used on PCs and removable media.
-Requires the
-.Cm GEOM_PART_MBR
-kernel option.
-The
+Загрузочный сектор (Master Boot Record) используется на ПК и сменных носителях.
+Требуется опция ядра
+.Cm GEOM_PART_MBR.
+Опция
 .Cm GEOM_PART_EBR
-option adds support for the Extended Boot Record (EBR),
-which is used to define a logical partition.
-The
+добавляет поддержку Расширенного Загрузочного Сектора (Extended Boot Record, EBR),
+используемого для определения логического раздела.
+Опция
 .Cm GEOM_PART_EBR_COMPAT
-option enables backward compatibility for partition names
-in the EBR scheme.
-It also prevents any type of actions on such partitions.
+включает обратную совместимость для имен разделов
+в схеме EBR.
+Также предотвращает любые действия с такими разделами.
 .El
 .Pp
-See
+См.
 .Xr glabel 8
-for additional information on labelization of devices and partitions.
-.Sh PARTITION TYPES
-Partition types are identified on disk by particular strings or magic
-values.
-The
+для дополнительной информации о маркировке устройств и разделов.
+.Sh ТИПЫ РАЗДЕЛОВ
+Типы разделов идентифицируются на диске с помощью определенных строк или магических
+значений.
+Утилита
 .Nm
-utility uses symbolic names for common partition types so the user
-does not need to know these values or other details of the partitioning
-scheme in question.
-The
-.Nm
-utility also allows the user to specify scheme-specific partition types
-for partition types that do not have symbolic names.
-Symbolic names currently understood and used by
-.Fx
-are:
+использует символические имена для общих типов разделов, так что пользователю
+не нужно знать эти значения или другие детали соответствующей схемы разбиения на разделы.Утилита 
+.Nm 
+также позволяет пользователю указывать типы разделов, специфичные для схемы, для типов разделов, которые не имеют символических имен.
+Текущие символические имена, которые понимаются и используются 
+.Fx, 
+следующие:
 .Bl -tag -width ".Cm dragonfly-disklabel64"
 .It Cm apple-boot
-The system partition dedicated to storing boot loaders on some Apple
-systems.
-The scheme-specific types are
+Системный раздел, предназначенный для хранения загрузчиков на некоторых системах Apple.
+Типы, специфичные для схемы, следующие:
 .Qq Li "!171"
-for MBR,
+для MBR,
 .Qq Li "!Apple_Bootstrap"
-for APM, and
+для APM и
 .Qq Li "!426f6f74-0000-11aa-aa11-00306543ecac"
-for GPT.
+для GPT.
 .It Cm bios-boot
-The system partition dedicated to second stage of the boot loader program.
-Usually it is used by the GRUB 2 loader for GPT partitioning schemes.
-The scheme-specific type is
+Системный раздел, предназначенный для второй стадии программы загрузчика.
+Обычно он используется загрузчиком GRUB 2 для схем разделов GPT.
+Тип, специфичный для схемы, следующий:
 .Qq Li "!21686148-6449-6E6F-744E-656564454649" .
 .It Cm efi
-The system partition for computers that use the Extensible Firmware
-Interface (EFI).
-The scheme-specific types are
+Системный раздел для компьютеров, использующих интерфейс Extensible Firmware Interface (EFI).
+Типы, специфичные для схемы, следующие:
 .Qq Li "!239"
-for MBR, and
+для MBR, и
 .Qq Li "!c12a7328-f81f-11d2-ba4b-00a0c93ec93b"
-for GPT.
+для GPT.
 .It Cm freebsd
-A
-.Fx
-partition subdivided into filesystems with a
-.Bx
-disklabel.
-This is a legacy partition type and should not be used for the APM
-or GPT schemes.
-The scheme-specific types are
+Раздел 
+.Fx, 
+разделенный на файловые системы с помощью дисковой метки 
+.Bx.
+Это устаревший тип раздела и его не следует использовать для схем APM или GPT.
+Типы, специфичные для схемы, следующие:
 .Qq Li "!165"
-for MBR,
+для MBR,
 .Qq Li "!FreeBSD"
-for APM, and
+для APM, и
 .Qq Li "!516e7cb4-6ecf-11d6-8ff8-00022d09712b"
-for GPT.
+для GPT.
 .It Cm freebsd-boot
-A
-.Fx
-partition dedicated to bootstrap code.
-The scheme-specific type is
+Раздел 
+.Fx, 
+предназначенный для начального кода загрузки.
+Тип, специфичный для схемы, следующий:
 .Qq Li "!83bd6b9d-7f41-11dc-be0b-001560b84f0f"
-for GPT.
+для GPT.
 .It Cm freebsd-swap
-A
-.Fx
-partition dedicated to swap space.
-The scheme-specific types are
+Раздел 
+.Fx, 
+предназначенный для пространства подкачки.
+Типы, специфичные для схемы, следующие:
 .Qq Li "!FreeBSD-swap"
-for APM, and
+для APM, и
 .Qq Li "!516e7cb5-6ecf-11d6-8ff8-00022d09712b"
-for GPT.
+для GPT.
 .It Cm freebsd-ufs
-A
-.Fx
-partition that contains a UFS or UFS2 filesystem.
-The scheme-specific types are
+Раздел 
+.Fx, 
+содержащий файловую систему UFS или UFS2.Специфичные для схемы типы:
 .Qq Li "!FreeBSD-UFS"
-for APM, and
+для APM и
 .Qq Li "!516e7cb6-6ecf-11d6-8ff8-00022d09712b"
-for GPT.
+для GPT.
 .It Cm freebsd-vinum
-A
-.Fx
-partition that contains a Vinum volume.
-The scheme-specific types are
+Раздел
+.Fx,
+содержащий том Vinum.
+Специфичные для схемы типы:
 .Qq Li "!FreeBSD-Vinum"
-for APM, and
+для APM и
 .Qq Li "!516e7cb8-6ecf-11d6-8ff8-00022d09712b"
-for GPT.
+для GPT.
 .It Cm freebsd-zfs
-A
-.Fx
-partition that contains a ZFS volume.
-The scheme-specific types are
+Раздел
+.Fx,
+содержащий том ZFS.
+Специфичные для схемы типы:
 .Qq Li "!FreeBSD-ZFS"
-for APM, and
+для APM и
 .Qq Li "!516e7cba-6ecf-11d6-8ff8-00022d09712b"
-for GPT.
+для GPT.
 .El
 .Pp
-Other symbolic names that can be used with the
-.Nm
-utility are:
+Другие символические имена, которые могут быть использованы с утилитой
+.Nm:
 .Bl -tag -width ".Cm dragonfly-disklabel64"
 .It Cm apple-apfs
-An Apple macOS partition used for the Apple file system, APFS.
+Раздел Apple macOS, используемый для файловой системы Apple, APFS.
 .It Cm apple-core-storage
-An Apple Mac OS X partition used by logical volume manager known as
-Core Storage.
-The scheme-specific type is
+Раздел Apple Mac OS X, используемый менеджером логических томов, известным как Core Storage.
+Специфичный для схемы тип:
 .Qq Li "!53746f72-6167-11aa-aa11-00306543ecac"
-for GPT.
+для GPT.
 .It Cm apple-hfs
-An Apple Mac OS X partition that contains a HFS or HFS+ filesystem.
-The scheme-specific types are
+Раздел Apple Mac OS X, содержащий файловую систему HFS или HFS+.
+Специфичные для схемы типы:
 .Qq Li "!175"
-for MBR,
+для MBR,
 .Qq Li "!Apple_HFS"
-for APM and
+для APM и
 .Qq Li "!48465300-0000-11aa-aa11-00306543ecac"
-for GPT.
+для GPT.
 .It Cm apple-label
-An Apple Mac OS X partition dedicated to partition metadata that descibes
-disk device.
-The scheme-specific type is
+Раздел Apple Mac OS X, предназначенный для метаданных раздела, описывающих дисковое устройство.
+Специфичный для схемы тип:
 .Qq Li "!4c616265-6c00-11aa-aa11-00306543ecac"
-for GPT.
+для GPT.
 .It Cm apple-raid
-An Apple Mac OS X partition used in a software RAID configuration.
-The scheme-specific type is
+Раздел Apple Mac OS X, используемый в конфигурации программного RAID.
+Специфичный для схемы тип:
 .Qq Li "!52414944-0000-11aa-aa11-00306543ecac"
-for GPT.
+для GPT.
 .It Cm apple-raid-offline
-An Apple Mac OS X partition used in a software RAID configuration.
-The scheme-specific type is
-.Qq Li "!52414944-5f4f-11aa-aa11-00306543ecac"
-for GPT.
-.It Cm apple-tv-recovery
-An Apple Mac OS X partition used by Apple TV.
-The scheme-specific type is
+Раздел Apple Mac OS X, используемый в конфигурации программного RAID.
+Специфичный для схемы тип:
+.Qq Li "!52414944-5f4f-11aa-aa11-00306543ecac".It Cm apple-tv-recovery
+Раздел Apple Mac OS X, используемый Apple TV.
+Специфичный для схемы тип:
 .Qq Li "!5265636f-7665-11aa-aa11-00306543ecac"
-for GPT.
+для GPT.
 .It Cm apple-ufs
-An Apple Mac OS X partition that contains a UFS filesystem.
-The scheme-specific types are
+Раздел Apple Mac OS X, содержащий файловую систему UFS.
+Специфичные для схемы типы:
 .Qq Li "!168"
-for MBR,
+для MBR,
 .Qq Li "!Apple_UNIX_SVR2"
-for APM and
+для APM и
 .Qq Li "!55465300-0000-11aa-aa11-00306543ecac"
-for GPT.
+для GPT.
 .It Cm apple-zfs
-An Apple Mac OS X partition that contains a ZFS volume.
-The scheme-specific type is
+Раздел Apple Mac OS X, содержащий том ZFS.
+Специфичный для схемы тип:
 .Qq Li "!6a898cc3-1dd2-11b2-99a6-080020736631"
-for GPT.
-The same GUID is being used also for
-.Sy illumos/Solaris /usr partition .
-See
+для GPT.
+Тот же GUID также используется для
+.Sy illumos/Solaris /usr раздела.
+Смотрите
 .Sx CAVEATS
-section below.
+ниже.
 .It Cm dragonfly-label32
-A
+Раздел
 .Dx
-partition subdivided into filesystems with a
+с файловыми системами, подразделенный с помощью
 .Bx
 disklabel.
-The scheme-specific type is
+Специфичный для схемы тип:
 .Qq Li "!9d087404-1ca5-11dc-8817-01301bb8a9f5"
-for GPT.
+для GPT.
 .It Cm dragonfly-label64
-A
+Раздел
 .Dx
-partition subdivided into filesystems with a
+с файловыми системами, подразделенный с помощью
 disklabel64.
-The scheme-specific type is
+Специфичный для схемы тип:
 .Qq Li "!3d48ce54-1d16-11dc-8696-01301bb8a9f5"
-for GPT.
+для GPT.
 .It Cm dragonfly-legacy
-A legacy partition type used in
-.Dx .
-The scheme-specific type is
+Устаревший тип раздела, используемый в
+.Dx.
+Специфичный для схемы тип:
 .Qq Li "!bd215ab2-1d16-11dc-8696-01301bb8a9f5"
-for GPT.
+для GPT.
 .It Cm dragonfly-ccd
-A
+Раздел
 .Dx
-partition used with Concatenated Disk driver.
-The scheme-specific type is
+используемый с драйвером Concatenated Disk.
+Специфичный для схемы тип:
 .Qq Li "!dbd5211b-1ca5-11dc-8817-01301bb8a9f5"
-for GPT.
+для GPT.
 .It Cm dragonfly-hammer
-A
+Раздел
 .Dx
-partition that contains a Hammer filesystem.
-The scheme-specific type is
+содержащий файловую систему Hammer.
+Специфичный для схемы тип:
 .Qq Li "!61dc63ac-6e38-11dc-8513-01301bb8a9f5"
-for GPT.
+для GPT.
 .It Cm dragonfly-hammer2
-A
+Раздел
 .Dx
-partition that contains a Hammer2 filesystem.
-The scheme-specific type is
+содержащий файловую систему Hammer2.
+Специфичный для схемы тип:
 .Qq Li "!5cbb9ad1-862d-11dc-a94d-01301bb8a9f5"
-for GPT.
-.It Cm dragonfly-swap
-A
+для GPT..It Cm dragonfly-swap
 .Dx
-partition dedicated to swap space.
-The scheme-specific type is
+раздел, выделенный под область подкачки.
+Специфический для схемы тип -
 .Qq Li "!9d58fdbd-1ca5-11dc-8817-01301bb8a9f5"
-for GPT.
+для GPT.
 .It Cm dragonfly-ufs
-A
 .Dx
-partition that contains an UFS1 filesystem.
-The scheme-specific type is
+раздел, содержащий файловую систему UFS1.
+Специфический для схемы тип -
 .Qq Li "!9d94ce7c-1ca5-11dc-8817-01301bb8a9f5"
-for GPT.
+для GPT.
 .It Cm dragonfly-vinum
-A
 .Dx
-partition used with Logical Volume Manager.
-The scheme-specific type is
+раздел, используемый с Менеджером Логических Томов.
+Специфический для схемы тип -
 .Qq Li "!9dd4478f-1ca5-11dc-8817-01301bb8a9f5"
-for GPT.
+для GPT.
 .It Cm ebr
-A partition subdivided into filesystems with a EBR.
-The scheme-specific type is
+Раздел, подразделенный на файловые системы с EBR.
+Специфический для схемы тип -
 .Qq Li "!5"
-for MBR.
+для MBR.
 .It Cm fat16
-A partition that contains a FAT16 filesystem.
-The scheme-specific type is
+Раздел, содержащий файловую систему FAT16.
+Специфический для схемы тип -
 .Qq Li "!6"
-for MBR.
+для MBR.
 .It Cm fat32
-A partition that contains a FAT32 filesystem.
-The scheme-specific type is
+Раздел, содержащий файловую систему FAT32.
+Специфический для схемы тип -
 .Qq Li "!11"
-for MBR.
+для MBR.
 .It Cm fat32lba
-A partition that contains a FAT32 (LBA) filesystem.
-The scheme-specific type is
+Раздел, содержащий файловую систему FAT32 (LBA).
+Специфический для схемы тип -
 .Qq Li "!12"
-for MBR.
+для MBR.
 .It Cm hifive-fsbl
-A raw partition containing a HiFive first stage bootloader.
-The scheme-specific type is
+Неформатированный раздел, содержащий первичный загрузчик HiFive.
+Специфический для схемы тип -
 .Qq Li "!5b193300-fc78-40cd-8002-e86c45580b47"
-for GPT.
+для GPT.
 .It Cm hifive-bbl
-A raw partition containing a HiFive second stage bootloader.
-The scheme-specific type is
+Неформатированный раздел, содержащий вторичный загрузчик HiFive.
+Специфический для схемы тип -
 .Qq Li "!2e54b353-1271-4842-806f-e436d6af6985"
-for GPT.
+для GPT.
 .It Cm linux-data
-A Linux partition that contains some filesystem with data.
-The scheme-specific types are
+Linux раздел, содержащий файловую систему с данными.
+Специфические для схемы типы -
 .Qq Li "!131"
-for MBR and
+для MBR и
 .Qq Li "!0fc63daf-8483-4772-8e79-3d69d8477de4"
-for GPT.
+для GPT.
 .It Cm linux-lvm
-A Linux partition dedicated to Logical Volume Manager.
-The scheme-specific types are
+Linux раздел, выделенный под Менеджер Логических Томов.
+Специфические для схемы типы -
 .Qq Li "!142"
-for MBR and
+для MBR и
 .Qq Li "!e6d6d379-f507-44c2-a23c-238f2a3df928"
-for GPT.
-.It Cm linux-raid
-A Linux partition used in a software RAID configuration.
-The scheme-specific types are
+для GPT.Раздел Linux, используемый в конфигурации программного RAID.
+Специфичные для схемы типы:
 .Qq Li "!253"
-for MBR and
+для MBR и
 .Qq Li "!a19d880f-05fc-4d3b-a006-743f0f84911e"
-for GPT.
+для GPT.
 .It Cm linux-swap
-A Linux partition dedicated to swap space.
-The scheme-specific types are
+Раздел Linux, выделенный под область подкачки.
+Специфичные для схемы типы:
 .Qq Li "!130"
-for MBR and
+для MBR и
 .Qq Li "!0657fd6d-a4ab-43c4-84e5-0933c84b4f4f"
-for GPT.
+для GPT.
 .It Cm mbr
-A partition that is sub-partitioned by a Master Boot Record (MBR).
-This type is known as
+Раздел, который подразделен Master Boot Record (MBR).
+Этот тип известен как
 .Qq Li "!024dee41-33e7-11d3-9d69-0008c781f39f"
-by GPT.
+в GPT.
 .It Cm ms-basic-data
-A basic data partition (BDP) for Microsoft operating systems.
-In the GPT this type is the equivalent to partition types
-.Cm fat16 , fat32
-and
+Базовый раздел данных (BDP) для операционных систем Microsoft.
+В GPT этот тип эквивалентен типам разделов
+.Cm fat16, fat32
+и
 .Cm ntfs
-in MBR.
-This type is used for GPT exFAT partitions.
-The scheme-specific type is
+в MBR.
+Этот тип используется для разделов GPT с файловой системой exFAT.
+Специфичный для схемы тип:
 .Qq Li "!ebd0a0a2-b9e5-4433-87c0-68b6b72699c7"
-for GPT.
+для GPT.
 .It Cm ms-ldm-data
-A partition that contains Logical Disk Manager (LDM) volumes.
-The scheme-specific types are
+Раздел, содержащий тома Логического Дискового Менеджера (LDM).
+Специфичные для схемы типы:
 .Qq Li "!66"
-for MBR,
+для MBR,
 .Qq Li "!af9b60a0-1431-4f62-bc68-3311714a69ad"
-for GPT.
+для GPT.
 .It Cm ms-ldm-metadata
-A partition that contains Logical Disk Manager (LDM) database.
-The scheme-specific type is
+Раздел, содержащий базу данных Логического Дискового Менеджера (LDM).
+Специфичный для схемы тип:
 .Qq Li "!5808c8aa-7e8f-42e0-85d2-e1e90434cfb3"
-for GPT.
+для GPT.
 .It Cm netbsd-ccd
-A
+Раздел
 .Nx
-partition used with Concatenated Disk driver.
-The scheme-specific type is
+, используемый с драйвером Concatenated Disk.
+Специфичный для схемы тип:
 .Qq Li "!2db519c4-b10f-11dc-b99b-0019d1879648"
-for GPT.
+для GPT.
 .It Cm netbsd-cgd
-An encrypted
+Зашифрованный раздел
 .Nx
-partition.
-The scheme-specific type is
+.
+Специфичный для схемы тип:
 .Qq Li "!2db519ec-b10f-11dc-b99b-0019d1879648"
-for GPT.
+для GPT.
 .It Cm netbsd-ffs
-A
+Раздел
 .Nx
-partition that contains an UFS filesystem.
-The scheme-specific type is
+, который содержит файловую систему UFS.
+Специфичный для схемы тип:
 .Qq Li "!49f48d5a-b10e-11dc-b99b-0019d1879648"
-for GPT.
-.It Cm netbsd-lfs
-A
+для GPT..Rs
+Файловая система NetBSD LFS
+.Re
+Файловая система NetBSD LFS содержится в
 .Nx
-partition that contains an LFS filesystem.
-The scheme-specific type is
+разделе. Специфический для схемы тип —
 .Qq Li "!49f48d82-b10e-11dc-b99b-0019d1879648"
-for GPT.
-.It Cm netbsd-raid
-A
+для GPT.
+.Rs
+NetBSD RAID
+.Re
 .Nx
-partition used in a software RAID configuration.
-The scheme-specific type is
+раздел, используемый в конфигурации программного RAID.
+Специфический для схемы тип —
 .Qq Li "!49f48daa-b10e-11dc-b99b-0019d1879648"
-for GPT.
-.It Cm netbsd-swap
-A
+для GPT.
+.Rs
+NetBSD swap
+.Re
 .Nx
-partition dedicated to swap space.
-The scheme-specific type is
+раздел, выделенный под область подкачки.
+Специфический для схемы тип —
 .Qq Li "!49f48d32-b10e-11dc-b99b-0019d1879648"
-for GPT.
-.It Cm ntfs
-A partition that contains a NTFS or exFAT filesystem.
-The scheme-specific type is
+для GPT.
+.Rs
+NTFS
+.Re
+Раздел, содержащий файловую систему NTFS или exFAT.
+Специфический для схемы тип —
 .Qq Li "!7"
-for MBR.
-.It Cm prep-boot
-The system partition dedicated to storing boot loaders on some PowerPC systems,
-notably those made by IBM.
-The scheme-specific types are
+для MBR.
+.Rs
+Prep-boot
+.Re
+Системный раздел, выделенный для хранения загрузчиков на некоторых системах PowerPC,
+особенно на тех, что произведены IBM.
+Специфические для схемы типы —
 .Qq Li "!65"
-for MBR and
+для MBR и
 .Qq Li "!9e1a2d38-c612-4316-aa26-8b49521e5a8b"
-for GPT.
-.It Cm solaris-boot
-A illumos/Solaris partition dedicated to boot loader.
-The scheme-specific type is
+для GPT.
+.Rs
+Solaris-boot
+.Re
+Раздел illumos/Solaris, выделенный для загрузчика.
+Специфический для схемы тип —
 .Qq Li "!6a82cb45-1dd2-11b2-99a6-080020736631"
-for GPT.
-.It Cm solaris-root
-A illumos/Solaris partition dedicated to root filesystem.
-The scheme-specific type is
+для GPT.
+.Rs
+Solaris-root
+.Re
+Раздел illumos/Solaris, выделенный для корневой файловой системы.
+Специфический для схемы тип —
 .Qq Li "!6a85cf4d-1dd2-11b2-99a6-080020736631"
-for GPT.
-.It Cm solaris-swap
-A illumos/Solaris partition dedicated to swap.
-The scheme-specific type is
+для GPT.
+.Rs
+Solaris-swap
+.Re
+Раздел illumos/Solaris, выделенный для области подкачки.
+Специфический для схемы тип —
 .Qq Li "!6a87c46f-1dd2-11b2-99a6-080020736631"
-for GPT.
-.It Cm solaris-backup
-A illumos/Solaris partition dedicated to backup.
-The scheme-specific type is
+для GPT.
+.Rs
+Solaris-backup
+.Re
+Раздел illumos/Solaris, выделенный для резервного копирования.
+Специфический для схемы тип —
 .Qq Li "!6a8b642b-1dd2-11b2-99a6-080020736631"
-for GPT.
-.It Cm solaris-var
-A illumos/Solaris partition dedicated to /var filesystem.
-The scheme-specific type is
+для GPT.
+.Rs
+Solaris-var
+.Re
+Раздел illumos/Solaris, выделенный для файловой системы /var.
+Специфический для схемы тип —
 .Qq Li "!6a8ef2e9-1dd2-11b2-99a6-080020736631"
-for GPT.
-.It Cm solaris-home
-A illumos/Solaris partition dedicated to /home filesystem.
-The scheme-specific type is
+для GPT.
+.Rs
+Solaris-home
+.Re
+(продолжение следует...)Раздел Illumos/Solaris, предназначенный для файловой системы /home.
+Специфический для схемы тип:
 .Qq Li "!6a90ba39-1dd2-11b2-99a6-080020736631"
-for GPT.
+для GPT.
 .It Cm solaris-altsec
-A illumos/Solaris partition dedicated to alternate sector.
-The scheme-specific type is
+Раздел Illumos/Solaris, предназначенный для альтернативного сектора.
+Специфический для схемы тип:
 .Qq Li "!6a9283a5-1dd2-11b2-99a6-080020736631"
-for GPT.
+для GPT.
 .It Cm solaris-reserved
-A illumos/Solaris partition dedicated to reserved space.
-The scheme-specific type is
+Раздел Illumos/Solaris, предназначенный для зарезервированного пространства.
+Специфический для схемы тип:
 .Qq Li "!6a945a3b-1dd2-11b2-99a6-080020736631"
-for GPT.
+для GPT.
 .It Cm vmware-vmfs
-A partition that contains a VMware File System (VMFS).
-The scheme-specific types are
+Раздел, содержащий файловую систему VMware (VMFS).
+Специфический для схемы тип:
 .Qq Li "!251"
-for MBR and
+для MBR и
 .Qq Li "!aa31e02a-400f-11db-9590-000c2911d1b8"
-for GPT.
+для GPT.
 .It Cm vmware-vmkdiag
-A partition that contains a VMware diagostic filesystem.
-The scheme-specific types are
+Раздел, содержащий диагностическую файловую систему VMware.
+Специфический для схемы тип:
 .Qq Li "!252"
-for MBR and
+для MBR и
 .Qq Li "!9d275380-40ad-11db-bf97-000c2911d1b8"
-for GPT.
+для GPT.
 .It Cm vmware-reserved
-A VMware reserved partition.
-The scheme-specific type is
+Зарезервированный раздел VMware.
+Специфический для схемы тип:
 .Qq Li "!9198effc-31c0-11db-8f-78-000c2911d1b8"
-for GPT.
+для GPT.
 .It Cm vmware-vsanhdr
-A partition claimed by VMware VSAN.
-The scheme-specific type is
+Раздел, заявленный VMware VSAN.
+Специфический для схемы тип:
 .Qq Li "!381cfccc-7288-11e0-92ee-000c2911d0b2"
-for GPT.
+для GPT.
 .El
 .Sh ATTRIBUTES
-The scheme-specific attributes for EBR:
+Специфические атрибуты для EBR:
 .Bl -tag -width ".Cm active"
 .It Cm active
 .El
 .Pp
-The scheme-specific attributes for GPT:
+Специфические атрибуты для GPT:
 .Bl -tag -width ".Cm bootfailed"
 .It Cm bootme
-When set, the
+Когда установлен, загрузчик первой стадии
 .Nm gptboot
-stage 1 boot loader will try to boot the system from this partition.
-Multiple partitions can be marked with the
+попытается загрузить систему с этого раздела.
+Несколько разделов могут быть отмечены атрибутом
 .Cm bootme
-attribute.
-See
+Смотрите
 .Xr gptboot 8
-for more details.
+для более подробной информации.
 .It Cm bootonce
-Setting this attribute automatically sets the
+Установка этого атрибута автоматически устанавливает атрибут
 .Cm bootme
-attribute.
-When set, the
+Когда установлен, загрузчик первой стадии
 .Nm gptboot
-stage 1 boot loader will try to boot the system from this partition only once.
-Multiple partitions can be marked with the
+будет попытаться загрузить систему с этого раздела только один раз.
+Несколько разделов можно отметить с помощью пар атрибутов
 .Cm bootonce
-and
+и
 .Cm bootme
-attribute pairs.
-See
+Смотрите
 .Xr gptboot 8
-for more details.
+для получения дополнительной информации.
 .It Cm bootfailed
-This attribute should not be manually managed.
-It is managed by the
+Этот атрибут не следует управлять вручную.
+Его управляет загрузчик первой стадии
 .Nm gptboot
-stage 1 boot loader and the
+и скрипт запуска
 .Pa /etc/rc.d/gptboot
-start-up script.
-See
+Смотрите
 .Xr gptboot 8
-for more details.
+для получения дополнительной информации.
 .It Cm lenovofix
-Setting this attribute overwrites the Protective MBR with a new one where
-the 0xee partition is the second, rather than the first record.
-This resolves a BIOS compatibility issue with some Lenovo models including the
-X220, T420, and T520, allowing them to boot from GPT partitioned disks
-without using EFI.
+Установка этого атрибута перезаписывает Защитную MBR новой, где
+раздел 0xee является вторым, а не первым записью.
+Это решает проблему совместимости BIOS с некоторыми моделями Lenovo, включая
+X220, T420 и T520, позволяя им загружаться с дисков, разделенных с помощью GPT
+без использования EFI.
 .El
 .Pp
-The scheme-specific attributes for MBR:
+Специфические атрибуты схемы для MBR:
 .Bl -tag -width ".Cm active"
 .It Cm active
 .El
 .Sh BOOTSTRAPPING
 .Fx
-supports several partitioning schemes and each scheme uses different
-bootstrap code.
-The bootstrap code is located in a specific disk area for each partitioning
-scheme, and may vary in size for different schemes.
+поддерживает несколько схем разбиения на разделы и каждая схема использует разный
+загрузочный код.
+Загрузочный код расположен в определенной области диска для каждой схемы разбиения на разделы и может варьироваться по размеру для разных схем.
 .Pp
-Bootstrap code can be separated into two types.
-The first type is embedded in the partitioning scheme's metadata, while the
-second type is located on a specific partition.
-Embedding bootstrap code should only be done with the
+Загрузочный код можно разделить на два типа.
+Первый тип встроен в метаданные схемы разбиения на разделы, в то время как
+второй тип находится на определенном разделе.
+Встраивание загрузочного кода должно выполняться только с помощью команды
 .Cm gpart bootcode
-command with the
+с опцией
 .Fl b Ar bootcode
-option.
-The GEOM PART class knows how to safely embed bootstrap code into
-specific partitioning scheme metadata without causing any damage.
+Класс GEOM PART знает, как безопасно встраивать загрузочный код в
+метаданные конкретной схемы разбиения на разделы, не причиняя никакого ущерба.
 .Pp
-The Master Boot Record (MBR) uses a 512-byte bootstrap code image, embedded
-into the partition table's metadata area.
-There are two variants of this bootstrap code:
+Master Boot Record (MBR) использует 512-байтовый образ загрузочного кода, встроенного
+в область метаданных таблицы разделов.Существует два варианта кода начальной загрузки:
 .Pa /boot/mbr
-and
+и
 .Pa /boot/boot0 .
 .Pa /boot/mbr
-searches for a partition with the
+ищет в таблице разделов раздел с атрибутом
 .Cm active
-attribute (see the
-.Sx ATTRIBUTES
-section) in the partition table.
-Then it runs next bootstrap stage.
-The
+(смотрите раздел
+.Sx ATTRIBUTES),
+затем выполняет следующий этап начальной загрузки.
+Образ
 .Pa /boot/boot0
-image contains a boot manager with some additional interactive functions
-for multi-booting from a user-selected partition.
+содержит менеджер загрузки с некоторыми дополнительными интерактивными функциями
+для мультизагрузки с выбранного пользователем раздела.
 .Pp
-A BSD disklabel is usually created inside an MBR partition (slice)
-with type
+Разметка диска BSD обычно создается внутри раздела MBR (сектора)
+с типом
 .Cm freebsd
-(see the
-.Sx "PARTITION TYPES"
-section).
-It uses 8 KB size bootstrap code image
+(смотрите раздел
+.Sx "ТИПЫ РАЗДЕЛОВ").
+Используется образ кода начальной загрузки размером 8 КБ
 .Pa /boot/boot ,
-embedded into the partition table's metadata area.
+встроенный в область метаданных таблицы разделов.
 .Pp
-Both types of bootstrap code are used to boot from the GUID Partition Table.
-First, a protective MBR is embedded into the first disk sector from the
-.Pa /boot/pmbr
-image.
-It searches through the GPT for a
+Оба типа кода начальной загрузки используются для загрузки с таблицы разделов GUID.
+Сначала защитный MBR встраивается в первый сектор диска из образа
+.Pa /boot/pmbr .
+Он ищет в GPT раздел
 .Cm freebsd-boot
-partition (see the
-.Sx "PARTITION TYPES"
-section) and runs the next bootstrap stage from it.
-The
+(смотрите раздел
+.Sx "ТИПЫ РАЗДЕЛОВ") и выполняет следующий этап начальной загрузки с него.
+Раздел
 .Cm freebsd-boot
-partition should be smaller than 545 KB.
-It can be located either before or after other
+должен быть меньше 545 КБ.
+Он может быть расположен как до, так и после других разделов
 .Fx
-partitions on the disk.
-There are two variants of bootstrap code to write to this partition:
+на диске.
+Существует два варианта кода начальной загрузки для записи в этот раздел:
 .Pa /boot/gptboot
-and
+и
 .Pa /boot/gptzfsboot .
 .Pp
 .Pa /boot/gptboot
-is used to boot from UFS partitions.
+используется для загрузки с разделов UFS.
 .Cm gptboot
-searches through
+просматривает разделы
 .Cm freebsd-ufs
-partitions in the GPT and selects one to boot based on the
+в GPT и выбирает один для загрузки на основе атрибутов
 .Cm bootonce
-and
-.Cm bootme
-attributes.
-If neither attribute is found,
+и
+.Cm bootme .
+Если ни один атрибут не найден,
 .Pa /boot/gptboot
-boots from the first
-.Cm freebsd-ufs
-partition.
+загружается с первого раздела
+.Cm freebsd-ufs .
 .Pa /boot/loader
-.Pq the third bootstrap stage
-is loaded from the first partition that matches these conditions.
-See
-.Xr gptboot 8
-for more information.
+.Pq третий этап начальной загрузки
+загружается с первого раздела, который соответствует этим условиям.Для получения дополнительной информации смотри
+.Xr gptboot 8 .
 .Pp
 .Pa /boot/gptzfsboot
-is used to boot from ZFS.
-It searches through the GPT for
+используется для загрузки с ZFS.
+Он ищет в GPT
 .Cm freebsd-zfs
-partitions, trying to detect ZFS pools.
-After all pools are detected,
+разделы, пытаясь обнаружить пулы ZFS.
+После того как все пулы обнаружены,
 .Pa /boot/loader
-is started from the first one found set as bootable.
+запускается с первого найденного, установленного как загрузочный.
 .Pp
-The APM scheme also does not support embedding bootstrap code.
-Instead, the 800 KBytes bootstrap code image
+Схема APM также не поддерживает встраивание кода загрузки.
+Вместо этого, образ кода загрузки размером 800 КБайт
 .Pa /boot/boot1.hfs
-should be written with the
+должен быть записан с помощью команды
 .Cm gpart bootcode
-command to a partition of type
+на раздел типа
 .Cm apple-boot ,
-which should also be 800 KB in size.
-.Sh OPERATIONAL FLAGS
-Actions other than the
+размер которого также должен составлять 800 КБ.
+.Sh ОПЕРАЦИОННЫЕ ФЛАГИ
+Действия, отличные от
 .Cm commit
-and
-.Cm undo
-actions take an optional
-.Fl f Ar flags
-option.
-This option is used to specify action-specific operational flags.
-By default, the
-.Nm
-utility defines the
-.Ql C
-flag so that the action is immediately
-committed.
-The user can specify
-.Dq Fl f Cm x
-to have the action result in a pending change that can later, with
-other pending changes, be committed as a single compound change with
-the
+и
+.Cm undo ,
+принимают необязательный параметр
+.Fl f Ar flags .
+Этот параметр используется для указания операционных флагов, специфичных для действия.
+По умолчанию утилита
+.Nm 
+определяет флаг
+.Ql C ,
+чтобы действие было немедленно
+подтверждено.
+Пользователь может указать
+.Dq Fl f Cm x ,
+чтобы результат действия был отложенным изменением, которое позже, вместе с другими отложенными изменениями, может быть подтверждено как единое составное изменение с помощью действия
 .Cm commit
-action or reverted with the
-.Cm undo
-action.
-.Sh RECOVERING
-The GEOM PART class supports recovering of partition tables only for GPT.
-The GPT primary metadata is stored at the beginning of the device.
-For redundancy, a secondary
+или отменено с помощью действия
+.Cm undo .
+.Sh ВОССТАНОВЛЕНИЕ
+Класс GEOM PART поддерживает восстановление таблиц разделов только для GPT.
+Основные метаданные GPT хранятся в начале устройства.
+Для избыточности, вторичная
 .Pq backup
-copy of the metadata is stored at the end of the device.
-As a result of having two copies, some corruption of metadata is not
-fatal to the working of GPT.
-When the kernel detects corrupt metadata, it marks this table as corrupt
-and reports the problem.
+копия метаданных хранится в конце устройства.
+В результате наличия двух копий, некоторые повреждения метаданных не
+являются фатальными для работы GPT.
+Когда ядро обнаруживает поврежденные метаданные, оно помечает эту таблицу как поврежденную
+и сообщает о проблеме.
 .Cm destroy
-and
+и
 .Cm recover
-are the only operations allowed on corrupt tables.
+- это единственные операции, разрешенные на поврежденных таблицах.
 .Pp
-If one GPT header appears to be corrupt but the other copy remains intact,
-the kernel will log the following:
+Если один заголовок GPT кажется поврежденным, но другая копия остается целой,Ядра будут регистрировать следующее:
 .Bd -literal -offset indent
-GEOM: provider: the primary GPT table is corrupt or invalid.
-GEOM: provider: using the secondary instead -- recovery strongly advised.
+GEOM: поставщик: основная таблица GPT повреждена или недействительна.
+GEOM: поставщик: используется вторичная таблица -- настоятельно рекомендуется восстановление.
 .Ed
 .Pp
-or
+или
 .Bd -literal -offset indent
-GEOM: provider: the secondary GPT table is corrupt or invalid.
-GEOM: provider: using the primary only -- recovery suggested.
+GEOM: поставщик: вторичная таблица GPT повреждена или недействительна.
+GEOM: поставщик: используется только основная таблица -- рекомендуется восстановление.
 .Ed
 .Pp
-Also
+Также команды как
 .Nm
-commands such as
+например
 .Cm show , status
-and
+и
 .Cm list
-will report about corrupt tables.
+будут сообщать о повреждённых таблицах.
 .Pp
-If the size of the device has changed (e.g.,\& volume expansion) the
-secondary GPT header will no longer be located in the last sector.
-This is not a metadata corruption, but it is dangerous because any
-corruption of the primary GPT will lead to loss of the partition table.
-This problem is reported by the kernel with the message:
+Если размер устройства изменился (например,\& расширение объёма), то
+вторичный заголовок GPT больше не будет располагаться в последнем секторе.
+Это не порча метаданных, но это опасно, потому что
+любое повреждение основной таблицы GPT приведёт к потере таблицы разделов.
+Эта проблема сообщается ядром с сообщением:
 .Bd -literal -offset indent
-GEOM: provider: the secondary GPT header is not in the last LBA.
+GEOM: поставщик: вторичный заголовок GPT не находится в последнем LBA.
 .Ed
 .Pp
-This situation can be recovered with the
+Эту ситуацию можно исправить с помощью команды
 .Cm recover
-command.
-This command reconstructs the corrupt metadata using known valid
-metadata and relocates the secondary GPT to the end of the device.
+Эта команда реконструирует повреждённые метаданные, используя известные действительные
+метаданные и перемещает вторичную таблицу GPT в конец устройства.
 .Pp
-.Em NOTE :
-The GEOM PART class can detect the same partition table visible through
-different GEOM providers, and some of them will be marked as corrupt.
-Be careful when choosing a provider for recovery.
-If you choose incorrectly you can destroy the metadata of another GEOM class,
-e.g.,\& GEOM MIRROR or GEOM LABEL.
-.Sh SYSCTL VARIABLES
-The following
+.Em ВНИМАНИЕ :
+Класс GEOM PART может обнаружить одну и ту же таблицу разделов, видимую через
+разные поставщики GEOM, и некоторые из них будут помечены как повреждённые.
+Будьте осторожны при выборе поставщика для восстановления.
+Если выбрать неправильно, вы можете уничтожить метаданные другого класса GEOM,
+например,\& GEOM MIRROR или GEOM LABEL.
+.Sh ПЕРЕМЕННЫЕ SYSCTL
+Следующие переменные
 .Xr sysctl 8
-variables can be used to control the behavior of the
+могут быть использованы для контроля поведения класса GEOM
 .Nm PART
-GEOM class.
-The default value is shown next to each variable.
-.Bl -tag -width indent
-.It Va kern.geom.part.allow_nesting : No 0
-By default, some schemes (currently BSD and BSD64) do not permit
-further nested partitioning.
-This variable overrides this restriction and allows arbitrary nesting (except
-within partitions created at offset 0).
-Some schemes have their own separate checks, for which see below.
+Значение по умолчанию показано рядом с каждой переменной.
+.Bl -tag -width indent.It Va kern.geom.part.allow_nesting : No 0
+По умолчанию некоторые схемы (в настоящее время BSD и BSD64) не разрешают
+дальнейшее вложенное разделение.
+Эта переменная переопределяет это ограничение и позволяет произвольное вложение (кроме
+в случае разделов, созданных смещением 0).
+Некоторые схемы имеют свои собственные отдельные проверки, смотрите ниже.
 .It Va kern.geom.part.auto_resize : No 1
-This variable controls automatic resize behavior of the
+Эта переменная контролирует автоматическое изменение размера поведения класса
 .Nm PART
-GEOM class.
-When this variable is enable and new size of provider is detected, the schema
-metadata is resized but all changes are not saved to disk, until
+GEOM.
+Когда эта переменная включена и обнаружен новый размер провайдера, метаданные схемы
+изменяются, но все изменения не сохраняются на диск до тех пор, пока не будет выполнена команда
 .Cm gpart commit
-is run to confirm changes.
-This behavior is also reported with diagnostic message:
-.Sy "GEOM_PART: (provider) was automatically resized."
-.Sy "Use `gpart commit (provider)` to save changes or `gpart undo (provider)`"
-.Sy "to revert them."
+для подтверждения изменений.
+Это поведение также сообщается с диагностическим сообщением:
+.Sy "GEOM_PART: (провайдер) был автоматически изменен в размере."
+.Sy "Используйте `gpart commit (провайдер)` для сохранения изменений или `gpart undo (провайдер)`"
+.Sy "для их отмены."
 .It Va kern.geom.part.check_integrity : No 1
-This variable controls the behaviour of metadata integrity checks.
-When integrity checks are enabled, the
+Эта переменная контролирует поведение проверок целостности метаданных.
+Когда включены проверки целостности, класс
 .Nm PART
-GEOM class verifies all generic partition parameters obtained from the
-disk metadata.
-If some inconsistency is detected, the partition table will be
-rejected with a diagnostic message:
-.Sy "GEOM_PART: Integrity check failed (provider, scheme)" .
+GEOM проверяет все общие параметры разделов, полученные из метаданных диска.
+Если обнаружено какое-либо несоответствие, таблица разделов будет
+отклонена с диагностическим сообщением:
+.Sy "GEOM_PART: Проверка целостности не пройдена (провайдер, схема)".
 .It Va kern.geom.part.gpt.allow_nesting : No 0
-By default the GPT scheme is allowed only at the outermost nesting level.
-This variable allows this restriction to be removed.
+По умолчанию схема GPT разрешена только на самом внешнем уровне вложенности.
+Эта переменная позволяет удалить это ограничение.
 .It Va kern.geom.part.ldm.debug : No 0
-Debug level of the Logical Disk Manager (LDM) module.
-This can be set to a number between 0 and 2 inclusive.
-If set to 0 minimal debug information is printed,
-and if set to 2 the maximum amount of debug information is printed.
-.It Va kern.geom.part.ldm.show_mirrors : No 0
-This variable controls how the Logical Disk Manager (LDM) module handles
-mirrored volumes.
-By default mirrored volumes are shown as partitions with type
+Уровень отладки модуля управления логическими дисками (LDM).
+Может быть установлено число от 0 до 2 включительно.
+Если установлено в 0, выводится минимальная отладочная информация,
+и если установлено в 2, будет печатать максимум информации для отладки.
+.It Va kern.geom.part.ldm.show_mirrors : Нет 0
+Эта переменная контролирует, как модуль Менеджер Логических Дисков (LDM) обрабатывает
+зеркальные тома.
+По умолчанию зеркальные тома показываются как разделы с типом
 .Cm ms-ldm-data
-(see the
-.Sx "PARTITION TYPES"
-section).
-If this variable set to 1 each component of the mirrored volume will be
-present as independent partition.
-.Em NOTE :
-This may break a mirrored volume and lead to data damage.
-.It Va kern.geom.part.mbr.enforce_chs : No 0
-Specify how the Master Boot Record (MBR) module does alignment.
-If this variable is set to a non-zero value, the module will automatically
-recalculate the user-specified offset and size for alignment with the CHS
-geometry.
-Otherwise the values will be left unchanged.
-.It Va kern.geom.part.separator : No ""
-Specify an optional separator that will be inserted between the GEOM name
-and partition name.
-This variable is a
-.Xr loader 8
-tunable.
-Note that setting this variable may break software which assumes a particular
-naming scheme.
+(смотрите раздел
+.Sx "ТИПЫ РАЗДЕЛОВ").
+Если эта переменная установлена в 1, каждый компонент зеркального тома будет
+представлен как независимый раздел.
+.Em ПРИМЕЧАНИЕ:
+Это может нарушить работу зеркального тома и привести к повреждению данных.
+.It Va kern.geom.part.mbr.enforce_chs : Нет 0
+Укажите, как модуль Записи Основной Загрузки (MBR) проводит выравнивание.
+Если эта переменная установлена в ненулевое значение, модуль автоматически
+пересчитает указанные пользователем смещение и размер для выравнивания с геометрией CHS.
+В противном случае значения останутся без изменений.
+.It Va kern.geom.part.separator : Нет ""
+Укажите необязательный разделитель, который будет вставлен между именем GEOM
+и именем раздела.
+Эта переменная является
+.Xr загружаемой 8
+настраиваемой.
+Обратите внимание, что установка этой переменной может нарушить работу программного обеспечения, которое предполагает определенную
+схему именования.
 .El
-.Sh EXIT STATUS
-Exit status is 0 on success, and 1 if the command fails.
-.Sh EXAMPLES
-The examples below assume that the disk's logical block size is 512
-bytes, regardless of its physical block size.
+.Sh СТАТУС ВЫХОДА
+Статус выхода 0 при успешном выполнении и 1, если команда не удалась.
+.Sh ПРИМЕРЫ
+В приведенных ниже примерах предполагается, что логический размер блока диска составляет 512
+байт, независимо от его физического размера блока.
 .Ss GPT
-In this example, we will format
+В этом примере мы будем форматировать
 .Pa ada0
-with the GPT scheme and create boot, swap and root partitions.
-First, we need to create the partition table:
+с использованием схемы GPT и создадим загрузочные, своп и корневые разделы.
+Сначала нам нужно создать таблицу разделов:
 .Bd -literal -offset indent
 /sbin/gpart create -s GPT ada0
 .Ed
 .Pp
-Next, we install a protective MBR with the first-stage bootstrap code.
-The protective MBR lists a single, bootable partition spanning the
-entire disk, thus allowing non-GPT-aware BIOSes to boot from the disk
-and preventing tools which do not understand the GPT scheme from
-considering the disk to be unformatted.
+Далее устанавливаем защитный MBR с загрузочным кодом первой стадии.
+Защитный MBR содержит список одного загрузочного раздела, охватывающего 
+ваш полный диск, что позволяет BIOS, не поддерживающим GPT, выполнять загрузку с диска
+и предотвращает попытки инструментов, которые не распознают схему GPT,
+считать диск ненормированным.
 .Bd -literal -offset indent
 /sbin/gpart bootcode -b /boot/pmbr ada0
 .Ed
 .Pp
-We then create a dedicated
+Затем создаем специализированный раздел
 .Cm freebsd-boot
-partition to hold the second-stage boot loader, which will load the
+для размещения загрузчика второй стадии, который будет загружать
 .Fx
-kernel and modules from a UFS or ZFS filesystem.
-This partition must be larger than the bootstrap code
+ядро и модули из файловой системы UFS или ZFS.
+Этот раздел должен быть больше, чем код первой ступени загрузки
 .Po
-either
+либо
 .Pa /boot/gptboot
-for UFS or
+для UFS, либо
 .Pa /boot/gptzfsboot
-for ZFS
+для ZFS
 .Pc ,
-but smaller than 545 kB since the first-stage loader will load the
-entire partition into memory during boot, regardless of how much data
-it actually contains.
-We create a 472-block (236 kB) boot partition at offset 40, which is
-the size of the partition table (34 blocks or 17 kB) rounded up to the
-nearest 4 kB boundary.
+но меньше чем 545 кБ, так как загрузчик первой стадии будет загружать
+все содержимое раздела в память при загрузке, независимо от того, сколько данных
+он фактически содержит.
+Мы создаем загрузочный раздел размером 472 блока (236 кБ) с смещением 40, что
+соответствует размеру таблицы разделов (34 блока или 17 кБ), округленного до
+ближайшей границы в 4 кБ.
 .Bd -literal -offset indent
 /sbin/gpart add -b 40 -s 472 -t freebsd-boot ada0
 /sbin/gpart bootcode -p /boot/gptboot -i 1 ada0
 .Ed
 .Pp
-We now create a 4 GB swap partition at the first available offset,
-which is 40 + 472 = 512 blocks (256 kB).
+Теперь создаем 4 ГБ раздел swap в первом доступном смещении,
+что составляет 40 + 472 = 512 блоков (256 кБ).
 .Bd -literal -offset indent
 /sbin/gpart add -s 4G -t freebsd-swap ada0
 .Ed
 .Pp
-Aligning the swap partition and all subsequent partitions on a 256 kB
-boundary ensures optimal performance on a wide range of media, from
-plain old disks with 512-byte blocks, through modern
+Выравнивание раздела swap и всех последующих разделов по границе в 256 кБ
+обеспечивает оптимальную производительность на широком спектре носителей, от
+обычных дисков с блоками по 512 байт, до современных дисков
 .Dq advanced format
-disks with 4096-byte physical blocks, to RAID volumes with stripe
-sizes of up to 256 kB.
+с физическими блоками по 4096 байт, до RAID-томов с размером полосы до 256 кБ.
 .Pp
-Finally, we create and format an 8 GB
+В заключение, мы создаем и форматируем 8 ГБ раздел
 .Cm freebsd-ufs
-partition for the root filesystem, leaving the rest of the device free
-for additional filesystems:
+для корневой файловой системы, оставляя остальную часть устройства свободнойДля дополнительных файловых систем:
 .Bd -literal -offset indent
 /sbin/gpart add -s 8G -t freebsd-ufs ada0
 /sbin/newfs -Uj /dev/ada0p3
 .Ed
 .Ss MBR
-In this example, we will format
+В этом примере мы будем форматировать
 .Pa ada0
-with the MBR scheme and create a single partition which we subdivide
-using a traditional
+с использованием схемы MBR и создадим один раздел, который мы подразделим
+используя традиционную
 .Bx
-disklabel.
+таблицу разделов (disklabel).
 .Pp
-First, we create the partition table as well as a single partition 64 GB in
-size and an alignment of 4 kB, then we mark that partition active (bootable)
-and install the first-stage boot loader:
+Сначала создаем таблицу разделов, а также один раздел размером 64 ГБ с
+выравниванием в 4 кБ, затем отметим этот раздел как активный (загрузочный)
+и установим загрузочный код первой стадии:
 .Bd -literal -offset indent
 /sbin/gpart create -s MBR ada0
 /sbin/gpart add -t freebsd -s 64G -a 4k ada0
@@ -1430,92 +1384,87 @@ and install the first-stage boot loader:
 /sbin/gpart bootcode -b /boot/boot0 ada0
 .Ed
 .Pp
-Next, we create a disklabel in that partition
+Затем создаем disklabel в этом разделе
 .Po
 .Dq slice
-in disklabel terminology
+по терминологии disklabel
 .Pc
-with room for up to 20 partitions:
+с возможностью до 20 разделов:
 .Bd -literal -offset indent
 /sbin/gpart create -s BSD -n 20 ada0s1
 .Ed
 .Pp
-We then create an 8 GB root partition and a 4 GB swap partition:
+Далее создаем 8 ГБ корневой раздел и 4 ГБ раздел подкачки (swap):
 .Bd -literal -offset indent
 /sbin/gpart add -t freebsd-ufs -s 8G ada0s1
 /sbin/gpart add -t freebsd-swap -s 4G ada0s1
 .Ed
 .Pp
-Finally, we install the appropriate boot loader for the
+Наконец, устанавливаем соответствующий загрузочный код для
 .Bx
-label:
+метки (label):
 .Bd -literal -offset indent
 /sbin/gpart bootcode -b /boot/boot ada0s1
 .Ed
-.Ss Deleting Partitions and Destroying the Partitioning Scheme
-If a
+.Ss Удаление разделов и уничтожение схемы разделения
+Если при попытке уничтожить таблицу разделов появляется ошибка
 .Em "Device busy"
-error is shown when trying to destroy a partition table, remember that
-all of the partitions must be deleted first with the
+необходимо помнить, что сначала нужно удалить все разделы с помощью
 .Cm delete
-action.
-In this example,
+действия.
+В этом примере,
 .Pa da0
-has three partitions:
+имеет три раздела:
 .Bd -literal -offset indent
 /sbin/gpart delete -i 3 da0
 /sbin/gpart delete -i 2 da0
 /sbin/gpart delete -i 1 da0
-/sbin/gpart destroy da0
-.Ed
+/sbin/gpart destroy da0.Ed
 .Pp
-Rather than deleting each partition and then destroying the partitioning
-scheme, the
+Вместо удаления каждого раздела и затем уничтожения схемы разделения, можно использовать опцию
 .Fl F
-option can be given with
+вместе с командой
 .Cm destroy
-to delete all of the partitions before destroying the partitioning scheme.
-This is equivalent to the previous example:
+для удаления всех разделов перед уничтожением схемы разделения. Это эквивалентно предыдущему примеру:
 .Bd -literal -offset indent
 /sbin/gpart destroy -F da0
 .Ed
-.Ss Backup and Restore
-Create a backup of the partition table from
+.Ss Резервное копирование и восстановление
+Создать резервную копию таблицы разделов с
 .Pa da0 :
 .Bd -literal -offset indent
 /sbin/gpart backup da0 > da0.backup
 .Ed
 .Pp
-Restore the partition table from the backup to
+Восстановить таблицу разделов из резервной копии на
 .Pa da0 :
 .Bd -literal -offset indent
 /sbin/gpart restore -l da0 < /mnt/da0.backup
 .Ed
 .Pp
-Clone the partition table from
+Клонировать таблицу разделов с
 .Pa ada0
-to
+на
 .Pa ada1
-and
+и
 .Pa ada2 :
 .Bd -literal -offset indent
 /sbin/gpart backup ada0 | /sbin/gpart restore -F ada1 ada2
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРИ ТАКЖЕ
 .Xr geom 4 ,
 .Xr boot0cfg 8 ,
 .Xr geom 8 ,
 .Xr glabel 8 ,
 .Xr gptboot 8
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Утилита
 .Nm
-utility appeared in
+впервые появилась в
 .Fx 7.0 .
-.Sh AUTHORS
+.Sh АВТОРЫ
 .An Marcel Moolenaar Aq Mt marcel@FreeBSD.org
-.Sh CAVEATS
-Partition type
+.Sh ОСОБЕННОСТИ
+Тип раздела
 .Em apple-zfs
-(6a898cc3-1dd2-11b2-99a6-080020736631) is also being used
-on illumos/Solaris platforms for ZFS volumes.
+(6a898cc3-1dd2-11b2-99a6-080020736631) также используется на платформах illumos/Solaris для томов ZFS.

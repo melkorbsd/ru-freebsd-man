@@ -12,140 +12,133 @@
 .Dd December 22, 2009
 .Dt APM 8 i386
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm apm
-.Nd control the APM BIOS and display its information
-.Sh SYNOPSIS
+.Nd управляет APM BIOS и отображает его информацию
+.Sh СИНТАКСИС
 .Nm
 .Op Fl ablstzZ
 .Op Fl d Ar enable
 .Op Fl e Ar enable
 .Op Fl h Ar enable
 .Op Fl r Ar delta
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility
-controls the Intel / Microsoft APM (Advanced Power Management) BIOS and
-displays the current status of APM on laptop PCs.
-.Pp
-The options are as follows:
+управляет Intel / Microsoft APM (расширенное управление питанием) BIOS и
+отображает текущее состояние APM на портативных ПК.
+Возможны следующие параметры:
 .Bl -tag -width indent
 .It Fl a
-Display the current AC-line status as an integer value.
-The values
-0, 1 and 2 correspond to the
-.Dq off-line
-state,
+Отображает текущее состояние сети переменного тока в виде целого числа.
+Значения
+0, 1 и 2 соответствуют состояниям
+.Dq off-line ,
 .Dq on-line
-state or
-.Dq backup power
-state, respectively.
+и
+.Dq backup power , 
+соответсвенно.
 .It Fl b
-Display an integer value reflecting the current battery status.
-The values 0, 1, 2, 3, correspond to the
-.Dq high
-status,
-.Dq low
-status,
-.Dq critical
-status,
+Отображает целочисленное значение, отражающее текущее состояние батареи.
+Значения 0, 1, 2, 3 соответствуют статусам
+.Dq high ,
+.Dq low ,
+.Dq critical ,
 .Dq charging
-status respectively.
+соответсвенно.
 .It Fl d Ar enable
-Disable/enable suspending of the display separately from a normal suspend
-using the boolean value for
+Отключает/включает приостановку отображения отдельно от обычной приостановки,
+используя логическое значение для
 .Ar enable .
-This feature seems to not work on many different laptops,
-including the Libretto 30CT and 50CT.
+Похоже, что эта функция не работает на многих различных ноутбуках,
+включая Libretto 30CT и 50CT.
 .It Fl e Ar enable
-Enable or disable APM functions of the computer,
-depending on the boolean
-.Ar enable
-argument.
+Включает или отключает функции APM компьютера
+в зависимости от логического значения аргумента
+.Ar enable .
 .It Fl h Ar enable
-Depending on the boolean value of
+В зависимости от логического значения
 .Ar enable ,
-enable or disable the HLT instruction in the kernel context switch routine.
-These options are not necessary for almost all APM implementations,
-but for some implementations whose
+включиает или отключиает инструкцию HLT в процедуре переключения контекста ядра.
+Эти опции не обязательны почти для всех реализаций APM,
+но для некоторых реализаций, в которых вызов
 .Dq Pa Idle CPU
-call executes both CPU clock slowdown and HLT instruction,
+приводит как к замедлению тактовой частоты процессора, так и к инструкции HLT,
 .Fl h Cm false
-is necessary to prevent the system from reducing its peak performance.
-See
+необходимо для предотвращения снижения максимальной производительности системы.
+Смотрите
 .Xr apm 4
-for details.
+для получения подробностей.
 .It Fl l
-Display the remaining battery percentage.
-If your laptop does not
-support this function, 255 is displayed.
+Отображает оставшийся заряд батареи в процентах.
+Если ваш ноутбук не
+поддерживает эту функцию, на дисплее отобразится значение 255.
 .It Fl r Ar delta
-Enable the resume wakeup timer, if the laptop supports it.
-This
-does not actually suspend the laptop, but if the laptop is suspended,
-and it supports resume from suspend, then it will be resumed after
+Включает таймер возобновления работы, если ноутбук поддерживает его.
+На самом деле это
+не приводит к приостановке работы ноутбука, но если ноутбук приостановлен
+и поддерживает возобновление работы из режима приостановки, то он будет возобновлен после
 .Ar delta
-seconds (from when you run this command, not from when you suspend).
+секунды (с момента выполнения этой команды, а не с момента приостановки).
 .It Fl s
-Display the status of the APM support as an integer value.
-The values
-0 and 1 correspond to the
+Отображает статус поддержки APM в виде целого числа.
+Значения
+0 и 1 соответствуют состояниям
 .Dq disabled
-state or
+и
 .Dq enabled
-state respectively.
+соответственно.
 .It Fl t
-Display the estimated remaining battery lifetime in seconds.
-If
-it is unknown, -1 is displayed.
+Отображает расчетное оставшееся время автономной работы в секундах.
+Если
+оно неизвестно, отображается значение -1.
 .It Fl Z
-Transition the system into standby mode.
-This mode uses less power than
-full power mode, but more than suspend mode.
-Some laptops support
-resuming from this state on timer or Ring Indicator events.
-The
-output of
+Переводит систему в режим ожидания.
+В этом режиме потребляется меньше энергии, чем
+в режиме полной мощности, но больше, чем в режиме приостановки.
+Некоторые ноутбуки поддерживают
+выход из этого состояния по таймеру или сигналу вызова.
+В
+выходных данных
 .Nm
-tells what your laptop claims to support.
+указано, что, как утверждается, поддерживает ваш ноутбук.
 .It Fl z
-Suspend the system.
-It is used by
+Приостанавливает работу системы.
+Он используется
 .Xr zzz 8 .
 .El
 .Pp
-If no options are specified,
+Если параметры не указаны,
 .Nm
-displays information and current status of APM in verbose mode.
-If multiple display options are given, the values are displayed one
-per line in the order given here.
-.Sh NOTES
+отображает информацию и текущее состояние APM в подробном режиме.
+Если задано несколько вариантов отображения, значения отображаются по одному
+в строке в указанном здесь порядке.
+.Sh ПРИМЕЧАНИЯ
 .Xr apmconf 8
-has been merged in
+был объединен в
 .Nm
-and thus
+и таким образом
 .Nm
-replaces all of its functionality.
-.Sh SEE ALSO
+заменяет всю его функциональность.
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr apm 4 ,
 .Xr zzz 8
-.Sh AUTHORS
-.An Tatsumi Hosokawa Aq Mt hosokawa@jp.FreeBSD.org
-.Sh BUGS
-Some APM implementations do not support parameters needed by
+.Sh АВТОРЫ
+.An Тацуми Хосокава, он же Mt hosokawa@jp.FreeBSD.org
+.Sh ПРОБЛЕМЫ
+Некоторые реализации APM не поддерживают параметры, необходимые
 .Nm .
-On such systems,
+В таких системах,
 .Nm
-displays them as unknown.
+отображает их как неизвестные.
 .Pp
-Some APM implementations cannot handle events such as pushing the
-power button or closing the cover.
-On such implementations, the system
+Некоторые реализации APM не могут обрабатывать такие события, как нажатие кнопки
+включения или закрытие крышки.
+В таких реализациях система
 .Ar must
-be suspended
+будет отстраненна
 .Ar only
-by using
+с помощью
 .Nm
-or
+или
 .Nm zzz .

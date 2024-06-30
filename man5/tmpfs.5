@@ -54,109 +54,109 @@
 .Dd July 21, 2022
 .Dt TMPFS 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm tmpfs
-.Nd "in-memory file system"
-.Sh SYNOPSIS
-To compile this driver into the kernel,
-place the following line in your
-kernel configuration file:
-.Bd -ragged -offset indent
-.Cd "options TMPFS"
+.Nd "файловая система в оперативной памяти"
+.Sh КРАТКИЙ ОБЗОР
+Чтобы скомпилировать этот драйвер в ядро,
+поместите следующую строку в свой
+файл конфигурации ядра:
+.Bd -неровный отступ со смещением
+.Cd "параметры TMPFS"
 .Ed
 .Pp
-Alternatively, to load the driver as a
-module at boot time, place the following line in
+Альтернативно, можно загрузить драйвер как
+модуль во время загрузки, поместите следующую строку в
 .Xr loader.conf 5 :
-.Bd -literal -offset indent
+.Bd -буквальный отступ со смещением
 tmpfs_load="YES"
 .Ed
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ 
+драйвер 
 .Nm
-driver implements an in-memory, or
+реализует в памяти или
 .Nm
-file system.
-The filesystem stores both file metadata and data in main memory.
-This allows very fast and low latency accesses to the data.
-The data is volatile.
-An umount or system reboot invalidates it.
-These properties make the filesystem's mounts suitable for fast
-scratch storage, like
+файловая система.
+Файловая система хранит как метаданные файла, так и данные в основной памяти.
+Это обеспечивает очень быстрый доступ к данным с низкой задержкой.
+Данные нестабильны.
+Размонтирование или перезагрузка системы делают его недействительным.
+Эти свойства делают монтирование файловой системы подходящим для быстрого
+скретч-хранилище, например
 .Pa /tmp .
 .Pp
-If the system becomes low on memory and swap is configured
-.Po see
+Если в системе недостаточно памяти и настроен раздел подкачки
+.Po смотреть
 .Xr swapon 8 Pc ,
-the system can transfer file data to swap space, freeing memory
-for other needs.
-Metadata, including the directory content, is never swapped out by the
-current implementation.
-Keep this in mind when planning the mount limits, especially when expecting
-to place many small files on a tmpfs mount.
+система может переносить данные файла в пространство подкачки, освобождая память
+для других нужд.
+Метаданные, включая содержимое каталога, никогда не заменяются пользователем
+текущей реализации.
+Имейте это в виду при планировании ограничений монтирования, особенно при ожидании
+разместите множество небольших файлов при монтировании tmpfs.
 .Pp
-When
+Когда
 .Xr mmap 2
-is used on a file from a tmpfs mount, the swap VM object managing the
-file pages is used to implement mapping and avoid double-copying of
-the file data.
-This quirk causes process inspection tools, like
+используется для файла из монтирования tmpfs, объект подкачки виртуальной машины, управляющий
+страницы файлов используются для реализации сопоставления и предотвращения двойного копирования
+данных файла.
+Эта особенность приводит к тому, что инструменты проверки процесса, такие как
 .Xr procstat 1 ,
-to report anonymous memory mappings instead of file mappings.
-.Sh OPTIONS
-The following options are available when
-mounting
+сообщают об анонимных сопоставлениях памяти вместо сопоставлений файлов.
+.Sh ОПЦИИ
+Следующие параметры доступны, когда
+монтаж
 .Nm
-file systems:
-.Bl -tag -width "It Cm maxfilesize"
+файловые системы:
+.Bl -ширина тега "It Cm maxfilesize"
 .It Cm gid
-Specifies the group ID of the root inode of the file system.
-Defaults to the mount point's GID.
+Указывает идентификатор группы корневого индекса файловой системы.
+По умолчанию используется GID точки монтирования.
 .It Cm uid
-Specifies the user ID of the root inode of the file system.
-Defaults to the mount point's UID.
+Указывает идентификатор пользователя корневого индекса файловой системы.
+По умолчанию используется UID точки монтирования.
 .It Cm mode
-Specifies the mode (in octal notation) of the root inode of the file system.
-Defaults to the mount point's mode.
+Указывает режим (в восьмеричной записи) корневого индексного дескриптора файловой системы.
+По умолчанию используется режим точки монтирования.
 .It Cm nonc
-Do not use namecache to resolve names to files for the created mount.
-This saves memory, but currently might impair scalability for highly
-used mounts on large machines.
+Не используйте кэш имен для разрешения имен файлов для созданного монтирования.
+Это экономит память, но в настоящее время может ухудшить масштабируемость для высокопроизводительных систем
+б/у крепления на больших машинах.
 .It Cm inodes
-Specifies the maximum number of nodes available to the file system.
-If not specified, the file system chooses a reasonable maximum based on
-the file system size, which can be limited with the
-.Cm size
-option.
-.It Cm size
-Specifies the total file system size in bytes, unless suffixed
-with one of k, m, g, t, or p, which denote byte, kilobyte,
-megabyte, gigabyte, terabyte and petabyte respectively.
-If zero (the default) or a value larger than SIZE_MAX - PAGE_SIZE
-is given, the available amount of memory (including
-main memory and swap space) will be used.
-.It Cm maxfilesize
-Specifies the maximum file size in bytes.
-Defaults to the maximum possible value.
-.It Cm easize
-Specifies the maximum memory size used by extended attributes in bytes.
-Defaults to 16 megabytes.
+Указывает максимальное количество узлов, доступных для файловой системы.
+Если не указано, файловая система выбирает разумный максимум на основе
+размера файловой системы, который можно ограничить с помощью 
+.Cm  "Размер".
+параметра
+.It Cm  Размер
+Указывает общий размер файловой системы в байтах, если не указан суффикс
+с одним из k, m, g, t или p, которые обозначают байт, килобайт,
+мегабайт, гигабайт, терабайт и петабайт соответственно.
+Если ноль (по умолчанию) или значение больше SIZE_MAX — PAGE_SIZE.
+указан доступный объем памяти (включая
+будет использоваться основная память и пространство подкачки).
+.It Cm максимальный размер файла
+Указывает максимальный размер файла в байтах.
+По умолчанию установлено максимально возможное значение.
+.It Cm размер
+Указывает максимальный размер памяти, используемый расширенными атрибутами в байтах.
+По умолчанию 16 мегабайт.
 .El
-.Sh EXAMPLES
-Mount a
+.Sh ПРИМЕРЫ
+Установите
 .Nm
-memory file system:
+файловую система памяти:
 .Pp
 .Dl "mount -t tmpfs tmpfs /tmp"
 .Pp
-Configure a
+Настройте
 .Nm
-mount via
+монтировать через
 .Xr fstab 5 :
 .Bd -literal -offset indent
 tmpfs /tmp tmpfs rw 0 0
 .Ed
-.Sh SEE ALSO
+.Sh смотрите также
 .Xr procstat 1 ,
 .Xr mmap 2 ,
 .Xr nmount 2 ,
@@ -167,23 +167,23 @@ tmpfs /tmp tmpfs rw 0 0
 .Xr swapinfo 8 ,
 .Xr swapon 8
 .Sh HISTORY
-The
+Драйвер 
 .Nm
-driver first appeared in
+впервые появился в
 .Fx 7.0 .
-.Sh AUTHORS
+.Sh АВТОРЫ
 .An -nosplit
-The
+Реализацию 
 .Nm
-kernel implementation was written by
+ядра написал
 .An Julio M. Merino Vidal Aq Mt jmmv@NetBSD.org
 as a Google Summer of Code project.
 .Pp
 .An Rohit Jalan
-and others ported it from
+и другие портировали его из
 .Nx
-to
+к
 .Fx .
 .Pp
-This manual page was written by
+Эта страница руководства была написана
 .An Xin LI Aq Mt delphij@FreeBSD.org .
