@@ -27,98 +27,97 @@
 .\"
 .\"     @(#)tcopy.1	8.2 (Berkeley) 4/17/94
 .\"
-.Dd December 20, 2006
+.Dd 20 декабря, 2006
 .Dt TCOPY 1
 .Os
-.Sh NAME
+  .Sh ИМЯ
 .Nm tcopy
-.Nd copy and/or verify mag tapes
-.Sh SYNOPSIS
+.Nd копирование и/или проверка магнитных лент
+.Sh СИНТАКСИС
 .Nm
 .Op Fl cvx
 .Op Fl s Ar maxblk
 .Oo Ar src Op Ar dest
 .Oc
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility is designed to copy magnetic tapes.
-The only assumption made
-about the tape layout is that there are two sequential EOF marks
-at the end.
-By default, the
+предназначена для копирования магнитных лент.
+Единственное предположение, сделанное
+относительно структуры ленты, заключается в том, что
+конце находятся два последовательных маркера EOF.
+По умолчанию утилита
 .Nm
-utility will print
-information about the sizes of records and files found
-on the
+будет выводить
+информацию о размерах записей и файлов, найденных 
+на
 .Pa /dev/sa0
-tape, or on the tape specified by the
+летне, или на ленте,указанной 
 .Ar src
-argument.
-If a destination tape is also specified by the
+Если также указана целевая лента
 .Ar dest
-argument, a copy of the source tape will be made.
-The blocking on the
-destination tape will be identical to that used on the source tape.
-Copying
-a tape will yield the same program output as if just printing the sizes.
+аргументом, будет создана копия исходной ленты.
+Блокирование на
+целевой ленте будет идентичным тому, что использовалось на исходной ленте.
+Копирование
+ленты приведет к тому же выводу программы, что и просто вывод размеров.
 .Pp
-The following options are available:
+Доступны следующие параметры:
 .Bl -tag -width ".Fl s Ar maxblk"
 .It Fl c
-Copy
+Скопировать
 .Ar src
-to
+на
 .Ar dest
-and then verify that the two tapes are identical.
+и затем проверить, что обе ленты идентичны.
 .It Fl s Ar maxblk
-Specify a maximum block size,
+Указать максимальный размер блока,
 .Ar maxblk .
 .It Fl v
-Given the two tapes
+Для двух лент
 .Ar src
-and
+и
 .Ar dest ,
-verify that they are identical.
+проверить,что они идентичны.
 .It Fl x
-Output all informational messages to the standard error
-instead of the standard output.
-This option is useful when
+Вывести все информационные сообщения в стандартный поток ошибок,
+вместо стандартного вывода.
+Этот параметр полезна,когда
 .Ar dest
-is given as
+указан как
 .Pa /dev/stdout .
 .El
-.Sh SEE ALSO
+.Sh СМОТРИ ТАКЖЕ
 .Xr mt 1 ,
 .Xr mtio 4
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Команда
 .Nm
-command appeared in
+появилась в
 .Bx 4.3 .
-.Sh BUGS
+.Sh БАГИ
 .Bl -item
 .It
-Writing an image of a tape to a file does not preserve much more than
-the raw data.
-Block size(s) and tape EOF marks are lost which would
-otherwise be preserved in a tape-to-tape copy.
+Запись образа ленты в файл не сохраняет больше чем 
+сырые данные.
+Размер(ы) блока и маркеры EOF ленты теряются, что в 
+противном случае сохраняется при копировании с ленты на ленту.
 .It
-End of data (EOD) is determined by two sequential EOF marks
-with no data between them.
-There used to be old systems which typically wrote three EOF's between tape
-files.
-The
+Конец данных (EOD) определяется двумя последовательными маркерами EOF 
+без данных между ними.
+Ранее существовали старые системы, которые обычно писали три EOF между
+файлами в ленте.
+Утилита
 .Nm
-utility will erroneously stop copying early in this case.
+ошибочно прекратит копирование раньше в этом случае.
 .It
-When using the copy/verify option
+При использовании параметра копирования/проверки
 .Fl c ,
 .Nm
-does not rewind the tapes prior to start.
-A rewind is performed
-after writing, prior to the verification stage.
-If one does not start
-at the beginning-of-tape (BOT) then the comparison
-may not be of the intended data.
+не перематывает ленты перед началом.
+Перемотка выполняется
+после записи, перед этапом проверки.
+Если не начать
+с начала ленты (BOT), то сравнение 
+может не соответствовать намеченным данным.
 .El
