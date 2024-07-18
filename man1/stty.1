@@ -31,482 +31,486 @@
 .\"
 .\"     @(#)stty.1	8.4 (Berkeley) 4/18/94
 .\"
-.Dd 27 сентября, 2022
+.Dd September 27, 2022
 .Dt STTY 1
 .Os
-.Sh ИМЯ
+.Sh NAME
 .Nm stty
-.Nd устанавливает параметры для интерфейса терминального устройства
-.Sh СИНТАКСИС
+.Nd set the options for a terminal device interface
+.Sh SYNOPSIS
 .Nm
 .Op Fl a | e | g
 .Op Fl f Ar file
 .Op Ar arguments
-.Sh ОПИСАНИЕ
-Утилита
+.Sh DESCRIPTION
+The
 .Nm
-устанавливает или отчитывается о
-характеристиках терминала для устройства, которое является ее стандартным вводом.
-Если не указаны никакие опции или аргументы, она отчитывается о настройках подмножества 
-характеристик, а также о дополнительных, если они
-отличаются от значений по умолчанию.
-В противном случае она изменяет
-состояние терминала в соответствии с указанными аргументами.
-Некоторые комбинации аргументов
-взаимоисключающи на некоторых типах терминалов.
+utility sets or reports on terminal
+characteristics for the device that is its standard input.
+If no options or arguments are specified, it reports the settings of a subset
+of characteristics as well as additional ones if they differ from their
+default values.
+Otherwise it modifies
+the terminal state according to the specified arguments.
+Some combinations of arguments are mutually
+exclusive on some terminal types.
 .Pp
-Доступны следующие опции:
+The following options are available:
 .Bl -tag -width indent
 .It Fl a
-Отображает все текущие настройки терминала на стандартный вывод в 
-соответствии с
+Display all the current settings for the terminal to standard output
+as per
 .St -p1003.2 .
 .It Fl e
-Отображает все текущие настройки терминала на стандартный вывод 
-в традиционных
+Display all the current settings for the terminal to standard output
+in the traditional
 .Bx
-``all'' и ``everything'' форматах.
+``all'' and ``everything'' formats.
 .It Fl f
-Открывает и использует терминал с именем
+Open and use the terminal named by
 .Ar file
-вместо стандартного ввода.
-Файл открывается
-используя
+rather than using standard input.
+The file is opened
+using the
 .Dv O_NONBLOCK
-флаг
+flag of
 .Fn open ,
-что позволяет
-устанавливать или отображать настройки на терминале, который в противном случае мог бы 
-заблокироваться при открытии.
+making it possible to
+set or display settings on a terminal that might otherwise
+block on the open.
 .It Fl g
-Отображает все текущие настройки терминала на стандартный вывод в 
-форме, которая может быть использована в качестве аргумента для последующего вызова
+Display all the current settings for the terminal to standard output
+in a form that may be used as an argument to a subsequent invocation of
 .Nm
-для восстановления текущего состояния терминала в соответствии с
+to restore the current terminal state as per
 .St -p1003.2 .
 .El
 .Pp
-Доступны следующие аргументы для установки 
-характеристик терминала:
-.Ss Режимы управления:
-Флаги режима управления влияют на аппаратные характеристики, 
-связанные с терминалом.
-Это соответствует c_cflag в termios структуре.
+The following arguments are available to set the terminal
+characteristics:
+.Ss Control Modes:
+Control mode flags affect hardware characteristics associated with the
+terminal.
+This corresponds to the c_cflag in the termios structure.
 .Bl -tag -width Fl
 .It Cm parenb Pq Fl parenb
-Включить (выключить) генерацию 
-и обнаружение четности.
+Enable (disable) parity generation
+and detection.
 .It Cm parodd Pq Fl parodd
-Выбрать нечетную (четную) четность.
+Select odd (even) parity.
 .It Cm cs5 cs6 cs7 cs8
-Выбрать размер символа, если возможно.
+Select character size, if possible.
 .It Ar number
-Установить скорость передачи данных терминала на 
-указанное число, если возможно.
+Set terminal baud rate to the
+number given, if possible.
 If the
-сли скорость передачи данных установлена на ноль,
-управление модемом больше 
-не утверждается.
+baud rate is set to zero, modem
+control is no longer
+asserted.
 .It Cm ispeed Ar number
-SУстановить скорость ввода данных терминала 
-на указанное число, если возможно.
-Если
-скорость ввода данных установлена на ноль, 
-скорость ввода данных устанавливается на 
-значение скорости 
-передачи данных
+Set terminal input baud rate to the
+number given, if possible.
+If the
+input baud rate is set to zero, the
+input baud rate is set to the
+value of the output baud
+rate.
 .It Cm ospeed Ar number
-Установить скорость вывода данных терминала на 
-указанное число, если возможно.
-Если
-скорость вывода данных установлена на ноль,
-управление модемом больше 
-не утверждается.
+Set terminal output baud rate to
+the number given, if possible.
+If
+the output baud rate is set to
+zero, modem control is
+no longer asserted.
 .It Cm speed Ar number
-Это устанавливает как
+This sets both
 .Cm ispeed
-так и
+and
 .Cm ospeed
-на
+to
 .Ar number .
 .It Cm hupcl Pq Fl hupcl
-Прекратить утверждение управления модемом 
-(не прекращать утверждение управления модемом) при последнем закрытии.
+Stop asserting modem control
+(do not stop asserting modem control) on last close.
 .It Cm hup Pq Fl hup
-То же,что и hupcl
+Same as hupcl
 .Pq Fl hupcl .
 .It Cm cstopb Pq Fl cstopb
-Использовать два (один) стоп-бит на символ.
+Use two (one) stop bits per character.
 .It Cm cread Pq Fl cread
-Включить (отключить) приемник.
+Enable (disable) the receiver.
 .It Cm clocal Pq Fl clocal
-Предположить линию без (с) контроля
-модема.
+Assume a line without (with) modem
+control.
 .It Cm crtscts Pq Fl crtscts
 Enable (disable) RTS/CTS flow control.
 .It Cm rtsdtr Pq Fl rtsdtr
-Включить (отключить) потоковое управление RTS/DTR.
+Enable (disable) asserting RTS/DTR on open.
 .El
-.Ss Режимы ввода:
-Это соответствует c_iflag в termios структуре.
+.Ss Input Modes:
+This corresponds to the c_iflag in the termios structure.
 .Bl -tag -width Fl
 .It Cm ignbrk Pq Fl ignbrk
-Игнорировать (не игнорировать) сигнал о разрыве 
-на вводе.
+Ignore (do not ignore) break on
+input.
 .It Cm brkint Pq Fl brkint
-Послать (не посылать) сигнал
+Signal (do not signal)
 .Dv INTR
-при
-разрыве.
+on
+break.
 .It Cm ignpar Pq Fl ignpar
-Игнорировать (не игнорировать) символы с 
-ошибками четности.
+Ignore (do not ignore) characters with parity
+errors.
 .It Cm parmrk Pq Fl parmrk
-Отмечать (не отмечать) символы с ошибками четности.
+Mark (do not mark) characters with parity errors.
 .It Cm inpck Pq Fl inpck
-Включить (отключить) проверку четности 
-на вводе.
+Enable (disable) input parity
+checking.
 .It Cm istrip Pq Fl istrip
-Обрезать (не обрезать) входные 
-символы до семи бит.
+Strip (do not strip) input characters
+to seven bits.
 .It Cm inlcr Pq Fl inlcr
-Преобразовывать (не преобразовывать)
+Map (do not map)
 .Dv NL
-в
+to
 .Dv CR
-на вводе.
+on input.
 .It Cm igncr Pq Fl igncr
-Игнорировать (не игнорировать)
+Ignore (do not ignore)
 .Dv CR
-.на вводе.
+on input.
 .It Cm icrnl Pq Fl icrnl
-Преобразовывать (не преобразовывать)
+Map (do not map)
 .Dv CR
-в
+to
 .Dv NL
-на вводе.
+on input.
 .It Cm ixon Pq Fl ixon
-Включить (отключить)
+Enable (disable)
 .Dv START/STOP
-управление
-выводом.
-Вывод из системы останавливается 
-при получении
+output
+control.
+Output from the system is
+stopped when the system receives
 .Dv STOP
-и возобновляется при 
-получении
+and started when the system
+receives
 .Dv START ,
-или,если
+or if
 .Cm ixany
-установлен,любой символ возобновляет вывод.
+is set, any character restarts output.
 .It Cm ixoff Pq Fl ixoff
-Запросить систему отправить 
-(не отправлять)
+Request that the system send (not
+send)
 .Dv START/STOP
-символы, когда 
-очередь ввода почти 
-пуста/полна.
+characters when
+the input queue is nearly
+empty/full.
 .It Cm ixany Pq Fl ixany
-Разрешить любой символ (разрешить только
+Allow any character (allow only
 .Dv START )
-возобновлять вывод.
+to restart output.
 .It Cm imaxbel Pq Fl imaxbel
-Система устанавливает ограничение
+The system imposes a limit of
 .Dv MAX_INPUT
-(в настоящее время 255) симовлов в очереди ввода.
-Если
+(currently 255) characters in the input queue.
+If
 .Cm imaxbel
-установлен и лимит очереди ввода достигнут, 
-последующий ввод заставляет систему отправить ASCII BEL
-символ в очередь вывода (терминал издает звуковой сигнал).
-В противном случае,
-если
+is set and the input queue limit has been reached,
+subsequent input causes the system to send an ASCII BEL
+character to the output queue (the terminal beeps at you).
+Otherwise,
+if
 .Cm imaxbel
-не установлен и очередь ввода заполнена, 
-следующий символ ввода заставляет отбросить всю очередь ввода и вывода.
+is unset and the input queue is full, the next input character causes
+the entire input and output queues to be discarded.
 .It Cm iutf8 Pq Fl iutf8
-Предлагать,что входные символы UTF-8 кодированы. Установка этого флага 
-позволяет правильно удалять многобайтовые символы при использовании клавиши Backspace в каноническом режиме.
+Assume that input characters are UTF-8 encoded. Setting this flag
+causes backspace to properly delete multibyte characters in canonical mode.
 .El
-.Ss Режимы вывода:
-Это соответствует c_oflag в termios структуре.
+.Ss Output Modes:
+This corresponds to the c_oflag of the termios structure.
 .Bl -tag -width Fl
 .It Cm opost Pq Fl opost
-Послеобработка вывода (не послеобработка вывода; 
-игнорировать все остальные режимы вывода).
+Post-process output (do not
+post-process output; ignore all other
+output modes).
 .It Cm onlcr Pq Fl onlcr
-Преобразовывать (не преобразовывать)
+Map (do not map)
 .Dv NL
-в
+to
 .Dv CR-NL
-на выводе.
+on output.
 .It Cm ocrnl Pq Fl ocrnl
-Преобразовывать (не преобразовывать)
+Map (do not map)
 .Dv CR
-в
+to
 .Dv NL
-на выводе.
+on output.
 .It Cm tab0 tab3
-Выбрать политику развертывания табуляции. 
+Select tab expansion policy.
 .Cm tab0
-отключает развертывание табуляции,
+disables tab expansion, while
 .Cm tab3
-включает его.
+enables it.
 .It Cm onocr Pq Fl onocr
-Не (делать) вывод CR в нулевой колонке.
+Do not (do) output CRs at column zero.
 .It Cm onlret Pq Fl onlret
-На терминале NL выполняет (не выполняет) CR функцию.
+On the terminal NL performs (does not perform) the CR function.
 .El
-.Ss Локальные режимы:
-Флаги локальных режимов (lflags) влияют на различные характеристики обработки 
-терминала.
-Исторически термин "локальный" относился к новым функциям управления заданиями, 
-реализованным Джимом Кульпом на
+.Ss Local Modes:
+Local mode flags (lflags) affect various and sundry characteristics of terminal
+processing.
+Historically the term "local" pertained to new job control features
+implemented by Jim Kulp on a
 .Tn Pdp 11/70
-в
+at
 .Tn IIASA .
-Позже драйвер работал на первом
+Later the driver ran on the first
 .Tn VAX
-в здании Эванс Холл, Университета Калифорнии в Беркли, где детали управления заданиями 
-были существенно изменены, но определения структуры и названия 
-остались практически неизменными.
-Вторая интерпретация 'l' в lflag
-это «флаг дисциплины линии», который соответствует
+at Evans Hall, UC Berkeley, where the job control details
+were greatly modified but the structure definitions and names
+remained essentially unchanged.
+The second interpretation of the 'l' in lflag
+is ``line discipline flag'' which corresponds to the
 .Ar c_lflag
-из
+of the
 .Ar termios
-структуры.
+structure.
 .Bl -tag -width Fl
 .It Cm isig Pq Fl isig
-Включить (отключить) проверку
-символов на особые управляющие
-символы
+Enable (disable) the checking of
+characters against the special control
+characters
 .Dv INTR , QUIT ,
-и
+and
 .Dv SUSP .
 .It Cm icanon Pq Fl icanon
-Включить (отключить) канонический ввод
+Enable (disable) canonical input
 .Pf ( Dv ERASE
-и
+and
 .Dv KILL
-обработка).
+processing).
 .It Cm iexten Pq Fl iexten
-Включить (отключить) любые
-реализованные специальные управляющие символы,
-которые в настоящее время не контролируются icanon,
-isig, или ixon.
+Enable (disable) any implementation
+defined special control characters
+not currently controlled by icanon,
+isig, or ixon.
 .It Cm echo Pq Fl echo
-Эхо (не эхо) каждого
-набранного символа.
+Echo back (do not echo back) every
+character typed.
 .It Cm echoe Pq Fl echoe
-Символ
+The
 .Dv ERASE
-должен (не
-должен) визуально стирать последний символ
-в текущей строке с экрана,
-если это возможно.
+character shall (shall
+not) visually erase the last character
+in the current line from the
+display, if possible.
 .It Cm echok Pq Fl echok
-Эхо (не эхо)
+Echo (do not echo)
 .Dv NL
-после
+after
 .Dv KILL
-символа.
+character.
 .It Cm echoke Pq Fl echoke
-Символ
+The
 .Dv KILL
-должен (не
-должен) визуально стирать 
-текущую строку с экрана, 
-если это возможно.
+character shall (shall
+not) visually erase the
+current line from the
+display, if possible.
 .It Cm echonl Pq Fl echonl
-Эхо (не эхо)
+Echo (do not echo)
 .Dv NL ,
-даже если эхо
-отключено.
+even if echo
+is disabled.
 .It Cm echoctl Pq Fl echoctl
-Если
+If
 .Cm echoctl
-установлено, управляющие символы будут отображаться как ^X.
-В противном случае управляющие символы
-отображаются как они есть.
+is set, echo control characters as ^X.
+Otherwise control characters
+echo as themselves.
 .It Cm echoprt Pq Fl echoprt
-Для печатающих терминалов.
-Если установлено, стираемые символы будут отображаться задом наперед внутри ``\\\\''
-и ``/''.
-В противном случае это функция отключается.
+For printing terminals.
+If set, echo erased characters backwards within ``\\''
+and ``/''.
+Otherwise, disable this feature.
 .It Cm noflsh Pq Fl noflsh
-Отключить (включить) очистку после
+Disable (enable) flush after
 .Dv INTR , QUIT , SUSP .
 .It Cm tostop Pq Fl tostop
-Отправить (не отправлять)
+Send (do not send)
 .Dv SIGTTOU
-для фонового вывода.
-Это заставляет фоновые задания останавливаться, если они пытаются выполнить
-вывод на терминал.
+for background output.
+This causes background jobs to stop if they attempt
+terminal output.
 .It Cm altwerase Pq Fl altwerase
-Использовать (не использовать) альтернативный алгоритм стирания слов при обработке 
+Use (do not use) an alternate word erase algorithm when processing
 .Dv WERASE
-символов.
-Этот альтернативный алгоритм считает последовательности
-буквенно-цифровых символов/подчеркиваний словами.
-Он также пропускает первый предшествующий символ в его классификации
-(как удобство, поскольку предшествующий символ мог быть стерт просто
+characters.
+This alternate algorithm considers sequences of
+alphanumeric/underscores as words.
+It also skips the first preceding character in its classification
+(as a convenience since the one preceding character could have been
+erased with simply an
 .Dv ERASE
-символом.)
+character.)
 .It Cm mdmbuf Pq Fl mdmbuf
-Если установлено, вывод управления потоком основан на состоянии обнаружения несущего сигнала.
-В противном случае
-В противном случае записи возвращают ошибку, если обнаружение несущего сигнала низкое 
-(и не игнорируется
+If set, flow control output based on condition of Carrier Detect.
+Otherwise
+writes return an error if Carrier Detect is low (and Carrier is not being
+ignored with the
 .Dv CLOCAL
-флагом.)
+flag.)
 .It Cm flusho Pq Fl flusho
-Указывает, что вывод отбрасывается (не отбрасывается).
+Indicates output is (is not) being discarded.
 .It Cm pendin Pq Fl pendin
-Указывает, что ввод ожидается (не ожидается) после переключения из неканонического режима
-ввода в канонический и будет повторно введен, когда будет ожидание чтения
-или поступит дополнительный ввод.
+Indicates input is (is not) pending after a switch from non-canonical
+to canonical mode and will be re-input when a read becomes pending
+or more input arrives.
 .El
-.Ss Управляющие символы:
+.Ss Control Characters:
 .Bl -tag -width Fl
 .It Ar control-character Ar string
-Установить
+Set
 .Ar control-character
-в
+to
 .Ar string .
-Если строка состоит из одного символа,
-управляющий символ устанавливается 
-в этот символ.
-Если строка представляет собой
-двухсимвольную последовательность "^-" или
-строку "undef", то управляющий символ
-отключен (т.е. установлен на
+If string is a single character,
+the control character is set to
+that character.
+If string is the
+two character sequence "^-" or the
+string "undef" the control character
+is disabled (i.e., set to
 .Pf { Dv _POSIX_VDISABLE Ns } . )
 .Pp
-Распознаваемые управляющие символы:
+Recognized control-characters:
 .Bd -ragged -offset indent
 .Bl -column character Subscript
 .It control- Ta \& Ta \&
 .It character Ta Subscript Ta Description
 .It _________ Ta _________ Ta _______________
-.It eof Ta Tn VEOF Ta EOF Нет символа
-.It eol Ta Tn VEOL Ta EOL Нет символа
-.It eol2 Ta Tn VEOL2 Ta EOL2 Нет символа
-.It erase Ta Tn VERASE Ta ERASE Нет символа
-.It erase2 Ta Tn VERASE2 Ta ERASE2 Нет символа
-.It werase Ta Tn VWERASE Ta WERASE Нет символа
-.It intr Ta Tn VINTR Ta INTR Нет символа
-.It kill Ta Tn VKILL Ta KILL Нет символа
-.It quit Ta Tn VQUIT Ta QUIT Нет символа
-.It susp Ta Tn VSUSP Ta SUSP Нет символа
-.It start Ta Tn VSTART Ta START Нет символа
-.It stop Ta Tn VSTOP Ta STOP Нет символа
-.It dsusp Ta Tn VDSUSP Ta DSUSP Нет символа
-.It lnext Ta Tn VLNEXT Ta LNEXT Нет символа
-.It reprint Ta Tn VREPRINT Ta REPRINT Нет символа
-.It status Ta Tn VSTATUS Ta STATUS Нет символа
+.It eof Ta Tn VEOF Ta EOF No character
+.It eol Ta Tn VEOL Ta EOL No character
+.It eol2 Ta Tn VEOL2 Ta EOL2 No character
+.It erase Ta Tn VERASE Ta ERASE No character
+.It erase2 Ta Tn VERASE2 Ta ERASE2 No character
+.It werase Ta Tn VWERASE Ta WERASE No character
+.It intr Ta Tn VINTR Ta INTR No character
+.It kill Ta Tn VKILL Ta KILL No character
+.It quit Ta Tn VQUIT Ta QUIT No character
+.It susp Ta Tn VSUSP Ta SUSP No character
+.It start Ta Tn VSTART Ta START No character
+.It stop Ta Tn VSTOP Ta STOP No character
+.It dsusp Ta Tn VDSUSP Ta DSUSP No character
+.It lnext Ta Tn VLNEXT Ta LNEXT No character
+.It reprint Ta Tn VREPRINT Ta REPRINT No character
+.It status Ta Tn VSTATUS Ta STATUS No character
 .El
 .Ed
 .It Cm min Ar number
 .It Cm time Ar number
-Устанавливает min или timeт на
-число.
+Set the value of min or time to
+number.
 .Dv MIN
-и
+and
 .Dv TIME
-используется
-в обработке ввода в режиме неканонического ввода
+are used in
+Non-Canonical mode input processing
 (-icanon).
 .El
-.Ss Режимы комбинаций:
+.Ss Combination Modes:
 .Bl -tag -width Fl
 .It Ar saved settings
-Установить текущие
-характеристики терминала в сохраненные настройки,
-созданные с помощью 
+Set the current terminal
+characteristics to the saved settings
+produced by the
 .Fl g
-опции.
+option.
 .It Cm evenp No or Cm parity
-Включить parenb и cs7; отключить
+Enable parenb and cs7; disable
 parodd.
 .It Cm oddp
-Включить parenb, cs7, и parodd.
+Enable parenb, cs7, and parodd.
 .It Fl parity , evenp , oddp
-Отключить parenb, и установить cs8.
+Disable parenb, and set cs8.
 .It Cm \&nl Pq Fl \&nl
-Включить (отключить) icrnl.
-Кроме того,
--nl сбрасываат inlcr и igncr.
+Enable (disable) icrnl.
+In addition
+-nl unsets inlcr and igncr.
 .It Cm ek
-Сбросить
+Reset
 .Dv ERASE ,
 .Dv ERASE2 ,
-и 
+and
 .Dv KILL
-символы
-к системным значениям по умолчанию.
+characters
+back to system defaults.
 .It Cm sane
-Сбросить все режимы к разумным значениям для интерактивного использования терминала
+Resets all modes to reasonable values for interactive terminal use.
 .It Cm tty
-Установить дисциплину линии на стандартную дисциплину линии терминала
+Set the line discipline to the standard terminal line discipline
 .Dv TTYDISC .
 .It Cm crt Pq Fl crt
-SУстановить (отключить) все режимы, подходящие для устройства CRT дисплея.
+Set (disable) all modes suitable for a CRT display device.
 .It Cm kerninfo Pq Fl kerninfo
-Включить (отключить) системно-генерируемую строку состояния, связанную с 
-обработкой
+Enable (disable) the system generated status line associated with
+processing a
 .Dv STATUS
-символа (обычно установленного на ^T).
-Строка состояния включает
-среднюю нагрузку системы, имя текущей команды, ее идентификатор процесса,
-событие, на которое процесс ожидает (или статус процесса), пользовательское
-и системное время, процент использования ЦП и текущее использование памяти.
+character (usually set to ^T).
+The status line consists of the
+system load average, the current command name, its process ID, the
+event the process is waiting on (or the status of the process), the user
+and system times, percent cpu, and current memory usage.
 .Pp
-Если
+If the
 .Xr sysctl 8
-переменная
+variable
 .Va kern.tty_info_kstacks
-установлена в ненулевое значение, сообщение о состоянии также включает ядро программного 
-стека переднего потока.
+is set to a non-zero value, the status message also includes the kernel program
+stack of the foreground thread.
 .It Cm columns Ar number
-Размер терминала записывается как имеющий
-.Ar number столбцов.
+The terminal size is recorded as having
+.Ar number
+columns.
 .It Cm cols Ar number
-является псевдонимом для
+is an alias for
 .Cm columns .
 .It Cm rows Ar number
-Размер терминала записывается как имеющий
-.Ar number строк.
+The terminal size is recorded as having
+.Ar number
+rows.
 .It Cm dec
-Установить режимы, подходящие для пользователей систем Digital Equipment Corporation 
+Set modes suitable for users of Digital Equipment Corporation systems
 .Dv ( ERASE ,
 .Dv KILL ,
-и
+and
 .Dv INTR
-символы установлены на ^?, ^U, и ^C;
+characters are set to ^?, ^U, and ^C;
 .Dv ixany
-отключен, а
+is disabled, and
 .Dv crt
-включен.)
+is enabled.)
 .It Cm extproc Pq Fl extproc
-Если установлен этот флаг, это указывает на то, что некоторая часть обработки терминала выполняется 
-либо аппаратной частью терминала, либо удаленной стороной, 
-подключенной к pty.
+If set, this flag indicates that some amount of terminal processing is being
+performed by either the terminal hardware or by the remote side connected
+to a pty.
 .It Cm raw Pq Fl raw
-Если установлено, изменяет режимы терминала таким образом, что не выполняется никакая 
-обработка ввода или вывода.
-IЕсли сброшено, изменяет режимы терминала на некоторое разумное состояние,
-которое выполняет обработку ввода и вывода.
-Обратите внимание,что
-что поскольку драйвер терминала больше не имеет одного 
+If set, change the modes of the terminal so that no input or output processing
+is performed.
+If unset, change the modes of the terminal to some reasonable
+state that performs input and output processing.
+Note that since the
+terminal driver no longer has a single
 .Dv RAW
-бита, невозможно предугадать, какие флаги были установлены до установки
+bit, it is not possible to intuit what flags were set prior to setting
 .Cm raw .
-Это означает, что сброс
+This means that unsetting
 .Cm raw
-ожет не вернуть все установки, которые были ранее в силе.
-Для установки терминала в необработанное состояние и точного его 
-восстановления рекомендуется следующий код оболочки:
+may not put back all the setting that were previously in effect.
+To set the terminal into a raw state and then accurately restore it, the following
+shell code is recommended:
 .Bd -literal
 save_state=$(stty -g)
 stty raw
@@ -514,130 +518,130 @@ stty raw
 stty "$save_state"
 .Ed
 .It Cm size
-Размер терминала выводится как два числа в одной строке, 
-сначала строки, затем столбцы.
+The size of the terminal is printed as two numbers on a single line,
+first rows, then columns.
 .El
-.Ss Режимы совместимости:
-Эти режимы остаются для совместимости с предыдущей 
-версией
+.Ss Compatibility Modes:
+These modes remain for compatibility with the previous version of
+the
 .Nm
-команды.
+command.
 .Bl -tag -width Fl
 .It Cm all
-Сообщает все режимы терминала как с
+Reports all the terminal modes as with
 .Cm stty Fl a
-за исключением того, что управляющие символы печатаются в формате столбца.
+except that the control characters are printed in a columnar format.
 .It Cm everything
-То же самое,что и
+Same as
 .Cm all .
 .It Cm cooked
-То же самое,что и
+Same as
 .Cm sane .
 .It Cm cbreak
-Если установлено,включает
+If set, enables
 .Cm brkint , ixon , imaxbel , opost ,
 .Cm isig , iexten ,
-и
+and
 .Fl icanon .
-Если сброшено,то же самое,что и
+If unset, same as
 .Cm sane .
 .It Cm new
-То же самое,что и
+Same as
 .Cm tty .
 .It Cm old
-То же самое,что и
+Same as
 .Cm tty .
 .It Cm newcrt Pq Fl newcrt
-То же самое,что и
+Same as
 .Cm crt .
 .It Cm pass8
-Обратное
+The converse of
 .Cm parity .
 .It Cm tandem Pq Fl tandem
-То же самое,что и
+Same as
 .Cm ixoff .
 .It Cm decctlq Pq Fl decctlq
-Обратное
+The converse of
 .Cm ixany .
 .It Cm crterase Pq Fl crterase
-То же самое, что и
+Same as
 .Cm echoe .
 .It Cm crtbs Pq Fl crtbs
-То же самое,что и
+Same as
 .Cm echoe .
 .It Cm crtkill Pq Fl crtkill
-То же самое,что и
+Same as
 .Cm echoke .
 .It Cm ctlecho Pq Fl ctlecho
-То же самое,что и
+Same as
 .Cm echoctl .
 .It Cm prterase Pq Fl prterase
-То же самое,что и
+Same as
 .Cm echoprt .
 .It Cm litout Pq Fl litout
-Обратное
+The converse of
 .Cm opost .
 .It Cm oxtabs Pq Fl oxtabs
-Расширять (не расширять) табуляции до пробелов при выводе.
+Expand (do not expand) tabs to spaces on output.
 .It Cm tabs Pq Fl tabs
-Обратное
+The converse of
 .Cm oxtabs .
 .It Cm brk Ar value
-Эквивалентно управляющему символу
+Same as the control character
 .Cm eol .
 .It Cm flush Ar value
-Эквивалентно управляющему символу
+Same as the control character
 .Cm discard .
 .It Cm rprnt Ar value
-Эквивалентно управляющему символу
+Same as the control character
 .Cm reprint .
 .El
-.Sh ВЗАИМОДЕЙСТВИЕ С УПРАВЛЕНИЕМ ЗАДАЧАМИ
-Изменения в настройках терминала обрабатываются управлением задачами
-(см.
+.Sh INTERACTION WITH JOB CONTROL
+Modifications to the terminal settings are treated by job control
+(see
 .Xr termios 4 )
-так же,как и записи.
-Когда
+same as writes.
+When the
 .Nm
-утилита выполняется в фоновой группе процессов,
-такие попытки приводят к отправке ядром
+utility is executing in a background process group,
+such attempts result in the kernel sending the
 .Dv SIGTTOU
-сигнала и остановке процесса до тех пор, пока его группа не вернется 
-в передний план.
-Неблокирующее открытие устройства терминала с помощью
+signal and stopping the process until its group is returned
+to foreground.
+The non-blocking open of the terminal device with the
 .Fl f
-опции
+option to
 .Nm
-не влияет на поведение.
-Если желательно изменить настройки из фонового режима,
+does not affect the behavior.
+If it is desirable to modify the settings from the background,
 .Xr sh 1
-Пользователи могут использовать следующий идиом:
+users might utilize the following idiom:
 .Bd -literal
 (trap '' TTOU; stty -f /dev/tty sane)
 .Ed
 .Pp
-Обратите внимание, что изменение настроек терминала для 
-работающей передней задачи, не подготовленной к этому, может вызвать несоответствия.
-.Sh КОДЫ ВЫХОДА
+Note that changing terminal settings for a running foreground
+job that is not prepared for it might cause inconsistencies.
+.Sh EXIT STATUS
 .Ex -std
-.Sh СМОТРИ ТАКЖЕ
+.Sh SEE ALSO
 .Xr resizewin 1 ,
 .Xr termios 4 ,
 .Xr pstat 8
-.Sh СТАНДАРТЫ
-Утилита
+.Sh STANDARDS
+The
 .Nm
-ожидается быть с
+utility is expected to be
 .St -p1003.2
-совместимой.
-Флаги
+compatible.
+The flags
 .Fl e
-и
+and
 .Fl f
-является
-расширениями стандарта.
-.Sh ИСТОРИЯ
-Команда
+are
+extensions to the standard.
+.Sh HISTORY
+A
 .Nm
-появилась в
+command appeared in
 .At v2 .

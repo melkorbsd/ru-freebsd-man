@@ -30,65 +30,65 @@
 .\"
 .\"     @(#)tee.1	8.1 (Berkeley) 6/6/93
 .\"
-.Dd 30 октября, 2022
+.Dd October 30, 2022
 .Dt TEE 1
 .Os
-.Sh имя
+.Sh NAME
 .Nm tee
-.Nd копирование стандартного ввода
-.Sh СИНТАКСИС
+.Nd duplicate standard input
+.Sh SYNOPSIS
 .Nm
 .Op Fl ai
 .Op Ar
-.Sh ОПИСАНИЕ
-Утилита
+.Sh DESCRIPTION
+The
 .Nm
-копирует стандартный ввод в стандартный вывод,
-делая копию в одном или нескольких файлах.
-Вывод не буферизуется.
+utility copies standard input to standard output,
+making a copy in zero or more files.
+The output is unbuffered.
 .Pp
-Доступны следующие параметры:
+The following options are available:
 .Bl -tag -width indent
 .It Fl a
-Добавить вывод в файлы,а не
-перезаписывать их.
+Append the output to the files rather than
+overwriting them.
 .It Fl i
-Игнорировать
+Ignore the
 .Dv SIGINT
-сигнал.
+signal.
 .El
 .Pp
-Доступны следующие операнды:
+The following operands are available:
 .Bl -tag -width indent
 .It Ar file
-Путь к файлу для вывода.
+A pathname of an output
 .Ar file .
 .El
 .Pp
-Утилита
+The
 .Nm
-принимает стандартное действие для всех сигналов,
-за исключением случаев с
+utility takes the default action for all signals,
+except in the event of the
 .Fl i
-параметром.
-.Sh СТАТУС ВЫХОДА
+option.
+.Sh EXIT STATUS
 .Ex -std
-.Sh ПРИМЕРЫ
-Отправить эхо-сообщение как на стандартный вывод, так и в
+.Sh EXAMPLES
+Send the echoed message both to stdout and to the
 .Pa greetings.txt
-файл:
+file:
 .Bd -literal -offset indent
-$ echo "Привет" | tee greetings.txt
-Привет
+$ echo "Hello" | tee greetings.txt
+Hello
 .Ed
-.Sh СТАНДАРТЫ
-Утилита
+.Sh STANDARDS
+The
 .Nm
-ожидается с
+utility is expected to be
 .St -p1003.2
-совместимой.
-.Sh ИСТОРИЯ
-Команда
+compatible.
+.Sh HISTORY
+The
 .Nm
-впервые появилась в
+command first appeared in
 .At v7 .
