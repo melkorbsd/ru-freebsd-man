@@ -1,426 +1,426 @@
-.\" Авторское право (c) 2000
+.\" Copyright (c) 2000
 .\"	Mike W. Meyer
 .\"
-.\" Распространение и использование в исходном коде и двоичном формате, с
-.\" изменениями или без них, разрешено при соблюдении следующих условий:
-.\" 1. При повторном распространении исходного кода должны сохраняться вышеуказанное
-.\"	 уведомление об авторских правах, этот список условий и следующий отказ от ответственности.
-.\" 2. При повторном распространении в двоичной форме должны воспроизводиться вышеуказанное
-.\"	 уведомление об авторских правах, этот список условий и следующий отказ от ответственности в
-.\"	 документации и/или других материалах, прилагаемых к дистрибутиву.
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
 .\"
-.\" ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ АВТОРОМ "КАК ЕСТЬ", И
-.\" МЫ НЕ ДАЕМ НИКАКИХ ЯВНЫХ ИЛИ ПОДРАЗУМЕВАЕМЫХ ГАРАНТИЙ, ВКЛЮЧАЯ
-.\" ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ТОВАРНОЙ ПРИГОДНОСТИ И ПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ ЦЕЛИ И Т.П.
-.\" АВТОР НИ В КОЕМ СЛУЧАЕ НЕ НЕСЕТ ОТВЕТСТВЕННОСТИ
-.\" ЗА ЛЮБОЙ ПРЯМОЙ, КОСВЕННЫЙ, СЛУЧАЙНЫЙ, ОСОБЫЙ, ПОКАЗАТЕЛЬНЫЙ ИЛИ ЛОГИЧЕСКИ ВЫТЕКАЮЩИЙ
-.\" УЩЕРБ (ВКЛЮЧАЯ: ПРИОБРЕТЕНИЕ ЗАМЕНЯЮЩИХ ТОВАРОВ ИЛИ УСЛУГ; ПОТЕРЮ ВОЗМОЖНОСТИ ИСПОЛЬЗОВАНИЯ,
-.\" ДАННЫХ ИЛИ ПРИБЫЛИ; ПЕРЕБОИ В РАБОТЕ)
-.\" НЕЗАВИСИМО ОТ ПРИЧИН И ПО ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО В КОНТРАКТЕ,
-.\" ИЛИ ПРАВОНАРУШЕНИЕ (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНОЕ ПРАВОНАРУШЕНИЕ ИНЫМ ОБРАЗОМ),
-.\" ВОЗНИКАЮЩЕЕ КАКИМ-ЛИБО ОБРАЗОМ В РЕЗУЛЬТАТЕ ИСПОЛЬЗОВАНИЯ ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ,
-.\" ДАЖЕ ЕСЛИ ВЫ БЫЛИ ПРЕДУПРЕЖДЕНЫ О ВОЗМОЖНОСТИ ТАКОГО УЩЕРБА.
+.\" THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND
+.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE
+.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+.\" SUCH DAMAGE.
 .\"
-.Dd Август 1, 2023
+.Dd August 1, 2023
 .Dt BUILD 7
 .Os
-.Sh НАИМЕНОВАНИЕ
+.Sh NAME
 .Nm build
-.Nd Общие инструкции по сборке системы
-.Sh ОПИСАНИЕ
-Исходные файлы для
+.Nd General instructions on how to build the system
+.Sh DESCRIPTION
+The sources for the
 .Fx
-истемы и ее приложений содержатся в трех разных каталогах,
-обычно
+system and its applications are contained in three different directories,
+normally
 .Pa /usr/src ,
 .Pa /usr/doc ,
-и
+and
 .Pa /usr/ports .
-Эти каталоги могут быть изначально пустыми или вообще не существовать,
-пока не будут обновлены с помощью Git
-.Po устанавливается из пакетов с
+These directories may be initially empty or non-existent until updated with
+Git
+.Po installed from packages with
 .Xr pkg 7
-.Xr pkg 7
-или из
+or from
 .Xr ports 7 Pc .
-Каталог
+Directory
 .Pa /usr/src
-содержит исходные файлы
-.Dq "базовой системы",
-которые в общих чертах определяются как элементы, необходимые для восстановления системы
-до работоспособного состояния.
-Каталог
+contains the
+.Dq "base system"
+sources, which is loosely defined as the things required to rebuild
+the system to a useful state.
+Directory
 .Pa /usr/doc
-содержит исходную документацию по системе, за исключением страниц руководства.
-Каталог
+contains the source for the system documentation, excluding the manual
+pages.
+Directory
 .Pa /usr/ports
-содержит дерево, которое предоставляет согласованный интерфейс
-для создания и установки приложений сторонних производителей.
-Дополнительные сведения о процессе создания портов см. в
+contains a tree that provides a consistent interface for building and
+installing third party applications.
+For more information about the ports build process, see
 .Xr ports 7 .
 .Pp
-Команда
+The
 .Xr make 1
-используется в каждом из этих каталогов для сборки и
-установки компонентов в этом каталоге.
-При использовании
+command is used in each of these directories to build and install the
+things in that directory.
+Issuing the
 .Xr make 1
-в любом каталоге команда
+command in any directory issues the
 .Xr make 1
-рекурсивно запускается во всех подкаталогах.
-Если цель не указана, элементы в каталогах будут созданы
-и никаких дальнейших действий предпринято не будет.
+command recursively in all subdirectories.
+With no target specified, the items in the directories are built
+and no further action is taken.
 .Pp
-Дерево исходных текстов должно быть доступно только для чтения.
-Как описано в
+A source tree is allowed to be read-only.
+As described in
 .Xr make 1 ,
-объекты обычно создаются в отдельной иерархии каталогов объектов,
-определяемой переменной среды
+objects are usually built in a separate object directory hierarchy
+specified by the environment variable
 .Va MAKEOBJDIRPREFIX ,
-или в
+or under
 .Pa /usr/obj
-если переменная
+if variable
 .Va MAKEOBJDIRPREFIX
-не задана.
-Каталог канонических объектов описан в документации к целевому объекту
+is not set.
+The canonical object directory is described in the documentation for the
 .Cm buildworld
-ниже.
+target below.
 .Pp
-Сборкой можно управлять, определяя переменные
+The build may be controlled by defining
 .Xr make 1
-вариации которых описанны в разделе
+variables described in the
 .Sx ENVIRONMENT
-секцией ниже, и переменные, задокументированные в
+section below, and by the variables documented in
 .Xr make.conf 5 .
 .Pp
-Компоненты, включаемые в сборку по умолчанию, указаны в файле
+The default components included in the build are specified in the file
 .Pa /etc/src.conf
-в дереве исходных файлов.
-Чтобы переопределить файл по умолчанию,
-включите параметр SRCCONF в шаги создания,
-указывая на пользовательский файл src.conf file.
-Для получения дополнительной информации смотрите файл
+in the source tree.
+To override the default file, include the SRCCONF option in the make steps,
+pointing to a custom src.conf file.
+For more information see
 .Xr src.conf 5 .
 .Pp
-В следующем списке приведены имена и действия для целевых объектов,
-поддерживаемых системой:
+The following list provides the names and actions for the targets
+supported by the build system:
 .Bl -tag -width ".Cm cleandepend"
 .It Cm analyze
-Запускает статический анализатор Clang для всех объектов и выводит выходные данные в стандартный вывод.
+Run Clang static analyzer against all objects and present output on stdout.
 .It Cm check
-Запускает тесты для заданного подкаталога.
-По умолчанию используется каталог
+Run tests for a given subdirectory.
+The default directory used is
 .Pa ${.OBJDIR} ,
-но каталог проверки можно изменить с помощью
+but the check directory can be changed with
 .Pa ${CHECKDIR} .
 .It Cm checkworld
-Запускает пакет тестов
+Run the
 .Fx
-на установленной платформе world.
+test suite on installed world.
 .It Cm clean
-Удаляет все файлы, созданные в процессе сборки.
+Remove any files created during the build process.
 .It Cm cleandepend
-Удаляет файлы
+Remove the
 .Pa ${.OBJDIR}/${DEPENDFILE}*
-сгенерированные предыдущими шагами
+files generated by prior
 .Dq Li "make"
-и
-.Dq Li "make depend" .
+and
+.Dq Li "make depend"
+steps.
 .It Cm cleandir
-Удаляет каталог каноничных объектов, если он существует,
-или выполняет действия, эквивалентные
+Remove the canonical object directory if it exists, or perform
+actions equivalent to
 .Dq Li "make clean cleandepend"
-если его нет.
-Этот целевой объект также удалит ссылку 
+if it does not.
+This target will also remove an
 .Pa obj
-в
+link in
 .Pa ${.CURDIR}
-если она существует.
+if that exists.
 .Pp
-Рекомендуется запустить
+It is advisable to run
 .Dq Li "make cleandir"
-дважды: первый вызов удалит каталог канонических объектов,
-а второй очистит
+twice: the first invocation will remove the canonical object directory
+and the second one will clean up
 .Pa ${.CURDIR} .
 .It Cm depend
-Генерирует список зависимостей сборки в файле
+Generate a list of build dependencies in file
 .Pa ${.OBJDIR}/${DEPENDFILE} .
-Зависимости для каждого объекта генерируются во время сборки и сохраняются в
+Per-object dependencies are generated at build time and stored in
 .Pa ${.OBJDIR}/${DEPENDFILE}.${OBJ} .
 .It Cm install
-Устанавливает результаты сборки в соответствующую локальную
-папку в иерархии каталогов установки, указанной в переменной
+Install the results of the build to the appropriate location in the
+installation directory hierarchy specified in variable
 .Va DESTDIR .
 .It Cm obj
-Создаёт каталог канонических объектов, связанный с
-текущим каталогом.
+Create the canonical object directory associated with the current
+directory.
 .It Cm objlink
-Создаёт символическую ссылку на каталог канонических объектов в
+Create a symbolic link to the canonical object directory in
 .Pa ${.CURDIR} .
 .It Cm tags
-Генерирует файл тегов, используя программу, расположенную в
+Generate a tags file using the program specified in the
 .Xr make 1
-в переменной
+variable
 .Va CTAGS .
-Система сборки поддерживает
+The build system supports
 .Xr ctags 1
-и
+and
 .Nm "GNU Global" .
 .El
 .Pp
-Другими поддерживаемыми целевыми объектами в каталоге
+The other supported targets under directory
 .Pa /usr/src
-являются:
+are:
 .Bl -tag -width ".Cm distributeworld"
 .It Cm buildenv
-Создаёт интерактивную оболочку с переменными среды,
-настроенными для построения системы или отдельных
-компонентов.
-Для перекрестного построения целевой архитектуры
-необходимо указать в
+Spawn an interactive shell with environment variables set up for
+building the system or individual components.
+For cross-building the target architecture needs to be specified with
 .Xr make 1
-переменные
+variables
 .Va TARGET_ARCH
-и
+and
 .Va TARGET .
 .Pp
-Этот целевой объект полезен только после того, как будет собран полный набор инструментов
-(включая компилятор, компоновщик, ассемблер, заголовки
-и библиотеки); смотрите описание
+This target is only useful after a complete toolchain (including
+the compiler, linker, assembler, headers and libraries) has been
+built; see the
 .Cm toolchain
-ниже.
+target below.
 .It Cm buildworld
-Соберите все, кроме ядра, сконфигурируйте файлы в
+Build everything but the kernel, configure files in
 .Pa etc ,
-и
+and
 .Pa release .
-Каталог объектов может быть изменен
-из файла
+The object directory can be changed from the default
 .Pa /usr/obj
-по умолчанию, установив
+by setting the
 .Pa MAKEOBJDIRPREFIX
 .Xr make 1
-переменной.
-Используемый префикс местоположения фактической сборки
-зависит от параметра
+variable.
+The actual build location prefix used
+depends on the
 .Va WITH_UNIFIED_OBJDIR
-из
+option from
 .Xr src.conf 5 .
-Если включить, то будет установлено
+If enabled it is
 .Pa ${MAKEOBJDIRPREFIX}${.CURDIR}/${TARGET}.${TARGET_ARCH}
-для всех сборок.
-Если он отключен, то будет установлено
+for all builds.
+If disabled it is
 .Pa ${MAKEOBJDIRPREFIX}${.CURDIR}
-для собственных сборок и
+for native builds, and
 .Pa ${MAKEOBJDIRPREFIX}/${TARGET}.${TARGET_ARCH}${.CURDIR}
-для кросс-сборок и собственных сборок с переменной
-.Va CROSS_BUILD_TESTING .
+for cross builds and native builds with variable
+.Va CROSS_BUILD_TESTING
+set.
 .It Cm cleankernel
-Попытается очистить цели, созданные
+Attempts to clean up targets built by a preceding
 .Cm buildkernel ,
-или аналогичный этап, построенный на основе того же
-исходного каталога и
+or similar step, built from the same source directory and
 .Va KERNCONF .
 .It Cm cleanworld
-Попытается очистить целевые объекты, созданные с помощью
+Attempt to clean up targets built by a preceding
 .Cm buildworld ,
-или аналогичного шага, созданного из этого исходного
-каталога.
+or similar step, built from this source directory.
 .It Cm cleanuniverse
-Когда параметр
+When
 .Va WITH_UNIFIED_OBJDIR
-включен, попытайтесь очистить целевые объекты, созданные
+is enabled, attempt to clean up targets built by a preceding
 .Cm buildworld ,
 .Cm universe ,
-или аналогичном шаге, для любой архитектуры,
-созданной из этого исходного каталога.
+or similar step, for any architecture built from this source directory.
 .It Cm distributeworld
-Распространяет все, что было скомпилировано на шаге
-.Cm buildworld .
-Файлы размещаются в иерархии каталогов, в
+Distribute everything compiled by a preceding
+.Cm buildworld
+step.
+Files are placed in the directory hierarchy specified by
 .Xr make 1
-с помощью указанной переменной
+variable
 .Va DISTDIR .
-Этот целевой объект используется при создании релиза; смотрите
+This target is used while building a release; see
 .Xr release 7 .
 .It Cm native-xtools
-Этот целевой объект создает перекрестную цепочку инструментов для данного
+This target builds a cross-toolchain for the given
 .Sy TARGET
-и
+and
 .Sy TARGET_ARCH ,
-а также список выбранных статических пользовательских инструментов для хост-системы.
-Это предназначено для использования в jail, где QEMU используется для
-повышения производительности за счет исключения двоичных файлов эмуляции,
-которые не нужно эмулировать.
+as well as a select list of static userland tools for the host system.
+This is intended to be used in a jail where QEMU is used to improve
+performance by avoiding emulating binaries that do not need to be emulated.
 .Sy TARGET
-и
+and
 .Sy TARGET_ARCH
-должны быть определены.
+should be defined.
 .It Cm native-xtools-install
-Устанавливает результаты в
+Installs the results to
 .Pa ${DESTDIR}/${NXTP}
-где
+where
 .Va NXTP
-по умолчанию используется значение
+defaults to
 .Pa nxb-bin .
 .Sy TARGET
-и
+and
 .Sy TARGET_ARCH
-должны быть определены.
+must be defined.
 .It Cm packageworld
-Архивирует результаты
+Archive the results of
 .Cm distributeworld ,
-поместив их в
+placing the results in
 .Va DISTDIR .
-Этот целевой объект используется при сборке-релизе; смотрите
+This target is used while building a release; see
 .Xr release 7 .
 .It Cm installworld
-Устанавливает все, что было создано с помощью
+Install everything built by a preceding
 .Cm buildworld
-в иерархию каталогов, на которую указывает в
+step into the directory hierarchy pointed to by
 .Xr make 1
-переменная
+variable
 .Va DESTDIR .
 .Pp
-При установке в файловую систему NFS и запуске
+If installing onto an NFS file system and running
 .Xr make 1
-с параметром
-.Fl j ,
-убедитесь что
+with the
+.Fl j
+option, make sure that
 .Xr rpc.lockd 8
-запущен как на клиенте, так и на сервере.
-Смотрите
+is running on both client and server.
+See
 .Xr rc.conf 5
-о том, как заставить его запускаться во время загрузки.
+on how to make it start at boot time.
 .It Cm toolchain
-Создаёт набор инструментов для сборки,
-необходимый для сборки остальной части системы.
-Для межархитектурных сборок этот шаг создает набор инструментов для разных архитектур.
+Create the build toolchain needed to build the rest of the system.
+For cross-architecture builds, this step creates a cross-toolchain.
 .It Cm universe
-Для каждой архитектуры выполните команду
+For each architecture,
+execute a
 .Cm buildworld
-следующей за
+followed by a
 .Cm buildkernel
-для всех ядер для этой архитектуры, включая
+for all kernels for that architecture,
+including
 .Pa LINT .
-Эта команда занимает много времени.
+This command takes a long time.
 .It Cm kernels
-Подобно
+Like
 .Cm universe
-с
+with
 .Va WITHOUT_WORLDS
-определен таким образом, что создаются только ядра для каждой архитектуры.
+defined so only the kernels for each architecture are built.
 .It Cm worlds
-Подобно
+Like
 .Cm universe
-с
+with
 .Va WITHOUT_KERNELS
-определенной таким образом, что создаются только миры для каждой архитектуры.
+defined so only the worlds for each architecture are built.
 .It Cm targets
-Выводит список поддерживаемых пар
+Print a list of supported
 .Va TARGET
 /
 .Va TARGET_ARCH
-для целевых объектов мирового уровня и ядра.
+pairs for world and kernel targets.
 .It Cm tinderbox
-Выполнет те же задачи, что и
+Execute the same targets as
 .Cm universe .
-В дополнение в конце выведет сводку по всем неудачным целям и
-завершит работу с ошибкой, если таковая была.
+In addition print a summary of all failed targets at the end and
+exit with an error if there were any.
 .It Cm toolchains
-Создаёт инструментальные средства построения для каждой архитектуры,
-поддерживаемой системой сборки.
+Create a build toolchain for each architecture supported by the build system.
 .It Cm xdev
-Создает и устанавливает перекрестную цепочку инструментов и системный корень для заданного
+Builds and installs a cross-toolchain and sysroot for the given
 .Sy TARGET
-и
+and
 .Sy TARGET_ARCH .
-Системный корень содержит целевую библиотеку и заголовки.
-Целевой объект выполняет функцию псевдонима для
+The sysroot contains target library and headers.
+The target is an alias for
 .Cm xdev-build
-и
+and
 .Cm xdev-install .
-Управлять местоположением всех установленных файлов можно с помощью
+The location of the files installed can be controlled with
 .Va DESTDIR .
-Целевой объект расположенный в
+The target location in
 .Va DESTDIR
-это
+is
 .Pa ${DESTDIR}/${XDTP}
-где значение
+where
 .Va XDTP
-по умолчанию равно
-.Pa /usr/${XDDIR} ,
-а значение
+defaults to
+.Pa /usr/${XDDIR}
+and
 .Va XDDIR
-равно
+defaults to
 .Pa ${TARGET_ARCH}-freebsd .
 .It Cm xdev-build
-Создаёт целевой объект
-.Cm xdev .
+Builds for the
+.Cm xdev
+target.
 .It Cm xdev-install
-Устанавливает файлы для целевого объекта
-.Cm xdev .
+Installs the files for the
+.Cm xdev
+target.
 .It Cm xdev-links
-Устанавливает символические ссылки в стиле autoconf в
-.Pa ${DESTDIR}/usr/bin ,
-указывающие на набор инструментов разработки в
+Installs autoconf-style symlinks to
+.Pa ${DESTDIR}/usr/bin
+pointing into the xdev toolchain in
 .Pa ${DESTDIR}/${XDTP} .
 .El
 .Pp
-Целями сборки, специфичными для ядра, в
+Kernel specific build targets in
 .Pa /usr/src
-являются:
+are:
 .Bl -tag -width ".Cm distributekernel"
 .It Cm buildkernel
-Перестраивает ядро и модули ядра.
-Каталог объекта можно изменить на каталог по умолчанию
+Rebuild the kernel and the kernel modules.
+The object directory can be changed from the default
 .Pa /usr/obj
-изменив переменную
+by setting the
 .Pa MAKEOBJDIRPREFIX
-.Xr make 1 .
+.Xr make 1
+variable.
 .It Cm installkernel
-Установливает ядро и модули ядра напрямую в каталог
+Install the kernel and the kernel modules to directory
 .Pa ${DESTDIR}/boot/kernel ,
-переименовывает любой ранее существовавший
-каталог с таким именем в
+renaming any pre-existing directory with this name to
 .Pa kernel.old
-если он содержал запущенное в данный момент ядро.
-Целевой каталог в
+if it contained the currently running kernel.
+The target directory under
 .Pa ${DESTDIR}
-может быть изменен с помощью
+may be modified using the
 .Va INSTKERNNAME
-и
+and
 .Va KODIR
 .Xr make 1
-переменных.
+variables.
 .It Cm distributekernel
-Установливает ядро в каталог
+Install the kernel to the directory
 .Pa ${DISTDIR}/kernel/boot/kernel .
-тот целевой объект используется при сборке-релизе; смотрите
+This target is used while building a release; see
 .Xr release 7 .
 .It Cm packagekernel
-Архивирует результаты
+Archive the results of
 .Cm distributekernel ,
-помещая их в
+placing the results in
 .Va DISTDIR .
-Этот целевой объект используется при сборке-релизе; смотрите
+This target is used while building a release; see
 .Xr release 7 .
 .It Cm kernel
-Аналогично
+Equivalent to
 .Cm buildkernel
-за которым следует
+followed by
 .Cm installkernel
 .It Cm kernel-toolchain
-Перестраивает инструменты, необходимые для компиляции ядра.
-Используйте в том случае, если вы сначала не создавали
-.Cm buildworld .
+Rebuild the tools needed for kernel compilation.
+Use this if you did not do a
+.Cm buildworld
+first.
 .It Cm reinstallkernel
-Переустанавливает ядро и модули ядра,
-перезаписав содержимое целевого каталога. 
-Как и в случае с 
+Reinstall the kernel and the kernel modules, overwriting the contents
+of the target directory.
+As with the
 .Cm installkernel
-целевой каталог можно указать с помощью переменной 
+target, the target directory can be specified using the
 .Xr make 1
+variable
 .Va INSTKERNNAME .
 .El
 .Pp
@@ -430,437 +430,443 @@ denoted by variable
 include:
 .Bl -tag -width ".Cm delete-old-libs"
 .It Cm check-old
-Выводит список старых файлов и каталогов в
-системе.
+Print a list of old files and directories in the system.
 .It Cm delete-old
-Удаляет устаревшие системные файлы и каталоги последовательно.
-Если в командной строке указано значение
-.Li -DBATCH_DELETE_OLD_FILES ,
-то операция удаления будет неинтерактивной.
-Переменные
+Delete obsolete base system files and directories interactively.
+When
+.Li -DBATCH_DELETE_OLD_FILES
+is specified at the command line, the delete operation will be
+non-interactive.
+The variables
 .Va DESTDIR ,
 .Va TARGET_ARCH
-и
+and
 .Va TARGET
-должны быть установлены так же, как в случае с
+should be set as with
 .Dq Li "make installworld" .
 .It Cm delete-old-libs
-Удаляет устаревшие базовые системные библиотеки в интерактивном режиме.
-Этот метод должен использоваться только если никакая третья сторона
-программного обеспечения не использует эти библиотеки.
-Если в командной строке указан параметр
-.Li -DBATCH_DELETE_OLD_FILES ,
-то операция удаления будет неинтерактивной.
-Переменные
+Delete obsolete base system libraries interactively.
+This target should only be used if no third party software uses these
+libraries.
+When
+.Li -DBATCH_DELETE_OLD_FILES
+is specified at the command line, the delete operation will be
+non-interactive.
+The variables
 .Va DESTDIR ,
 .Va TARGET_ARCH
-и
+and
 .Va TARGET
-должны быть установлены так же, как в случае с
+should be set as with
 .Dq Li "make installworld" .
 .El
-.Sh ОКРУЖЕНИЕ
-Переменные, влияющие на все сборки, включают:
+.Sh ENVIRONMENT
+Variables that influence all builds include:
 .Bl -tag -width ".Va MAKEOBJDIRPREFIX"
 .It Va DEBUG_FLAGS
-Определяет набор флагов отладки, которые будут использоваться для
-создания всех двоичных файлов пользовательской области в
+Defines a set of debugging flags that will be used to build all userland
+binaries under
 .Pa /usr/src .
-Когда
+When
 .Va DEBUG_FLAGS
-определен,
+is defined, the
 .Cm install
-и
+and
 .Cm installworld
-установливают двоичные файлы из текущего
+targets install binaries from the current
 .Va MAKEOBJDIRPREFIX
-без удаления, так что информация об отладке сохраняется в установленных двоичных файлах.
+without stripping,
+so that debugging information is retained in the installed binaries.
 .It Va DESTDIR
-Префикс иерархии каталогов, в который будут установлены встроенные объекты..
-Если он не задан, в
+The directory hierarchy prefix where built objects will be installed.
+If not set,
 .Va DESTDIR
-по умолчанию используется пустая строка.
+defaults to the empty string.
 .It Va MAKEOBJDIRPREFIX
-Определяет префикс для имен каталогов в дереве созданных объектов.
-По умолчанию используется
-.Pa /usr/obj ,
-если он не определен.
-Эта переменная должна быть установлена только в среде или
-.Pa /etc/src-env.conf ,
-а не через
+Defines the prefix for directory names in the tree of built objects.
+Defaults to
+.Pa /usr/obj
+if not defined.
+This variable should only be set in the environment or
+.Pa /etc/src-env.conf
+and not via
 .Pa /etc/make.conf
-или
+or
 .Pa /etc/src.conf
-или командную строку.
+or the command line.
 .It Va WITHOUT_WERROR
-Если определен, предупреждения компилятора не приведут к
-остановке сборки, даже если в makefile указано обратное.
+If defined, compiler warnings will not cause the build to halt,
+even if the makefile says otherwise.
 .It Va WITH_CTF
-Если этот параметр задан, в процессе построения будет запущен
-DTrace CTF инструменты преобразования для построенных объектов.
+If defined, the build process will run the DTrace CTF conversion
+tools on built objects.
 .El
 .Pp
-Кроме того, на сборки в
+Additionally, builds in
 .Pa /usr/src
-влияют следующие переменные
-.Xr make 1 :
+are influenced by the following
+.Xr make 1
+variables:
 .Bl -tag -width ".Va LOCAL_MODULES_DIR"
 .It Va CROSS_TOOLCHAIN
-Запрашивает использование внешней цепочки инструментов для создания
-внешнего мира или ядра. Значение этой переменной может быть либо полным путем к файлу,
-либо базовым именем файла в
+Requests use of an external toolchain to build either the world or kernel.
+This value of this variable can either be the full path to a file,
+or the base name of a file in
 .Pa ${LOCALBASE}/share/toolchains .
-Файл должен быть make-файлом, который устанавливает переменные для запроса
-внешней цепочки инструментов, такой как
+The file should be a make file which sets variables to request an external
+toolchain such as
 .Va XCC .
 .Pp
-Внешние цепочки инструментов доступны в портах как для LLVM, так и для GCC/binutils.
-Для внешних цепочек инструментов доступных в портах, параметр
+External toolchains are available in ports for both LLVM and GCC/binutils.
+For external toolchains available in ports,
 .Va CROSS_TOOLCHAIN
-должен быть равен имени пакета.
-LLVM пакеты инструментальных цепочек используют имя llvm<major version>.
-GCC набор инструментов предоставляет отдельные пакеты для каждой архитектуры и
-использует имя ${MACHINE_ARCH}-gcc<major version>.
+should be set to the name of the package.
+LLVM toolchain packages use the name llvm<major version>.
+GCC toolchains provide separate packages for each architecture and use the
+name ${MACHINE_ARCH}-gcc<major version>.
 .It Va KERNCONF
-Определяет, какое ядро собирать и устанавливать для различных целевых компонентов ядра.
-По умолчанию используется
+Overrides which kernel to build and install for the various kernel
+make targets.
+It defaults to
 .Cm GENERIC .
 .It Va KERNCONFDIR
-Переопределяет каталог, в котором должен быть найден
+Overrides the directory in which
 .Va KERNCONF
-и все файлы, включенные в
-.Va KERNCONF .
-По умолчанию используется
+and any files included by
+.Va KERNCONF
+should be found.
+Defaults to
 .Pa sys/${ARCH}/conf .
 .It Va KERNFAST
-Если задано значение, для целевого ядра сборки 
+If set, the build target
 .Cm buildkernel
-по умолчанию используются параметры
+defaults to setting
 .Va NO_KERNELCLEAN ,
 .Va NO_KERNELCONFIG ,
-и
+and
 .Va NO_KERNELOBJ .
-Если задано значение, отличное от
+When set to a value other than
 .Cm 1
-то для
+then
 .Va KERNCONF
-устанавливается значение
+is set to the value of
 .Va KERNFAST .
 .It Va LOCAL_DIRS
-Если эта переменная задана, она предоставляет список дополнительных
-каталогов, относящихся к корню дерева исходного кода,
-которые будут созданы как часть целевого объекта
-.Cm everything .
-Каталоги
-создаются параллельно друг с другом и
-с базовыми системными каталогами.
-Устанавливает директиву
+If set, this variable supplies a list of additional directories relative to
+the root of the source tree to build as part of the
+.Cm everything
+target.
+The directories are built in parallel with each other,
+and with the base system directories.
+Insert a
 .Va .WAIT
-в начало списка
-.Va LOCAL_DIRS ,
-гарантирующую, что все базовые системные каталоги будут созданы первыми.
-.Va .WAIT
-также может использоваться при необходимости в других местах списка.
-.It Va LOCAL_ITOOLS
-Если эта переменная задана, она предоставляет список дополнительных
-инструментов, которые используются целевыми объектами
-.Cm installworld
-и
-.Cm distributeworld.
-.It Va LOCAL_LIB_DIRS
-Если эта переменная задана, она предоставляет список дополнительных каталогов,
-относящихся к корню дерева исходного кода,
-которые будут созданы как часть целевых библиотек
-.Cm libraries.
-Каталоги создаются параллельно друг с другом и
-с базовыми системными библиотеками.
-Устанавливает директиву
-.Va .WAIT
-в начало списка
+directive at the beginning of the
 .Va LOCAL_DIRS
-чтобы убедиться, что все базовые системные библиотеки будут созданы первыми.
+list to ensure all base system directories are built first.
 .Va .WAIT
-также может использоваться при необходимости в других местах списка.
+may also be used as needed elsewhere within the list.
+.It Va LOCAL_ITOOLS
+If set, this variable supplies a list of additional tools that are used by the
+.Cm installworld
+and
+.Cm distributeworld
+targets.
+.It Va LOCAL_LIB_DIRS
+If set, this variable supplies a list of additional directories relative to
+the root of the source tree to build as part of the
+.Cm libraries
+target.
+The directories are built in parallel with each other,
+and with the base system libraries.
+Insert a
+.Va .WAIT
+directive at the beginning of the
+.Va LOCAL_DIRS
+list to ensure all base system libraries are built first.
+.Va .WAIT
+may also be used as needed elsewhere within the list.
 .It Va LOCAL_MTREE
-Если эта переменная задана, она предоставляет список дополнительных
-параметров относительно корня исходного дерева для
-использования в качестве части целевой иерархии
-.Cm hierarchy .
+If set, this variable supplies a list of additional mtrees relative to the
+root of the source tree to use as part of the
+.Cm hierarchy
+target.
 .It Va LOCAL_LEGACY_DIRS
-Если эта переменная задана, она предоставляет список дополнительных
-каталогов относительно корня исходного дерева,
-которые будут созданы как часть унаследованного целевого объекта
-.Cm legacy .
+If set, this variable supplies a list of additional directories relative to
+the root of the source tree to build as part of the
+.Cm legacy
+target.
 .It Va LOCAL_BSTOOL_DIRS
-Если эта переменная задана, она предоставляет список дополнительных
-каталогов, относящихся к корню дерева исходного кода,
-для создания в рамках целевой программы
-.Cm bootstrap-tools .
+If set, this variable supplies a list of additional directories relative to
+the root of the source tree to build as part of the
+.Cm bootstrap-tools
+target.
 .It Va LOCAL_TOOL_DIRS
-Если эта переменная задана, она предоставляет список дополнительных
-каталогов относительно корня дерева исходных текстов
-для сборки как части целевого объекта
-.Cm build-tools .
+If set, this variable supplies a list of additional directories relative to
+the root of the source tree to build as part of the
+.Cm build-tools
+target.
 .It Va LOCAL_XTOOL_DIRS
-Если эта переменная задана, она предоставляет список дополнительных
-каталогов, относящихся к корню дерева исходных текстов,
-для создания в рамках целевой программы
-.Cm cross-tools .
+If set, this variable supplies a list of additional directories relative to
+the root of the source tree to build as part of the
+.Cm cross-tools
+target.
 .It Va PORTS_MODULES
-Список портов с модулями ядра, которые должны быть
-собраны и установлены в рамках процессов
+A list of ports with kernel modules that should be built and installed
+as part of the
 .Cm buildkernel
-и
-.Cm installkernel .
+and
+.Cm installkernel
+process.
 .Bd -literal -offset indent
 make PORTS_MODULES=emulators/virtualbox-ose-kmod kernel
 .Ed
 .It Va LOCAL_MODULES
-Список внешних модулей ядра, которые должны быть
-собраны и установлены в рамках
+A list of external kernel modules that should be built and installed
+as part of the
 .Cm buildkernel
-и
+and
 .Cm installkernel
-процессов.
-По умолчанию используется список вспомогательных каталогов
+process.
+Defaults to the list of sub-directories of
 .Va LOCAL_MODULES_DIR .
 .It Va LOCAL_MODULES_DIR
-Каталог, в котором следует искать модули ядра, указанные в параметре
+The directory in which to search for the kernel modules specified by
 .Va LOCAL_MODULES .
-Каждый модуль ядра должен состоять из каталога, содержащего makefile.
-о умолчанию используется
+Each kernel module should consist of a directory containing a makefile.
+Defaults to
 .Pa ${LOCALBASE}/sys/modules .
 .It Va SRCCONF
-Указывает файл, который будет переопределять значение по умолчанию
+Specify a file to override the default
 .Pa /etc/src.conf .
-Файл src.conf управляет компонентами для сборки.
-Смотрите
+The src.conf file controls the components to build.
+See
 .Xr src.conf 5
 .It Va STRIPBIN
-Команда, используемая во время установки при удалении двоичных файлов.
-Обязательно добавьте все необходимые дополнительные инструменты для запуска
+Command to use at install time when stripping binaries.
+Be sure to add any additional tools required to run
 .Va STRIPBIN
-в переменную
+to the
 .Va LOCAL_ITOOLS
 .Xr make 1
-перед запуском
+variable before running the
 .Cm distributeworld
-или
-.Cm installworld .
-Смотрите
+or
+.Cm installworld
+targets.
+See
 .Xr install 1
-для более подробной информации.
+for more details.
 .It Va SUBDIR_OVERRIDE
-Переопределяет список подкаталогов по умолчанию и
-создаёт только тот подкаталог, который указан в этой переменной.
-При объединении с
+Override the default list of sub-directories and only build the
+sub-directory named in this variable.
+If combined with
 .Cm buildworld
-все библиотеки и включения,
-а также некоторые инструменты сборки по-прежнему будут работать.
-Указание
+then all libraries and includes, and some of the build tools will still build
+as well.
+Specifying
 .Cm -DNO_LIBS ,
-и
+and
 .Cm -DWORLDFAST
-приведет только к созданию указанного каталога,
-как это делалось исторически.
-В сочетании с
+will only build the specified directory as was done historically.
+When combined with
 .Cm buildworld
-еобходимо переопределить
+it is necesarry to override
 .Va LOCAL_LIB_DIRS
-для любых пользовательских каталогов, содержащих библиотеки.
-Это позволяет создавать подмножество системы таким же образом,
-как это делает
+with any custom directories containing libraries.
+This allows building a subset of the system in the same way as
 .Cm buildworld
-используя его системный корень.
-Эта переменная также может быть полезна при отладке сбойных сборок.
+does using its sysroot handling.
+This variable can also be useful when debugging failed builds.
 .Bd -literal -offset indent
 make some-target SUBDIR_OVERRIDE=foo/bar
 .Ed
 .It Va SYSDIR
-Указывает расположение исходного кода ядра, чтобы заменить стандартный
+Specify the location of the kernel source to override the default
 .Pa /usr/src/sys .
-Исходный код ядра находится в подкаталоге
+The kernel source is located in the
 .Pa sys
-дерева исходных текстов,
-извлеченных из репозитория
-.Pa src.git .
+subdirectory of the source tree checked out from the
+.Pa src.git
+repository.
 .It Va TARGET
-Целевая аппаратная платформа. Это аналогично выводу
-.Dq Nm uname Fl m .
-Это необходимо для перекрестной сборки некоторых целевых архитектур.
-Например, для перекрестной сборки для машин ARM64 требуется
+The target hardware platform.
+This is analogous to the
+.Dq Nm uname Fl m
+output.
+This is necessary to cross-build some target architectures.
+For example, cross-building for ARM64 machines requires
 .Va TARGET_ARCH Ns = Ns Li aarch64
-и
+and
 .Va TARGET Ns = Ns Li arm64 .
-Если значение не задано,
-.Va TARGET 
-по умолчанию использует текущую аппаратную платформу,
-если только также не задано значение
-.Va TARGET_ARCH ,
-в этом случае оно возвращается к соответствующему
-значению для данной архитектуры.
-.It Va TARGET_ARCH
-Архитектура процессора целевой машины.
-Это аналогично выводу
-.Dq Nm uname Fl p .
-Установите это значение в перекрестную сборку для другой архитектуры.
-Если значение не задано,
-.Va TARGET_ARCH
-по умолчанию соответствует текущей архитектуре компьютера, если только
+If not set,
 .Va TARGET
-также не задан, и в этом случае по умолчанию используется
-соответствующее значение для данной платформы.
-Как правило, требуется только установить
+defaults to the current hardware platform, unless
+.Va TARGET_ARCH
+is also set, in which case it defaults to the appropriate
+value for that architecture.
+.It Va TARGET_ARCH
+The target machine processor architecture.
+This is analogous to the
+.Dq Nm uname Fl p
+output.
+Set this to cross-build for a different architecture.
+If not set,
+.Va TARGET_ARCH
+defaults to the current machine architecture, unless
+.Va TARGET
+is also set, in which case it defaults to the appropriate
+value for that platform.
+Typically, one only needs to set
 .Va TARGET .
 .El
 .Pp
-На сборки в каталоге
+Builds under directory
 .Pa /usr/src
-также влияет определение одного или нескольких из следующих символов
-с помощью параметра
-.Fl D ,
-находящегося в
+are also influenced by defining one or more of the following symbols,
+using the
+.Fl D
+option of
 .Xr make 1 :
 .Bl -tag -width ".Va LOADER_DEFAULT_INTERP"
 .It Va LOADER_DEFAULT_INTERP
-Определяет какие именно загрузочные программы будут у
-интерпретатора по умолчанию.
-Допустимые значения:
+Defines what interpreter the default loader program will have.
+Valid values include
 .Dq 4th ,
 .Dq lua ,
-и
+and
 .Dq simp .
-Это создает по умолчанию ссылку на файл
+This creates the default link for
 .Pa /boot/loader
-для загрузчика с этим интерпритатором.
-Он также определяет, какой интерфейс будет скомпилирован в
+to the loader with that interpreter.
+It also determines what interpreter is compiled into
 .Pa userboot .
 .It Va NO_CLEANDIR
-Если задано, целевые значения построения, которые очищают части
-дерева объектов, используют аналог 
+If set, the build targets that clean parts of the object tree use the
+equivalent of
 .Dq make clean
-вместо
+instead of
 .Dq make cleandir .
 .It Va NO_CLEAN
-Если этот параметр установлен, файлы дерева объектов вообще не очищаются.
-Это значение используется по умолчанию при использовании параметра
+If set, no object tree files are cleaned at all.
+This is the default when
 .Va WITH_META_MODE
-с загруженным
-.Xr filemon 4 .
-Смотрите
+is used with
+.Xr filemon 4
+loaded.
+See
 .Xr src.conf 5
-для получения дополнительной информации.
-Установка
+for more details.
+Setting
 .Va NO_CLEAN
-подразумевает
+implies
 .Va NO_KERNELCLEAN ,
-поэтому, когда задано значение
+so when
 .Va NO_CLEAN
-другие объекты ядра также не очищаются.
+is set no kernel objects are cleaned either.
 .It Va NO_CTF
-Если этот параметр установлен в процессе сборки,
-инструменты преобразования DTrace CTF для построенных объектов не запускаются.
+If set, the build process does not run the DTrace CTF conversion tools
+on built objects.
 .It Va NO_SHARE
-Если этот параметр установлен, сборка не будет перенесена в подкаталог
+If set, the build does not descend into the
 .Pa /usr/src/share
-(т.е. страницы руководства, файлы данных о языковых стандартах,
-файлы данных о часовых поясах и другие
+subdirectory (i.e., manual pages, locale data files, timezone data files and
+other
 .Pa /usr/src/share
-файлы, не будут восстановлены из их источников).
+files will not be rebuild from their sources).
 .It Va NO_KERNELCLEAN
-Если этот параметр установлен, процесс сборки не запускает
+If set, the build process does not run
 .Dq make clean
-как часть целевого объекта
-.Cm buildkernel .
+as part of the
+.Cm buildkernel
+target.
 .It Va NO_KERNELCONFIG
-Если этот параметр установлен, процесс сборки не запускает
+If set, the build process does not run
 .Xr config 8
-как часть целевого объекта
-.Cm buildkernel .
+as part of the
+.Cm buildkernel
+target.
 .It Va NO_KERNELOBJ
-Если этот параметр установлен, процесс сборки не запускает
+If set, the build process does not run
 .Dq make obj
-как часть целевого объекта
-.Cm buildkernel .
+as part of the
+.Cm buildkernel
+target.
 .It Va NO_LIBS
-Если этот параметр установлен, этап просмотра библиотек будет пропущен.
+If set, the libraries phase will be skipped.
 .It Va NO_OBJWALK
-Если этот параметр установлен, каталоги объектов создаваться не будут.
-Это следует использовать только в том случае, если каталоги объектов
-были созданы в предыдущей сборке и новые каталоги не подключены.
+If set, no object directories will be created.
+This should only be used if object directories were created in a
+previous build and no new directories are connected.
 .It Va UNIVERSE_TOOLCHAIN
-Запрашивает использование цепочки инструментов,
-созданной как часть целевого объекта
+Requests use of the toolchain built as part of the
 .Cm universe
-в качестве внешней цепочки инструментов.
+target as an external toolchain.
 .It Va WORLDFAST
-Если этот параметр установлен, в сборке
+If set, the build target
 .Cm buildworld
-по умолчанию установлены значения
+defaults to setting
 .Va NO_CLEAN ,
 .Va NO_OBJWALK ,
-и будет пропущена большая часть этапов начальной загрузки.
-Это приведет к загрузке библиотек и созданию всего пользовательского пространства.
-Этот вариант следует использовать только тогда, когда известно,
-что ни один из загрузчиков не нуждается в изменении и что
-к сборке не были подключены новые каталоги.
+and will skip most bootstrap phases.
+It will only bootstrap libraries and build all of userland.
+This option should be used only when it is known that none of the bootstrap
+needs changed and that no new directories have been connected to the build.
 .El
 .Pp
-На сборки в каталоге
+Builds under directory
 .Pa /usr/doc
-влияют следующие
+are influenced by the following
 .Xr make 1
-переменные:
+variables:
 .Bl -tag -width ".Va DOC_LANG"
 .It Va DOC_LANG
-Если значение задано, то построение документации ограничивается языком
-подкаталогов, указанных в качестве содержимого. Действие по умолчанию
-заключается в создании документации для всех языков.
+If set, restricts the documentation build to the language subdirectories
+specified as its content.
+The default action is to build documentation for all languages.
 .El
 .Pp
-На сборки с использованием
+Builds using the
 .Cm universe
-и связанных с ним целевых объектов влияют
-следующие переменные
-.Xr make 1 :
+and related targets are influenced by the following
+.Xr make 1
+variables:
 .Bl -tag -width ".Va USE_GCC_TOOLCHAINS"
 .It Va JFLAG
-Передаёт значение этой переменной каждой функции
-.Xr make 1 ,
-используемой для создания миров и ядер.
-Это может использоваться для выполнения нескольких заданий в рамках одной сборки
-архитектуры, при этом каждая архитектура создается последовательно.
-.It Va MAKE_JUST_KERNELS
-Создаёт ядра для каждой поддерживаемой архитектуры.
-.It Va MAKE_JUST_WORLDS
-Создаёт миры для каждой поддерживаемой архитектуры.
-.It Va WITHOUT_WORLDS
-Создаёт ядра для каждой поддерживаемой архитектуры.
-.It Va WITHOUT_KERNELS
-Создаёт миры для каждой поддерживаемой архитектуры.
-.It Va UNIVERSE_TARGET
-Выполняет указанную
+Pass the value of this variable to each
 .Xr make 1
-для каждой поддерживаемой архитектуры, вместо действия по умолчанию
-(создания мира и одного или нескольких ядер).
-Это переменная подразумевает
+invocation used to build worlds and kernels.
+This can be used to enable multiple jobs within a single architecture's build
+while still building each architecture serially.
+.It Va MAKE_JUST_KERNELS
+Only build kernels for each supported architecture.
+.It Va MAKE_JUST_WORLDS
+Only build worlds for each supported architecture.
+.It Va WITHOUT_WORLDS
+Only build kernels for each supported architecture.
+.It Va WITHOUT_KERNELS
+Only build worlds for each supported architecture.
+.It Va UNIVERSE_TARGET
+Execute the specified
+.Xr make 1
+target for each supported architecture instead of the default action of
+building a world and one or more kernels.
+This variable implies
 .Va WITHOUT_KERNELS .
 .It Va USE_GCC_TOOLCHAINS
-Использует внешние цепочки инструментов GCC для создания запрошенной
-цели.
-Если необходимый пакет цепочки инструментов для поддерживаемой
-архитектуры не установлен, сборка для этой архитектуры пропускается.
+Use external GCC toolchains to build the requested targets.
+If the required toolchain package for a supported architecture is not installed,
+the build for that architecture is skipped.
 .It Va TARGETS
-Создаёт только перечисленные целевые объекты вместо каждой поддерживаемой архитектуры.
+Only build the listed targets instead of each supported architecture.
 .It Va EXTRA_TARGETS
-В дополнение к поддерживаемым архитектурам,
-создаёт полуподдерживаемые архитектуры. 
-Полуподдерживаемая архитектура имееет поддержку создания в дереве
+In addition to the supported architectures, build the semi-supported
+architectures.
+A semi-supported architecture has build support in the
 .Fx
-но тестируется значительно реже и на самом деле она предназначена
-для периферийных применений, которые не имеют широкого распространения.
+tree, but receives significantly less testing and is generally for
+fringe uses that do not have a wide appeal.
 .El
-.Sh ФАЙЛЫ
+.Sh FILES
 .Bl -tag -width ".Pa /usr/share/examples/etc/make.conf" -compact
 .It Pa /usr/doc/Makefile
 .It Pa /usr/doc/share/mk/doc.project.mk
@@ -870,28 +876,27 @@ make some-target SUBDIR_OVERRIDE=foo/bar
 .It Pa /usr/src/Makefile
 .It Pa /usr/src/Makefile.inc1
 .El
-.Sh ПРИМЕРЫ
-Для получения информации об
+.Sh EXAMPLES
+For an
 .Dq approved
-методе обновления вашей системы с использованием последних версий
-пожалуйста, ознакомьтесь с разделом
+method of updating your system from the latest sources, please see the
 .Sx COMMON ITEMS
-в разделе
+section in
 .Pa src/UPDATING .
 .Pp
-Следующая последовательность команд может быть использована для перекрестной сборки
-системы для архитектуры armv6 на хосте amd64:
+The following sequence of commands can be used to cross-build the
+system for the armv6 architecture on an amd64 host:
 .Bd -literal -offset indent
 cd /usr/src
 make TARGET_ARCH=armv6 buildworld buildkernel
 make TARGET_ARCH=armv6 DESTDIR=/clients/arm installworld installkernel
 .Ed
-.Sh ИСТОРИЯ
-Страница руководства
+.Sh HISTORY
+The
 .Nm
-впервые появились в
+manpage first appeared in
 .Fx 4.3 .
-.Sh СМОТРИТЕ ТАКЖЕ
+.Sh SEE ALSO
 .Xr cc 1 ,
 .Xr install 1 ,
 .Xr make 1 ,
@@ -906,5 +911,5 @@ make TARGET_ARCH=armv6 DESTDIR=/clients/arm installworld installkernel
 .Xr etcupdate 8 ,
 .Xr reboot 8 ,
 .Xr shutdown 8
-.Sh АВТОРЫ
+.Sh AUTHORS
 .An Mike W. Meyer Aq Mt mwm@mired.org
