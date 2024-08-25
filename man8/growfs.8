@@ -1,41 +1,42 @@
+.\" Copyright (c) 2000 Christoph Herrmann, Thomas-Henning von Kamptz
+.\" Copyright (c) 1980, 1989, 1993 The Regents of the University of California.
+.\" All rights reserved.
 .\"
-.\" Авторское право (c) 2000 Кристоф Херрманн, Томас-Хеннинг фон Кампц
-.\" Авторское право (c) 1980, 1989, 1993 Правительство Университета Калифорнии.
-.\" Все права защищены.
+.\" This code is derived from software contributed to Berkeley by
+.\" Christoph Herrmann and Thomas-Henning von Kamptz, Munich and Frankfurt.
 .\"
-.\" Этот код основан на программном обеспечении, предоставленном в Беркли
-.\" Кристофом Херрманном и Томасом-Хеннингом фон Кампц, Мюнхен и Франкфурт.
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
+.\" 3. All advertising materials mentioning features or use of this software
+.\"    must display the following acknowledgment:
+.\"      This product includes software developed by the University of
+.\"      California, Berkeley and its contributors, as well as Christoph
+.\"      Herrmann and Thomas-Henning von Kamptz.
+.\" 4. Neither the name of the University nor the names of its contributors
+.\"    may be used to endorse or promote products derived from this software
+.\"    without specific prior written permission.
 .\"
-.\" Распространение и использование в исходных и двоичных формах, с изменениями или без,
-.\" разрешено при условии соблюдения следующих условий:
-.\" 1. Распространение исходного кода должно сохранять вышеуказанное уведомление об авторском праве,
-.\"    этот список условий и следующее отказ от ответственности.
-.\" 2. Распространение в двоичной форме должно воспроизводить вышеуказанное уведомление об авторском праве,
-.\"    этот список условий и отказ от ответственности в
-.\"    документации и/или других материалах, поставляемых с дистрибутивом.
-.\" 3. Все рекламные материалы, упоминающие функции или использование этого программного обеспечения,
-.\"    должны содержать следующее признание:
-.\"      Этот продукт включает программное обеспечение, разработанное Университетом
-.\"      Калифорния, Беркли и его участниками, а также Кристофом Херрманном и Томасом-Хеннингом фон Кампц.
-.\" 4. Ни имя Университета, ни имена участников
-.\"    не могут быть использованы для поддержки или продвижения продуктов, полученных из этого программного обеспечения,
-.\"    без конкретного предварительного письменного разрешения.
-.\"
-.\" ЭТО ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ ПРАВЛЕНИЕМ И УЧАСТНИКАМИ «КАК ЕСТЬ» И
-.\" ЛЮБЫЕ ЯВНЫЕ ИЛИ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ ЭТИМ,
-.\" ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ КОММЕРЧЕСКОЙ ЦЕННОСТИ И ПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ ЦЕЛИ
-.\" ОТКЛЮЧЕНЫ. НИ В КОАКОМ СЛУЧАЕ ПРАВЛЕНИЕ ИЛИ УЧАСТНИКИ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ
-(здесь текст обрывается, поскольку исходное сообщение было неполным).\" ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, ОСОБЫЕ, ШТРАФНЫЕ ИЛИ ПОСЛЕДУЮЩИЕ
-.\" УБЫТКИ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ЗАТРАТАМИ НА ЗАМЕНУ ТОВАРОВ ИЛИ УСЛУГ,
-.\" ПОТЕРЕЙ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ ИЛИ ПРЕРЫВАНИЕМ БИЗНЕСА),
-.\" ПРИЧИНЕННЫЕ КАКИМ-ЛИБО ОБРАЗОМ И НА ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО
-.\" В ДОГОВОРЕ, СТРОГОЙ ОТВЕТСТВЕННОСТИ ИЛИ ДЕЛИКТЕ (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНОЕ)
-.\" ВОЗНИКШИЕ КАКИМ-ЛИБО ОБРАЗОМ В РЕЗУЛЬТАТЕ ИСПОЛЬЗОВАНИЯ ДАННОГО ПРОГРАММНОГО
-.\" ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ УВЕДОМЛЕНЫ О ВОЗМОЖНОСТИ ТАКОГО УЩЕРБА.
+.\" THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+.\" SUCH DAMAGE.
 .\"
 .\" $TSHeader: src/sbin/growfs/growfs.8,v 1.3 2000/12/12 19:31:00 tomsoft Exp $
 .\"
-.Dd 13 декабря 2017
+.Dd October 3, 2023
 .Dt GROWFS 8
 .Os
 .Sh НАЗВАНИЕ
@@ -85,6 +86,10 @@
 .Nm
 увеличивает файловую систему до размера всего раздела).
 .El
+.Sh EXIT STATUS
+Exit status is 0 on success, and >= 1 on errors.
+Errors recoverable by user action are indicated by 2.
+OS errors, which are usually not recoverable, are indicated by 3 or greater.
 .Sh ПРИМЕРЫ
 Расширение корневой файловой системы для использования доступного пространства:
 .Dl growfs /
