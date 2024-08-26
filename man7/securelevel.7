@@ -1,36 +1,36 @@
-.\" Copyright (C) 1998 Matthew Dillon. Все права защищены.
+.\" Copyright (C) 1998 Matthew Dillon. All rights reserved.
 .\" Copyright (c) 2019 The FreeBSD Foundation, Inc.
 .\"
-.\" Часть этой документации была написана
-.\" Константином Белоусовым <kib@FreeBSD.org> при спонсорской поддержке
-.\" Фонда FreeBSD.
+.\" Parts of this documentation were written by
+.\" Konstantin Belousov <kib@FreeBSD.org> under sponsorship
+.\" from the FreeBSD Foundation.
 .\"
-.\" Распространение и использование в исходных и двоичных формах, с модификацией или без
-.\" модификацией, разрешены при соблюдении следующих условий
-.\" соблюдаются:
-.\" 1. Перераспределение исходного кода должно сохранять вышеуказанное уведомление об авторских правах
-.\" уведомление об авторских правах, этот список условий и следующий отказ от ответственности.
-.\" 2. Перераспределение в двоичной форме должно воспроизводить вышеуказанное уведомление об авторских правах
-.\" уведомление об авторских правах, этот список условий и следующий отказ от ответственности в
-.\" документации и/или других материалах, поставляемых вместе с дистрибутивом.
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
 .\"
-.\" ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ АВТОРОМ И РАЗРАБОТЧИКАМИ ``КАК ЕСТЬ`` И
-.\" ЛЮБЫЕ ЯВНЫЕ ИЛИ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ
-.\" ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ТОВАРНОГО СОСТОЯНИЯ И ПРИГОДНОСТИ ДЛЯ КОНКРЕТНОЙ ЦЕЛИ
-.\" НЕ ПРИНИМАЮТСЯ.  НИ ПРИ КАКИХ ОБСТОЯТЕЛЬСТВАХ АВТОР ИЛИ СОАВТОРЫ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ
-.\" ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, СПЕЦИАЛЬНЫЕ, ПРИМЕРНЫЕ ИЛИ КОСВЕННЫЕ УБЫТКИ.
-.\" УЩЕРБ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПРИОБРЕТЕНИЕ ТОВАРОВ-ЗАМЕНИТЕЛЕЙ
-.\" ИЛИ УСЛУГИ; ПОТЕРЮ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПЕРЕРЫВ В РАБОТЕ)
-.\" НЕЗАВИСИМО ОТ ПРИЧИН И ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО КОНТРАКТ, СТРОГИЙ
-.\" ОТВЕТСТВЕННОСТИ, ИЛИ ДЕЛИКТА (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНОЕ), ВОЗНИКАЮЩИХ КАКИМ-ЛИБО ОБРАЗОМ
-.\" В СВЯЗИ С ИСПОЛЬЗОВАНИЕМ ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ ВЫ БЫЛИ ПРЕДУПРЕЖДЕНЫ О ВОЗМОЖНОСТИ
-.\" ТАКОГО УЩЕРБА.
+.\" THIS SOFTWARE IS PROVIDED BY AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\" ARE DISCLAIMED.  IN NO EVENT SHALL AUTHOR OR CONTRIBUTORS BE LIABLE
+.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+.\" SUCH DAMAGE.
 .\"
 .Dd October 5, 2023
-.Dt БЕЗОПАСНОСТЬ 7
+.Dt SECURITY 7
 .Os
 .Sh ИМЯ
-.Nm безопасность
+.Nm security
 .Nd введение в безопасность во FreeBSD
 .Sh ОПИСАНИЕ
 Безопасность - это функция, которая начинается и заканчивается системным администратором.
@@ -125,19 +125,17 @@ Paranoia
 Пароль
 пароль почти всегда необходим для консольного доступа к машине.
 Это означает, что не следует делать возможным использование пароля
-вне консоли или, возможно, даже с помощью
-.Xr su 1
-утилитой.
+вне консоли или, возможно, даже с помощью утилиты
+.Xr su 1 .
 Например, убедитесь, что ваши PTY указаны как
 .Dq Li insecure
-в
-.Pa /etc/ttys
-файл
+в файле
+.Pa /etc/ttys ,
 чтобы прямой вход в систему через
 .Xr telnet 1
-были запрещены.
+был запрещен.
 При использовании
-другие службы входа в систему, такие как
+других служб входа в систему, таких как
 .Xr sshd 8 ,
 убедитесь, что прямой вход в систему root
 запрещены и там.
@@ -1004,21 +1002,20 @@ amd64 и i386.
 не несут накладных расходов на сериализацию при доступе к общему буферу,
 и не сериализуют обращения к внеядерной памяти.
 .It Dv kern.elf32.aslr.enable
-Управляет системной глобальной рандомизацией разметки адресного пространства (ASLR) для
+Управляет системной глобальной случайной разметкой адресного пространства (ASLR) для
 обычных не-PIE (Position Independent Executable) 32-битных двоичных файлов ELF.
 См. также
 .Xr proccontrol 1
 .Dv aslr
 режим, на который также влияет флаг примечания к управлению каждым изображением.
 .It Dv kern.elf32.aslr.pie_enable
-Управляет системной глобальной рандомизацией компоновки адресного пространства для
+Управляет системной глобальной случайной компоновкой адресного пространства для
 position-independent (PIE) 32-битных двоичных файлов.
 .It Dv kern.elf32.aslr.honor_sbrk
 Делает ASLR менее агрессивным и более совместимым со старыми двоичными программами
 полагающимися на область sbrk.
 .It Dv kern.elf32.aslr.stack
-Если ASLR включена для двоичного файла, ненулевое значение позволяет рандомизировать
-стека.
+Делает случайным стек для 32-битных программ.
 В противном случае стек отображается в фиксированное место, определяемое
 ABI процесса.
 .It Dv kern.elf64.aslr.enable
@@ -1028,7 +1025,7 @@ ABI процесса.
 .It Dv kern.elf64.aslr.honor_sbrk
 Контроль совместимости ASLR sbrk для 64-bit двоичных файлов.
 .It Dv kern.elf64.aslr.stack
-Управляет рандомизацией адресов стека для 64-bit двоичных файлов.
+Управляет случайностью адресов стека для 64-bit двоичных файлов.
 .It Dv kern.elf32.nxstack
 Включает неисполняемый стек для 32-bit процессов.
 Включен по умолчанию, если поддерживается аппаратным обеспечением и соответствующими двоичными файлами.
@@ -1041,7 +1038,7 @@ ABI процесса.
 Разрешает отображение одновременно записываемых и исполняемых страниц для
 64-bit процессов.
 ..El
-.Sh СМОТРИТЕ ТАКЖЕ
+.Sh СМОТРИ ТАКЖЕ
 .Xr chflags 1 ,
 .Xr find 1 ,
 .Xr md5 1 ,
