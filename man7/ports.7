@@ -1,35 +1,34 @@
 .\"
-.\" Авторское право (c) 1997 David E. O'Brien
+.\" Copyright (c) 1997 David E. O'Brien
 .\"
-.\" Все права защищены.
+.\" All rights reserved.
 .\"
-.\" Распространение и использование в исходном коде и двоичном формате, с
-.\" изменениями или без них, разрешено при соблюдении следующих условий:
-.\" 1. При повторном распространении исходного кода должны сохраняться вышеуказанное
-.\"    уведомление об авторских правах, этот список условий и следующий отказ от ответственности.
-.\" 2. При повторном распространении в двоичной форме должны воспроизводиться вышеуказанное
-.\"    уведомление об авторских правах, этот список условий и следующий отказ от ответственности в
-.\"    документации и/или других материалах, прилагаемых к дистрибутиву.
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
 .\"
-.\" ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ АВТОРОМ "КАК ЕСТЬ", И
-.\" МЫ НЕ ДАЕМ НИКАКИХ ЯВНЫХ ИЛИ ПОДРАЗУМЕВАЕМЫХ ГАРАНТИЙ, ВКЛЮЧАЯ
-.\" ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ТОВАРНОЙ ПРИГОДНОСТИ И ПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ ЦЕЛИ И Т.П.
-.\" АВТОР НИ В КОЕМ СЛУЧАЕ НЕ НЕСЕТ ОТВЕТСТВЕННОСТИ
-.\" ЗА ЛЮБОЙ ПРЯМОЙ, КОСВЕННЫЙ, СЛУЧАЙНЫЙ, ОСОБЫЙ, ПОКАЗАТЕЛЬНЫЙ ИЛИ ЛОГИЧЕСКИ ВЫТЕКАЮЩИЙ
-.\" УЩЕРБ (ВКЛЮЧАЯ: ПРИОБРЕТЕНИЕ ЗАМЕНЯЮЩИХ ТОВАРОВ ИЛИ УСЛУГ; ПОТЕРЮ ВОЗМОЖНОСТИ ИСПОЛЬЗОВАНИЯ,
-.\" ДАННЫХ ИЛИ ПРИБЫЛИ; ПЕРЕБОИ В РАБОТЕ)
-.\" НЕЗАВИСИМО ОТ ПРИЧИН И ПО ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО В КОНТРАКТЕ,
-.\" ИЛИ ПРАВОНАРУШЕНИЕ (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНОЕ ПРАВОНАРУШЕНИЕ ИНЫМ ОБРАЗОМ),
-.\" ВОЗНИКАЮЩЕЕ КАКИМ-ЛИБО ОБРАЗОМ В РЕЗУЛЬТАТЕ ИСПОЛЬЗОВАНИЯ ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ,
-.\" ДАЖЕ ЕСЛИ ВЫ БЫЛИ ПРЕДУПРЕЖДЕНЫ О ВОЗМОЖНОСТИ ТАКОГО УЩЕРБА.
+.\" THIS SOFTWARE IS PROVIDED BY THE DEVELOPERS ``AS IS'' AND ANY EXPRESS OR
+.\" IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+.\" OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+.\" IN NO EVENT SHALL THE DEVELOPERS BE LIABLE FOR ANY DIRECT, INDIRECT,
+.\" INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+.\" NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+.\" DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+.\" THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+.\" (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+.\" THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 .\"
-.Dd Июнь 1, 2023
+.Dd September 24, 2023
 .Dt PORTS 7
 .Os
-.Sh НАИМЕНОВАНИЕ
+.Sh ИМЯ
 .Nm ports
-.Nd contributed applications
-.Sh ОПИСАНИЕ
+.Nd устанавливаемые приложения.Sh ОПИСАНИЕ
 Коллекция портов
 .Fx
 предлагает простой способ компиляции и установки сторонних приложений.
@@ -474,7 +473,7 @@ sсозданный на кластере
 (для целевого объекта
 .Cm fetchindex ).
 По умолчанию используется значение
-.Pa https://www.FreeBSD.org/ports/ .
+.Pa https://download.FreeBSD.org/ports/index/ .
 .It Va FETCHINDEX
 Команда для получения
 .Pa INDEX
@@ -687,7 +686,7 @@ to
 которую может предложить данная часть программного обеспечения).
 .El
 .El
-.Sh СМОТРИТЕ ТАКЖЕ
+.Sh СМОТРИ ТАКЖЕ
 .Xr make 1 ,
 .Xr make.conf 5 ,
 .Xr development 7 ,
