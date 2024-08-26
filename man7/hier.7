@@ -31,196 +31,191 @@
 .Dd April 18, 2024
 .Dt HIER 7
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm hier
-.Nd index of
+.Nd описание иерархии файловой системы
 .Fx
-file system hierarchy
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 .Bl -tag -width "/libexec/"
 .It Pa /
-root directory of the file system
+корневой каталог файловой системы
 .It Pa /COPYRIGHT
 .Fx
-copyright information
+информация об авторских правах
 .It Pa /bin/
-fundamental
-.Bx
-user utilities; see
+основные пользовательские утилиты
+.Bx ; 
+смотри
 .Xr intro 1
 .It Pa /boot/
-programs and configurations used during
-.Fx
+программы и файлы настроек, используемые в процесс загрузки
+.Fx ;
+смоьтри
 .Xr boot 8
 .Pp
 .Bl -tag -width "loader.conf.d/" -compact
 .It Pa defaults/
-default boot configuration files; see
+конфигурационные файлы загрузки по умолчанию; смотри
 .Xr loader.conf 5
 .It Pa device.hints
-kernel variables for controlling drivers; see
+переменные ядра для контроля над драйверами; смотри
 .Xr device.hints 5
 .It Pa dtb/
-compiled flattened device tree (FDT) files; see
+скомпилированные файлы для плоского (flattened) дерева устройств (FDT); смотри
 .Xr fdt 4
-and
+и
 .Xr dtc 1
 .Pp
 .Bl -tag -width "overlays/" -compact
 .It Pa overlays/
-compiled
-.Xr fdt 4
-overlays; see
+скомпилированные наложения
+.Xr fdt 4 ; смотри
 .Va fdt_overlays
-in
+в
 .Xr loader.conf 5
 .El
 .Pp
 .It Pa efi/
-the
+точка монтирования системного раздела EFI (ESP); смотри
 .Xr uefi 8
-EFI System Partition (ESP) mount point
 .It Pa firmware/
-loadable binary firmware kernel modules
+загружаемые модули ядра, содержащие прошивки
 .It Pa fonts/
-binary bitmap console fonts; see
+двоичные растровые консольные шрифты; смотри
 .Xr loader.conf 5
-and
+и
 .Xr vtfontcvt 8
 .It Pa images/
-beastie boot menu images; see
+изображения чертика для загрузочного меню; смотри
 .Xr loader_lua 8
 .It Pa kernel/
-.Fx
-kernel and modules; see
+ядро и модули ядра
+.Fx ; смотри
 .Xr kldstat 8
 .It Pa kernel.old/
-alternative kernel and modules
+альтернативное ядро и модули ядра
 .It Pa loader.conf
-boot loader configuration; see
+файл конфигурации загрузчика; смотри
 .Xr loader.conf 5
 .It Pa loader.conf.d/
+конфигурационные файлы
 .Xr loader.conf 5
-configuration files
 .It Pa lua/
-scripts for the Lua boot loader; see
+скрипты для загрузчка Lua; смотри
 .Xr loader_lua 8
 .It Pa modules/
-third-party loadable kernel modules, such as those installed with
+загружаемые сторонние модули ядра, устанавливаемые с помощью
 .Xr pkg 8
-or from
+или
 .Xr ports 7
 .It Pa zfs/
-ZFS
+кэш-файлы 
 .Xr zpool 8
-cache files
+файловой системы ZFS
 .El
 .It Pa /compat/
-files supporting binary compatibility with other operating systems
+файлы, поддерживающие двоичную совместимость с другими операционные системами
 .Pp
 .Bl -tag -width "loader.conf.d" -compact
 .It Pa linux/
-default location for
+расположение по умолчанию для совместимости времени выполнения с
 .Xr linux 4
-compatibility run-time
 .El
 .It Pa /dev/
-device nodes and special files; see
+узлы устройств и специальные файлы; смотри
 .Xr intro 4
-and
+и
 .Xr devfs 5
 .Pp
 .Bl -tag -width "loader.conf.d" -compact
 .It Pa ada0
-first ATA storage device
+первое устройство хранения ATA
 .It Pa ada0p1
-first partition on ada0
+первый раздел на ada0
 .It Pa cd0
-first optical drive
+первый оптически дисковод
 .It Pa cuaU0
-first USB serial port; see
+первый последовательный порт USB; смотри
 .Xr cu 1
 .It Pa da0
-first SCSI storage device
+первое устройство хранения SCSI
 .It Pa da0s1
-first partition on da0
+первый раздел на da0
 .It Pa dri/
-GPU character device nodes; see
+узлы устройств символьного GPU; смотри
 .Xr drm 7
 .It Pa drm/
-GPU
+специальные файлы
 .Xr drm 7
-special files
+для GPU
 .It Pa fd/
-file descriptor files; see
+файлы дескрипторов файлов; смотри
 .Xr fd 4
 .It Pa fd0
-first floppy drive
+первый дисковод для гибких дисков
 .It Pa mmcsd0
-first SD storage device
+первое устройство хранения SD
 .It Pa mmcsd0s1
-first partition on mmcsd0
+первый раздел на mmcsd0
 .It Pa nda0
-first NVMe storage device attached via
+первое устройство хранения NVMe подключенное с помощью
 .Xr cam 3
 .It Pa null
-infinite loop that accepts anything and contains nothing
+бесконечная петля, которая принимает всё что угодно, но ничего не содержит
 .It Pa nvd0
-first NVMe storage device using NVMe namespaces
+первое устройство хранения NVMe в пространстве имен NVMe
 .It Pa pts/
-pseduo-terminals; see
+псевдо-терминалы; смотри
 .Xr pts 4
 .It Pa random
-source of weak randomness; see
+источник слабых случайных чисел; смотри
 .Xr random 4
 .It Pa sa0
-first tape drive
+первый накопитель на магнитной ленте
 .It Pa usb/
-USB busses
+USB шины
 .It Pa vmm/
-active
+активные виртуальные машины
 .Xr bhyve 8
-virtual machines
 .It Pa zvol/
+тома
 .Xr zfs 8
-volumes
 .El
 .It Pa /entropy
-provides initial state to RNG; see
+обеспечивает исходное состояние для генератора случайных чисел; смотри
 .Xr save-entropy 8
 .It Pa /etc/
-base system configuration files and scripts; see
+основные системные конфигурационные файлы и скрипты; смотри
 .Xr intro 5
 .Pp
 .Bl -tag -width "freebsd-update.conf" -compact
 .It Pa auto_master
-autofs
+конфигурация autofs; смотри
 .Xr automount 8
-configuration
 .It Pa bluetooth/
-bluetooth configuration files
+конфигурационные файлы bluetooth
 .It Pa cron.d/
-tables for driving scheduled tasks; see
+таблицы для управления запланированными задачами; смотри
 .Xr crontab 5
 .It Pa crontab
-root's cron table
+таблица планировщика для root
 .It Pa defaults/
-default system configuration files; see
+системные конфигурационные файлы  по умолчанию; смотри
 .Xr rc 8
 .It Pa devd/
-configuration for
+настройки для
 .Xr devd 8 ,
-the device state change daemon
+демона отслеживания состояний устройств
 .It Pa devfs.conf
-boot time device configuration
+настройки загрузки устройства времени
 .It Pa dma/
-configuration for
+настройки для
 .Xr dma 8
 .It Pa freebsd-update.conf
-configuration for the base system updater; see
+конфигурация для утилиты обновления базовой системы; смотри
 .Xr freebsd-update 8
 .It Pa fstab
-static filesystem configuration; see
+статическая конфигурация файловой системы; смотри
 .Xr fstab 5
 .It Pa hosts
 database of local hosts if no network name server is running
@@ -319,14 +314,14 @@ client wifi configuration; see
 .Xr wpa_supplicant.conf 5
 .El
 .It Pa /home/
-home directories for users; the typical home for an interactive user
+домашние каталоги пользователей; обычное имя для интерактивного пользователя
 .Va beastie
-would be
+будет
 .Pa /home/beastie/
 .It Pa /lib/
-system libraries critical to binaries in
+системные библиотеки, являющиеся критическими зависимостями утилит из 
 .Pa /bin
-and
+и
 .Pa /sbin
 .Pp
 .Bl -tag -width "nvmecontrol/" -compact
@@ -340,23 +335,23 @@ vendor-specific libraries to extend the
 utility
 .El
 .It Pa /libexec/
-system utilities critical to binaries in
+системные утилиты, являющиеся критическими зависимостями утилит из
 .Pa /bin
-and
+и
 .Pa /sbin
 .It Pa /media/
-mount points for removable storage media such as CDs, DVDs,
-and USB drives; see
+точки монтирования для сменных устройств хранения данных, таких как CD, DVD,
+USB-диски; смотри
 .Xr automount 8 ,
-or
-.Xr bsdisks 8
-if a using a desktop environment from
+или
+.Xr bsdisks 8 ,
+если используется окружение рабочего стола из 
 .Xr ports 7
 .It Pa /mnt/
-empty directory commonly used by
-system administrators as a temporary mount point
+пустой катало, обычно используемый
+системными администраторами как временная точка монтирования
 .It Pa /net/
-automounted NFS shares; see
+автомонтируемые разделяемые каталоги NFS; смотри
 .Xr auto_master 5
 .It Pa /nonexistent/
 a non-existent directory;
@@ -364,72 +359,72 @@ by convention, it serves as a home directory for user accounts
 that need no home directory; see also
 .Pa /var/empty/
 .It Pa /proc/
-process file system; see
+файловая система процессов; смотри
 .Xr procfs 5
 .It Pa /rescue/
-statically linked programs for emergency recovery; see
+статически собранные программы для аварийного восстановления; смотри
 .Xr rescue 8
 .It Pa /root/
-home directory of the root user
+домашний каталог пользователя root
 .It Pa /sbin/
-fundamental
-.Bx
-system administration utilities; see
+основные утилиты для системного администрирования
+.Bx ; 
+смотри
 .Xr intro 8
 .It Pa /tmp/
-temporary files commonly removed between system reboots;
-see
+временные файлы, обычно удаляемые после каждой перезагрузки системы;
+смотри
 .Va clear_tmp_enable
-in
+в
 .Xr rc.conf 5
 .It Pa /usr/
-contains the majority of user utilities and applications
+содержит большинство пользовательских утилит и приложений
 .Pp
 .Bl -tag -width "freebsd-dist/" -compact
 .It Pa bin/
-common utilities, programming tools, and applications; see
+общие утилиты, инструменты программирования и приложения; смотри
 .Xr intro 1
 .It Pa freebsd-dist/
-distribution files
-.Pq like base.txz ;
-see
+файлы дистрибутива, такие как
+.Pq base.txz ;
+смотри
 .Xr release 7
-and
+и
 .Xr bsdinstall 8
 .It Pa include/
-standard C include header files
+стандартные заголовочные файлы C
 .It Pa lib/
-shared and
-.Xr ar 1 Ns -type
-libraries; see
+общие разделяемые библиотеки и библиотеки
+.Xr ar 1 Ns -type ; 
+смотри
 .Xr intro 3
 .Pp
 .Bl -tag -width Fl -compact
 .It Pa clang/
-shared libraries for the system compiler,
+разделяемые библиотеки для системного компилятора,
 .Xr clang 1
 .It Pa compat/
-shared libraries for compatibility
+разделяемые библиотеки для совместимости
 .It Pa debug/
-standalone debug data for the kernel and base system libraries and binaries
+автономные данные для отладки ядра, библиотек и утилит базовой системы
 .It Pa dtrace/
+скрипты для библиотеки
 .Xr dtrace 1
-library scripts
 .It Pa engines/
 OpenSSL
 .Pq Cryptography/SSL toolkit
 dynamically loadable engines
 .It Pa flua/
 .Fx
-Lua shared libraries
+разделяемые библиотеки Lua
 .It Pa i18n/
-shared libraries for internationalization
+разделяемые библиотеки для интернационализации
 .El
 .Pp
 .It Pa lib32/
-32-bit compatibility libraries
+библиотеки для 32-битной совместимости
 .It Pa libdata/
-miscellaneous utility data files
+разные файлы данных утилит
 .Pp
 .Bl -tag -width Fl -compact
 .It Pa ldscripts/
@@ -963,23 +958,23 @@ the NIS maps; see
 .Xr yp 8
 .El
 .El
-.Sh NOTES
-This manual page documents the default
+.Sh ЗАМЕЧАНИЯ
+Эта страница руководства документирует макет файловой системы
 .Fx
-file system layout.
-The actual hierarchy on a given system is defined at the system
-administrator's discretion.
-A well-maintained installation will include a customized version of
-this document.
-.Sh SEE ALSO
+по умолчанию.
+Фактическая иерархия конкретной системы определяется по усмотрению
+системного администратора.
+Хорошо-поддерживаемая установка должна включать исправленную версию
+данного документа.
+.Sh СМОТРИ ТАКЖЕ
 .Xr apropos 1 ,
 .Xr find 1 ,
 .Xr grep 1 ,
 .Xr ls 1 ,
 .Xr whereis 1 ,
 .Xr which 1
-.Sh HISTORY
-A
+.Sh ИСТОРИЯ
+Страница руководства
 .Nm
-manual page first appeared in 1979 with
+впервые появилась в 1979 году в версии
 .At v7 .
