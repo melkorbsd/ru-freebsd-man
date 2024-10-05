@@ -1,46 +1,47 @@
-.\" Авторское право (c) 1997, 2000 - 2003 Королевский технологический институт
-.\" (Kungliga Tekniska Högskolan, Стокгольм, Швеция).
-.\" Все права защищены.
+.\" Copyright (c) 1997, 2000 - 2003 Kungliga Tekniska Högskolan
+.\" (Royal Institute of Technology, Stockholm, Sweden).
+.\" All rights reserved.
 .\"
-.\" Распространение и использование в исходных и бинарных формах, с изменениями или без,
-.\" разрешается при условии соблюдения следующих условий:
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
 .\"
-.\" 1. Перераспределение исходного кода должно сохранять вышеуказанное уведомление об авторском праве,
-.\"    этот список условий и следующее отказ от ответственности.
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
 .\"
-.\" 2. Перераспределение в бинарной форме должно воспроизводить вышеуказанное уведомление об авторском праве,
-.\"    этот список условий и следующее отказ от ответственности в
-.\"    документации и/или других материалах, предоставляемых с распространением.
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
 .\"
-.\" 3. Ни имя Института, ни имена его участников
-.\"    не могут быть использованы для поддержки или продвижения продуктов, произведенных на основе этого программного обеспечения
-.\"    без конкретного предварительного письменного разрешения.
+.\" 3. Neither the name of the Institute nor the names of its contributors
+.\"    may be used to endorse or promote products derived from this software
+.\"    without specific prior written permission.
 .\"
-.\" ЭТО ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ ИНСТИТУТОМ И ЕГО УЧАСТНИКАМИ ``КАК ЕСТЬ'' И
-.\" ЛЮБЫЕ ЯВНЫЕ ИЛИ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ ИМИ, ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ
-.\" КОММЕРЧЕСКОЙ ПРИГОДНОСТИ И ПРИСПОСОБЛЕННОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ ЦЕЛИ ОТКАЗЫВАЮТСЯ ОТ ОТВЕТСТВЕННОСТИ.
-.\" НИ ПРИ КАКИХ ОБСТОЯТЕЛЬСТВАХ ИНСТИТУТ ИЛИ УЧАСТНИКИ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ
-.\" ЗА КАКИЕ-ЛИБО ПРЯМЫЕ, КОСВЕННЫЕ, ИНЦИДЕНТНЫЕ, ОСОБЫЕ, ЭКЗЕМПЛЯРНЫЕ ИЛИ ПОСЛЕДУЮЩИЕ
-.\" УБЫТКИ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ ИМИ, ПРИОБРЕТЕНИЕ ЗАМЕНЯЮЩИХ ТОВАРОВ
-.\" ИЛИ УСЛУГ; ПОТЕРЯ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПРЕРЫВАНИЕ БИЗНЕСА)
-.\" ОДНАКО ВОЗНИКШИЕ И ПО ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО В ДОГОВОРНЫХ ОБЯЗАТЕЛЬСТВАХ, СТРОГОЙ
-.\" ОТВЕТСТВЕННОСТИ ИЛИ В ДЕЛИКТЕ (ВКЛЮЧАЯ НЕБРЕЖНОСТЬ ИЛИ ИНОЕ) ВОЗНИКШИЕ В ЛЮБОМ СЛУЧАЕ
-.\" В СЛЕДСТВИЕ ИСПОЛЬЗОВАНИЯ ЭТОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ БЫЛО ПРЕДУПРЕЖДЕНИЕ О ВОЗМОЖНОСТИ ТАКИХ УБЫТКОВ.
+.\" THIS SOFTWARE IS PROVIDED BY THE INSTITUTE AND CONTRIBUTORS ``AS IS'' AND
+.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE INSTITUTE OR CONTRIBUTORS BE LIABLE
+.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 .\" SUCH DAMAGE.
 .\"
 .\" $Id$
 .\"
-.Dd 27 августа 1997 года
+.Dd August 27, 1997
 .Dt HPROPD 8
 .Os HEIMDAL
-.Sh ИМЯ
+.Sh NAME
 .Nm hpropd
-.Nd принимать распространяемую базу данных
-.Sh СИНТАКСИС
+.Nd receive a propagated database
+.Sh SYNOPSIS
 .Nm
 .Bk -words
-.Oo Fl d Ar файл \*(Ba Xo
-.Fl Fl database= Ns Ar файл
+.Oo Fl d Ar file \*(Ba Xo
+.Fl Fl database= Ns Ar file
 .Xc
 .Oc
 .Op Fl n | Fl Fl stdin
@@ -52,37 +53,38 @@
 .Oc
 .Op Fl 4 | Fl Fl v4dump
 .Ek
-.Sh ОПИСАНИЕ
+.Sh DESCRIPTION
 .Nm
-принимает базу данных, отправленную
+receives a database sent by
 .Nm hprop .
-и записывает ее как локальную базу данных.
+and writes it as a local database.
 .Pp
-По умолчанию,
+By default,
 .Nm
-ожидает запуска от
+expects to be started from
 .Nm inetd
-если stdin является сокетом и ожидает получения дампа базы данных через
-stdin в противном случае.
-Если база данных передается по сети, она аутентифицируется и
-шифруется.
-Принимаются только соединения, аутентифицированные с помощью принципала
+if stdin is a socket and expects to receive the dumped database over
+stdin otherwise.
+If the database is sent over the network, it is authenticated and
+encrypted.
+Only connections authenticated with the principal
 .Nm kadmin Ns / Ns Nm hprop
+are accepted.
 .Pp
-Поддерживаемые опции:
+Options supported:
 .Bl -tag -width Ds
-.It Fl d Ar файл , Fl Fl database= Ns Ar файл
-база данных
+.It Fl d Ar file , Fl Fl database= Ns Ar file
+database
 .It Fl n , Fl Fl stdin
-читать из stdin
+read from stdin
 .It Fl Fl print
-печатать дамп в stdout
+print dump to stdout
 .It Fl i , Fl Fl no-inetd
-не запускаться от inetd
+not started from inetd
 .It Fl k Ar keytab , Fl Fl keytab= Ns Ar keytab
-keytab для использования при аутентификации
+keytab to use for authentication
 .It Fl 4 , Fl Fl v4dump
-создать базу данных типа v4
+create v4 type DB
 .El
-.Sh СМОТРИ ТАКЖЕ
+.Sh SEE ALSO
 .Xr hprop 8

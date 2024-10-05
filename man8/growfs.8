@@ -39,94 +39,97 @@
 .Dd October 3, 2023
 .Dt GROWFS 8
 .Os
-.Sh НАЗВАНИЕ
+.Sh NAME
 .Nm growfs
-.Nd расширение существующей файловой системы UFS
-.Sh СИНТАКСИС
+.Nd expand an existing UFS file system
+.Sh SYNOPSIS
 .Nm
 .Op Fl Ny
-.Op Fl s Ar размер
-.Ar специальный | файловая_система
-.Sh ОПИСАНИЕ
-Утилита
+.Op Fl s Ar size
+.Ar special | filesystem
+.Sh DESCRIPTION
+The
 .Nm
-позволяет расширить файловую систему UFS.
-Перед запуском
+utility makes it possible to expand an UFS file system.
+Before running
 .Nm
-раздел или слайс, содержащий файловую систему, должен быть расширен с помощью
+the partition or slice containing the file system must be extended using
 .Xr gpart 8 .
-Если вы используете тома, их необходимо увеличить с помощью
+If you are using volumes you must enlarge them by using
 .Xr gvinum 8 .
-Утилита
+The
 .Nm
-расширяет размер файловой системы на указанном специальном файле.
-Доступны следующие опции:
+utility extends the size of the file system on the specified special file.
+The following options are available:
 .Bl -tag -width indent
 .It Fl N
-.Dq Режим тестирования .
-Позволяет выводить новые параметры файловой системы без фактического увеличения размера файловой системы.
+.Dq Test mode .
+Causes the new file system parameters to be printed out without actually
+enlarging the file system.
 .It Fl y
-Заставляет
+Causes
 .Nm
-предполагать да
-в качестве ответа на все вопросы оператора.
-.It Fl s Ar размер
-Определяет
-.Ar размер
-файловой системы после увеличения в секторах.
-.Ar Размер
-является числом 512-байтных секторов, если не суффиксирован
-.Cm b, k, m, g,
-или
-.Cm t,
-что
-обозначает байт, килобайт, мегабайт, гигабайт и терабайт соответственно.
-Это значение по умолчанию равно размеру необработанного раздела, указанного в.Ar special
-(другими словами,
+to assume yes
+as the answer to all operator questions.
+.It Fl s Ar size
+Determines the
+.Ar size
+of the file system after enlarging in sectors.
+.Ar Size
+is the number of 512 byte sectors unless suffixed with a
+.Cm b , k , m , g ,
+or
+.Cm t
+which
+denotes byte, kilobyte, megabyte, gigabyte and terabyte respectively.
+This value defaults to the size of the raw partition specified in
+.Ar special
+(in other words,
 .Nm
-увеличивает файловую систему до размера всего раздела).
+will enlarge the file system to the size of the entire partition).
 .El
 .Sh EXIT STATUS
 Exit status is 0 on success, and >= 1 on errors.
 Errors recoverable by user action are indicated by 2.
 OS errors, which are usually not recoverable, are indicated by 3 or greater.
-.Sh ПРИМЕРЫ
-Расширение корневой файловой системы для использования доступного пространства:
+.Sh EXAMPLES
+Expand root file system to fill up available space:
 .Dl growfs /
 .Pp
-Обновление размера LUN, изменение размера раздела для использования всей доступной
-ёмкости и соответствующее расширение файловой системы:
+Refresh the LUN size, resize the partition to use all available
+capacity, and expand the filesystem accordingly:
 .Dl camcontrol reprobe da0
 .Dl gpart recover da0
 .Dl gpart resize -i 1 da0
 .Dl growfs /dev/da0p1
-.Sh СМОТРИ ТАКЖЕ
+.Sh SEE ALSO
 .Xr growfs 7 ,
 .Xr camcontrol 8 ,
 .Xr fsck 8 ,
 .Xr gpart 8 ,
 .Xr newfs 8 ,
 .Xr tunefs 8
-.Sh ИСТОРИЯ
-Утилита
+.Sh HISTORY
+The
 .Nm
-впервые появилась в
+utility first appeared in
 .Fx 4.4 .
-Возможность изменения размера смонтированных файловых систем была добавлена в
+The ability to resize mounted file systems was added in
 .Fx 10.0 .
-.Sh АВТОРЫ
+.Sh AUTHORS
 .An Christoph Herrmann Aq Mt chm@FreeBSD.org
 .An Thomas-Henning von Kamptz Aq Mt tomsoft@FreeBSD.org
-.An КОМАНДА GROWFS Aq Mt growfs@Tomsoft.COM
+.An The GROWFS team Aq Mt growfs@Tomsoft.COM
 .An Edward Tomasz Napierala Aq Mt trasz@FreeBSD.org
-.Sh ОСТОРОЖНО
-При расширении файловой системы, смонтированной для чтения-записи, любые записи в эту файловую систему
-будут временно приостановлены до завершения расширения.
-.Sh ОШИБКИ
-Обычно
+.Sh CAVEATS
+When expanding a file system mounted read-write, any writes to that file system
+will be temporarily suspended until the expansion is finished.
+.Sh BUGS
+Normally
 .Nm
-записывает сводку по группам цилиндров на диск и считывает её позже для дополнительных
-обновлений.
-Эта операция чтения предоставит неожиданные данные при использовании
+writes cylinder group summary to disk and reads it again later for doing more
+updates.
+This read operation will provide unexpected data when using
 .Fl N .
-Следовательно, эту часть нельзя действительно симулировать, и она будет пропущена в тестовом режиме.
+Therefore, this part cannot really be simulated and will be skipped in test
+mode.

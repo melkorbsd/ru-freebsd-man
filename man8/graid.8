@@ -1,10 +1,34 @@
-.Dd 4 апреля 2013 года
+.\" Copyright (c) 2010 Alexander Motin <mav@FreeBSD.org>
+.\" All rights reserved.
+.\"
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
+.\"
+.\" THIS SOFTWARE IS PROVIDED BY THE AUTHORS AND CONTRIBUTORS ``AS IS'' AND
+.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHORS OR CONTRIBUTORS BE LIABLE
+.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+.\" SUCH DAMAGE.
+.\"
+.Dd April 4, 2013
 .Dt GRAID 8
 .Os
-.Sh НАЗВАНИЕ
+.Sh NAME
 .Nm graid
-.Nd "утилита управления для устройств программного RAID"
-.Sh СИНТАКСИС
+.Nd "control utility for software RAID devices"
+.Sh SYNOPSIS
 .Nm
 .Cm label
 .Op Fl f
@@ -52,218 +76,244 @@
 .Cm load
 .Nm
 .Cm unload
-.Sh ОПИСАНИЕ
-Утилита
+.Sh DESCRIPTION
+The
 .Nm
-используется для управления конфигурациями программного RAID, которые поддерживаются классом GEOM RAID.
-Класс GEOM RAID использует метаданные на диске, чтобы предоставлять доступ к томам программного RAID, определенным различными RAID BIOS.
-В зависимости от типа RAID BIOS и формата его метаданных поддерживаются различные подмножества конфигураций и функций.
-Для возможности загрузки с тома RAID формат метаданных должен соответствовать типу RAID BIOS и его возможностям.
-Чтобы гарантировать их соответствие, рекомендуется создавать тома через интерфейс RAID BIOS, хотя опытные пользователи могут делать это с помощью этой утилиты.
+utility is used to manage software RAID configurations, supported by the
+GEOM RAID class.
+GEOM RAID class uses on-disk metadata to provide access to software-RAID
+volumes defined by different RAID BIOSes.
+Depending on RAID BIOS type and its metadata format, different subsets of
+configurations and features are supported.
+To allow booting from RAID volume, the metadata format should match the
+RAID BIOS type and its capabilities.
+To guarantee that these match, it is recommended to create volumes via the
+RAID BIOS interface, while experienced users are free to do it using this
+utility.
 .Pp
-Первый аргумент для
+The first argument to
 .Nm
-указывает действие, которое должно быть выполнено:
+indicates an action to be performed:
 .Bl -tag -width ".Cm destroy"
 .It Cm label
-Создать массив с одним томом.
-Аргумент
+Create an array with single volume.
+The
 .Ar format
-указывает формат метаданных на диске, который будет использоваться для этого массива, такой как "Intel".
-Аргумент
+argument specifies the on-disk metadata format to use for this array,
+such as "Intel".
+The
 .Ar label
-указывает метку созданного тома.
-Аргумент
+argument specifies the label of the created volume.
+The
 .Ar level
-указывает уровень RAID созданного тома, такой как: "RAID0", "RAID1" и т.д.Следующий список перечисляет провайдеров для использования в качестве компонентов массива.
-Особое имя "NONE" может использоваться для резервирования места для отсутствующих дисков.
-Порядок компонентов может быть важен в зависимости от конкретного уровня RAID
-и формата метаданных.
+argument specifies the RAID level of the created volume, such as:
+"RAID0", "RAID1", etc.
+The subsequent list enumerates providers to use as array components.
+The special name "NONE" can be used to reserve space for absent disks.
+The order of components can be important, depending on specific RAID level
+and metadata format.
 .Pp
-Дополнительные параметры включают в себя:
+Additional options include:
 .Bl -tag -width ".Fl s Ar strip"
 .It Fl f
-Принудительно создать указанную конфигурацию, если официально она не поддерживается,
-но технически может быть создана.
+Enforce specified configuration creation if it is officially unsupported,
+but technically can be created.
 .It Fl o Ar fmtopt
-Указывает параметры формата метаданных.
+Specifies metadata format options.
 .It Fl S Ar size
-Использовать
+Use
 .Ar size
-байт на каждом компоненте для этого тома.
-Следует использовать, если планируется несколько томов на массив или если позже будут добавлены более мелкие компоненты.
-По умолчанию устанавливается размер наименьшего компонента.
+bytes on each component for this volume.
+Should be used if several volumes per array are planned, or if smaller
+components going to be inserted later.
+Defaults to size of the smallest component.
 .It Fl s Ar strip
-Указывает размер полосы в байтах.
-По умолчанию 131072.
+Specifies strip size in bytes.
+Defaults to 131072.
 .El
 .It Cm add
-Создать дополнительный том на существующем массиве.
-Аргумент
+Create another volume on the existing array.
+The
 .Ar name
-- это имя существующего массива, указанное командой label.
-Остальные аргументы такие же, как для команды label.
+argument is the name of the existing array, reported by label command.
+The rest of arguments are the same as for the label command.
 .It Cm delete
-Удалить том(ы) из существующего массива.
-Когда удаляется последний том, массив также удаляется и его метаданные
-стираются.
-Аргумент
+Delete volume(s) from the existing array.
+When the last volume is deleted, the array is also deleted and its metadata
+erased.
+The
 .Ar name
-- это имя существующего массива.
-Необязательные аргументы
+argument is the name of existing array.
+Optional
 .Ar label
-или
+or
 .Ar num
-позволяют указать том для удаления.
+arguments allow specifying volume for deletion.
 .Pp
-Дополнительные параметры включают в себя:
+Additional options include:
 .Bl -tag -width ".Fl f"
 .It Fl f
-Удалить том(ы) даже если он все еще открыт.
+Delete volume(s) even if it is still open.
 .El
 .It Cm insert
-Вставить указанный провайдер(ы) в указанный массив вместо первого отсутствующего
-или неисправного компонентов.
-Если таких компонентов нет, отметить диск(и) как резервный(е).
+Insert specified provider(s) into specified array instead of the first missing
+or failed components.
+If there are no such components, mark disk(s) as spare.
 .It Cm remove
-Удалить указанный провайдер(ы) из указанного массива и стереть метаданные.Если имеются запасные диски, удаленные диск(и) будут заменены запасными.
+Remove the specified provider(s) from the specified array and erase metadata.
+If there are spare disks present, the removed disk(s) will be replaced by
+spares.
 .It Cm fail
-Пометить указанные диск(и) как неисправные, исключив их из активного использования, если это не абсолютно необходимо из-за исчерпания резерва.
-Если имеются запасные диски – неисправные диск(и) будут заменены одним из них.
+Mark the given disks(s) as failed, removing from active use unless absolutely
+necessary due to exhausted redundancy.
+If there are spare disks present - failed disk(s) will be replaced with one
+of them.
 .It Cm stop
-Остановить указанный массив.
-Метаданные не будут стерты.
+Stop the given array.
+The metadata will not be erased.
 .Pp
-Дополнительные опции включают:
+Additional options include:
 .Bl -tag -width ".Fl f"
 .It Fl f
-Остановить указанный массив, даже если некоторые из его томов открыты.
+Stop the given array even if some of its volumes are opened.
 .El
 .It Cm list
-См.
+See
 .Xr geom 8 .
 .It Cm status
-См.
+See
 .Xr geom 8 .
 .It Cm load
-См.
+See
 .Xr geom 8 .
 .It Cm unload
-См.
+See
 .Xr geom 8 .
 .El
 .Pp
-Дополнительные опции включают:
+Additional options include:
 .Bl -tag -width ".Fl v"
 .It Fl v
-Более подробный вывод.
+Be more verbose.
 .El
-.Sh ПОДДЕРЖИВАЕМЫЕ ФОРМАТЫ МЕТАДАННЫХ
-Класс GEOM RAID следует модульному дизайну, позволяя использовать различные форматы метаданных.
-На данный момент поддержка реализована для следующих форматов:
+.Sh SUPPORTED METADATA FORMATS
+The GEOM RAID class follows a modular design, allowing different metadata
+formats to be used.
+Support is currently implemented for the following formats:
 .Bl -tag -width "Intel"
 .It DDF
-Формат, определенный спецификацией SNIA Common RAID Disk Data Format v2.0.
-Используется некоторыми BIOS Adaptec RAID и некоторыми аппаратными RAID-контроллерами.
-Из-за высокой гибкости формата различные реализации поддерживают
-разный набор функций и имеют различные разметки метаданных на диске.
-Для обеспечения совместимости класс GEOM RAID имитирует возможности
-первого обнаруженного массива DDF.
-Учитывая это, он может поддерживать различное количество дисков на том,
-томов на массив, разделов на диск и т. д.
-Поддерживаются следующие конфигурации: RAID0 (2+ диска), RAID1 (2+ диска),
-RAID1E (3+ диска), RAID3 (3+ диска), RAID4 (3+ диска), RAID5 (3+ диска),
-RAID5E (4+ диска), RAID5EE (4+ диска), RAID5R (3+ диска), RAID6 (4+ диска),
-
-RAIDMDF (4+ дисков), RAID10 (4+ дисков), SINGLE (1 диск), CONCAT (2+ дисков).
+The format defined by the SNIA Common RAID Disk Data Format v2.0 specification.
+Used by some Adaptec RAID BIOSes and some hardware RAID controllers.
+Because of high format flexibility different implementations support
+different set of features and have different on-disk metadata layouts.
+To provide compatibility, the GEOM RAID class mimics capabilities
+of the first detected DDF array.
+Respecting that, it may support different number of disks per volume,
+volumes per array, partitions per disk, etc.
+The following configurations are supported: RAID0 (2+ disks), RAID1 (2+ disks),
+RAID1E (3+ disks), RAID3 (3+ disks), RAID4 (3+ disks), RAID5 (3+ disks),
+RAID5E (4+ disks), RAID5EE (4+ disks), RAID5R (3+ disks), RAID6 (4+ disks),
+RAIDMDF (4+ disks), RAID10 (4+ disks), SINGLE (1 disk), CONCAT (2+ disks).
 .Pp
-Формат поддерживает две опции "BE" и "LE", что означает порядок байтов big-endian, который определен спецификацией (по умолчанию) и порядок байтов little-endian, используемый некоторыми контроллерами Adaptec.
+Format supports two options "BE" and "LE", that mean big-endian byte order
+defined by specification (default) and little-endian used by some Adaptec
+controllers.
 .It Intel
-Формат, используемый BIOS RAID от Intel.
-Поддерживает до двух томов на массив.
-Поддерживаемые конфигурации: RAID0 (2+ дисков), RAID1 (2 диска),
-RAID5 (3+ дисков), RAID10 (4 диска).
-Конфигурации, не поддерживаемые BIOS RAID от Intel, но возможные для самостоятельного использования на свой страх и риск: RAID1 (3+ дисков), RAID1E (3+ дисков), RAID10 (6+ дисков).
+The format used by Intel RAID BIOS.
+Supports up to two volumes per array.
+Supports configurations: RAID0 (2+ disks), RAID1 (2 disks),
+RAID5 (3+ disks), RAID10 (4 disks).
+Configurations not supported by Intel RAID BIOS, but enforceable on your own
+risk: RAID1 (3+ disks), RAID1E (3+ disks), RAID10 (6+ disks).
 .It JMicron
-Формат, используемый BIOS RAID от JMicron.
-Поддерживает один том на массив.
-Поддерживаемые конфигурации: RAID0 (2+ дисков), RAID1 (2 диска),
-RAID10 (4 диска), CONCAT (2+ дисков).
-Конфигурации, не поддерживаемые BIOS RAID от JMicron, но возможные для самостоятельного использования на свой страх и риск: RAID1 (3+ дисков), RAID1E (3+ дисков), RAID10 (6+ дисков), RAID5 (3+ дисков).
+The format used by JMicron RAID BIOS.
+Supports one volume per array.
+Supports configurations: RAID0 (2+ disks), RAID1 (2 disks),
+RAID10 (4 disks), CONCAT (2+ disks).
+Configurations not supported by JMicron RAID BIOS, but enforceable on your own
+risk: RAID1 (3+ disks), RAID1E (3+ disks), RAID10 (6+ disks), RAID5 (3+ disks).
 .It NVIDIA
-Формат, используемый BIOS RAID от NVIDIA MediaShield.
-Поддерживает один том на массив.
-Поддерживаемые конфигурации: RAID0 (2+ дисков), RAID1 (2 диска),
-RAID5 (3+ дисков), RAID10 (4+ дисков), SINGLE (1 диск), CONCAT (2+ дисков).
-Конфигурации, не поддерживаемые BIOS RAID от NVIDIA MediaShield, но возможные для самостоятельного использования на свой страх и риск: RAID1 (3+ дисков).
+The format used by NVIDIA MediaShield RAID BIOS.
+Supports one volume per array.
+Supports configurations: RAID0 (2+ disks), RAID1 (2 disks),
+RAID5 (3+ disks), RAID10 (4+ disks), SINGLE (1 disk), CONCAT (2+ disks).
+Configurations not supported by NVIDIA MediaShield RAID BIOS, but enforceable
+on your own risk: RAID1 (3+ disks).
 .It Promise
-Формат, используемый BIOS RAID от Promise и AMD/ATI.
-Поддерживает несколько томов на массив.
-Каждый диск может быть разделен для использования до двух произвольных томов.
-Поддерживаемые конфигурации: RAID0 (2+ дисков), RAID1 (2 диска),
-RAID5 (3+ дисков), RAID10 (4 диска), SINGLE (1 диск), CONCAT (2+ дисков).
-Конфигурации, не поддерживаемые BIOS RAID, но возможные для самостоятельного использования на ваш страх и риск:Данный формат используется BIOS RAID от SiliconImage.
-Поддерживает один том на массив.
-Поддерживаются следующие конфигурации: RAID0 (2+ диска), RAID1 (2 диска),
-RAID5 (3+ диска), RAID10 (4 диска), SINGLE (1 диск), CONCAT (2+ диска).
-Конфигурации, не поддерживаемые BIOS RAID от SiliconImage, но применимые на ваш
-собственный риск: RAID1 (3+ диска), RAID10 (6+ дисков).
+The format used by Promise and AMD/ATI RAID BIOSes.
+Supports multiple volumes per array.
+Each disk can be split to be used by up to two arbitrary volumes.
+Supports configurations: RAID0 (2+ disks), RAID1 (2 disks),
+RAID5 (3+ disks), RAID10 (4 disks), SINGLE (1 disk), CONCAT (2+ disks).
+Configurations not supported by RAID BIOSes, but enforceable on your
+own risk: RAID1 (3+ disks), RAID10 (6+ disks).
+.It SiI
+The format used by SiliconImage RAID BIOS.
+Supports one volume per array.
+Supports configurations: RAID0 (2+ disks), RAID1 (2 disks),
+RAID5 (3+ disks), RAID10 (4 disks), SINGLE (1 disk), CONCAT (2+ disks).
+Configurations not supported by SiliconImage RAID BIOS, but enforceable on your
+own risk: RAID1 (3+ disks), RAID10 (6+ disks).
 .El
-.Sh ПОДДЕРЖИВАЕМЫЕ УРОВНИ RAID
-Класс GEOM RAID следует модульному дизайну, позволяющему использовать различные уровни RAID.
-Полная поддержка следующих уровней RAID в настоящее время реализована:
+.Sh SUPPORTED RAID LEVELS
+The GEOM RAID class follows a modular design, allowing different RAID levels
+to be used.
+Full support for the following RAID levels is currently implemented:
 RAID0, RAID1, RAID1E, RAID10, SINGLE, CONCAT.
-Следующие уровни RAID поддерживаются только для чтения для томов в оптимальном
-состоянии (без использования избыточности): RAID4, RAID5, RAID5E, RAID5EE, RAID5R,
+The following RAID levels supported as read-only for volumes in optimal
+state (without using redundancy): RAID4, RAID5, RAID5E, RAID5EE, RAID5R,
 RAID6, RAIDMDF.
-.Sh МИГРАЦИЯ УРОВНЯ RAID
-Класс GEOM RAID не поддерживает миграцию уровня RAID, разрешенную некоторыми
-форматами метаданных.
-Если вы начали миграцию с помощью BIOS или каким-либо другим способом, убедитесь, что
-завершите ее там.
-Не запускайте класс GEOM RAID на мигрирующих томах под угрозой возможной потери данных!
-.Sh 2TiB ПРЕПЯТСТВИЯ
-Формат метаданных NVIDIA не поддерживает тома свыше 2TiB.
-.Sh ПЕРЕМЕННЫЕ SYSCTL
-Следующие переменные
+.Sh RAID LEVEL MIGRATION
+The GEOM RAID class has no support for RAID level migration, allowed by some
+metadata formats.
+If you started migration using BIOS or in some other way, make sure to
+complete it there.
+Do not run GEOM RAID class on migrating volumes under pain of possible data
+corruption!
+.Sh 2TiB BARRIERS
+NVIDIA metadata format does not support volumes above 2TiB.
+.Sh SYSCTL VARIABLES
+The following
 .Xr sysctl 8
-могут быть использованы для управления поведением класса
+variable can be used to control the behavior of the
 .Nm RAID
-GEOM.
+GEOM class.
 .Bl -tag -width indent
 .It Va kern.geom.raid.aggressive_spare : No 0
-Используйте любые диски без метаданных, подключенные к контроллерам производителя,
-соответствующего формату метаданных тома, в качестве запасных.
-Используйте это с большой осторожностью, чтобы не потерять данные при подключении несвязанного диска!
+Use any disks without metadata connected to controllers of the vendor
+matching to volume metadata format as spare.
+Use it with much care to not lose data if connecting unrelated disk!
 .It Va kern.geom.raid.clean_time : No 5
-Отметьте том как чистый при простое в течение указанного количества секунд..Va kern.geom.raid.debug : No 0
-Уровень отладки для класса GEOM
-.Nm RAID.
-.Va kern.geom.raid.enable : No 1
-Включение тестирования метаданных на диске.
-.Va kern.geom.raid.idle_threshold : No 1000000
-Время в микросекундах для определения простоя тома в целях перестройки.
-.Va kern.geom.raid.name_format : No 0
-Формат имени провайдера: 0 -- raid/r{num}, 1 -- raid/{label}.
-.Va kern.geom.raid.read_err_thresh : No 10
-Количество ошибок чтения равносильных отказу диска.
-Ошибки записи всегда рассматриваются как отказы диска.
-.Va kern.geom.raid.start_timeout : No 30
-Время ожидания отсутствующих компонентов массива при запуске.
-.Va kern.geom.raid. Ns Ar X Ns Va .enable : No 1
-Включение тестирования для конкретных метаданных или модуля преобразования.
+Mark volume as clean when idle for the specified number of seconds.
+.It Va kern.geom.raid.debug : No 0
+Debug level of the
+.Nm RAID
+GEOM class.
+.It Va kern.geom.raid.enable : No 1
+Enable on-disk metadata taste.
+.It Va kern.geom.raid.idle_threshold : No 1000000
+Time in microseconds to consider a volume idle for rebuild purposes.
+.It Va kern.geom.raid.name_format : No 0
+Providers name format: 0 -- raid/r{num}, 1 -- raid/{label}.
+.It Va kern.geom.raid.read_err_thresh : No 10
+Number of read errors equated to disk failure.
+Write errors are always considered as disk failures.
+.It Va kern.geom.raid.start_timeout : No 30
+Time to wait for missing array components on startup.
+.It Va kern.geom.raid. Ns Ar X Ns Va .enable : No 1
+Enable taste for specific metadata or transformation module.
 .El
-.Sh СТАТУС ВЫХОДА
-Статус выхода 0 при успешном выполнении и ненулевой, если команда завершилась с ошибкой.
-.Sh СМ. ТАКЖЕ
-.Xr geom 4,
-.Xr geom 8,
+.Sh EXIT STATUS
+Exit status is 0 on success, and non-zero if the command fails.
+.Sh SEE ALSO
+.Xr geom 4 ,
+.Xr geom 8 ,
 .Xr gvinum 8
-.Sh ИСТОРИЯ
-Утилита
+.Sh HISTORY
+The
 .Nm
-появилась в
-.Fx 9.0.
-.Sh АВТОРЫ
+utility appeared in
+.Fx 9.0 .
+.Sh AUTHORS
 .An Alexander Motin Aq Mt mav@FreeBSD.org
 .An M. Warner Losh Aq Mt imp@FreeBSD.org

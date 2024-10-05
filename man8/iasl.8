@@ -1,43 +1,45 @@
-.\"
+.\"-
 .\" Copyright (c) 2003 Nate Lawson
-.\" Все права защищены.
+.\" All rights reserved.
 .\"
-.\" Распространение и использование в исходных и двоичных формах, с изменениями или без них,
-.\" разрешается при условии соблюдения следующих условий:
-.\" 1. Распространяемый исходный код должен сохранять указанное выше уведомление об авторских правах,
-.\"    этот список условий и следующее отказ от гарантий
-.\"    в этой позиции и без изменений.
-.\" 2. Распространения в двоичной форме должны воспроизводить указанное выше уведомление об авторских правах,
-.\"    этот список условий и следующее отказ от гарантий в документации
-.\"    и/или других материалах, предоставляемых с распространением.
-.\" 3. Имя автора не может быть использовано для поддержки или продвижения продуктов,
-.\"    производных от этого программного обеспечения без конкретного предварительного письменного разрешения.
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer
+.\"    in this position and unchanged.
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
+.\" 3. The name of the author may not be used to endorse or promote products
+.\"    derived from this software without specific prior written permission.
 .\"
-.\" ЭТО ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ АВТОРОМ ``КАК ЕСТЬ'' И ЛЮБЫЕ ЯВНЫЕ ИЛИ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ,
-.\" ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ ПОДРАЗУМЕВАЕМЫМИ ГАРАНТИЯМИ КОММЕРЧЕСКОЙ ЦЕННОСТИ И ПРИГОДНОСТИ
-.\" ДЛЯ КОНКРЕТНОЙ ЦЕЛИ ОТКЛЮЧАЮТСЯ.
-.\" НИ ПРИ КАКИХ ОБСТОЯТЕЛЬСТВАХ АВТОР НЕ НЕСЁТ ОТВЕТСТВЕННОСТИ ЗА ЛЮБОЙ ПРЯМОЙ, КОСВЕННЫЙ,
-.\" СЛУЧАЙНЫЙ, ОСОБЫЙ, ЭКЗЕМПЛЯРНЫЙ ИЛИ КОСВЕННЫЙ УЩЕРБ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ЗАМЕЩЕНИЕМ ТОВАРОВ ИЛИ УСЛУГ;
-.\" ПОТЕРЕЙ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПРЕРЫВАНИЕМ ДЕЛОВОЙ АКТИВНОСТИ) ТЕМ НЕ МЕНЕЕ ВЫЗВАННОГО И ПО
-.\" ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО В ДОГОВОРЕ, СТРОГОЙ ОТВЕТСТВЕННОСТИ ИЛИ ДЕЛИКТЕ
-.\" (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНАЧЕ) ВОЗНИКШЕГО В ЛЮБОМ СЛУЧАЕ В РЕЗУЛЬТАТЕ ИСПОЛЬЗОВАНИЯ
-.\" ЭТОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ УВЕДОМЛЕНЫ О ВОЗМОЖНОСТИ ТАКОГО УЩЕРБА.
+.\" THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+.\" IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+.\" OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+.\" IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+.\" INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+.\" NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+.\" DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+.\" THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+.\" (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+.\" THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 .\"
-.Dd 20 мая 2008 года
+.Dd May 20, 2008
 .Dt IASL 8
 .Os
-.Sh НАЗВАНИЕ
+.Sh NAME
 .Nm iasl
-.Nd Компилятор/декомпилятор Intel ACPI
-.Sh СИНТАКСИС
+.Nd Intel ACPI compiler/decompiler
+.Sh SYNOPSIS
 .Nm
 .Op Fl 2cefghl
-.Op Fl b Ar тип
-.Op Fl d Ar файл
-.Op Fl dc Ar файл
+.Op Fl b Ar type
+.Op Fl d Ar file
+.Op Fl dc Ar file
 .Op Fl hc
 .Op Fl hr
-.Op Fl i Ar тип
+.Op Fl i Ar type
 .Op Fl ln
 .Op Fl ls
 .Op Fl oa
@@ -45,132 +47,131 @@
 .Op Fl oi
 .Op Fl on
 .Op Fl ot
-.Op Fl p Ar префикс
-.Op Fl s Ar тип
-.Op Fl t Ar тип
+.Op Fl p Ar prefix
+.Op Fl s Ar type
+.Op Fl t Ar type
 .Op Fl vi
 .Op Fl vo
 .Op Fl vr
 .Op Fl vs
-.Op Fl x Ar уровень
-.Op Fl w Ar уровень
-.Ar входной-файл
-.Sh ОПИСАНИЕ
-Программа
+.Op Fl x Ar level
+.Op Fl w Ar level
+.Ar input-file
+.Sh DESCRIPTION
+The
 .Nm
-— это компилятор/декомпилятор для ACPI Исходного Языка (ASL)
-и ACPI Машинного Языка (AML).
-Основные возможности
+utility is a compiler/decompiler for ACPI Source Language (ASL)
+and ACPI Machine Language (AML).
+Major features of
 .Nm
-включают:
+include:
 .Bl -bullet -offset indent
 .It
-Полная поддержка спецификации ACPI 3.0b, включая элементы грамматики ASL
-и операторы.
+Full support for the ACPI 3.0b Specification including ASL grammar
+elements and operators.
 .It
-Обширная проверка синтаксиса и семантики компилятора, особенно в
-области методов управления.
-Это снижает количество ошибок, которые
-обнаруживаются не до того, как код AML фактически интерпретируется (то есть
-проверка ошибок на этапе компиляции сокращает количество ошибок выполнения).
+Extensive compiler syntax and semantic error checking, especially in
+the area of control methods.
+This reduces the number of errors that are
+not discovered until the AML code is actually interpreted (i.e., the
+compile-time error checking reduces the number of run-time errors).
 .It
-Множество типов выходных файлов, включая отформатированные файлы листингов с
-перемешанным исходным кодом, несколько типов файлов AML и сообщения об ошибках.
+Multiple types of output files, including formatted listing files with
+intermixed source, several types of AML files, and error messages.
 .El
-.Sh ОПЦИИ
+.Sh OPTIONS
 .Bl -tag -width indent
 .It Fl 2
-Генерировать совместимый с ACPI 2.0 код ASL.
+Emit ACPI 2.0 compatible ASL code.
 .It Fl b Sm Cm p | t | b Sm
-Создать файл отладки/трассировки компилятора
+Create compiler debug/trace file
 .Pq Pa *.txt .
-Типы: Парсинг/Дерево/Оба.
+Types: Parse/Tree/Both.
 .It Fl c
-Только парсинг, без создания выходного файла.
-.It Fl d Ar файл
-Декомпилировать AML в исходный код ASL
+Parse only, no output generation.
+.It Fl d Ar file
+Disassemble AML to ASL source code file
 .Pq Pa *.dsl .
-.It Fl dc Ar файл
-Декомпилировать AML и немедленно скомпилировать его.
-(Получать DSDT из текущей системы, если нет входного файла.)
+.It Fl dc Ar file
+Disassemble AML and immediately compile it.
+(Obtain DSDT from current system if no input file.)
 .It Fl e
-Генерировать
-.Fn Внешние
-указания для неразрешенных символов.
+Generate
+.Fn External
+statements for unresolved symbols.
 .It Fl f
-Игнорировать ошибки, принудительно создавать файл(ы) AML.
+Ignore errors, force creation of AML output file(s).
 .It Fl g
-Получать таблицы ACPI и записывать в файлы
-
+Get ACPI tables and write to files
 .Pq Pa *.dat .
 .It Fl h
-Дополнительная помощь и опции отладки компилятора.
+Additional help and compiler debug options.
 .It Fl hc
-Показывает операторы, разрешенные в константных выражениях.
+Display operators allowed in constant expressions.
 .It Fl hr
-Показывает зарезервированные методы имена ACPI.
+Display ACPI reserved method names.
 .It Fl i Sm Cm a | c Sm
-Создание файла ассемблера или файла включения C
+Create assembler or C include file
 .Pa ( *.inc
-или
+or
 .Pa *.h ) .
 .It Fl l
-Создание смешанного файла листинга (исходный код ASL и AML)
+Create mixed listing file (ASL source and AML)
 .Pq Pa *.lst .
 .It Fl ln
-Создание файла пространства имен
+Create namespace file
 .Pq Pa *.nsp .
 .It Fl ls
-Создание объединенного исходного файла (расширенные включения)
+Create combined source file (expanded includes)
 .Pq Pa *.src .
 .It Fl oa
-Отключение всех оптимизаций (режим совместимости).
+Disable all optimizations (compatibility mode).
 .It Fl of
-Отключение сворачивания констант.
+Disable constant folding.
 .It Fl oi
-Отключение оптимизации целых чисел в Ноль/Один/Единицы.
+Disable integer optimization to Zero/One/Ones.
 .It Fl on
-Отключение оптимизации строковых ссылок по имени.
+Disable named reference string optimization.
 .It Fl ot
-Показ времени компиляции.
+Display compile times.
 .It Fl p Ar prefix
-Определение префикса имени файла для всех выходных файлов (включая
+Specify filename prefix for all output files (including
 .Pa .aml ) .
 .It Fl s Sm Cm a | c Sm
-Создание AML в файле исходного кода ассемблера или C
+Create AML in assembler or C source file
 .Pa ( *.asm
-или
+or
 .Pa *.c ) .
 .It Fl t Ar a|c
-Создание AML в таблице шестнадцатеричных кодов ассемблера или C
+Create AML in assembler or C hex table
 .Pq Pa *.hex .
 .It Fl vi
-Менее подробные ошибки и предупреждения для использования с IDE.
+Less verbose errors and warnings for use with IDEs.
 .It Fl vo
-Включение комментариев оптимизации.
+Enable optimization comments.
 .It Fl vr
-Отключение замечаний.
+Disable remarks.
 .It Fl vs
-Отключение приветствия.
+Disable signon.
 .It Fl x Ar level
-Установка уровня отладки для трассировки вывода.
+Set debug level for trace output.
 .It Fl w Ar level
-Установка уровня предупреждений.
+Set warning level.
 .El
 .Sh SEE ALSO
 .Xr acpi 4 ,
 .Xr acpidump 8
 .Sh HISTORY
-Утилита
+The
 .Nm
-поставляется вместе с Intel ACPI-CA.
-Впервые появилась в
+utility is provided with Intel ACPI-CA.
+It first appeared in
 .Fx 5.2 .
 .Sh AUTHORS
 .An -nosplit
-Утилиту
+The
 .Nm
-написал
+utility was written by
 .An Intel .
-Эту страницу руководства написал
+This manual page was written by
 .An Nate Lawson .

@@ -1,226 +1,300 @@
-.\" Copyright (c) 2005 Chris Jones
-.\" Все права защищены.
+.\"  Copyright (c) 2005 Chris Jones
+.\"  All rights reserved.
 .\"
-.\" Это программное обеспечение было разработано для проекта FreeBSD Chris Jones
-.\" благодаря поддержке программы Google's Summer of Code и
-.\" наставничеству Lukas Ertl.
+.\" This software was developed for the FreeBSD Project by Chris Jones
+.\" thanks to the support of Google's Summer of Code program and
+.\" mentoring by Lukas Ertl.
 .\"
-.\" Распространение и использование в исходных и двоичных формах, с изменениями или без них,
-.\" разрешены при условии соблюдения следующих условий:
-.\" 1. Распространение исходного кода должно сохранять вышеуказанное уведомление об авторских правах,
-.\"    этот список условий и следующее отказ от гарантий.
-.\" 2. Распространение в двоичной форме должно воспроизводить вышеуказанное уведомление об авторских правах,
-.\"    этот список условий и следующий отказ от гарантий в документации
-.\"    и/или других материалах, предоставляемых с распространением.
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
 .\"
-.\" ЭТО ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ АВТОРОМ И УЧАСТНИКАМИ "КАК ЕСТЬ" И
-.\" ВСЕ ЯВНЫЕ ИЛИ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ ИМИ, ПОДРАЗУМЕВАЕМЫЕ
-.\" ГАРАНТИИ ТОВАРНОЙ ПРИГОДНОСТИ И ПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЁННОЙ ЦЕЛИ ОТКЛОНЯЮТСЯ.
-.\" НИ В КОЕМ СЛУЧАЕ АВТОР ИЛИ УЧАСТНИКИ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ ЗА
-.\" ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, ОСОБЫЕ, ПОСЛЕДСТВЕННЫЕ ИЛИ ИНЫЕ УБЫТКИ
-.\" (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ ИМИ, ЗАМЕЩЕНИЕ ТОВАРОВ ИЛИ УСЛУГ; ПОТЕРЮ ИСПОЛЬЗОВАНИЯ, ДАННЫХ
-.\" ИЛИ ПРИБЫЛИ; ИЛИ ПРЕРЫВАНИЕ БИЗНЕСА), ОДНАКО ПРОИЗОШЕДШИЕ СЛЕДСТВИЕМ ИЛИ В СВЯЗИ С
-.\" ЛЮБОЙ ТЕОРИЕЙ ОТВЕТСТВЕННОСТИ, БУДЬ ТО В РАМКАХ КОНТРАКТА, СТРОГОЙ ОТВЕТСТВЕННОСТИ
-.\" ИЛИ ДЕЛИКТА (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНОЕ) В ЛЮБОМ СЛУЧАЕ, ВЫТЕКАЮЩЕМ ИЗ
-.\" ИСПОЛЬЗОВАНИЯ ЭТОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ БЫЛО ПРЕДУПРЕЖДЕНИЕ О ВОЗМОЖНОСТИ ТАКОГО УБЫТКА.
+.\" THIS SOFTWARE IS PROVIDED BY AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\" ARE DISCLAIMED.  IN NO EVENT SHALL AUTHOR OR CONTRIBUTORS BE LIABLE
+.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+.\" SUCH DAMAGE.
 .\"
-.Dd 28 марта 2021 года
+.Dd March 28, 2021
 .Dt GVINUM 8
 .Os
-.Sh ИМЯ
+.Sh NAME
 .Nm gvinum
-.Nd Программа управления Логическим ТомомResponse preparation time is too long, please simplify the question or use streaming.Ar description-file
-не будет создан, если указан флаг
-.Fl f
-.
-.It Ic detach Oo Fl f Oc Op Ar plex | subdisk
-Отсоединение плекса или субдиска от тома или плекса, к которому он подключен.
-.It Ic grow Ar plex device
-Увеличение плекса путем создания диска gvinum и субдиска на устройстве и их присоединения к плексу.
-Если это требуется организацией плекса, он будет переведен в состояние, доступное для увеличения.
-.It Ic help
-Предоставляет краткую сводку команд и аргументов
+.Nd Logical Volume Manager control program
+.Sh DEPRECATION NOTICE
 .Nm
-.
+and associated
+.Xr geom 4
+kernel support is deprecated, and may not be available in
+.Fx 14.0
+and later.
+Users are advised to migrate to
+.Xr gconcat 8 ,
+.Xr gmirror 8 ,
+.Xr gstripe 8 ,
+.Xr graid 8 ,
+or
+.Xr zfs 8 .
+More information is available at
+.Pa https://wiki.freebsd.org/DeprecationPlan/gvinum .
+.Sh SYNOPSIS
+.Nm
+.Op Ar command
+.Op Fl options
+.Sh COMMANDS
+.Bl -tag -width indent
+.It Ic attach Ar plex volume Op Cm rename
+.It Ic attach Ar subdisk plex Oo Ar offset Oc Op Cm rename
+Attach a plex to a volume, or a subdisk to a plex.
+If offset is specified, the subdisk will be attached to the given offset within
+the plex.
+If rename is specified, the subdisk or plex will change name according to the
+object it attaches to.
+.It Ic checkparity Oo Fl f Oc Ar plex
+Check the parity blocks of a RAID-5 plex.
+The parity check will start at the
+beginning of the plex if the
+.Fl f
+flag is specified, or otherwise at the location of the parity check pointer,
+the first location at which plex's parity is incorrect.
+All subdisks in the
+plex must be up for a parity check.
+.It Ic concat Oo Fl fv Oc Oo Fl n Ar name Oc Ar drives
+Create a concatenated volume from the specified drives.
+If no name is specified, a unique name will be set by
+.Ic gvinum .
+.It Ic create Oo Fl f Oc Op Ar description-file
+Create a volume as described in
+.Ar description-file .
+If no
+.Ar description-file
+provided, opens an editor and provides the current
+.Nm
+configuration for editing.
+The
+.Fl f
+flag will make gvinum ignore any errors regarding creating objects that already
+exists.
+However, in contrast to vinum, objects that are not properly named in the
+.Ar description-file
+will not be created when the
+.Fl f
+flag is given.
+.It Ic detach Oo Fl f Oc Op Ar plex | subdisk
+Detach a plex or subdisk from the volume or plex to which it is
+attached.
+.It Ic grow Ar plex device
+Grow a plex by creating a gvinum drive and subdisk on device and attach it to
+the plex.
+If required by the plex organization, it will be put into the growable state.
+.It Ic help
+Provides a synopsis of
+.Nm
+commands and arguments.
 .It Ic l | list Oo Fl rvV Oc Op Ar volume | plex | subdisk
 .It Ic ld Oo Fl rvV Oc Op Ar drive ...
 .It Ic ls Oo Fl rvV Oc Op Ar subdisk ...
 .It Ic lp Oo Fl rvV Oc Op Ar plex ...
 .It Ic lv Oo Fl rvV Oc Op Ar volume ...
-Выводит информацию о соответствующем объекте(ах).
-Флаг
+List information about the relevant object(s).
+The
 .Fl r
-предоставляет рекурсивное отображение, показывая объекты, подчиненные каждому, в правильной связи.
-Флаги
+flag provides recursive display, showing each object's subordinate objects in
+proper relation.
+The
 .Fl v
-и
+and
 .Fl V
-предоставляют более детальный вывод постепенно.
+flags provide progressively more detailed output.
 .It Ic mirror Oo Fl fsv Oc Oo Fl n Ar name Oc Ar drives
-Создает зеркальный том из указанных дисков.
-Для этого требуется как минимум два диска.
-Если имя не указано, уникальное имя будет установлено gvinum.
-Если указан флаг
+Create a mirrored volume from the specified drives.
+It requires at least a multiple of 2 drives.
+If no name is specified, a unique name will be set by gvinum.
+If the
 .Fl s
-, будет создано зеркало со стрипингом, для чего потребуется четное кратное 4 дисков.
+flag is specified, a striped mirror will be created, and thus requires a
+multiple of 4 drives.
 .It Ic move | mv Fl f Ar drive subdisk Op Ar ...
-Перемещение субдиска(ов) на указанный диск.
-Флаг
+Move the subdisk(s) to the specified drive.
+The
 .Fl f
-обязателен, так как все данные на указанном субдиске(ах) будут уничтожены в ходе перемещения.
-На данный момент это может быть выполнено, только если субдиск не используется.
+flag is required, as all data on the indicated subdisk(s) will be destroyed as
+part of the move.
+This can currently only be done when the subdisk is
+not being accessed.
 .Pp
-Если перемещается один субдиск, и он является частью RAID-5 плекса, перемещенные субдиски нуждаются в установке в состояние
-.Dq staleсостояние и плексу потребуется команда
+If a single subdisk is moved, and it forms a part of a RAID-5 plex, the moved
+subdisks will need to be set to the
+.Dq stale
+state, and the plex will require a
 .Ic start
-.
-Если перемещается несколько поддисков, и они являются частью RAID-5 плекса, перемещенные диски нужно будет установить в состояние
+command.
+If multiple subdisk(s) is moved, and form part of a RAID-5 plex, the
+moved disk(s) will need to be set to the
 .Dq up
-и плексу потребуется команда
+state and the plex will require a
 .Ic rebuildparity
-.
-Если поддиски являются частью плекса, который зеркалирован с другими плексами, плекс потребуется перезапустить, и он синхронизируется после перезапуска.
-Перемещение
-более одного поддиска в RAID-5 плексе или поддисков с обеих сторон зеркального плекса объема уничтожит данные.
-Обратите внимание, что восстановление четности и синхронизация
-должны быть начаты вручную после перемещения.
+command.
+If the subdisk(s) form part of a plex that is mirrored with other
+plexes, the plex will require restarting and will sync once restarted.
+Moving
+more than one subdisk in a RAID-5 plex or subdisks from both sides of a
+mirrored plex volume will destroy data.
+Note that parity rebuilds and syncing
+must be started manually after a move.
 .It Ic printconfig
-Записать копию текущей конфигурации на стандартный вывод.
+Write a copy of the current configuration to standard output.
 .It Ic quit
-Выход
+Exit
 .Nm
-при работе в интерактивном режиме.
-Обычно это делается путем ввода символа
-EOF
-.
-.It Ic raid5 Oo Fl fv Oc Oo Fl s Ar размер_полосы Oc Oo Fl n Ar имя Oc Ar диски
-Создать RAID-5 том из указанных дисков.
-Если имя не указано, уникальное имя будет установлено командой
-.Ic gvinum
-.
-Для данной организации требуется как минимум три диска.
-.It Ic rename Oo Fl r Oc Ar диск | поддиск | плекс | том новое_имя
-Изменить имя указанного объекта.
-Флаг
+when running in interactive mode.
+Normally this would be done by entering the
+EOF character.
+.It Ic raid5 Oo Fl fv Oc Oo Fl s Ar stripesize Oc Oo Fl n Ar name Oc Ar drives
+Create a RAID-5 volume from the specified drives.
+If no name is specified, a unique name will be set by
+.Ic gvinum .
+This organization requires at least three drives.
+.It Ic rename Oo Fl r Oc Ar drive | subdisk | plex | volume newname
+Change the name of the specified object.
+The
 .Fl r
-будет рекурсивно переименовывать подчиненные объекты.
+flag will recursively rename subordinate objects.
 .Pp
-Обратите внимание, что узлы устройств не будут переименованы до перезапуска
+Note that device nodes will not be renamed until
 .Nm
-.
-.It Ic rebuildparity Oo Fl f Oc Ar плекс
-Перестроить блоки четности RAID-5 плекса.
-Перестроение четности начнется с
-начала плекса, если указан флаг
+is restarted.
+.It Ic rebuildparity Oo Fl f Oc Ar plex
+Rebuild the parity blocks of a RAID-5 plex.
+The parity rebuild will start at
+the beginning of the plex if the
 .Fl f
-, или в противном случае с местоположения указателя проверки четности.
-Все поддиски в плексе должны быть в состоянии up для проверки четности.
+flag is specified, or otherwise at the location of the parity check pointer.
+All subdisks in the plex must be up for a parity check.
 .It Ic resetconfig Oo Fl f Oc
-Сбросить полную конфигурацию
+Reset the complete
 .Nm
-.It Ic rm Oo Fl r Oc Ar объем | plex | subdisk
-Удаляет объект и, если указан
-.Fl r,
-его подчиненные объекты.
+configuration.
+.It Ic rm Oo Fl r Oc Ar volume | plex | subdisk
+Remove an object and, if
+.Fl r
+is specified, its subordinate objects.
 .It Ic saveconfig
-Сохраняет конфигурацию
+Save
 .Nm
-на диск после сбоев конфигурации.
-.It Ic setstate Oo Fl f Oc Ar состояние объем | plex | subdisk | диск
-Устанавливает состояние без влияния на другие объекты, только для диагностических целей.
-Флаг
+configuration to disk after configuration failures.
+.It Ic setstate Oo Fl f Oc Ar state volume | plex | subdisk | drive
+Set state without influencing other objects, for diagnostic purposes
+only.
+The
 .Fl f
-принудительно изменяет состояние независимо от того, являются ли изменения законными.
+flag forces state changes regardless of whether they are legal.
 .It Ic start
-Читает конфигурацию со всех дисков vinum.
-.It Ic start Oo Fl S Ar размер Oc Ar объем | plex | subdisk
-Позволяет системе получать доступ к объектам.
-Если необходимо, plex будут синхронизированы и восстановлены.
-Если subdisk был добавлен к работающему RAID-5 или striped plex, gvinum будет
-расширяться на этот subdisk и увеличивать весь массив RAID-5.
-Это можно сделать без размонтирования вашей файловой системы.
-Флаг
+Read configuration from all vinum drives.
+.It Ic start Oo Fl S Ar size Oc Ar volume | plex | subdisk
+Allow the system to access the objects.
+If necessary, plexes will be synced and rebuilt.
+If a subdisk was added to a running RAID-5 or striped plex, gvinum will
+expand into this subdisk and grow the whole RAID-5 array.
+This can be done without unmounting your filesystem.
+The
 .Fl S
-в настоящее время игнорируется.
-.It Ic stop Oo Fl f Oc Op Ar объем | plex | subdisk
-Прекращает доступ к объектам или останавливает
-.Nm,
-если параметры не указаны.
-.It Ic stripe Oo Fl fv Oc Oo Fl n Ar имя Oc Ar диски
-Создает striped объем из указанных дисков.
-Если имя не указано, уникальное имя будет установлено
-.Ic gvinum.
-Для этой организации требуется как минимум два диска.
+flag is currently ignored.
+.It Ic stop Oo Fl f Oc Op Ar volume | plex | subdisk
+Terminate access to the objects, or stop
+.Nm
+if no parameters are specified.
+.It Ic stripe Oo Fl fv Oc Oo Fl n Ar name Oc Ar drives
+Create a striped volume from the specified drives.
+If no name is specified, a unique name will be set by
+.Ic gvinum .
+This organization requires at least two drives.
 .El
-.Sh ОПИСАНИЕ
-Утилита
+.Sh DESCRIPTION
+The
 .Nm
-взаимодействует с компонентом ядра менеджера логических томов GVinum.
-Она разработана для интерактивного использования, когда запущена без аргументов командной строки, или для выполнения одной команды, если команда предоставлена в командной строке.
-В интерактивном режиме
+utility communicates with the kernel component of the GVinum logical volume
+manager.
+It is designed either for interactive use, when started without
+command line arguments, or to execute a single command if the command is
+supplied on the command line.
+In interactive mode,
 .Nm
-поддерживает историю команд.
-.Sh ОПЦИИ
-Командам
+maintains a command line history.
+.Sh OPTIONS
+The
 .Nm
-могут следовать опции.
+commands may be followed by an option.
 .Bl -tag -width indent
 .It Fl f
-Опция
+The
 .Fl f
 .Pq Dq force
-переопределяет проверки безопасности.
-Следует использовать с особой осторожностью.
-Эта
-опция необходима для использования команды
+option overrides safety checks.
+It should be used with extreme caution.
+This
+option is required in order to use the
 .Ic move
+command.
 .It Fl r
-Опция
+The
 .Fl r
 .Pq Dq recursive
-применяет команду рекурсивно к подчиненным объектам.
-Например, в
-сочетании с командой
+option applies the command recursively to subordinate objects.
+For example, in
+conjunction with the
 .Ic lv
-опция
+command, the
 .Fl r
-также покажет информацию о плексах и субдисках, принадлежащих
-тому же тому.
-Опция также используется командой
+option will also show information about the plexes and subdisks belonging to
+the volume.
+It is also used by the
 .Ic rename
-для указания, что подчиненные объекты, такие как субдиски, должны быть переименованы
-в соответствии с указанными объектами, и командой
+command to indicate that subordinate objects such as subdisks should be renamed
+to match the object(s) specified and by the
 .Ic rm
-для удаления плексов, принадлежащих тому же.
+command to delete plexes belonging to a volume and so on.
 .It Fl v
-Опция
+The
 .Fl v
 .Pq Dq verbose
-предоставляет более детальный вывод.
+option provides more detailed output.
 .It Fl V
-Опция
+The
 .Fl V
 .Pq Dq "very verbose"
-предоставляет еще более подробный вывод, чем
+option provides even more detailed output than
 .Fl v .
 .El
 .Sh ENVIRONMENT
 .Bl -tag -width ".Ev EDITOR"
 .It Ev EDITOR
-Название редактора для редактирования файлов конфигурации, по
-умолчанию вызывается
+The name of the editor to use for editing configuration files, by
+default
 .Xr vi 1
+is invoked.
 .El
 .Sh FILES
 .Bl -tag -width ".Pa /dev/gvinum/plex"
 .It Pa /dev/gvinum
-каталог с устройственными узлами для
+directory with device nodes for
 .Nm
-объектов
+objects
 .El
 .Sh EXAMPLES
-Для создания зеркала на дисках /dev/ada1 и /dev/ada2, создания файловой системы,
-монтирования, размонтирования и затем остановки
+To create a mirror on disks /dev/ada1 and /dev/ada2, create a filesystem,
+mount, unmount and then stop
 .Ic gvinum :
 .Pp
 .Dl "gvinum mirror /dev/ada1 /dev/ada2"
@@ -230,27 +304,28 @@ EOF
 .Dl "unmount /mnt"
 .Dl "gvinum stop"
 .Pp
-Для создания полосатого зеркала на дисках /dev/ada1 /dev/ada2 /dev/ada3 и
-/dev/ada4 с именем "data" и создания файловой системы:
+To create a striped mirror on disks /dev/ada1 /dev/ada2 /dev/ada3 and
+/dev/ada4 named "data" and create a filesystem:
 .Pp
 .Dl "gvinum mirror -s -n data /dev/ada1 /dev/ada2 /dev/ada3 /dev/ada4"
 .Dl "newfs /dev/gvinum/data"
 .Pp
-Для создания массива raid5 на дисках /dev/ada1 /dev/ada2 и /dev/ada3,
-со значением размера полосы 493k, можно использовать команду raid5:
+To create a raid5 array on disks /dev/ada1 /dev/ada2 and /dev/ada3,
+with stripesize 493k you can use the raid5 command:
 .Pp
 .Dl "gvinum raid5 -s 493k /dev/ada1 /dev/ada2 /dev/ada3"
 .Pp
-Затем том будет создан автоматически.
-После этого вам необходимо инициализировать том:
+Then the volume will be created automatically.
+Afterwards, you have to initialize the volume:
 .Pp
 .Dl "gvinum start myraid5vol"
 .Pp
-Инициализация начнется, и состояния будут обновлены после ее завершения.
-Команда list предоставит вам информацию о ее прогрессе.
+The initialization will start, and the states will be updated when it's
+finished.
+The list command will give you information about its progress.
 .Pp
-Представьте, что один из дисков выходит из строя, и вывод 'printconfig' выглядит
-примерно так:
+Imagine that one of the drives fails, and the output of 'printconfig' looks
+something like this:
 .Pp
 .Dl "drive gvinumdrive1 device /dev/ada2"
 .Dl "drive gvinumdrive2 device /dev/???"
@@ -264,113 +339,122 @@ EOF
 .Dl "sd name myraid5vol.p0.s0 drive gvinumdrive0 len 32538s driveoffset 265s"
 .Dl "plex myraid5vol.p0 plexoffset 0s"
 .Pp
-Создайте новый диск с этой конфигурацией:
+Create a new drive with this configuration:
 .Pp
 .Dl "drive gdrive4 device /dev/ada4"
 .Pp
-Затем переместите устаревший субдиск на новый диск:
+Then move the stale subdisk to the new drive:
 .Pp
 .Dl "gvinum move gdrive4 myraid5vol.p0.s2"
 .Pp
-После этого начните перестройку:
+Then, initiate the rebuild:
 .Pp
 .Dl "gvinum start myraid5vol.p0"
 .Pp
-Plex выйдет из состояния деградации после завершения перестройки.
-Plex все еще можно использовать во время перестройки, хотя запросы
-могут задерживаться.Увеличение массива выполняется с помощью команды grow:
+The plex will go up form degraded mode after the rebuild is finished.
+The plex can still be used while the rebuild is in progress, although requests
+might be delayed.
+.Pp
+Given the configuration as in the previous example, growing a RAID-5 or STRIPED
+array is accomplished by using the grow command:
 .Pp
 .Dl "gvinum grow myraid5vol.p0 /dev/ada4"
 .Pp
-Если всё прошло хорошо, то состояние плекса теперь должно быть установлено, как расширяемое.
-Затем вы можете начать процесс увеличения с помощью команды
+If everything went ok, the plex state should now be set to growable.
+You can then start the growing with the
 .Ic start
-:
+command:
 .Pp
 .Dl "gvinum start myraid5vol.p0"
 .Pp
-Как и в случае с перестроением, вы можете следить за процессом с помощью команды
+As with rebuilding, you can watch the progress using the
 .Ic list
-.
+command.
 .Pp
-Для более сложного использования и детального объяснения gvinum рекомендуется обратиться к руководству пользователя.
-.Sh СМОТРИ ТАКЖЕ
+For a more advanced usage and detailed explanation of gvinum, the
+handbook is recommended.
+.Sh SEE ALSO
 .Xr geom 4 ,
 .Xr geom 8
-.Sh ИСТОРИЯ
-Утилита
+.Sh HISTORY
+The
 .Nm
-впервые появилась в
+utility first appeared in
 .Fx 5.3 .
-Утилита
+The
 .Nm vinum
-, на которой основан
+utility, on which
 .Nm
-, была написана
+is based, was written by
 .An "Greg Lehey" .
 .Pp
-Утилита
+The
 .Nm
-была написана
+utility
+was written by
 .An "Lukas Ertl" .
-Команды
+The
 .Ic move
-и
+and
 .Ic rename
-, а также документация были добавлены
+commands and
+documentation were added by
 .An "Chris Jones"
-в рамках программы Google Summer of Code 2005.
-Частичная перепись gvinum была выполнена
+through the 2005 Google Summer
+of Code program.
+A partial rewrite of gvinum was done by
 .An "Lukas Ertl"
-и
+and
 .An "Ulf Lilleengen"
-в рамках программы Google Summer of Code 2007.
-Документация была обновлена, чтобы отразить новые функции.
-.Sh АВТОРЫ
+through the 2007 Google Summer of Code program.
+The documentation have been updated to reflect the new functionality.
+.Sh AUTHORS
 .An Lukas Ertl Aq Mt le@FreeBSD.org
 .An Chris Jones Aq Mt soc-cjones@FreeBSD.org
 .An Ulf Lilleengen Aq Mt lulf@FreeBSD.org
-.Sh ОШИБКИ
-На данный момент
+.Sh BUGS
+Currently,
 .Nm
-не переименовывает устройства в
+does not rename devices in
 .Pa /dev/gvinum
-до их перезагрузки.
+until reloaded.
 .Pp
-Флаг
+The
 .Fl S
-initsize для команды
+initsize flag to
 .Ic start
-игнорируется.
+is ignored.
 .Pp
-Перемещение поддисков, которые не являются частью зеркального или RAID-5 тома, приведёт к уничтожению данных.
-Возможно, это следует считать ошибкой.
+Moving subdisks that are not part of a mirrored or RAID-5 volume will
+destroy data.
+It is perhaps a bug to permit this.
 .Pp
-Плексы, в которых поддиски были перемещены, не синхронизируются автоматически и не восстанавливают паритет.
-Это может оставить данные без защиты и, возможно, нецелесообразно.
+Plexes in which subdisks have been moved do not automatically sync or
+rebuild parity.
+This may leave data unprotected and is perhaps unwise.
 .Pp
-В настоящее время
+Currently,
 .Nm
-ещё не полностью реализует все функции, найденные в
+does not yet fully implement all of the functions found in
 .Nm vinum .
-В частности, следующие команды из
+Specifically, the following commands from
 .Nm vinum
-не поддерживаются:
+are not supported:
 .Bl -tag -width indent
 .It Ic debug
-Заставить менеджер томов войти в отладчик ядра.
+Cause the volume manager to enter the kernel debugger.
 .It Ic debug Ar flags
-Установить флаги отладки.
+Set debugging flags.
 .It Ic dumpconfig Op Ar drive ...
-Показать информацию о конфигурации, сохранённой на указанных дисках или на всех
-дисках в системе, если имена дисков не указаны.
+List the configuration information stored on the specified drives, or all
+drives in the system if no drive names are specified.
 .It Ic info Op Fl vV
-Показать информацию о состоянии менеджера томов.
+List information about volume manager state.
 .It Ic label Ar volume
-Создать метку тома.
+Create a volume label.
 .It Ic resetstats Oo Fl r Oc Op Ar volume | plex | subdisk
-Сбросить счётчики статистики для указанных объектов или для всех объектов, если
-они не указаны.
+Reset statistics counters for the specified objects, or for all objects if none
+are specified.
 .It Ic setdaemon Op Ar value
-Настроить конфигурацию daemon.
+Set daemon configuration.
 .El

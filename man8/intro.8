@@ -1,79 +1,90 @@
+.\" Copyright (c) 1983, 1991, 1993
+.\"	The Regents of the University of California.  All rights reserved.
 .\"
-.\" Авторские права (c) 1983, 1991, 1993
-.\" Регенты Университета Калифорнии. Все права защищены.
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
+.\" 3. Neither the name of the University nor the names of its contributors
+.\"    may be used to endorse or promote products derived from this software
+.\"    without specific prior written permission.
 .\"
-.\" Перераспределение и использование в исходных и двоичных формах, с изменениями или без,
-.\" разрешено при условии соблюдения следующих условий:
-.\" 1. Перераспределения исходного кода должны сохранять вышеуказанное уведомление об авторских правах,
-.\"    этот список условий и следующее отказ от ответственности.
-.\" 2. Перераспределения в двоичной форме должны воспроизводить вышеуказанное уведомление об авторских правах,
-.\"    этот список условий и следующее отказ от ответственности в
-.\"    документации и/или других материалах, предоставляемых с распределением.
-.\" 3. Название Университета, а также имена его участников,
-.\"    не могут быть использованы для одобрения или продвижения продуктов, производных от этого программного обеспечения,
-.\"    без конкретного предварительного письменного разрешения.
+.\" THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+.\" SUCH DAMAGE.
 .\"
-.\" ЭТО ПО ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ РЕГЕНТАМИ И УЧАСТНИКАМИ "КАК ЕСТЬ" И
-.\" ЛЮБЫЕ ЯВНЫЕ ИЛИ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПОДРАЗУМЕВАЕМЫМИ ГАРАНТИЯМИ
-.\" КОММЕРЧЕСКОЙ ЦЕННОСТИ И ПРИГОДНОСТИ ДЛЯ КОНКРЕТНОЙ ЦЕЛИ ОТКЛОНЯЮТСЯ. НИ В КОЕМ СЛУЧАЕ РЕГЕНТЫ ИЛИ УЧАСТНИКИ НЕ НЕСУТ ОТВЕТСТВЕННОСТЬ
-.\" ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, ОСОБЫЕ, ЭКЗЕМПЛЯРНЫЕ ИЛИ ПОСЛЕДОВАТЕЛЬНЫЕ УБЫТКИ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ЗАТРАТЫ НА ЗАМЕЩЕНИЕ ТОВАРОВ
-.\" ИЛИ УСЛУГ; ПОТЕРЮ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПРЕРЫВАНИЕ БИЗНЕСА)
-.\" ОДНАКО ПРИЧИНЕНЫ И ПО ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО В ДОГОВОРЕ, СТРОГОЙ ОТВЕТСТВЕННОСТИ,
-.\" ИЛИ ДЕЛИКТ (ВКЛЮЧАЯ НЕБРЕЖНОСТЬ ИЛИ ИНАЧЕ) ВОЗНИКАЮЩИЕ ЛЮБЫМ ОБРАЗОМ
-.\" ИЗ ИСПОЛЬЗОВАНИЯ ЭТОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ УВЕДОМЛЕНЫ О ВОЗМОЖНОСТИ ТАКОГО УЩЕРБА.
+.\"	@(#)intro.8	8.2 (Berkeley) 12/11/93
 .\"
-
-.Dd 22 октября 2006 года
-.INTRO 8
-.Ос
-.Sh НАЗВАНИЕ
-.Nm введение
-.Nd "введение в процедуры и команды по обслуживанию системы"
-.Sh ОПИСАНИЕ
-Этот раздел содержит информацию, относящуюся к операциям с системой и её обслуживанию.
+.Dd October 22, 2006
+.Dt INTRO 8
+.Os
+.Sh NAME
+.Nm intro
+.Nd "introduction to system maintenance procedures and commands"
+.Sh DESCRIPTION
+This section contains information related to system operation
+and maintenance.
 .Pp
-Здесь описываются команды, используемые для создания новых файловых систем
+It describes commands used to create new file systems
 .Pq Xr newfs 8 ,
-проверки целостности файловых систем
+verify the integrity of the file systems
 .Pq Xr fsck 8 ,
-контроля за использованием диска
+control disk usage
 .Pq Xr edquota 8 ,
-поддержания системных резервных копий
+maintain system backups
 .Pq Xr dump 8 ,
-и восстановления файлов, когда диски выходят из строя несвоевременно
+and recover files when disks die an untimely death
 .Pq Xr restore 8 .
-.\" Документация
+.\" The
 .\" .Xr format 8
-.\" для конкретной архитектуры системы, на которой она работает, должна быть
-.\" проконсультирована при форматировании дисков и лент.
-Также описываются сетевые службы, такие как
+.\" manual
+.\" for the specific architecture the system is running on should be
+.\" consulted when formatting disks and tapes.
+Network related services like
 .Xr inetd 8
-и
+and
 .Xr ftpd 8
+are also described.
 .Pp
-Все команды устанавливают статус выхода.
-Его значение может быть проверено,
-чтобы увидеть, завершилась ли команда нормально.
-Если не указано иное (редко), значение 0 означает успешное
-завершение команды, в то время как значение >0 указывает на ошибку.
-Некоторые команды пытаются описать характер неудачи, используя
-коды ошибок, определённые в
+All commands set an exit status.
+Its value may be tested
+to see if the command completed normally.
+Unless otherwise noted (rare), the value 0 signifies successful
+completion of the command, while a value >0 indicates an error.
+Some commands attempt to describe the nature of the failure by using
+error codes defined in
 .Xr sysexits 3 ,
-или устанавливают статус на произвольные значения >0 (обычно 1), но многие
-такие значения не описаны в руководстве.
+or set the status to arbitrary values >0 (typically 1), but many
+such values are not described in the manual.
 .Pp
-Несколько страниц в этом разделе описывают общие темы управления системой.
+A number of pages in this section describe general system
+management topics.
 .Pp
-Например, страница руководства
+For example, the
 .Xr boot 8
-описывает процедуры загрузки системы,
-а страница руководства
+manual page describes the system bootstrapping procedures,
+and the
 .Xr diskless 8
-описывает, как загрузить систему по сети.
-Страница руководства
+manual page describes how to boot a system over a network.
+The
 .Xr crash 8
-должна быть проконсультирована для понимания, как интерпретировать дампы сбоев системы.
-.Sh ИСТОРИЯ
+manual page
+should be consulted to understand how to interpret system
+crash dumps.
+.Sh HISTORY
+The
 .Nm
-Раздел руководства появился в
+section manual page appeared in
 .Bx 4.2 .

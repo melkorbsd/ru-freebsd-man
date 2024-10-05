@@ -1,32 +1,34 @@
-.\" Авторское право (c) 2006-2011 Иван Ворас <ivoras@FreeBSD.org>
-.\" Все права защищены.
+.\" Copyright (c) 2006-2011 Ivan Voras <ivoras@FreeBSD.org>
+.\" All rights reserved.
 .\"
-.\" Перераспределение и использование в исходных и бинарных формах, с изменениями или без,
-.\" разрешается при условии соблюдения следующих условий:
-.\" 1. Перераспределения исходного кода должны сохранять вышеуказанное уведомление об авторских правах,
-.\"    этот список условий и следующее отказ от гарантий.
-.\" 2. Перераспределения в бинарной форме должны воспроизводить вышеуказанное уведомление об авторских правах,
-.\"    этот список условий и следующее отказ от гарантий в
-.\"    документации и/или других материалах, распространяемых в комплекте.
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
 .\"
-.\" ЭТО ПО ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ АВТОРАМИ И УЧАСТНИКАМИ "КАК ЕСТЬ" И
-.\" ЛЮБЫЕ ЯВНЫЕ ИЛИ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПОДРАЗУМЕВАЕМЫМИ ГАРАНТИЯМИ
-.\" КОММЕРЧЕСКОЙ ЦЕННОСТИ И ПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ ЦЕЛИ ОТКАЗЫВАЮТСЯ. НИ В КОЕМ СЛУЧАЕ АВТОРЫ ИЛИ УЧАСТНИКИ НЕ НЕСУТ
-.\" ОТВЕТСТВЕННОСТИ ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, ОСОБЫЕ, ПРИМЕРНЫЕ ИЛИ ПОСЛЕДОВАТЕЛЬНЫЕ
-.\" УБЫТКИ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПРИОБРЕТЕНИЕМ ЗАМЕНЯЮЩИХ ТОВАРОВ
-.\" ИЛИ УСЛУГ; ПОТЕРЕЙ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПРЕРЫВАНИЕМ БИЗНЕСА)
-.\" ОДНАКО ВЫЗВАННЫЕ И НА КАКОЙ-ЛИБО ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО В ДОГОВОРЕ, СТРОГАЯ
-.\" ОТВЕТСТВЕННОСТЬ ИЛИ ДЕЛИКТ (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНЫЕ) В ЛЮБОМ СЛУЧАЕ
-.\" ВЫХОД ИЗ ИСПОЛЬЗОВАНИЯ ЭТОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ СОВЕТОВАЛИ О ВОЗМОЖНОСТИ
-.\" ТАКОГО УЩЕРБА.
+.\" THIS SOFTWARE IS PROVIDED BY THE AUTHORS AND CONTRIBUTORS ``AS IS'' AND
+.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHORS OR CONTRIBUTORS BE LIABLE
+.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+.\" SUCH DAMAGE.
 .\"
-.Dd 1 октября 2013 года
+.Dd October 1, 2013
 .Dt GVIRSTOR 8
 .Os
-.Sh ИМЯ
+.Sh NAME
 .Nm gvirstor
-.Nd "утилита управления для виртуальных устройств хранения данных"
-.Sh СИНТАКСИС
+.Nd "control utility for virtual data storage devices"
+.Sh SYNOPSIS
 .Nm
 .Cm label
 .Op Fl hv
@@ -37,19 +39,19 @@
 .Nm
 .Cm stop
 .Op Fl fv
-.Ar имя ...
+.Ar name ...
 .Nm
 .Cm destroy
 .Op Fl fv
-.Ar имя ...
+.Ar name ...
 .Nm
 .Cm add
 .Op Fl vh
-.Ar имя prov ...
+.Ar name prov ...
 .Nm
 .Cm remove
 .Op Fl v
-.Ar имя prov ...
+.Ar name prov ...
 .Nm
 .Cm clear
 .Op Fl v
@@ -65,222 +67,231 @@
 .Cm load
 .Nm
 .Cm unload
-.Sh ОПИСАНИЕ
-Утилита
+.Sh DESCRIPTION
+The
 .Nm
-используется для настройки виртуального устройства хранения произвольного
-большого размера
-.Pq например, несколько ТБ,
-состоящего из произвольного числа физических устройств хранения с
-общим размером, равным или меньшим виртуального размера.
-Данные для виртуальных устройств будут выделяться с физических устройств по
-запросу.
-Идея за
+utility is used for setting up a virtual storage device of arbitrary
+large size
+.Pq for example, several TB ,
+consisting of an arbitrary number of physical storage devices with the
+total size which is equal to or smaller than the virtual size.
+Data for the virtual devices will be allocated from physical devices on
+demand.
+The idea behind
 .Nm
-аналогична концепции Виртуальной Памяти в операционных системах,
-фактически позволяя пользователям перераспределить место хранения
-.Pq свободное место файловой системы.
-Эта концепция также известна как "тонкое провизионирование" в средах виртуализации, только здесь она реализована на уровне физических устройств хранения.
+is similar to the concept of Virtual Memory in operating systems,
+effectively allowing users to overcommit on storage
+.Pq free file system space .
+The concept is also known as "thin provisioning" in virtualization
+environments, only here it is implemented on the level of physical storage
+devices.
 .Pp
-Первый аргумент к
+The first argument to
 .Nm
-указывает действие, которое нужно выполнить:
+indicates an action to be performed:
 .Bl -tag -width ".Cm remove"
 .It Cm label
-Настройка виртуального устройства из данного компонента с указанным
-.Ar имя.
-Метаданные хранятся в последнем секторе каждого компонента.
-Аргумент
+Set up a virtual device from the given components with the specified
+.Ar name .
+Metadata is stored in the last sector of every component.
+Argument
 .Fl s Ar virsize
-это размер нового виртуального устройства, по умолчанию установленный в 2 ТиБ
-.Pq 2097152 МиБ.
-Аргумент
+is the size of new virtual device, with default being set to 2 TiB
+.Pq 2097152 MiB .
+Argument
 .Fl m Ar chunksize
-это размер чанка, по умолчанию установленный в 4 МиБ
-.Pq 4096 КиБ.
-Таким образом, аргументы по умолчанию это
-.Qq Fl s Ar 2097152 Fl m Ar 4096.
+is the chunk size, with default being set to 4 MiB
+.Pq 4096 KiB .
+The default arguments are thus
+.Qq Fl s Ar 2097152 Fl m Ar 4096 .
 .It Cm stop
-Выключение существующего виртуального устройства с данным
-.Ar имя.
-Эта команда не затрагивает метаданные на диске.
-Как и в других классах GEOM, остановленные геомы не могут быть запущены вручную.
+Turn off an existing virtual device with the given
+.Ar name .
+This command does not touch on-disk metadata.
+As with other GEOM classes, stopped geoms cannot be started manually.
 .It Cm destroy
-То же самое, что и
+Same as
 .Cm stop.
 .It Cm add
-Добавляет новые компоненты к существующему виртуальному устройству с данным
-.Ar именем .
-Указанное виртуальное устройство хранения должно существовать и быть активным
-.Pq то есть модуль загружен, устройство присутствует в Pa /dev .
-Это действие можно безопасно выполнять, пока виртуальное устройство хранения используется
-.Pq Qo горячая Qc операция .
+Adds new components to existing virtual device with the given
+.Ar name .
+The specified virstor device must exist and be active
+.Pq i.e. module loaded, device present in Pa /dev .
+This action can be safely performed while the virstor device is in use
+.Pq Qo hot Qc operation .
 .It Cm remove
-Удаляет компоненты из существующего виртуального устройства с данным
-.Ar именем .
-Можно удалять только нераспределенные провайдеры.
+Removes components from existing virtual device with the given
+.Ar name .
+Only unallocated providers can be removed.
 .It Cm clear
-Очищает метаданные на указанных провайдерах.
+Clear metadata on the given providers.
 .It Cm dump
-Сдампить метаданные, сохраненные на указанных провайдерах.
+Dump metadata stored on the given providers.
 .It Cm list
-Смотрите
+See
 .Xr geom 8 .
 .It Cm status
-Смотрите
+See
 .Xr geom 8 .
 .It Cm load
-Смотрите
+See
 .Xr geom 8 .
 .It Cm unload
-Смотрите
+See
 .Xr geom 8 .
 .El
 .Pp
-Дополнительные опции:
+Additional options:
 .Bl -tag -width ".Fl f"
 .It Fl f
-Принудительное удаление указанного виртуального устройства.
+Force the removal of the specified virtual device.
 .It Fl h
-Захардкодить имена провайдеров в метаданных.
+Hardcode providers' names in metadata.
 .It Fl v
-Быть более разговорчивым.
+Be more verbose.
 .El
-.Sh ПРИМЕРЫ
-Следующий пример показывает, как создать виртуальное устройство стандартного размера
+.Sh EXAMPLES
+The following example shows how to create a virtual device of default size
 .Pq 2 TiB ,
-стандартного размера части
+of default chunk
 .Pq extent
+size
 .Pq 4 MiB ,
-с двумя физическими устройствами для резервного хранения.
+with two physical devices for backing storage.
 .Bd -literal -offset indent
 .No gvirstor label -v Ar mydata Ar /dev/ada4 Ar /dev/ada6
 .No newfs Ar /dev/virstor/mydata
 .Ed
 .Pp
-С этого момента виртуальное устройство будет доступно через
+From now on, the virtual device will be available via the
 .Pa /dev/virstor/mydata
-запись устройства.
-Чтобы добавить новое физическое устройство / компонент к активному устройству виртуального хранения:
+device entry.
+To add a new physical device / component to an active virstor device:
 .Bd -literal -offset indent
 .No gvirstor add Ar mydata Ar ada8
 .Ed
 .Pp
-Это добавит физическое хранилище
+This will add physical storage of
 .Ar ada8
-к
+to
 .Pa /dev/virstor/mydata
-устройству.
+device.
 .Pp
-Чтобы увидеть информацию о статусе устройства
-.Pq включая, сколько физического хранения еще доступно для виртуального устройства ,
-Используйте:
+To see the device status information
+.Pq including how much physical storage is still available for the virtual device ,
+use:
 .Bd -literal -offset indent
 gvirstor list
 .Ed
 .Pp
-Все стандартные
+All standard
 .Xr geom 8
-подкоманды
-.Pq например, Cm status, Cm help
-также поддерживаются.
-.Sh ПЕРЕМЕННЫЕ SYSCTL
+subcommands
+.Pq e.g. Cm status , Cm help
+are also supported.
+.Sh SYSCTL VARIABLES
 .Nm
-имеет несколько настраиваемых переменных
-.Xr sysctl 8.
+has several
+.Xr sysctl 8
+tunable variables.
 .Bd -literal -offset indent
 .Va int kern.geom.virstor.debug
 .Ed
 .Pp
-Эта переменная sysctl контролирует уровень подробности вывода модуля ядра в диапазоне
-от 1 до 15.
-Сообщения, помеченные уровнями подробности выше этого значения,
-подавляются.
-Значение по умолчанию — 5, и не рекомендуется устанавливать этот параметр меньше
-чем 2, поскольку сообщения уровня 1 являются сообщениями об ошибках, а сообщения уровня 2 предупреждают о проблемах системы.
+This sysctl controls verbosity of the kernel module, in the range
+1 to 15.
+Messages that are marked with higher verbosity levels than this are
+suppressed.
+Default value is 5 and it is not recommended to set this tunable to less
+than 2, because level 1 messages are error events, and level 2 messages
+are system warnings.
 .Bd -literal -offset indent
 .Va int kern.geom.virstor.chunk_watermark
 .Ed
 .Pp
-Значение этой переменной sysctl устанавливает уровень предупреждения для использования физических блоков на отдельном компоненте.
-Предупреждение выдается, когда у компонента virstor остается меньше,
-чем это количество свободных блоков
-.Pq по умолчанию 100.
+Value in this sysctl sets warning watermark level for physical chunk
+usage on a single component.
+The warning is issued when a virstor component has less than this many
+free chunks
+.Pq default 100 .
 .Bd -literal -offset indent
 .Va int kern.geom.virstor.component_watermark
 .Ed
 .Pp
-Значение этой переменной sysctl устанавливает уровень предупреждения для использования компонентов.
-Предупреждение выдается, когда количество не выделенных компонентов меньше,
-чем это число
-.Pq по умолчанию 1.
+Value in this sysctl sets warning watermark level for component usage.
+The warning is issued when there are less than this many unallocated
+components
+.Pq default is 1 .
 .Pp
-Все эти переменные sysctl также доступны как настраиваемые параметры
-.Xr loader 8.
-.Sh ДИАГНОСТИКА
+All these sysctls are also available as
+.Xr loader 8
+tunables.
+.Sh DIAGNOSTICS
 .Ex -std
 .Pp
 .Nm
-модуль ядра выдает сообщения журнала с префиксами в стандартизированном формате,
-что полезно для фильтрации сообщений журнала и их распределения.
-Каждая строка сообщения начинается с
+kernel module issues log messages with prefixes in standardized format,
+which is useful for log message filtering and dispatching.
+Each message line begins with
 .Bd -literal -offset indent
 .Li GEOM_VIRSTOR[%d]:
 .Ed
 .Pp
-Число
+The number
 .Pq %d
-является уровнем подробности / важности сообщения, в диапазоне от 1 до 15.
-Если используется система фильтрации сообщений, их распределения или оповещения оператора, рекомендуется серьезно относиться к сообщениям с уровнями 1 и 2.
-
-.Pq например, чтобы отлавливать условия нехватки места, установленные водяными знаками
+is message verbosity / importance level, in the range 1 to 15.
+If a message filtering, dispatching or operator alert system is used, it
+is recommended that messages with levels 1 and 2 be taken seriously
+.Pq for example, to catch out-of-space conditions as set by watermark
 sysctls.
-.Sh СМОТРИ ТАКЖЕ
+.Sh SEE ALSO
 .Xr geom 4 ,
 .Xr fstab 5 ,
 .Xr geom 8 ,
 .Xr glabel 8 ,
 .Xr newfs 8
-.Sh ИСТОРИЯ
-Утилита
+.Sh HISTORY
+The
 .Nm
-впервые появилась в
+utility first appeared in
 .Fx 7.0 .
-.Sh АВТОРЫ
-.An Иван Ворас Aq Mt ivoras@FreeBSD.org
+.Sh AUTHORS
+.An Ivan Voras Aq Mt ivoras@FreeBSD.org
 .Pp
-Спонсировано программой Google Summer of Code 2006.
-.Sh ОШИБКИ
-Команды
+Sponsored by Google Summer of Code 2006.
+.Sh BUGS
+Commands
 .Cm add
-и
+and
 .Cm remove
-содержат неизбежные критические секции, которые могут сделать устройство virstor
-непригодным для использования, если во время их выполнения произойдёт отключение питания
-.Pq или другое разрушительное событие.
-Рекомендуется запускать их, когда система находится в спокойном состоянии.
-.Sh ПРЕДПОЛОЖЕНИЯ И ВЗАИМОДЕЙСТВИЕ С ФАЙЛОВЫМИ СИСТЕМАМИ
-Существует несколько предположений, которые
+contain unavoidable critical sections which may make the virstor
+device unusable if a power failure
+.Pq or other disruptive event
+happens during their execution.
+It is recommended to run them when the system is quiescent.
+.Sh ASSUMPTIONS AND INTERACTION WITH FILE SYSTEMS
+There are several assumptions that
 .Nm
-делает в своей работе: что размер виртуального устройства хранения не изменится
-после его установки, и что размеры отдельных физических компонентов хранения
-всегда будут постоянными в течение их существования.
-Для альтернативных способов реализации виртуальных или изменяемых файловых систем смотрите
+has in its operation: that the size of the virtual storage device will not
+change once it is set, and that the sizes of individual physical storage
+components will always remain constant during their existence.
+For alternative ways to implement virtual or resizable file systems see
 .Xr zfs 1M ,
 .Xr gconcat 8
-и
+and
 .Xr growfs 8 .
 .Pp
-Обратите внимание, что
+Note that
 .Nm
-имеет немаловажное взаимодействие с файловыми системами, которые инициализируют большое количество
-структур на диске во время newfs.
-Если такие файловые системы попытаются распределить свои структуры по всему носителю
-.Pq как это делают UFS/UFS2 ,
-их усилия будут фактически сорваны последовательным выделением
-кусков в
+has nontrivial interaction with file systems which initialize a large
+number of on-disk structures during newfs.
+If such file systems attempt to spread their structures across the drive
+media
+.Pq like UFS/UFS2 does ,
+their efforts will be effectively foiled by sequential allocation of
+chunks in
 .Nm
-и все их структуры будут физически размещены в начале
-первого компонента virstor.
-Это может существенно повлиять на производительность файловой системы
-.Pq что в некоторых редких случаях может быть даже позитивным.
+and all their structures will be physically allocated at the start
+of the first virstor component.
+This could have a significant impact on file system performance
+.Pq which can in some rare cases be even positive .

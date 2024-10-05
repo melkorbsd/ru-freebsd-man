@@ -1,52 +1,56 @@
-.\" Copyright (c) 2000 - 2004 Королевский Технологический Институт
-.\" (Kungliga Tekniska Högskolan, Стокгольм, Швеция).
-.\" Все права защищены.
+.\" Copyright (c) 2000 - 2004 Kungliga Tekniska Högskolan
+.\" (Royal Institute of Technology, Stockholm, Sweden).
+.\" All rights reserved.
 .\"
-.\" Перераспределение и использование в исходных и двоичных формах, с изменениями или без,
-.\" разрешено при условии соблюдения следующих условий:
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
 .\"
-.\" 1. Перераспределенный исходный код должен сохранять вышеуказанное уведомление о copyright,
-.\"    данный список условий и следующее отказ от ответственности.
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
 .\"
-.\" 2. Перераспределенные в двоичной форме данные должны воспроизводить вышеуказанное уведомление о copyright,
-.\"    данный список условий и следующее отказ от ответственности в
-.\"    документации и/или других материалах, предоставляемых с распространением.
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
 .\"
-.\" 3. Ни имя Института, ни имена его участников
-.\"    не могут быть использованы для подтверждения или рекламы продуктов, произведенных на основе этого программного обеспечения
-.\"    без специального предварительного письменного разрешения.
+.\" 3. Neither the name of the Institute nor the names of its contributors
+.\"    may be used to endorse or promote products derived from this software
+.\"    without specific prior written permission.
 .\"
-.\" ЭТО ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ ИНСТИТУТОМ И УЧАСТНИКАМИ «КАК ЕСТЬ», И
-.\" ЛЮБЫЕ ЯВНЫЕ ИЛИ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПОДРАЗУМЕВАЕМЫЕ
-.\" ГАРАНТИИ ТОВАРНОЙ ПРИГОДНОСТИ И ПРИГОДНОСТИ ДЛЯ КОНКРЕТНОЙ ЦЕЛИ ОТКЛОНЯЮТСЯ. НИ ПРИ КАКИХ ОБСТОЯТЕЛЬСТВАХ ИНСТИТУТ ИЛИ УЧАСТНИКИ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ
-.\" ЗА ЛЮБОЙ ПРЯМОЙ, КОСВЕННЫЙ, СЛУЧАЙНЫЙ, ОСОБЫЙ, ПРИМЕРНЫЙ, ИЛИ ПОСЛЕДОВАТЕЛЬНЫЙ УЩЕРБ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПРИОБРЕТЕНИЕМ ЗАМЕНЯЮЩИХ ТОВАРОВ
-.\" ИЛИ УСЛУГ; ПОТЕРЕЮ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПРЕРЫВАНИЕ БИЗНЕСА)
-.\" КАКИМ ЛИБО ОБРАЗОМ ВОЗНИКШИМ И НА ОСНОВАНИИ ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО В ДОГОВОРЕ, СТРОГОЙ ОТВЕТСТВЕННОСТИ,
-.\" ИЛИ ДЕЛИКТЕ (ВКЛЮЧАЯ НЕБРЕЖНОСТЬ ИЛИ ИНЫЕ) ВОЗНИКШИМИ ЛЮБЫМ СПОСОБОМ
-.\" ИЗ ИСПОЛЬЗОВАНИЯ ЭТОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ БЫЛИ ПРЕДУПРЕЖДЕНЫ О ВОЗМОЖНОСТИ ТАКОГО УЩЕРБА.
+.\" THIS SOFTWARE IS PROVIDED BY THE INSTITUTE AND CONTRIBUTORS ``AS IS'' AND
+.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE INSTITUTE OR CONTRIBUTORS BE LIABLE
+.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+.\" SUCH DAMAGE.
 .\"
 .\" $Id$
 .\"
-.Dd 8 декабря 2004
+.Dd December  8, 2004
 .Dt HPROP 8
 .Os HEIMDAL
-.Sh ИМЯ
+.Sh NAME
 .Nm hprop
-.Nd распространение базы данных KDC
-.Sh СИНТАКСИС
+.Nd propagate the KDC database
+.Sh SYNOPSIS
 .Nm
 .Bk -words
-.Oo Fl m Ar файл \*(Ba Xo
-.Fl Fl master-key= Ns Pa файл
+.Oo Fl m Ar file \*(Ba Xo
+.Fl Fl master-key= Ns Pa file
 .Xc
 .Oc
-.Oo Fl d Ar файл \*(Ba Xo
-.Fl Fl database= Ns Pa файл
+.Oo Fl d Ar file \*(Ba Xo
+.Fl Fl database= Ns Pa file
 .Xc
 .Oc
 .Op Fl Fl source= Ns Ar heimdal|mit-dump
-.Oo Fl r Ar строка \*(Ba Xo
-.Fl Fl v4-realm= Ns Ar строка
+.Oo Fl r Ar string \*(Ba Xo
+.Fl Fl v4-realm= Ns Ar string
 .Xc
 .Oc
 .Oo Fl c Ar cell \*(Ba Xo
@@ -57,8 +61,8 @@
 .Fl Fl keytab= Ns Ar keytab
 .Xc
 .Oc
-.Oo Fl R Ar строка \*(Ba Xo
-.Fl Fl v5-realm= Ns Ar строка
+.Oo Fl R Ar string \*(Ba Xo
+.Fl Fl v5-realm= Ns Ar string
 .Xc
 .Oc
 .Op Fl D | Fl Fl decrypt
@@ -67,59 +71,58 @@
 .Op Fl v | Fl Fl verbose
 .Op Fl Fl version
 .Op Fl h | Fl Fl help
-.Op Ar хост Ns Op : Ns Ar порт
+.Op Ar host Ns Op : Ns Ar port
 .Ar ...
 .Ek
-.Sh ОПИСАНИЕ
+.Sh DESCRIPTION
 .Nm
-принимает базу данных принципалов в указанном формате и преобразует ее в
-поток записей базы данных Heimdal. Этот поток может быть написан
-на стандартный вывод или (чаще) распространен на
+takes a principal database in a specified format and converts it into
+a stream of Heimdal database records. This stream can either be
+written to standard out, or (more commonly) be propagated to a
 .Xr hpropd 8
-сервер, работающий на другой машине.
+server running on a different machine.
 .Pp
-Если распространяется, он подключается ко всем
-.Ar хостам
-указаны в команде, открывая TCP-соединение с портом 754
-(служба hprop) и отправляет базу данных в зашифрованной форме.
+If propagating, it connects to all
+.Ar hosts
+specified on the command by opening a TCP connection to port 754
+(service hprop) and sends the database in encrypted form.
 .Pp
-Поддерживаемые опции:
+Supported options:
 .Bl -tag -width Ds
-.It Fl m Ar файл , Fl Fl master-key= Ns Pa файл
-Где найти мастер-ключ для шифрования или дешифрования ключей.
-.It Fl d Ar файл , Fl Fl database= Ns Pa файл
-База данных для распространения.
+.It Fl m Ar file , Fl Fl master-key= Ns Pa file
+Where to find the master key to encrypt or decrypt keys with.
+.It Fl d Ar file , Fl Fl database= Ns Pa file
+The database to be propagated.
 .It Fl Fl source= Ns Ar heimdal|mit-dump|krb4-dump|kaserver
-Указывает тип исходной базы данных. Альтернативы включают:
+Specifies the type of the source database. Alternatives include:
 .Pp
 .Bl -tag -width mit-dump -compact -offset indent
 .It heimdal
-База данных Heimdal
+a Heimdal database
 .It mit-dump
-Файл дампа MIT Kerberos 5
+a MIT Kerberos 5 dump file
 .El
 +.It Fl k Ar keytab , Fl Fl keytab= Ns Ar keytab
-Используемый keytab для извлечения ключа для аутентификации
-перед демонами репликации. Используется ключ
+The keytab to use for fetching the key to be used for authenticating
+to the propagation daemon(s). The key
 .Pa hprop/hostname
-из этого keytab. По умолчанию ключ извлекается из
-базы данных KDC.
+is used from this keytab.  The default is to fetch the key from the
+KDC database.
 .It Fl R Ar string , Fl Fl v5-realm= Ns Ar string
-Перекрытие локального домена.
+Local realm override.
 .It Fl D , Fl Fl decrypt
-Ключи шифрования в базе данных могут быть как в открытом виде, так и
-зашифрованы мастер-ключом. Эта опция передает базу данных с
-незашифрованными ключами.
+The encryption keys in the database can either be in clear, or
+encrypted with a master key. This option transmits the database with
+unencrypted keys.
 .It Fl E , Fl Fl encrypt
-Эта опция передает базу данных с зашифрованными ключами.
+This option transmits the database with encrypted keys.
 .It Fl n , Fl Fl stdout
-Выгружает базу данных на stdout в формате, который может быть
-передан hpropd.
+Dump the database on stdout, in a format that can be fed to hpropd.
 .El
 .Sh EXAMPLES
-Следующее команда передаст базу данных на другую машину (на которой
-должен работать
-.Xr hpropd 8 ):
+The following will propagate a database to another machine (which
+should run
+.Xr hpropd 8 ) :
 .Bd -literal -offset indent
 $ hprop slave-1 slave-2
 .Ed
