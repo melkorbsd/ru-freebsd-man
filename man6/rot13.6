@@ -30,32 +30,34 @@
 .Dd November 16, 1993
 .Dt CAESAR 6
 .Os
-.Sh Название
+.Sh NAME
 .Nm caesar , rot13
 .Nd decrypt caesar ciphers
-.Sh Краткий обзор
+.Sh SYNOPSIS
 .Nm
 .Op Ar rotation
 .Nm rot13
-.Sh Описание
+.Sh DESCRIPTION
+The
 .Nm
-утилита пытается расшифровать шифры caesar, используя статистику частотности английских букв.
+utility attempts to decrypt caesar ciphers using English letter frequency
+statistics.
 .Nm Caesar
-считывает данные со стандартного ввода и записывает их на стандартный вывод.
+reads from the standard input and writes to the standard output.
 .Pp
-Необязательный числовой аргумент
+The optional numerical argument
 .Ar rotation
-может использоваться для задания определенного значения поворота.
-Если вызывается как
+may be used to specify a specific rotation value.
+If invoked as
 .Nm rot13 ,
-будет использоваться значение поворота, равное 13.
+a rotation value of 13 will be used.
 .Pp
-Частота встречаемости (от наиболее распространенной до наименее распространенной) английских букв выглядит следующим образом:
+The frequency (from most common to least) of English letters is as follows:
 .Bd -ragged -offset indent
 ETAONRISHDLFCMUGPYWBVKXJQZ
 .Ed
 .Pp
-Их частота в процентах выглядит следующим образом:
+Their frequencies as a percentage are as follows:
 .Bd -ragged -offset indent
 E(13), T(10.5), A(8.1), O(7.9), N(7.1), R(6.8), I(6.3), S(6.1), H(5.2),
 D(3.8), L(3.4), F(2.9), C(2.7), M(2.5), U(2.4), G(2),
@@ -63,8 +65,8 @@ P(1.9), Y(1.9),
 W(1.5), B(1.4), V(.9), K(.4), X(.15), J(.13), Q(.11), Z(.07).
 .Ed
 .Pp
-Повернутые проводки в
+Rotated postings to
 .Tn USENET
-и некоторые базы данных, используемые
+and some of the databases used by the
 .Xr fortune 6
-программы повернуты на 13 символов.
+program are rotated by 13 characters.

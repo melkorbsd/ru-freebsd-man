@@ -30,35 +30,36 @@
 .Dd July 14, 2010
 .Dt POM 6
 .Os
-.Sh Название
+.Sh NAME
 .Nm pom
-.Nd отображение фазы Луны
-.Sh Краткий обзор
+.Nd display the phase of the moon
+.Sh SYNOPSIS
 .Nm
 .Op Fl p
 .Op Fl d Ar yyyy.mm.dd
 .Op Fl t Ar hh:mm:ss
-.Sh Описание
+.Sh DESCRIPTION
+The
 .Nm
-Утилиты отображают текущую фазу Луны.
-Полезно для выбора целевых дат завершения разработки программного обеспечения и прогнозирования
-управленческого поведения.
+utility displays the current phase of the moon.
+Useful for selecting software completion target dates and predicting
+managerial behavior.
 .Pp
-Используйте
+Use the
 .Fl p
-возможность печати только фазы в процентах.
+option to print just the phase as a percentage.
 .Pp
-Используйте аргументы
+Use the arguments
 .Fl d
-и
+and
 .Fl t
-чтобы указать конкретную дату и время, на которые приходится фаза Луны
-должно быть рассчитано.
-Если
+to specify a specific date and time for which the phase of the moon
+has to be calculated.
+If
 .Fl d
-но нет
+but not
 .Fl t
-было указано, что он будет вычислять фазу Луны по этому
-день в полночь.
-.Sh Смотрите также
-"Практическая астрономия с вашим калькулятором" Даффетт-Смита.
+has been specified, it will calculate the phase of the moon on that
+day at midnight.
+.Sh SEE ALSO
+`Practical Astronomy with Your Calculator' by Duffett-Smith.

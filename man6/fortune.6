@@ -33,168 +33,171 @@
 .Dd July 1, 2021
 .Dt FORTUNE 6
 .Os
-.Sh Название
-.Nm Фортуна-состояние
-.Nd "напечатайте случайную, надеюсь, интересную пословицу".
-.Sh Краткий обзор
+.Sh NAME
+.Nm fortune
+.Nd "print a random, hopefully interesting, adage"
+.Sh SYNOPSIS
 .Nm
 .Op Fl aDefilosw
-.Op Fl m Ar шаблон
+.Op Fl m Ar pattern
 .Oo
 .Op Ar \&N%
 .Ar file Ns / Ns Ar directory Ns / Ns Cm all
 .Oc
-.Sh Описание
-Когда
+.Sh DESCRIPTION
+When
 .Nm
-запускается без каких-либо аргументов и выводит случайную эпиграмму.
-Эпиграммы делятся на несколько категорий, где каждая категория
-подразделяется на те, которые потенциально являются оскорбительными, и те, которые
-которые таковыми не являются.
-Возможны следующие варианты:
-.Bl -tag -width абзац
+is run with no arguments it prints out a random epigram.
+Epigrams are divided into several categories, where each category
+is subdivided into those which are potentially offensive and those
+which are not.
+The options are as follows:
+.Bl -tag -width indent
 .It Fl a
-Выбирайте из всех списков сентенций, как оскорбительных, так и нет.
-(Смотрите на
+Choose from all lists of maxims, both offensive and not.
+(See the
 .Fl o
-возможность получить дополнительную информацию о наступательных удачах.)
+option for more information on offensive fortunes.)
 .It Fl D
-Включите дополнительный отладочный вывод.
-Укажите этот параметр несколько раз для получения более подробного вывода.
-Доступно только в том случае, если скомпилировано с
+Enable additional debugging output.
+Specify this option multiple times for more verbose output.
+Only available if compiled with
 .Li -DDEBUG .
 .It Fl e
-Считайте, что все файлы состояния имеют одинаковый размер (см. Обсуждение ниже
-в нескольких файлах).
+Consider all fortune files to be of equal size (see discussion below
+on multiple files).
 .It Fl f
-Напечатайте список файлов, в которых будет производиться поиск, но не
-печатайте состояние
+Print out the list of files which would be searched, but do not
+print a fortune.
 .It Fl l
-Только длинные изречения.
-.It Fl m Ar шаблон
-Выведите все состояния, которые соответствуют регулярному выражению
-.Ar шаблон.
-Посмотрите
+Long dictums only.
+.It Fl m Ar pattern
+Print out all fortunes which match the regular expression
+.Ar pattern .
+See
 .Xr regex 3
-для описания паттернов.
+for a description of patterns.
 .It Fl o
-Выбирайте только из потенциально оскорбительных афоризмов.
+Choose only from potentially offensive aphorisms.
 .Bf -symbolic
-Пожалуйста, пожалуйста, пожалуйста, запросите потенциально оскорбительную сумму, если и
-только если ты веришь, глубоко в своем сердце, что ты готов
-обидеться.
-(И что если вы не захотите, то просто прекратите использовать
+Please, please, please request a potentially offensive fortune if and
+only if you believe, deep down in your heart, that you are willing
+to be offended.
+(And that if you are not willing, you will just quit using
 .Fl o
-вместо того, чтобы дать нам
-огорчить из-за этого, ладно?)
+rather than give us
+grief about it, okay?)
 .Ef
 .Bd -unfilled -offset indent
-\&... давайте не будем забывать об основной философии управления
-о Братстве, как это прекрасно выражено в этих словах:
-мы верим в здоровый, искренний смех - за счет
-вся человеческая раса, если понадобится.
-Так и должно быть.
+\&... let us keep in mind the basic governing philosophy
+of The Brotherhood, as handsomely summarized in these words:
+we believe in healthy, hearty laughter -- at the expense of
+the whole human race, if needs be.
+Needs be.
                            --H. Allen Smith, "Rude Jokes"
 .Ed
 .It Fl s
-Short только апофегмы.
+Short apothegms only.
 .It Fl i
-Игнорировать регистр для
+Ignore case for
 .Fl m
-шаблонов
+patterns.
 .It Fl w
-Подождите перед завершением в течение периода времени, рассчитанного исходя из
-количество символов в сообщении.
-Это полезно, если оно выполняется как часть процедуры выхода из системы
-чтобы гарантировать, что сообщение можно будет прочитать до того, как экран будет очищен.
+Wait before termination for an amount of time calculated from the
+number of characters in the message.
+This is useful if it is executed as part of the logout procedure
+to guarantee that the message can be read before the screen is cleared.
 .El
 .Pp
-Пользователь может указать альтернативные высказывания.
-Вы можете указать конкретный файл, каталог, содержащий один или
-дополнительные файлы или специальное слово
-.Cm всё
-в котором говорится об использовании всех стандартных баз данных.
-Любому из них может предшествовать процент, который представляет собой число
+The user may specify alternate sayings.
+You can specify a specific file, a directory which contains one or
+more files, or the special word
+.Cm all
+which says to use all the standard databases.
+Any of these may be preceded by a percentage, which is a number
 .Ar N
-от 0 до 100 включительно, за которым следует
+between 0 and 100 inclusive, followed by a
 .Ql % .
-Если это так, то будет
+If it is, there will be an
 .Ar N
-процентная вероятность того, что пословица будет выбрана из этого файла
-или каталога.
-Если проценты в сумме не равны 100, и есть технические требования
-без учета процентных значений, оставшийся процент будет применяться к этим файлам
-и/или каталоги, и в этом случае вероятность выбора из
-один из них будет основан на их относительных размерах.
+percent probability that an adage will be picked from that file
+or directory.
+If the percentages do not sum to 100, and there are specifications
+without percentages, the remaining percent will apply to those files
+and/or directories, in which case the probability of selecting from
+one of them will be based on their relative sizes.
 .Pp
-В качестве примера приведены две базы данных
-.Pa смешной
-и
-.Pa не смешной ,
-с
-.Pa смешной
-в два раза больше, говоря
+As an example, given two databases
+.Pa funny
+and
+.Pa not-funny ,
+with
+.Pa funny
+twice as big, saying
 .Pp
-.Dl "фортуна: забавная, не смешная"
+.Dl "fortune funny not-funny"
 .Pp
-это принесет вам целое состояние.
-.Pa смешной
-в двух третях случаев.
-Команда
+will get you fortunes out of
+.Pa funny
+two-thirds of the time.
+The command
 .Pp
-.Dl "фортуна:  90% смешная,  10% не смешная"
+.Dl "fortune 90% funny 10% not-funny"
 .Pp
-получит 90% своего состояния от
-.Pa смешная
-.Dq Li "10% не смешных"
-(в этом нет необходимости, так как 10% - это все, что осталось).
+will pick out 90% of its fortunes from
+.Pa funny
+(the
+.Dq Li "10% not-funny"
+is unnecessary, since 10% is all that is left).
+The
 .Fl e
-параметр позволяет считать все файлы равными;
-таким образом
+option says to consider all files equal;
+thus
 .Pp
-.Dl "фортуна -е смешно, а не смешно"
+.Dl "fortune -e funny not-funny"
 .Pp
-эквивалентно
+is equivalent to
 .Pp
-.Dl "фортуна 50% смешная,  50% несмешная"
-.Sh Услоавие
+.Dl "fortune 50% funny 50% not-funny"
+.Sh ENVIRONMENT
 .Bl -tag -width ".Ev FORTUNE_PATH"
 .It Ev FORTUNE_PATH
-Путь поиска файлов с данными.
-Это разделенный двоеточием список каталогов, в которых
+The search path for the data files.
+It is a colon-separated list of directories in which
 .Nm
-выполняет поиск файлов с данными.
-Если этот параметр не установлен, то по умолчанию будет установлено значение
+looks for data files.
+If not set it will default to
 .Pa /usr/share/games/fortune:/usr/local/share/games/fortune .
-Если ни один из указанных каталогов не существует, программа выведет предупреждение и завершит работу.
+If none of the directories specified exist, it will print a warning and exit.
 .It Ev FORTUNE_SAVESTATE
-Если этот параметр установлен, fortune сохранит некоторое представление о том, какое состояние
-все это было записано на диске.
+If set, fortune will save some state about what fortune
+it was up to on disk.
 .El
-.Sh Файлы
+.Sh FILES
 .Bl -tag -width ".Pa /usr/share/games/fortune/*"
 .It Pa /usr/share/games/fortune/*
-базы данных fortunes (эти файлы заканчиваются
+the fortunes databases (those files ending
 .Dq Pa -o
-содержат в себе
-.Sy негативные
-состояния)
+contain the
+.Sy offensive
+fortunes)
 .El
-.Sh СТАТУС ВЫХОДА
+.Sh EXIT STATUS
 .Ex -std
-В частности, если
+In particular, if
 .Fl l ,
 .Fl m ,
-или
+or
 .Fl s
-указано, что не удалось найти соответствующую цитату в выбранном
-файлы засчитываются как ошибка.
-.Sh смотрите также
+is specified, failure to find a matching citation in the selected
+files counts as an error.
+.Sh SEE ALSO
 .Xr arc4random_uniform 3 ,
 .Xr regcomp 3 ,
 .Xr regex 3 ,
 .Xr strfile 8
-.Sh История
+.Sh HISTORY
+The
 .Nm
-Утилита появилась впервые в
+utility first appeared
 .At v7 .

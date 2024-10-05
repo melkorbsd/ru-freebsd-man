@@ -25,96 +25,96 @@
 .Dd September 14, 2014
 .Dt ATF 7
 .Os
-.Sh Название
+.Sh NAME
 .Nm ATF
-.Nd введение в систему автоматизированного тестирования
-.Sh Описание
-Платформа автоматизированного тестирования
+.Nd introduction to the Automated Testing Framework
+.Sh DESCRIPTION
+The Automated Testing Framework
 .Pf ( Nm )
-это
-.Em коллекция библиотек
-для реализации тестовых программ на различных языках
-Все эти библиотеки предлагают схожую функциональность и любую тестовую программу
-написанный с их помощью, он предоставляет согласованный пользовательский интерфейс.
+is a
+.Em collection of libraries
+to implement test programs in a variety of languages.
+These libraries all offer similar functionality and any test program
+written with them exposes a consistent user interface.
 .Pp
-Тестовые программы с использованием
+Test programs using the
 .Nm
-библиотеки полагаются на отдельный движок времени выполнения, который выполняет их в
-детерминированный способ.
-Механизм выполнения изолирует тестовые программы от остальной части системы
-и гарантирует устранение некоторых распространенных побочных эффектов.
-Механизм выполнения также отвечает за сбор результатов всех
-тесты и составление отчетов.
-В настоящее время предпочтительной средой выполнения является Kyua, описанная в
+libraries rely on a separate runtime engine to execute them in a
+deterministic fashion.
+The runtime engine isolates the test programs from the rest of the system
+and ensures some common side-effects are cleaned up.
+The runtime engine is also responsible for gathering the results of all
+tests and composing reports.
+The current runtime of choice is Kyua, described in
 .Xr kyua 1 .
 .Pp
-Если ваши операционные системы распространяются
+If your operating systems distributes
 .Nm ,
-в нем также должна содержаться вводная часть
+it should also provide an introductory
 .Xr tests 7
-страниц руководства.
-Мы рекомендуем вам прочитать это прямо сейчас.
+manual page.
+You are encouraged to read it now.
 .Pp
-Остальная часть этой страницы руководства служит перекрестной ссылкой на все остальные
-документация, поставляемая вместе с
+The rest of this manual page serves as a cross-reference to all the other
+documentation shipped with
 .Nm .
-.Ss Языковые привязки
+.Ss Language bindings
 .Bl -tag -width atfXtestXprogramXXXXX
 .It Xr atf-c 3
-Программный интерфейс на языке С.
+C programming interface.
 .It Xr atf-c++ 3
-Программный интерфейс на языке С++.
+C++ programming interface.
 .It Xr atf-sh 3
 .Xr sh 1
-программный интерфейс.
+programming interface.
 .El
-.Ss Разные страницы
+.Ss Miscellaneous pages
 .Bl -tag -width atfXtestXprogramXXXXX
 .It Xr atf-test-case 4
-Общее описание тестовых примеров, независимо от языка, на котором они написаны
-реализовано в.
+Generic description of test cases, independent of the language they are
+implemented in.
 .It Xr atf-test-program 1
-Общий интерфейс, предоставляемый тестовыми программами, написанными с использованием
+Common interface provided by the test programs written using the
 .Nm
-библиотек.
+libraries.
 .El
-.Sh Cмотрите также
+.Sh SEE ALSO
 .Xr kyua 1 ,
 .Xr tests 7
-.Sh История
+.Sh HISTORY
 .Nm
-начинался как проект Google Summer of Code 2007 под руководством NetBSD
-Основа.
-Его первоначальная цель состояла в том, чтобы обеспечить основу для тестирования
+started as a Google Summer of Code 2007 project mentored by The NetBSD
+Foundation.
+Its original goal was to provide a testing framework for the
 .Nx
-операционной системы, но она выросла как самостоятельный проект, потому что
-сам фреймворк не нужно было привязывать к конкретной операционной системе.
+operating system, but it grew as an independent project because the
+framework itself did not need to be tied to a specific operating system.
 .Pp
-Первоначально,
+Originally,
 .Nm
-также была отправлена коллекция библиотек, описанных на этой странице руководства
-как движок времени выполнения.
-С тех пор движок runtime engine был заменен на Kyua, а старые инструменты были заменены на
-удаленный в
+shipped the collection of libraries described in this manual page as well
+as a runtime engine.
+The runtime engine has since been replaced by Kyua and the old tools were
+removed in
 .Nm 0.20 ,
-который был отправлен в начале 2014 года.
+which shipped in early 2014.
 .Pp
-По состоянию на конец 2014 года оба
+As of late 2014, both
 .Fx
-и
+and
 .Nx
-загружали
+ship
 .Nm
-в своих базовых системах и предоставляют обширные наборы тестов на их основе.
+in their base systems and provide extensive test suites based on it.
 .Pp
-Для получения более подробной информации об исторических изменениях обратитесь к:
+For more details on historical changes, refer to:
 .Bd -literal -offset indent
 .Pa /usr/share/doc/atf/NEWS
 .Ed
-.Sh Авторы
-Для получения более подробной информации о людях, которые сделали
+.Sh AUTHORS
+For more details on the people that made
 .Nm
-возможно, обратитесь к:
+possible, refer to:
 .Bd -literal -offset indent
 .Pa /usr/share/doc/atf/AUTHORS
 .Ed

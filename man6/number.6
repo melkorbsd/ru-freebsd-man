@@ -30,27 +30,28 @@
 .Dd March 31, 1994
 .Dt NUMBER 6
 .Os
-.Sh Название
+.Sh NAME
 .Nm number
-.Nd преобразование арабских цифр в английские
-.Sh Краткий обзор
+.Nd convert Arabic numerals to English
+.Sh SYNOPSIS
 .Nm
 .Op Fl l
 .Op Ar \&# ...
-.Sh Описание
+.Sh DESCRIPTION
+The
 .Nm
-Утилита выводит английский эквивалент стандартного номера
-выводится, причем каждая величина 10^3 отображается в отдельной строке.
-Если аргумент не указан,
+utility prints the English equivalent of the number to the standard
+output, with each 10^3 magnitude displayed on a separate line.
+If no argument is specified,
 .Nm
-считывает строки из стандартного ввода.
+reads lines from the standard input.
 .Pp
-Возможны следующие варианты:
+The options are as follows:
 .Bl -tag -width Ds
 .It Fl l
-Выведите номер на экран в одной строке.
+Display the number on a single line.
 .El
-.Sh Баги
-Однако
+.Sh BUGS
+Although
 .Nm
-разбирается в дробях, но не разбирается в показателях степени.
+understand fractions, it does not understand exponents.
