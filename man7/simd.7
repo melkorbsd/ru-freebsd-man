@@ -1,0 +1,240 @@
+.\" Copyright (c) 2023 The FreeBSD Foundation
+.
+.\" This documentation was written by Robert Clausecker <fuz@FreeBSD.org>
+.\" under sponsorship from the FreeBSD Foundation.
+.
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
+.
+.\" THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ''AS IS'' AND
+.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\" ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+.\" SUCH DAMAGE
+.
+.Dd December 6, 2023
+.Dt SIMD 7
+.Os
+.Sh ИМЯ
+.Nm simd
+.Nd усовершенствованная SIMD
+.
+.Sh ОПИСАНИЕ
+В некоторых архитектурах,
+.Fx
+.Em libc
+предоставляет расширенные реализации часто используемых функций, заменяя
+архитектурно-независимые реализации, используемые в других случаях.
+В зависимости от архитектуры и функции, расширенная
+реализация функции может всегда использоваться, или
+.Em libc
+во время выполнения определяет, какие расширения набора команд SIMD
+поддерживаются, и автоматически выбирает наиболее подходящую реализацию.
+В
+.Cm amd64 ,
+переменная среды
+.Ev ARCHLEVEL
+может быть использован для переопределения этого механизма.
+.Pp
+Расширенные функции доступны для следующих архитектур:
+.Bl -column FUNCTION_________ aarch64_ arm_ amd64_ i386_ ppc64_ -offset indent
+.It Em FUNCTION          Ta Em AARCH64 Ta Em ARM Ta Em AMD64  Ta Em I386 Ta Em PPC64
+.It    bcmp              Ta            Ta        Ta    S1     Ta    S
+.It    bcopy             Ta            Ta    S   Ta    S      Ta    S    Ta    SV
+.It    bzero             Ta            Ta    S   Ta    S      Ta    S
+.It    div               Ta            Ta        Ta    S      Ta    S
+.It    index             Ta    S       Ta        Ta    S1
+.It    ldiv              Ta            Ta        Ta    S      Ta    S
+.It    lldiv             Ta            Ta        Ta    S
+.It    memchr            Ta    S       Ta        Ta    S1
+.It    memcmp            Ta    S       Ta    S   Ta    S1     Ta    S
+.It    memccpy           Ta            Ta        Ta    S1
+.It    memcpy            Ta    S       Ta    S   Ta    S      Ta    S    Ta    SV
+.It    memmove           Ta    S       Ta    S   Ta    S      Ta    S    Ta    SV
+.It    memrchr           Ta            Ta        Ta    S1
+.It    memset            Ta    S       Ta    S   Ta    S      Ta    S
+.It    rindex            Ta    S       Ta        Ta    S1     Ta    S
+.It    stpcpy            Ta    S       Ta        Ta    S1
+.It    stpncpy           Ta            Ta        Ta    S1
+.It    strcat            Ta            Ta        Ta    S1     Ta    S
+.It    strchr            Ta    S       Ta        Ta    S1     Ta    S
+.It    strchrnul         Ta    S       Ta        Ta    S1
+.It    strcmp            Ta    S       Ta    S   Ta    S1     Ta    S
+.It    strcpy            Ta    S       Ta        Ta    S1     Ta    S    Ta    S2
+.It    strcspn           Ta            Ta        Ta    S2
+.It    strlcat           Ta            Ta        Ta    S1
+.It    strlcpy           Ta            Ta        Ta    S1
+.It    strlen            Ta    S       Ta    S   Ta    S1
+.It    strncat           Ta            Ta        Ta    S1
+.It    strncmp           Ta    S       Ta    S   Ta    S1     Ta    S
+.It    strncpy           Ta            Ta        Ta    S1     Ta         Ta    S2
+.It    strnlen           Ta    S       Ta        Ta    S1
+.It    strrchr           Ta    S       Ta        Ta    S1     Ta    S
+.It    strpbrk           Ta            Ta        Ta    S2
+.It    strsep            Ta            Ta        Ta    S2
+.It    strspn            Ta            Ta        Ta    S2
+.It    swab              Ta            Ta        Ta           Ta    S
+.It    timingsafe_bcmp   Ta            Ta        Ta    S1
+.It    timingsafe_memcmp Ta            Ta        Ta    S
+.It    wcschr            Ta            Ta        Ta           Ta    S
+.It    wcscmp            Ta            Ta        Ta           Ta    S
+.It    wcslen            Ta            Ta        Ta           Ta    S
+.It    wmemchr           Ta            Ta        Ta           Ta    S
+.El
+.Pp
+.Sy S Ns :\ скалярный (не SIMD),
+.Sy 1 Ns :\ базовый уровень amd64,
+.Sy 2 Ns :\ x86-64-v2
+или PowerPC\ 2.05,
+.Sy 3 Ns :\ x86-64-v3,
+.Sy 4 Ns :\ x86-64-v4,
+.Sy V Ns :\ PowerPC\ VSX.
+.
+.Sh ОКРУЖЕНИЕ
+.Bl -tag
+.It Ev ARCHLEVEL
+В
+.Em amd64 ,
+управляет уровнем используемых улучшений SIMD.
+Если для этой переменной задан уровень архитектуры из приведенного ниже
+списка и этот уровень архитектуры поддерживается процессором,
+то используется усовершенствования SIMD до
+.Ev ARCHLEVEL .
+Если
+.Ev ARCHLEVEL
+не установлен, не распознается или не поддерживается процессором, используется самый высокий
+уровень усовершенствований SIMD, поддерживаемый процессором.
+.Pp
+Суффикс, начинающийся на
+.Sq ":"
+или
+.Sq "+"
+в
+.Ev ARCHLEVEL
+игнорируется и может быть использовано для будущих расширений.
+Уровень архитектуры может иметь префикс в виде символа
+.Sq "!" ,
+чтобы принудительно использовать запрошенный уровень архитектуры, даже если
+процессор не сообщает о том, что он поддерживается.
+Обычно это приводит к сбоям в работе приложений и должно использоваться только
+в целях тестирования или если определение уровня архитектуры дает неверные
+результаты.
+.Pp
+Уровни архитектуры соответствуют дополнению AMD64 SysV ABI:
+.Bl -tag -width x86-64-v2
+.It Cm scalar
+только скалярные улучшения (без SIMD)
+.It Cm baseline
+cmov, cx8, x87 FPU, fxsr, MMX, osfxsr, SSE, SSE2
+.It Cm x86-64-v2
+cx16, lahf/sahf, popcnt, SSE3, SSSE3, SSE4.1, SSE4.2
+.It Cm x86-64-v3
+AVX, AVX2, BMI1, BMI2, F16C, FMA, lzcnt, movbe, osxsave
+.It Cm x86-64-v4
+AVX-512F/BW/CD/DQ/VL
+.El
+.El
+.
+.Sh ДИАГНОСТИКА
+.Bl -diag
+.It "Illegal Instruction"
+Выводится
+.Xr sh 1
+если команда завершается подачей сигнала
+.Dv SIGILL ,
+смотрите
+.Xr signal 3 .
+.Pp
+Использование неподдерживаемого уровня архитектуры было вызвано установкой
+.Ev ARCHLEVEL
+к строке, начинающейся с символа
+.Sq "!" ,
+вызывает сбой процесса из-за использования неподдерживаемой
+инструкции.
+Сбросьте
+.Ev ARCHLEVEL ,
+удалите префикс
+.Sq "!"
+или выберите поддерживаемый уровень архитектуры.
+.Pp
+Сообщение также может появиться по другим причинам, не связанным с этим.
+.El
+.
+.Sh СМОТРИТЕ ТАКЖЕ
+.Xr string 3 ,
+.Xr arch 7
+.Rs
+.%A H. J. Lu
+.%A Michael Matz
+.%A Milind Girkar
+.%A Jan Hubi\[u010D]ka \" \(vc
+.%A Andreas Jaeger
+.%A Mark Mitchell
+.%B System V Application Binary Interface
+.%D May 23, 2023
+.%T AMD64 Architecture Processor Supplement
+.%O Version 1.0
+.Re
+.
+.Sh ИСТОРИЯ
+Расширенные функции, зависящие от конкретной архитектуры
+.Em libc
+были добавлены, начиная
+с
+.Fx 2.0
+для
+.Cm i386 ,
+.Fx 6.0
+для
+.Cm arm ,
+.Fx 6.1
+для
+.Cm amd64 ,
+.Fx 11.0
+для
+.Cm aarch64 ,
+и
+.Fx 12.0
+для
+.Cm powerpc64 .
+Расширенные SIMD функции были впервые добавлены с
+.Fx 13.0
+для
+.Cm powerpc64
+и с
+.Fx 14.1
+для
+.Cm amd64 .
+.Pp
+Страница руководства
+.Nm
+появилась в
+.Fx 14.1 .
+.
+.Sh АВТОР
+.An Роберт Клаузекер Aq Mt fuz@FreeBSD.org
+.
+.Sh ПРЕДУПРЕЖДЕНИЯ
+Другие части
+.Fx ,
+например, криптографические процедуры в ядре или в
+OpenSSL, также может использовать усовершенствования SIMD.
+Эти усовершенствования не зависят от переменной
+.Ev ARCHLEVEL
+и могут иметь свой собственный
+механизм настройки.
+.
+.Sh НЕИСПРАВНОСТИ
+Использование улучшений SIMD не может быть настроено на powerpc64.
