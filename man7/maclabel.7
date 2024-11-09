@@ -34,39 +34,39 @@
 .Dd October 25, 2002
 .Dt MACLABEL 7
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm maclabel
-.Nd Mandatory Access Control label format
-.Sh DESCRIPTION
-If Mandatory Access Control, or MAC, is enabled in the kernel,
-then in addition to the traditional credentials,
-each subject
-(typically a user or a socket)
-and object
-(file system object, socket, etc.\&)
-is given a
+.Nd формат обязательной метки контроля доступа
+.Sh ОПИСАНИЕ
+Если в ядре включен обязательный контроль доступа, или MAC,
+то в дополнение к традиционным учетным данным
+каждому субъекту
+(обычно пользователю или сокету)
+и объекту
+(объект файловой системы, сокет и т.д.)
+присваивается
 .Em "MAC label" .
-The MAC label specifies the necessary subject-specific or
-object-specific information necessary for a MAC security policy
+Метка MAC указывает необходимую информацию, относящуюся к конкретному субъекту или
+объекту, необходимую для политики безопасности MAC
 .\" .Pq Xr mac 9
-to enforce access control on the subject/object.
+для обеспечения контроля доступа к субъекту/объекту.
 .Pp
-The format for a MAC label is defined as follows:
+Формат для MAC-метки определяется следующим образом:
 .Pp
 .Sm off
 .D1 Ar policy1 No / Ar qualifier1 , policy2 No / Ar qualifier2 , No ...
 .Sm on
 .Pp
-A MAC label consists of a policy name,
-followed by a forward slash,
-followed by the subject or object's qualifier,
-optionally followed by a comma and one or more additional policy labels.
-For example:
+Метка MAC состоит из названия политики,
+за которым следует косая черта,
+затем указывается субъект или объект,
+за которым при необходимости следует запятая и одна или несколько дополнительных меток политики.
+Например:
 .Bd -literal -offset indent
 biba/low(low-low)
 biba/high(low-high),mls/equal(equal-equal),partition/0
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr mac 3 ,
 .Xr posix1e 3 ,
 .Xr mac_biba 4 ,
@@ -84,13 +84,13 @@ biba/high(low-high),mls/equal(equal-equal),partition/0
 .Xr setfmac 8 ,
 .Xr setpmac 8 ,
 .Xr mac 9
-.Sh HISTORY
-MAC first appeared in
+.Sh ИСТОРИЯ
+MAC впервые появился в
 .Fx 5.0 .
-.Sh AUTHORS
-This software was contributed to the
+.Sh АВТОРЫ
+Это программное обеспечение было внесено в проект
 .Fx
-Project by NAI Labs, the Security Research Division of Network Associates
-Inc.\& under DARPA/SPAWAR contract N66001-01-C-8035
+NAI Labs, исследовательским подразделением по безопасности Network Associates
+Inc.\& в соответствии с контрактом DARPA/SPAWAR N66001-01-C-8035
 .Pq Dq CBOSS ,
-as part of the DARPA CHATS research program.
+в рамках исследовательской программы DARPA CHATS.
