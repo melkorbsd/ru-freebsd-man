@@ -218,37 +218,37 @@ USB шины
 статическая конфигурация файловой системы; смотри
 .Xr fstab 5
 .It Pa hosts
-database of local hosts if no network name server is running
+база данных имен узлов локальной сети на случай отсутствия работающего DNS-сервера
 .It Pa inetd.conf
 configuration for
 .Bx
 heritage internet servers; see
 .Xr inetd 8
 .It Pa localtime
-local timezone information; see
+информация о местном часовом поясе; смотри
 .Xr ctime 3
 .It Pa jail.conf.d/
+скрипты для запуска
 .Xr jail 8
-startup scripts
 .It Pa login.conf
-login class capability database; see
+база данных классов авторизации; смотри
 .Xr login.conf 5
 .It Pa machine-id
-defines the UUID for the local system, required for dbus
+определяет UUID для локальной системы, требуется для dbus
 .It Pa mail/
+файлы для управления
 .Xr sendmail 8
-control files
 .Pp
 .Bl -tag -width "mailer.conf" -compact
 .It Pa aliases
-addresses to deliver system mail
+адреса пересылки системной почты
 .It Pa mailer.conf
+настройки
 .Xr mailwrapper 8
-configuration
 .El
 .Pp
 .It Pa motd.template
-message displayed upon tty login; see
+сообщение, отображаемое при входе через tty; смотри
 .Xr motd 5
 .It Pa mtree/
 system mapper specification; see
