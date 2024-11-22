@@ -27,18 +27,18 @@
 .\"
 .\"	@(#)ascii.7	8.1 (Berkeley) 6/5/93
 .\"
-.Dd Ноябрь 12, 2022
+.Dd November 12, 2022
 .Dt ASCII 7
 .Os
-.Sh ИМЯ
+.Sh NAME
 .Nm ascii
 .Nd octal, hexadecimal, decimal and binary
 .Tn ASCII
-наборы символов
-.Sh ОПИСАНИЕ
-
+character sets
+.Sh DESCRIPTION
+The
 .Nm octal
-набор:
+set:
 .Bd -literal -offset left
 000 NUL  001 SOH  002 STX  003 ETX  004 EOT  005 ENQ  006 ACK  007 BEL
 010 BS   011 HT   012 LF   013 VT   014 FF   015 CR   016 SO   017 SI
@@ -58,7 +58,7 @@
 170  x   171  y   172  z   173  {   174  |   175  }   176  ~   177 DEL
 .Ed
 .Pp
-
+The
 .Nm hexadecimal
 set:
 .Bd -literal -offset left
@@ -80,7 +80,7 @@ set:
 78  x    79  y    7a  z    7b  {    7c  |    7d  }    7e  ~    7f DEL
 .Ed
 .Pp
-
+The
 .Nm decimal
 set:
 .Bd -literal -offset left
@@ -102,7 +102,7 @@ set:
 120  x   121  y   122  z   123  {   124  |   125  }   126  ~   127 DEL
 .Ed
 .Pp
-
+The
 .Nm binary
 set:
 .Bd -literal -offset left
@@ -142,9 +142,9 @@ ESC      ;      [      {     11011
  US      ?      _    DEL     11111
 .Ed
 .Pp
-Полный
+The full
 .Nm names
-из набора управляющих символов:
+of the control character set:
 .Bd -literal -offset left
 NUL      NULl
 SOH      Start Of Heading
@@ -179,19 +179,19 @@ ESC      ESCape
  RS      Record Separator
  US      Unit Separator
 .Ed
-.Sh ФАЙЛЫ
+.Sh FILES
 .Bl -tag -width /usr/share/misc/ascii -compact
 .It Pa /usr/share/misc/ascii
 .El
-.Sh СТАНДАРТЫ
+.Sh STANDARDS
 .Rs
 .%T Information Systems - Coded Character Sets - 7-Bit American National\
- Стандартный код для обмена информацией (7-разрядный ASCII)
+ Standard Code for Information Interchange (7-Bit ASCII)
 .%R INCITS 4-1986[R2017]
 .%Q InterNational Committee for Information Technology Standards
 .Re
-.Sh ИСТОРИЯ
-Одна
+.Sh HISTORY
+An
 .Nm
-страница руководства появилась в
+manual page appeared in
 .At v2 .

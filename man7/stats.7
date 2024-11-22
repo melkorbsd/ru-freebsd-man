@@ -27,67 +27,67 @@
 .Dd April 22, 2021
 .Dt STATS 7
 .Os
-.Sh ИМЯ
+.Sh NAME
 .Nm stats
-.Nd информация о различных статистических утилитах
-.Sh ОПИСАНИЕ
-Пользовательское пространство
+.Nd information about various and sundry statistics utilities
+.Sh DESCRIPTION
+The
 .Fx
-частично содержит ряд утилит, которые можно использовать
-для определения состояния системы во время выполнения и, при необходимости, из основных файлов.
-.Sh КОМАНДЫ
-Следующие команды,
-.Pq отсортированные в алфавитном порядке , 
-в настоящее время включены в базовую систему, и периодически появляются новые.
+userland in part contains a series of utilities which can be used
+to ascertain system state at runtime and optionally from core files.
+.Sh COMMANDS
+The following commands
+.Pq sorted alphabetically
+are currently included in the base system, with more appearing periodically.
 .Bl -tag -width "zpool iostat"
 .It Nm btsockstat
-Отображение информации о разъеме Bluetooth
+Show Bluetooth socket information
 .It Nm ctlstat
-Утилита статистики целевого слоя CAM
+CAM Target Layer statistics utility
 .It Nm dwatch
-Наблюдайте за процессами, когда они запускают определенный тест DTrace
+Watch processes as they trigger a particular DTrace probe
 .It Nm fstat
-Идентификация активных файлов
+Identify active files
 .It Nm gstat
-Печать статистики о дисках GEOM
+Print statistics about GEOM disks
 .It Nm ibstat
-Отображение информации из драйвера InfiniBand
+Display information from the InfiniBand driver
 .It Nm ifmcstat
-Вывод статистики управления группами многоадресной рассылки для каждого интерфейса
+Dump multicast group management statistics per interface
 .It Nm iostat
-Отчет о статистике ввода-вывода подсистемы ядра
+Report kernel subsystem I/O statistics
 .It Nm ipfstat
-Отображение статистики фильтрации IPF-пакетов и списка фильтров
+Display IPF packet filter statistics and filter list
 .It Nm kldstat
-Отображение состояния динамического компоновщика ядра
+Display status of dynamic kernel linker
 .It Nm lockstat
-Отчет о блокировке ядра и статистике профилирования
+Report kernel lock and profiling statistics
 .It Nm mailstats
-Отображение почтовой статистики
+Display mail statistics
 .It Nm netstat
-Отображение состояния сети и статистики
+Show network status and statistics
 .It Nm nfsstat
-Отображение статистики NFS
+Display NFS statistics
 .It Nm plockstat
-Отслеживание статистики блокировок pthread с помощью DTrace
+Trace pthread lock statistics using DTrace
 .It Nm pmcstat
-Измерение производительности с помощью аппаратного обеспечения для мониторинга производительности
+Performance measurement with performance monitoring hardware
 .It Nm procstat
-Получите подробную информацию о процессе
+Get detailed process information
 .It Nm pstat
-Структуры данных системы отображения
+Display system data structures
 .It Nm sockstat
-Список открытых сокетов
+List open sockets
 .It Nm stat
-Отображение состояния файла
+Display file status
 .It Nm systat
-Отоюражение статистики системы
+Display system statistics
 .It Nm vmstat
-Отчет о статистике виртуальной памяти
+Report virtual memory statistics
 .It Nm zpool iostat
-Отчет о статистике ввода-вывода ZFS
+Report ZFS I/O statistics
 .El
-.Sh СМОТРИТЕ ТАКЖЕ
+.Sh SEE ALSO
 .Xr btsockstat 1 ,
 .Xr dwatch 1 ,
 .Xr fstat 1 ,
@@ -113,10 +113,10 @@
 .Xr pstat 8 ,
 .Xr vmstat 8 ,
 .Xr zpool 8
-.Sh ИСТОРИЯ
-Страница руководства
+.Sh HISTORY
+The
 .Nm
-впервые появилась в
+manual page first appeared in
 .Fx 13.0 .
-.Sh АВТОРЫ
-.An Даниэль Эбдруп Йенсен Aq Mt debdrup@FreeBSD.org
+.Sh AUTHORS
+.An Daniel Ebdrup Jensen Aq Mt debdrup@FreeBSD.org

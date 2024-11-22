@@ -28,208 +28,216 @@
 .Dd August 19, 2020
 .Dt TESTS 7
 .Os
-.Sh ИМЯ
+.Sh NAME
 .Nm tests
-.Nd введение в набор тестов
+.Nd introduction to the
 .Fx
-.Sh ОПИСАНИЕ
-Набор тестов
+Test Suite
+.Sh DESCRIPTION
+The
 .Fx
-предоставляет набор автоматизированных тестов для двух основных целей.
-С одной стороны, набор тестов помогает
-.Em разработчикам
-обнаруживать ошибки и регрессии при изменении дерева исходных текстов.
-С другой стороны, это помогает
-.Em конечным пользователям
-(и, в частности, системным администраторам) убедиться в том, что новые установки
-операционной системы
+Test Suite provides a collection of automated tests for two major purposes.
+On one hand, the test suite aids
+.Em developers
+to detect bugs and regressions when they modify the source tree.
+On the other hand, it allows
+.Em end users
+(and, in particular, system administrators) to verify that fresh installations
+of the
 .Fx
-правильно работают на своей аппаратной платформе, а также обеспечивают,
-чтобы система не страдала от сбоев в работе во время регулярной эксплуатации и технического обслуживания.
+operating system behave correctly on their hardware platform and also to ensure
+that the system does not suffer from regressions during regular operation and
+maintenance.
 .Pp
-Набор тестов
+The
 .Fx
-можно найти в иерархии
-.Pa /usr/tests .
+Test Suite can be found in the
+.Pa /usr/tests
+hierarchy.
 .Pp
-На этой странице руководства описано, как запустить набор тестов и как настроить
-некоторые из его дополнительных функций.
-Информацию о написании тестов смотрите в
+This manual page describes how to run the test suite and how to configure
+some of its optional features.
+For information on writing the tests, see
 .Xr atf 7 .
 .Ss Installing the test suite
-Если каталог
+If the
 .Pa /usr/tests
-отсутствует, то вам придется включить сборку набора
-тестов, перестроить вашу систему и установить результаты.
-Вы можете сделать это, установив
+directory is missing, then you will have to enable the build of the test
+suite, rebuild your system and install the results.
+You can do so by setting
 .Sq WITH_TESTS=yes
-в вашем файле
+in your
 .Pa /etc/src.conf
-(смотрите
+file (see
 .Xr src.conf 5
-для получения подробной информации)
-и перестроить систему, как описано в
+for details)
+and rebuilding the system as described in
 .Xr build 7 .
 .Ss When to run the tests?
-Прежде чем углубиться в подробности запуска набора тестов, вот несколько
-сценариев, в которых вы должны его запустить:
+Before diving into the details of how to run the test suite, here are some
+scenarios in which you should run it:
 .Bl -bullet -offset indent
 .It
-После новой установки
+After a fresh installation of
 .Fx
-убедитесь, что система корректно работает на вашей аппаратной платформе.
+to ensure that the system works correctly on your hardware platform.
 .It
-После обновления
+After an upgrade of
 .Fx
-до другой версии, убедитесь, что новый код хорошо работает на вашей
-аппаратной платформе и что обновление не привело к регрессиям в вашей
-конфигурации.
+to a different version to ensure that the new code works well on your
+hardware platform and that the upgrade did not introduce regressions in your
+configuration.
 .It
-После изменения исходного дерева для обнаружения любых новых ошибок и/или регрессий.
+After modifying the source tree to detect any new bugs and/or regressions.
 .It
-Периодически, возможно, с помощью задания
-.Xr cron 8 ,
-чтобы гарантировать, что любые изменения в системе (такие как установка
-пакетов сторонних производителей или внесение изменений в файлы конфигурации вручную) не
-приведут к непредвиденным сбоям.
+Periodically, maybe from a
+.Xr cron 8
+job, to ensure that any changes to the system (such as the installation of
+third-party packages or manual modifications to configuration files) do not
+introduce unexpected failures.
 .El
 .Ss Running the tests
-Используйте следующую команду для запуска всего набора тестов:
+Use the following command to run the whole test suite:
 .Bd -literal -offset indent
 $ kyua test -k /usr/tests/Kyuafile
 .Ed
 .Pp
-Описанное выше будет повторяться во всех тестовых программах в
+The above will iterate through all test programs in
 .Pa /usr/tests
-рекурсивно, выполняйте их, сохраняйте их результаты и отладочные данные в
-базе данных Kyua (по умолчанию в
+recursively, execute them, store their results and debugging data in Kyua's
+database (by default in
 .Pa ~/.kyua/store.db ) ,
-и выводите сводку результатов.
-Эта сводка содержит краткий подсчет всех выполненных тестов и количество
-неудачных из них.
+and print a summary of the results.
+This summary includes a brief count of all total tests run and how many of
+them failed.
 .Pp
-Можно ограничить количество запускаемых тестов, указав их названия в
-командной строке.
-Например, это позволит выполнять тесты для утилит
+It is possible to restrict which tests to run by providing their names in
+the command line.
+For example, this would execute the tests for the
 .Xr cp 1
-и
-.Xr cut 1 :
+and
+.Xr cut 1
+utilities:
 .Bd -literal -offset indent
 $ kyua test -k /usr/tests/Kyuafile bin/cp usr.bin/cut
 .Ed
 .Ss Obtaining reports of the tests execution
-Дополнительную информацию о результатах тестирования можно получить
-с помощью различных команд создания отчетов Kyua.
-Например, приведенный ниже текстовый отчет о выполненных
-тестах с указанием того, какие из них завершились неудачей:
+Additional information about the test results can be retrieved
+by using Kyua's various reporting commands.
+For example, the following would print a plain-text report of the executed
+tests and show which ones failed:
 .Bd -literal -offset indent
 $ kyua report --verbose -r <.db file from output of test>
 .Ed
 .Pp
-В этом примере будет сгенерирован HTML-отчет, готовый к публикации на
-веб-сервере:
+This example would generate an HTML report ready to be published on a
+web server:
 .Bd -literal -offset indent
 $ kyua report-html --output ~/public_html/tests
 .Ed
 .Pp
-Для получения более подробной информации об интерфейсе командной строки Kyua, пожалуйста, обратитесь
-к его справочной странице
+For further details on the command-line interface of Kyua, please refer
+to its manual page
 .Xr kyua 1 .
 .Ss Configuring the tests
-Некоторые тестовые примеры в наборе тестов
+Some test cases in the
 .Fx
-требуют ручную настройку администратором для их запуска.
-Если не определены определенные свойства, тесты, для которых они требуются, будут
-пропущены.
+Test Suite require manual configuration by the administrator before they can be
+run.
+Unless certain properties are defined, the tests that require them will be
+skipped.
 .Pp
-Наборы тестов настраиваются путем определения их конфигурационных
-переменных в
+Test suites are configured by defining their configuration
+variables in
 .Pa /etc/kyua/kyua.conf .
-Формат этого файла подробно описан в
+The format of this file is detailed in
 .Xr kyua.conf 5 .
 .Pp
-В наборе тестов доступны следующие переменные конфигурации
-.Fx :
+The following configuration variables are available in the
+.Fx
+Test Suite:
 .Bl -tag -width "allow_sysctl_side_effects"
 .It allow_devfs_side_effects
-Если определено, включает тесты, которые могут уничтожать и воссоздавать полупостоянные
-узлы устройств, такие как дисковые устройства.
-Без этой переменной тесты могут по-прежнему создавать и уничтожать узлы устройств, которые
-обычно являются временными, такие как /dev/tap* и /dev/pts*, при условии,
-что впоследствии они будут очищены.
-Однако тесты, для которых требуется эта переменная, имеют упрощенные требования к очистке;
-они должны воссоздать все устройства, которые они уничтожили, но не обязательно с
-тем же именем разработчика.
+If defined, enables tests that may destroy and recreate semipermanent device
+nodes, like disk devices.
+Without this variable, tests may still create and destroy devices nodes that
+are normally transient, like /dev/tap* and /dev/pts*, as long as they clean
+them up afterwards.
+However, tests that require this variable have a relaxed cleanup requirement;
+they must recreate any devices that they destroyed, but not necessarily with
+the same devnames.
 .It allow_sysctl_side_effects
-Включает тесты, которые изменяют глобально значимые переменные
-.Xr sysctl 8 .
-Тесты отменят все изменения, внесенные на этапах очистки.
+Enables tests that change globally significant
+.Xr sysctl 8
+variables.
+The tests will undo any changes in their cleanup phases.
 .It disks
-Необходимо указать список узлов дисковых устройств, разделенных пробелами.
-Тесты, которым требуется деструктивный доступ к дискам, должны использовать эти устройства.
-Тесты не требуются для сохранения каких-либо данных, имеющихся на этих дисках.
+Must be set to a space delimited list of disk device nodes.
+Tests that need destructive access to disks must use these devices.
+Tests are not required to preserve any data present on these disks.
 .It fibs
-Должен быть установлен разделенный пробелами список FIBS (таблиц маршрутизации).
-Тесты, которым необходимо изменить таблицу маршрутизации, могут использовать любую из них.
-Тесты будут очищать все новые маршруты, которые они создают.
+Must be set to a space delimited list of FIBs (routing tables).
+Tests that need to modify a routing table may use any of these.
+Tests will cleanup any new routes that they create.
 .El
 .Ss What to do if something fails?
-Если произойдет
-.Em какой-либо сбой
-во время выполнения набора тестов, пожалуйста, подумайте о том, чтобы сообщить об этом
+If there is
+.Em any failure
+during the execution of the test suite, please consider reporting it to the
 .Fx
-разработчикам, чтобы можно было проанализировать и устранить неисправность.
-Для этого отправьте сообщение в соответствующий список рассылки или отправьте
-отчет о проблеме.
-Для получения более подробной информации, пожалуйста, обратитесь к:
+developers so that the failure can be analyzed and fixed.
+To do so, either send a message to the appropriate mailing list or file a
+problem report.
+For more details please refer to:
 .Bl -bullet -offset indent -compact
 .It
 .Lk https://lists.freebsd.org/ "FreeBSD Mailing Lists"
 .It
 .Lk https://www.freebsd.org/support/ "Problem Reporting"
 .El
-.Sh ФАЙЛЫ
+.Sh FILES
 .Bl -tag -compact -width "/etc/kyua/kyua.conf"
 .It Pa /etc/kyua/kyua.conf
-Общесистемный конфигурационный файл для
+System-wide configuration file for
 .Xr kyua 1 .
 .It Pa ~/.kyua/kyua.conf
-Пользовательский конфигурационный файл для
+User-specific configuration file for
 .Xr kyua 1 ;
-переопределяет системный файл.
+overrides the system file.
 .It Pa ~/.kyua/store.db
-База данных результатов по умолчанию, используемая Kyua.
+Default result database used by Kyua.
 .It Pa /usr/tests/
-Расположение набора тестов
-.Fx .
+Location of the
+.Fx
+Test Suite.
 .It Pa /usr/tests/Kyuafile
-Файл определения набора тестов верхнего уровня.
+Top-level test suite definition file.
 .El
-.Sh СМОТРЕТЬ ТАКЖЕ
+.Sh SEE ALSO
 .Xr kyua 1 ,
 .Xr atf 7 ,
 .Xr build 7 ,
 .Xr development 7
-.Sh ИСТОРИЯ
-Набор тестов
+.Sh HISTORY
+The
 .Fx
-впервые появился в
+Test Suite first appeared in
 .Fx 10.1
-и был установлен по умолчанию в
+and was installed by default in
 .Fx 11.0 .
 .Pp
-Страница руководства
+The
 .Nm
-впервые появилась в
+manual page first appeared in
 .Nx 6.0
-и позже был портирован на
+and was later ported to
 .Fx 10.1 .
 .Pp
-Тестовый драйвер
+The test driver,
 .Xr kyua 1 ,
-был импортирован как часть базовой системы в
+was imported as part of the base system in
 .Fx 13.0 ,
-ранее доступный только в
+previously being available only in
 .Xr ports 7 .
-.Sh АВТТОРЫ
-.An Хулио Мерино Aq Mt jmmv@FreeBSD.org
+.Sh AUTHORS
+.An Julio Merino Aq Mt jmmv@FreeBSD.org

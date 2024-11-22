@@ -28,133 +28,136 @@
 .Dd January 18, 2008
 .Dt CLOCKS 7
 .Os
-.Sh ИМЯ
+.Sh NAME
 .Nm clocks
-.Nd различные системные таймеры
-.Sh СИНТАКСИС
+.Nd various system timers
+.Sh SYNOPSIS
 .In time.h
-.Sh ОПИСАНИЕ
+.Sh DESCRIPTION
 .Dv HZ
-не является частью интерфейса приложения в
+is not part of the application interface in
 .Bx .
 .Pp
-Существует множество различных реальных и виртуальных (хронометрирующих) часов с
-разной частотой:
+There are many different real and virtual (timekeeping) clocks with
+different frequencies:
 .Bl -bullet
 .It
 The scheduling clock.
 This is a real clock with frequency that happens to be 100.
 It is not available to applications.
 .It
-Статистические часы.
-Это реальные часы с частотой, равной 128.
-Они недоступны приложениям напрямую.
+The statistics clock.
+This is a real clock with frequency that happens to be 128.
+It is not directly available to applications.
 .It
-Часы, о которых сообщал
+The clock reported by
 .Xr clock 3 .
-Это виртуальные часы с частотой, равной 128.
-Их фактическая частота задается макросом
+This is a virtual clock with a frequency that happens to be 128.
+Its actual frequency is given by the macro
 .Dv CLOCKS_PER_SEC .
-Обратите внимание, что
+Note that
 .Dv CLOCKS_PER_SEC
-может быть с плавающей запятой.
-Не используйте
+may be floating point.
+Do not use
 .Xr clock 3
-в новых программах в рамках
+in new programs under
 .Fx .
-Это слабо по сравнению с
+It is feeble compared with
 .Xr getrusage 2 .
-Это предусмотрено для обеспечения соответствия
-.Tn ANSI .
-Это реализуется путем вызова
+It is provided for
+.Tn ANSI
+conformance.
+It is implemented by calling
 .Xr getrusage 2
-и отбрасывает информацию и решение.
+and throwing away information and resolution.
 .It
-Часы, сообщенные
+The clock reported by
 .Xr times 3 .
-Это виртуальные часы с частотой, равной 128.
-Их фактическая частота задается макросом
+This is a virtual clock with a frequency that happens to be 128.
+Its actual frequency is given by the macro
 .Dv CLK_TCK
-(устарел; не используется) и с помощью
+(deprecated; do not use) and by
 .Fn sysconf _SC_CLK_TCK
-и с помощью
+and by
 .Xr sysctl 3 .
-Обратите внимание, что его частота может отличаться от
+Note that its frequency may be different from
 .Dv CLOCKS_PER_SEC .
-Не используйте
+Do not use
 .Xr times 3
-в новых программах в рамках
+in new programs under
 .Fx .
-Это слабо по сравнению с
+It is feeble compared with
 .Xr gettimeofday 2
-вместе с
+together with
 .Xr getrusage 2 .
-Это предусмотрено для обеспечения соответствия
-.Tn POSIX .
-Это реализуется путем вызова
+It is provided for
+.Tn POSIX
+conformance.
+It is implemented by calling
 .Xr gettimeofday 2
-и
+and
 .Xr getrusage 2
-и отбрасывает информацию и решение.
+and throwing away information and resolution.
 .It
-Часы профилирования.
-Это реальные часы с частотой 1024.
-Они используются в основном в
+The profiling clock.
+This is a real clock with frequency 1024.
+It is used mainly by
 .Xr moncontrol 3
-и
+and
 .Xr gprof 1 .
-Приложения должны определять его фактическую частоту, используя
+Applications should determine its actual frequency using
 .Xr sysctl 3
-или путем считывания его из заголовка в файле данных профилирования.
+or by reading it from the header in the profiling data file.
 .It
-Часы mc146818a.
-Это реальные часы с номинальной частотой 32768.
-Они разделены на две части, чтобы получить статистические часы и часы для профилирования.
-Они недоступны для приложений.
+The mc146818a clock.
+This is a real clock with a nominal frequency of 32768.
+It is divided down to give the statistic clock and the profiling clock.
+It is not available to applications.
 .It
-Микросекундные часы.
-Это виртуальные часы с частотой 1000000.
-Они используются для большей части хронометража в
+The microseconds clock.
+This is a virtual clock with frequency 1000000.
+It is used for most timekeeping in
 .Bx
-и экспортируются в приложения в
+and is exported to applications in
 .Xr getrusage 2 ,
 .Xr gettimeofday 2 ,
 .Xr select 2 ,
 .Xr getitimer 2 ,
-и т.д.
-Это часы, которые обычно должны использоваться приложениями
-.Bx .
+etc.
+This is the clock that should normally be used by
+.Bx
+applications.
 .It
-Часы i8254.
-Это настоящие часы / таймер с номинальной частотой 1193182.
-Они имеют три независимых счетчика времени, которые будут использоваться.
-Они разделены на две части, чтобы отображать время планирования.
-Они недоступны для приложений.
+The i8254 clock.
+This is a real clock/timer with a nominal frequency of 1193182.
+It has three independent time counters to be used.
+It is divided down to give the scheduling clock.
+It is not available to applications.
 .It
-Тактовый сигнал TSC (64-разрядный регистр) в системах пятого поколения или более поздних версиях x86.
-Это реальные тактовые сигналы с частотой, эквивалентной количеству
-циклов процессора (ов) в секунду.
-Его частоту можно определить с помощью sysctl.
-.Va machdep.tsc_freq ,
-если он доступен.
-Он используется для интерполяции между значениями часов планирования.
-К нему можно получить доступ с помощью запроса
+The TSC clock (64-bit register) on fifth-generation or later x86 systems.
+This is a real clock with a frequency that is equivalent to the number of
+cycles per second of the CPU(s).
+Its frequency can be found using the
+.Va machdep.tsc_freq
+sysctl, if it is available.
+It is used to interpolate between values of the scheduling clock.
+It can be accessed using the
 .Dv PMIOTSTAMP
-в
+request of
 .Xr perfmon 4 .
 .It
-Часы ACPI.
-Это реальные часы/таймер с номинальной частотой 3579545.
-Доступ к ним осуществляется через 24- или 32-разрядный регистр.
-В отличие от тактовой частоты TSC, она поддерживает постоянную частоту тактов, даже когда процессор
-находится в спящем режиме или его тактовая частота изменяется.
-Она недоступна для приложений.
+The ACPI clock.
+This is a real clock/timer with a nominal frequency of 3579545.
+It is accessed via a 24 or 32 bit register.
+Unlike the TSC clock, it maintains a constant tick rate even when the CPU
+sleeps or its clock rate changes.
+It is not available to applications.
 .El
 .Pp
-Резюме: если
+Summary: if
 .Dv HZ
-не 1000000, то приложение, вероятно, использует неправильные часы.
-.Sh СМОТРИТЕ ТАКЖЕ
+is not 1000000 then the application is probably using the wrong clock.
+.Sh SEE ALSO
 .Xr gprof 1 ,
 .Xr clock_gettime 2 ,
 .Xr getitimer 2 ,
@@ -164,9 +167,9 @@ It is not available to applications.
 .Xr clock 3 ,
 .Xr moncontrol 3 ,
 .Xr times 3
-.Sh АВТОРЫ
+.Sh AUTHORS
 .An -nosplit
-Эта страница руководства была написана
-.An Й\(:орг Вуншем
-после описания, опубликованного
-.An Брюсом Эвансом .
+This manual page was written by
+.An J\(:org Wunsch
+after a description posted by
+.An Bruce Evans .

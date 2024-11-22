@@ -6,94 +6,96 @@
 .Dd April 17, 2024
 .Dt "NETWORKING" 7
 .Os
-.Sh ИМЯ
+.Sh NAME
 .Nm networking ,
 .Nm wifi
-.Nd краткое руководство по подключению к сети
-.Sh ОПИСАНИЕ
-В следующих примерах предполагается, что мы подключаемся к Ethernet
-с помощью первого интерфейса, найденного драйвером
-.Xr em 4 ,
-и Wi-Fi с первым интерфейсом, найденным драйвером
-.Xr iwn 4 ,
-хотя ваше аппаратное обеспечение будет отличаться.
-.Sh ПРИМЕРЫ
+.Nd quickstart guide to connecting to a network
+.Sh DESCRIPTION
+In the following examples, it is assumed that we are connecting to Ethernet
+with the first interface found by the
+.Xr em 4
+driver, and Wi-Fi with the first interface found by the
+.Xr iwn 4
+driver, though your hardware will vary.
+.Sh EXAMPLES
 .Bl -tag -width 0n
-.It Sy Подключение к сети Ethernet с помощью DHCP:
+.It Sy Connecting to an Ethernet network with DHCP:
 .Bd -literal -offset 2n
 .Ic # dhclient em0
 .Ed
-.It Sy Подключение к сотовой сети с помощью USB-модема:
+.It Sy Connecting to a cellular network with USB tethering:
 .Pp
-Загрузите драйвер подключения через USB,
+Load the USB tethering driver,
 .Xr urndis 4 :
 .Bd -literal -offset 2n
 .Ic # kldload urndis
 .Ed
 .Pp
-Запросите аренду DHCP-сервера на интерфейсе подключения USB:
+Ask for a DHCP lease on the USB tethering interface:
 .Bd -literal -offset 2n
 .Ic # dhclient ue0
 .Ed
-.It Sy Подключение к сети Wi-Fi:
+.It Sy Connecting to a Wi-Fi network:
 .Pp
-Определите свое оборудование Wi-Fi:
+Identify your Wi-Fi hardware:
 .Bd -literal -offset 2n
 .Ic % sysctl net.wlan.devices
 .Ed
 .Pp
-Настройте свое оборудование Wi-Fi в качестве интерфейса wlan0:
+Configure your Wi-Fi hardware as wlan0 interface:
 .Ed
 .Bd -literal -offset 2n
 .Ic # sysrc wlans_iwn0="wlan0"
 .Ed
 .Pp
-Установите этот интерфейс для согласования аренды DHCP с
+Set that interface to negotiate a DHCP lease with
 .Xr wpa_supplicant 8 :
 .Bd -literal -offset 2n
 .Ic # sysrc ifconfig_wlan0="WPA SYNCDHCP"
 .Ed
 .Pp
-Введите данные о сети Wi-Fi:
+Enter the details of the Wi-Fi network:
 .Bd -literal -offset 2n
 .Ic # wpa_passphrase \(dqmyssid\(dq \(dqmypassphrase\(dq >> wpa_supplicant.conf
 .Ed
 .Pp
-Перезапустите демон сетевого интерфейса:
+Restart the network interface daemon:
 .Bd -literal -offset 2n
 .Ic # service netif restart
 .Ed
 .Pp
-.It Sy Поиск сетей Wi-Fi:
+.It Sy Scanning for Wi-Fi networks:
 .Bd -literal -offset 2n
 .Ic % ifconfig wlan0 scan
 .Ed
-.It Sy Режим полета:
+.It Sy Airplane mode:
 .Bd -literal -offset 2n
 .Ic # service netif stop
 .Ed
 .El
-.Sh СМОТРИТЕ ТАКЖЕ
+.Sh SEE ALSO
 .Xr bsdconfig 8 ,
 .Xr dhclient 8 ,
 .Xr ifconfig 8 ,
 .Xr wpa_passphrase 8
 .Pp
-Глава о расширенных сетях в руководстве
-.Fx .
-.Sh ПРЕДУПРЕЖДЕНИЯ
-Специальные символы оболочки в
+The Advanced Networking chapter of the
+.Fx
+Handbook.
+.Sh CAVEATS
+Shell Special Characters in the
 .Ar SSID
-или
+or
 .Ar passphrase
-нужно будет экранировать для
+will need to be escaped for
 .Xr wpa_passphrase 8 ,
-обычно использующий
+commonly using
 .Ql \e ,
-более подробную информацию смотрите на странице руководства для вашей оболочки.
+see the manual page for your shell for more details.
 .Pp
-В настоящий момент
+Currently
 .Ql Ic service netif restart
-не перезапускает маршрутизацию.
-Распространенным обходным путем вместо этого является выдача
-.Ql Ic service netif restart && service routing restart .
+does not restart routing.
+A common workaround is to issue
+.Ql Ic service netif restart && service routing restart
+instead.

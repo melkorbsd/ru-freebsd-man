@@ -30,46 +30,48 @@
 .Dd June 5, 1993
 .Dt STICKY 7
 .Os
-.Sh ИМЯ
+.Sh NAME
 .Nm sticky
-.Nd каталоги с привязанным текстом и только для добавления
-.Sh ОПИСАНИЕ
-Специальный файловый режим, называемый
+.Nd sticky text and append-only directories
+.Sh DESCRIPTION
+A special file mode, called the
 .Em sticky bit
-(режим S_ISTXT),
-используется для указания особого режима
-работы с каталогами.
-Для обычных файлов он игнорируется.
-Смотрите
+(mode S_ISTXT),
+is used to indicate special treatment
+for directories.
+It is ignored for regular files.
+See
 .Xr chmod 2
-или файл
+or
+the file
 .In sys/stat.h
-для получения объяснения режимов работы файлов.
-.Sh СВАЯЗАННЫЕ КАТАЛОГИ
-Каталог, для которого установлен`sticky bit', становится каталогом только для добавления, или, точнее,
-каталогом, в котором удаление файлов ограничено.
-Файл из фиксированного каталога может быть удален или переименован
-пользователем только в том случае, если у пользователя есть разрешение на запись в каталог и
-он является владельцем файла, владельцем каталога
-или суперпользователем.
-Эта функция полезна для таких каталогов, как
-.Pa /tmp ,
-которые должны быть общедоступны для записи, но
-должны лишать пользователей лицензии на произвольное
-удаление или переименование файлов друг друга.
+for an explanation of file modes.
+.Sh STICKY DIRECTORIES
+A directory whose `sticky bit' is set
+becomes an append-only directory, or, more accurately,
+a directory in which the deletion of files is restricted.
+A file in a sticky directory may only be removed or renamed
+by a user if the user has write permission for the directory and
+the user is the owner of the file, the owner of the directory,
+or the super-user.
+This feature is usefully applied to directories such as
+.Pa /tmp
+which must be publicly writable but
+should deny users the license to arbitrarily
+delete or rename each others' files.
 .Pp
-Любой пользователь может создать отдельный каталог.
-Смотрите
+Any user may create a sticky directory.
+See
 .Xr chmod 1
-для получения подробной информации об изменении режимов работы файлов.
-.Sh ИСТОРИЯ
-Команда
+for details about modifying file modes.
+.Sh HISTORY
+A
 .Nm
-появилась в
+command appeared in
 .At 32v .
-.Sh НЕИСПРАВНОСТИ
-Ни
-.Xr open 2 ,
-ни
+.Sh BUGS
+Neither
+.Xr open 2
+nor
 .Xr mkdir 2
-не создаст файл с установленным битом sticky.
+will create a file with the sticky bit set.

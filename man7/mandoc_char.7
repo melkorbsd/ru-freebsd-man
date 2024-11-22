@@ -19,175 +19,181 @@
 .Dd $Mdocdate: October 31 2020 $
 .Dt MANDOC_CHAR 7
 .Os
-.Sh ИМЯ
+.Sh NAME
 .Nm mandoc_char
-.Nd специальные символы mandoc
-.Sh ОПИСАНИЕ
-На этой странице документируются escape-последовательности
-.Xr roff 7 ,
-принятые
+.Nd mandoc special characters
+.Sh DESCRIPTION
+This page documents the
+.Xr roff 7
+escape sequences accepted by
 .Xr mandoc 1
-для представления специальных символов в документах
+to represent special characters in
 .Xr mdoc 7
-и
-.Xr man 7 .
+and
+.Xr man 7
+documents.
 .Pp
-Рендеринг зависит от режима вывода
-.Xr mandoc 1 ;
-это можно проверить, вызвав
+The rendering depends on the
+.Xr mandoc 1
+output mode; it can be inspected by calling
 .Xr man 1
-на странице руководства
+on the
 .Nm
-с разными аргументами
-.Fl T .
-При выводе в формате ASCII некоторые символы могут быть трудно
-интерпретированы читателем.
-Многие из них отображаются в виде описательных строк, таких как
+manual page with different
+.Fl T
+arguments.
+In ASCII output, the rendering of some characters may be hard
+to interpret for the reader.
+Many are rendered as descriptive strings like
 .Qq <integral> ,
 .Qq <degree> ,
-или
+or
 .Qq <Gamma> ,
-которые могут выглядеть некрасиво, и многие из них заменяются аналогичными символами ASCII.
-В частности, символы с ударением обычно отображаются без ударения.
-По этой причине старайтесь избегать использования каких-либо специальных символов,
-описанных здесь, за исключением тех, которые обсуждались в
-.Sx ОПИСАНИИ ,
-за исключением случаев, когда они необходимы для объяснения рассматриваемого предмета,
-например, при документировании сложных математических функций.
+which may look ugly, and many are replaced by similar ASCII characters.
+In particular, accented characters are usually shown without the accent.
+For that reason, try to avoid using any of the special characters
+documented here except those discussed in the
+.Sx DESCRIPTION ,
+unless they are essential for explaining the subject matter at hand,
+for example when documenting complicated mathematical functions.
 .Pp
-В частности, на страницах руководства на английском языке не используйте
-escape-последовательности специальных символов для представления символов национального языка в
-именах авторов; вместо этого используйте ASCII-транскрипцию имен.
+In particular, in English manual pages, do not use special-character
+escape sequences to represent national language characters in author
+names; instead, provide ASCII transcriptions of the names.
 .Ss Dashes and Hyphens
-В типографике существуют различные типы тире различной ширины:
-дефис (\(hy),
-короткое тире (\(en),
-длинное тире (\(em),
-и математический знак минус(\(mi).
+In typography there are different types of dashes of various width:
+the hyphen (\(hy),
+the en-dash (\(en),
+the em-dash (\(em),
+and the mathematical minus sign (\(mi).
 .Pp
-Дефисы используются для обозначения прилагательных;
-для разделения двух частей сложного слова;
-или для разделения слова в двух последовательных строках текста.
-Дефис не обязательно должен быть экранирован:
+Hyphens are used for adjectives;
+to separate the two parts of a compound word;
+or to separate a word across two successive lines of text.
+The hyphen does not need to be escaped:
 .Bd -unfilled -offset indent
 blue-eyed
 lorry-driver
 .Ed
 .Pp
-Короткое тире используется для разделения двух элементов диапазона
-или может использоваться так же, как и длинное тире.
-Его следует записать в виде
+The en-dash is used to separate the two elements of a range,
+or can be used the same way as an em-dash.
+It should be written as
 .Sq \e(en :
 .Bd -unfilled -offset indent
 pp. 95\e(en97.
 Go away \e(en or else!
 .Ed
 .Pp
-Длинное тире может использоваться для обозначения прерывания
-или использоваться так же, как двоеточия, точки с запятой или круглые скобки.
-Его следует записать в виде
+The em-dash can be used to show an interruption
+or can be used the same way as colons, semi-colons, or parentheses.
+It should be written as
 .Sq \e(em :
 .Bd -unfilled -offset indent
 Three things \e(em apples, oranges, and bananas.
 This is not that \e(em rather, this is that.
 .Ed
 .Pp
-В документах
-.Xr roff 7 ,
-знак минус обычно записывается как
-.Sq \e- .
-На страницах руководства по стилю некоторые руководства по стилю рекомендуют также использовать
-.Sq \e-
-если выводимый глиф ASCII 0x2d
-.Dq дефис-минус ,
-который можно копировать и вставлять, желателен в режимах вывода,
-поддерживающих его, например, в
-.Fl T Cm utf8
-и
-.Fl T Cm html .
-Но в настоящее время ни один практически релевантный ручной форматер страниц не требует
-такой тонкости, поэтому на страницах руководства достаточно писать простой
-.Sq -
-для обозначения дефиса, минуса и дефис-минус.
-.Pp
-Если слово в строке ввода текста содержит дефис, разработчик форматирования может решить
-вставить разрыв строки вывода после дефиса, если это поможет заполнить
-текущую строку вывода, но все слово будет переполнять строку целиком.
-Если важно, чтобы слово не было разбито на строки таким
-образом, перед дефисом или после него можно вставить пробел нулевой ширины
-.Pq Sq \e& .
-Хотя
-.Xr mandoc 1
-никогда не прерывает строку вывода после дефисов, расположенных рядом с
-пробелом нулевой ширины, после любых других символов, похожих на тире или дефис,
-представленных escape-последовательностями, или после дефисов внутри слов в
-аргументах макроса, другие программы могут не соблюдать эти правила и
-даже в таких случаях могут прерывать строку.
-.Pp
-Некоторые реализации
+In
 .Xr roff 7
-содержат словари, позволяющие разрывать строку
-на границах слогов даже внутри слов, не содержащих дефисов.
-Такая автоматическая расстановка переносов не поддерживается
+documents, the minus sign is normally written as
+.Sq \e- .
+In manual pages, some style guides recommend to also use
+.Sq \e-
+if an ASCII 0x2d
+.Dq hyphen-minus
+output glyph that can be copied and pasted is desired in output modes
+supporting it, for example in
+.Fl T Cm utf8
+and
+.Fl T Cm html .
+But currently, no practically relevant manual page formatter requires
+that subtlety, so in manual pages, it is sufficient to write plain
+.Sq -
+to represent hyphen, minus, and hyphen-minus.
+.Pp
+If a word on a text input line contains a hyphen, a formatter may decide
+to insert an output line break after the hyphen if that helps filling
+the current output line, but the whole word would overflow the line.
+If it is important that the word is not broken across lines in this
+way, a zero-width space
+.Pq Sq \e&
+can be inserted before or after the hyphen.
+While
+.Xr mandoc 1
+never breaks the output line after hyphens adjacent to a zero-width
+space, after any of the other dash- or hyphen-like characters
+represented by escape sequences, or after hyphens inside words in
+macro arguments, other software may not respect these rules and may
+break the line even in such cases.
+.Pp
+Some
+.Xr roff 7
+implementations contains dictionaries allowing to break the line
+at syllable boundaries even inside words that contain no hyphens.
+Such automatic hyphenation is not supported by
 .Xr mandoc 1 ,
-который прерывает строку только пробелами, а внутри слов - только
-после существующих дефисов.
+which only breaks the line at whitespace, and inside words only
+after existing hyphens.
 .Ss Spaces
-Для разделения слов в обычном тексте, для выделения отступов и выравнивания
-в буквальном контексте, а также в тех случаях, когда не применим ни один из следующих особых случаев,
-просто используйте обычный пробел
+To separate words in normal text, for indenting and alignment
+in literal context, and when none of the following special cases apply,
+just use the normal space character
 .Pq Sq \  .
 .Pp
-При заполнении текста строки вывода могут быть разделены между словами, например,
-пробелами.
-Чтобы предотвратить разрыв строки между двумя конкретными словами,
-используйте непополняемую управляющую последовательность без пробелов
+When filling text, output lines may be broken between words, i.e. at space
+characters.
+To prevent a line break between two particular words,
+use the unpaddable non-breaking space escape sequence
 .Pq Sq \e\ \&
-вместо обычного символа пробела.
-Например, входная строка
+instead of the normal space character.
+For example, the input string
 .Dq number\e\ 1
-будет сохранена вместе с
+will be kept together as
 .Dq number\ 1
-в той же выходной строке.
+on the same output line.
 .Pp
-В строках запроса и макросов обычный символ пробела используется в качестве разделителя
-аргументов.
-Для включения пробелов в аргументы обычно лучше всего использовать кавычки;
-смотрите раздел СИНТАКСИС МАКРОСОВ в
+On request and macro lines, the normal space character serves as an
+argument delimiter.
+To include whitespace into arguments, quoting is usually the best choice;
+see the MACRO SYNTAX section in
 .Xr roff 7 .
-В некоторых случаях предпочтительнее использовать неразрывную последовательность пробелов
-.Pq Sq \e\ \& .
+In some cases, using the non-breaking space escape sequence
+.Pq Sq \e\ \&
+may be preferable.
 .Pp
-Чтобы избежать имен макросов и защитить пробелы в конце
-строк ввода, часто бывает полезно использовать пробел нулевой ширины
-.Pq Sq \e& .
-Например, в
+To escape macro names and to protect whitespace at the end
+of input lines, the zero-width space
+.Pq Sq \e&
+is often useful.
+For example, in
 .Xr mdoc 7 ,
-обычный символ пробела может быть заключен в одинарные кавычки любым
-из следующих способов:
+a normal space character can be displayed in single quotes in either
+of the following ways:
 .Pp
 .Dl .Sq \(dq \(dq
 .Dl .Sq \e \e&
 .Ss Quotes
-В строках запроса и макросов символ двойной кавычки
+On request and macro lines, the double-quote character
 .Pq Sq \(dq
-обрабатывается специально, чтобы разрешить использование кавычек.
-Один из способов предотвратить эту специальную обработку - использовать escape-последовательность
-.Sq \e(dq .
+is handled specially to allow quoting.
+One way to prevent this special handling is by using the
+.Sq \e(dq
+escape sequence.
 .Pp
-Обратите внимание, что в текстовых строках буквальные символы, заключенные в двойные кавычки, могут использоваться
-дословно.
-Все остальные символы, подобные кавычкам, также могут использоваться дословно,
-даже в строках запроса и макросов.
+Note that on text lines, literal double-quote characters can be used
+verbatim.
+All other quote-like characters can be used verbatim as well,
+even on request and macro lines.
 .Ss Accents
-В режимах вывода, поддерживающих такие специальные символы вывода, например
+In output modes supporting such special output characters, for example
 .Fl T Cm pdf ,
-а иногда и менее последовательно в
+and sometimes less consistently in
 .Fl T Cm utf8 ,
-некоторые форматировщики
+some
 .Xr roff 7
-преобразуют следующие входные символы ASCII в
-следующие специальные выходные символы Unicode:
+formatters convert the following ASCII input characters to the
+following Unicode special output characters:
 .Bl -column x(ga U+2018 -offset indent
 .It \(ga Ta U+2018 Ta left single quotation mark
 .It \(aq Ta U+2019 Ta right single quotation mark
@@ -195,10 +201,10 @@ This is not that \e(em rather, this is that.
 .It \(ha Ta U+02C6 Ta modifier letter circumflex
 .El
 .Pp
-В прозе такая автоматическая замена часто желательна;
-но когда эти символы должны отображаться в виде обычных
-символов ASCII, например, в примерах исходного кода, для их отображения требуется
-экранирование следующим образом:
+In prose, this automatic substitution is often desirable;
+but when these characters have to be displayed as plain ASCII
+characters, for example in source code samples, they require
+escaping to render as follows:
 .Bl -column x(ga U+2018 -offset indent
 .It \e(ga Ta U+0060 Ta grave accent
 .It \e(aq Ta U+0027 Ta apostrophe
@@ -206,52 +212,56 @@ This is not that \e(em rather, this is that.
 .It \e(ha Ta U+005E Ta circumflex accent
 .El
 .Ss Periods
-Период
+The period
 .Pq Sq \&.
-обрабатывается специальным образом в начале строки ввода,
-где вводится запрос
+is handled specially at the beginning of an input line,
+where it introduces a
 .Xr roff 7
-или макрос, и когда он появляется отдельно в качестве аргумента макроса в
+request or a macro, and when appearing alone as a macro argument in
 .Xr mdoc 7 .
-В таких ситуациях добавляйте перед текстом пробел нулевой ширины
-.Pq Sq \e&. ,
-чтобы он вел себя как обычный текст.
+In such situations, prepend a zero-width space
+.Pq Sq \e&.
+to make it behave like normal text.
 .Pp
-Не используйте управляющую последовательность
-.Sq \e. .
-Это не препятствует специальной обработке периода.
+Do not use the
+.Sq \e.
+escape sequence.
+It does not prevent special handling of the period.
 .Ss Backslashes
-Чтобы включить буквальную обратную косую черту
+To include a literal backslash
 .Pq Sq \e
-в выходных данных, используйте управляющую последовательность
-.Pq Sq \ee .
+into the output, use the
+.Pq Sq \ee
+escape sequence.
 .Pp
-Обратите внимание, что удвоение
+Note that doubling it
 .Pq Sq \e\e
-это неправильный способ вывода обратной косой черты.
-Потому что
+is not the right way to output a backslash.
+Because
 .Xr mandoc 1
-не реализует полную функциональность
-.Xr roff 7 ,
-это может сработать с
+does not implement full
+.Xr roff 7
+functionality, it may work with
 .Xr mandoc 1 ,
-но это может иметь странные последствия для полной реализации
-.Xr roff 7 .
-.Sh СПЕЦИАЛЬНЫЕ СИМВОЛЫ
-Специальные символы кодируются следующим образом
+but it may have weird effects on complete
+.Xr roff 7
+implementations.
+.Sh SPECIAL CHARACTERS
+Special characters are encoded as
 .Sq \eX
-.Pq для односимвольного экранирования ,
+.Pq for a one-character escape ,
 .Sq \e(XX
-.Pq двухсимвольного ,
-и
+.Pq two-character ,
+and
 .Sq \e[N]
-.Pq N-символьного .
-Более подробную информацию смотрите в подразделе
+.Pq N-character .
+For details, see the
 .Em Special Characters
-в руководстве
-.Xr roff 7.
+subsection of the
+.Xr roff 7
+manual.
 .Pp
-Пробелы, неразрывные, если не указано иное:
+Spaces, non-breaking unless stated otherwise:
 .Bl -column "Input" "Description" -offset indent -compact
 .It Em Input Ta Em Description
 .It Sq \e\ \& Ta unpaddable space
@@ -265,7 +275,7 @@ This is not that \e(em rather, this is that.
 .It \e:      Ta zero-width space allowing line break
 .El
 .Pp
-Линии:
+Lines:
 .Bl -column "Input" "Rendered" "Description" -offset indent -compact
 .It Em Input Ta Em Rendered Ta Em Description
 .It \e(ba    Ta \(ba        Ta bar
@@ -278,7 +288,7 @@ This is not that \e(em rather, this is that.
 .It \e(rs    Ta \(rs        Ta backward slash
 .El
 .Pp
-Текстовые маркеры:
+Text markers:
 .Bl -column "Input" "Rendered" "Description" -offset indent -compact
 .It Em Input Ta Em Rendered Ta Em Description
 .It \e(ci    Ta \(ci        Ta circle
@@ -301,7 +311,7 @@ This is not that \e(em rather, this is that.
 .It \e(DI    Ta \(DI        Ta diamond suit
 .El
 .Pp
-Законные символы:
+Legal symbols:
 .Bl -column "Input" "Rendered" "Description" -offset indent -compact
 .It Em Input Ta Em Rendered Ta Em Description
 .It \e(co    Ta \(co        Ta copyright
@@ -309,7 +319,7 @@ This is not that \e(em rather, this is that.
 .It \e(tm    Ta \(tm        Ta trademarked
 .El
 .Pp
-Пунктуация:
+Punctuation:
 .Bl -column "Input" "Rendered" "Description" -offset indent -compact
 .It Em Input Ta Em Rendered Ta Em Description
 .It \e(em    Ta \(em        Ta em-dash
@@ -321,7 +331,7 @@ This is not that \e(em rather, this is that.
 .It \e(r?    Ta \(r?        Ta upside-down question
 .El
 .Pp
-Цитаты:
+Quotes:
 .Bl -column "Input" "Rendered" "Description" -offset indent -compact
 .It Em Input Ta Em Rendered Ta Em Description
 .It \e(Bq    Ta \(Bq        Ta right low double-quote
@@ -338,7 +348,7 @@ This is not that \e(em rather, this is that.
 .It \e(fc    Ta \(fc        Ta right single guillemet
 .El
 .Pp
-Скобки:
+Brackets:
 .Bl -column "xxbracketrightbtx" Rendered Description -offset indent -compact
 .It Em Input Ta Em Rendered Ta Em Description
 .It \e(lB    Ta \(lB        Ta left bracket
@@ -377,7 +387,7 @@ This is not that \e(em rather, this is that.
 .It \e[parenrightex] Ta \[parenrightex] Ta right hooked parenthesis extension
 .El
 .Pp
-Стрелки:
+Arrows:
 .Bl -column "Input" "Rendered" "Description" -offset indent -compact
 .It Em Input Ta Em Rendered Ta Em Description
 .It \e(<-    Ta \(<-        Ta left arrow
@@ -395,7 +405,7 @@ This is not that \e(em rather, this is that.
 .It \e(an    Ta \(an        Ta horizontal arrow extension
 .El
 .Pp
-Логические:
+Logical:
 .Bl -column "Input" "Rendered" "Description" -offset indent -compact
 .It Em Input Ta Em Rendered Ta Em Description
 .It \e(AN    Ta \(AN        Ta logical and
@@ -410,7 +420,7 @@ This is not that \e(em rather, this is that.
 .It \e(or    Ta \(or        Ta bitwise or
 .El
 .Pp
-Математические:
+Mathematical:
 .Bl -column "xxcoproductxx" "Rendered" "Description" -offset indent -compact
 .It Em Input Ta Em Rendered Ta Em Description
 .It \e-      Ta \-          Ta minus (text font)
@@ -488,7 +498,7 @@ This is not that \e(em rather, this is that.
 .It \e(S3    Ta \(S3        Ta superscript 3
 .El
 .Pp
-Лигатуры:
+Ligatures:
 .Bl -column "Input" "Rendered" "Description" -offset indent -compact
 .It Em Input Ta Em Rendered Ta Em Description
 .It \e(ff    Ta \(ff        Ta ff ligature
@@ -505,7 +515,7 @@ This is not that \e(em rather, this is that.
 .It \e(ij    Ta \(ij        Ta ij ligature
 .El
 .Pp
-Акценты:
+Accents:
 .Bl -column "Input" "Rendered" "Description" -offset indent -compact
 .It Em Input Ta Em Rendered Ta Em Description
 .It \e(a"    Ta \(a"        Ta Hungarian umlaut
@@ -527,7 +537,7 @@ This is not that \e(em rather, this is that.
 .It \e(ti    Ta \(ti        Ta tilde (ASCII character)
 .El
 .Pp
-Буквы с ударением:
+Accented letters:
 .Bl -column "Input" "Rendered" "Description" -offset indent -compact
 .It Em Input Ta Em Rendered Ta Em Description
 .It \e(\(aqA Ta \('A        Ta acute A
@@ -589,7 +599,7 @@ This is not that \e(em rather, this is that.
 .It \e(oa    Ta \(oa        Ta ring a
 .El
 .Pp
-Специальные буквы:
+Special letters:
 .Bl -column "Input" "Rendered" "Description" -offset indent -compact
 .It Em Input Ta Em Rendered Ta Em Description
 .It \e(-D    Ta \(-D        Ta Eth
@@ -600,7 +610,7 @@ This is not that \e(em rather, this is that.
 .It \e(.j    Ta \(.j        Ta dotless j
 .El
 .Pp
-Валюта:
+Currency:
 .Bl -column "Input" "Rendered" "Description" -offset indent -compact
 .It Em Input Ta Em Rendered Ta Em Description
 .It \e(Do    Ta \(Do        Ta dollar
@@ -613,7 +623,7 @@ This is not that \e(em rather, this is that.
 .It \e(Fn    Ta \(Fn        Ta florin
 .El
 .Pp
-Единицы:
+Units:
 .Bl -column "Input" "Rendered" "Description" -offset indent -compact
 .It Em Input Ta Em Rendered Ta Em Description
 .It \e(de    Ta \(de        Ta degree
@@ -625,7 +635,7 @@ This is not that \e(em rather, this is that.
 .It \e(Om    Ta \(Om        Ta Spanish masculine ordinal
 .El
 .Pp
-Греческие буквы:
+Greek letters:
 .Bl -column "Input" "Rendered" "Description" -offset indent -compact
 .It Em Input Ta Em Rendered Ta Em Description
 .It \e(*A    Ta \(*A        Ta Alpha
@@ -682,23 +692,23 @@ This is not that \e(em rather, this is that.
 .It \e(+e    Ta \(+e        Ta epsilon variant
 .It \e(ts    Ta \(ts        Ta sigma terminal
 .El
-.Sh ПРЕДОПРЕДЕЛЕННЫЕ СТРОКИ
-Предопределенные строки унаследованы от макропакетов предыдущих
-реализаций troff.
-Их 
-.Em не рекомендуется
-использовать, поскольку они различаются в разных реализациях.
-Руководства, использующие эти предопределенные строки, почти наверняка не
-переносимы.
+.Sh PREDEFINED STRINGS
+Predefined strings are inherited from the macro packages of historical
+troff implementations.
+They are
+.Em not recommended
+for use, as they differ across implementations.
+Manuals using these predefined strings are almost certainly not
+portable.
 .Pp
-Их синтаксис аналогичен специальным символам, использующим
+Their syntax is similar to special characters, using
 .Sq \e*X
-.Pq для односимвольного экранирования ,
+.Pq for a one-character escape ,
 .Sq \e*(XX
-.Pq двухсимвольного ,
-и
+.Pq two-character ,
+and
 .Sq \e*[N]
-.Pq N-символьного .
+.Pq N-character .
 .Bl -column "Input" "Rendered" "Description" -offset indent
 .It Em Input Ta Em Rendered Ta Em Description
 .It \e*(Ba   Ta \*(Ba       Ta vertical bar
@@ -730,85 +740,90 @@ This is not that \e(em rather, this is that.
 .It \e*(Px   Ta \*(Px       Ta POSIX standard name
 .It \e*(Ai   Ta \*(Ai       Ta ANSI standard name
 .El
-.Sh СИМВОЛЫ UNICODE
-Управляющие последовательности
+.Sh UNICODE CHARACTERS
+The escape sequences
 .Pp
 .Dl \e[uXXXX] and \eC\(aquXXXX\(aq
 .Pp
-интерпретируются как кодовые значения в Unicode.
-Кодовая точка должна находиться в диапазоне выше U+0080 и меньше U+10FFFF.
-Для обеспечения совместимости шестнадцатеричные цифры от
+are interpreted as Unicode codepoints.
+The codepoint must be in the range above U+0080 and less than U+10FFFF.
+For compatibility, the hexadecimal digits
 .Sq A
-до
+to
 .Sq F
-должны быть указаны в верхнем регистре,
-а точки должны быть заполнены нулями до четырех символов; если их
-больше четырех, заполнение нулями не допускается.
-Заменители в Юникоде не допускаются.
-.Sh ПРОНУМЕРОВАННЫЕ СИМВОЛЫ
-Для обеспечения обратной совместимости с существующими руководствами,
+must be given as uppercase characters,
+and points must be zero-padded to four characters; if
+greater than four characters, no zero padding is allowed.
+Unicode surrogates are not allowed.
+.Sh NUMBERED CHARACTERS
+For backward compatibility with existing manuals,
 .Xr mandoc 1
-также поддерживает
+also supports the
 .Pp
 .Dl \eN\(aq Ns Ar number Ns \(aq and \e[ Ns Cm char Ns Ar number ]
 .Pp
-управляющие последовательности, вставляющие
-в выходные данные
-.Ar номер
-символа из текущего набора символов.  Конечно, это по своей сути непереносимо
-и уже помечено как устаревшее в руководстве Heirloom roff;
-кроме того, вторая форма является расширением GNU.
-Например, не используйте \eN\(aq34\(aq or \e[char34], используйте \e(dq,
-или даже простой символ
-.Sq \(dq ,
-где это возможно.
-.Sh СОВМЕСТИМОСТЬ
-В этом разделе описывается совместимость mandoc с другими
-реализациями troff, на данный момент ограниченная GNU troff
+escape sequences, inserting the character
+.Ar number
+from the current character set into the output.
+Of course, this is inherently non-portable and is already marked
+as deprecated in the Heirloom roff manual;
+on top of that, the second form is a GNU extension.
+For example, do not use \eN\(aq34\(aq or \e[char34], use \e(dq,
+or even the plain
+.Sq \(dq
+character where possible.
+.Sh COMPATIBILITY
+This section documents compatibility between mandoc and other
+troff implementations, at this time limited to GNU troff
 .Pq Qq groff .
 .Pp
 .Bl -dash -compact
 .It
-Управляющая последовательность \eN\(aq\(aq ограничена печатаемыми символами; в
-groff она принимает произвольные номера символов.
+The \eN\(aq\(aq escape sequence is limited to printable characters; in
+groff, it accepts arbitrary character numbers.
 .It
-В
+In
 .Fl T Ns Cm ascii ,
-специальные символы
+the
 \e(ss, \e(nm, \e(nb, \e(nc, \e(ib, \e(ip, \e(pp, \e[sum], \e[product],
-\e[coproduct], \e(gr, \e(-h, and \e(a. в mandoc и groff отображаются по-разному.
+\e[coproduct], \e(gr, \e(-h, and \e(a. special characters render
+differently between mandoc and groff.
 .It
-В
+In
 .Fl T Ns Cm html ,
-специальные символы \e(\(ti=, \e(nb, and \e(nc в mandoc и groff отображаются по-разному.
+the \e(\(ti=, \e(nb, and \e(nc special characters render differently
+between mandoc and groff.
 .It
-Режимы
+The
 .Fl T Ns Cm ps
-и
+and
 .Fl T Ns Cm pdf
-форматируют как
+modes format like
 .Fl T Ns Cm ascii
-вместо рендеринга глифов, как в groff.
+instead of rendering glyphs as in groff.
 .It
-Специальные символы \e[radicalex], \e[sqrtex] и \e(ru были опущены в mandoc либо потому, что они плохо документированы, либо потому, что их
-представление неизвестно.
+The \e[radicalex], \e[sqrtex], and \e(ru special characters have been omitted
+from mandoc either because they are poorly documented or they have no
+known representation.
 .El
-.Sh СМОТРИТЕ ТАКЖЕ
+.Sh SEE ALSO
 .Xr mandoc 1 ,
 .Xr man 7 ,
 .Xr mdoc 7 ,
 .Xr roff 7
-.Sh АВТОРЫ
-Страница руководства
+.Sh AUTHORS
+The
 .Nm
-была написана
-.An Кристапом Дзонсоном Aq Mt kristaps@bsd.lv .
-.Sh ПРЕДУПРЕЖДЕНИЯ
-Предопределенная строка
+manual page was written by
+.An Kristaps Dzonsons Aq Mt kristaps@bsd.lv .
+.Sh CAVEATS
+The predefined string
 .Sq \e*(Ba
-имитирует поведение символа
+mimics the behaviour of the
 .Sq \&|
-в
+character in
 .Xr mdoc 7 ;
-таким образом, если вы хотите отобразить вертикальную полосу без побочных эффектов, используйте экранирующий символ
-.Sq \e(ba .
+thus, if you wish to render a vertical bar with no side effects, use
+the
+.Sq \e(ba
+escape.

@@ -18,192 +18,195 @@
 .Dd $Mdocdate: July 29 2021 $
 .Dt MDOC 7
 .Os
-.Sh ИМЯ
+.Sh NAME
 .Nm mdoc
-.Nd язык семантической разметки для форматирования справочных страниц
-.Sh ОПИСАНИЕ
-Язык
+.Nd semantic markup language for formatting manual pages
+.Sh DESCRIPTION
+The
 .Nm mdoc
-поддерживает создание справочных страниц для утилиты
-.Xr man 1 ,
-позволяя создавать семантические аннотации к словам, фразам,
-разделам страниц и полным страницам руководства.
-Такие аннотации используются средствами форматирования для обеспечения единообразного
-представления во всех руководствах, написанных на
+language supports authoring of manual pages for the
+.Xr man 1
+utility by allowing semantic annotations of words, phrases,
+page sections and complete manual pages.
+Such annotations are used by formatting tools to achieve a uniform
+presentation across all manuals written in
 .Nm ,
-и поддерживают гиперссылки, если они поддерживаются носителем вывода.
+and to support hyperlinking if supported by the output medium.
 .Pp
-В этом справочном документе описывается структура справочных страниц,
-а также синтаксис и использование языка
-.Nm .
-Эталонной реализацией инструмента синтаксического анализа и форматирования является
-.Xr mandoc 1 ;
-В разделе
-.Sx СОВМЕСТИМОСТЬ
-описывается совместимость с другими реализациями.
-.Pp
-В документе
+This reference document describes the structure of manual pages
+and the syntax and usage of the
 .Nm
-строки, начинающиеся с управляющего символа
-.Sq \&. ,
-называются
-.Dq строками макроса .
-Первое слово - это название макроса.
-Оно состоит из двух или трех букв.
-Большинство названий макросов начинаются с заглавной буквы.
-Список доступных макросов приведен в разделе
-.Sx ОБЗОР МАКРОСОВ .
-Слова, следующие за именем макроса, являются аргументами макроса, необязательно
-включать имена других вызываемых макросов; смотрите
-.Sx СИНТАКСИС МАКРОСА
-для получения подробной информации.
+language.
+The reference implementation of a parsing and formatting tool is
+.Xr mandoc 1 ;
+the
+.Sx COMPATIBILITY
+section describes compatibility with other implementations.
 .Pp
-Строки, не начинающиеся с управляющего символа, называются
-.Dq текстовыми строками .
-Они предоставляют текст в произвольной форме для печати; форматирование текста
-зависит от соответствующего контекста обработки:
+In an
+.Nm
+document, lines beginning with the control character
+.Sq \&.
+are called
+.Dq macro lines .
+The first word is the macro name.
+It consists of two or three letters.
+Most macro names begin with a capital letter.
+For a list of available macros, see
+.Sx MACRO OVERVIEW .
+The words following the macro name are arguments to the macro, optionally
+including the names of other, callable macros; see
+.Sx MACRO SYNTAX
+for details.
+.Pp
+Lines not beginning with the control character are called
+.Dq text lines .
+They provide free-form text to be printed; the formatting of the text
+depends on the respective processing context:
 .Bd -literal -offset indent
-\&.Sh Строки макроса изменяют состояние элемента управления.
-Текстовые строки интерпретируются в рамках текущего состояния.
+\&.Sh Macro lines change control state.
+Text lines are interpreted within the current state.
 .Ed
 .Pp
-Многие аспекты базового синтаксиса языка
+Many aspects of the basic syntax of the
 .Nm
-основаны на языке
-.Xr roff 7 ;
-смотрите разделы
-.Em СИНТАКСИС ЯЗЫКА
-и
-.Em СИНТАКСИС МАКРОСА
-в руководстве
+language are based on the
 .Xr roff 7
-для получения подробной информации, в частности, о
-комментариях, экранирующих последовательностях, пробелах и кавычках.
-Однако использование запросов
+language; see the
+.Em LANGUAGE SYNTAX
+and
+.Em MACRO SYNTAX
+sections in the
 .Xr roff 7
-в документах
+manual for details, in particular regarding
+comments, escape sequences, whitespace, and quoting.
+However, using
+.Xr roff 7
+requests in
 .Nm
-проблематично;
+documents is discouraged;
 .Xr mandoc 1
-поддерживает некоторые из них только для обеспечения обратной совместимости.
-.Sh СТРУКТУРА РУКОВОДСТВА
-Хорошо сформированный документ
+supports some of them merely for backward compatibility.
+.Sh MANUAL STRUCTURE
+A well-formed
 .Nm
-состоит из пролога документа, за которым следует один или несколько разделов.
+document consists of a document prologue followed by one or more
+sections.
 .Pp
-Пролог, который состоит из макросов
+The prologue, which consists of the
 .Ic \&Dd ,
 .Ic \&Dt ,
-и
+and
 .Ic \&Os
-в таком порядке, требуется для каждого документа.
+macros in that order, is required for every document.
 .Pp
-Первый раздел (разделы обозначаются символом
+The first section (sections are denoted by
 .Ic \&Sh )
-должен быть разделом ИМЯ, состоящий, по меньшей мере, из одного
+must be the NAME section, consisting of at least one
 .Ic \&Nm
-с последующим
+followed by
 .Ic \&Nd .
 .Pp
-После этого соглашение предписывает указать, по крайней мере, следующие разделы
-.Em СИНТАКСИС
-и
-.Em ОПИСАНИЕ ,
-хотя это варьируется в зависимости от разделов руководства.
+Following that, convention dictates specifying at least the
+.Em SYNOPSIS
+and
+.Em DESCRIPTION
+sections, although this varies between manual sections.
 .Pp
-Ниже приведен хорошо сформированный скелет файла
+The following is a well-formed skeleton
 .Nm
-для утилиты
+file for a utility
 .Qq progname :
 .Bd -literal -offset indent
 \&.Dd $\&Mdocdate$
-\&.Dt PROGNAME раздел
+\&.Dt PROGNAME section
 \&.Os
-\&.Sh ИМЯ
+\&.Sh NAME
 \&.Nm progname
-\&.Nd одна строчка о том, что он делает
-\&.\e\(dq .Sh БИБЛИОТЕКА
-\&.\e\(dq Только для разделов 2, 3 и 9.
-\&.\e\(dq Не используется в OpenBSD.
-\&.Sh СИНТАКСИС
+\&.Nd one line about what it does
+\&.\e\(dq .Sh LIBRARY
+\&.\e\(dq For sections 2, 3, and 9 only.
+\&.\e\(dq Not used in OpenBSD.
+\&.Sh SYNOPSIS
 \&.Nm progname
-\&.Op Fl параметры
+\&.Op Fl options
 \&.Ar
-\&.Sh ОПИСАНИЕ
-Утилита
+\&.Sh DESCRIPTION
+The
 \&.Nm
-обрабатывает файлы ...
-\&.\e\(dq .Sh КОНТЕКСТ
-\&.\e\(dq Только для функций раздела 9.
-\&.\e\(dq .Sh ПРИМЕЧАНИЯ ПО ИСПОЛЬЗОВАНИЮ
-\&.\e\(dq Не используется в OpenBSD.
-\&.\e\(dq .Sh ВОЗВРАТ ЗНАЧЕНИЙ
-\&.\e\(dq Для разделов 2, 3 и 9 функция возвращает только значения.
-\&.\e\(dq .Sh ОКРУЖЕНИЕ
-\&.\e\(dq Только для разделов 1, 6, 7 и 8.
-\&.\e\(dq .Sh ФАЙЛЫ
-\&.\e\(dq .Sh ВОЗВРАЩАЕМОЕ ЗНАЧЕНИЕ
-\&.\e\(dq Только для разделов 1, 6 и 8.
-\&.\e\(dq .Sh ПРИМЕРЫ
-\&.\e\(dq .Sh ДИАГНОСТИКА
-\&.\e\(dq Только сообщения printf/stderr для разделов 1, 4, 6, 7, 8, и 9.
-\&.\e\(dq .Sh ОШИБКИ
-\&.\e\(dq Только настройки без ошибок для разделов 2, 3, 4 и 9.
-\&.\e\(dq .Sh СМОТРИТЕ ТАКЖЕ
+utility processes files ...
+\&.\e\(dq .Sh CONTEXT
+\&.\e\(dq For section 9 functions only.
+\&.\e\(dq .Sh IMPLEMENTATION NOTES
+\&.\e\(dq Not used in OpenBSD.
+\&.\e\(dq .Sh RETURN VALUES
+\&.\e\(dq For sections 2, 3, and 9 function return values only.
+\&.\e\(dq .Sh ENVIRONMENT
+\&.\e\(dq For sections 1, 6, 7, and 8 only.
+\&.\e\(dq .Sh FILES
+\&.\e\(dq .Sh EXIT STATUS
+\&.\e\(dq For sections 1, 6, and 8 only.
+\&.\e\(dq .Sh EXAMPLES
+\&.\e\(dq .Sh DIAGNOSTICS
+\&.\e\(dq For sections 1, 4, 6, 7, 8, and 9 printf/stderr messages only.
+\&.\e\(dq .Sh ERRORS
+\&.\e\(dq For sections 2, 3, 4, and 9 errno settings only.
+\&.\e\(dq .Sh SEE ALSO
 \&.\e\(dq .Xr foobar 1
-\&.\e\(dq .Sh СТАНДАРТЫ
-\&.\e\(dq .Sh ИСТОРИЯ
-\&.\e\(dq .Sh АВТОРЫ
-\&.\e\(dq .Sh ПРЕДУПРЕЖДЕНИЯ
-\&.\e\(dq .Sh НЕИСПРОВНОСТИ
-\&.\e\(dq .Sh МЕРЫ БЕЗОПАСНОСТИ
-\&.\e\(dq Не используется в OpenBSD.
+\&.\e\(dq .Sh STANDARDS
+\&.\e\(dq .Sh HISTORY
+\&.\e\(dq .Sh AUTHORS
+\&.\e\(dq .Sh CAVEATS
+\&.\e\(dq .Sh BUGS
+\&.\e\(dq .Sh SECURITY CONSIDERATIONS
+\&.\e\(dq Not used in OpenBSD.
 .Ed
 .Pp
-Разделы в документе
+The sections in an
 .Nm
-расположены в обычном порядке, как указано выше.
-Разделы должны быть составлены следующим образом:
+document are conventionally ordered as they appear above.
+Sections should be composed as follows:
 .Bl -ohang -offset Ds
-.It Em ИМЯ
-Название(я) и однострочное описание документированного материала.
-Синтаксис для этого следующий:
+.It Em NAME
+The name(s) and a one line description of the documented material.
+The syntax for this as follows:
 .Bd -literal -offset indent
 \&.Nm name0 ,
 \&.Nm name1 ,
 \&.Nm name2
-\&.Nd описание в одну строку
+\&.Nd a one line description
 .Ed
 .Pp
-Несколько имен
+Multiple
 .Sq \&Nm
-должны быть разделены запятыми.
+names should be separated by commas.
 .Pp
-Макрос(ы)
+The
 .Ic \&Nm
-должен предшествовать макросу
-.Ic \&Nd .
+macro(s) must precede the
+.Ic \&Nd
+macro.
 .Pp
-Смотрите
+See
 .Ic \&Nm
-и
+and
 .Ic \&Nd .
-.It Em БИБЛИОТЕКА
-Название библиотеки, содержащей документированный материал, который,
-как предполагается, является функцией в руководстве по разделам 2, 3 или 9.
-Синтаксис для этого следующий:
+.It Em LIBRARY
+The name of the library containing the documented material, which is
+assumed to be a function in a section 2, 3, or 9 manual.
+The syntax for this is as follows:
 .Bd -literal -offset indent
 \&.Lb libarm
 .Ed
 .Pp
-Смотрите
+See
 .Ic \&Lb .
-.It Em СИНТАКСИС
-Документирует синтаксис вызова утилиты, синтаксис вызова функции или
-конфигурацию устройства.
+.It Em SYNOPSIS
+Documents the utility invocation syntax, function call syntax, or device
+configuration.
 .Pp
-Во-первых, утилиты (разделы 1, 6 и 8),
-как правило, структурированы следующим образом:
+For the first, utilities (sections 1, 6, and 8), this is
+generally structured as follows:
 .Bd -literal -offset indent
 \&.Nm bar
 \&.Op Fl v
@@ -215,9 +218,9 @@
 \&.Op Ar
 .Ed
 .Pp
-Команды должны быть расположены в алфавитном порядке.
+Commands should be ordered alphabetically.
 .Pp
-Во-вторых, вызовы функций(sразделы 2, 3, 9):
+For the second, function calls (sections 2, 3, 9):
 .Bd -literal -offset indent
 \&.In header.h
 \&.Vt extern const char *global;
@@ -227,26 +230,26 @@
 \&.Fn bar "const char *src"
 .Ed
 .Pp
-Порядок расположения макросов
+Ordering of
 .Ic \&In ,
 .Ic \&Vt ,
-.Ic \&Fn
-и
+.Ic \&Fn ,
+and
 .Ic \&Fo
-должен соответствовать соглашениям о заголовочных файлах языка Си.
+macros should follow C header-file conventions.
 .Pp
-И в-третьих, конфигурации (раздел 4):
+And for the third, configurations (section 4):
 .Bd -literal -offset indent
 \&.Cd \(dqit* at isa? port 0x2e\(dq
 \&.Cd \(dqit* at isa? port 0x4e\(dq
 .Ed
 .Pp
-Руководства, отсутствующие в этих разделах, как правило, не нуждаются в
-.Em СИНТАКСИСЕ .
+Manuals not in these sections generally don't need a
+.Em SYNOPSIS .
 .Pp
-Некоторые макросы отображаются по-разному в разделе
-.Em СИНТАКСИС ,
-в частности
+Some macros are displayed differently in the
+.Em SYNOPSIS
+section, particularly
 .Ic \&Nm ,
 .Ic \&Cd ,
 .Ic \&Fd ,
@@ -254,282 +257,285 @@
 .Ic \&Fo ,
 .Ic \&In ,
 .Ic \&Vt ,
-и
+and
 .Ic \&Ft .
-Все эти макросы выводятся в отдельной строке.
-Если два таких разных макроса вызываются попарно (за исключением
+All of these macros are output on their own line.
+If two such dissimilar macros are pairwise invoked (except for
 .Ic \&Ft
-до
+before
 .Ic \&Fo
-или
+or
 .Ic \&Fn ) ,
-они разделены вертикальным пробелом, за исключением
+they are separated by a vertical space, unless in the case of
 .Ic \&Fo ,
 .Ic \&Fn ,
-и
+and
 .Ic \&Ft ,
-которые всегда разделены вертикальным пробелом.
+which are always separated by vertical space.
 .Pp
-Когда текст и макросы следуют за макросом
+When text and macros following an
 .Ic \&Nm
-начальная строка ввода охватывает несколько выходных строк,
-все выходные строки, кроме первой, будут иметь отступ для выравнивания
-с текстом, следующим непосредственно за макросом
-.Ic \&Nm ,
-вплоть до следующего макроса
+macro starting an input line span multiple output lines,
+all output lines but the first will be indented to align
+with the text immediately following the
+.Ic \&Nm
+macro, up to the next
 .Ic \&Nm ,
 .Ic \&Sh ,
-или
+or
 .Ic \&Ss
-или в конце окружающего блока, в зависимости от того, что наступит раньше.
-.It Em ОПИСАНИЕ
-Начинается с расширения краткого описания в одну строку в разделе
-.Em ИМЯ :
+macro or the end of an enclosing block, whichever comes first.
+.It Em DESCRIPTION
+This begins with an expansion of the brief, one line description in
+.Em NAME :
 .Bd -literal -offset indent
-Утилита
+The
 \&.Nm
-делает это, то и другое.
+utility does this, that, and the other.
 .Ed
 .Pp
-Обычно за этим следует разбивка параметров (при документировании
-команды), таких как:
+It usually follows with a breakdown of the options (if documenting a
+command), such as:
 .Bd -literal -offset indent
-Возможны следующие варианты:
+The options are as follows:
 \&.Bl \-tag \-width Ds
 \&.It Fl v
-Напечатайте подробную информацию.
+Print verbose information.
 \&.El
 .Ed
 .Pp
-Перечислите варианты в алфавитном порядке,
-прописные буквы перед строчными для каждой буквы,
-независимо от того, является ли параметр аргументом.
-Перед всеми вариантами букв поставьте цифры в порядке возрастания.
+List the options in alphabetical order,
+uppercase before lowercase for each letter and
+with no regard to whether an option takes an argument.
+Put digits in ascending order before all letter options.
 .Pp
-Руководства, в которых не описана команда, не будут включать приведенный выше фрагмент.
+Manuals not documenting a command won't include the above fragment.
 .Pp
-Начиная с раздела
-.Em ОПИСАНИЕ
-обычно содержит большую часть текста руководства, в более длинных руководствах
-часто используется макрос
+Since the
+.Em DESCRIPTION
+section usually contains most of the text of a manual, longer manuals
+often use the
 .Ic \&Ss
-для формирования подразделов.
-В очень длинных руководствах
-.Em ОПИСАНИЕ
-может быть разделен на несколько разделов, каждый из которых запускается отдельным макросом
+macro to form subsections.
+In very long manuals, the
+.Em DESCRIPTION
+may be split into multiple sections, each started by an
 .Ic \&Sh
-за ним следует нестандартное название раздела, каждый из которых содержит
-несколько подразделов, как в настоящем руководстве
-.Nm .
-.It Em КОНТЕКСТ
-В этом разделе перечислены контексты, в которых могут вызываться функции, описанные в разделе 9.
-Это контексты autoconf, process или interrupt.
-.It Em ПРИМЕЧАНИЯ ПО ИСПОЛЬЗОВАНИЮ
-Примечания, касающиеся конкретной реализации следует сохранять здесь.
-Это полезно при реализации стандартных функций, которые могут иметь побочные
-эффекты или заметные алгоритмические последствия.
-.It Em ВОЗВРАТ ЗНАЧЕНИЙ
-В этом разделе описываются
-возвращаемые значения функций, описанные в разделах 2, 3 и 9.
+macro followed by a non-standard section name, and each having
+several subsections, like in the present
+.Nm
+manual.
+.It Em CONTEXT
+This section lists the contexts in which functions can be called in section 9.
+The contexts are autoconf, process, or interrupt.
+.It Em IMPLEMENTATION NOTES
+Implementation-specific notes should be kept here.
+This is useful when implementing standard functions that may have side
+effects or notable algorithmic implications.
+.It Em RETURN VALUES
+This section documents the
+return values of functions in sections 2, 3, and 9.
 .Pp
-Смотрите
+See
 .Ic \&Rv .
-.It Em ОКРУЖЕНИЕ
-Содержит список переменных среды, используемых утилитой,
-и объясняет синтаксис и семантику их значений.
-В руководстве
+.It Em ENVIRONMENT
+Lists the environment variables used by the utility,
+and explains the syntax and semantics of their values.
+The
 .Xr environ 7
-приведены примеры типичного содержимого и форматирования.
+manual provides examples of typical content and formatting.
 .Pp
-Смотрите
+See
 .Ic \&Ev .
-.It Em ФАЙЛЫ
-Документируйте использованные файлы.
-Полезно указать как название файла, так и краткое описание того, как
-файл используется (создается, изменяется и т.д.).
+.It Em FILES
+Documents files used.
+It's helpful to document both the file name and a short description of how
+the file is used (created, modified, etc.).
 .Pp
-Смотрите
+See
 .Ic \&Pa .
-.It Em ВОЗВРАЩАЕМОЕ ЗНАЧЕНИЕ
-В этом разделе описывается
-статус завершения работы команд для утилит разделов 1, 6 и 8.
-Исторически эта информация была описана в
-.Em ДИАГНОСТИКЕ ,
-практика, которая в настоящее время не поощряется.
+.It Em EXIT STATUS
+This section documents the
+command exit status for section 1, 6, and 8 utilities.
+Historically, this information was described in
+.Em DIAGNOSTICS ,
+a practise that is now discouraged.
 .Pp
-Смотрите
+See
 .Ic \&Ex .
-.It Em ПРИМЕРЫ
-Примеры использования.
-Здесь часто содержатся фрагменты хорошо сформированных, хорошо протестированных вызовов.
-Убедитесь, что примеры работают должным образом!
-.It Em ДИАГНОСТИКА
-Документирует сообщения об ошибках.
-В разделах 4 и 9 руководств обычно это сообщения, выводимые
-ядром на консоль и в журнал ядра.
-В разделах 1, 6, 7 и 8 обычно это сообщения, выводимые
-пользовательскими программами для стандартного вывода ошибок.
+.It Em EXAMPLES
+Example usages.
+This often contains snippets of well-formed, well-tested invocations.
+Make sure that examples work properly!
+.It Em DIAGNOSTICS
+Documents error messages.
+In section 4 and 9 manuals, these are usually messages printed by the
+kernel to the console and to the kernel log.
+In section 1, 6, 7, and 8, these are usually messages printed by
+userland programs to the standard error output.
 .Pp
-Исторически сложилось так, что этот раздел использовался вместо
-.Em ВОЗВРАЩАЕМОГО ЗНАЧЕНИЯ
-для руководств в разделах 1, 6 и 8; однако такая практика
-не рекомендуется.
+Historically, this section was used in place of
+.Em EXIT STATUS
+for manuals in sections 1, 6, and 8; however, this practise is
+discouraged.
 .Pp
-Смотрите
+See
 .Ic \&Bl
 .Fl diag .
-.It Em ОШИБКИ
-Настройки документов
+.It Em ERRORS
+Documents
 .Xr errno 2
-в разделах 2, 3, 4 и 9.
+settings in sections 2, 3, 4, and 9.
 .Pp
-Смотрите
+See
 .Ic \&Er .
-.It Em СМОТРИТЕ ТАКЖЕ
-Ссылки на другие руководства по смежным темам.
-Этот раздел должен присутствовать в большинстве руководств.
-Перекрестные ссылки обычно следует размещать сначала по разделам, а затем
-в алфавитном порядке (без учета регистра).
+.It Em SEE ALSO
+References other manuals with related topics.
+This section should exist for most manuals.
+Cross-references should conventionally be ordered first by section, then
+alphabetically (ignoring case).
 .Pp
-В этом разделе также могут быть приведены ссылки на другую документацию, относящуюся к теме страницы руководства,
-например, на авторитетные книги или журнальные статьи.
+References to other documentation concerning the topic of the manual page,
+for example authoritative books or journal articles, may also be
+provided in this section.
 .Pp
-Смотрите
+See
 .Ic \&Rs
-и
+and
 .Ic \&Xr .
-.It Em СТАНДАРТЫ
-Ссылки на любые внедренные или используемые стандарты.
-Если вы не придерживаетесь каких-либо стандартов, раздел
-.Em ИСТОРИЯ
-следует использовать вместо этого.
+.It Em STANDARDS
+References any standards implemented or used.
+If not adhering to any standards, the
+.Em HISTORY
+section should be used instead.
 .Pp
-Смотрите
+See
 .Ic \&St .
-.It Em ИСТОРИЯ
-Краткая история объекта, включая то, где он был впервые реализован,
-и когда он был перенесен или повторно реализован для данной операционной системы.
-.It Em АВТОРЫ
-Авторские права принадлежат лицу или лицам, написавшим код и/или документацию.
-Как правило, авторы должны быть указаны как по имени, так и по адресу электронной почты.
+.It Em HISTORY
+A brief history of the subject, including where it was first implemented,
+and when it was ported to or reimplemented for the operating system at hand.
+.It Em AUTHORS
+Credits to the person or persons who wrote the code and/or documentation.
+Authors should generally be noted by both name and email address.
 .Pp
-Смотрите
+See
 .Ic \&An .
-.It Em ПРЕДУПРЕЖДЕНИЯ
-В этом разделе следует объяснить распространенные случаи неправильного использования и недопонимания.
-.It Em НЕИСПРАВНОСТИ
-В этом разделе должны быть описаны известные ошибки, ограничения и способы
-их устранения.
-.It Em МЕРЫ БЕЗОПАСНОСТИ
-Документирует все меры предосторожности, которые следует учитывать операторам.
+.It Em CAVEATS
+Common misuses and misunderstandings should be explained
+in this section.
+.It Em BUGS
+Known bugs, limitations, and work-arounds should be described
+in this section.
+.It Em SECURITY CONSIDERATIONS
+Documents any security precautions that operators should consider.
 .El
-.Sh ОБЗОР МАКРОСОВ
-Этот обзор отсортирован таким образом, что макросы схожего назначения перечислены
-вместе, что помогает найти наилучший макрос для любой конкретной цели.
-Устаревшие макросы не включены в обзор, но их можно найти ниже
-в алфавитном
-.Sx СПРАВОЧНИКЕ ПО МАКРОСАМ .
-.Ss Макросы преамбулы документа и раздела ИМЯ
+.Sh MACRO OVERVIEW
+This overview is sorted such that macros of similar purpose are listed
+together, to help find the best macro for any given purpose.
+Deprecated macros are not included in the overview, but can be found below
+in the alphabetical
+.Sx MACRO REFERENCE .
+.Ss Document preamble and NAME section macros
 .Bl -column "Brq, Bro, Brc" description
-.It Ic \&Dd Ta дата документа: Cm $\&Mdocdate$ | Ar month day , year
-.It Ic \&Dt Ta название документа: Ar TITLE section Op Ar arch
-.It Ic \&Os Ta версия операционной системы: Op Ar system Op Ar version
-.It Ic \&Nm Ta имя документа (один аргумент)
-.It Ic \&Nd Ta описание документа (одна строка)
+.It Ic \&Dd Ta document date: Cm $\&Mdocdate$ | Ar month day , year
+.It Ic \&Dt Ta document title: Ar TITLE section Op Ar arch
+.It Ic \&Os Ta operating system version: Op Ar system Op Ar version
+.It Ic \&Nm Ta document name (one argument)
+.It Ic \&Nd Ta document description (one line)
 .El
-.Ss Разделы и перекрестные ссылки
+.Ss Sections and cross references
 .Bl -column "Brq, Bro, Brc" description
-.It Ic \&Sh Ta заголовок раздела (одна строка)
-.It Ic \&Ss Ta заголовок подраздела (одна строка)
-.It Ic \&Sx Ta внутренняя перекрестная ссылка на раздел или подраздел
-.It Ic \&Xr Ta перекрестная ссылка на другую страницу руководства: Ar name section
-.It Ic \&Tg Ta тег определение Ar term Pq <= 1 аргумент
-.It Ic \&Pp Ta начать текстовый абзац (без аргументов)
+.It Ic \&Sh Ta section header (one line)
+.It Ic \&Ss Ta subsection header (one line)
+.It Ic \&Sx Ta internal cross reference to a section or subsection
+.It Ic \&Xr Ta cross reference to another manual page: Ar name section
+.It Ic \&Tg Ta tag the definition of a Ar term Pq <= 1 arguments
+.It Ic \&Pp Ta start a text paragraph (no arguments)
 .El
-.Ss Дисплеи и списки
+.Ss Displays and lists
 .Bl -column "Brq, Bro, Brc" description
-.It Ic \&Bd , \&Ed Ta блок отображения:
+.It Ic \&Bd , \&Ed Ta display block:
 .Fl Ar type
 .Op Fl offset Ar width
 .Op Fl compact
-.It Ic \&D1 Ta отображение с отступом (одна строка)
-.It Ic \&Dl Ta отображение букв с отступом (одна строка)
-.It Ic \&Ql Ta отображение встроенного литерала: Ql text
-.It Ic \&Bl , \&El Ta блок списка:
+.It Ic \&D1 Ta indented display (one line)
+.It Ic \&Dl Ta indented literal display (one line)
+.It Ic \&Ql Ta in-line literal display: Ql text
+.It Ic \&Bl , \&El Ta list block:
 .Fl Ar type
 .Op Fl width Ar val
 .Op Fl offset Ar val
 .Op Fl compact
-.It Ic \&It Ta элемент списка (синтаксис зависит от Fl Ar type )
-.It Ic \&Ta Ta разделитель ячеек таблицы вIc \&Bl Fl column No списках
-.It Ic \&Rs , \&%* , \&Re Ta библиографический блок (ссылки)
+.It Ic \&It Ta list item (syntax depends on Fl Ar type )
+.It Ic \&Ta Ta table cell separator in Ic \&Bl Fl column No lists
+.It Ic \&Rs , \&%* , \&Re Ta bibliographic block (references)
 .El
-.Ss Управление расстоянием
+.Ss Spacing control
 .Bl -column "Brq, Bro, Brc" description
-.It Ic \&Pf Ta префикс, без следующего горизонтального пробела (один аргумент)
-.It Ic \&Ns Ta римский шрифт, без предшествующего горизонтального пробела (без аргументов)
-.It Ic \&Ap Ta апостроф без окружающего пробела (без аргументов)
-.It Ic \&Sm Ta переключите режим горизонтального интервала: Op Cm on | off
-.It Ic \&Bk , \&Ek Ta держать блок: Fl words
+.It Ic \&Pf Ta prefix, no following horizontal space (one argument)
+.It Ic \&Ns Ta roman font, no preceding horizontal space (no arguments)
+.It Ic \&Ap Ta apostrophe without surrounding whitespace (no arguments)
+.It Ic \&Sm Ta switch horizontal spacing mode: Op Cm on | off
+.It Ic \&Bk , \&Ek Ta keep block: Fl words
 .El
-.Ss Семантическая разметка для утилит командной строки
+.Ss Semantic markup for command line utilities
 .Bl -column "Brq, Bro, Brc" description
-.It Ic \&Nm Ta запустите блок СИНТАКСИСА с названием утилиты
-.It Ic \&Fl Ta параметры командной строки (флаги) (>=0 аргументов)
-.It Ic \&Cm Ta модификатор команды (>0 аргументов)
-.It Ic \&Ar Ta аргументы команды (>=0 аргументов)
-.It Ic \&Op , \&Oo , \&Oc Ta дополнительные синтаксические элементы (вложение)
-.It Ic \&Ic Ta внутренняя или интерактивная команда (>0 аргументов)
-.It Ic \&Ev Ta переменная окружения (>0 аргументов)
-.It Ic \&Pa Ta путь к файловой системе (>=0 аргументов)
+.It Ic \&Nm Ta start a SYNOPSIS block with the name of a utility
+.It Ic \&Fl Ta command line options (flags) (>=0 arguments)
+.It Ic \&Cm Ta command modifier (>0 arguments)
+.It Ic \&Ar Ta command arguments (>=0 arguments)
+.It Ic \&Op , \&Oo , \&Oc Ta optional syntax elements (enclosure)
+.It Ic \&Ic Ta internal or interactive command (>0 arguments)
+.It Ic \&Ev Ta environmental variable (>0 arguments)
+.It Ic \&Pa Ta file system path (>=0 arguments)
 .El
-.Ss Семантическая разметка для библиотек функций
+.Ss Semantic markup for function libraries
 .Bl -column "Brq, Bro, Brc" description
-.It Ic \&Lb Ta библиотека функций (один аргумент)
-.It Ic \&In Ta включаемый файл (один аргумент)
-.It Ic \&Fd Ta другая директива препроцессора (>0 аргументов)
-.It Ic \&Ft Ta тип функции (>0 аргументов)
-.It Ic \&Fo , \&Fc Ta блок функции: Ar funcname
-.It Ic \&Fn Ta название функции: Ar funcname Op Ar argument ...
-.It Ic \&Fa Ta аргумент функции (>0 аргументов)
-.It Ic \&Vt Ta тип переменной (>0 аргументов)
-.It Ic \&Va Ta имя переменной (>0 аргументов)
-.It Ic \&Dv Ta определенная переменная или константа препроцессора (>0 аргументов)
-.It Ic \&Er Ta постоянная ошибка (>0 аргументов)
-.It Ic \&Ev Ta переменная окружения (>0 аргументов)
+.It Ic \&Lb Ta function library (one argument)
+.It Ic \&In Ta include file (one argument)
+.It Ic \&Fd Ta other preprocessor directive (>0 arguments)
+.It Ic \&Ft Ta function type (>0 arguments)
+.It Ic \&Fo , \&Fc Ta function block: Ar funcname
+.It Ic \&Fn Ta function name: Ar funcname Op Ar argument ...
+.It Ic \&Fa Ta function argument (>0 arguments)
+.It Ic \&Vt Ta variable type (>0 arguments)
+.It Ic \&Va Ta variable name (>0 arguments)
+.It Ic \&Dv Ta defined variable or preprocessor constant (>0 arguments)
+.It Ic \&Er Ta error constant (>0 arguments)
+.It Ic \&Ev Ta environmental variable (>0 arguments)
 .El
-.Ss Различная семантическая разметка
+.Ss Various semantic markup
 .Bl -column "Brq, Bro, Brc" description
-.It Ic \&An Ta имя автора (>0 аргументов)
-.It Ic \&Lk Ta гиперссылка: Ar uri Op Ar display_name
-.It Ic \&Mt Ta Сделать гиперссылку mailto Dc: Ar localpart Ns @ Ns Ar domain
-.It Ic \&Cd Ta объявление конфигурации ядра (>0 аргументов)
-.It Ic \&Ad Ta адрес памяти (>0 аргументов)
-.It Ic \&Ms Ta математический символ (>0 аргументов)
+.It Ic \&An Ta author name (>0 arguments)
+.It Ic \&Lk Ta hyperlink: Ar uri Op Ar display_name
+.It Ic \&Mt Ta Do mailto Dc hyperlink: Ar localpart Ns @ Ns Ar domain
+.It Ic \&Cd Ta kernel configuration declaration (>0 arguments)
+.It Ic \&Ad Ta memory address (>0 arguments)
+.It Ic \&Ms Ta mathematical symbol (>0 arguments)
 .El
-.Ss Физическая разметка
+.Ss Physical markup
 .Bl -column "Brq, Bro, Brc" description
-.It Ic \&Em Ta курсивный шрифт или подчеркивание (emphasis) (>0 аргументов)
-.It Ic \&Sy Ta жирный шрифт (символьный) (>0 аргументов)
-.It Ic \&No Ta вернуться к римскому шрифту (нормальному) (>0 аргументов)
-.It Ic \&Bf , \&Ef Ta шрифтовый блок: Fl Ar type | Cm \&Em | \&Li | \&Sy
+.It Ic \&Em Ta italic font or underline (emphasis) (>0 arguments)
+.It Ic \&Sy Ta boldface font (symbolic) (>0 arguments)
+.It Ic \&No Ta return to roman font (normal) (>0 arguments)
+.It Ic \&Bf , \&Ef Ta font block: Fl Ar type | Cm \&Em | \&Li | \&Sy
 .El
-.Ss Физические ограждения
+.Ss Physical enclosures
 .Bl -column "Brq, Bro, Brc" description
-.It Ic \&Dq , \&Do , \&Dc Ta заключите в типографские двойные кавычки: Dq text
-.It Ic \&Qq , \&Qo , \&Qc Ta заключите в печатные двойные кавычки: Qq text
-.It Ic \&Sq , \&So , \&Sc Ta заключать в одинарные кавычки: Sq text
-.It Ic \&Pq , \&Po , \&Pc Ta заключить в круглые скобки: Pq text
-.It Ic \&Bq , \&Bo , \&Bc Ta заключить в квадратные скобки: Bq text
-.It Ic \&Brq , \&Bro , \&Brc Ta заключать в фигурные скобки: Brq text
-.It Ic \&Aq , \&Ao , \&Ac Ta заключить в угловые скобки: Aq text
-.It Ic \&Eo , \&Ec Ta универсальный корпус
+.It Ic \&Dq , \&Do , \&Dc Ta enclose in typographic double quotes: Dq text
+.It Ic \&Qq , \&Qo , \&Qc Ta enclose in typewriter double quotes: Qq text
+.It Ic \&Sq , \&So , \&Sc Ta enclose in single quotes: Sq text
+.It Ic \&Pq , \&Po , \&Pc Ta enclose in parentheses: Pq text
+.It Ic \&Bq , \&Bo , \&Bc Ta enclose in square brackets: Bq text
+.It Ic \&Brq , \&Bro , \&Brc Ta enclose in curly braces: Brq text
+.It Ic \&Aq , \&Ao , \&Ac Ta enclose in angle brackets: Aq text
+.It Ic \&Eo , \&Ec Ta generic enclosure
 .El
-.Ss Создание текста
+.Ss Text production
 .Bl -column "Brq, Bro, Brc" description
-.It Ic \&Ex Fl std Ta стандартные значения выхода из команды: Op Ar utility ...
-.It Ic \&Rv Fl std Ta значения, возвращаемые стандартной функцией: Op Ar function ...
-.It Ic \&St Ta ссылка на документ о стандартах (один аргумент)
+.It Ic \&Ex Fl std Ta standard command exit values: Op Ar utility ...
+.It Ic \&Rv Fl std Ta standard function return values: Op Ar function ...
+.It Ic \&St Ta reference to a standards document (one argument)
 .It Ic \&At Ta At
 .It Ic \&Bx Ta Bx
 .It Ic \&Bsx Ta Bsx
@@ -538,362 +544,385 @@
 .It Ic \&Ox Ta Ox
 .It Ic \&Dx Ta Dx
 .El
-.Sh ССЫЛКА НА МАКРОС
-Этот раздел является каноническим справочником по всем макросам, расположенным
-в алфавитном порядке.
-Для определения области действия отдельных макросов смотрите
-.Sx СИНТАКСИС МАКРОСОВ.
+.Sh MACRO REFERENCE
+This section is a canonical reference of all macros, arranged
+alphabetically.
+For the scoping of individual macros, see
+.Sx MACRO SYNTAX .
 .Bl -tag -width 3n
 .It Ic \&%A Ar first_name ... last_name
-Имя автора блока
-.Ic \&Rs .
-Нескольким авторам следует предоставить свою собственную строку
-.Ic \%%A .
-Имена авторов следует указывать сначала полным или сокращенным именем (ами),
-а затем полной фамилией.
+Author name of an
+.Ic \&Rs
+block.
+Multiple authors should each be accorded their own
+.Ic \%%A
+line.
+Author names should be ordered with full or abbreviated forename(s)
+first, then full surname.
 .It Ic \&%B Ar title
-Книжное название блока
-.Ic \&Rs .
-Этот макрос также может использоваться в небиблиографическом контексте при
-ссылке на названия книг.
+Book title of an
+.Ic \&Rs
+block.
+This macro may also be used in a non-bibliographic context when
+referring to book titles.
 .It Ic \&%C Ar location
-Город публикации или местоположение блока
-.Ic \&Rs .
+Publication city or location of an
+.Ic \&Rs
+block.
 .It Ic \&%D Oo Ar month day , Oc Ar year
-Дата публикации блока
-.Ic \&Rs .
-Укажите полное английское название
-.Ar месяца
-и все четыре цифры
-.Ar года .
+Publication date of an
+.Ic \&Rs
+block.
+Provide the full English name of the
+.Ar month
+and all four digits of the
+.Ar year .
 .It Ic \&%I Ar name
-Имя издателя или эмитента блока
-.Ic \&Rs .
+Publisher or issuer name of an
+.Ic \&Rs
+block.
 .It Ic \&%J Ar name
-Название журнала для блока
-.Ic \&Rs .
+Journal name of an
+.Ic \&Rs
+block.
 .It Ic \&%N Ar number
-Номер выпуска (обычно для журналов) блока
-.Ic \&Rs .
+Issue number (usually for journals) of an
+.Ic \&Rs
+block.
 .It Ic \&%O Ar line
-Дополнительная информация о блоке
-.Ic \&Rs .
+Optional information of an
+.Ic \&Rs
+block.
 .It Ic \&%P Ar number
-Номер страницы книги или журнала в блоке
-.Ic \&Rs .
-Обычно аргумент начинается с
+Book or journal page number of an
+.Ic \&Rs
+block.
+Conventionally, the argument starts with
 .Ql p.\&
-для одной страницы или
+for a single page or
 .Ql pp.\&
-для ряда страниц, например:
+for a range of pages, for example:
 .Pp
 .Dl .%P pp. 42\e(en47
 .It Ic \&%Q Ar name
-Институциональный автор (школа, правительство и т.д.) блока
-.Ic \&Rs .
-Нескольким институциональным авторам, каждому из которых должна быть предоставлена своя собственная строка
-.Ic \&%Q .
+Institutional author (school, government, etc.) of an
+.Ic \&Rs
+block.
+Multiple institutional authors should each be accorded their own
+.Ic \&%Q
+line.
 .It Ic \&%R Ar name
-Технический отчет название блока
-.Ic \&Rs .
+Technical report name of an
+.Ic \&Rs
+block.
 .It Ic \&%T Ar title
-Название статьи в блоке
-.Ic \&Rs .
-Этот макрос также может использоваться в небиблиографическом контексте при
-ссылке на названия статей.
+Article title of an
+.Ic \&Rs
+block.
+This macro may also be used in a non-bibliographical context when
+referring to article titles.
 .It Ic \&%U Ar protocol Ns :// Ns Ar path
-URI справочного документа.
+URI of reference document.
 .It Ic \&%V Ar number
-Номер тома блока
-.Ic \&Rs .
+Volume number of an
+.Ic \&Rs
+block.
 .It Ic \&Ac
-Закрыть блок
-.Ic \&Ao .
-Не имеет никаких дополнительных аргументов.
+Close an
+.Ic \&Ao
+block.
+Does not have any tail arguments.
 .Tg Ad
 .It Ic \&Ad Ar address
-Адрес в памяти.
-Не используйте это значение для почтовых адресов.
+Memory address.
+Do not use this for postal addresses.
 .Pp
-Примеры:
+Examples:
 .Dl \&.Ad [0,$]
 .Dl \&.Ad 0x00000000
 .Tg An
 .It Ic \&An Fl split | nosplit | Ar first_name ... last_name
-Имя автора.
-Может использоваться как для обозначения авторов программы, функции или драйвера
-, описанных в руководстве, так и для обозначения авторов самого руководства.
-Требуется либо имя автора, либо один из следующих аргументов:
+Author name.
+Can be used both for the authors of the program, function, or driver
+documented in the manual, or for the authors of the manual itself.
+Requires either the name of an author or one of the following arguments:
 .Pp
 .Bl -tag -width "-nosplitX" -offset indent -compact
 .It Fl split
-Запускайте новую строку вывода перед каждым последующим вызовом
+Start a new output line before each subsequent invocation of
 .Ic \&An .
 .It Fl nosplit
-Противоположность
+The opposite of
 .Fl split .
 .El
 .Pp
-Значение по умолчанию равно
+The default is
 .Fl nosplit .
-Эффект от выбора любого из режимов
+The effect of selecting either of the
 .Fl split
-заканчивается в начале раздела
-.Em AUTHORS .
-В разделе
+modes ends at the beginning of the
 .Em AUTHORS
-значение по умолчанию равно
+section.
+In the
+.Em AUTHORS
+section, the default is
 .Fl nosplit
-для первого списка авторов и
+for the first author listing and
 .Fl split
-для всех остальных списков авторов.
+for all other author listings.
 .Pp
-Примеры:
+Examples:
 .Dl \&.An -nosplit
 .Dl \&.An Kristaps Dzonsons \&Aq \&Mt kristaps@bsd.lv
 .It Ic \&Ao Ar block
-Начинается блок, заключенный в угловые скобки.
-Не содержит аргументов head.
-Этот макрос практически никогда не используется.
-Смотрите
+Begin a block enclosed by angle brackets.
+Does not have any head arguments.
+This macro is almost never useful.
+See
 .Ic \&Aq
-для получения более подробной информации.
+for more details.
 .Tg Ap
 .It Ic \&Ap
-Вставляет апостроф без каких-либо окружающих его пробелов.
-Обычно используется как грамматический прием при обозначении глагольной
-формы функции.
+Inserts an apostrophe without any surrounding whitespace.
+This is generally used as a grammatical device when referring to the verb
+form of a function.
 .Pp
-Примеры:
+Examples:
 .Dl \&.Fn execve \&Ap d
 .Tg Aq
 .It Ic \&Aq Ar line
-Заключите оставшуюся часть строки ввода в угловые скобки.
-Единственный важный вариант использования - для адресов электронной почты.
-Смотрите
+Enclose the rest of the input line in angle brackets.
+The only important use case is for email addresses.
+See
 .Ic \&Mt
-для получения более подробной информации.
+for an example.
 .Pp
-Иногда он используется для обозначения символов и клавиш, например:
+Occasionally, it is used for names of characters and keys, for example:
 .Bd -literal -offset indent
-Нажмите кнопку
-\&.Aq escape ,
-чтобы ...
+Press the
+\&.Aq escape
+key to ...
 .Ed
 .Pp
-Для URI используйте вместо этого
-.Ic \&Lk ,
-и
+For URIs, use
+.Ic \&Lk
+instead, and
 .Ic \&In
-для директив
-.Dq #include .
-Никогда не заворачивайте
+for
+.Dq #include
+directives.
+Never wrap
 .Ic \&Ar
-в
+in
 .Ic \&Aq .
 .Pp
-С
+Since
 .Ic \&Aq
-обычно выводится с использованием символов, отличных от ASCII, в режимах вывода, отличных от ASCII,
-не используйте его там, где символы ASCII
+usually renders with non-ASCII characters in non-ASCII output modes,
+do not use it where the ASCII characters
 .Sq <
-и
+and
 .Sq >
-требуются в качестве синтаксических элементов.
-Вместо этого в таких случаях используйте эти символы напрямую, комбинируя их
-с макросами
+are required as syntax elements.
+Instead, use these characters directly in such cases, combining them
+with the macros
 .Ic \&Pf ,
 .Ic \&Ns ,
-или
+or
 .Ic \&Eo
-по мере необходимости.
+as needed.
 .Pp
-Смотрите также
+See also
 .Ic \&Ao .
 .Tg Ar
 .It Ic \&Ar Op Ar placeholder ...
-Аргументы команды.
-Если аргумент не указан, строка
+Command arguments.
+If an argument is not provided, the string
 .Dq file ...\&
-используется по умолчанию.
+is used as a default.
 .Pp
-Примеры:
+Examples:
 .Dl ".Fl o Ar file"
 .Dl ".Ar"
 .Dl ".Ar arg1 , arg2 ."
 .Pp
-Аргументы для макроса
+The arguments to the
 .Ic \&Ar
-это имена и заполнители для аргументов команды;
-для дословной передачи фиксированных строк в качестве аргументов используйте
+macro are names and placeholders for command arguments;
+for fixed strings to be passed verbatim as arguments, use
 .Ic \&Fl
-или
+or
 .Ic \&Cm .
 .Tg At
 .It Ic \&At Op Ar version
-Форматирует версию
-.At .
-Принимает один необязательный аргумент:
+Formats an
+.At
+version.
+Accepts one optional argument:
 .Pp
 .Bl -tag -width "v[1-7] | 32vX" -offset indent -compact
 .It Cm v[1-7] | 32v
-Версия
+A version of
 .At .
 .It Cm III
 .At III .
 .It Cm V | V.[1-4]
-Версия
+A version of
 .At V .
 .El
 .Pp
-Обратите внимание, что эти аргументы не начинаются с дефиса.
+Note that these arguments do not begin with a hyphen.
 .Pp
-Примеры:
+Examples:
 .Dl \&.At
 .Dl \&.At III
 .Dl \&.At V.1
 .Pp
-Смотрите также
+See also
 .Ic \&Bsx ,
 .Ic \&Bx ,
 .Ic \&Dx ,
 .Ic \&Fx ,
 .Ic \&Nx ,
-и
+and
 .Ic \&Ox .
 .It Ic \&Bc
-Закрыть блок
-.Ic \&Bo .
-Не имеет никаких дополнительных аргументов.
+Close a
+.Ic \&Bo
+block.
+Does not have any tail arguments.
 .Tg Bd
 .It Ic \&Bd Fl Ns Ar type Oo Fl offset Ar width Oc Op Fl compact
-Начните отображать блок.
-Отображаемые блоки используются для выбора отступа и
-выравнивания, отличных от тех, которые используются для окружающего текста.
-Они могут содержать как макролинии, так и текстовые строки.
-По умолчанию перед отображаемым блоком ставится вертикальный пробел.
+Begin a display block.
+Display blocks are used to select a different indentation and
+justification than the one used by the surrounding text.
+They may contain both macro lines and text lines.
+By default, a display block is preceded by a vertical space.
 .Pp
-.Ar Тип
-должен быть одним из следующих:
+The
+.Ar type
+must be one of the following:
 .Bl -tag -width 13n -offset indent
 .It Fl centered
-Создайте по одной выходной строке из каждой входной строки и выровняйте каждую строку по центру.
-Использование этого типа отображения не рекомендуется; во многих реализациях
+Produce one output line from each input line, and center-justify each line.
+Using this display type is not recommended; many
 .Nm
-отображает его плохо.
+implementations render it poorly.
 .It Fl filled
-Измените положение переносов строк, чтобы заполнить каждую строку, и
-выровняйте полученный блок по левому и правому краю.
+Change the positions of line breaks to fill each line, and left- and
+right-justify the resulting block.
 .It Fl literal
-Выводите по одной строке из каждой строки ввода
-и не выравнивайте размер блока по ширине.
-Сохраняйте пробелы в том виде, в каком они отображаются во входных данных.
-Всегда используйте шрифт постоянной ширины.
-Используйте это для отображения исходного кода.
+Produce one output line from each input line,
+and do not justify the block at all.
+Preserve white space as it appears in the input.
+Always use a constant-width font.
+Use this for displaying source code.
 .It Fl ragged
-Измените положение переносов строк, чтобы заполнить каждую строку, и выровняйте
-полученный блок по левому краю.
+Change the positions of line breaks to fill each line, and left-justify
+the resulting block.
 .It Fl unfilled
-То же самое, что
+The same as
 .Fl literal ,
-но с использованием того же шрифта, что и для обычного текста, который является шрифтом переменной ширины,
-если поддерживается устройством вывода.
+but using the same font as for normal text, which is a variable width font
+if supported by the output device.
 .El
 .Pp
-.Ar Тип
-должны быть предоставлены в первую очередь.
-Могут последовать дополнительные аргументы:
+The
+.Ar type
+must be provided first.
+Additional arguments may follow:
 .Bl -tag -width 13n -offset indent
 .It Fl offset Ar width
-Сделайте отступ от экрана по
-.Ar ширине ,
-который может быть одним из следующих:
+Indent the display by the
+.Ar width ,
+which may be one of the following:
 .Bl -item
 .It
-Одна из предопределенных строк
+One of the pre-defined strings
 .Cm indent ,
-ширина стандартного отступа (шесть символов постоянной ширины);
+the width of a standard indentation (six constant width characters);
 .Cm indent-two ,
-дважды
+twice
 .Cm indent ;
 .Cm left ,
-который не имеет никакого эффекта;
+which has no effect;
 .Cm right ,
-который выравнивается по правому краю; или
+which justifies to the right margin; or
 .Cm center ,
-который выравнивается вокруг воображаемой центральной оси.
+which aligns around an imagined center axis.
 .It
-Вызов макроса, который выбирает предопределенную ширину,
-связанную с этим макросом.
-Наиболее популярным является воображаемый макрос
+A macro invocation, which selects a predefined width
+associated with that macro.
+The most popular is the imaginary macro
 .Ar \&Ds ,
-который принимает решение о
+which resolves to
 .Sy 6n .
 .It
-Ширину масштабирования, как описано в
+A scaling width as described in
 .Xr roff 7 .
 .It
-Произвольная строка, отступ которой равен длине этой строки.
+An arbitrary string, which indents by the length of this string.
 .El
 .Pp
-Когда аргумент отсутствует,
+When the argument is missing,
 .Fl offset
-игнорируется.
+is ignored.
 .It Fl compact
-Не оставляйте вертикального пространства перед дисплеем.
+Do not assert vertical space before the display.
 .El
 .Pp
-Примеры:
+Examples:
 .Bd -literal -offset indent
 \&.Bd \-literal \-offset indent \-compact
    Hello       world.
 \&.Ed
 .Ed
 .Pp
-Смотрит также
+See also
 .Ic \&D1
-и
+and
 .Ic \&Dl .
 .Tg Bf
 .It Ic \&Bf Fl emphasis | literal | symbolic | Cm \&Em | \&Li | \&Sy
-Измените режим шрифта для выделенного блока текста.
-Аргументы
+Change the font mode for a scoped block of text.
+The
 .Fl emphasis
-и
+and
 .Cm \&Em
-являются эквивалентными, как и
+argument are equivalent, as are
 .Fl symbolic
-и
+and
 .Cm \&Sy ,
-и
+and
 .Fl literal
-и
+and
 .Cm \&Li .
-Без аргумента этот макрос ничего не делает.
-Режим шрифта сохраняется до тех пор, пока не будет изменен новым режимом шрифта во вложенной
-области или
+Without an argument, this macro does nothing.
+The font mode continues until broken by a new font mode in a nested
+scope or
 .Ic \&Ef
-встречается.
+is encountered.
 .Pp
-Смотрите также
+See also
 .Ic \&Li ,
 .Ic \&Ef ,
 .Ic \&Em ,
-и
+and
 .Ic \&Sy .
 .Tg Bk
 .It Ic \&Bk Fl words
-Для каждого макроса сохраняйте его выходные данные в одной и той же строке вывода до тех пор,
-пока не будет достигнут конец макроса или конец строки ввода, в зависимости от того,
-что наступит раньше.
-Переносы строк в текстовых строках не изменяются.
+For each macro, keep its output together on the same output line,
+until the end of the macro or the end of the input line is reached,
+whichever comes first.
+Line breaks in text lines are unaffected.
 .Pp
-Аргумент
+The
 .Fl words
-является обязательным; дополнительные аргументы игнорируются.
+argument is required; additional arguments are ignored.
 .Pp
-Следующий пример не будет прерываться внутри каждой строки макроса
-.Ic \&Op :
+The following example will not break within each
+.Ic \&Op
+macro line:
 .Bd -literal -offset indent
 \&.Bk \-words
 \&.Op Fl f Ar flags
@@ -901,8 +930,8 @@ URI справочного документа.
 \&.Ek
 .Ed
 .Pp
-Будьте осторожны при использовании слишком длинных линий в пределах блока хранения!
-Это приведет к увеличению правого поля.
+Be careful in using over-long lines within a keep block!
+Doing so will clobber the right margin.
 .Tg Bl
 .It Xo
 .Ic \&Bl
@@ -913,242 +942,251 @@ URI справочного документа.
 .Op Ar col ...
 .Xc
 Begin a list.
-Списки состоят из элементов, указанных с помощью макроса
-.Ic \&It,
-содержащий head, или body, или то и другое вместе.
+Lists consist of items specified using the
+.Ic \&It
+macro, containing a head or a body or both.
 .Pp
-.Ar Тип
-списка является обязательным и должен быть указан в первую очередь.
-Аргументы
+The list
+.Ar type
+is mandatory and must be specified first.
+The
 .Fl width
-и
+and
 .Fl offset
-принимают имена макросов, как описано для
+arguments accept macro names as described for
 .Ic \&Bd
 .Fl offset ,
-масштабирование ширины, как описано в
+scaling widths as described in
 .Xr roff 7 ,
-или используйте длину заданной строки.
+or use the length of the given string.
+The
 .Fl offset
-это глобальный отступ для всего списка, затрагивающий как заголовки,
-так и тела элементов.
-Для тех типов списков, которые поддерживают это, аргумент
+is a global indentation for the whole list, affecting both item heads
+and bodies.
+For those list types supporting it, the
 .Fl width
-запрашивает дополнительный отступ в текстах элементов,
-который должен быть добавлен в
+argument requests an additional indentation of item bodies,
+to be added to the
 .Fl offset .
-Если указывается только аргумент
-.Fl compact ,
-элементы списка разделяются вертикальным пробелом.
+Unless the
+.Fl compact
+argument is specified, list entries are separated by vertical space.
 .Pp
-В списке должен быть указан один из следующих типов списков:
+A list must specify one of the following list types:
 .Bl -tag -width 12n -offset indent
 .It Fl bullet
-Заголовки элементов указать нельзя, но в начале каждого элемента будет напечатан маркер.
-Он отображает начало в той же строке вывода, что и маркер,
-и предназначен в соответствии с аргументом
-.Fl width .
-.It Fl column
-Список с разбивкой по столбцам.
-Аргумент
+No item heads can be specified, but a bullet will be printed at the head
+of each item.
+Item bodies start on the same output line as the bullet
+and are indented according to the
 .Fl width
-не имеет никакого эффекта; вместо этого длина строки каждого аргумента
-определяет ширину одного столбца.
-Если первая строка основного текста списка
+argument.
+.It Fl column
+A columnated list.
+The
+.Fl width
+argument has no effect; instead, the string length of each argument
+specifies the width of one column.
+If the first line of the body of a
 .Fl column
-это не строка макроса
-.Ic \&It ,
-контексты
-.Ic \&It ,
-охватывающие по одной строке ввода, подразумеваются до тех пор, пока не обнаруживается строка макроса
-.Ic \&It ,
-и в этот момент элементы начинают интерпретироваться так, как
-описано в документации
-.Ic \&It .
+list is not an
+.Ic \&It
+macro line,
+.Ic \&It
+contexts spanning one input line each are implied until an
+.Ic \&It
+macro line is encountered, at which point items start being interpreted as
+described in the
+.Ic \&It
+documentation.
 .It Fl dash
-Как
+Like
 .Fl bullet ,
-за исключением того, что вместо маркеров используются тире.
+except that dashes are used in place of bullets.
 .It Fl diag
-Как
+Like
 .Fl inset ,
-за исключением того, что заголовки элементов не анализируются для вызовов макросов.
-Наиболее часто используется в разделе
-.Em ДИАГНОСТИКА
-с константами ошибок в заголовках элементов.
+except that item heads are not parsed for macro invocations.
+Most often used in the
+.Em DIAGNOSTICS
+section with error constants in the item heads.
 .It Fl enum
-Нумерованный список.
-Заголовки элементов указать нельзя.
-Отформатированный как
+A numbered list.
+No item heads can be specified.
+Formatted like
 .Fl bullet ,
-за исключением того, что вместо маркеров используются количественные числа,
-начинающиеся с 1.
+except that cardinal numbers are used in place of bullets,
+starting at 1.
 .It Fl hang
-Как
+Like
 .Fl tag ,
-за исключением того, что первые строки текста элементов не имеют отступов, а следуют
-за заголовками элементов, как в списках
-.Fl inset .
+except that the first lines of item bodies are not indented, but follow
+the item heads like in
+.Fl inset
+lists.
 .It Fl hyphen
-Синоним для
+Synonym for
 .Fl dash .
 .It Fl inset
-Заголовки элементов следуют за заголовками элементов в одной строке с использованием обычного
-интервала между словами.
-Заголовки не предназначены, а аргумент
+Item bodies follow items heads on the same line, using normal inter-word
+spacing.
+Bodies are not indented, and the
 .Fl width
-игнорируется.
+argument is ignored.
 .It Fl item
-Заголовки элементов указать нельзя, и ни один из них не печатается.
-Заголовки элементов не предназначены, а аргумент
+No item heads can be specified, and none are printed.
+Bodies are not indented, and the
 .Fl width
-игнорируется.
+argument is ignored.
 .It Fl ohang
-Он начинается в строке, следующей за заголовками товаров, и не предназначен для этого.
-Аргумент
+Item bodies start on the line following item heads and are not indented.
+The
 .Fl width
-игнорируется.
+argument is ignored.
 .It Fl tag
-Тела элементов имеют отступы в соответствии с аргументом
-.Fl width .
-Когда заголовок элемента помещается в углубление, текст элемента следует
-за этим заголовком по той же выходной строке.
-В противном случае текст начинается с выходной строки, следующей за заголовком.
+Item bodies are indented according to the
+.Fl width
+argument.
+When an item head fits inside the indentation, the item body follows
+this head on the same output line.
+Otherwise, the body starts on the output line following the head.
 .El
 .Pp
-Списки могут быть вложены в списки и дисплеи.
-Вложенность списков
+Lists may be nested within lists and displays.
+Nesting of
 .Fl column
-и
+and
 .Fl enum
-может быть непереносимой.
+lists may not be portable.
 .Pp
-Смотрите также
+See also
 .Ic \&El
-и
+and
 .Ic \&It .
 .It Ic \&Bo Ar block
-Начинается блок, заключенный в квадратные скобки.
-Не содержит аргументов head.
+Begin a block enclosed by square brackets.
+Does not have any head arguments.
 .Pp
-Примеры:
+Examples:
 .Bd -literal -offset indent -compact
 \&.Bo 1 ,
 \&.Dv BUFSIZ \&Bc
 .Ed
 .Pp
-Смотрите также
+See also
 .Ic \&Bq .
 .Tg Bq
 .It Ic \&Bq Ar line
-Заключает свои аргументы в квадратные скобки.
+Encloses its arguments in square brackets.
 .Pp
-Примеры:
+Examples:
 .Dl \&.Bq 1 , \&Dv BUFSIZ
 .Pp
-.Em Замечания :
-этим макросом иногда злоупотребляют для эмуляции необязательных аргументов
-команд; правильными макросами, которые следует использовать для этой цели, являются
+.Em Remarks :
+this macro is sometimes abused to emulate optional arguments for
+commands; the correct macros to use for this purpose are
 .Ic \&Op ,
 .Ic \&Oo ,
-и
+and
 .Ic \&Oc .
 .Pp
-Смотрите также
+See also
 .Ic \&Bo .
 .It Ic \&Brc
-Закрыть блок
-.Ic \&Bro .
-Не имеет никаких дополнительных аргументов.
+Close a
+.Ic \&Bro
+block.
+Does not have any tail arguments.
 .It Ic \&Bro Ar block
-Начинается блок, заключенный в фигурные скобки.
-Не содержит аргументов head.
+Begin a block enclosed by curly braces.
+Does not have any head arguments.
 .Pp
-Примеры:
+Examples:
 .Bd -literal -offset indent -compact
 \&.Bro 1 , ... ,
 \&.Va n \&Brc
 .Ed
 .Pp
-Смотрите также
+See also
 .Ic \&Brq .
 .Tg Brq
 .It Ic \&Brq Ar line
-Заключает свои аргументы в фигурные скобки.
+Encloses its arguments in curly braces.
 .Pp
-Примеры:
+Examples:
 .Dl \&.Brq 1 , ... , \&Va n
 .Pp
-Смотрите также
+See also
 .Ic \&Bro .
 .Tg Bsx
 .It Ic \&Bsx Op Ar version
-Отформатирует версию
-.Bsx ,
-указанную в качестве аргумента или значение по умолчанию, если
-аргумент не указан.
+Format the
+.Bsx
+version provided as an argument, or a default value if
+no argument is provided.
 .Pp
-Примеры:
+Examples:
 .Dl \&.Bsx 1.0
 .Dl \&.Bsx
 .Pp
-Смотрите также
+See also
 .Ic \&At ,
 .Ic \&Bx ,
 .Ic \&Dx ,
 .Ic \&Fx ,
 .Ic \&Nx ,
-и
+and
 .Ic \&Ox .
 .It Ic \&Bt
-Поддерживается только для обеспечения совместимости, не используйте это в новых руководствах.
-Выводит
-.Dq в настоящее время находится в стадии бета-тестирования.
+Supported only for compatibility, do not use this in new manuals.
+Prints
+.Dq is currently in beta test.
 .Tg Bx
 .It Ic \&Bx Op Ar version Op Ar variant
-Отформатирует версию
-.Bx ,
-указанную в качестве аргумента или значение по умолчанию, если
-аргумент не указан.
+Format the
+.Bx
+version provided as an argument, or a default value if no
+argument is provided.
 .Pp
-Примеры:
+Examples:
 .Dl \&.Bx 4.3 Tahoe
 .Dl \&.Bx 4.4
 .Dl \&.Bx
 .Pp
-Смотрите также
+See also
 .Ic \&At ,
 .Ic \&Bsx ,
 .Ic \&Dx ,
 .Ic \&Fx ,
 .Ic \&Nx ,
-и
+and
 .Ic \&Ox .
 .Tg Cd
 .It Ic \&Cd Ar line
-Объявление конфигурации ядра.
-Это обозначает строки, принимаемые
+Kernel configuration declaration.
+This denotes strings accepted by
 .Xr config 8 .
-Чаще всего он используется на страницах руководства по разделу 4.
+It is most often used in section 4 manual pages.
 .Pp
-Примеры:
+Examples:
 .Dl \&.Cd device le0 at scode?
 .Pp
-.Em Замечания :
-этим макросом обычно злоупотребляют, используя литералы в кавычках для сохранения
-пробелов и выравнивания последовательных объявлений
-.Ic \&Cd .
-Такая практика не поощряется.
+.Em Remarks :
+this macro is commonly abused by using quoted literals to retain
+whitespace and align consecutive
+.Ic \&Cd
+declarations.
+This practise is discouraged.
 .Tg Cm
 .It Ic \&Cm Ar keyword ...
-Модификаторы команд.
-Обычно используется для фиксированных строк, передаваемых в качестве аргументов интерактивным
-командам, командам в интерпретируемых скриптах или
-директивам конфигурационного файла, если только
+Command modifiers.
+Typically used for fixed strings passed as arguments to interactive
+commands, to commands in interpreted scripts, or to configuration
+file directives, unless
 .Ic \&Fl
-не является более подходящим.
+is more appropriate.
 .Pp
-Примеры:
+Examples:
 .Dl ".Nm mt Fl f Ar device Cm rewind"
 .Dl ".Nm ps Fl o Cm pid , Ns Cm command"
 .Dl ".Nm dd Cm if= Ns Ar file1 Cm of= Ns Ar file2"
@@ -1157,94 +1195,99 @@ Begin a list.
 .Dl ".Ic permit Ar identity Op Cm as Ar target"
 .Tg D1
 .It Ic \&D1 Ar line
-Отображение с отступом в одну строку.
-Этот параметр отформатирован по правилам по умолчанию и полезен для простых
-инструкций с отступом.
-За ним следует новая строка.
+One-line indented display.
+This is formatted by the default rules and is useful for simple indented
+statements.
+It is followed by a newline.
 .Pp
-Примеры:
+Examples:
 .Dl \&.D1 \&Fl abcdefgh
 .Pp
-Смотрите также
+See also
 .Ic \&Bd
-и
+and
 .Ic \&Dl .
 .It Ic \&Db
-Этот макрос устарел.
-Замена не требуется.
-Он игнорируется
+This macro is obsolete.
+No replacement is needed.
+It is ignored by
 .Xr mandoc 1
-и groff, включая его аргументы.
-Ранее он использовался для переключения режима отладки.
+and groff including its arguments.
+It was formerly used to toggle a debugging mode.
 .It Ic \&Dc
-Закрыть блок
-.Ic \&Do .
-Не имеет никаких дополнительных аргументов.
+Close a
+.Ic \&Do
+block.
+Does not have any tail arguments.
 .Tg Dd
 .It Ic \&Dd Cm $\&Mdocdate$ | Ar month day , year
-Данные документа для отображения в нижнем колонтитуле страницы,
-обычно это дата последнего изменения.
-Это обязательный первый макрос в любом руководстве
-.Nm .
+Document date for display in the page footer,
+by convention the date of the last change.
+This is the mandatory first macro of any
+.Nm
+manual.
 .Pp
-.Ar Month
-это полное английское название месяца,
+The
+.Ar month
+is the full English month name, the
 .Ar day
-является целым числом, и значение
+is an integer number, and the
 .Ar year
-это полный четырехзначный год.
+is the full four-digit year.
 .Pp
-Другие аргументы не переносимы; утилита
+Other arguments are not portable; the
 .Xr mandoc 1
-обрабатывает их следующим образом:
+utility handles them as follows:
 .Bl -dash -offset 3n -compact
 .It
-Чтобы дата автоматически заполнялась версией
+To have the date automatically filled in by the
 .Ox
-от
+version of
 .Xr cvs 1 ,
-в качестве аргумента может быть указана специальная строка
-.Dq $\&Mdocdate$ .
+the special string
+.Dq $\&Mdocdate$
+can be given as an argument.
 .It
-Традиционный, чисто цифровой формат
+The traditional, purely numeric
 .Xr man 7
+format
 .Ar year Ns \(en Ns Ar month Ns \(en Ns Ar day
-тоже принят.
+is accepted, too.
 .It
-Если строка даты не может быть проанализирована, она используется дословно.
+If a date string cannot be parsed, it is used verbatim.
 .It
-Если строка даты не указана, используется текущая дата.
+If no date string is given, the current date is used.
 .El
 .Pp
-Примеры:
+Examples:
 .Dl \&.Dd $\&Mdocdate$
 .Dl \&.Dd $\&Mdocdate: July 2 2018$
 .Dl \&.Dd July 2, 2018
 .Pp
-Смотрите также
+See also
 .Ic \&Dt
-и
+and
 .Ic \&Os .
 .Tg Dl
 .It Ic \&Dl Ar line
-Отображение с отступом в одну строку.
-Это форматируется как буквальный текст и полезно для команд и
-вызовов.
-За ним следует новая строка.
+One-line indented display.
+This is formatted as literal text and is useful for commands and
+invocations.
+It is followed by a newline.
 .Pp
-Примеры:
+Examples:
 .Dl \&.Dl % mandoc mdoc.7 \e(ba less
 .Pp
-Смотрите также
+See also
 .Ic \&Ql ,
 .Ic \&Bd Fl literal ,
-и
+and
 .Ic \&D1 .
 .It Ic \&Do Ar block
-Начинается блок, заключенный в двойные кавычки.
-Не содержит аргументов head.
+Begin a block enclosed by double quotes.
+Does not have any head arguments.
 .Pp
-Примеры:
+Examples:
 .Bd -literal -offset indent -compact
 \&.Do
 April is the cruellest month
@@ -1252,42 +1295,43 @@ April is the cruellest month
 \e(em T.S. Eliot
 .Ed
 .Pp
-Смотрите также
+See also
 .Ic \&Dq .
 .Tg Dq
 .It Ic \&Dq Ar line
-Заключает свои аргументы в
-.Dq типографские
-двойные кавычки.
+Encloses its arguments in
+.Dq typographic
+double-quotes.
 .Pp
-Примеры:
+Examples:
 .Bd -literal -offset indent -compact
 \&.Dq April is the cruellest month
 \e(em T.S. Eliot
 .Ed
 .Pp
-Смотрите также
+See also
 .Ic \&Qq ,
 .Ic \&Sq ,
-и
+and
 .Ic \&Do .
 .Tg Dt
 .It Ic \&Dt Ar TITLE section Op Ar arch
-Название документа для отображения в верхнем колонтитуле страницы.
-Это обязательный второй макрос для любого файла
-.Nm .
+Document title for display in the page header.
+This is the mandatory second macro of any
+.Nm
+file.
 .Pp
-Его аргументы заключаются в следующем:
+Its arguments are as follows:
 .Bl -tag -width section -offset 2n
 .It Ar TITLE
-Название документа (name), значение по умолчанию
+The document's title (name), defaulting to
 .Dq UNTITLED
-если не указано иное.
-Чтобы добиться единообразного оформления строк верхнего колонтитула страницы,
-по общему правилу все они должны быть заглавными.
+if unspecified.
+To achieve a uniform appearance of page header lines,
+it should by convention be all caps.
 .It Ar section
-Раздел руководства.
-Это может быть один из
+The manual section.
+This may be one of
 .Cm 1
 .Pq General Commands ,
 .Cm 2
@@ -1306,109 +1350,109 @@ April is the cruellest month
 .Pq Miscellaneous Information ,
 .Cm 8
 .Pq System Manager's Manual ,
-или
+or
 .Cm 9
 .Pq Kernel Developer's Manual .
-Он должен соответствовать суффиксу имени файла, указанному в руководстве, и по умолчанию должен
-содержать пустую строку, если она не указана.
+It should correspond to the manual's filename suffix and defaults to
+the empty string if unspecified.
 .It Ar arch
-Это определяет архитектуру машины, к которой применяется страница руководства,
-где это уместно, например
+This specifies the machine architecture a manual page applies to,
+where relevant, for example
 .Cm alpha ,
 .Cm amd64 ,
 .Cm i386 ,
-или
+or
 .Cm sparc64 .
-Список допустимых архитектур зависит от операционной системы.
+The list of valid architectures varies by operating system.
 .El
 .Pp
-Примеры:
+Examples:
 .Dl \&.Dt FOO 1
 .Dl \&.Dt FOO 9 i386
 .Pp
-Смотрите также
+See also
 .Ic \&Dd
-и
+and
 .Ic \&Os .
 .Tg Dv
 .It Ic \&Dv Ar identifier ...
-Определенные переменные, такие как константы препроцессора, постоянные символы,
-значения перечисления и так далее.
+Defined variables such as preprocessor constants, constant symbols,
+enumeration values, and so on.
 .Pp
-Примеры:
+Examples:
 .Dl \&.Dv NULL
 .Dl \&.Dv BUFSIZ
 .Dl \&.Dv STDOUT_FILENO
 .Pp
-Смотрите также
+See also
 .Ic \&Er
-и
+and
 .Ic \&Ev
-для констант специального назначения,
+for special-purpose constants,
 .Ic \&Va
-для переменных символов, и
+for variable symbols, and
 .Ic \&Fd
-для перечисления определений переменных препроцессора в
-.Em СИНТАКСИСЕ .
+for listing preprocessor variable definitions in the
+.Em SYNOPSIS .
 .Tg Dx
 .It Ic \&Dx Op Ar version
-Отформатирует версию
-.Dx ,
-указывается в качестве аргумента или
-значения по умолчанию, если аргумент не указан.
+Format the
+.Dx
+version provided as an argument, or a default
+value if no argument is provided.
 .Pp
-Примеры:
+Examples:
 .Dl \&.Dx 2.4.1
 .Dl \&.Dx
 .Pp
-Смотрите также
+See also
 .Ic \&At ,
 .Ic \&Bsx ,
 .Ic \&Bx ,
 .Ic \&Fx ,
 .Ic \&Nx ,
-и
+and
 .Ic \&Ox .
 .It Ic \&Ec Op Ar closing_delimiter
-Закройте область, начатую с
+Close a scope started by
 .Ic \&Eo .
 .Pp
-Аргумент
+The
 .Ar closing_delimiter
-используется в качестве хвостовика корпуса, например, указывая \e(rq
-будет подражать
+argument is used as the enclosure tail, for example, specifying \e(rq
+will emulate
 .Ic \&Dc .
 .It Ic \&Ed
-Завершите контекст отображения, начатый с помощью
+End a display context started by
 .Ic \&Bd .
 .It Ic \&Ef
-Завершите контекст режима шрифта, запущенный с помощью
+End a font mode context started by
 .Ic \&Bf .
 .It Ic \&Ek
-Завершить сохранение контекста, начатого
+End a keep context started by
 .Ic \&Bk .
 .It Ic \&El
-Завершить контекст списка, начатый с
+End a list context started by
 .Ic \&Bl .
-Смотрите также
+See also
 .Ic \&It .
 .Tg Em
 .It Ic \&Em Ar word ...
-Запросите курсивный шрифт.
-Если устройство вывода не предоставляет такой возможности, подчеркните.
+Request an italic font.
+If the output device does not provide that, underline.
 .Pp
-Чаще всего это используется для выделения ударения (не путать с
-важностью, смотрите
+This is most often used for stress emphasis (not to be confused with
+importance, see
 .Ic \&Sy ) .
-В редких случаях, когда ни один из макросов семантической разметки не подходит,
-он также может использоваться для технических терминов и заполнителей
-, за исключением синтаксических элементов,
+In the rare cases where none of the semantic markup macros fit,
+it can also be used for technical terms and placeholders, except
+that for syntax elements,
 .Ic \&Sy
-и
+and
 .Ic \&Ar
-являются предпочтительными, соответственно.
+are preferred, respectively.
 .Pp
-Примеры:
+Examples:
 .Bd -literal -compact -offset indent
 Selected lines are those
 \&.Em not
@@ -1418,123 +1462,127 @@ Some of the functions use a
 to save the pattern space for subsequent retrieval.
 .Ed
 .Pp
-Смотрите также
+See also
 .Ic \&No ,
 .Ic \&Ql ,
-и
+and
 .Ic \&Sy .
 .It Ic \&En Ar word ...
-Этот макрос устарел.
-Используйте
+This macro is obsolete.
+Use
 .Ic \&Eo
-или любой другой макрос приложения.
+or any of the other enclosure macros.
 .Pp
-Он заключает свой аргумент в разделители, указанные последним макросом
-.Ic \&Es .
+It encloses its argument in the delimiters specified by the last
+.Ic \&Es
+macro.
 .Tg Eo
 .It Ic \&Eo Op Ar opening_delimiter
-Произвольное вложение.
-Аргумент
+An arbitrary enclosure.
+The
 .Ar opening_delimiter
-используется в качестве заголовка приложения, например, при указании \e(lq
-будет эмулировать
+argument is used as the enclosure head, for example, specifying \e(lq
+will emulate
 .Ic \&Do .
 .Tg Er
 .It Ic \&Er Ar identifier ...
-Константы ошибок для определений глобальной переменной 
+Error constants for definitions of the
 .Va errno
-libc.
-Чаще всего это используется на страницах руководства по разделам 2 и 3.
+libc global variable.
+This is most often used in section 2 and 3 manual pages.
 .Pp
-Примеры:
+Examples:
 .Dl \&.Er EPERM
 .Dl \&.Er ENOENT
 .Pp
-Смотрите также
+See also
 .Ic \&Dv
-для общих констант.
+for general constants.
 .It Ic \&Es Ar opening_delimiter closing_delimiter
-Этот макрос устарел.
-Используйте
+This macro is obsolete.
+Use
 .Ic \&Eo
-или любой другой макрос приложения.
+or any of the other enclosure macros.
 .Pp
-Он принимает два аргумента, определяющих разделители, которые будут использоваться последующими макросами
-.Ic \&En .
+It takes two arguments, defining the delimiters to be used by subsequent
+.Ic \&En
+macros.
 .Tg Ev
 .It Ic \&Ev Ar identifier ...
-Переменные окружающей среды, такие как те, которые указаны в
+Environmental variables such as those specified in
 .Xr environ 7 .
 .Pp
-Примеры:
+Examples:
 .Dl \&.Ev DISPLAY
 .Dl \&.Ev PATH
 .Pp
-Смотрите также
+See also
 .Ic \&Dv
-для общих констант.
+for general constants.
 .Tg Ex
 .It Ic \&Ex Fl std Op Ar utility ...
-Вставьте стандартное предложение, касающееся значений завершения команды, равных 0 в случае успеха
-и >0 в случае сбоя.
-Чаще всего это используется на страницах руководства в разделах 1, 6 и 8.
+Insert a standard sentence regarding command exit values of 0 on success
+and >0 on failure.
+This is most often used in section 1, 6, and 8 manual pages.
 .Pp
-Если
-.Ar утилита
-не указана, используется имя документа, заданное с помощью
-.Ic \&Nm .
-Несколько аргументов
-.Ar утилиты
-рассматриваются как отдельные утилиты.
+If
+.Ar utility
+is not specified, the document's name set by
+.Ic \&Nm
+is used.
+Multiple
+.Ar utility
+arguments are treated as separate utilities.
 .Pp
-Смотрите также
+See also
 .Ic \&Rv .
 .Tg Fa
 .It Ic \&Fa Ar argument ...
-Аргумент функции или параметр.
-Каждый аргумент может быть именем и типом (рекомендуется для раздела
-.Em СИНТАКСИС ),
-только именем (для вызовова функций)
-или только типом (для прототипов функций).
-Если заданы и тип, и имя или если тип состоит из нескольких
-слов, все слова, относящиеся к одному и тому же аргументу функции, должны быть
-указаны в одном аргументе макроса
-.Ic \&Fa .
-.Pp
-Этот макрос также используется для указания имени поля структуры.
-.Pp
-Чаще всего макрос
+Function argument or parameter.
+Each argument may be a name and a type (recommended for the
+.Em SYNOPSIS
+section), a name alone (for function invocations),
+or a type alone (for function prototypes).
+If both a type and a name are given or if the type consists of multiple
+words, all words belonging to the same function argument have to be
+given in a single argument to the
 .Ic \&Fa
-используется в
-.Em СИНТАКСИСЕ
-без блоков
-.Ic \&Fo
-при документировании прототипов многострочных функций.
-При вызове с несколькими аргументами аргументы разделяются
-запятой.
-Кроме того, если следующий макрос является другим
-.Ic \&Fa ,
-последний аргумент также будет содержать запятую в конце.
+macro.
 .Pp
-Примеры:
+This macro is also used to specify the field name of a structure.
+.Pp
+Most often, the
+.Ic \&Fa
+macro is used in the
+.Em SYNOPSIS
+within
+.Ic \&Fo
+blocks when documenting multi-line function prototypes.
+If invoked with multiple arguments, the arguments are separated by a
+comma.
+Furthermore, if the following macro is another
+.Ic \&Fa ,
+the last argument will also have a trailing comma.
+.Pp
+Examples:
 .Dl \&.Fa \(dqconst char *p\(dq
 .Dl \&.Fa \(dqint a\(dq \(dqint b\(dq \(dqint c\(dq
 .Dl \&.Fa \(dqchar *\(dq size_t
 .Pp
-Смотрите также
+See also
 .Ic \&Fo .
 .It Ic \&Fc
-Завершите контекст функции, запущенный с помощью
+End a function context started by
 .Ic \&Fo .
 .Tg Fd
 .It Ic \&Fd Pf # Ar directive Op Ar argument ...
-Директива препроцессора, в частности, для включения ее в
-.Em СИНТАКСИС .
-Исторически он также использовался для документирования включаемых файлов.
-Последнее использование устарело в пользу
+Preprocessor directive, in particular for listing it in the
+.Em SYNOPSIS .
+Historically, it was also used to document include files.
+The latter usage has been deprecated in favour of
 .Ic \&In .
 .Pp
-Примеры:
+Examples:
 .Dl \&.Fd #define sa_handler __sigaction_u.__sa_handler
 .Dl \&.Fd #define SIO_MAXNFDS
 .Dl \&.Fd #ifdef FS_DEBUG
@@ -1542,23 +1590,23 @@ libc.
 .Dl \&.Fn dbg_open \(dqconst char *\(dq
 .Dl \&.Fd #endif
 .Pp
-Смотрите также
-.Sx СТРУКТУРА РАЗДЕЛА ,
+See also
+.Sx MANUAL STRUCTURE ,
 .Ic \&In ,
-и
+and
 .Ic \&Dv .
 .Tg Fl
 .It Ic \&Fl Op Ar word ...
-Флаг или параметр командной строки.
-Используется при перечислении аргументов утилит командной строки.
-Для каждого аргумента выводится символ ASCII с дефисом и минусом
+Command-line flag or option.
+Used when listing arguments to command-line utilities.
+For each argument, prints an ASCII hyphen-minus character
 .Sq \- ,
-сразу после аргумента.
-Если аргументы не указаны, выводится знак минус-дефис, за которым следует пробел.
-Если аргументом является макрос,
-то к последующему выводу макроса добавляется знак минус-дефис.
+immediately followed by the argument.
+If no arguments are provided, a hyphen-minus is printed followed by a space.
+If the argument is a macro, a hyphen-minus is prefixed
+to the subsequent macro output.
 .Pp
-Примеры:
+Examples:
 .Dl ".Nm du Op Fl H | L | P"
 .Dl ".Nm ls Op Fl 1AaCcdFfgHhikLlmnopqRrSsTtux"
 .Dl ".Nm route Cm add Fl inet Ar destination gateway"
@@ -1566,26 +1614,26 @@ libc.
 .Dl ".Nm aucat Fl o Fl"
 .Dl ".Nm kill Fl Ar signal_number"
 .Pp
-Для длинных опций в стиле GNU использование дополнительного дефиса с минусом не
-является строго обязательным, но может быть более безопасным в будущих версиях GNU troff; смотрите
+For GNU-sytle long options, escaping the additional hyphen-minus is not
+strictly required, but may be safer with future versions of GNU troff; see
 .Xr mandoc_char 7
-для получения подробной информации.
+for details.
 .Pp
-Смотрите также
+See also
 .Ic \&Cm .
 .Tg Fn
 .It Ic \&Fn Ar funcname Op Ar argument ...
-Имя функции.
+A function name.
 .Pp
-Аргументы функции заключаются в круглые скобки и
-разделяются запятыми.
-Если аргументы не указаны, выводятся пустые круглые скобки.
-В разделе
-.Em СИНТАКСИС ,
-этот макрос запускает новую строку вывода,
-и между определениями функций автоматически вставляется пустая строка.
+Function arguments are surrounded in parenthesis and
+are delimited by commas.
+If no arguments are specified, blank parenthesis are output.
+In the
+.Em SYNOPSIS
+section, this macro starts a new output line,
+and a blank line is automatically inserted between function definitions.
 .Pp
-Примеры:
+Examples:
 .Dl \&.Fn \(dqint funcname\(dq \(dqint arg0\(dq \(dqint arg1\(dq
 .Dl \&.Fn funcname \(dqint arg0\(dq
 .Dl \&.Fn funcname arg0
@@ -1594,20 +1642,21 @@ libc.
 \&.Fn funcname
 .Ed
 .Pp
-При ссылке на функцию, описанную на другой странице руководства, используйте вместо этого
-.Ic \&Xr .
-Смотрите также
-.Sx СТРУКТУРА РАЗДЕЛА ,
+When referring to a function documented in another manual page, use
+.Ic \&Xr
+instead.
+See also
+.Sx MANUAL STRUCTURE ,
 .Ic \&Fo ,
-и
+and
 .Ic \&Ft .
 .Tg Fo
 .It Ic \&Fo Ar funcname
-Запуск функционального блока.
-Это многострочная версия
+Begin a function block.
+This is a multi-line version of
 .Ic \&Fn .
 .Pp
-Вызовы обычно происходят в следующем контексте:
+Invocations usually occur in the following context:
 .Bd -ragged -offset indent
 .Pf \. Ic \&Ft Ar functype
 .br
@@ -1620,301 +1669,304 @@ libc.
 .Pf \. Ic \&Fc
 .Ed
 .Pp
-Область действия
+A
 .Ic \&Fo
-закрыта с помощью
+scope is closed by
 .Ic \&Fc .
 .Pp
-Смотрите также
-.Sx СТРУКТУРА РАЗДЕЛА ,
+See also
+.Sx MANUAL STRUCTURE ,
 .Ic \&Fa ,
 .Ic \&Fc ,
-и
+and
 .Ic \&Ft .
 .It Ic \&Fr Ar number
-Этот макрос устарел.
-Разметка для замены не требуется.
+This macro is obsolete.
+No replacement markup is needed.
 .Pp
-Он был использован для отображения числовых значений, возвращаемых функцией, курсивным шрифтом.
+It was used to show numerical function return values in an italic font.
 .Tg Ft
 .It Ic \&Ft Ar functype
-Тип функции.
+A function type.
 .Pp
-В разделе
-.Em СИНТАКСИС ,
-после этого макроса запускается новая строка вывода.
+In the
+.Em SYNOPSIS
+section, a new output line is started after this macro.
 .Pp
-Примеры:
+Examples:
 .Dl \&.Ft int
 .Bd -literal -offset indent -compact
 \&.Ft functype
 \&.Fn funcname
 .Ed
 .Pp
-Смотрите также
-.Sx СТРУКТУРА РАЗДЕЛА ,
+See also
+.Sx MANUAL STRUCTURE ,
 .Ic \&Fn ,
-и
+and
 .Ic \&Fo .
 .Tg Fx
 .It Ic \&Fx Op Ar version
-Отформатируйте версию
-.Fx ,
-указывается в качестве аргумента или значения по умолчанию,
-если аргумент не указан.
+Format the
+.Fx
+version provided as an argument, or a default value
+if no argument is provided.
 .Pp
-Примеры:
+Examples:
 .Dl \&.Fx 7.1
 .Dl \&.Fx
 .Pp
-Смотрите также
+See also
 .Ic \&At ,
 .Ic \&Bsx ,
 .Ic \&Bx ,
 .Ic \&Dx ,
 .Ic \&Nx ,
-и
+and
 .Ic \&Ox .
 .It Ic \&Hf Ar filename
-Этот макрос не реализован в
+This macro is not implemented in
 .Xr mandoc 1 .
-Он был использован для буквального включения содержимого файла (заголовка).
+It was used to include the contents of a (header) file literally.
 .Tg Ic
 .It Ic \&Ic Ar keyword ...
-Внутренняя или интерактивная команда или инструкция
-по настройке в файле конфигурации.
-Смотрите также
+Internal or interactive command, or configuration instruction
+in a configuration file.
+See also
 .Ic \&Cm .
 .Pp
-Примеры:
+Examples:
 .Dl \&.Ic :wq
 .Dl \&.Ic hash
 .Dl \&.Ic alias
 .Pp
-Обратите внимание, что использование
+Note that using
 .Ic \&Ql ,
 .Ic \&Dl ,
-или
+or
 .Ic \&Bd Fl literal
-предпочтителен для отображения примеров кода; макрос
+is preferred for displaying code samples; the
 .Ic \&Ic
-используется при обращении к отдельному имени команды.
+macro is used when referring to an individual command name.
 .Tg In
 .It Ic \&In Ar filename
-Имя включаемого файла.
-Этот макрос чаще всего используется на страницах руководства в разделах 2, 3 и 9.
+The name of an include file.
+This macro is most often used in section 2, 3, and 9 manual pages.
 .Pp
-При вызове в качестве первого макроса в строке ввода в разделе
-.Em СИНТАКСИС ,
-аргумент выводится в угловых скобках
-и предваряется
+When invoked as the first macro on an input line in the
+.Em SYNOPSIS
+section, the argument is displayed in angle brackets
+and preceded by
 .Qq #include ,
-и пустая строка вставляется спереди, если перед
-ней указано объявление функции.
-В других разделах она заключает свой аргумент только в угловые скобки
-и не приводит к разрыву строки.
+and a blank line is inserted in front if there is a preceding
+function declaration.
+In other sections, it only encloses its argument in angle brackets
+and causes no line break.
 .Pp
-Примеры:
+Examples:
 .Dl \&.In sys/types.h
 .Pp
-Смотрите также
-.Sx СТРУКТУРА РАЗДЕЛА .
+See also
+.Sx MANUAL STRUCTURE .
 .Tg It
 .It Ic \&It Op Ar head
-Элемент списка.
-Синтаксис этого макроса зависит от типа списка.
+A list item.
+The syntax of this macro depends on the list type.
 .Pp
-Списки
-типов
+Lists
+of type
 .Fl hang ,
 .Fl ohang ,
 .Fl inset ,
-и
+and
 .Fl diag
-имеют следующий синтаксис:
+have the following syntax:
 .Pp
 .D1 Pf \. Ic \&It Ar args
 .Pp
-Списки типов
+Lists of type
 .Fl bullet ,
 .Fl dash ,
 .Fl enum ,
 .Fl hyphen
-и
+and
 .Fl item
-имеют следующий синтаксис:
+have the following syntax:
 .Pp
 .D1 Pf \. Ic \&It
 .Pp
-с последующими строками , интерпретируемыми в рамках
-.Ic \&It ,
- до тех пор , пока не будет закрыто
-.Ic \&El ,
-или другое
+with subsequent lines interpreted within the scope of the
+.Ic \&It
+until either a closing
+.Ic \&El
+or another
 .Ic \&It .
 .Pp
-Список
+The
 .Fl tag
-имеет следующий синтаксис:
+list has the following syntax:
 .Pp
 .D1 Pf \. Ic \&It Op Cm args
 .Pp
-Последующие строки интерпретируются как с
+Subsequent lines are interpreted as with
 .Fl bullet
-и семейством.
-Аргументы строки соответствуют левой части
-списка; аргументы тела соответствуют содержимому списка.
+and family.
+The line arguments correspond to the list's left-hand side; body
+arguments correspond to the list's contents.
 .Pp
-Список
+The
 .Fl column
-самый сложный.
-Его синтаксис выглядит следующим образом:
+list is the most complicated.
+Its syntax is as follows:
 .Pp
 .D1 Pf \. Ic \&It Ar cell Op Ic \&Ta Ar cell ...
 .D1 Pf \. Ic \&It Ar cell Op <TAB> Ar cell ...
 .Pp
-Аргументы состоят из одной или нескольких строк текста и макросов,
-представляющих полную строку таблицы.
-Ячейки в строке разделяются специальным макросом блока
+The arguments consist of one or more lines of text and macros
+representing a complete table line.
+Cells within the line are delimited by the special
 .Ic \&Ta
-или буквенными символами табуляции.
+block macro or by literal tab characters.
 .Pp
-Категорически не рекомендуется использовать буквенные табуляции, поскольку их очень
-сложно правильно использовать, а код 
-.Nm ,
-использующий их, очень сложен для чтения.
-В частности, синтаксически значимым является пробел
-перед буквальным символом табуляции и после него.
-Если слово предшествует символу табуляции или следует за ним без промежуточного пробела,
-это слово никогда не интерпретируется как вызов макроса, а всегда выводится
-буквально.
+Using literal tabs is strongly discouraged because they are very
+hard to use correctly and
+.Nm
+code using them is very hard to read.
+In particular, a blank character is syntactically significant
+before and after the literal tab character.
+If a word precedes or follows the tab without an intervening blank,
+that word is never interpreted as a macro call, but always output
+literally.
 .Pp
-Разделитель ячеек с табуляцией может использоваться только внутри самой
-строки
-.Ic \&It ;
-в следующих строках используется только макрос
-.Ic \&Ta ,
-может использоваться для разграничения ячеек, а переносимость требует, чтобы
+The tab cell delimiter may only be used within the
+.Ic \&It
+line itself; on following lines, only the
 .Ic \&Ta
-вызывается другими макросами: некоторые синтаксические анализаторы не распознают его, когда
-он появляется в качестве первого макроса в строке.
+macro can be used to delimit cells, and portability requires that
+.Ic \&Ta
+is called by other macros: some parsers do not recognize it when
+it appears as the first macro on a line.
 .Pp
-Обратите внимание, что строки, заключенные в кавычки, могут занимать ячейки, разделенные табуляцией, в строке
-.Ic \&It .
-Например,
+Note that quoted strings may span tab-delimited cells on an
+.Ic \&It
+line.
+For example,
 .Pp
 .Dl .It \(dqcol1 ,\& <TAB> col2 ,\(dq \&;
 .Pp
-сохранит пробел перед обеими запятыми,
-но не перед точкой с запятой.
+will preserve the whitespace before both commas,
+but not the whitespace before the semicolon.
 .Pp
-Смотрите также
+See also
 .Ic \&Bl .
 .Tg Lb
 .It Ic \&Lb Cm lib Ns Ar name
-Укажите библиотеку.
+Specify a library.
 .Pp
-Параметром
+The
 .Ar name
-может быть системная библиотека, такая как
+parameter may be a system library, such as
 .Cm z
-или
+or
 .Cm pam ,
-в этом случае рядом с вызовом компоновщика печатается небольшое описание библиотеки;
-или пользовательской библиотеки, в этом случае имя библиотеки
-печатается в кавычках.
-Это наиболее часто используется в разделе
-.Em СИНТАКСИС
-как описано в
-.Sx СТРУКТУРЕ РАЗДЕЛА .
+in which case a small library description is printed next to the linker
+invocation; or a custom library, in which case the library name is
+printed in quotes.
+This is most commonly used in the
+.Em SYNOPSIS
+section as described in
+.Sx MANUAL STRUCTURE .
 .Pp
-Примеры:
+Examples:
 .Dl \&.Lb libz
 .Dl \&.Lb libmandoc
 .Tg Li
 .It Ic \&Li Ar word ...
-Запросите шрифт для пишущей машинки (буквенный).
-Не рекомендуется, поскольку на терминальных устройствах вывода он обычно
-неотличим от обычного текста.
-Для буквального отображения используйте вместо
-.Ic \&Ql Pq в строке ,
-.Ic \&Dl Pq одиночная строка ,
-или
-.Ic \&Bd Fl literal Pq многострочный .
+Request a typewriter (literal) font.
+Deprecated because on terminal output devices, this is usually
+indistinguishable from normal text.
+For literal displays, use
+.Ic \&Ql Pq in-line ,
+.Ic \&Dl Pq single line ,
+or
+.Ic \&Bd Fl literal Pq multi-line
+instead.
 .Tg Lk
 .It Ic \&Lk Ar uri Op Ar display_name
-Отформатируйте гиперссылку.
+Format a hyperlink.
 .Pp
-Примеры:
+Examples:
 .Dl \&.Lk https://bsd.lv \(dqThe BSD.lv Project\(dq
 .Dl \&.Lk https://bsd.lv
 .Pp
-Смотрите также
+See also
 .Ic \&Mt .
 .It Ic \&Lp
-Устаревший синоним для
+Deprecated synonym for
 .Ic \&Pp .
 .Tg Ms
 .It Ic \&Ms Ar name
-Выведите на экран математический символ.
-.Pp 
-Примеры:
+Display a mathematical symbol.
+.Pp
+Examples:
 .Dl \&.Ms sigma
 .Dl \&.Ms aleph
 .Tg Mt
 .It Ic \&Mt Ar localpart Ns @ Ns Ar domain
-Формат
-.Dq почтовый адрес:
-гиперссылка.
+Format a
+.Dq mailto:
+hyperlink.
 .Pp
-Примеры:
+Examples:
 .Dl \&.Mt discuss@manpages.bsd.lv
 .Dl \&.An Kristaps Dzonsons \&Aq \&Mt kristaps@bsd.lv
 .Tg Nd
 .It Ic \&Nd Ar line
-Однострочное описание содержания руководства.
-Это обязательный последний макрос в разделе
-.Em ИМЯ
-и не подходит для других разделов.
+A one line description of the manual's content.
+This is the mandatory last macro of the
+.Em NAME
+section and not appropriate for other sections.
 .Pp
-Примеры:
+Examples:
 .Dl Pf . Ic \&Nd mdoc language reference
 .Dl Pf . Ic \&Nd format and display UNIX manuals
 .Pp
-Макрос
+The
 .Ic \&Nd
-технически принимает дочерние макросы и завершает работу с последующим вызовом
-.Ic \&Sh .
-Не допускайте такого поведения: некоторые генераторы баз данных
+macro technically accepts child macros and terminates with a subsequent
+.Ic \&Sh
+invocation.
+Do not assume this behaviour: some
 .Xr whatis 1
-недостаточно умны для анализа большего
-количества аргументов, чем строка, и будут отображать макросы дословно.
+database generators are not smart enough to parse more than the line
+arguments and will display macros verbatim.
 .Pp
-Смотрите также
+See also
 .Ic \&Nm .
 .Tg Nm
 .It Ic \&Nm Op Ar name
-Название страницы руководства, или \(em в частности, на страницах разделов 1, 6
-и 8 \(em о дополнительной команде или функции, описанной на
-странице руководства.
-При первом вызове макрос
+The name of the manual page, or \(em in particular in section 1, 6,
+and 8 pages \(em of an additional command or feature documented in
+the manual page.
+When first invoked, the
 .Ic \&Nm
-ожидает единственный аргумент - название страницы руководства.
-Обычно первый вызов происходит в разделе
-.Em ИМЯ
-на странице.
-Указанное имя будет запоминаться и использоваться всякий раз, когда макрос будет
-вызываться снова без аргументов позже на странице.
-Макрос
+macro expects a single argument, the name of the manual page.
+Usually, the first invocation happens in the
+.Em NAME
+section of the page.
+The specified name will be remembered and used whenever the macro is
+called again without arguments later in the page.
+The
 .Ic \&Nm
-использует семантику
+macro uses
 .Sx Block full-implicit
-при вызове в качестве первого макроса в строке ввода в разделе
-.Em СИНТАКСИС ;
-в противном случае он использует обычную семантику
-.Sx In-line .
+semantics when invoked as the first macro on an input line in the
+.Em SYNOPSIS
+section; otherwise, it uses ordinary
+.Sx In-line
+semantics.
 .Pp
-Примеры:
+Examples:
 .Bd -literal -offset indent
 \&.Sh SYNOPSIS
 \&.Nm cat
@@ -1922,26 +1974,26 @@ libc.
 \&.Op Ar
 .Ed
 .Pp
-В
-.Em СИНТАКСИСЕ
-на страницах руководства в разделах 2, 3 и 9 используйте макрос
-.Ic \&Fn ,
-а не
-.Ic \&Nm ,
-чтобы отметить название страницы руководства.
+In the
+.Em SYNOPSIS
+of section 2, 3 and 9 manual pages, use the
+.Ic \&Fn
+macro rather than
+.Ic \&Nm
+to mark up the name of the manual page.
 .Tg No
 .It Ic \&No Ar word ...
-Обычный текст.
-Закрывает область действия любого предыдущего встроенного макроса.
-При использовании после макросов физического форматирования, таких как
+Normal text.
+Closes the scope of any preceding in-line macro.
+When used after physical formatting macros like
 .Ic \&Em
-или
+or
 .Ic \&Sy ,
-переключается обратно на стандартные начертание и вес шрифта.
-Также может использоваться для встраивания строк обычного текста в строки макросов
-с помощью макросов семантических аннотаций.
+switches back to the standard font face and weight.
+Can also be used to embed plain text strings in macro lines
+using semantic annotation macros.
 .Pp
-Примеры:
+Examples:
 .Dl ".Em italic , Sy bold , No and roman"
 .Bd -literal -offset indent
 \&.Sm off
@@ -1949,57 +2001,59 @@ libc.
 \&.Sm on
 .Ed
 .Pp
-Смотрите также
+See also
 .Ic \&Em ,
 .Ic \&Ql ,
-и
+and
 .Ic \&Sy .
 .Tg Ns
 .It Ic \&Ns
-Не используйте пробел между выводом предыдущего макроса
-и следующим текстом или макрокомандой.
-После вызова вводимые данные интерпретируются как обычный текст,
-как и после макроса
-.Ic \&No .
+Suppress a space between the output of the preceding macro
+and the following text or macro.
+Following invocation, input is interpreted as normal text
+just like after an
+.Ic \&No
+macro.
 .Pp
-Это не имеет никакого эффекта при вызове в начале строки макроса.
+This has no effect when invoked at the start of a macro line.
 .Pp
-Примеры:
+Examples:
 .Dl ".Ar name Ns = Ns Ar value"
 .Dl ".Cm :M Ns Ar pattern"
 .Dl ".Fl o Ns Ar output"
 .Pp
-Смотрите также
+See also
 .Ic \&No
-и
+and
 .Ic \&Sm .
 .Tg Nx
 .It Ic \&Nx Op Ar version
-Отформатируйте версию
-.Nx ,
-указывается в качестве аргумента или значения по умолчанию, если
-аргумент не указан.
+Format the
+.Nx
+version provided as an argument, or a default value if
+no argument is provided.
 .Pp
-Примеры:
+Examples:
 .Dl \&.Nx 5.01
 .Dl \&.Nx
 .Pp
-Смотрите также
+See also
 .Ic \&At ,
 .Ic \&Bsx ,
 .Ic \&Bx ,
 .Ic \&Dx ,
 .Ic \&Fx ,
-и
+and
 .Ic \&Ox .
 .It Ic \&Oc
-Закрыть многострочный контекст
-.Ic \&Oo .
+Close multi-line
+.Ic \&Oo
+context.
 .It Ic \&Oo Ar block
-Многострочная версия
+Multi-line version of
 .Ic \&Op .
 .Pp
-Примеры:
+Examples:
 .Bd -literal -offset indent -compact
 \&.Oo
 \&.Op Fl flag Ns Ar value
@@ -2007,181 +2061,185 @@ libc.
 .Ed
 .Tg Op
 .It Ic \&Op Ar line
-Необязательная часть командной строки.
-Выводит аргументы в квадратных скобках.
-Чаще всего используется в разделе
-.Em СИНТАКСИС
-из раздела 1 и 8 страниц руководства.
+Optional part of a command line.
+Prints the argument(s) in brackets.
+This is most often used in the
+.Em SYNOPSIS
+section of section 1 and 8 manual pages.
 .Pp
-Примеры:
+Examples:
 .Dl \&.Op \&Fl a \&Ar b
 .Dl \&.Op \&Ar a | b
 .Pp
-Смотрите также
+See also
 .Ic \&Oo .
 .Tg Os
 .It Ic \&Os Op Ar system Op Ar version
-Версия операционной системы для отображения в нижнем колонтитуле страницы.
-Это обязательный третий макрос
-для любого файла
-.Nm .
+Operating system version for display in the page footer.
+This is the mandatory third macro of
+any
+.Nm
+file.
 .Pp
-Необязательный
-.Ar системный
-параметр определяет соответствующую операционную систему или среду.
-Предлагается оставить его неуказанным, в таком случае
+The optional
+.Ar system
+parameter specifies the relevant operating system or environment.
+It is suggested to leave it unspecified, in which case
 .Xr mandoc 1
-использует свой аргумент
+uses its
 .Fl Ios
-или, если это тоже не указано,
+argument or, if that isn't specified either,
 .Fa sysname
-и
+and
 .Fa release
-как было возвращено
+as returned by
 .Xr uname 3 .
 .Pp
-Примеры:
+Examples:
 .Dl \&.Os
 .Dl \&.Os KTH/CSC/TCS
 .Dl \&.Os BSD 4.3
 .Pp
-Смотрите также
+See also
 .Ic \&Dd
-и
+and
 .Ic \&Dt .
 .It Ic \&Ot Ar functype
-Этот макрос устарел.
-Используйте
+This macro is obsolete.
+Use
 .Ic \&Ft
-вместо этого; с
+instead; with
 .Xr mandoc 1 ,
-оба имеют одинаковый эффект.
+both have the same effect.
 .Pp
-Исторические пакеты 
+Historical
 .Nm
-описывали это как
-.Dq "старый тип функции (FORTRAN)" .
+packages described it as
+.Dq "old function type (FORTRAN)" .
 .Tg Ox
 .It Ic \&Ox Op Ar version
-Отформатируйте версию
-.Ox ,
-указанную в качестве аргумента, или значение по умолчанию,
-если аргумент не указан.
+Format the
+.Ox
+version provided as an argument, or a default value
+if no argument is provided.
 .Pp
-Примеры:
+Examples:
 .Dl \&.Ox 4.5
 .Dl \&.Ox
 .Pp
-Смотрите также
+See also
 .Ic \&At ,
 .Ic \&Bsx ,
 .Ic \&Bx ,
 .Ic \&Dx ,
 .Ic \&Fx ,
-и
+and
 .Ic \&Nx .
 .Tg Pa
 .It Ic \&Pa Ar name ...
-Абсолютный или относительный путь к файловой системе, а также имя файла или каталога.
-Если аргумент не указан, то символ
+An absolute or relative file system path, or a file or directory name.
+If an argument is not provided, the character
 .Sq \(ti
-используется по умолчанию.
+is used as a default.
 .Pp
-Примеры:
+Examples:
 .Dl \&.Pa /usr/bin/mandoc
 .Dl \&.Pa /usr/share/man/man7/mdoc.7
 .Pp
-Смотрите также
+See also
 .Ic \&Lk .
 .It Ic \&Pc
-Контекст закрытия круглых скобок, открытый с помощью
+Close parenthesised context opened by
 .Ic \&Po .
 .Tg Pf
 .It Ic \&Pf Ar prefix macro Op Ar argument ...
-Удаляет пробел между его аргументом и следующим макросом.
-Это эквивалентно:
+Removes the space between its argument and the following macro.
+It is equivalent to:
 .Pp
 .D1 Ic \&No Pf \e& Ar prefix Ic \&Ns Ar macro Op Ar argument ...
 .Pp
-Аргумент
+The
 .Ar prefix
-не анализируется на наличие имен макросов или разделителей,
-но используется дословно, как если бы он был экранирован.
+argument is not parsed for macro names or delimiters,
+but used verbatim as if it were escaped.
 .Pp
-Примеры:
+Examples:
 .Dl ".Pf $ Ar variable_name"
 .Dl ".Pf . Ar macro_name"
 .Dl ".Pf 0x Ar hex_digits"
 .Pp
-Смотрите также
+See also
 .Ic \&Ns
-и
+and
 .Ic \&Sm .
 .It Ic \&Po Ar block
-Многострочная версия
+Multi-line version of
 .Ic \&Pq .
 .Tg Pp
 .It Ic \&Pp
-Разделите абзац.
-Это позволит установить вертикальный интервал между предыдущим и последующим макросами
-и/или текстом.
+Break a paragraph.
+This will assert vertical space between prior and subsequent macros
+and/or text.
 .Pp
-Разрывы абзацев не нужны ни до, ни после макросов
+Paragraph breaks are not needed before or after
 .Ic \&Sh
-или
+or
 .Ic \&Ss
-или перед показами
+macros or before displays
 .Pq Ic \&Bd Ar line
-или списков
+or lists
 .Pq Ic \&Bl
-если только флаг
+unless the
 .Fl compact
-присвоен.
+flag is given.
 .Tg Pq
 .It Ic \&Pq Ar line
-Приложение, заключенное в круглые скобки.
+Parenthesised enclosure.
 .Pp
-Смотрите также
+See also
 .Ic \&Po .
 .It Ic \&Qc
-Закрыть заключенный в кавычки контекст, открытый
+Close quoted context opened by
 .Ic \&Qo .
 .Tg Ql
 .It Ic \&Ql Ar line
-Отображение букв в строке.
-Это можно использовать для полных вызовов команд и для
-примеров кода, состоящего из нескольких слов, когда отображение с отступом нежелательно.
+In-line literal display.
+This can be used for complete command invocations and for multi-word
+code examples when an indented display is not desired.
 .Pp
-Смотрите также
+See also
 .Ic \&Dl
-и
+and
 .Ic \&Bd
 .Fl literal .
 .It Ic \&Qo Ar block
-Многострочная версия
+Multi-line version of
 .Ic \&Qq .
 .Tg Qq
 .It Ic \&Qq Ar line
-Заключает свои аргументы в двойные кавычки
-.Qq typewriter .
-Рассмотрите возможность использования
+Encloses its arguments in
+.Qq typewriter
+double-quotes.
+Consider using
 .Ic \&Dq .
 .Pp
-Смотрите также
+See also
 .Ic \&Dq ,
 .Ic \&Sq ,
-и
+and
 .Ic \&Qo .
 .It Ic \&Re
-Закрыть блок
-.Ic \&Rs .
-Не имеет никаких дополнительных аргументов.
+Close an
+.Ic \&Rs
+block.
+Does not have any tail arguments.
 .Tg Rs
 .It Ic \&Rs
-Начните с библиографического блока
-.Pq Dq справка .
-Не содержит аргументов head.
-Макрос блока может содержать только дочерние макросы
+Begin a bibliographic
+.Pq Dq reference
+block.
+Does not have any head arguments.
+The block macro may only contain
 .Ic \&%A ,
 .Ic \&%B ,
 .Ic \&%C ,
@@ -2195,11 +2253,11 @@ libc.
 .Ic \&%R ,
 .Ic \&%T ,
 .Ic \&%U ,
-и
+and
 .Ic \&%V
-(необходимо указать хотя бы один из них).
+child macros (at least one must be specified).
 .Pp
-Примеры:
+Examples:
 .Bd -literal -offset indent -compact
 \&.Rs
 \&.%A J. E. Hopcroft
@@ -2211,110 +2269,113 @@ libc.
 \&.Re
 .Ed
 .Pp
-Если блок
+If an
 .Ic \&Rs
-используется в разделе СМОТРИТЕ ТАКЖЕ,
-перед выводом указывается вертикальный интервал, в противном случае блок продолжается в текущей
-строке.
+block is used within a SEE ALSO section, a vertical space is asserted
+before the rendered output, else the block continues on the current
+line.
 .Tg Rv
 .It Ic \&Rv Fl std Op Ar function ...
-Вставьте стандартное предложение о том, что возвращаемое вызовом функции значение равно 0
-в случае успеха и \-1 в случае ошибки, с глобальной переменной
+Insert a standard sentence regarding a function call's return value of 0
+on success and \-1 on error, with the
 .Va errno
-libc, установленной на ошибку.
+libc global variable set on error.
 .Pp
-Если
-.Ar функция
-не указана, используется название документа, заданное с помощью
-.Ic \&Nm .
-Несколько аргументов
-.Ar функции
-обрабатываются как отдельные функции.
+If
+.Ar function
+is not specified, the document's name set by
+.Ic \&Nm
+is used.
+Multiple
+.Ar function
+arguments are treated as separate functions.
 .Pp
-Смотрите также
+See also
 .Ic \&Ex .
 .It Ic \&Sc
-Закрыть контекст, заключенный в одинарные кавычки, открытый
+Close single-quoted context opened by
 .Ic \&So .
 .Tg Sh
 .It Ic \&Sh Ar TITLE LINE
-Начните новый раздел.
-Для получения списка обычных разделов руководства, смотрите
-.Sx СТРУКТУРУ РАЗДЕЛА .
-Эти разделы следует использовать за исключением
-случаев, когда использование пользовательских разделов абсолютно необходимо.
+Begin a new section.
+For a list of conventional manual sections, see
+.Sx MANUAL STRUCTURE .
+These sections should be used unless it's absolutely necessary that
+custom sections be used.
 .Pp
-Названия разделов должны быть уникальными, чтобы их можно было ввести с помощью
+Section names should be unique so that they may be keyed by
 .Ic \&Sx .
-Хотя этот макрос анализируется, он не должен состоять из дочернего узла или не
-может быть связан с
+Although this macro is parsed, it should not consist of child node or it
+may not be linked with
 .Ic \&Sx .
 .Pp
-Смотрите также
+See also
 .Ic \&Pp ,
 .Ic \&Ss ,
-и
+and
 .Ic \&Sx .
 .Tg Sm
 .It Ic \&Sm Op Cm on | off
-Переключает режим интервалов для вывода, генерируемого с помощью макросов.
+Switches the spacing mode for output generated from macros.
 .Pp
-По умолчанию интервал равен
+By default, spacing is
 .Cm on .
-При переключении
+When switched
 .Cm off ,
-пробелы не вставляются между аргументами макроса и между
-выводами, генерируемыми соседними макросами, но текстовые строки
-по-прежнему имеют нормальный интервал между словами и предложениями.
+no white space is inserted between macro arguments and between the
+output generated from adjacent macros, but text lines
+still get normal spacing between words and sentences.
 .Pp
-При вызове без аргумента макрос
+When called without an argument, the
 .Ic \&Sm
-переключает режим интервалов.
-Использовать это не рекомендуется, так как это затрудняет чтение кода.
+macro toggles the spacing mode.
+Using this is not recommended because it makes the code harder to read.
 .It Ic \&So Ar block
-Многострочная версия
+Multi-line version of
 .Ic \&Sq .
 .Tg Sq
 .It Ic \&Sq Ar line
-Заключает свои аргументы в одинарные кавычки
-.Sq typewriter .
+Encloses its arguments in
+.Sq typewriter
+single-quotes.
 .Pp
-Смотрите также
+See also
 .Ic \&Dq ,
 .Ic \&Qq ,
-и
+and
 .Ic \&So .
 .Tg Ss
 .It Ic \&Ss Ar Title line
-Начните новый подраздел.
-В отличие от
+Begin a new subsection.
+Unlike with
 .Ic \&Sh ,
-не существует никакого соглашения о наименовании подразделов.
-Кроме
-.Em ОПИСАНИЯ ,
-обычные разделы, описанные в
-.Sx СТРУКТУРЕ РАЗДЕЛА
-редко бывают подразделы.
+there is no convention for the naming of subsections.
+Except
+.Em DESCRIPTION ,
+the conventional sections described in
+.Sx MANUAL STRUCTURE
+rarely have subsections.
 .Pp
-Названия подразделов должны быть уникальными, чтобы их можно было ввести с помощью
+Sub-section names should be unique so that they may be keyed by
 .Ic \&Sx .
-Хотя этот макрос анализируется, он не должен состоять из дочернего узла или не
-может быть связан с
+Although this macro is parsed, it should not consist of child node or it
+may not be linked with
 .Ic \&Sx .
 .Pp
-Смотрите также
+See also
 .Ic \&Pp ,
 .Ic \&Sh ,
-и
+and
 .Ic \&Sx .
 .Tg St
 .It Ic \&St Fl Ns Ar abbreviation
-Замените аббревиатуру стандарта на полную форму.
-Признаются следующие стандарты.
-Если указано несколько строк без пробела между
-ними, все они относятся к одному и тому же стандарту, и рекомендуется использовать первую форму.
+Replace an abbreviation for a standard with the full form.
+The following standards are recognised.
+Where multiple lines are given without a blank line in between,
+they all refer to the same standard, and using the first form
+is recommended.
 .Bl -tag -width 1n
-.It Языковые стандарты Cи
+.It C language standards
 .Pp
 .Bl -tag -width "-p1003.1g-2000" -compact
 .It \-ansiC
@@ -2326,7 +2387,7 @@ libc, установленной на ошибку.
 .It \-isoC-90
 .St -isoC-90
 .br
-Оригинальный стандарт языка Си.
+The original C standard.
 .Pp
 .It \-isoC-amd1
 .St -isoC-amd1
@@ -2340,14 +2401,14 @@ libc, установленной на ошибку.
 .It \-isoC-99
 .St -isoC-99
 .br
-Вторая основная версия стандарта языка Си.
+The second major version of the C language standard.
 .Pp
 .It \-isoC-2011
 .St -isoC-2011
 .br
-Третья основная версия стандарта языка Си.
+The third major version of the C language standard.
 .El
-.It POSIX.1 до появления единой спецификации UNIX
+.It POSIX.1 before the Single UNIX Specification
 .Pp
 .Bl -tag -width "-p1003.1g-2000" -compact
 .It \-p1003.1-88
@@ -2355,46 +2416,46 @@ libc, установленной на ошибку.
 .It \-p1003.1
 .St -p1003.1
 .br
-Оригинальный стандарт POSIX, основанный на ANSI C.
+The original POSIX standard, based on ANSI C.
 .Pp
 .It \-p1003.1-90
 .St -p1003.1-90
 .It \-iso9945-1-90
 .St -iso9945-1-90
 .br
-Первое обновление POSIX.1.
+The first update of POSIX.1.
 .Pp
 .It \-p1003.1b-93
 .St -p1003.1b-93
 .It \-p1003.1b
 .St -p1003.1b
 .br
-Расширения в режиме реального времени.
+Real-time extensions.
 .Pp
 .It \-p1003.1c-95
 .St -p1003.1c-95
 .br
-Интерфейсы потоков POSIX.
+POSIX thread interfaces.
 .Pp
 .It \-p1003.1i-95
 .St -p1003.1i-95
 .br
-Техническое исправление.
+Technical Corrigendum.
 .Pp
 .It \-p1003.1-96
 .St -p1003.1-96
 .It \-iso9945-1-96
 .St -iso9945-1-96
 .br
-Включает в себя POSIX.1-1990, 1b, 1c и 1i.
+Includes POSIX.1-1990, 1b, 1c, and 1i.
 .El
-.It X/Открытое руководство по переносимости версии 4 и связанные с ним стандарты
+.It X/Open Portability Guide version 4 and related standards
 .Pp
 .Bl -tag -width "-p1003.1g-2000" -compact
 .It \-xpg3
 .St -xpg3
 .br
-Предшественник XPG4, опубликованный в 1989 году.
+An XPG4 precursor, published in 1989.
 .Pp
 .It \-p1003.2
 .St -p1003.2
@@ -2403,19 +2464,19 @@ libc, установленной на ошибку.
 .It \-iso9945-2-93
 .St -iso9945-2-93
 .br
-Предшественник XCU4.
+An XCU4 precursor.
 .Pp
 .It \-p1003.2a-92
 .St -p1003.2a-92
 .br
-Обновления до версии POSIX.2.
+Updates to POSIX.2.
 .Pp
 .It \-xpg4
 .St -xpg4
 .br
-Основан на POSIX.1 и POSIX.2, опубликованных в 1992 году.
+Based on POSIX.1 and POSIX.2, published in 1992.
 .El
-.It Единая спецификация UNIX версии 1 и связанные с ней стандарты
+.It Single UNIX Specification version 1 and related standards
 .Pp
 .Bl -tag -width "-p1003.1g-2000" -compact
 .It \-susv1
@@ -2423,9 +2484,9 @@ libc, установленной на ошибку.
 .It \-xpg4.2
 .St -xpg4.2
 .br
-Этот стандарт был опубликован в 1994 году.
-Он был использован в качестве основы для сертификации UNIX 95.
-Следующие три относятся к его частям.
+This standard was published in 1994.
+It was used as the basis for UNIX 95 certification.
+The following three refer to parts of it.
 .Pp
 .It \-xsh4.2
 .St -xsh4.2
@@ -2436,22 +2497,22 @@ libc, установленной на ошибку.
 .It \-p1003.1g-2000
 .St -p1003.1g-2000
 .br
-Сетевые API, включая сокеты.
+Networking APIs, including sockets.
 .Pp
 .It \-svid4
 .St -svid4 ,
 .br
-Опубликовано в 1995 году.
+Published in 1995.
 .El
-.It Единая спецификация UNIX версии 2 и связанные с ней стандарты
+.It Single UNIX Specification version 2 and related standards
 .Pp
 .Bl -tag -width "-p1003.1g-2000" -compact
 .It \-susv2
 .St -susv2
-Этот стандарт был опубликован в 1997
-году и также называется X/Open Portability Guide версии 5.
-Он был использован в качестве основы для сертификации UNIX 98.
-Ниже приведены его отдельные части.
+This Standard was published in 1997
+and is also called X/Open Portability Guide version 5.
+It was used as the basis for UNIX 98 certification.
+The following refer to parts of it.
 .Pp
 .It \-xbd5
 .St -xbd5
@@ -2467,7 +2528,7 @@ libc, установленной на ошибку.
 .It \-xns5.2
 .St -xns5.2
 .El
-.It Единая спецификация UNIX версии 3
+.It Single UNIX Specification version 3
 .Pp
 .Bl -tag -width "-p1003.1-2001" -compact
 .It \-p1003.1-2001
@@ -2475,16 +2536,16 @@ libc, установленной на ошибку.
 .It \-susv3
 .St -susv3
 .br
-Этот стандарт основан на C99, SUSv2, POSIX.1-1996, 1d и 1j.
-Он также называется X/Open Portability Guide версии 6.
-Он используется в качестве основы для сертификации UNIX 03.
+This standard is based on C99, SUSv2, POSIX.1-1996, 1d, and 1j.
+It is also called X/Open Portability Guide version 6.
+It is used as the basis for UNIX 03 certification.
 .Pp
 .It \-p1003.1-2004
 .St -p1003.1-2004
 .br
-Второе и последнее техническое исправление.
+The second and last Technical Corrigendum.
 .El
-.It Единая спецификация UNIX версии 4
+.It Single UNIX Specification version 4
 .Pp
 .Bl -tag -width "-p1003.1g-2000" -compact
 .It \-p1003.1-2008
@@ -2492,26 +2553,26 @@ libc, установленной на ошибку.
 .It \-susv4
 .St -susv4
 .br
-Этот стандарт также называется
-X/Open Portability Guide версии 7.
+This standard is also called
+X/Open Portability Guide version 7.
 .El
-.It Другие стандарты
+.It Other standards
 .Pp
 .Bl -tag -width "-p1003.1g-2000" -compact
 .It \-ieee754
 .St -ieee754
 .br
-Арифметика с плавающей запятой.
+Floating-point arithmetic.
 .Pp
 .It \-iso8601
 .St -iso8601
 .br
-Представление дат и времени, опубликованное в 1988 году.
+Representation of dates and times, published in 1988.
 .Pp
 .It \-iso8802-3
 .St -iso8802-3
 .br
-Локальные вычислительные сети Ethernet.
+Ethernet local area networks.
 .Pp
 .It \-ieee1275-94
 .St -ieee1275-94
@@ -2519,231 +2580,234 @@ X/Open Portability Guide версии 7.
 .El
 .Tg Sx
 .It Ic \&Sx Ar Title line
-Укажите ссылку на раздел или подраздел на той же странице руководства.
-Название раздела или подраздела, на которые дается ссылка, должно совпадать с
-прилагаемым аргументом, включая пробелы.
+Reference a section or subsection in the same manual page.
+The referenced section or subsection name must be identical to the
+enclosed argument, including whitespace.
 .Pp
-Примеры:
+Examples:
 .Dl \&.Sx MANUAL STRUCTURE
 .Pp
-Смотрите также
+See also
 .Ic \&Sh
-и
+and
 .Ic \&Ss .
 .Tg Sy
 .It Ic \&Sy Ar word ...
-Запросите жирный шрифт.
+Request a boldface font.
 .Pp
-Это чаще всего используется для обозначения важности или серьезности (не
-путать с подчеркиванием ударения, смотрите
+This is most often used to indicate importance or seriousness (not to be
+confused with stress emphasis, see
 .Ic \&Em ) .
-Когда ни один из семантических макросов не подходит, его также достаточно для синтаксических
-элементов, которые должны быть приведены или которые отображаются дословно.
+When none of the semantic macros fit, it is also adequate for syntax
+elements that have to be given or that appear verbatim.
 .Pp
-Примеры:
+Examples:
 .Bd -literal -compact -offset indent
-\&.Sy Предупреждение :
-Если
+\&.Sy Warning :
+If
 \&.Sy s
-отображается в разрешениях владельца, установлен режим set-user-ID.
-Эта утилита заменяет предыдущую
+appears in the owner permissions, set-user-ID mode is set.
+This utility replaces the former
 \&.Sy dumpdir
-программу.
+program.
 .Ed
 .Pp
-Смотрите также
+See also
 .Ic \&Em ,
 .Ic \&No ,
-и
+and
 .Ic \&Ql .
 .Tg Ta
 .It Ic \&Ta
-Разделитель ячеек таблицы в списках
-.Ic \&Bl Fl column ;
-может быть использован только ниже
+Table cell separator in
+.Ic \&Bl Fl column
+lists; can only be used below
 .Ic \&It .
 .Tg Tg
 .It Ic \&Tg Op Ar term
-Объявите, что в следующей строке ввода начинается определение
+Announce that the next input line starts a definition of the
 .Ar term .
-Этот макрос должен отображаться отдельно в отдельной строке ввода.
-По умолчанию в качестве аргумента используется первый аргумент первого макроса
-в следующей строке.
-Аргумент не может содержать пробельных символов, даже если он заключен в кавычки.
-Этот макрос является расширением
+This macro must appear alone on its own input line.
+The argument defaults to the first argument of the first macro
+on the next line.
+The argument may not contain whitespace characters, not even when it is quoted.
+This macro is a
 .Xr mandoc 1
-и обычно игнорируется другими средствами форматирования.
+extension and is typically ignored by other formatters.
 .Pp
-При просмотре выходных данных терминала с
+When viewing terminal output with
 .Xr less 1 ,
-интерактивная команда
+the interactive
 .Ic :t
-может быть использована для перехода к определению
+command can be used to go to the definition of the
 .Ar term
-как описано для переменной
+as described for the
 .Ev MANPAGER
-в
+variable in
 .Xr man 1 ;
-при выводе HTML-кода генерируется идентификатор фрагмента
-.Pq Ic id No атрибут
-для использования для глубокой привязки к этому месту документа.
+when producing HTML output, a fragment identifier
+.Pq Ic id No attribute
+is generated, to be used for deep linking to this place of the document.
 .Pp
-В большинстве случаев добавление макроса
+In most cases, adding a
 .Ic \&Tg
-было бы излишним, потому что
+macro would be redundant because
 .Xr mandoc 1
-способен автоматически помечать тегами большинство определений.
-Этот макрос предназначен для случаев, когда автоматическая пометка
+is able to automatically tag most definitions.
+This macro is intended for cases where automatic tagging of a
 .Ar term
-является неудовлетворительной, например, если определение не помечено
-автоматически (ложноотрицательное значение) или если помечены места,
-которые не определяют
+is unsatisfactory, for example if a definition is not tagged
+automatically (false negative) or if places are tagged that do
+not define the
 .Ar term
-(ложные срабатывания).
-Когда есть хотя бы один макрос
+(false positives).
+When there is at least one
 .Ic \&Tg
-для
+macro for a
 .Ar term ,
-никакие другие места автоматически не помечаются как определения этого
+no other places are automatically marked as definitions of that
 .Ar term .
 .It Ic \&Tn Ar word ...
-Поддерживается только для обеспечения совместимости, не используйте это в новых руководствах.
-Даже несмотря на то, что имя макроса
-.Pq Dq торговое название
-предполагает семантическую функцию, историческое использование непоследовательно, в основном
-используется как макрос уровня представления для запроса шрифта с маленькой буквы.
+Supported only for compatibility, do not use this in new manuals.
+Even though the macro name
+.Pq Dq tradename
+suggests a semantic function, historic usage is inconsistent, mostly
+using it as a presentation-level macro to request a small caps font.
 .It Ic \&Ud
-Поддерживается только для обеспечения совместимости, не используйте это в новых руководствах.
-Выводит
-.Dq в настоящее время находится в стадии разработки.
+Supported only for compatibility, do not use this in new manuals.
+Prints out
+.Dq currently under development.
 .It Ic \&Ux
-Поддерживается только для обеспечения совместимости, не используйте это в новых руководствах.
-Выводит
+Supported only for compatibility, do not use this in new manuals.
+Prints out
 .Dq Ux .
 .Tg Va
 .It Ic \&Va Oo Ar type Oc Ar identifier ...
-Имя переменной.
+A variable name.
 .Pp
-Примеры:
+Examples:
 .Dl \&.Va foo
 .Dl \&.Va const char *bar ;
 .Pp
-Для аргументов и параметров функции используйте вместо
-.Ic \&Fa .
-Для объявлений глобальных переменных в разделе
-.Em СИНТАКСИС ,
-используйте
+For function arguments and parameters, use
+.Ic \&Fa
+instead.
+For declarations of global variables in the
+.Em SYNOPSIS
+section, use
 .Ic \&Vt .
 .Tg Vt
 .It Ic \&Vt Ar type Op Ar identifier
-Тип переменной.
+A variable type.
 .Pp
-Это также используется для указания глобальных переменных в разделе
-.Em СИНТАКСИС ,
-в этом случае также указывается имя переменной.
-Обратите
-внимание, что он принимает синтаксис
+This is also used for indicating global variables in the
+.Em SYNOPSIS
+section, in which case a variable name is also specified.
+Note that it accepts
 .Sx Block partial-implicit
-при вызове в качестве первого макроса в строке ввода в разделе
-.Em СИНТАКСИС ,
-в противном случае он принимает обычный синтаксис
-.Sx In-line .
-В первом случае этот макрос запускает новую строку вывода,
-и перед ней вставляется пустая строка, если есть предыдущее
-определение функции или директива include.
+syntax when invoked as the first macro on an input line in the
+.Em SYNOPSIS
+section, else it accepts ordinary
+.Sx In-line
+syntax.
+In the former case, this macro starts a new output line,
+and a blank line is inserted in front if there is a preceding
+function definition or include directive.
 .Pp
-Примеры:
+Examples:
 .Dl \&.Vt unsigned char
 .Dl \&.Vt extern const char * const sys_signame[] \&;
 .Pp
-Для получения параметров в прототипах функций используйте вместо
-.Ic \&Fa ,
-для типов возвращаемых функций
+For parameters in function prototypes, use
+.Ic \&Fa
+instead, for function return types
 .Ic \&Ft ,
-и для имен переменных за пределами раздела
-.Em СИНТАКСИС
+and for variable names outside the
+.Em SYNOPSIS
+section
 .Ic \&Va ,
-даже при включении типа с таким именем.
-СМОТРИТЕ ТАКЖЕ
-.Sx СТРУКТУРА РАЗДЕЛА .
+even when including a type with the name.
+See also
+.Sx MANUAL STRUCTURE .
 .It Ic \&Xc
-Закройте область, открытую с помощью
+Close a scope opened by
 .Ic \&Xo .
 .It Ic \&Xo Ar block
-Расширьте заголовок макроса
+Extend the header of an
 .Ic \&It
-или текст частично неявного блочного макроса
-за пределами конца строки ввода.
-Этот макрос изначально существовал для обхода ограничения в 9 аргументов
-в исторических
+macro or the body of a partial-implicit block macro
+beyond the end of the input line.
+This macro originally existed to work around the 9-argument limit
+of historic
 .Xr roff 7 .
 .Tg Xr
 .It Ic \&Xr Ar name section
-Ссылка на другое руководство
-.Pq Qq перекрестная ссылка .
+Link to another manual
+.Pq Qq cross-reference .
 .Pp
-Укажите перекрестную ссылку на
-.Ar название
-и номер
-.Ar раздела 
-другой справочной страницы.
+Cross reference the
+.Ar name
+and
+.Ar section
+number of another man page.
 .Pp
-Примеры:
+Examples:
 .Dl \&.Xr mandoc 1
 .Dl \&.Xr mandoc 1 \&;
 .Dl \&.Xr mandoc 1 \&Ns s behaviour
 .El
-.Sh СИНТАКСИС МАКРОСА
-Синтаксис макроса зависит от его классификации.
-В этом разделе,
+.Sh MACRO SYNTAX
+The syntax of a macro depends on its classification.
+In this section,
 .Sq \-arg
-относится к аргументам макроса, за которыми могут следовать ноль или более параметров
-.Sq parm ;
+refers to macro arguments, which may be followed by zero or more
+.Sq parm
+parameters;
 .Sq \&Yo
-открывает область действия макроса; и если указано,
+opens the scope of a macro; and if specified,
 .Sq \&Yc
-закрывает его.
+closes it out.
 .Pp
-Столбец 
+The
 .Em Callable
-указывает на то, что макрос также можно вызвать,
-передав его имя в качестве аргумента другому макросу.
-Например,
+column indicates that the macro may also be called by passing its name
+as an argument to another macro.
+For example,
 .Sq \&.Op \&Fl O \&Ar file
-производит
+produces
 .Sq Op Fl O Ar file .
-Чтобы предотвратить вызов макроса и передать имя макроса буквально,
-экранируйте его, добавив пробел нулевой ширины,
+To prevent a macro call and render the macro name literally,
+escape it by prepending a zero-width space,
 .Sq \e& .
-Например,
+For example,
 .Sq \&Op \e&Fl O
-производит
+produces
 .Sq Op \&Fl O .
-Если макрос недоступен для вызова, но его имя отображается в качестве аргумента
-для другого макроса, оно интерпретируется как непрозрачный текст.
-Например,
+If a macro is not callable but its name appears as an argument
+to another macro, it is interpreted as opaque text.
+For example,
 .Sq \&.Fl \&Sh
-производит
+produces
 .Sq Fl \&Sh .
 .Pp
-Столбец
+The
 .Em Parsed
-указывает, может ли макрос вызывать другие макросы,
-получая их имена в качестве аргументов.
-Если макрос не анализируется, но в качестве аргумента отображается имя другого макроса,
-он интерпретируется как непрозрачный текст.
+column indicates whether the macro may call other macros by receiving
+their names as arguments.
+If a macro is not parsed but the name of another macro appears
+as an argument, it is interpreted as opaque text.
 .Pp
-В столбце
-.Em Scope ,
-если это применимо, описываются правила закрытия.
+The
+.Em Scope
+column, if applicable, describes closure rules.
 .Ss Block full-explicit
-Многострочная область, закрываемая явным закрывающим макросом.
-Все макросы содержат тела; только
+Multi-line scope closed by an explicit closing macro.
+All macros contains bodies; only
 .Ic \&Bf
-и
-.Pq опционально
+and
+.Pq optionally
 .Ic \&Bl
-содержат голову.
+contain a head.
 .Bd -literal -offset indent
 \&.Yo \(lB\-arg \(lBparm...\(rB\(rB \(lBhead...\(rB
 \(lBbody...\(rB
@@ -2761,8 +2825,8 @@ X/Open Portability Guide версии 7.
 .It Ic \&El  Ta    \&No     Ta    \&No     Ta    opened by Ic \&Bl
 .El
 .Ss Block full-implicit
-Многострочная область, закрываемая с помощью конца файла или неявно с помощью другого макроса.
-Все макросы имеют тела; некоторые
+Multi-line scope closed by end-of-file or implicitly by another macro.
+All macros have bodies; some
 .Po
 .Ic \&It Fl bullet ,
 .Fl hyphen ,
@@ -2770,13 +2834,13 @@ X/Open Portability Guide версии 7.
 .Fl enum ,
 .Fl item
 .Pc
-у них нет голов; только одна
+don't have heads; only one
 .Po
 .Ic \&It
-в
+in
 .Ic \&Bl Fl column
 .Pc
-имеет несколько голов.
+has multiple heads.
 .Bd -literal -offset indent
 \&.Yo \(lB\-arg \(lBparm...\(rB\(rB \(lBhead... \(lBTa head...\(rB\(rB
 \(lBbody...\(rB
@@ -2790,23 +2854,23 @@ X/Open Portability Guide версии 7.
 .It Ic \&Ss Ta \&No Ta Yes  Ta closed by Ic \&Sh , Ic \&Ss
 .El
 .Pp
-Обратите внимание, что макрос
+Note that the
 .Ic \&Nm
-это макрос
+macro is a
 .Sx Block full-implicit
-только при вызове в качестве первого макроса
-в строке раздела
-.Em СИНТАКСИС ,
-в противном случае это
+macro only when invoked as the first macro
+in a
+.Em SYNOPSIS
+section line, else it is
 .Sx In-line .
 .Ss Block partial-explicit
-Как и полностью явный блок, но также с однострочной областью действия.
-У каждого из них есть, по крайней мере, тело и, в некоторых случаях, голова
+Like block full-explicit, but also with single-line scope.
+Each has at least a body and, in limited circumstances, a head
 .Po
 .Ic \&Fo ,
 .Ic \&Eo
 .Pc
-и/или хвост
+and/or tail
 .Pq Ic \&Ec .
 .Bd -literal -offset indent
 \&.Yo \(lB\-arg \(lBparm...\(rB\(rB \(lBhead...\(rB
@@ -2830,7 +2894,7 @@ X/Open Portability Guide версии 7.
 .It Ic \&Eo  Ta    Yes      Ta    Yes      Ta    closed by Ic \&Ec
 .It Ic \&Fc  Ta    Yes      Ta    Yes      Ta    opened by Ic \&Fo
 .It Ic \&Fo  Ta    \&No     Ta    \&No     Ta    closed by Ic \&Fc
-.It Ic \&Oc  Ta    Yes      Ta    Yes      Ta    opened by Ic \&Oo
+.It Ic \&Oc  Ta    Yes      Ta    Yes      Ta    closed by Ic \&Oo
 .It Ic \&Oo  Ta    Yes      Ta    Yes      Ta    opened by Ic \&Oc
 .It Ic \&Pc  Ta    Yes      Ta    Yes      Ta    closed by Ic \&Po
 .It Ic \&Po  Ta    Yes      Ta    Yes      Ta    opened by Ic \&Pc
@@ -2844,8 +2908,8 @@ X/Open Portability Guide версии 7.
 .It Ic \&Xo  Ta    Yes      Ta    Yes      Ta    closed by Ic \&Xc
 .El
 .Ss Block partial-implicit
-Например, блок полностью неявный, но с однострочной областью видимости, закрытой к
-концу строки.
+Like block full-implicit, but with single-line scope closed by the
+end of the line.
 .Bd -literal -offset indent
 \&.Yo \(lB\-arg \(lBval...\(rB\(rB \(lBbody...\(rB \(lBres...\(rB
 .Ed
@@ -2866,35 +2930,36 @@ X/Open Portability Guide версии 7.
 .It Ic \&Vt  Ta    Yes      Ta    Yes
 .El
 .Pp
-Обратите внимание, что макрос
+Note that the
 .Ic \&Vt
-это
+macro is a
 .Sx Block partial-implicit
-только при вызове в качестве первого макроса
-в строке раздела
-.Em СИНТАКСИС ,
-в противном случае это
+only when invoked as the first macro
+in a
+.Em SYNOPSIS
+section line, else it is
 .Sx In-line .
 .Ss Special block macro
-Макрос
+The
 .Ic \&Ta
-может быть использован только ниже
+macro can only be used below
 .Ic \&It
-в списках
-.Ic \&Bl Fl column .
-Он разделяет блоки, представляющие ячейки таблицы;
-у этих блоков есть тела, но нет заголовков.
+in
+.Ic \&Bl Fl column
+lists.
+It delimits blocks representing table cells;
+these blocks have bodies, but no heads.
 .Bl -column "MacroX" "CallableX" "ParsedX" "closed by XXXX" -offset indent
 .It Em Macro Ta Em Callable Ta Em Parsed Ta Em Scope
 .It Ic \&Ta  Ta    Yes      Ta    Yes    Ta closed by Ic \&Ta , Ic \&It
 .El
 .Ss In-line
-Закрывается в конце строки, аргументы фиксированной длины
-и/или последующие макросы.
-У встроенных макросов есть только текстовые дочерние элементы.
-Если число (или неравенство) аргументов равно
+Closed by the end of the line, fixed argument lengths,
+and/or subsequent macros.
+In-line macros have only text children.
+If a number (or inequality) of arguments is
 .Pq n ,
-затем макрос принимает произвольное количество аргументов.
+then the macro accepts an arbitrary number of arguments.
 .Bd -literal -offset indent
 \&.Yo \(lB\-arg \(lBval...\(rB\(rB \(lBargs...\(rB \(lBres...\(rB
 
@@ -2978,170 +3043,172 @@ X/Open Portability Guide версии 7.
 .It Ic \&Xr  Ta    Yes      Ta    Yes      Ta    2
 .El
 .Ss Delimiters
-Когда аргумент макроса состоит из одного входного символа,
-который рассматривается как разделитель, этот аргумент обрабатывается специальным образом.
-Это правило не применяется, когда разделители появляются в аргументах, содержащих
-более одного символа.
-Следовательно, чтобы предотвратить специальную обработку и просто обрабатывать его
-как любой другой аргумент, разделитель можно экранировать, добавив перед ним пробел
-нулевой ширины
+When a macro argument consists of one single input character
+considered as a delimiter, the argument gets special handling.
+This does not apply when delimiters appear in arguments containing
+more than one character.
+Consequently, to prevent special handling and just handle it
+like any other argument, a delimiter can be escaped by prepending
+a zero-width space
 .Pq Sq \e& .
-В текстовых строках разделители никогда не нуждаются в экранировании, но могут использоваться
-как обычные знаки препинания.
+In text lines, delimiters never need escaping, but may be used
+as normal punctuation.
 .Pp
-Для многих макросов, когда начальные аргументы являются открывающими разделителями,
-эти разделители помещаются перед областью действия макроса,
-а когда конечные аргументы являются закрывающими разделителями,
-эти разделители помещаются после области действия макроса.
-Интервал подавляется после открывающих разделителей
-и перед закрывающими разделителями.
-Yfghbvth,
+For many macros, when the leading arguments are opening delimiters,
+these delimiters are put before the macro scope,
+and when the trailing arguments are closing delimiters,
+these delimiters are put after the macro scope.
+Spacing is suppressed after opening delimiters
+and before closing delimiters.
+For example,
 .Pp
 .D1 Pf \. \&Aq "( [ word ] ) ."
 .Pp
-визуализируется как:
+renders as:
 .Pp
 .D1 Aq ( [ word ] ) .
 .Pp
-Открывающими разделителями являются:
+Opening delimiters are:
 .Pp
 .Bl -tag -width Ds -offset indent -compact
 .It \&(
-левая скобка
+left parenthesis
 .It \&[
-левая квадратная скобка
+left bracket
 .El
 .Pp
-Закрывающими разделителями являются:
+Closing delimiters are:
 .Pp
 .Bl -tag -width Ds -offset indent -compact
 .It \&.
-период
+period
 .It \&,
-запятая
+comma
 .It \&:
-двоеточие
+colon
 .It \&;
-точка с запятой
+semicolon
 .It \&)
-правая скобка
+right parenthesis
 .It \&]
-правая квадрвтная скобка
+right bracket
 .It \&?
-вопросительный знак
+question mark
 .It \&!
-восклицательный знак
+exclamation mark
 .El
 .Pp
-Обратите внимание, что даже точка, которой предшествует обратная косая черта
+Note that even a period preceded by a backslash
 .Pq Sq \e.\&
-получает такую особую обработку; используйте
+gets this special handling; use
 .Sq \e&.\&
-чтобы предотвратить это.
+to prevent that.
 .Pp
-Многие встроенные макросы прерывают свою область действия, когда сталкиваются
-с разделителями, и возобновляют ее, когда следуют другие аргументы, которые
-не являются разделителями.
-Например,
+Many in-line macros interrupt their scope when they encounter
+delimiters, and resume their scope when more arguments follow that
+are not delimiters.
+For example,
 .Pp
 .D1 Pf \. \&Fl "a ( b | c \e*(Ba d ) e"
 .Pp
-визуализируется как:
+renders as:
 .Pp
 .D1 Fl a ( b | c \*(Ba d ) e
 .Pp
-Это относится как к открывающему, так и к закрывающему разделителям,
-а также к среднему разделителю, который не подавляет интервал:
+This applies to both opening and closing delimiters,
+and also to the middle delimiter, which does not suppress spacing:
 .Pp
 .Bl -tag -width Ds -offset indent -compact
 .It \&|
-вертикальная полоса
+vertical bar
 .El
 .Pp
-В качестве особого случая, предопределенная строка \e*(Ba обрабатывается и отображается
-таким же образом, как и обычный символ
-.Sq \&| .
-В новых руководствах не рекомендуется использовать эту предопределенную строку.
+As a special case, the predefined string \e*(Ba is handled and rendered
+in the same way as a plain
+.Sq \&|
+character.
+Using this predefined string is not recommended in new manuals.
 .Pp
-Добавление пробела нулевой ширины
+Appending a zero-width space
 .Pq Sq \e&
-в конце строки ввода также полезно для предотвращения интерпретации
-конечной точки, восклицательного или вопросительного знака как конца
-предложения, например, когда
-в конце строки ввода текста или макроса встречается аббревиатура.
+to the end of an input line is also useful to prevent the interpretation
+of a trailing period, exclamation or question mark as the end of a
+sentence, for example when an abbreviation happens to occur
+at the end of a text or macro input line.
 .Ss Font handling
-В документах
-.Nm ,
-рекомендуется использовать семантическую разметку, чтобы
-автоматически выбрать подходящие шрифты; только если подходящая семантическая разметка
-недоступна, рассмотрите возможность использования макросов
-.Sx Physical markup .
-Всякий раз, когда какой-либо макрос
+In
 .Nm
-переключает режим шрифта
-.Xr roff 7 ,
-он автоматически восстановит предыдущий шрифт при выходе
-из своей области видимости.
-Ручное переключение шрифта с помощью
+documents, usage of semantic markup is recommended in order to have
+proper fonts automatically selected; only when no fitting semantic markup
+is available, consider falling back to
+.Sx Physical markup
+macros.
+Whenever any
+.Nm
+macro switches the
+.Xr roff 7
+font mode, it will automatically restore the previous font when exiting
+its scope.
+Manually switching the font using the
 .Xr roff 7
 .Ql \ef
-управляющие последовательности шрифтов никогда не требуются.
-.Sh СОВМЕСТИМОСТЬ
-В этом разделе представлен неполный список проблем совместимости
-между madoc и GNU troff
+font escape sequences is never required.
+.Sh COMPATIBILITY
+This section provides an incomplete list of compatibility issues
+between mandoc and GNU troff
 .Pq Qq groff .
 .Pp
-В groff обнаруживается следующее проблемное поведение:
+The following problematic behaviour is found in groff:
 .Pp
 .Bl -dash -compact
 .It
 .Ic \&Pa
-не форматирует свои аргументы при использовании в разделе ФАЙЛЫ в
-определенных типах списков.
+does not format its arguments when used in the FILES section under
+certain list types.
 .It
 .Ic \&Ta
-может вызываться только другими макросами, но не в начале строки.
+can only be called by other macros, but not at the beginning of a line.
 .It
 .Sq \ef
 .Pq font face
-и
+and
 .Sq \eF
 .Pq font family face
 .Sx Text Decoration
-экранирующие элементы ведут себя нерегулярно, если они заданы в рамках линейных макросов.
+escapes behave irregularly when specified within line-macro scopes.
 .It
-Отрицательные единицы масштабирования возвращаются к предыдущим строкам.
-Вместо этого mandoc обнуляет их.
+Negative scaling units return to prior lines.
+Instead, mandoc truncates them to zero.
 .El
 .Pp
-В mandoc не реализованы следующие функции:
+The following features are unimplemented in mandoc:
 .Pp
 .Bl -dash -compact
 .It
 .Ic \&Bd Fl file Ar file
-не поддерживается по соображениям безопасности.
+is unsupported for security reasons.
 .It
 .Ic \&Bd
 .Fl filled
-не изменяет правое поле, но является псевдонимом для
+does not adjust the right margin, but is an alias for
 .Ic \&Bd
 .Fl ragged .
 .It
 .Ic \&Bd
 .Fl literal
-не использует буквальный шрифт, но является псевдонимом для
+does not use a literal font, but is an alias for
 .Ic \&Bd
 .Fl unfilled .
 .It
 .Ic \&Bd
 .Fl offset Cm center
-и
+and
 .Fl offset Cm right
-не работает.
-Groff также не реализует рендеринг по центру и заподлицо справа,
-но создает большие отступы.
+don't work.
+Groff does not implement centered and flush-right rendering either,
+but produces large indentations.
 .El
-.Sh СМОТРИТЕ ТАКЖЕ
+.Sh SEE ALSO
 .Xr man 1 ,
 .Xr mandoc 1 ,
 .Xr eqn 7 ,
@@ -3150,30 +3217,30 @@ Groff также не реализует рендеринг по центру и
 .Xr roff 7 ,
 .Xr tbl 7
 .Pp
-Веб-страница
-.Lk https://mandoc.bsd.lv/mdoc/ "расширенная документация по языку mdoc"
-содержит несколько страниц в стиле учебника для начинающих, подробное
-руководство по стилю для продвинутых авторов и алфавитный указатель, помогающий выбрать
-лучшие макросы для различных видов контента.
+The web page
+.Lk https://mandoc.bsd.lv/mdoc/ "extended documentation for the mdoc language"
+provides a few tutorial-style pages for beginners, an extensive style
+guide for advanced authors, and an alphabetic index helping to choose
+the best macros for various kinds of content.
 .Pp
-Страница руководства
+The manual page
 .Lk https://man.voidlinux.org/groff_mdoc "groff_mdoc(7)"
-содержится в пакете документов
+contained in the
 .Dq groff
-точно такой же язык, но в несколько ином стиле.
-.Sh ИСТОРИЯ
-Язык
+package documents exactly the same language in a somewhat different style.
+.Sh HISTORY
+The
 .Nm
-впервые появился как макропакет troff в
+language first appeared as a troff macro package in
 .Bx 4.4 .
-Позже он был значительно обновлен Вернером Лембергом и Русланом Ермиловым
-в groff-1.17.
-Автономная реализация, являющаяся частью утилиты
+It was later significantly updated by Werner Lemberg and Ruslan Ermilov
+in groff-1.17.
+The standalone implementation that is part of the
 .Xr mandoc 1
-автор сценария Кристапс Дзонсонс появился в
+utility written by Kristaps Dzonsons appeared in
 .Ox 4.6 .
-.Sh АВТОРЫ
-Ссылка
+.Sh AUTHORS
+The
 .Nm
-была написана
-.An Кристапсом Дзонсонс Aq Mt kristaps@bsd.lv .
+reference was written by
+.An Kristaps Dzonsons Aq Mt kristaps@bsd.lv .

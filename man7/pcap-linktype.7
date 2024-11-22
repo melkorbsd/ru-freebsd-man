@@ -19,30 +19,30 @@
 .\" MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 .\"
 .TH PCAP-LINKTYPE 7 "6 April 2020"
-.SH ИМЯ
-pcap-linktype \- типы заголовков канального уровня, поддерживаемые libpcap
-.SH ОПИСАНИЕ
-Для оперативного захвата или ``сохранения файла'', libpcap предоставляет в качестве возвращаемого
-значения процедуры
-.BR pcap_datalink (3) ,
-значение, указывающее тип заголовка канального уровня в
-начале передаваемых пакетов.  Это не обязательно тот тип
-заголовка канального уровня, который используется для перехвата пакетов в сети,
-из которой они перехватываются; например, пакеты из IEEE
-Сеть стандарта 802.11 может быть предоставлена libpcap с заголовками Ethernet, которые
-сетевой адаптер или драйвер сетевого адаптера генерирует из
-Заголовки стандарта 802.11.  Имена этих значений начинаются с
+.SH NAME
+pcap-linktype \- link-layer header types supported by libpcap
+.SH DESCRIPTION
+For a live capture or ``savefile'', libpcap supplies, as the return
+value of the
+.BR pcap_datalink (3)
+routine, a value that indicates the type of link-layer header at the
+beginning of the packets it provides.  This is not necessarily the type
+of link-layer header that the packets being captured have on the network
+from which they're being captured; for example, packets from an IEEE
+802.11 network might be provided by libpcap with Ethernet headers that
+the network adapter or the network adapter driver generates from the
+802.11 headers.  The names for those values begin with
 .BR DLT_ ,
-поэтому их иногда называют "DLT_значениями".
+so they are sometimes called "DLT_ values".
 .PP
-Значения, сохраненные в поле тип заголовка канального уровня
-в заголовке файла сохранения, в большинстве, но не во всех случаях, совпадают со значениями,
-возвращаемыми
+The values stored in the link-layer header type field in the savefile
+header are, in most but not all cases, the same as the values returned
+by
 .BR pcap_datalink ().
-Имена этих значений начинаются с
+The names for those values begin with
 .BR LINKTYPE_ .
 .PP
-Типы заголовков канального уровня, поддерживаемые libpcap, описаны по адресу
+The link-layer header types supported by libpcap are described at
 https://www.tcpdump.org/linktypes.html .
-.SH СМОТРИТЕ ТАКЖЕ
+.SH SEE ALSO
 .BR pcap (3)

@@ -35,188 +35,190 @@
 .el       .ds '' ''
 .ds n 5
 .ds d /usr/share/misc/terminfo
-.SH ИМЯ
-term \- соглашения о присвоении имен типам терминалов
-.SH ОПИСАНИЕ
+.SH NAME
+term \- conventions for naming terminal types
+.SH DESCRIPTION
 .PP
-Переменная среды \fBTERM\fR обычно должна содержать название
-используемого вами терминала, консоли или устройства отображения.
-Эта информация
-важна для всех программ, ориентированных на экран, включая ваш редактор и почтовую программу.
+The environment variable \fBTERM\fR should normally contain the type name of
+the terminal, console or display-device type you are using.
+This information
+is critical for all screen-oriented programs, including your editor and mailer.
 .PP
-По умолчанию \fBTERM\fR будет установлено для каждой строки одним из следующих способов
-\fB/etc/inittab\fR (например, System\-V-like UNIXes)
-или \fB/etc/ttys\fR (BSD UNIXes).
-Этого почти всегда будет достаточно для рабочих станций и микрокомпьютерных консолей.
+A default \fBTERM\fR value will be set on a per-line basis by either
+\fB/etc/inittab\fR (e.g., System\-V-like UNIXes)
+or \fB/etc/ttys\fR (BSD UNIXes).
+This will nearly always suffice for workstation and microcomputer consoles.
 .PP
-Если вы используете коммутируемую линию, тип подключенного к ней устройства может отличаться.
-В старых системах UNIX предустановлен очень простой тип терминала,
-как \*(``dumb\*('' или \*(``dialup\*('' на коммутируемых линиях.
-На более новых устройствах может быть предварительно установлено \*(``vt100\*('', что отражает распространенность DEC
-терминалов и эмуляторов персональных компьютеров, совместимых с VT100.
+If you use a dialup line, the type of device attached to it may vary.
+Older UNIX systems pre-set a very dumb terminal type
+like \*(``dumb\*('' or \*(``dialup\*('' on dialup lines.
+Newer ones may pre-set \*(``vt100\*('', reflecting the prevalence of DEC
+VT100-compatible terminals and personal-computer emulators.
 .PP
-Современные telnet передают вашу переменную окружения \fBTERM\fR с локальной стороны на
-удаленную.
-Могут возникнуть проблемы, если удаленная запись terminfo или termcap
-для вашего типа не совместима с вашим типом, но такая ситуация встречается редко, и
-ее почти всегда можно избежать путем явного экспорта \*(``vt100\*(''
-(предполагая, что вы на самом деле используете консоль,
-терминал или эмулятор терминала с надстройкой VT100.)
+Modern telnets pass your \fBTERM\fR environment variable from the local side to
+the remote one.
+There can be problems if the remote terminfo or termcap entry
+for your type is not compatible with yours, but this situation is rare and
+can almost always be avoided by explicitly exporting \*(``vt100\*(''
+(assuming you are in fact using a VT100-superset console,
+terminal, or terminal emulator.)
 .PP
-В любом случае, вы можете по своему усмотрению изменить настройки system \fBTERM\fR
-в своем профиле shell.
-Утилита \fBtset\fP(1) может оказаться полезной;
-вы можете задать ему набор правил для определения или запроса типа терминала
-на основе устройства tty и скорости передачи данных в бодах.
+In any case, you are free to override the system \fBTERM\fR setting to your
+taste in your shell profile.
+The \fBtset\fP(1) utility may be of assistance;
+you can give it a set of rules for deducing or requesting a terminal type based
+on the tty device and baud rate.
 .PP
-Установка собственного значения \fBTERM\fR также может быть полезна, если вы создали
-пользовательскую запись, включающую параметры (такие как визуальный звонок или обратное видео),
-которые вы хотите изменить на системный тип по умолчанию для вашей строки.
+Setting your own \fBTERM\fR value may also be useful if you have created a
+custom entry incorporating options (such as visual bell or reverse-video)
+which you wish to override the system default type for your line.
 .PP
-Описания типов терминалов хранятся в виде файлов с данными о возможностях под ними
+Terminal type descriptions are stored as files of capability data underneath
 \*d.
-Чтобы просмотреть список всех названий терминалов, распознанных системой, выполните
+To browse a list of all terminal names recognized by the system, do
 .sp
 	toe | more
 .sp
-из своего терминала.
-Эти файлы возможностей представлены в двоичном формате, оптимизированном для
-ускорения поиска (в отличие от старого текстового формата \fBtermcap\fR, который они заменяют);
-чтобы проверить запись, вы должны использовать команду \fBinfocmp\fR(1M).
-Вызовите его следующим образом:
+from your shell.
+These capability files are in a binary format optimized for
+retrieval speed (unlike the old text-based \fBtermcap\fR format they replace);
+to examine an entry, you must use the \fBinfocmp\fR(1M) command.
+Invoke it as follows:
 .sp
 	infocmp \fIentry_name\fR
 .sp
-где \fIentry_name\fR - это имя типа, который вы хотите проверить (и
-имя файла его возможностей в подкаталоге \*d, названном по его первой
-букве).
-Эта команда создает файл возможностей в текстовом формате, описанном в
+where \fIentry_name\fR is the name of the type you wish to examine (and the
+name of its capability file the subdirectory of \*d named for its first
+letter).
+This command dumps a capability file in the text format described by
 \fBterminfo\fR(\*n).
 .PP
-В первой строке описания \fBterminfo\fR(\*n) указаны имена, по которым
-terminfo распознает терминал,
-разделенные символами \*(``|\*('' (pipe-bar), а поле last name
-заканчивается запятой.
-Поле first name является основным именем типа
-\fIprimary name\fR и используется при настройке \fBTERM\fR.  Поле last
-name (если оно отличается от первого first) на самом деле является описанием типа
-терминала (оно может содержать пробелы; остальные должны быть отдельными словами).
-Поля name между first и last (если они есть) являются псевдонимами для терминала,
-обычно это исторические имена, сохраняемые для совместимости.
+The first line of a \fBterminfo\fR(\*n) description gives the names by which
+terminfo knows a terminal,
+separated by \*(``|\*('' (pipe-bar) characters with the last
+name field terminated by a comma.
+The first name field is the type's
+\fIprimary name\fR, and is the one to use when setting \fBTERM\fR.  The last
+name field (if distinct from the first) is actually a description of the
+terminal type (it may contain blanks; the others must be single words).
+Name
+fields between the first and last (if present) are aliases for the terminal,
+usually historical names retained for compatibility.
 .PP
-Существуют некоторые правила выбора основных имен терминалов, которые помогают
-сохранить их информативность и уникальность.
-Вот пошаговое руководство по присвоению
-имен терминалам, в котором также объясняется, как их анализировать:
+There are some conventions for how to choose terminal primary names that help
+keep them informative and unique.
+Here is a step-by-step guide to naming
+terminals that also explains how to parse them:
 .PP
-Сначала выберите корневое имя.
-Корень будет состоять из строчной буквы,
-за которой будут следовать до семи строчных букв или цифр.
-Вам следует избегать использования
-знаков препинания в корневых именах, поскольку они используются и интерпретируются как
-имена файлов, а встроенные в них метасимволы оболочки (такие как !, $, *, ? и т.д.)
-могут привести к странному и бесполезному поведению.
-Косая черта (/) или любой другой символ,
-который может быть интерпретирован любой файловой системой (\e, $, [, ]), особенно
-опасен (terminfo не зависит от платформы и выбирает имена со специальными символами).
-символы могут когда-нибудь усложнить жизнь пользователям будущего порта).
-Символ точки (.) относительно безопасен, если на одно корневое
-имя приходится не более одного символа; в некоторых исторических названиях терминалов он используется.
+First, choose a root name.
+The root will consist of a lower-case letter
+followed by up to seven lower-case letters or digits.
+You need to avoid using
+punctuation characters in root names, because they are used and interpreted as
+filenames and shell meta-characters (such as !, $, *, ?, etc.) embedded in them
+may cause odd and unhelpful behavior.
+The slash (/), or any other character
+that may be interpreted by anyone's file system (\e, $, [, ]), is especially
+dangerous (terminfo is platform-independent, and choosing names with special
+characters could someday make life difficult for users of a future port).
+The
+dot (.) character is relatively safe as long as there is at most one per root
+name; some historical terminfo names use it.
 .PP
-Корневое имя для типа консоли терминала или рабочей станции почти всегда должно
-начинаться с префикса поставщика (например, \fBhp\fR для Hewlett-Packard, \fBwy\fR для
-Wyse, или \fBatt\fR для терминалов AT&T), или общее название терминальной линии
-(\fBvt\fR для терминалов серии VT от DEC, или \fBsun\fR для Sun
-Консоли для рабочих станций Microsystems или \fBregent\fR для серии ADDS Regent.
-Вы можете просмотреть дерево terminfo, чтобы увидеть, какие префиксы уже широко используются.
-После префикса корневого имени, при необходимости, следует указать номер модели;
-таким образом, \fBvt100\fR, \fBhp2621\fR, \fBwy50\fR.
+The root name for a terminal or workstation console type should almost always
+begin with a vendor prefix (such as \fBhp\fR for Hewlett-Packard, \fBwy\fR for
+Wyse, or \fBatt\fR for AT&T terminals), or a common name of the terminal line
+(\fBvt\fR for the VT series of terminals from DEC, or \fBsun\fR for Sun
+Microsystems workstation consoles, or \fBregent\fR for the ADDS Regent series.
+You can list the terminfo tree to see what prefixes are already in common use.
+The root name prefix should be followed when appropriate by a model number;
+thus \fBvt100\fR, \fBhp2621\fR, \fBwy50\fR.
 .PP
-Корневым именем для консоли типа PC-Unix должно быть имя операционной системы,
-т.е. \fBlinux\fR, \fBbsdos\fR, \fBfreebsd\fR, \fBnetbsd\fR.  Оно должно
-\fInot\fR не должен быть \fBconsole\fR или любым другим универсальным, который может вызвать путаницу в
-многоплатформенной среде!  Если указан номер модели, он должен указывать
-либо на уровень выпуска операционной системы, либо на уровень выпуска консольного драйвера.
+The root name for a PC-Unix console type should be the OS name,
+i.e., \fBlinux\fR, \fBbsdos\fR, \fBfreebsd\fR, \fBnetbsd\fR.  It should
+\fInot\fR be \fBconsole\fR or any other generic that might cause confusion in a
+multi-platform environment!  If a model number follows, it should indicate
+either the OS release level or the console driver release level.
 .PP
-Корневым именем эмулятора терминала (при условии, что оно не соответствует ни одному из
-стандартных типов ANSI или vt100) должно быть название программы или ее легко
-узнаваемая аббревиатура (например, \fBversaterm\fR, \fBctrm\fR).
+The root name for a terminal emulator (assuming it does not fit one of the
+standard ANSI or vt100 types) should be the program name or a readily
+recognizable abbreviation of it (i.e., \fBversaterm\fR, \fBctrm\fR).
 .PP
-После корневого имени вы можете добавить любое разумное количество
-суффиксов объектов, разделенных дефисом.
+Following the root name, you may add any reasonable number of hyphen-separated
+feature suffixes.
 .TP 5
 2p
-Имеет две страницы памяти.
-Аналогично, 4p, 8p и т.д.
+Has two pages of memory.
+Likewise 4p, 8p, etc.
 .TP 5
 mc
 Magic-cookie.
-Некоторые терминалы (особенно старые Wyses) могут поддерживать только один
-атрибут без потери magic-cookie.
-Их базовая запись обычно сочетается
-с другой, которая имеет этот суффикс и использует magic cookies для поддержки нескольких
-атрибутов.
+Some terminals (notably older Wyses) can only support one
+attribute without magic-cookie lossage.
+Their base entry is usually paired
+with another that has this suffix and uses magic cookies to support multiple
+attributes.
 .TP 5
 \-am
-Включите автоматическое отступление (обводка по правому краю).
+Enable auto-margin (right-margin wraparound).
 .TP 5
 \-m
-Монорежим \ - отключение поддержки цвета.
+Mono mode \- suppress color support.
 .TP 5
 \-na
-Нет клавиш со стрелками \ - termcap игнорирует клавиши со стрелками, которые на самом деле есть на
-терминале, поэтому пользователь может использовать клавиши со стрелками локально.
+No arrow keys \- termcap ignores arrow keys which are actually there on the
+terminal, so the user can use the arrow keys locally.
 .TP 5
 \-nam
-Нет auto-margin \- подавляет возможность.
+No auto-margin \- suppress am capability.
 .TP 5
 \-nl
-Без надписей \ - подавить неявные надписи.
+No labels \- suppress soft labels.
 .TP 5
 \-nsl
-Нет строки состояния \ - отключить строку состояния.
+No status line \- suppress status line.
 .TP 5
 \-pp
-Имеет используемый порт принтера.
+Has a printer port which is used.
 .TP 5
 \-rv
-Терминал в режиме обратной видеосъемки (черное на белом).
+Terminal in reverse video mode (black on white).
 .TP 5
 \-s
-Включите строку состояния.
+Enable status line.
 .TP 5
 \-vb
-Используйте видимый звуковой сигнал (вспышку) вместо звукового сигнала.
+Use visible bell (flash) rather than beep.
 .TP 5
 \-w
-Широкий; терминал работает в режиме 132 столбцов.
+Wide; terminal is in 132-column mode.
 .PP
-Обычно, если ваш тип терминала является вариантом, предназначенным для указания
-высоты строки, этот суффикс должен идти первым.
-Итак, для гипотетического терминала FuBarCo
-model 2317 в 30-строчном режиме с обратным видео наилучшей формой была бы
-\fBfubar\-30\-rv\fR (а не, скажем, \*(``fubar\-rv\-30\*('').
+Conventionally, if your terminal type is a variant intended to specify a
+line height, that suffix should go first.
+So, for a hypothetical FuBarCo
+model 2317 terminal in 30-line mode with reverse video, best form would be
+\fBfubar\-30\-rv\fR (rather than, say, \*(``fubar\-rv\-30\*('').
 .PP
-Типы терминалов, которые записываются не как отдельные элементы, а скорее как
-компоненты, подключаемые к другим элементам с помощью функций \fBuse\fP,
-различаются с помощью встроенных знаков плюс, а не тире.
+Terminal types that are written not as standalone entries, but rather as
+components to be plugged into other entries via \fBuse\fP capabilities,
+are distinguished by using embedded plus signs rather than dashes.
 .PP
-Команды, которые используют тип терминала для управления отображением, часто принимают параметр \-T,
-который принимает аргумент имени терминала.
-Такие программы должны
-использовать переменную окружения \fBTERM\fR, если параметр \-T не указан.
-.SH ПОРТАТИВНОСТЬ
-Для обеспечения максимальной совместимости с более старыми версиями System V Unix имена и псевдонимы
-должны быть уникальными в пределах первых 14 символов.
-.SH ФАЙЛЫ
+Commands which use a terminal type to control display often accept a \-T
+option that accepts a terminal name argument.
+Such programs should fall back
+on the \fBTERM\fR environment variable when no \-T option is specified.
+.SH PORTABILITY
+For maximum compatibility with older System V UNIXes, names and aliases
+should be unique within the first 14 characters.
+.SH FILES
 .TP 5
 \*d/?/*
-составленная база данных о возможностях терминала
+compiled terminal capability data base
 .TP 5
 /etc/inittab
-инициализация строки tty (UNIX-файлы, подобные AT&T)
+tty line initialization (AT&T-like UNIXes)
 .TP 5
 /etc/ttys
-инициализация строки tty (BSD-подобные UNIX-системы)
-.SH СМОТРИТЕ ТАКЖЕ
+tty line initialization (BSD-like UNIXes)
+.SH SEE ALSO
 \fBcurses\fR(3X), \fBterminfo\fR(\*n), \fBterm\fR(\*n).

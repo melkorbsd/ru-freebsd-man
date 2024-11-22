@@ -25,110 +25,110 @@
 .Dd September 15, 2002
 .Dt STDINT 7
 .Os
-.Sh ИМЯ
+.Sh NAME
 .Nm stdint
-.Nd "стандартные целочисленные типы"
-.Sh СИНТАКСИС
+.Nd "standard integer types"
+.Sh SYNOPSIS
 .In stdint.h
-.Sh ОПИСАНИЕ
-Заголовок
+.Sh DESCRIPTION
+The
 .In stdint.h
-предоставляет переносимые из исходного кода целочисленные типы определенного
-размера, наименьший объем памяти при минимальном размере, максимальную скорость
-доступа при минимальном размере, наибольший размер целого числа и
-типы, способные хранить указатели.
+header provides source-portable integer types of a specific
+size, smallest memory footprint with a minimum size, fastest
+access speed with a minimum size, largest integer size, and
+those capable of storing pointers.
 .Pp
-Типы
+The types
 .Vt int8_t ,
 .Vt int16_t ,
 .Vt int32_t ,
-и
+and
 .Vt int64_t
-предоставляют тип целого числа со знаком шириной 8, 16, 32 или 64 бита соответственно.
-Типы
+provide a signed integer type of width 8, 16, 32, or 64 bits, respectively.
+The types
 .Vt uint8_t ,
 .Vt uint16_t ,
 .Vt uint32_t ,
-и
+and
 .Vt uint64_t
-предоставляют тип целого числа без знака шириной 8, 16, 32 или 64 бита соответственно.
-Эти целочисленные типы следует использовать, когда требуется определенный размер.
+provide an unsigned integer type of width 8, 16, 32, or 64 bits, respectively.
+These integer types should be used when a specific size is required.
 .Pp
-Типы
+The types
 .Vt int_fast8_t ,
 .Vt int_fast16_t ,
 .Vt int_fast32_t ,
-и
+and
 .Vt int_fast64_t
-предоставляют самый быстрый тип целого числа со знаком шириной
-не менее 8, 16, 32 или 64 бит соответственно.
-Типы
+provide the fastest signed integer type with a width
+of at least 8, 16, 32, or 64 bits, respectively.
+The types
 .Vt uint_fast8_t ,
 .Vt uint_fast16_t ,
 .Vt uint_fast32_t ,
-и
+and
 .Vt uint_fast64_t
-предоставляют самый быстрый тип целого числа без знака шириной
-не менее 8, 16, 32 или 64 бит соответственно.
-Эти типы следует использовать, когда скорость доступа имеет
-первостепенное значение и когда не требуется определенный размер.
+provide the fastest unsigned integer type with a width
+of at least 8, 16, 32, or 64 bits, respectively.
+These types should be used when access speed is
+paramount, and when a specific size is not required.
 .Pp
-Типы
+The types
 .Vt int_least8_t ,
 .Vt int_least16_t ,
 .Vt int_least32_t ,
-и
+and
 .Vt int_least64_t
-предоставляют целочисленный тип со знаком, занимающий наименьший объем памяти,
-шириной не менее 8, 16, 32 или 64 бит соответственно.
-Типы
+provide the smallest memory footprint signed integer type with
+a width of at least 8, 16, 32, or 64 bits, respectively.
+The types
 .Vt uint_least8_t ,
 .Vt uint_least16_t ,
 .Vt uint_least32_t ,
-и
+and
 .Vt uint_least64_t
-предоставляют тип беззнакового целого числа с наименьшим объемом занимаемой памяти
-шириной не менее 8, 16, 32 или 64 бит соответственно.
-Эти типы следует использовать, когда требуется объем памяти
-и когда не требуется определенный размер.
+provide the smallest memory footprint unsigned integer type with
+a width of at least 8, 16, 32, or 64 bits, respectively.
+These types should be used when memory storage is of
+concern, and when a specific size is not required.
 .Pp
-Тип
+The type
 .Vt intmax_t
-предоставляет тип целого числа со знаком,
-достаточно большой для хранения любого другого целого числа со знаком.
-Тип
+provides a signed integer type large
+enough to hold any other signed integer.
+The type
 .Vt uintmax_t
-предоставляет тип unsigned integer,
-достаточный для хранения любого другого целого числа без знака.
-Эти типы, как правило, являются самыми большими
-типами целых чисел со знаком и без знака, доступными для конкретной архитектуры.
+provides an unsigned integer type large
+enough to hold any other unsigned integer.
+These types are generally the largest signed and unsigned
+integer types available on a specific architecture.
 .Pp
-Тип
+The type
 .Vt intptr_t
-предоставляет тип целого числа со знаком, который может содержать указатель на
+provides a signed integer type with the ability to hold a pointer to
 .Vt void ,
-который позже может быть преобразован обратно в указатель на
+that can later be converted back to a pointer to
 .Vt void .
 .Pp
-Тип
+The type
 .Vt uintptr_t
-предоставляет целочисленный тип без знака с возможностью хранения указателя на
+provides an unsigned integer type with the ability to hold a pointer to
 .Vt void ,
-который позже может быть преобразован обратно в указатель на
+that can later be converted back to a pointer to
 .Vt void .
 .Pp
-Кроме того, заголовок
+Additionally, the
 .In stdint.h
-определяет некоторые макросы, но ни один из них здесь не описан.
-.Sh СТАНДАРТЫ
-Заголовок
+header defines some macros, but none of them are documented here.
+.Sh STANDARDS
+The
 .In stdint.h
-соответствует требованиям
+header conforms to
 .St -isoC-99
-и
+and
 .St -p1003.1-2001 .
-.Sh ИСТОРИЯ
-Заголовок
+.Sh HISTORY
+The
 .In stdint.h
-впервые был представлен в
+header was first introduced in
 .Fx 5.0 .
