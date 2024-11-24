@@ -26,32 +26,32 @@
 .Dd June 3, 2001
 .Dt SPROG 7
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm sprog
-.Nd secure programming practices
-.Sh DESCRIPTION
-Security issues have crept into many systems over the years.
-This document is a guide for programming practices that prevent these problems.
+.Nd безопасные методы программирования
+.Sh ОПИСАНИЕ
+На протяжении многих лет проблемы с безопасностью возникали во многих системах.
+Этот документ представляет собой руководство по методам программирования, позволяющим избежать этих проблем.
 .Ss Overview
-Writing secure applications takes a very scrutinous and pessimistic outlook.
-Applications should be run with the principle of
-.Dq Li least privilege
-so that no process is ever running with more than the bare minimum access it
-needs to accomplish its function.
-Previously tested code should be reused whenever possible.
-Generally, anything beyond the control of a program should never be trusted.
-This includes all forms of user input, system resources, interprocess
-communication, and the timing of events.
+Написание безопасных приложений требует очень тщательного и пессимистичного подхода.
+Приложения должны запускаться с соблюдением принципа
+.Dq Li least privilege ,
+чтобы ни один процесс никогда не запускался с доступом, превышающим минимальный,
+необходимый для выполнения его функций.
+По возможности, следует повторно использовать ранее протестированный код.
+Как правило, никогда не следует доверять всему, что находится вне контроля программы.
+Это включает в себя все формы пользовательского ввода, системные ресурсы, межпроцессное
+взаимодействие и синхронизацию событий.
 .Ss Buffer Overflows
-One of the most common types of security problems is the buffer overflow.
-In short, if a program is not careful with the data it receives, it may be
-possible for this data to be written across memory, overwriting the return
-address for a function call, and the program will be forced to run code that
-does unfriendly things.
+Одним из наиболее распространенных типов проблем безопасности является переполнение буфера.
+Короче говоря, если программа не будет осторожна с получаемыми данными,
+то эти данные могут быть записаны в память, что приведет к перезаписи
+адреса возврата для вызова функции, и программа будет вынуждена запустить код, который
+выполняет недружественные действия.
 .Pp
-A good number of functions in the standard C library make it difficult or
-even impossible to prevent buffer overflows when used.
-These include
+Большое количество функций в стандартной библиотеке C затрудняет или
+даже делает невозможным предотвращение переполнения буфера при использовании.
+К ним относятся
 .Xr fscanf 3 ,
 .Xr gets 3 ,
 .Xr getwd 3 ,
@@ -61,118 +61,114 @@ These include
 .Xr strcat 3 ,
 .Xr strcpy 3 ,
 .Xr vscanf 3 ,
-and
+и
 .Xr vsprintf 3 .
 .Pp
-Many other functions that deal with strings can also open up a potential
-buffer overflow when not used carefully.
-For example,
+Многие другие функции, работающие со строками, также могут привести к потенциальному
+переполнению буфера при неосторожном использовании.
+Например,
 .Xr strncat 3
-does not go out of its way to provide
-.Tn NUL
-character termination.
-Of course, the proper length must always be specified.
-Usage of
+не делает все возможное, чтобы обеспечить завершение символа
+.Tn NUL .
+Конечно, всегда должна быть указана правильная длина.
+Используя
 .Xr strlcat 3
-and
+и
 .Xr strlcpy 3
-ensure that strings are null terminated and of the specified length.
+убедитесь, что строки заканчиваются нулем и имеют указанную длину.
 .Pp
-Functions that receive a string format must also be used carefully.
-It is possible for a string to contain additional format specifiers, which
-open up another possibility for a buffer overflow.
-Never pass a string with untrusted data without using
+Функции, которые принимают формат строки, также должны использоваться с осторожностью.
+Строка может содержать дополнительные спецификаторы формата, которые
+открывают еще одну возможность переполнения буфера.
+Никогда не передавайте строку с ненадежными данными без использования
 .Ql %s .
-Always use the proper secure idiom:
+Всегда используйте правильную безопасную идиому:
 .Pp
 .Dl function("%s", string);
 .Pp
-There are mechanisms that provide a backstop for these problems at the
-library and compiler levels, however, there is no substitute for simply
-writing good code.
+Существуют механизмы, которые решают эти проблемы на уровне библиотеки
+и компилятора, однако ничто не заменит простого
+написания хорошего кода.
 .Ss Set-user-ID Issues
-In many cases, it may be necessary for a program to operate with an increased
-set of permissions.
-Reasons for this include binding to protected sockets, reading and writing
-certain files and directories, and access to various resources.
-Using a setuid program is frequently the solution.
-However, it is important that programs give up these privileges as soon as
-possible.
-For example, if a program is binding to a protected socket, it should give
-up its privileges as soon as it has finished binding to that socket.
-This is accomplished with the
-.Xr setuid 2
-family of system calls.
+Во многих случаях может потребоваться, чтобы программа работала с расширенным
+набором разрешений.
+Причины этого включают привязку к защищенным сокетам, чтение и запись
+определенных файлов и каталогов, а также доступ к различным ресурсам.
+Часто решением является использование программы setuid.
+Однако важно, чтобы программы отказались от этих привилегий как
+можно скорее.
+Например, если программа выполняет привязку к защищенному сокету, она должна
+отказаться от своих привилегий, как только завершит привязку к этому сокету.
+Это достигается с
+помощью семейства системных вызовов
+.Xr setuid 2 .
 .Ss Limited Environments
-The traditional method of restricting a process is with the
-.Xr chroot 2
-system call.
-This system call changes the root directory from which all other paths are
-referenced for a process and any child processes.
-Of course, the process must have access to this path to begin with.
-The new environment does not actually take effect until
+Традиционным методом ограничения процесса является системный вызов
+.Xr chroot 2 .
+Этот системный вызов изменяет корневой каталог, из которого ссылаются на все остальные пути
+для процесса и любых дочерних процессов.
+Конечно, для начала процесс должен иметь доступ к этому пути.
+Фактически новая среда не вступит в силу до тех пор, пока
 .Xr chdir 2
-is called to place the process into the new environment.
-Unfortunately, a process can break out of this environment if root access is
-obtained.
+вызывается для помещения процесса в новую среду.
+К сожалению, процесс может выйти из этой среды, если будет
+получен root-доступ.
 .Pp
-Often,
+Часто,
 .Xr jail 2
-can be used to create a more complete and enclosed environment than
+может использоваться для создания более полной и замкнутой среды, чем
 .Xr chroot 2
-can provide.
-A jail limits all processes inside that environment, including processes with
-superuser privileges.
+может обеспечить.
+Тюрьма ограничивает все процессы внутри этой среды, включая процессы с
+правами суперпользователя.
 .Pp
-Fine grained privileges, as described by
-.Tn POSIX Ns .1e
-extensions, are currently a work in progress, and the focus of the
-.Tn TrustedBSD
-Project.
-More information can be found at
+Детализированные привилегии, как описано в расширениях
+.Tn POSIX Ns .1e ,
+в настоящее время работа продолжается, и в центре внимания  находится проект
+.Tn TrustedBSD .
+Более подробную информацию можно найти по адресу
 .Pa http://www.TrustedBSD.org/ .
 .Ss Trust
-Programs should not make assumptions about the environment in which they are
-running.
-This includes user input, signals, environment variables, system resources,
-interprocess communications, and shared memory, amongst other things that are
-beyond the control of the program.
-They should not assume that all forms of invalid data can be detected either.
-Instead, they should use positive filtering, and only allow a specific subset
-of inputs that are known to be safe.
-This is the same logic that an administrator should apply to a firewall, that
-is, deny by default and specify what is to be accepted.
+Программы не должны делать предположений о среде, в которой они
+выполняются.
+Это включает в себя ввод данных пользователем, сигналы, переменные среды, системные ресурсы,
+взаимодействие между процессами и общую память, а также другие факторы, которые
+не контролируются программой.
+Они также не должны предполагать, что могут быть обнаружены все формы недопустимых данных.
+Вместо этого они должны использовать позитивную фильтрацию и разрешать только определенное подмножество
+входных данных, которые, как известно, безопасны.
+Это та же логика, которую администратор должен применять к брандмауэру, что
+то есть отклонить по умолчанию и указать, что должно быть принято.
 .Ss Race Conditions
-A race condition is anomalous behavior caused by the relative timing of
-events.
-Programs should not assume that a particular event will occur before another.
-The most common causes of race conditions are signals, access checks, and
-file reads.
-Signals are asynchronous by nature, so special care must be taken
-while dealing with them.
-Attempting to check access with sequential non-atomic operations is a very
-bad idea, as files can be moved and changed at any given time.
-Instead of using a sequence of
+Состояние гонки - это аномальное поведение, вызванное относительной синхронизацией
+событий.
+Программы не должны предполагать, что одно событие произойдет раньше другого.
+Наиболее распространенными причинами возникновения условий гонки являются сигналы, проверки доступа и
+чтение файлов.
+Сигналы по своей природе асинхронны, поэтому
+при работе с ними необходимо соблюдать особую осторожность.
+Попытка проверить доступ с помощью последовательных неатомарных операций - очень
+плохая идея, поскольку файлы могут быть перемещены и изменены в любой момент времени.
+Вместо использования последовательности
 .Xr access 2
-and
+и
 .Xr open 2 ,
-use
+используйте
 .Xr seteuid 2
-and then call
+а затем вызывайте
 .Xr open 2
-directly.
-Set
-.Xr umask 2
-properly beforehand.
-.Sh SEE ALSO
+напрямую.
+Предварительно правильно установите 
+.Xr umask 2 .
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr jail 2 ,
 .Xr setuid 2 ,
 .Xr strlcat 3 ,
 .Xr strlcpy 3
-.Sh AUTHORS
+.Sh АВТОРЫ
 .An -nosplit
-.An Eric Melville Aq Mt eric@FreeBSD.org
-originally wrote this document based on a chapter of the
-.%B "FreeBSD Developer's Handbook"
-written by
-.An Murray Stokely Aq Mt murray@FreeBSD.org .
+.An Эрик Мелвилл Aq Mt eric@FreeBSD.org
+первоначально написал этот документ на основе главы из
+.%B "Руководство разработчика FreeBSD"
+написанной
+.An Мюрреем Стокли Aq Mt murray@FreeBSD.org .

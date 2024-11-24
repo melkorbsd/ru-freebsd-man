@@ -31,80 +31,79 @@
 .Dd February 16, 2015
 .Dt SYMLINK 7
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm symlink
-.Nd symbolic link handling
-.Sh SYMBOLIC LINK HANDLING
-Symbolic links are files that act as pointers to other files.
-To understand their behavior, you must first understand how hard links
-work.
-A hard link to a file is indistinguishable from the original file because
-it is a reference to the object underlying the original file name.
-Changes to a file are independent of the name used to reference the
-file.
-Hard links may not refer to directories and may not reference files
-on different file systems.
-A symbolic link contains the name of the file to which it is linked,
-i.e., it is a pointer to another name, and not to an underlying object.
-For this reason, symbolic links may reference directories and may span
-file systems.
+.Nd обработка символических ссылок
+.Sh ОБРАБОТКА СИМВОЛИЧЕСКИХ ССЫЛОК
+Символьные ссылки - это файлы, которые действуют как указатели на другие файлы.
+Чтобы понять их поведение, вы должны сначала понять, как
+работают жесткие ссылки.
+Жесткая ссылка на файл неотличима от исходного файла, поскольку
+она является ссылкой на объект, лежащий в основе исходного имени файла.
+Изменения в файле не зависят от имени, используемого для ссылки на
+файл.
+Жесткие ссылки могут не ссылаться на каталоги и файлы
+в разных файловых системах.
+Символьная ссылка содержит имя файла, с которым она связана,
+т.е. это указатель на другое имя, а не на базовый объект.
+По этой причине символические ссылки могут ссылаться на каталоги и могут охватывать
+файловые системы.
 .Pp
-Because a symbolic link and its referenced object coexist in the file system
-name space, confusion can arise in distinguishing between the link itself
-and the referenced object.
-Historically, commands and system calls have adopted their own link
-following conventions in a somewhat ad-hoc fashion.
-Rules for more a uniform approach, as they are implemented in this system,
-are outlined here.
-It is important that local applications conform to these rules, too,
-so that the user interface can be as consistent as possible.
+Поскольку символьная ссылка и объект, на который ссылается файловая система, сосуществуют в
+пространстве имен файловой системы, может возникнуть путаница при различении между самой ссылкой
+и объектом, на который ссылается ссылка.
+Исторически сложилось так, что команды и системные вызовы использовали свои собственные
+соглашения, основанные на ссылках, в некоторой степени случайным образом.
+Правила для более единообразного подхода, как они реализованы в этой системе,
+описаны здесь.
+Важно, чтобы локальные приложения также соответствовали этим правилам,
+чтобы пользовательский интерфейс был максимально согласован.
 .Pp
-Symbolic links are handled either by operating on the link itself,
-or by operating on the object referenced by the link.
-In the latter case,
-an application or system call is said to
-.Dq follow
-the link.
-Symbolic links may reference other symbolic links,
-in which case the links are dereferenced until an object that is
-not a symbolic link is found,
-a symbolic link which references a file which does not exist is found,
-or a loop is detected.
-(Loop detection is done by placing an upper limit on the number of
-links that may be followed, and an error results if this limit is
-exceeded.)
+Символьные ссылки обрабатываются либо с помощью самой ссылки,
+либо с помощью объекта, на который ссылается ссылка.
+В последнем случае считается,
+что приложение или системный вызов
+.Dq переходят
+по ссылке.
+Символьные ссылки могут ссылаться на другие символьные ссылки,
+и в этом случае ссылки разыменовываются до тех пор, пока не будет найден объект, который
+не является символьной ссылкой, не будет найдена
+символьная ссылка, которая ссылается на несуществующий файл,
+или не будет обнаружен цикл.
+(Обнаружение зацикленности осуществляется путем установления верхнего предела количества
+ссылок, по которым можно перейти, и при превышении этого предела возникает ошибка).
 .Pp
-There are three separate areas that need to be discussed.
-They are as follows:
+Есть три отдельные области, которые необходимо обсудить.
+Они заключаются в следующем:
 .Pp
 .Bl -enum -compact -offset indent
 .It
-Symbolic links used as file name arguments for system calls.
+Символические ссылки, используемые в качестве аргументов имени файла для системных вызовов.
 .It
-Symbolic links specified as command line arguments to utilities that
-are not traversing a file tree.
+Символьные ссылки, указанные в качестве аргументов командной строки для утилит, которые
+не пересекают файловое дерево.
 .It
-Symbolic links encountered by utilities that are traversing a file tree
-(either specified on the command line or encountered as part of the
-file hierarchy walk).
+Символические ссылки, с которыми сталкиваются утилиты, просматривающие файловое дерево
+(либо заданные в командной строке, либо встречающиеся при просмотре
+файловой иерархии).
 .El
 .Ss System calls.
-The first area is symbolic links used as file name arguments for
-system calls.
+Первая область - это символические ссылки, используемые в качестве аргументов имени файла для
+системных вызовов.
 .Pp
-Except as noted below, all system calls follow symbolic links.
-For example, if there were a symbolic link
+За исключением случаев, указанных ниже, все системные вызовы следуют по символическим ссылкам.
+Например, если бы существовала символическая ссылка
 .Dq Li slink
-which pointed to a file named
+которая указывала на файл с именем
 .Dq Li afile ,
-the system call
+системный вызов
 .Dq Li open("slink" ...\&)
-would return a file descriptor to the file
+вернет файловый дескриптор в файл
 .Dq afile .
 .Pp
-There are thirteen system calls that do not follow links, and which operate
-on the symbolic link itself.
-They are:
+Существует тринадцать системных вызовов, которые не переходят по ссылкам и которые работают
+с самой символьной ссылкой.
+Они являются:
 .Xr lchflags 2 ,
 .Xr lchmod 2 ,
 .Xr lchown 2 ,
@@ -117,172 +116,167 @@ They are:
 .Xr renameat 2 ,
 .Xr rmdir 2 ,
 .Xr unlink 2 ,
-and
+и
 .Xr unlinkat 2 .
-Because
+Потому что
 .Xr remove 3
-is an alias for
+это псевдоним для
 .Xr unlink 2 ,
-it also does not follow symbolic links.
-When
+он также не переходит по символическим ссылкам.
+Когда
 .Xr rmdir 2
-or
+или
 .Xr unlinkat 2
-with the
+с флагом
 .Dv AT_REMOVEDIR
-flag
-is applied to a symbolic link, it fails with the error
+применяется к символьной ссылке, завершается ошибкой
 .Er ENOTDIR .
 .Pp
-The
+Системный вызов
 .Xr linkat 2
-system call does not follow symbolic links
-unless given the
-.Dv AT_SYMLINK_FOLLOW
-flag.
+не переходит по символическим ссылкам,
+если не установлен соответствующий флажок
+.Dv AT_SYMLINK_FOLLOW .
 .Pp
-The following system calls follow symbolic links
-unless given the
-.Dv AT_SYMLINK_NOFOLLOW
-flag:
+Следующие системные вызовы следуют по символическим ссылкам,
+если не установлен соответствующий флаг
+.Dv AT_SYMLINK_NOFOLLOW :
 .Xr chflagsat 2 ,
 .Xr fchmodat 2 ,
 .Xr fchownat 2 ,
 .Xr fstatat 2
-and
+и
 .Xr utimensat 2 .
 .Pp
-The owner and group of an existing symbolic link can be changed by
-means of the
-.Xr lchown 2
-system call.
-The flags, access permissions, owner/group and modification time of
-an existing symbolic link can be changed by means of the
+Владелец и группа существующей символьной ссылки могут быть изменены с
+помощью системного вызова
+.Xr lchown 2 .
+Флаги, права доступа, владелец/группа и время модификации
+существующей символьной ссылки могут быть изменены с помощью системных вызовов
 .Xr lchflags 2 ,
 .Xr lchmod 2 ,
 .Xr lchown 2 ,
-and
-.Xr lutimes 2
-system calls, respectively.
-Of these, only the flags and ownership are used by the system;
-the access permissions are ignored.
+и
+.Xr lutimes 2 ,
+соответственно.
+Из них система использует только флаги и права собственности;
+права доступа игнорируются.
 .Pp
-The
+Система
 .Bx 4.4
-system differs from historical
+отличается от исторических систем
 .Bx 4
-systems in that the system call
+в том, что системный вызов
 .Xr chown 2
-has been changed to follow symbolic links.
-The
+был изменен для перехода по символическим ссылкам.
+Системный вызов
 .Xr lchown 2
-system call was added later when the limitations of the new
+был добавлен позже, когда ограничение нового
 .Xr chown 2
-became apparent.
+стало очевидным.
 .Ss Commands not traversing a file tree.
-The second area is symbolic links, specified as command line file
-name arguments, to commands which are not traversing a file tree.
+Вторая область - это символические ссылки, указанные в качестве
+аргументов имени файла командной строки, на команды, которые не проходят через файловое дерево.
 .Pp
-Except as noted below, commands follow symbolic links named as command
-line arguments.
-For example, if there were a symbolic link
+За исключением случаев, указанных ниже, команды следуют по символическим ссылкам, указанным в качестве
+аргументов командной строки.
+Например, если имеется символическая ссылка
 .Dq Li slink
-which pointed to a file named
+который указывал на файл с именем
 .Dq Li afile ,
-the command
+команда
 .Dq Li cat slink
-would display the contents of the file
+будет отображаться содержимое файла
 .Dq Li afile .
 .Pp
-It is important to realize that this rule includes commands which may
-optionally traverse file trees, e.g.\& the command
+Важно понимать, что это правило включает в себя команды, которые могут
+необязательно пересекать файловые деревья, например\& команда
 .Dq Li "chown file"
-is included in this rule, while the command
+включено в это правило, в то время как команда
 .Dq Li "chown -R file"
-is not.
-(The latter is described in the third area, below.)
+нет.
+(Последнее описано ниже, в третьей области.)
 .Pp
-If it is explicitly intended that the command operate on the symbolic
-link instead of following the symbolic link, e.g., it is desired that
+Если явно предполагается, что команда работает с символической
+ссылкой вместо перехода по символической ссылке, например, желательно, чтобы
 .Dq Li "chown slink"
-change the ownership of the file that
+изменила владельца файла, который
 .Dq Li slink
-is, whether it is a symbolic link or not, the
+независимо от того, является ли это символической ссылкой или нет, опцию
 .Fl h
-option should be used.
-In the above example,
+следует использовать.
+В приведенном выше примере,
 .Dq Li "chown root slink"
-would change the ownership of the file referenced by
+изменил бы владельца файла, на который ссылается
 .Dq Li slink ,
-while
+пока
 .Dq Li "chown -h root slink"
-would change the ownership of
+изменил бы владельца
 .Dq Li slink
-itself.
+сам.
 .Pp
-There are five exceptions to this rule.
-The
+Из этого правила есть пять исключений.
+Команды
 .Xr mv 1
-and
+и
 .Xr rm 1
-commands do not follow symbolic links named as arguments,
-but respectively attempt to rename and delete them.
-(Note, if the symbolic link references a file via a relative path,
-moving it to another directory may very well cause it to stop working,
-since the path may no longer be correct.)
+не переходят по символическим ссылкам, указанным в качестве аргументов,
+но, соответственно, попытаются переименовать или удалить их.
+(Обратите внимание, что если символическая ссылка ссылается на файл по относительному пути,
+перемещение ее в другой каталог может привести к тому, что она перестанет работать,
+поскольку путь может быть неверным.)
 .Pp
-The
+Команда
 .Xr ls 1
-command is also an exception to this rule.
-For compatibility with historic systems (when
+также является исключением из этого правила.
+Для обеспечения совместимости с историческими системами (когда
 .Nm ls
-is not doing a tree walk, i.e., the
+это не прогулка по дереву, т.е. вариант
 .Fl R
-option is not specified),
-the
+не указан),
+команда
 .Nm ls
-command follows symbolic links named as arguments if the
+следует по символическим ссылкам, указанным в качестве аргументов, если параметр
 .Fl H
-or
+или
 .Fl L
-option is specified,
-or if the
+указан,
+или если параметры
 .Fl F ,
 .Fl d
-or
+или
 .Fl l
-options are not specified.
-(The
+не указаны.
+(Команда
 .Nm ls
-command is the only command where the
+это единственная команда, в которой параметры
 .Fl H
-and
+и
 .Fl L
-options affect its behavior even though it is not doing a walk of
-a file tree.)
+повлияют на его поведение, даже если он не выполняет обход
+файлового дерева.)
 .Pp
-The
+Команды
 .Xr file 1
-and
+и
 .Xr stat 1
-commands are also exceptions to this rule.
-These
-commands do not follow symbolic links named as argument by default,
-but do follow symbolic links named as argument if the
+также являются исключениями из этого правила.
+По умолчанию эти команды не переходят по символическим ссылкам, указанным в качестве аргумента,
+но переходят по символическим ссылкам, указанным в качестве аргумента, если опция
 .Fl L
-option is specified.
+указана.
 .Pp
-The
+Система
 .Bx 4.4
-system differs from historical
+отличается от исторических систем
 .Bx 4
-systems in that the
+в том, что команды
 .Nm chown
-and
+и
 .Nm chgrp
-commands follow symbolic links specified on the command line.
+следуют символическим ссылкам, указанным в командной строке.
 .Ss Commands traversing a file tree.
-The following commands either optionally or always traverse file trees:
+Следующие команды либо необязательно, либо всегда перемещаются по файловым деревьям:
 .Xr chflags 1 ,
 .Xr chgrp 1 ,
 .Xr chmod 1 ,
@@ -293,169 +287,162 @@ The following commands either optionally or always traverse file trees:
 .Xr pax 1 ,
 .Xr rm 1 ,
 .Xr tar 1
-and
+и
 .Xr chown 8 .
 .Pp
-It is important to realize that the following rules apply equally to
-symbolic links encountered during the file tree traversal and symbolic
-links listed as command line arguments.
+Важно понимать, что приведенные ниже правила в равной степени применимы к
+символическим ссылкам, встречающимся при обходе файлового дерева, и к символическим
+ссылкам, указанным в качестве аргументов командной строки.
 .Pp
-The first rule applies to symbolic links that reference files that are
-not of type directory.
-Operations that apply to symbolic links are performed on the links
-themselves, but otherwise the links are ignored.
+Первое правило применяется к символьным ссылкам, которые ссылаются на файлы,
+не относящиеся к типу directory.
+Операции, которые применяются к символьным ссылкам, выполняются над самими ссылками
+, но в противном случае ссылки игнорируются.
 .Pp
-The command
+Команда
 .Dq Li "rm -r slink directory"
-will remove
+удалит
 .Dq Li slink ,
-as well as any symbolic links encountered in the tree traversal of
+а также любые символические ссылки, встречающиеся при обходе дерева
 .Dq Li directory ,
-because symbolic links may be removed.
-In no case will
+потому что символические ссылки могут быть удалены.
+Ни в коем случае
 .Nm rm
-affect the file which
-.Dq Li slink
-references in any way.
+не повлияет на файл, на который ссылается
+.Dq Li slink .
 .Pp
-The second rule applies to symbolic links that reference files of type
+Второе правило применяется к символическим ссылкам, которые ссылаются на файлы типа
 directory.
-Symbolic links which reference files of type directory are never
-.Dq followed
-by default.
-This is often referred to as a
-.Dq physical
-walk, as opposed to a
-.Dq logical
-walk (where symbolic links referencing directories are followed).
+Символические ссылки, которые ссылаются на файлы типа directory, никогда
+.Dq не используются
+по умолчанию.
+Это часто называют
+.Dq физическим
+переходом, в отличие от
+.Dq логического
+перехода (когда переходят по символическим ссылкам, ссылающимся на каталоги).
 .Pp
-As consistently as possible, you can make commands doing a file tree
-walk follow any symbolic links named on the command line, regardless
-of the type of file they reference, by specifying the
+Максимально последовательно вы можете заставить команды, выполняющие переход по файловому дереву,
+следовать любым символическим ссылкам, указанным в командной строке, независимо
+от типа файла, на который они ссылаются, указав соответствующий флаг
 .Fl H
-(for
-.Dq half\-logical )
-flag.
-This flag is intended to make the command line name space look
-like the logical name space.
-(Note, for commands that do not always do file tree traversals, the
+(для
+.Dq half\-logical ).
+Этот флаг предназначен для того, чтобы пространство имен командной строки выглядело
+как логическое пространство имен.
+(Обратите внимание, что для команд, которые не всегда выполняют обход файлового дерева, флаг
 .Fl H
-flag will be ignored if the
+будет проигнорирован, если флаг
 .Fl R
-flag is not also specified.)
+также не указан.)
 .Pp
-For example, the command
+Например, команда
 .Dq Li "chown -HR user slink"
-will traverse the file hierarchy rooted in the file pointed to by
+будет проходить по файловой иерархии, корнями уходящей в файл, на который указывает
 .Dq Li slink .
-Note, the
+Обратите внимание, что
 .Fl H
-is not the same as the previously discussed
-.Fl h
-flag.
-The
+это не то же самое, что ранее обсуждавшийся флаг
+.Fl h .
+Флаг
 .Fl H
-flag causes symbolic links specified on the command line to be
-dereferenced both for the purposes of the action to be performed
-and the tree walk, and it is as if the user had specified the
-name of the file to which the symbolic link pointed.
+приводит к разыменованию символических ссылок, указанных в командной строке,
+как для целей выполняемого действия,
+так и для обхода дерева, и это происходит так, как если бы пользователь указал
+имя файла, на который указывает символическая ссылка.
 .Pp
-As consistently as possible, you can make commands doing a file tree
-walk follow any symbolic links named on the command line, as well as
-any symbolic links encountered during the traversal, regardless of
-the type of file they reference, by specifying the
+Максимально последовательно вы можете заставить команды, выполняющие переход по файловому дереву
+, следовать любым символическим ссылкам, указанным в командной строке, а также
+любым символическим ссылкам, встречающимся во время обхода, независимо от
+типа файла, на который они ссылаются, указав соответствующий флаг
 .Fl L
-(for
-.Dq logical )
-flag.
-This flag is intended to make the entire name space look like
-the logical name space.
-(Note, for commands that do not always do file tree traversals, the
+(для
+.Dq logical ).
+Этот флаг предназначен для того, чтобы все пространство имен выглядело как
+логическое пространство имен.
+(Обратите внимание, что для команд, которые не всегда выполняют обход файлового дерева, флаг
 .Fl L
-flag will be ignored if the
+будет проигнорирован, если флаг
 .Fl R
-flag is not also specified.)
+также не уточняется.)
 .Pp
-For example, the command
+Например, команда
 .Dq Li "chown -LR user slink"
-will change the owner of the file referenced by
+изменит владельца файла, на который ссылается
 .Dq Li slink .
-If
+Если
 .Dq Li slink
-references a directory,
+ссылается на каталог,
 .Nm chown
-will traverse the file hierarchy rooted in the directory that it
-references.
-In addition, if any symbolic links are encountered in any file tree that
+будет проходить по файловой иерархии, корнями уходящей в каталог, на который он
+ссылается.
+Кроме того, если в любом файловом дереве будут обнаружены какие-либо символические ссылки, которые
 .Nm chown
-traverses, they will be treated in the same fashion as
+проходит, они будут обрабатываться таким же образом, как и
 .Dq Li slink .
 .Pp
-As consistently as possible, you can specify the default behavior by
-specifying the
+Максимально последовательно вы можете задать поведение по умолчанию,
+указав флаг
 .Fl P
-(for
-.Dq physical )
-flag.
-This flag is intended to make the entire name space look like the
-physical name space.
+(для
+.Dq physical ).
+Этот флаг предназначен для того, чтобы все пространство имен выглядело как
+физическое пространство имен.
 .Pp
-For commands that do not by default do file tree traversals, the
+Для команд, которые по умолчанию не выполняют обход файлового дерева, флаги
 .Fl H ,
 .Fl L
-and
+и
 .Fl P
-flags are ignored if the
+игнорируются, если флаг
 .Fl R
-flag is not also specified.
-In addition, you may specify the
+также не указан.
+Кроме того, вы можете указать параметры
 .Fl H ,
 .Fl L
-and
+и
 .Fl P
-options more than once; the last one specified determines the
-command's behavior.
-This is intended to permit you to alias commands to behave one way
-or the other, and then override that behavior on the command line.
+более одного раза; последний указанный параметр определяет
+поведение команды.
+Это предназначено для того, чтобы разрешить вам создавать псевдонимы команд, которые будут вести себя тем
+или иным образом, а затем переопределять это поведение в командной строке.
 .Pp
-The
+Команды
 .Xr ls 1
-and
+и
 .Xr rm 1
-commands have exceptions to these rules.
-The
+являются исключениями из этих правил.
+Команда
 .Nm rm
-command operates on the symbolic link, and not the file it references,
-and therefore never follows a symbolic link.
-The
+работает с символической ссылкой, а не с файлом, на который она ссылается,
+и поэтому никогда не переходит по символической ссылке.
+Команда
 .Nm rm
-command does not support the
+не поддерживает параметры
 .Fl H ,
 .Fl L
-or
-.Fl P
-options.
+или
+.Fl P .
 .Pp
-To maintain compatibility with historic systems,
-the
+Для поддержания совместимости с существующими системами,
+команда
 .Nm ls
-command acts a little differently.
-If you do not specify the
+действует немного по-другому.
+Если вы не укажете параметры
 .Fl F ,
 .Fl d
-or
-.Fl l
-options,
+или
+.Fl l ,
 .Nm ls
-will follow symbolic links specified on the command line.
-If the
+будет переходить по символическим ссылкам, указанным в командной строке.
+Если флажок
 .Fl L
-flag is specified,
+установлен,
 .Nm ls
-follows all symbolic links,
-regardless of their type,
-whether specified on the command line or encountered in the tree walk.
-.Sh SEE ALSO
+следует по всем символьным ссылкам,
+независимо от их типа,
+независимо от того, указаны ли они в командной строке или встречаются при просмотре дерева.
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr chflags 1 ,
 .Xr chgrp 1 ,
 .Xr chmod 1 ,
