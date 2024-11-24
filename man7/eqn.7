@@ -18,45 +18,43 @@
 .Dd $Mdocdate: January 10 2020 $
 .Dt EQN 7
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm eqn
-.Nd eqn language reference for mandoc
-.Sh DESCRIPTION
-The
+.Nd справочник по языку eqn для mandoc
+.Sh ОПИСАНИЕ
+Язык
 .Nm eqn
-language is an equation-formatting language.
-It is used within
+это язык форматирования уравнений.
+Он используется на страницах руководства
 .Xr mdoc 7
-and
+и
 .Xr man 7
-.Ux
-manual pages.
-It describes the
-.Em structure
-of an equation, not its mathematical meaning.
-This manual describes the
+.Ux .
+Он описывает
+.Em структуру
+уравнения, а не его математический смысл.
+В данном руководстве описан язык
 .Nm
-language accepted by the
-.Xr mandoc 1
-utility, which corresponds to the Second Edition
+принятый утилитой
+.Xr mandoc 1  ,
+что соответствует спецификации второго издания
 .Nm
-specification (see
-.Sx SEE ALSO
-for references).
+(смотрите раздел
+.Sx СМОТРИТЕ ТАКЖЕ
+для справок).
 .Pp
-An equation starts with an input line containing exactly the characters
+Уравнение начинается со строки ввода, содержащей именно символы
 .Sq \&.EQ ,
-may contain multiple input lines, and ends with an input line
-containing exactly the characters
+может содержать несколько строк ввода и заканчивается строкой ввода,
+содержащей именно символы
 .Sq \&.EN .
-Equivalently, an equation can be given in the middle of a single
-text input line by surrounding it with the equation delimiters
-defined with the
-.Cm delim
-statement.
+Аналогично, уравнение можно задать в середине одной
+строки ввода текста, окружив его разделителями уравнений,
+определенными с помощью инструкции
+.Cm delim .
 .Pp
-The equation grammar is as follows, where quoted strings are
-case-sensitive literals in the input:
+Грамматика уравнения выглядит следующим образом, где заключенные в кавычки строки являются
+литералами с учетом регистра во входных данных:
 .Bd -literal -offset indent
 eqn     : box | eqn box
 box     : text
@@ -88,24 +86,24 @@ list    : eqn
 space   : [\e^~ \et]
 .Ed
 .Pp
-White-space consists of the space, tab, circumflex, and tilde
-characters.
-It is required to delimit tokens consisting of alphabetic characters
-and it is ignored at other places.
-Braces and quotes also delimit tokens.
-If within a quoted string, these space characters are retained.
-Quoted strings are also not scanned for keywords, glyph names,
-and expansion of definitions.
-To print a literal quote character, it can be prepended with a
-backslash or expressed with the \e(dq escape sequence.
+Пробел состоит из символов пробела, табуляции,
+окружности и тильды.
+Он необходим для разделения символов, состоящих из буквенных символов,
+и игнорируется в других местах.
+Фигурные скобки и кавычки также разделяют символы.
+Если строка заключена в кавычки, эти символы пробела сохраняются.
+Строки, заключенные в кавычки, также не проверяются на наличие ключевых слов, названий символов
+и расширений определений.
+Чтобы напечатать буквальный символ кавычки, его можно дополнить
+обратной косой чертой или выразить управляющей последовательностью \e(dq.
 .Pp
-Subequations can be enclosed in braces to pass them as arguments
-to operation keywords, overriding standard operation precedence.
-Braces can be nested.
-To set a brace verbatim, it needs to be enclosed in quotes.
+Вложенные выражения могут быть заключены в фигурные скобки, чтобы передавать их в качестве аргументов
+ключевым словам операций, переопределяя приоритет стандартных операций.
+Фигурные скобки могут быть вложенными.
+Чтобы дословно задать фигурную скобку, ее необходимо заключить в кавычки.
 .Pp
-The following text terms are translated into a rendered glyph, if
-available: alpha, beta, chi, delta, epsilon, eta, gamma, iota, kappa,
+Следующие текстовые термины переводятся в визуализированный глиф, если
+таковой имеется: alpha, beta, chi, delta, epsilon, eta, gamma, iota, kappa,
 lambda, mu, nu, omega, omicron, phi, pi, psi, rho, sigma, tau, theta,
 upsilon, xi, zeta, DELTA, GAMMA, LAMBDA, OMEGA, PHI, PI, PSI, SIGMA,
 THETA, UPSILON, XI, inter (intersection), union (union), prod (product),
@@ -116,293 +114,289 @@ partial (partial differential), inf (infinity), >> (much greater), <<
 (much less), <\- (left arrow), \-> (right arrow), +\- (plus-minus), !=
 (not equal), == (equivalence), <= (less-than-equal), and >=
 (more-than-equal).
-The character escape sequences documented in
+Управляющие последовательности символов, задокументированные в
 .Xr mandoc_char 7
-can be used, too.
+тоже можно использовать.
 .Pp
-The following control statements are available:
+Доступны следующие управляющие инструкции:
 .Bl -tag -width Ds
 .It Cm define
-Replace all occurrences of a key with a value.
-Its syntax is as follows:
+Замените все вхождения ключа значением.
+Его синтаксис следующий:
 .Pp
 .D1 Cm define Ar key cvalc
 .Pp
-The first character of the value string,
+Первый символ строки значений,
 .Ar c ,
-is used as the delimiter for the value
+используется в качестве разделителя для значения
 .Ar val .
-This allows for arbitrary enclosure of terms (not just quotes), such as
+Это позволяет заключать термины произвольно (не только в кавычки), например
 .Pp
 .D1 Cm define Ar foo \(aqbar baz\(aq
 .D1 Cm define Ar foo cbar bazc
 .Pp
-It is an error to have an empty
+Наличие пустого поля
 .Ar key
-or
-.Ar val .
-Note that a quoted
+или
+.Ar val 
+является ошибкой.
+Обратите внимание, что кавычки
 .Ar key
-causes errors in some
+вызывают ошибки в некоторых реализациях
 .Nm
-implementations and should not be considered portable.
-It is not expanded for replacements.
-Definitions may refer to other definitions; these are evaluated
-recursively when text replacement occurs and not when the definition is
-created.
+и не должен рассматриваться как переносимый.
+Он не расширяется для замены.
+Определения могут ссылаться на другие определения; они вычисляются
+рекурсивно при замене текста, а не при создании определения.
 .Pp
-Definitions can create arbitrary strings, for example, the following is
-a legal construction.
+Определения могут создавать произвольные строки, например, следующая конструкция является
+допустимой.
 .Bd -literal -offset indent
 define foo \(aqdefine\(aq
 foo bar \(aqbaz\(aq
 .Ed
 .Pp
-Self-referencing definitions will raise an error.
-The
+Определения, ссылающиеся на себя, приведут к возникновению ошибки.
+Оператор
 .Cm ndefine
-statement is a synonym for
+является синонимом для
 .Cm define ,
-while
+в то время как
 .Cm tdefine
-is discarded.
+отбрасывается.
 .It Cm delim
-This statement takes a string argument consisting of two bytes,
-to be used as the opening and closing delimiters for equations
-in the middle of text input lines.
-Conventionally, the dollar sign is used for both delimiters,
-as follows:
+Этот оператор принимает строковый аргумент, состоящий из двух байт,
+который будет использоваться в качестве начального и заключительного разделителей для уравнений
+в середине строк ввода текста.
+Обычно знак доллара используется для обоих разделителей
+следующим образом:
 .Bd -literal -offset indent
 \&.EQ
 delim $$
 \&.EN
-An equation like $sin pi = 0$ can now be entered
-in the middle of a text input line.
+Уравнение типа $sin pi = 0$ теперь можно ввести
+в середине строки ввода текста.
 .Ed
 .Pp
-The special statement
+Специальный оператор
 .Cm delim off
-temporarily disables previously declared delimiters and
+временно отключает ранее объявленные разделители и
 .Cm delim on
-reenables them.
+снова включает их.
 .It Cm gfont
-Set the default font of subsequent output.
-Its syntax is as follows:
+Установите шрифт по умолчанию для последующего вывода.
+Его синтаксис следующий:
 .Pp
 .D1 Cm gfont Ar font
 .Pp
-In mandoc, this value is discarded.
+В mandoc это значение отбрасывается.
 .It Cm gsize
-Set the default size of subsequent output.
-Its syntax is as follows:
+Установите размер по умолчанию для последующего вывода.
+Его синтаксис следующий:
 .Pp
 .D1 Cm gsize Oo +|\- Oc Ns Ar size
 .Pp
-The
+Значение
 .Ar size
-value should be an integer.
-If prepended by a sign,
-the font size is changed relative to the current size.
+должно быть целым числом.
+Если перед текстом стоит знак,
+размер шрифта изменяется относительно текущего размера.
 .It Cm set
-Set an equation mode.
-In mandoc, both arguments are thrown away.
-Its syntax is as follows:
+Установите режим уравнения.
+В mandoc оба аргумента отбрасываются.
+Его синтаксис следующий:
 .Pp
 .D1 Cm set Ar key val
 .Pp
-The
 .Ar key
-and
+и
 .Ar val
-are not expanded for replacements.
-This statement is a GNU extension.
+не расширяются для замены.
+Это утверждение является расширением GNU.
 .It Cm undef
-Unset a previously-defined key.
-Its syntax is as follows:
+Отмените установку ранее определенного ключа.
+Его синтаксис следующий:
 .Pp
 .D1 Cm define Ar key
 .Pp
-Once invoked, the definition for
+После вызова определение для
 .Ar key
-is discarded.
-The
+отбрасывается.
 .Ar key
-is not expanded for replacements.
-This statement is a GNU extension.
+не расширяется для замены.
+Это утверждение является расширением GNU.
 .El
 .Pp
-Operation keywords have the following semantics:
+Ключевые слова операции имеют следующую семантику:
 .Bl -tag -width Ds
 .It Cm above
-See
+Смотрите
 .Cm pile .
 .It Cm bar
-Draw a line over the preceding box.
+Нарисуйте линию над предыдущим полем.
 .It Cm bold
-Set the following box using bold font.
+Выделите следующее поле жирным шрифтом.
 .It Cm ccol
-Like
+Как
 .Cm cpile ,
-but for use in
+но для использования в
 .Cm matrix .
 .It Cm cpile
-Like
+Как
 .Cm pile ,
-but with slightly increased vertical spacing.
+но с немного увеличенным расстоянием по вертикали.
 .It Cm dot
-Set a single dot over the preceding box.
+Поставьте одну точку над предыдущим полем.
 .It Cm dotdot
-Set two dots (dieresis) over the preceding box.
+Установите две точки (различные) над предыдущим полем.
 .It Cm dyad
-Set a dyad symbol (left-right arrow) over the preceding box.
+Установите символ диады (стрелка влево-вправо) поверх предыдущего поля.
 .It Cm fat
-A synonym for
+Синоним для
 .Cm bold .
 .It Cm font
-Set the second argument using the font specified by the first argument;
-currently not recognized by the
+Задайте второй аргумент, используя шрифт, указанный в первом аргументе;
+в настоящее время не распознается синтаксическим анализатором
 .Xr mandoc 1
-.Nm
-parser.
+.Nm .
 .It Cm from
-Set the following box below the preceding box,
-using a slightly smaller font.
-Used for sums, integrals, limits, and the like.
+Установите следующее поле под предыдущим,
+используя шрифт чуть меньшего размера.
+Используется для сумм, интегралов, пределов и тому подобного.
 .It Cm hat
-Set a hat (circumflex) over the preceding box.
+Наденьте шапочку (circumflex) на предыдущее поле.
 .It Cm italic
-Set the following box using italic font.
+Установите следующее поле, используя курсивный шрифт.
 .It Cm lcol
-Like
+Как
 .Cm lpile ,
-but for use in
+но для использования в
 .Cm matrix .
 .It Cm left
-Set the first argument as a big left delimiter before the second argument.
-As an optional third argument,
+Укажите первый аргумент в качестве большого левого разделителя перед вторым аргументом.
+В качестве необязательного третьего аргумента,
 .Cm right
-can follow.
-In that case, the fourth argument is set as a big right delimiter after
-the second argument.
+может следовать.
+В этом случае четвертый аргумент устанавливается как большой правый разделитель после
+второго аргумента.
 .It Cm lpile
-Like
+Как
 .Cm cpile ,
-but subequations are left-justified.
+но вложенные уравнения выравниваются по левому краю.
 .It Cm matrix
-Followed by a list of columns enclosed in braces.
-All columns need to have the same number of subequations.
-The columns are set as a matrix.
-The difference compared to multiple subsequent
+Далее следует список столбцов, заключенных в фигурные скобки.
+Во всех столбцах должно быть одинаковое количество вложенных выражений.
+Столбцы задаются в виде матрицы.
+Разница по сравнению с несколькими последующими операторами
 .Cm pile
-operators is that in a
+заключается в
 .Cm matrix ,
-corresponding subequations in all columns line up horizontally,
-while each
+соответствующие подзаголовки во всех столбцах выстраиваются горизонтально,
+в то время как
 .Cm pile
-does vertical spacing independently.
+независимо выстраивается по вертикали.
 .It Cm over
-Set a fraction.
-The preceding box is the numerator, the following box is the denominator.
+Задайте дробь.
+Предыдущее поле - это числитель, следующее поле - знаменатель.
 .It Cm pile
-Followed by a list of subequations enclosed in braces,
-the subequations being separated by
-.Cm above
-keywords.
-Sets the subequations one above the other, each of them centered.
-Typically used to represent vectors in coordinate representation.
+За ним следует список подзаконных актов, заключенных в фигурные скобки,
+причем подзаконные акты разделены ключевыми словами
+.Cm above .
+Задает вложенные уравнения одно над другим, каждое из которых центрируется.
+Обычно используется для представления векторов в координатном представлении.
 .It Cm rcol
-Like
+Как
 .Cm rpile ,
-but for use in
+но для использования в
 .Cm matrix .
 .It Cm right
-See
+Смотрите
 .Cm left ;
 .Cm right
-cannot be used without
+не может быть использован без
 .Cm left .
-To set a big right delimiter without a big left delimiter, the following
-construction can be used:
+Чтобы установить большой правый разделитель без большого левого разделителя,
+можно использовать следующую конструкцию:
 .Pp
 .D1 Cm left No \(dq\(dq Ar box Cm right Ar delimiter
 .It Cm roman
-Set the following box using the default font.
+Установите следующее поле, используя шрифт по умолчанию.
 .It Cm rpile
-Like
+Как
 .Cm cpile ,
-but subequations are right-justified.
+но подзадачи правильно обоснованы.
 .It Cm size
-Set the second argument with the font size specified by the first
-argument; currently ignored by
+Установите во втором аргументе размер шрифта, указанный в первом
+аргументе; в настоящее время игнорируется
 .Xr mandoc 1 .
-By prepending a plus or minus sign to the first argument,
-the font size can be selected relative to the current size.
+Добавляя знак плюс или минус к первому аргументу,
+можно выбрать размер шрифта относительно текущего размера.
 .It Cm sqrt
-Set the square root of the following box.
+Установите квадратный корень из следующего поля.
 .It Cm sub
-Set the following box as a subscript to the preceding box.
+Установите следующий флажок в качестве нижнего индекса к предыдущему полю.
 .It Cm sup
-Set the following box as a superscript to the preceding box.
-As a special case, if a
+Установите следующий флажок в качестве верхнего индекса к предыдущему полю.
+В качестве особого случая, если предложение
 .Cm sup
-clause immediately follows a
+непосредственно следует за предложением
 .Cm sub
-clause as in
+как в
 .Pp
 .D1 Ar mainbox Cm sub Ar subbox Cm sup Ar supbox
 .Pp
-both are set with respect to the same
+оба они установлены относительно одного и того же
 .Ar mainbox ,
-that is,
+то есть,
 .Ar supbox
-is set above
+установлен выше
 .Ar subbox .
 .It Cm tilde
-Set a tilde over the preceding box.
+Установите тильду над предыдущим полем.
 .It Cm to
-Set the following box above the preceding box,
-using a slightly smaller font.
-Used for sums and integrals and the like.
-As a special case, if a
+Установите следующее поле над предыдущим,
+используя шрифт чуть меньшего размера.
+Используется для сумм, интегралов и т.п.
+В качестве особого случая, если предложение
 .Cm to
-clause immediately follows a
+следует непосредственно за предложением
 .Cm from
-clause as in
+как в
 .Pp
 .D1 Ar mainbox Cm from Ar frombox Cm to Ar tobox
 .Pp
-both are set below and above the same
+оба они установлены ниже и выше одного и того же
 .Ar mainbox .
 .It Cm under
-Underline the preceding box.
+Подчеркните предыдущее поле.
 .It Cm vec
-Set a vector symbol (right arrow) over the preceding box.
+Установите векторный символ (стрелку вправо) поверх предыдущего поля.
 .El
 .Pp
-The binary operations
+Бинарные операции
 .Cm from ,
 .Cm to ,
 .Cm sub ,
-and
+и
 .Cm sup
-group to the right, that is,
+группируются справа, то есть,
 .Pp
 .D1 Ar mainbox Cm sup Ar supbox Cm sub Ar subbox
 .Pp
-is the same as
+это то же самое, что
 .Pp
 .D1 Ar mainbox Cm sup Brq Ar supbox Cm sub Ar subbox
 .Pp
-and different from
+и отличается от
 .Pp
 .D1 Bro Ar mainbox Cm sup Ar supbox Brc Cm sub Ar subbox .
 .Pp
-By contrast,
+По контрасту,
 .Cm over
-groups to the left.
+группируется слева.
 .Pp
-In the following list, earlier operations bind more tightly than
-later operations:
+В следующем списке более ранние операции связаны более тесно, чем
+более поздние:
 .Pp
 .Bl -enum -compact
 .It
@@ -431,77 +425,76 @@ later operations:
 .Cm from ,
 .Cm to
 .El
-.Sh COMPATIBILITY
-This section documents the compatibility of mandoc
+.Sh СОВМЕСТИМОСТЬ
+В этом разделе описывается совместимость реализации mandoc
 .Nm
-and the troff
+и реализации troff
 .Nm
-implementation (including GNU troff).
+(включая GNU troff).
 .Pp
 .Bl -dash -compact
 .It
-The text string
+Текстовая строка
 .Sq \e\(dq
-is interpreted as a literal quote in troff.
-In mandoc, this is interpreted as a comment.
+в troff интерпретируется как буквальная цитата.
+В mandoc это интерпретируется как комментарий.
 .It
-In troff, The circumflex and tilde white-space symbols map to
-fixed-width spaces.
-In mandoc, these characters are synonyms for the space character.
+В troff символы циркумфлекса и тильды, обозначающие пробелы,
+соответствуют символам фиксированной ширины.
+В mandoc эти символы являются синонимами символа пробела.
 .It
-The troff implementation of
+Реализация troff
 .Nm
-allows for equation alignment with the
+позволяет выравнивать уравнения с помощью токенов
 .Cm mark
-and
-.Cm lineup
-tokens.
-mandoc discards these tokens.
-The
+и
+.Cm lineup .
+mandoc отбрасывает эти токены.
+Команды
 .Cm back Ar n ,
 .Cm fwd Ar n ,
 .Cm up Ar n ,
-and
+и
 .Cm down Ar n
-commands are also ignored.
+также игнорируются.
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr mandoc 1 ,
 .Xr man 7 ,
 .Xr mandoc_char 7 ,
 .Xr mdoc 7 ,
 .Xr roff 7
 .Rs
-.%A Brian W. Kernighan
-.%A Lorinda L. Cherry
-.%T System for Typesetting Mathematics
-.%J Communications of the ACM
+.%A Брайан У. Керниган
+.%A Лоринда Л. Черри
+.%T Система для математического набора текста
+.%J Сообщения ACM
 .%V 18
-.%P pp. 151\(en157
-.%D March, 1975
+.%P стр. 151\(en157
+.%D Март, 1975
 .Re
 .Rs
-.%A Brian W. Kernighan
-.%A Lorinda L. Cherry
-.%T Typesetting Mathematics, User's Guide
+.%A Брайан У. Керниган
+.%A Лоринда Л. Черри
+.%T Математика набора текста, Руководство пользователя
 .%D 1976
 .Re
 .Rs
-.%A Brian W. Kernighan
-.%A Lorinda L. Cherry
-.%T Typesetting Mathematics, User's Guide (Second Edition)
+.%A Брайан У. Керниган
+.%A Лоринда Л. Черри
+.%T Математика набора текста, Руководство пользователя (Второе издание)
 .%D 1978
 .Re
-.Sh HISTORY
-The eqn utility, a preprocessor for troff, was originally written by
-Brian W. Kernighan and Lorinda L. Cherry in 1975.
-The GNU reimplementation of eqn, part of the GNU troff package, was
-released in 1989 by James Clark.
-The eqn component of
+.Sh ИСТОРИЯ
+Утилита eqn, препроцессор для troff, была первоначально написана
+Брайаном У. Керниганом и Лориндой Л. Черри в 1975 году.
+Новая реализация GNU eqn, входящая в состав пакета GNU troff, была
+выпущена в 1989 году Джеймсом Кларком.
+Компонент eqn в
 .Xr mandoc 1
-was added in 2011.
-.Sh AUTHORS
-This
+был добавлен в 2011 году.
+.Sh АВТОРЫ
+Эта ссылка
 .Nm
-reference was written by
-.An Kristaps Dzonsons Aq Mt kristaps@bsd.lv .
+была написана
+.An Кристапом Дзонсоном Aq Mt kristaps@bsd.lv .

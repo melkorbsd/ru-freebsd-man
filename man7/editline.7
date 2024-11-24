@@ -18,92 +18,87 @@
 .Dd May 7, 2016
 .Dt EDITLINE 7
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm editline
-.Nd line editing user interface
-.Sh DESCRIPTION
-When a program using the
-.Xr editline 3
-library prompts for an input string using the function
+.Nd пользовательский интерфейс для редактирования строк
+.Sh ОПИСАНИЕ
+Когда программа, использующая библиотеку
+.Xr editline 3 ,
+запрашивает ввод строки с помощью функции
 .Xr el_wgets 3 ,
-it reads characters from the terminal.
-Invalid input bytes that do not form characters are silently
-discarded.
-For each character read, one editor command is executed.
-The mapping of input characters to editor commands depends on the
-editing mode.
-There are three editing modes: vi insert mode, vi command mode,
-and emacs mode.
-The default is vi insert mode.
-The program can switch the default to emacs mode by using the
+она считывает символы с терминала.
+Недопустимые входные байты, которые не образуют символов, автоматически
+удаляются.
+Для каждого считанного символа выполняется одна команда редактора.
+Соответствие входных символов командам редактора зависит от режима
+редактирования.
+Существует три режима редактирования: vi insert mode, vi command mode
+и emacs mode.
+По умолчанию используется vi insert mode.
+Программа может переключить режим по умолчанию на emacs с помощью функций
 .Xr el_set 3
-or
-.Xr el_parse 3
-functions, and the user can switch to emacs mode either in the
+или
+.Xr el_parse 3 ,
+и пользователь может переключиться в режим emacs либо в конфигурационном файле
 .Xr editrc 5
-configuration file or interactively with the
-.Ic ed-command
-editor command, in all three cases executing the
-.Ic bind Fl e
-builtin command.
+или в интерактивном режиме с помощью команды редактора
+.Ic ed-command ,
+во всех трех случаях выполняется встроенная команда
+.Ic bind Fl e .
 .Pp
-If trying to read from the terminal results in end of file or an
-error, the library signals end of file to the program and does not
-return a string.
+Если попытка чтения из терминала приводит к завершению файла или
+ошибке, библиотека сигнализирует программе об окончании файла и не
+возвращает строку.
 .Ss Input character bindings
-All default bindings described below can be overridden by individual
-programs and can be changed with the
+Все описанные ниже привязки по умолчанию могут быть переопределены отдельными
+программами и изменены с помощью встроенной команды
 .Xr editrc 5
-.Ic bind
-builtin command.
+.Ic bind .
 .Pp
-In the following tables,
+В следующих таблицах,
 .Sq Ctrl-
-indicates a character with the bit 0x40 flipped, and
+указывает символ с перевернутым битом 0x40, и
 .Sq Meta-
-indicates a character with the bit 0x80 set.
-In vi insert mode and in emacs mode, all Meta-characters considered
-printable by the current
-.Xr locale 1
-are bound to
+указывает символ с установленным разрядом 0x80.
+В режиме vi insert и в режиме emacs все метасимволы, которые текущий пользователь считает
+пригодными для печати
+.Xr locale 1 ,
+привязаны к
 .Ic ed-insert
-instead of to the editor command listed below.
-Consequently, in UTF-8 mode, most of the Meta-characters are not
-directly accessible because their code points are occupied by
-printable Unicode characters, and Meta-characters are usually input
-using the
-.Ic em-meta-next
-editor command.
-For example, to enter
+вместо приведенной ниже команды редактирования.
+Следовательно, в режиме UTF-8 большинство метасимволов недоступны
+напрямую, поскольку их кодовые точки заняты
+печатаемыми символами Юникода, а метасимволы обычно вводятся
+с помощью команды редактирования
+.Ic em-meta-next .
+Например, для ввода
 .Sq Meta-B
-in order to call the
+для того, чтобы вызвать команду редактора
 .Ic ed-prev-word
-editor command in emacs mode, call
+в режиме emacs вызовите
 .Ic em-meta-next
-by pressing and releasing the escape key (or equivalently, Ctrl-[),
-then press and release the
-.Sq B
-key.
-If you have configured a Meta-key on your keyboard, for example
-with
+нажав и отпустив клавишу escape (или эквивалентное, Ctrl-[),
+затем нажмите и отпустите клавишу
+.Sq B .
+Если вы настроили мета-клавишу на своей клавиатуре, например,
+с помощью
 .Ql setxkbmap -option altwin:left_meta_win ,
-the Ctrl-Meta-characters are directly accessible.
-For example, to enter
+метасимволы Ctrl доступны непосредственно.
+Например, для ввода
 .Sq Ctrl-Meta-H
-in order to call the
+для того, чтобы вызвать команду редактора
 .Ic ed-delete-prev-word
-editor command in emacs mode, hold down the keys
+в режиме emacs удерживайте одновременно нажатыми клавиши
 .Sq Ctrl ,
 .Sq Meta ,
-and
-.Sq H
-at the same time.
-Alternatively, press and release the escape key, then press and
-release
+и
+.Sq H .
+В качестве альтернативы нажмите и отпустите клавишу escape, затем нажмите и
+отпустите
 .Sq Ctrl-H .
 .Pp
-In vi input mode, input characters are bound to the following editor
-commands by default:
+В режиме ввода vi вводимые символы по умолчанию привязаны к следующим
+командам редактора:
 .Bl -column -offset indent "Ctrl-Z, TSTP" "ed-search-next-history"
 .It Ctrl-D, EOF Ta Ic vi-list-or-eof
 .It Ctrl-H, BS Ta Ic vi-delete-prev-char
@@ -119,12 +114,12 @@ commands by default:
 .It Ctrl-?, DEL Ta Ic vi-delete-prev-char
 .El
 .Pp
-All other input characters except the NUL character (Ctrl-@) are
-bound to
+Все остальные вводимые символы, кроме символа NUL (Ctrl-@),
+привязаны к
 .Ic ed-insert .
 .Pp
-In vi command mode, input characters are bound to the following
-editor commands by default:
+В командном режиме vi вводимые символы по умолчанию привязаны к следующим
+командам редактора:
 .Bl -column -offset indent "Ctrl-Z, TSTP" "ed-search-next-history"
 .It Ctrl-A Ta Ic ed-move-to-beg
 .It Ctrl-C, INT Ta Ic ed-tty-sigint
@@ -210,8 +205,8 @@ editor commands by default:
 .It Meta-[ Ta Ic ed-sequence-lead-in
 .El
 .Pp
-In emacs mode, input characters are bound to the following editor
-commands by default:
+В режиме emacs вводимые символы по умолчанию привязаны к следующим
+командам редактора:
 .Bl -column -offset indent "Ctrl-Z, TSTP" "ed-search-next-history"
 .It 0 to 9 Ta Ic ed-digit
 .It Ctrl-@, NUL Ta Ic em-set-mark
@@ -272,594 +267,577 @@ commands by default:
 .It Ctrl-Meta-? Ta Ic ed-delete-prev-word
 .El
 .Pp
-The remaining
+Остальные символы
 .Xr ascii 7
-characters in the range 0x20 to 0x7e are bound to
+в диапазоне от 0x20 до 0x7e привязаны к
 .Ic ed-insert .
 .Pp
-If standard output is not connected to a terminal device
-or
+Если стандартный выход не подключен к оконечному устройству
+или
 .Xr el_set 3
-was used to set
+был использован для установки
 .Dv EL_EDITMODE
-to 0, all input character bindings are disabled and all characters
-typed are appended to the edit buffer.
-In that case, the edit buffer is returned to the program after a
-newline or carriage return character is typed, or after the first
-character typed if
+на 0, все привязки к вводимым символам отключены, и все
+введенные символы добавляются в буфер редактирования.
+В этом случае буфер редактирования возвращается программе после
+ввода символа новой строки или возврата каретки или после ввода первого
+символа, если
 .Xr el_set 3
-was used to set
+был использован для установки
 .Dv EL_UNBUFFERED
-to non-zero.
+до ненулевого значения.
 .Ss Editor commands
-Most editor commands accept an optional argument.
-The argument is entered by prefixing the editor command with one
-or more of the editor commands
+Большинство команд редактора принимают необязательный аргумент.
+Аргумент вводится путем добавления к команде редактора одной
+или нескольких команд редактора
 .Ic ed-argument-digit ,
 .Ic ed-digit ,
 .Ic em-universal-argument ,
-or
+или
 .Ic vi-zero .
-When an argument is not provided, it defaults to 1.
-For most editor commands, the effect of an argument is to repeatedly
-execute the command that number of times.
+Если аргумент не указан, значение по умолчанию равно 1.
+Для большинства команд редактора значение аргумента заключается в повторном
+выполнении команды определенное количество раз.
 .Pp
-When talking about a character string from a left character to a
-right character, the left character is included in the string, while
-the right character is not included.
+Когда речь идет о символьной строке от левого символа к
+правому, левый символ включается в строку, в то время
+как правый символ не включается.
 .Pp
-If an editor command causes an error, the input character is discarded,
-no action occurs, and the terminal bell is rung.
-In case of a non-fatal error, the terminal bell is also rung,
-but the editor command takes effect anyway.
+Если команда редактора вызывает ошибку, вводимый символ отбрасывается,
+никаких действий не выполняется, и подается сигнал вызова терминала.
+В случае неустранимой ошибки также подается сигнал вызова терминала,
+но команда редактора все равно вступает в силу.
 .Pp
-In the following list, the default key bindings are listed after
-each editor command.
+В следующем списке привязки клавиш по умолчанию перечислены после
+каждой команды редактора.
 .Bl -tag -width 4n
 .It Ic ed-argument-digit Pq vi command: 1 to 9; emacs: Meta-0 to Meta-9
-If in argument input mode, append the input digit to the argument
-being read.
-Otherwise, switch to argument input mode and use the input digit
-as the most significant digit of the argument.
-It is an error if the input character is not a digit or if the
-existing argument is already greater than a million.
+Если используется режим ввода аргумента, добавьте входную цифру к
+считываемому аргументу.
+В противном случае переключитесь в режим ввода аргумента и используйте входную цифру
+в качестве старшей цифры аргумента.
+Это ошибка, если вводимый символ не является цифрой или если
+существующий аргумент уже превышает миллион.
 .It Ic ed-clear-screen Pq vi command: Ctrl-L; emacs: Ctrl-L, Ctrl-Meta-L
-Clear the screen and display the edit buffer at the top.
-Ignore any argument.
+Очистите экран и отобразите буфер редактирования вверху.
+Игнорируйте любые аргументы.
 .It Ic ed-command Pq vi command: So \&: Sc ; emacs: Meta-X, Meta-x
-Read a line from the terminal bypassing the normal line editing
-functionality and execute that line as an
-.Xr editrc 5
-builtin command.
-If in vi command mode, also switch back to vi insert mode.
-Ignore any argument.
+Считайте строку из терминала, минуя обычную
+функцию редактирования строк, и выполняйте эту строку как встроенную команду
+.Xr editrc 5 .
+Если вы находитесь в командном режиме vi, также переключитесь обратно в режим vi insert.
+Игнорируйте любые аргументы.
 .It Ic ed-delete-next-char Pq vi command: x
-Delete the character at the cursor position.
-With an argument, delete that number of characters.
-In emacs mode, it is an error if the cursor is at the end of the
-edit buffer.
-In vi mode, the last character in the edit buffer is deleted in
-that case, and it is an error if the buffer is empty.
+Удалите символ в позиции курсора.
+С помощью аргумента удалите указанное количество символов.
+В режиме emacs, если курсор находится в конце буфера редактирования, возникает ошибка.
+В режиме vi в этом случае последний символ в буфере редактирования удаляется,
+и если буфер пуст, это является ошибкой.
 .It Ic ed-delete-prev-char Pq vi command: X, Ctrl-H, BS, Ctrl-?, DEL
-Delete the character to the left of the cursor position.
-With an argument, delete that number of characters.
-It is an error if the cursor is at the beginning of the edit buffer.
+Удалите символ слева от позиции курсора.
+С помощью аргумента удалите это количество символов.
+Если курсор находится в начале буфера редактирования, возникает ошибка.
 .It Ic ed-delete-prev-word Pq vi: Ctrl-W; emacs: Ctrl-Meta-H, Ctrl-Meta-?
-Move to the left to the closest beginning of a word, delete the
-string from that position to the cursor, and save it to the cut
-buffer.
-With an argument, delete that number of words.
-It is an error if the cursor is at the beginning of the edit buffer.
+Переместитесь влево к ближайшему началу слова, удалите
+строку с этой позиции до курсора и сохраните ее в буфере вырезания.
+С аргументом удалите это количество слов.
+Если курсор находится в начале буфера редактирования, возникает ошибка.
 .It Ic ed-digit Pq emacs: 0 to 9
-If in argument input mode, append the input digit to the argument
-being read.
-Otherwise, call
+Если используется режим ввода аргумента, добавьте вводимую цифру к
+считываемому аргументу.
+В противном случае вызовите
 .Ic ed-insert .
-It is an error if the input character is not a digit or if the
-existing argument is already greater than a million.
+Это ошибка, если вводимый символ не является цифрой или если
+существующий аргумент уже превышает миллион.
 .It Ic ed-end-of-file Pq not bound by default
-Discard the edit buffer and indicate end of file to the program.
-Ignore any argument.
+Удалите буфер редактирования и укажите программе конец файла.
+Игнорируйте любые аргументы.
 .It Ic ed-ignore Pq various
-Discard the input character and do nothing.
+Удалите введенный символ и ничего не делайте.
 .It Ic ed-insert Pq vi input: almost all; emacs: printable characters
-In insert mode, insert the input character left of the cursor
-position.
-In replace mode, overwrite the character at the cursor and move the
-cursor to the right by one character position.
-Accept an argument to do this repeatedly.
-It is an error if the input character is the NUL character (Ctrl-@).
-Failure to enlarge the edit buffer also results in an error.
+В режиме вставки введите вводимый символ слева от позиции курсора.
+В режиме замены перепишите символ рядом с курсором и переместите
+курсор вправо на одну позицию.
+Примите аргумент, чтобы повторить это действие.
+Ошибка возникает, если в качестве входного символа используется символ NUL (Ctrl-@).
+Ошибка при увеличении буфера редактирования также приводит к ошибке.
 .It Ic ed-kill-line Pq vi command: D, Ctrl-K; emacs: Ctrl-K, Ctrl-U
-Delete the string from the cursor position to the end of the line
-and save it to the cut buffer.
-Ignore any argument.
+Удалите строку от позиции курсора до конца строки
+и сохраните ее в буфере вырезания.
+Игнорируйте любые аргументы.
 .It Ic ed-move-to-beg Pq vi command: ^, Ctrl-A; emacs: Ctrl-A
-In vi mode, move the cursor to the first non-space character in the
-edit buffer.
-In emacs mode, move the cursor to the beginning of the edit buffer.
-Ignore any argument.
-Can be used as a movement command after
+В режиме vi переместите курсор на первый символ без пробела в буфере
+редактирования.
+В режиме emacs переместите курсор в начало буфера редактирования.
+Игнорируйте любые аргументы.
+Может использоваться как команда перемещения после
 .Ic vi_change_meta ,
 .Ic vi_delete_meta ,
-or
+или
 .Ic vi_yank .
 .It Ic ed-move-to-end Pq vi command: $, Ctrl-E; emacs: Ctrl-E
-Move the cursor to the end of the edit buffer.
-Ignore any argument.
-Can be used as a movement command after
+Переместите курсор в конец буфера редактирования.
+Игнорируйте любые аргументы.
+Может использоваться как команда перемещения после
 .Ic vi_change_meta ,
 .Ic vi_delete_meta ,
-or
+или
 .Ic vi_yank .
 .It Ic ed-newline Pq all modes: Ctrl-J, LF, Ctrl-M, CR
-Append a newline character to the edit buffer and return the edit
-buffer to the program.
-Ignore any argument.
+Добавьте символ новой строки в буфер редактирования и верните буфер редактирования
+программе.
+Игнорируйте любые аргументы.
 .It Ic ed-next-char Pq vi command: Space, l; emacs: Ctrl-F
-Move the cursor one character position to the right.
-With an argument, move by that number of characters.
-Can be used as a movement command after
+Переместите курсор на одну позицию вправо.
+Используя аргумент, переместите курсор на указанное количество символов.
+Может использоваться как команда перемещения после
 .Ic vi_change_meta ,
 .Ic vi_delete_meta ,
-or
+или
 .Ic vi_yank .
-It is an error if the cursor is already at the end of the edit
-buffer.
+Это ошибка, если курсор уже находится в конце буфера редактирования.
 .It Ic ed-next-history Pq vi command: j, +, Ctrl-N; emacs: Ctrl-N
-Replace the edit buffer with the next history line.
-That line is older than the current line.
-With an argument, go forward by that number of history lines.
-It is a non-fatal error to advance by more lines than are available.
+Замените буфер редактирования следующей строкой хронологии.
+Эта строка старше текущей строки.
+Используя аргумент, перейдите вперед на указанное количество строк хронологии.
+Переход на большее количество строк, чем доступно, является неустранимой ошибкой.
 .It Ic ed-next-line Pq not bound by default
-Move the cursor down one line.
-With an argument, move down by that number of lines.
-It is an error if the edit buffer does not contain enough newline
-characters to the right of the cursor position.
+Переместите курсор вниз на одну строку.
+Используя аргумент, переместите его вниз на указанное количество строк.
+Ошибка возникает, если в буфере редактирования недостаточно символов
+новой строки справа от позиции курсора.
 .It Ic ed-prev-char Pq vi command: h; emacs: Ctrl-B
-Move the cursor one character position to the left.
-With an argument, move by that number of characters.
-Can be used as a movement command after
+Переместите курсор на одну позицию влево.
+Используя аргумент, переместите курсор на указанное количество символов.
+Может использоваться как команда перемещения после
 .Ic vi_change_meta ,
 .Ic vi_delete_meta ,
-or
+или
 .Ic vi_yank .
-It is an error if the cursor is already at the beginning of the
-edit buffer.
+Это ошибка, если курсор уже находится в начале буфера
+редактирования.
 .It Ic ed-prev-history Pq vi command: k, -, Ctrl-P; emacs: Ctrl-P
-Replace the edit buffer with the previous history line.
-That line is newer than the current line.
-With an argument, go back by that number of lines.
-It is a non-fatal error to back up by more lines than are available.
+Замените буфер редактирования предыдущей строкой истории.
+Эта строка более новая, чем текущая строка.
+Используя аргумент, вернитесь на указанное количество строк.
+Создание резервной копии на большее количество строк, чем доступно, является неустранимой ошибкой.
 .It Ic ed-prev-line Pq not bound by default
-Move the cursor up one line.
-With an argument, move up by that number of lines.
-It is an error if the edit buffer does not contain enough newline
-characters to the left of the cursor position.
+Переместите курсор на одну строку вверх.
+Используя аргумент, переместите его на указанное количество строк вверх.
+Ошибка возникает, если в буфере редактирования недостаточно символов
+новой строки слева от позиции курсора.
 .It Ic ed-prev-word Pq emacs: Meta-B, Meta-b
-Move the cursor to the left to the closest beginning of a word.
-With an argument, repeat that number of times.
-Can be used as a movement command after
+Переместите курсор влево к ближайшему началу слова.
+С аргументом повторите это количество раз.
+Может использоваться как команда перемещения после
 .Ic vi_change_meta ,
 .Ic vi_delete_meta ,
-or
+или
 .Ic vi_yank .
-It is an error if the cursor is already at the beginning of the
-edit buffer.
+Это ошибка, если курсор уже находится в начале буфера
+редактирования.
 .It Ic ed-quoted-insert Pq vi insert, emacs: Ctrl-V
-Read one character from the terminal bypassing the normal line
-editing functionality and call
+Считайте один символ с терминала, минуя обычную
+функцию редактирования строк, и вызывайте
 .Ic ed-insert
-on it.
-If trying to read the character returns end of file or an error,
-call
-.Ic ed-end-of-file
-instead.
+на нем.
+Если попытка прочитать символ возвращает конец файла или ошибку,
+вызовите вместо этого
+.Ic ed-end-of-file .
 .It Ic ed-redisplay Pq vi command, emacs: Ctrl-R
-Redisplay everything.
-Ignore any argument.
+Воспроизведите все заново.
+Игнорируйте любые аргументы.
 .It Ic ed-search-next-history Pq vi command: J; emacs: Meta-N, Meta-n
-Replace the edit buffer with the next matching history entry.
+Замените буфер редактирования следующей соответствующей записью в истории.
 .It Ic ed-search-prev-history Pq vi command: K; emacs: Meta-P, Meta-p
-Replace the edit buffer with the previous matching history entry.
+Замените буфер редактирования предыдущей соответствующей записью в истории.
 .It Ic ed-sequence-lead-in Pq vi cmd: O, \&[; emacs: Ctrl-X;\
  both: Meta-O, Meta-[
-Call a macro.
-See the section about
+Вызов макроса.
+Смотрите раздел
 .Sx Macros
-below for details.
+ниже для получения подробностей.
 .It Ic ed-start-over Pq not bound by default
-Discard the contents of the edit buffer and start from scratch.
-Ignore any argument.
+Удалите содержимое буфера редактирования и начните с нуля.
+Игнорируйте все аргументы.
 .It Ic ed-transpose-chars Pq emacs: Ctrl-T
-Exchange the character at the cursor position with the one to the
-left of it and move the cursor to the character to the right of the
-two exchanged characters.
-Ignore any argument.
-It is an error if the cursor is at the beginning of the edit buffer
-or if the edit buffer contains less than two characters.
+Замените символ в позиции курсора на символ
+слева от него и переместите курсор на символ справа от
+двух замененных символов.
+Игнорируйте любые аргументы.
+Это ошибка, если курсор находится в начале буфера редактирования
+или если буфер редактирования содержит менее двух символов.
 .It Ic ed-unassigned Pq all characters not listed
-This editor command always results in an error.
+Эта команда редактора всегда приводит к ошибке.
 .It Ic em-capitol-case Pq emacs: Meta-C, Meta-c
-Capitalize the string from the cursor to the end of the current
-word.
-That is, if it contains at least one alphabetic character, convert
-the first alphabetic character to upper case, and convert all
-characters to the right of it to lower case.
-In any case, move the cursor to the next character after the end
-of the current word.
+Введите строку от курсора до конца текущего
+слова с заглавной буквы.
+То есть, если она содержит хотя бы один буквенный символ, преобразуйте
+первый буквенный символ в верхний регистр, а все
+символы справа от него - в нижний.
+В любом случае, переместите курсор на следующий символ после окончания
+текущего слова.
 .It Ic em-copy-prev-word Pq emacs: Ctrl-Meta-_
-Copy the string from the beginning of the current word to the cursor
-and insert it to the left of the cursor.
-Move the cursor to the character after the inserted string.
-It is an error if the cursor is at the beginning of the edit buffer.
+Скопируйте строку с начала текущего слова в курсор
+и вставьте ее слева от курсора.
+Переместите курсор на символ, следующий за вставленной строкой.
+Если курсор находится в начале буфера редактирования, возникает ошибка.
 .It Ic em-copy-region Pq emacs: Meta-W, Meta-w
-Copy the string from the cursor to the mark to the cut buffer.
-It is an error if the mark is not set.
+Скопируйте строку с курсора на метку в буфер вырезания.
+Если метка не установлена, это ошибка.
 .It Ic em-delete-next-word Pq emacs: Meta-D, Meta-d
-Delete the string from the cursor to the end of the current word
-and save it to the cut buffer.
-It is an error if the cursor is at the end of the edit buffer.
+Удалите строку от курсора до конца текущего слова
+и сохраните ее в буфере редактирования.
+Если курсор находится в конце буфера редактирования, возникает ошибка.
 .It Ic em-delete-or-list Pq emacs: Ctrl-D, EOF
-If the cursor is not at the end of the line, delete the character
-at the cursor.
-If the edit buffer is empty, indicate end of file to the program.
-It is an error if the cursor is at the end of the edit buffer and
-the edit buffer is not empty.
+Если курсор находится не в конце строки, удалите символ
+рядом с курсором.
+Если буфер редактирования пуст, укажите программе конец файла.
+Если курсор находится не в конце буфера редактирования, а
+буфер редактирования не пуст, это означает ошибку.
 .It Ic em-delete-prev-char Pq emacs: Ctrl-H, BS, Ctrl-?, DEL
-Delete the character to the left of the cursor.
-It is an error if the cursor is at the beginning of the edit buffer.
+Удалите символ слева от курсора.
+Если курсор находится в начале буфера редактирования, возникает ошибка.
 .It Ic em-exchange-mark Pq not bound by default
-Exchange the cursor and the mark.
+Поменяйте местами курсор и метку.
 .It Ic em-gosmacs-transpose Pq not bound by default
-Exchange the two characters to the left of the cursor.
-It is an error if the cursor is on the first or second character
-of the edit buffer.
+Поменяйте местами два символа слева от курсора.
+Если курсор находится на первом или втором символе
+буфера редактирования, возникает ошибка.
 .It Ic em-inc-search-next Pq not bound by default
-Emacs incremental next search.
+Emacs выполняет инкрементный следующий поиск.
 .It Ic em-inc-search-prev Pq not bound by default
-Emacs incremental reverse search.
+Инкрементальный обратный поиск в Emacs.
 .It Ic em-kill-line Pq not bound by default
-Delete the entire contents of the edit buffer and save it to the
-cut buffer.
+Удалите все содержимое буфера редактирования и сохраните его в буфере
+вырезания.
 .It Ic em-kill-region Pq emacs: Ctrl-W
-Delete the string from the cursor to the mark and save it to the
-cut buffer.
-It is an error if the mark is not set.
+Удалите строку от курсора до метки и сохраните ее в буфере
+вырезания.
+Если метка не установлена, это ошибка.
 .It Ic em-lower-case Pq emacs: Meta-L, Meta-l
-Convert the characters from the cursor to the end of the current
-word to lower case.
+Преобразуйте символы от курсора до конца текущего
+слова в нижний регистр.
 .It Ic em-meta-next Pq vi command, emacs: Ctrl-[, ESC
-Set the bit 0x80 on the next character typed.
-Unless the resulting code point is printable, holding down the
-.Sq Meta-
-key while typing that character is a simpler way to achieve the
-same effect.
+Установите значение 0x80 для следующего введенного символа.
+Если результирующая кодовая точка не предназначена для печати, удерживая нажатой
+.Sq мета-клавишу ,
+хотя ввод этого символа - более простой способ добиться того
+же эффекта.
 .It Ic em-next-word Pq Meta-F, Meta-f
-Move the cursor to the end of the current word.
-Can be used as a movement command after
+Переместите курсор в конец текущего слова.
+Может использоваться как команда перемещения после
 .Ic vi_change_meta ,
 .Ic vi_delete_meta ,
-or
+или
 .Ic vi_yank .
-It is an error if the cursor is already at the end of the edit
-buffer.
+Это ошибка, если курсор уже находится в конце буфера редактирования.
 .It Ic em-set-mark Pq emacs: Ctrl-Q, NUL
-Set the mark at the current cursor position.
+Установите метку в текущее положение курсора.
 .It Ic em-toggle-overwrite Pq not bound by default
-Switch from insert to overwrite mode or vice versa.
+Переключитесь из режима вставки в режим перезаписи или наоборот.
 .It Ic em-universal-argument Pq not bound by default
-If in argument input mode, multiply the argument by 4.
-Otherwise, switch to argument input mode and set the argument to 4.
-It is an error if the existing argument is already greater than a
-million.
+Если используется режим ввода аргумента, умножьте аргумент на 4.
+В противном случае переключитесь в режим ввода аргумента и установите значение аргумента равным 4.
+Если существующий аргумент уже превышает
+миллион, это ошибка.
 .It Ic em-upper-case Pq emacs: Meta-U, Meta-u
-Convert the characters from the cursor to the end of the current
-word to upper case.
+Преобразуйте символы от курсора до конца текущего
+слова в верхний регистр.
 .It Ic em-yank Pq emacs: Ctrl-Y
-Paste the cut buffer to the left of the cursor.
+Вставьте вырезанный буфер слева от курсора.
 .It Ic vi-add Pq vi command: a
-Switch to vi insert mode.
-Unless the cursor is already at the end of the edit buffer, move
-it one character position to the right.
+Переключитесь в режим вставки vi.
+Если курсор уже не находится в конце буфера редактирования, переместите
+его на одну позицию вправо.
 .It Ic vi-add-at-eol Pq vi command: A
-Switch to vi insert mode and move the cursor to the end of the edit
-buffer.
+Переключитесь в режим вставки vi и переместите курсор в конец буфера редактирования.
 .It Ic vi-alias Pq vi command: @
-If an alias function was defined by calling the
+Если функция псевдонима была определена путем вызова функции
 .Xr el_set 3
-or
+или
 .Xr el_wset 3
-function with the argument
+с аргументом
 .Dv EL_ALIAS_TEXT ,
-read one character from the terminal bypassing the normal line
-editing functionality, call the alias function passing the argument that was specified with
+считайте один символ из терминала, минуя обычную
+функцию редактирования строк, вызывайте функцию псевдонима, передавая аргумент, который был указан с помощью
 .Dv EL_ALIAS_TEXT
-as the first argument and the character read, with an underscore
-prepended, as the second argument, and pass the string returned
-from the alias function to
+в качестве первого аргумента и считываемого символа с
+добавленным символом подчеркивания в качестве второго аргумента и передайте строку, возвращенную
+функцией alias, в
 .Xr el_wpush 3 .
-It is an error if no alias function is defined or if trying to read
-the character results in end of file or an error.
+Это ошибка, если функция псевдонима не определена или если попытка прочитать
+символ приводит к завершению файла или ошибке.
 .It Ic vi-change-case Pq vi command: ~
-Change the case of the character at the cursor and move the cursor
-one character position to the right.
-It is an error if the cursor is already at the end of the edit
-buffer.
+Измените регистр символов у курсора и переместите курсор
+на одну позицию вправо.
+Ошибка возникает, если курсор уже находится в конце буфера редактирования.
 .It Ic vi-change-meta Pq vi command: c
-Delete the string from the cursor to the position specified by the
-following movement command and save a copy of it to the cut buffer.
-When given twice in a row, instead delete the whole contents of the
-edit buffer and save a copy of it to the cut buffer.
-In either case, switch to vi insert mode after that.
+Удалите строку от позиции курсора до положения, указанного
+следующей командой перемещения, и сохраните ее копию в буфере вырезания.
+Если команда вводится дважды подряд, вместо этого удалите все содержимое буфера
+редактирования и сохраните его копию в буфере вырезания.
+В любом случае, после этого переключитесь в режим vi insert.
 .It Ic vi-change-to-eol Pq vi command: C
-Delete the string from the cursor position to the end of the line
-and save it to the cut buffer, then switch to vi insert mode.
+Удалите строку от позиции курсора до конца строки
+и сохраните ее в буфере вырезания, затем переключитесь в режим вставки vi.
 .It Ic vi-command-mode Pq vi insert: Ctrl-[, ESC
-Discard pending actions and arguments and switch to vi command mode.
-Unless the cursor is already at the beginning of the edit buffer,
-move it to the left by one character position.
+Отмените ожидающие действия и аргументы и переключитесь в командный режим vi.
+Если курсор уже не находится в начале буфера редактирования,
+переместите его влево на один символ.
 .It Ic vi-comment-out Pq vi command: #
-Insert a
+Вставка символа
 .Sq #
-character at the beginning of the edit buffer and return the edit
-buffer to the program.
+в начале буфера редактирования и возврат буфера редактирования
+программе.
 .It Ic vi-delete-meta Pq vi command: d
-Delete the string from the cursor to the position specified by the
-following movement command and save a copy of it to the cut buffer.
-When given twice in a row, instead delete the whole contents of the
-edit buffer and save a copy of it to the cut buffer.
+Удалите строку от позиции курсора до положения, указанного
+следующей командой перемещения, и сохраните ее копию в буфере вырезания.
+Если команда вводится дважды подряд, вместо этого удалите все содержимое буфера
+редактирования и сохраните его копию в буфере вырезания.
 .It Ic vi-delete-prev-char Pq vi insert: Ctrl-H, BS, Ctrl-?, DEL
-Delete the character to the left of the cursor.
-It is an error if the cursor is already at the beginning of the
-edit buffer.
+Удалите символ слева от курсора.
+Ошибка возникает, если курсор уже находится в начале буфера
+редактирования.
 .It Ic vi-end-big-word Pq vi command: E
-Move the cursor to the end of the current space delimited word.
-Can be used as a movement command after
+Переместите курсор в конец текущего слова, разделенного пробелом.
+Может использоваться как команда перемещения после
 .Ic vi_change_meta ,
 .Ic vi_delete_meta ,
-or
+или
 .Ic vi_yank .
-It is an error if the cursor is already at the end of the edit
-buffer.
+Это ошибка, если курсор уже находится в конце буфера редактирования.
 .It Ic vi-end-word Pq vi command: e
-Move the cursor to the end of the current word.
-Can be used as a movement command after
+Переместите курсор в конец текущего слова.
+Может использоваться как команда перемещения после
 .Ic vi_change_meta ,
 .Ic vi_delete_meta ,
-or
+или
 .Ic vi_yank .
-It is an error if the cursor is already at the end of the edit
-buffer.
+Это ошибка, если курсор уже находится в конце буфера редактирования.
 .It Ic vi-history-word Pq vi command: _
-Insert the first word from the most recent history entry after the
-cursor, move the cursor after to the character after the inserted
-word, and switch to vi insert mode.
-It is an error if there is no history entry or the most recent
-history entry is empty.
+Вставьте первое слово из самой последней записи в истории после
+курсора, переместите курсор на символ после вставленного
+слова и переключитесь в режим вставки vi.
+Если запись в истории отсутствует или самая последняя
+запись в истории пуста, возникает ошибка.
 .It Ic vi-insert Pq vi command: i
-Enter insert mode.
+Войдите в режим вставки.
 .It Ic vi-insert-at-bol Pq vi command: I
-Move the cursor to the beginning of the edit buffer and switch to
-vi insert mode.
+Переместите курсор в начало буфера редактирования и переключитесь в
+режим vi вставки.
 .It Ic vi-kill-line-prev Pq vi: Ctrl-U
-Delete the string from the beginning of the edit buffer to the
-cursor and save it to the cut buffer.
+Удалите строку от начала буфера редактирования до
+курсора и сохраните ее в буфере вырезания.
 .It Ic vi-list-or-eof Pq vi insert: Ctrl-D, EOF
-If the edit buffer is empty, indicate end of file to the program.
-It is an error if the edit buffer is not empty.
+Если буфер редактирования пуст, укажите программе конец файла.
+Если буфер редактирования не пуст, это означает ошибку.
 .It Ic vi-match Pq vi command: %
-Consider opening and closing parentheses, braces, and brackets as
-delimiters.
-If the cursor is not at a delimiter, move it to the right until it
-gets to one, then move it to the matching delimiter.
-Can be used as a movement command after
+В качестве разделителей можно использовать открывающие и закрывающие круглые скобки.
+Если курсор не находится на разделителе, переместите его вправо, пока он
+не достигнет единицы, затем переместите его на соответствующий разделитель.
+Может использоваться как команда перемещения после
 .Ic vi_change_meta ,
 .Ic vi_delete_meta ,
-or
+или
 .Ic vi_yank .
-It is an error if there is no delimiter at the cursor or in the
-string to the right of the cursor, or if the first such delimiter
-has no matching delimiter.
+Это ошибка, если нет разделителя рядом с курсором или в
+строке справа от курсора, или если первый такой разделитель
+не имеет соответствующего разделителя.
 .It Ic vi-next-big-word Pq vi command: W
-Move the cursor to the right to the beginning of the next space
-delimited word.
-Can be used as a movement command after
+Переместите курсор вправо к началу следующего
+слова, разделенного пробелом.
+Может использоваться как команда перемещения после
 .Ic vi_change_meta ,
 .Ic vi_delete_meta ,
-or
+или
 .Ic vi_yank .
-It is an error if the cursor is already at the end of the edit
-buffer or on its last character.
+Это ошибка, если курсор уже находится в конце буфера редактирования
+или на его последнем символе.
 .It Ic vi-next-char Pq vi command: f
-Read one character from the terminal bypassing the normal line
-editing functionality and move the cursor to the right to the next
-instance of that character in the edit buffer.
-Can be used as a movement command after
+Считайте один символ с терминала, минуя обычную
+функцию редактирования строк, и переместите курсор вправо к следующему
+экземпляру этого символа в буфере редактирования.
+Может использоваться как команда перемещения после
 .Ic vi_change_meta ,
 .Ic vi_delete_meta ,
-or
+или
 .Ic vi_yank .
-If trying to read the character results in end of file or an error,
-call
-.Ic ed-end-of-file
-instead.
-It is an error if the character is not found searching to the right
-in the edit buffer.
+Если попытка прочитать символ приводит к завершению файла или ошибке,
+вызовите вместо этого
+.Ic ed-end-of-file .
+Это ошибка, если символ не найден при поиске справа
+в буфере редактирования.
 .It Ic vi-next-word Pq vi command: w
-Move the cursor to the right to the beginning of the next word.
-Can be used as a movement command after
+Переместите курсор вправо к началу следующего слова.
+Может использоваться как команда перемещения после
 .Ic vi_change_meta ,
 .Ic vi_delete_meta ,
-or
+или
 .Ic vi_yank .
-It is an error if the cursor is already at the end of the edit
-buffer or on its last character.
+Это ошибка, если курсор уже находится в конце буфера редактирования
+или на его последнем символе.
 .It Ic vi-paste-next Pq vi command: p
-Insert a copy of the cut buffer to the right of the cursor.
-It is an error if the cut buffer is empty.
+Вставьте копию буфера вырезания справа от курсора.
+Если буфер вырезания пуст, возникает ошибка.
 .It Ic vi-paste-prev Pq vi command: P
-Insert a copy of the cut buffer to the left of the cursor.
-It is an error if the cut buffer is empty.
+Вставьте копию буфера для вырезания слева от курсора.
+Если буфер для вырезания пуст, это ошибка.
 .It Ic vi-prev-big-word Pq vi command: B
-Move the cursor to the left to the next beginning of a space delimited
-word.
-Can be used as a movement command after
+Переместите курсор влево к следующему началу
+слова, разделенного пробелом.
+Может использоваться как команда перемещения после
 .Ic vi_change_meta ,
 .Ic vi_delete_meta ,
-or
+или
 .Ic vi_yank .
-It is an error if the cursor is already at the beginning of the
-edit buffer.
+Это ошибка, если курсор уже находится в начале буфера
+редактирования.
 .It Ic vi-prev-char Pq vi command: F
-Read one character from the terminal bypassing the normal line
-editing functionality and move the cursor to the left to the next
-instance of that character in the edit buffer.
-Can be used as a movement command after
+Считайте один символ с терминала, минуя обычную
+функцию редактирования строк, и переместите курсор влево к следующему
+экземпляру этого символа в буфере редактирования.
+Может использоваться как команда перемещения после
 .Ic vi_change_meta ,
 .Ic vi_delete_meta ,
-or
+или
 .Ic vi_yank .
-If trying to read the character results in end of file or an error,
-call
-.Ic ed-end-of-file
-instead.
-It is an error if the character is not found searching to the left
-in the edit buffer.
+Если попытка прочитать символ приводит к завершению файла или ошибке,
+вызовите вместо этого
+.Ic ed-end-of-file .
+Это ошибка, если символ не найден при поиске слева
+в буфере редактирования.
 .It Ic vi-prev-word Pq vi command: b
-Move the cursor to the left to the next beginning of a word.
-Can be used as a movement command after
+Переместите курсор влево к следующему началу слова.
+Может использоваться как команда перемещения после
 .Ic vi_change_meta ,
 .Ic vi_delete_meta ,
-or
+или
 .Ic vi_yank .
-It is an error if the cursor is already at the beginning of the
-edit buffer.
+Это ошибка, если курсор уже находится в начале буфера
+редактирования.
 .It Ic vi-redo Pq vi command: Sq \&.
-Redo the last non-motion command.
+Повторите последнюю команду без движения.
 .It Ic vi-repeat-next-char Pq vi command: Sq \&;
-Repeat the most recent character search in the same search direction.
-Can be used as a movement command after
+Повторите поиск последнего символа в том же направлении.
+Может использоваться как команда перемещения после
 .Ic vi_change_meta ,
 .Ic vi_delete_meta ,
-or
+или
 .Ic vi_yank .
 .It Ic vi-repeat-prev-char Pq vi command: Sq \&,
-Repeat the most recent character search in the opposite search
-direction.
-Can be used as a movement command after
+Повторите поиск по последнему символу в противоположном
+направлении.
+Может использоваться как команда перемещения после
 .Ic vi_change_meta ,
 .Ic vi_delete_meta ,
-or
+или
 .Ic vi_yank .
 .It Ic vi-repeat-search-next Pq vi command: n
-Repeat the most recent history search in the same search direction.
+Повторите поиск по самой последней истории в том же направлении.
 .It Ic vi-repeat-search-prev Pq vi command: N
-Repeat the most recent history search in the opposite search
-direction.
+Повторите поиск по самой последней истории в обратном
+направлении.
 .It Ic vi-replace-char Pq vi command: r
-Switch to vi replace mode, and automatically switch back to vi
-command mode after the next character typed.
-See
+Переключитесь в режим замены vi и автоматически переключитесь обратно в
+командный режим vi после ввода следующего символа.
+Смотрите
 .Ic ed-insert
-for a description of replace mode.
-It is an error if the cursor is at the end of the edit buffer.
+для описания режима замены.
+Если курсор находится в конце буфера редактирования, возникает ошибка.
 .It Ic vi-replace-mode Pq vi command: R
-Switch to vi replace mode.
-This is a variant of vi insert mode; see
+Переключитесь в режим vi-замены.
+Это вариант режима vi-вставки; смотрите
 .Ic ed-insert
-for the difference.
+из-за разницы.
 .It Ic vi-search-next Pq vi command: \&?
-Replace the edit buffer with the next matching history entry.
+Замените буфер редактирования следующей соответствующей записью в истории.
 .It Ic vi-search-prev Pq vi command: /
-Replace the edit buffer with the previous matching history entry.
+Замените буфер редактирования предыдущей соответствующей записью в истории.
 .It Ic vi-substitute-char Pq vi command: s
-Delete the character at the cursor and switch to vi insert mode.
+Удалите символ рядом с курсором и переключитесь в режим вставки vi.
 .It Ic vi-substitute-line Pq vi command: S
-Delete the entire contents of the edit buffer, save a copy of it
-in the cut buffer, and enter vi insert mode.
+Удалите все содержимое буфера редактирования, сохраните его копию
+в буфере вырезания и перейдите в режим vi insert.
 .It Ic vi-to-column Pq vi command: \&|
-Move the cursor to the column specified as the argument.
-Can be used as a movement command after
+Переместите курсор на столбец, указанный в качестве аргумента.
+Может использоваться как команда перемещения после
 .Ic vi_change_meta ,
 .Ic vi_delete_meta ,
-or
+или
 .Ic vi_yank .
 .It Ic vi-to-history-line Pq vi command: G
-Replace the edit buffer with the specified history entry.
+Замените буфер редактирования указанной записью истории.
 .It Ic vi-to-next-char Pq vi command: t
-Read one character from the terminal bypassing the normal line
-editing functionality and move the cursor to the right to the
-character before the next instance of that character in the edit
-buffer.
-Can be used as a movement command after
+Считайте один символ с терминала, минуя обычную
+функцию редактирования строк, и переместите курсор вправо на
+символ до следующего появления этого символа в буфере редактирования.
+Может использоваться в качестве команды перемещения после
 .Ic vi_change_meta ,
 .Ic vi_delete_meta ,
-or
+или
 .Ic vi_yank .
-If trying to read the character results in end of file or an error,
-call
-.Ic ed-end-of-file
-instead.
-It is an error if the character is not found searching to the right
-in the edit buffer.
+Если попытка прочитать символ приводит к завершению файла или ошибке,
+вызовите вместо этого
+.Ic ed-end-of-file .
+Это ошибка, если символ не найден при поиске справа
+в буфере редактирования.
 .It Ic vi-to-prev-char Pq vi command: T
-Read one character from the terminal bypassing the normal line
-editing functionality and move the cursor to the left to the character
-after the next instance of that character in the edit buffer.
-Can be used as a movement command after
+Считайте один символ с терминала, минуя обычные
+функции редактирования строк, и переместите курсор влево на символ,
+следующий за следующим экземпляром этого символа в буфере редактирования.
+Может использоваться в качестве команды перемещения после
 .Ic vi_change_meta ,
 .Ic vi_delete_meta ,
-or
+или
 .Ic vi_yank .
-If trying to read the character results in end of file or an error,
-call
-.Ic ed-end-of-file
-instead.
-It is an error if the character is not found searching to the left
-in the edit buffer.
+Если попытка прочитать символ приводит к завершению файла или ошибке,
+вызовите вместо этого
+.Ic ed-end-of-file .
+Это ошибка, если символ не найден при поиске слева
+в буфере редактирования.
 .It Ic vi-undo Pq vi command: u
-Undo the last change.
+Отмените последнее изменение.
 .It Ic vi-undo-line Pq vi command: U
-Undo all changes to the edit buffer.
+Отмените все изменения в буфере редактирования.
 .It Ic vi-yank Pq vi command: y
-Copy the string from the cursor to the position specified by the
-following movement command to the cut buffer.
-When given twice in a row, instead copy the whole contents of the
-edit buffer to the cut buffer.
+Скопируйте строку из курсора в положение, указанное
+следующей командой перемещения, в буфер вырезания.
+Если команда вводится дважды подряд, вместо этого скопируйте все содержимое буфера
+редактирования в буфер вырезания.
 .It Ic vi-yank-end Pq vi command: Y
-Copy the string from the cursor to the end of the edit buffer to
-the cut buffer.
+Скопируйте строку от курсора до конца буфера редактирования
+в буфер вырезания.
 .It Ic vi-zero Pq vi command: 0
-If in argument input mode, multiply the argument by ten.
-Otherwise, move the cursor to the beginning of the edit buffer.
-Can be used as a movement command after
+Если используется режим ввода аргумента, умножьте аргумент на десять.
+В противном случае переместите курсор в начало буфера редактирования.
+Может использоваться как команда перемещения после
 .Ic vi_change_meta ,
 .Ic vi_delete_meta ,
-or
+или
 .Ic vi_yank .
 .El
 .Ss Macros
-If an input character is bound to the editor command
+Если вводимый символ привязан к команде редактора
 .Ic ed-sequence-lead-in ,
 .Nm
-attempts to call a macro.
-If the input character by itself forms the name of a macro, that
-macro is executed.
-Otherwise, additional input characters are read until the string
-read forms the name of a macro, in which case that macro is executed,
-or until the string read matches the beginning of none of the existing
-macro names, in which case the string including the final, mismatching
-character is discarded and the terminal bell is rung.
+попытается вызвать макрос.
+Если вводимый символ сам по себе образует имя макроса, этот
+макрос выполняется.
+В противном случае дополнительные входные символы считываются до тех пор, пока считанная строка не
+сформирует имя макроса, и в этом случае этот макрос не будет выполнен,
+или пока считанная строка не совпадет с началом ни одного из существующих
+имен макросов, и в этом случае строка, включающая последний, несоответствующий
+символ, не будет удалена, а завершающий сигнал не будет включен. прозвенел звонок.
 .Pp
-There are two kinds of macros.
-Command macros execute a single editor command.
-Keyboard macros return a string of characters that is appended
-as a new line to the
+Существует два вида макросов.
+Командные макросы выполняют одну команду редактора.
+Клавиатурные макросы возвращают строку символов, которая добавляется
+в качестве новой строки к
 .Sx Input Queue .
 .Pp
-The following command macros are defined by default in vi command
-mode and in emacs mode:
+Следующие командные макросы определены по умолчанию в командном
+режиме vi и в режиме emacs:
 .Bl -column -offset indent "Esc O A, Esc O A" "em-exchange-mark"
 .It Esc \&[ A, Esc O A Ta Ic ed-prev-history
 .It Esc \&[ B, Esc O B Ta Ic ed-next-history
@@ -869,54 +847,53 @@ mode and in emacs mode:
 .It Esc \&[ H, Esc O H Ta Ic ed-move-to-beg
 .El
 .Pp
-In vi command mode, they are also defined by default without the
-initial escape character.
+В командном режиме vi они также определены по умолчанию без
+начального экранирующего символа.
 .Pp
-In addition, the
+Кроме того, библиотека
 .Nm
-library tries to bind the strings generated by the arrow keys
-as reported by the
+попытается связать строки, сгенерированные клавишами со стрелками,
+как сообщает база данных
 .Xr terminfo 5
-database to these editor commands, unless that would clobber
-user settings.
+к этим командам редактора, если только это не нарушит
+пользовательские настройки.
 .Pp
-In emacs mode, the two-character string
+В режиме emacs двухсимвольная строка
 .Dq Ctrl-X Ctrl-X
-is bound to the
-.Ic em-exchange-mark
-editor command.
+привязана к команде редактора
+.Ic em-exchange-mark .
 .Ss Input Queue
-The
+Библиотека
 .Nm
-library maintains an input queue operated in FIFO mode.
-Whenever it needs an input character, it takes the first character
-from the first line of the input queue.
-When the queue is empty, it reads from the terminal.
+поддерживает очередь ввода, работающую в режиме FIFO.
+Всякий раз, когда ему требуется ввести символ, он берет первый символ
+из первой строки очереди ввода.
+Когда очередь пуста, он считывает данные с терминала.
 .Pp
-A line can be appended to the end of the input queue in several ways:
+Строка может быть добавлена в конец очереди ввода несколькими способами:
 .Bl -dash -offset indent
 .It
-By calling one of the keyboard
+С помощью вызова одной из клавиш
 .Sx Macros .
 .It
-By calling the editor command
+Вызвав команду редактора
 .Ic vi-redo .
 .It
-By calling the editor command
+Вызвав команду редактора
 .Ic vi-alias .
 .It
-By pressing a key in emacs incremental search mode that doesn't
-have a special meaning in that mode but returns to normal emacs
-mode.
+При нажатии клавиши в режиме инкрементального поиска emacs, которая не
+имеет особого значения в этом режиме, но возвращает к обычному
+режиму emacs.
 .It
-If an application program directly calls the functions
+Если прикладная программа напрямую вызывает функции
 .Xr el_push 3
-or
+или
 .Xr el_wpush 3 ,
-it can provide additional, program-specific ways
-of appending to the input queue.
+это может обеспечить дополнительные, зависящие от конкретной программы способы
+добавления во входную очередь.
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr mg 1 ,
 .Xr vi 1 ,
 .Xr editline 3 ,
@@ -924,12 +901,12 @@ of appending to the input queue.
 .Xr el_wpush 3 ,
 .Xr el_wset 3 ,
 .Xr editrc 5
-.Sh HISTORY
-This manual page first appeared in
+.Sh ИСТОРИЯ
+Эта страница руководства впервые появилась в
 .Ox 6.0
-and
+и
 .Nx 8 .
-.Sh AUTHORS
+.Sh АВТОРЫ
 .An -nosplit
-This manual page was written by
-.An Ingo Schwarze Aq Mt schwarze@openbsd.org .
+Эта страница руководства была написана
+.An Инго Шварце Aq Mt schwarze@openbsd.org .

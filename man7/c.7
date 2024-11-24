@@ -22,10 +22,10 @@
 .\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 .\" SUCH DAMAGE.
 .\"
-.Dd April 20, 2021
+.Dd Апрель 20, 2021
 .Dt C 7
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm c ,
 .Nm c78 ,
 .Nm c89 ,
@@ -36,200 +36,193 @@
 .Nm c17 ,
 .Nm c2x
 .Nd The C programming language
-.Sh DESCRIPTION
-C is a general purpose programming language, which has a strong connection
-with the UNIX operating system and its derivatives, since the vast
-majority of those systems were written in the C language.
-The C language contains some basic ideas from the BCPL language through
-the B language written by Ken Thompson in 1970 for the DEC PDP-7 machines.
-The development of the UNIX operating system was started on a PDP-7
-machine in assembly language, but it made very difficult to port the existing
-code to other systems.
+.Sh ОПИСАНИЕ
+C - это язык программирования общего назначения, который имеет тесную связь
+с операционной системой UNIX и ее производными, поскольку подавляющее
+большинство этих систем было написано на языке C.
+Язык C содержит некоторые базовые идеи, заимствованные из языка BCPL, а также из языка B, написанного Кеном Томпсоном в 1970 году для компьютеров DEC PDP-7.
+Разработка операционной системы UNIX была начата на PDP-7
+машина написана на языке ассемблера, но это очень затрудняло перенос существующего
+кода на другие системы.
 .Pp
-In 1972 Dennis M. Ritchie worked out the C programming language for
-further development of the UNIX operating system.
-The idea was to implement only the C compiler for different
-platforms, and implement most part of the operating system
-in the new programming language to simplify the portability between
-different architectures.
-It follows that C is very eligible for (but not limited to) writing
-operating systems and low-level applications.
+В 1972 году Деннис М. Ричи разработал язык программирования Си для
+дальнейшего развития операционной системы UNIX.
+Идея состояла в том, чтобы реализовать только компилятор C для разных
+платформ и реализовать большую часть операционной системы
+на новом языке программирования, чтобы упростить переносимость между
+различными архитектурами.
+Из этого следует, что язык Си вполне подходит для написания
+операционных систем и низкоуровневых приложений (но не ограничивается ими).
 .Pp
-The C language did not have a specification or standardized version for
-a long time.
-It went through a lot of changes and improvements for ages.
-In 1978, Brian W. Kernighan and Dennis M. Ritchie published the
-first book about C under the title "The C Programming Language".
-We can think of this book as the first specification of the language.
-This version is often referred as K&R C after the names of the authors.
-Sometimes it is referred as C78, as well, after the publishing year of
-the first edition of the book.
+Долгое время у языка Си не было спецификации или стандартизированной версии.
+На протяжении веков он претерпевал множество изменений и улучшений.
+В 1978 году Брайан У. Керниган и Деннис М. Ричи опубликовали
+первую книгу о Си под названием "Язык программирования Си".
+Мы можем рассматривать эту книгу как первую спецификацию языка.
+Эту версию часто называют K&R C по фамилиям авторов.
+Иногда ее также называют C78, в честь года публикации
+первого издания книги.
 .Pp
-It is important to notice, that the instruction set of the language is
-limited to the most fundamental elements for simplicity.
-Handling of the standard I/O and such common functions are implemented in
-the libraries shipped with the compiler.
-As these functions are also widely used, it was demanded to include into
-the description what requisites the library should conform to, not just
-strictly the language itself.
-Accordingly, the aforementioned standards cover the library elements, as well.
-The elements of this standard library is still not enough for more
-complicated tasks.
-In this case the provided system calls of the given operating system can be
-used.
-To not lose the portability by using these system calls, the POSIX
-(Portable Operating System Interface) standard evolved.
-It describes what functions should be available to keep portability.
-Note, that POSIX is not a C standard, but an operating system standard
-and thus is beyond the scope of this manual.
-The standards discussed below are all C standards and only cover
-the C programming language and the accompanying library.
-All listed improvements for each standard edition are taken from the official
-standard drafts.
-For further details, check the publicly available drafts or
-purchase the published standards \(em from either ISO or IEC resources.
+Важно отметить, что набор команд языка
+ограничен самыми фундаментальными элементами для простоты.
+Обработка стандартного ввода-вывода и такие распространенные функции реализованы в
+библиотеках, поставляемых с компилятором.
+Поскольку эти функции также широко используются, потребовалось указать в
+описании, каким требованиям должна соответствовать библиотека,
+а не только сам язык.
+Соответственно, вышеупомянутые стандарты распространяются и на библиотечные элементы.
+Элементов этой стандартной библиотеки все равно недостаточно для решения более
+сложных задач.
+В этом случае могут быть использованы предоставленные системные вызовы данной операционной системы.
+Чтобы не потерять переносимость при использовании этих системных вызовов, POSIX
+Стандарт (интерфейс портативной операционной системы) эволюционировал.
+В нем описывается, какие функции должны быть доступны для сохранения мобильности.
+Обратите внимание, что POSIX - это не стандарт C, а стандарт операционной системы, и поэтому он выходит за рамки данного руководства.
+Все стандарты, обсуждаемые ниже, являются стандартами C и охватывают только
+язык программирования C и прилагаемую библиотеку.
+Все перечисленные улучшения для каждой версии стандарта взяты из официального
+проекты стандартов.
+Для получения более подробной информации ознакомьтесь с общедоступными проектами или
+приобретите опубликованные стандарты на ресурсах ISO или IEC.
 .Pp
-After the publication of the book mentioned before,
-the American National Standards Institute (ANSI) started to work on
-standardizing the language, and they announced ANSI X3.159-1989
-in 1989.
-It is usually referred to as ANSI C or C89.
-The main difference in this standard were the function prototypes,
-which is a new way of declaring functions.
-With the old-style function declarations, the compiler was unable to
-check the sanity of the actual parameters at a function call.
-The old syntax was highly error-prone because incompatible parameters
-were hard to detect in the program code and the problem only showed up
-at run-time.
+После публикации упомянутой ранее книги
+Американский национальный институт стандартов (ANSI) начал работать над
+стандартизацией языка и в 1989 году анонсировал ANSI X3.159-1989.
+Обычно его называют ANSI C или C89.
+Основное отличие этого стандарта в том, что в нем используются прототипы функций,
+что является новым способом объявления функций.
+Из-за устаревших описаний функций компилятор не мог
+проверить правильность фактических параметров при вызове функции.
+Старый синтаксис был очень подвержен ошибкам из-за несовместимости параметров
+их было трудно обнаружить в программном коде, и проблема проявилась только
+во время выполнения.
 .Pp
-In 1990, the International Organization for Standardization (ISO) adopted
-the ANSI standard as ISO/IEC 9899:1990 in 1990.
-This is also referred to as ISO C or C90.
-It only contains negligible minor modifications against ANSI C,
-so the two standards often considered to be fully equivalent.
-This was a very important milestone in the history of the C language, but the
-development of the language did not stop.
+В 1990 году Международная организация по стандартизации (ISO) приняла
+стандарт ANSI в качестве стандарта ISO/IEC 9899:1990 в 1990 году.
+Он также называется ISO C или C90.
+Он содержит лишь незначительные изменения по сравнению с ANSI C,
+поэтому эти два стандарта часто считаются полностью эквивалентными.
+Это стало очень важной вехой в истории языка Си, но
+развитие языка не остановилось.
 .Pp
-The ISO C standard was later extended with an amendment as
-ISO/IEC 9899/AMD1 in 1995.
-This contained, for example, the wide-character support in <wchar.h> and
-<wctype.h>, and also restricted character set support via diagraphs and
+Позднее стандарт ISO C был дополнен поправкой в виде
+ISO/IEC 9899/AMD1 в 1995 году.
+Это содержало, например, поддержку широких символов в <wchar.h> и
+<wctype.h>, а также ограниченную поддержку набора символов с помощью diagraphs и
 <iso646.h>.
-This amendment is usually referred to as C95.
-Two technical corrigenda were also published: Technical Corrigendum 1 as
-ISO/IEC 9899/COR1 in 1994 and Technical Corrigendum 2 as ISO/IEC 9899/COR2
-in 1996.
-The continuous development and growth made it necessary to work out a new
-standard, which contains the new features and fixes the known defects and
-deficiencies of the language.
-As a result, ISO/IEC 9899:1999 was born in 1999 as the second edition of the
-standard.
-Similarly to the other standards, this is informally named after the
-publication year as C99.
-The improvements include (but are not limited to) the following:
+Эта поправка обычно упоминается как 95.
+Также были опубликованы два технических исправления: Техническое исправление 1 как
+ISO/IEC 9899/COR1 в 1994 году и Техническое исправление 2 в качестве ISO/IEC 9899/COR2
+в 1996 году.
+Постоянное развитие и рост привели к необходимости разработки нового
+стандарта, который содержит новые функции и исправляет известные дефекты и
+недостатки языка.
+В результате в 1999 году появилось второе издание стандарта ISO/IEC 9899:1999.
+Как и другие стандарты, этот стандарт неофициально назван C99 в честь
+года публикации.
+Улучшения включают (но не ограничиваются ими) следующее:
 .Bl -bullet -offset indent
 .It
-digraphs, trigraphs, and alternative spellings for the operators that
-use non-ISO646 characters in <iso646.h>
+орграфы, триграфы и альтернативные варианты написания для операторов,
+использующих символы, отличные от ISO 646, в <iso646.h>
 .It
-extended multibyte and wide character library support in <wchar.h> and
+расширенная поддержка многобайтовых и широких библиотек символов в <wchar.h> и
 <wctype.h>
 .It
-variable length arrays
+массивы переменной длины
 .It
-flexible array members
+гибкие элементы массива
 .It
-complex (and imaginary) number arithmetic support in <complex.h>
+поддержка арифметики комплексных (и мнимых) чисел в <complex.h>
 .It
-type-generic math macros in <tgmath.h>
+тип-общие математические макросы в <tgmath.h>
 .It
-the long long int type and library functions
+тип long long int и библиотечные функции
 .It
-remove implicit int type
+удалить неявный тип int
 .It
-universal character names (\eu and \eU)
+универсальные имена символов (\eu и \ЕС)
 .It
-compound literals
+составные литералы
 .It
-remove implicit function declaration
+удалить неявное объявление функции
 .It
-BCPL style single-line comments
+Однострочные комментарии в стиле BCPL
 .It
-allow mixed declarations and code
+разрешают смешанные объявления и код
 .It
-the vscanf family of functions in <stdio.h> and <wchar.h>
+семейство функций scanf в <stdio.h> и <wchar.h>
 .It
-allow trailing comma in enum declaration
+разрешить заключительную запятую в объявлении перечисления
 .It
-inline functions
+встроенные функции
 .It
-the snprintf family of functions in <stdio.h>
+семейство функций snprintf в <stdio.h>
 .It
-boolean type and macros in <stdbool.h>
+логический тип и макросы в <stdbool.h>
 .It
-empty macro arguments
+пустые аргументы макроса
 .It
-_Pragma preprocessing operator
+_Pragma оператор предварительной обработки
 .It
-__func__ predefined identifier
+__func__ предопределенный идентификатор
 .It
-va_copy macro in <stdarg.h>
+макрос va_copy в <stdarg.h>
 .It
-additional strftime conversion specifiers
+дополнительные спецификаторы преобразования strftime
 .El
 .Pp
-Later in 2011, the third edition of the standard, ISO/IEC 1989:2011,
-commonly referred to as C11 (formerly C1x), came out and replaced the
-second edition by ISO/IEC 9899:1999/COR1:2001, ISO/IEC 9899:1999/COR2:2004,
-and ISO/IEC 9899:1999/COR3:2007.
-The improvements include (but are not limited to) the following:
+Позднее, в 2011 году, вышло третье издание стандарта, ISO/IEC 1989:2011,
+обычно называемое C11 (ранее C1x), которое заменило
+второе издание на ISO/IEC 9899:1999/COR 1:2001, ISO/IEC 9899:1999/COR 2:2004,
+и ISO/IEC 9899:1999/COR 3:2007.
+Улучшения включают (но не ограничиваются ими) следующее:
 .Bl -bullet -offset indent
 .It
-support for multiple threads of execution and atomic operations in <threads.h>
-and <stdatomic.h>
+поддержка многопоточного выполнения и атомарных операций в <threads.h>
+и <stdatomic.h>
 .It
-additional floating-point characteristic macros in <float.h>
+дополнительные характерные макросы с плавающей запятой в <float.h>
 .It
-querying and specifying alignment of objects in <stdalign.h> and <stdlib.h>
+запрос и указание выравнивания объектов в <stdalign.h> и <stdlib.h>
 .It
-Unicode character types and functions in <uchar.h>
+Типы и функции символов Юникода в <uchar.h>
 .It
-type-generic expressions
+общие выражения типа
 .It
-static assertions in <assert.h>
+статические утверждения в <assert.h>
 .It
-anonymous structures and unions
+анонимные структуры и объединения
 .It
-remove the gets function from <stdio.h>
+удалите функцию gets из <stdio.h>
 .It
-add the aligned_alloc, at_quick_exit, and quick_exit functions in <stdlib.h>
+добавьте функции aligned_alloc, at_quick_exit и quick_exit в <stdlib.h>
 .El
 .Pp
-C11 was later superseded by ISO/IEC 9899:2018, also known as C17 which was
-prepared in 2017 and published in June 2018 as the fourth edition.
-It incorporates the Technical Corrigendum 1 (ISO/IEC 9899:2011/COR1:2012)
-which was published in 2012.
-It addressed defects and deficiencies in C11 without introducing new features,
-only corrections and clarifications.
-Since there were no major changes in C17, the current standard for
-Programming Language C, is still considered C11 \(em ISO/IEC 9899:2011, published
+C11 позже был заменен стандартом ISO/IEC 9899:2018, также известным как C17, который был
+подготовлен в 2017 году и опубликован в июне 2018 года в качестве четвертого издания.
+В него включено Техническое исправление 1 (ISO/IEC 9899:2011/COR 1:2012), опубликованное в 2012 году.
+В нем рассматриваются дефекты и недочеты в C11 без введения новых функций,
+только исправления и разъяснения.
+Поскольку в C17 не было никаких серьезных изменений, текущим стандартом для
+языка программирования C по-прежнему считается C11 \(em ISO/IEC 9899:2011, опубликован
 2011-12-08.
 .Pp
-The next standard, the fifth, is currently referred to as C2x and is scheduled
-to be adopted by the end of 2021, with a publication date of 2022.
-When published, it will cancel and replace the fourth edition, ISO/IEC
+Следующий стандарт, пятый, в настоящее время называется C2x, и его принятие запланировано
+на конец 2021 года, а дата публикации - на 2022 год.
+После публикации он отменит и заменит четвертое издание стандарта ISO/IEC
 9899:2018.
 .Pp
-Some useful features have been provided as extensions by some compilers, but
-they cannot be considered as standard features.
+Некоторые компиляторы предоставляют некоторые полезные функции в качестве расширений, но
+они не могут рассматриваться как стандартные.
 .Pp
-ISO/IEC JTC1/SC22/WG14 committee is responsible for the ISO/IEC 9899,
-C Standard.
-.Sh SEE ALSO
+Комитет ISO/IEC JTC1/SC22/WG14 отвечает за стандарт ISO/IEC 9899,
+C.
+.Sh СМОТРИТЕ ТАК
 .Xr c89 1 ,
 .Xr c99 1 ,
 .Xr cc 1
-.Sh STANDARDS
+.Sh СТАНДАРТЫ
 .Rs
 .%A ANSI
 .%T X3.159-1989 (aka C89 or ANSI C)
@@ -349,15 +342,15 @@ C Standard.
 .%A ISO/IEC
 .%T 9899:2018 (aka C17)
 .Re
-.Sh HISTORY
-This manual page first appeared in
+.Sh ИСТОРИЯ
+Эта страница руководства впервые появилась в
 .Fx 9.0 .
-.Sh AUTHORS
+.Sh АВТОРЫ
 .An -nosplit
-This manual page was originally written by
+Эта страница руководства была первоначально написана
 .An Gabor Kovesdan Aq Mt gabor@FreeBSD.org .
-It was updated for
+Он был обновлен для
 .Fx 14.0
-by
+от
 .An Faraz Vahedi Aq Mt kfv@kfv.io
-with information about more recent C standards.
+с информацией о более поздних стандартах языка Си.

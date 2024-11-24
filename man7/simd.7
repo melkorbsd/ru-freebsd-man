@@ -27,28 +27,28 @@
 .Dd December 6, 2023
 .Dt SIMD 7
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm simd
-.Nd SIMD enhancements
+.Nd усовершенствованная SIMD
 .
-.Sh DESCRIPTION
-On some architectures, the
+.Sh ОПИСАНИЕ
+В некоторых архитектурах,
 .Fx
 .Em libc
-provides enhanced implementations of commonly used functions, replacing
-the architecture-independent implementations used otherwise.
-Depending on architecture and function, an enhanced
-implementation of a function may either always be used or the
+предоставляет расширенные реализации часто используемых функций, заменяя
+архитектурно-независимые реализации, используемые в других случаях.
+В зависимости от архитектуры и функции, расширенная
+реализация функции может всегда использоваться, или
 .Em libc
-detects at runtime which SIMD instruction set extensions are
-supported and picks the most suitable implementation automatically.
-On
+во время выполнения определяет, какие расширения набора команд SIMD
+поддерживаются, и автоматически выбирает наиболее подходящую реализацию.
+В
 .Cm amd64 ,
-the environment variable
+переменная среды
 .Ev ARCHLEVEL
-can be used to override this mechanism.
+может быть использован для переопределения этого механизма.
 .Pp
-Enhanced functions are present for the following architectures:
+Расширенные функции доступны для следующих архитектур:
 .Bl -column FUNCTION_________ aarch64_ arm_ amd64_ i386_ ppc64_ -offset indent
 .It Em FUNCTION          Ta Em AARCH64 Ta Em ARM Ta Em AMD64  Ta Em I386 Ta Em PPC64
 .It    bcmp              Ta            Ta        Ta    S1     Ta    S
@@ -94,49 +94,48 @@ Enhanced functions are present for the following architectures:
 .It    wmemchr           Ta            Ta        Ta           Ta    S
 .El
 .Pp
-.Sy S Ns :\ scalar (non-SIMD),
-.Sy 1 Ns :\ amd64 baseline,
+.Sy S Ns :\ скалярный (не SIMD),
+.Sy 1 Ns :\ базовый уровень amd64,
 .Sy 2 Ns :\ x86-64-v2
-or PowerPC\ 2.05,
+или PowerPC\ 2.05,
 .Sy 3 Ns :\ x86-64-v3,
 .Sy 4 Ns :\ x86-64-v4,
 .Sy V Ns :\ PowerPC\ VSX.
 .
-.Sh ENVIRONMENT
+.Sh ОКРУЖЕНИЕ
 .Bl -tag
 .It Ev ARCHLEVEL
-On
+В
 .Em amd64 ,
-controls the level of SIMD enhancements used.
-If this variable is set to an architecture level from the list below
-and that architecture level is supported by the processor, SIMD
-enhancements up to
+управляет уровнем используемых улучшений SIMD.
+Если для этой переменной задан уровень архитектуры из приведенного ниже
+списка и этот уровень архитектуры поддерживается процессором,
+то используется усовершенствования SIMD до
+.Ev ARCHLEVEL .
+Если
 .Ev ARCHLEVEL
-are used.
-If
-.Ev ARCHLEVEL
-is unset, not recognised, or not supported by the processor, the highest
-level of SIMD enhancements supported by the processor is used.
+не установлен, не распознается или не поддерживается процессором, используется самый высокий
+уровень усовершенствований SIMD, поддерживаемый процессором.
 .Pp
-A suffix beginning with
+Суффикс, начинающийся на
 .Sq ":"
-or
+или
 .Sq "+"
-in
+в
 .Ev ARCHLEVEL
-is ignored and may be used for future extensions.
-The architecture level can be prefixed with a
-.Sq "!"
-character to force use of the requested architecture level, even if the
-processor does not advertise that it is supported.
-This usually causes applications to crash and should only be used for
-testing purposes or if architecture level detection yields incorrect
-results.
+игнорируется и может быть использовано для будущих расширений.
+Уровень архитектуры может иметь префикс в виде символа
+.Sq "!" ,
+чтобы принудительно использовать запрошенный уровень архитектуры, даже если
+процессор не сообщает о том, что он поддерживается.
+Обычно это приводит к сбоям в работе приложений и должно использоваться только
+в целях тестирования или если определение уровня архитектуры дает неверные
+результаты.
 .Pp
-The architecture levels follow the AMD64 SysV ABI supplement:
+Уровни архитектуры соответствуют дополнению AMD64 SysV ABI:
 .Bl -tag -width x86-64-v2
 .It Cm scalar
-scalar enhancements only (no SIMD)
+только скалярные улучшения (без SIMD)
 .It Cm baseline
 cmov, cx8, x87 FPU, fxsr, MMX, osfxsr, SSE, SSE2
 .It Cm x86-64-v2
@@ -148,32 +147,32 @@ AVX-512F/BW/CD/DQ/VL
 .El
 .El
 .
-.Sh DIAGNOSTICS
+.Sh ДИАГНОСТИКА
 .Bl -diag
 .It "Illegal Instruction"
-Printed by
+Выводится
 .Xr sh 1
-if a command is terminated through delivery of a
-.Dv SIGILL
-signal, see
+если команда завершается подачей сигнала
+.Dv SIGILL ,
+смотрите
 .Xr signal 3 .
 .Pp
-Use of an unsupported architecture level was forced by setting
+Использование неподдерживаемого уровня архитектуры было вызвано установкой
 .Ev ARCHLEVEL
-to a string beginning with a
-.Sq "!"
-character, causing a process to crash due to use of an unsupported
-instruction.
-Unset
+к строке, начинающейся с символа
+.Sq "!" ,
+вызывает сбой процесса из-за использования неподдерживаемой
+инструкции.
+Сбросьте
 .Ev ARCHLEVEL ,
-remove the
+удалите префикс
 .Sq "!"
-prefix or select a supported architecture level.
+или выберите поддерживаемый уровень архитектуры.
 .Pp
-Message may also appear for unrelated reasons.
+Сообщение также может появиться по другим причинам, не связанным с этим.
 .El
 .
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr string 3 ,
 .Xr arch 7
 .Rs
@@ -189,53 +188,53 @@ Message may also appear for unrelated reasons.
 .%O Version 1.0
 .Re
 .
-.Sh HISTORY
-Architecture-specific enhanced
+.Sh ИСТОРИЯ
+Расширенные функции, зависящие от конкретной архитектуры
 .Em libc
-functions were added starting
-with
+были добавлены, начиная
+с
 .Fx 2.0
-for
+для
 .Cm i386 ,
 .Fx 6.0
-for
+для
 .Cm arm ,
 .Fx 6.1
-for
+для
 .Cm amd64 ,
 .Fx 11.0
-for
+для
 .Cm aarch64 ,
-and
+и
 .Fx 12.0
-for
+для
 .Cm powerpc64 .
-SIMD-enhanced functions were first added with
+Расширенные SIMD функции были впервые добавлены с
 .Fx 13.0
-for
+для
 .Cm powerpc64
-and with
+и с
 .Fx 14.1
-for
+для
 .Cm amd64 .
 .Pp
-A
+Страница руководства
 .Nm
-manual page appeared in
+появилась в
 .Fx 14.1 .
 .
-.Sh AUTHOR
-.An Robert Clausecker Aq Mt fuz@FreeBSD.org
+.Sh АВТОР
+.An Роберт Клаузекер Aq Mt fuz@FreeBSD.org
 .
-.Sh CAVEATS
-Other parts of
-.Fx
-such as cryptographic routines in the kernel or in
-OpenSSL may also use SIMD enhancements.
-These enhancements are not subject to the
+.Sh ПРЕДУПРЕЖДЕНИЯ
+Другие части
+.Fx ,
+например, криптографические процедуры в ядре или в
+OpenSSL, также может использовать усовершенствования SIMD.
+Эти усовершенствования не зависят от переменной
 .Ev ARCHLEVEL
-variable and may have their own configuration
-mechanism.
+и могут иметь свой собственный
+механизм настройки.
 .
-.Sh BUGS
-Use of SIMD enhancements cannot be configured on powerpc64.
+.Sh НЕИСПРАВНОСТИ
+Использование улучшений SIMD не может быть настроено на powerpc64.
