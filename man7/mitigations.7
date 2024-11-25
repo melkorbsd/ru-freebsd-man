@@ -28,19 +28,19 @@
 .Dd October 6, 2023
 .Dt MITIGATIONS 7
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm mitigations
-.Nd FreeBSD Security Vulnerability Mitigations
-.Sh SYNOPSIS
-In
+.Nd Меры по устранению уязвимостей в системе безопасности FreeBSD
+.Sh СИНТАКСИС
+В
 .Fx ,
-various security mitigations are employed to limit the impact of
-vulnerabilities and protect the system from malicious attacks.
-Some of these mitigations have run-time controls to enable them on a global
-or per-process basis, some are optionally enabled or disabled at compile time,
-and some are inherent to the implementation and have no controls.
+для ограничения воздействия
+уязвимостей и защиты системы от вредоносных атак используются различные средства защиты.
+Некоторые из этих средств защиты имеют элементы управления во время выполнения, позволяющие включать их глобально
+или для каждого процесса, некоторые из них необязательно включаются или отключаются во время компиляции,
+а некоторые являются неотъемлемой частью реализации и не имеют элементов управления.
 .Pp
-The following vulnerability mitigations are covered in this document:
+В этом документе рассматриваются следующие способы устранения уязвимостей:
 .Bl -bullet -compact
 .It
 Address Space Layout Randomization (ASLR)
@@ -64,81 +64,81 @@ Hardware Vulnerability Mitigation Controls
 Capsicum
 .El
 .Pp
-Please note that the effectiveness and availability of these mitigations may
-vary depending on the
+Пожалуйста, обратите внимание, что эффективность и доступность этих мер может
+варьироваться в зависимости от версии
 .Fx
-version and system configuration.
-.Sh DESCRIPTION
-Security vulnerability mitigations are techniques employed in
+и конфигурации системы.
+.Sh ОПИСАНИЕ
+Методы устранения уязвимостей в системе безопасности - это методы, используемые в
 .Fx
-to limit the potential impact of security vulnerabilities in software and
-hardware.
-It is essential to understand that mitigations do not directly address the
-underlying security issues.
-They are not a substitute for secure coding practices.
-Mitigations serve as an additional layer of defense, helping to reduce the
-likelihood of a successful exploitation of vulnerabilities by making it
-more difficult for attackers to achieve their objectives.
+чтобы ограничить потенциальное воздействие уязвимостей в программном и
+аппаратном обеспечении.
+Важно понимать, что меры по устранению уязвимостей не направлены непосредственно на устранение
+основных проблем безопасности.
+Они не заменяют методы безопасного кодирования.
+Меры по смягчению последствий служат дополнительным уровнем защиты, помогая снизить
+вероятность успешного использования уязвимостей,
+затрудняя злоумышленникам достижение своих целей.
 .Pp
-This manual page describes the security mitigations implemented in
+На этой странице руководства описаны меры по снижению безопасности, реализованные в
 .Fx
-to enhance the overall security of the operating system.
-Each mitigation is designed to protect against specific types of attacks
-and vulnerabilities.
+для повышения общей безопасности операционной системы.
+Каждое средство защиты предназначено для защиты от определенных типов атак
+и уязвимостей.
 .\"
-.Sh SOFTWARE VULNERABILITY MITIGATIONS
+.Sh МЕРЫ ПО УСТРАНЕНИЮ УЯЗВИМОСТЕЙ ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ
 .Ss Address Space Layout Randomization (ASLR)
-Address Space Layout Randomization (ASLR) is a security mitigation technique
-that works by randomizing the memory addresses where system and application
-code, data, and libraries are loaded, making it more challenging for attackers
-to predict the memory layout and exploit vulnerabilities.
+Address Space Layout Randomization (ASLR) это метод снижения уровня безопасности,
+который работает путем рандомизации адресов памяти, куда загружаются системный и прикладной
+код, данные и библиотеки, что затрудняет злоумышленникам
+прогнозирование расположения памяти и использование уязвимостей.
 .Pp
-ASLR introduces randomness into the memory layout during process execution,
-reducing the predictability of memory addresses.
-ASLR is intended to make exploitation more difficult in the event that an
-attacker discovers a software vulnerability, such as a buffer overflow.
+ASLR вносит случайность в расположение памяти во время выполнения процесса,
+снижая предсказуемость адресов памяти.
+ASLR предназначен для того, чтобы усложнить использование в случае,
+если злоумышленник обнаружит уязвимость в программном обеспечении, такую как переполнение буфера.
 .Pp
-ASLR can be enabled on both a global and per-process basis.
-Global control is provided by a separate set of
+ASLR может быть включен как на глобальном уровне, так и для каждого отдельного процесса.
+Глобальное управление обеспечивается отдельным набором регуляторов
 .Xr sysctl 8
-knobs for 32- and 64-bit processes.
-It can be or disabled on a per-process basis via
+для 32- и 64-разрядных процессов.
+Это можно включить или отключить для каждого процесса с помощью
 .Xr proccontrol 1 .
-Note that an ASLR mode change takes effect upon address space change,
-i.e., upon
+Обратите внимание, что изменение режима ASLR вступает в силу при изменении адресного пространства,
+т.е. при
 .Xr execve 2 .
 .Pp
-Global controls for 32-bit processes:
+Глобальные элементы управления для 32-разрядных процессов:
 .Bl -tag -width kern.elf32.aslr.pie_enable
 .It Va kern.elf32.aslr.enable
-Enable ASLR for 32-bit ELF binaries, other than Position Independent
-Exectutable (PIE) binaries.
+Включите ASLR для 32-разрядных двоичных файлов ELF, отличных от двоичных файлов Position Independent
+Exectutable (PIE).
 .It Va kern.elf32.aslr.pie_enable
-Enable ASLR for 32-bit Position Independent Executable (PIE) ELF binaries.
+Включите ASLR для 32-разрядных двоичных файлов Position Independent Executable (PIE) ELF.
 .It Va kern.elf32.aslr.honor_sbrk
-Reserve the legacy
+Зарезервируйте унаследованный регион
 .Xr sbrk 2
-region for compatibility with older binaries.
+для совместимости со старыми двоичными файлами.
 .It Va kern.elf32.aslr.stack
-Randomize the stack location for 32-bit ELF binaries.
+Определите случайным образом расположение стека для 32-разрядных двоичных файлов ELF.
 .El
 .Pp
-Global controls for 64-bit processes:
+Глобальные элементы управления для 64-разрядных процессов:
 .Bl -tag -width kern.elf64.aslr.pie_enable
 .It Va kern.elf64.aslr.enable
-Enable ASLR for 64-bit ELF binaries, other than Position Independent
-Exectutable (PIE) binaries.
+Включите ASLR для 64-разрядных двоичных файлов ELF, отличных от двоичных файлов Position Independent
+Exectutable (PIE).
 .It Va kern.elf64.aslr.pie_enable
-Enable ASLR for 64-bit Position Independent Executable (PIE) ELF binaries.
+Включите ASLR для 64-разрядных двоичных файлов Position Independent Executable (PIE) ELF.
 .It Va kern.elf64.aslr.honor_sbrk
-Reserve the legacy
+Зарезервируйте унаследованный регион
 .Xr sbrk 2
-region for compatibility with older binaries.
+для совместимости со старыми двоичными файлами.
 .It Va kern.elf64.aslr.stack
-Randomize the stack location for 64-bit ELF binaries.
+Измените расположение стека в случайном порядке для 64-разрядных двоичных файлов ELF.
 .El
 .Pp
-To execute a command with ASLR enabled or disabled:
+Для выполнения команды с включенным или отключенным ASLR:
 .Pp
 proccontrol
 .Fl m Ar aslr
@@ -146,216 +146,204 @@ proccontrol
 .Ar command
 .\"
 .Ss Position Independent Executable (PIE)
-PIE binaries are executable files that do not have a fixed load address.
-They can be loaded at an arbitrary memory address by the
-.Xr rtld
-run-time linker.
-With ASLR they are loaded at a random address on each execution.
+Двоичные файлы PIE - это исполняемые файлы, у которых нет фиксированного адреса загрузки.
+Они могут быть загружены компоновщиком среды выполнения по произвольному адресу памяти
+.Xr rtld .
+С помощью ASLR они загружаются по случайному адресу при каждом выполнении.
 .\"
 .Ss Write XOR Execute page protection policy
-Write XOR Execute (W^X) is a vulnerability mitigation strategy that strengthens
-the security of the system by controlling memory access permissions.
+Запись XOR Execute (W^X) - это стратегия устранения уязвимостей, которая повышает
+безопасность системы за счет контроля разрешений на доступ к памяти.
 .Pp
-Under the W^X mitigation, memory pages may be writable (W) or executable (E),
-but not both at the same time.
-This means that code execution is prevented in areas of memory that are
-designated as writable, and writing or modification of memory is restricted in
-areas marked for execution.
-Applications that perform Just In Time (JIT) compilation need to be adapted
-to be compatible with W^X.
+В соответствии с ограничением W^X страницы памяти могут быть доступны для записи (W) или для выполнения (E), но не для того и другого одновременно.
+Это означает, что выполнение кода запрещено в областях памяти, которые
+обозначены как доступные для записи, а запись или модификация памяти ограничена в
+областях, помеченных для выполнения.
+Приложения, которые выполняют Just In Time (JIT) компиляцию должны быть адаптированы
+для обеспечения совместимости с W^X.
 .Pp
-There are separate
+Есть отдельные ручки
 .Xr sysctl 8
-knobs to control W^X policy enforcement for 32- and 64-bit processes.
-The W^X policy is enabled by setting the appropriate
+для управления применением политики W^ X для 32- и 64-разрядных процессов.
+Политика W^X включается путем установки соответствующего системного кода
 .Dv allow_wx
-sysctl to 0.
+на 0.
 .Bl -tag -width kern.elf64.allow_wx
 .It Va kern.elf32.allow_wx
-Allow 32-bit processes to map pages simultaneously writable and executable.
+Разрешите 32-разрядным процессам отображать страницы, одновременно доступные для записи и исполняемые.
 .It Va kern.elf64.allow_wx
-Allow 64-bit processes to map pages simultaneously writable and executable.
+Разрешите 64-разрядным процессам отображать страницы, одновременно доступные для записи и исполняемые.
 .El
 .\"
 .Ss PROT_MAX
 .Dv PROT_MAX
-is a FreeBSD-specific extension to
+это специфичное для FreeBSD расширение для
 .Xr mmap 2 .
 .Dv PROT_MAX
-provides the ability to set the maximum protection of a region allocated by
+предоставляет возможность установить максимальную защиту для области, выделенной
 .Xr mmap
-and later altered by
+и позже измененный
 .Xr mprotect .
-For example, memory allocated originally with an mmap prot argument of
+Например, память, первоначально выделенная с аргументом mmap prot, от
 PROT_MAX(PROT_READ | PROT_WRITE) | PROT_READ
-may be made writable by a future
-.Xr mprotect
-call, but may not be made executable.
+может быть доступна для записи в будущем вызове
+.Xr mprotect ,
+но не может быть сделан исполняемым.
 .\"
 .Ss Relocation Read-Only (RELRO)
-Relocation Read-Only (RELRO) is a mitigation tool that makes certain portions
-of a program's address space that contain ELF metadata read-only, after
-relocation processing by
+Relocation Read-Only (RELRO) это инструмент смягчения последствий, который делает определенные части
+адресного пространства программы, содержащие метаданные ELF, доступными только для чтения, после
+обработки перемещения с помощью
 .Xr rtld 1 .
 .Pp
-When enabled in isolation the RELRO option provides
-.Em partial RELRO
-support.
-In this case the Procedure Linkage Table (PLT)-related part of the
-Global Offset Table (GOT) (in the section typically named .got.plt) remains
-writable.
+Если опция RELRO включена изолированно, она обеспечивает
+.Em частичную поддержку RELRO .
+В этом случае Procedure Linkage Table (PLT) - связанная с этим часть
+Global Offset Table (GOT) (в разделе, который обычно называется .got.plt) остается
+доступным для записи.
 .Pp
-RELRO is enabled by default.
-The
+RELRO включена по умолчанию.
+Параметр времени сборки
 .Xr src.conf 5
-build-time option
 .Va WITHOUT_RELRO
-may be used to disable it.
+может быть использован для его отключения.
 .Ss BIND_NOW
-The
+Параметр времени сборки
 .Va WITH_BIND_NOW
 .Xr src.conf 5
-build-time option causes binaries to be built with the
-.Dv DF_BIND_NOW
-flag set.
-The run-time loader
+приводит к созданию двоичных файлов с установленым флагом
+.Dv DF_BIND_NOW .
+Затем загрузчик 
 .Xr rtld 1
-will then perform all relocation processing when the process starts, instead of
-on demand (on the first access to each symbol).
+во время выполнения выполнит всю обработку перемещения при запуске процесса, а
+не по требованию (при первом доступе к каждому символу).
 .Pp
-When enabled in combination with
+При включении в сочетании с
 .Dv RELRO
-(which is enabled by default) this provides
-.Em full RELRO .
-The entire GOT (.got and .got.plt) are made read-only at program startup,
-preventing attacks on the relocation table.
-Note that this results in a nonstandard Application Binary Interface (ABI),
-and it is possible that some applications may not function correctly.
+(которая включена по умолчанию) это обеспечивает
+.Em полную RELRO .
+Все файлы GOT (.got и .got.plt) доступны только для чтения при запуске программы,
+что предотвращает атаки на таблицу перемещения.
+Обратите внимание, что в результате создается нестандартный двоичный интерфейс приложения (ABI),
+и возможно, что некоторые приложения могут работать некорректно.
 .\"
 .\".Ss Stack Smashing Protection (SSP)
 .\"
 .\".Ss Supervisor mode memory protection
 .\"
 .Ss Hardware vulnerability controls
-See
+Смотрите
 .Xr security 7
-for more information.
+для получения дополнительной информации.
 .\"
 .Ss Capsicum
-Capsicum is a lightweight OS capability and sandbox framework.
-See
+Capsicum - это облегченная операционная система с возможностями песочницы.
+Смотрите
 .Xr capsicum 4
-for more information.
+для получения дополнительной информации.
 .Pp
-.Sh HARDWARE VULNERABILITY MITIGATIONS
-Recent years have seen an unending stream of new hardware vulnerabilities,
-notably CPU ones generally caused by detectable microarchitectural side-effects
-of speculative execution which leak private data from some other thread or
-process or sometimes even internal CPU state that is normally inaccessible.
-Hardware vendors usually address these vulnerabilities as they are discovered by
-releasing microcode updates, which may then be bundled into platform firmware
-updates
-.Pq historically called BIOS updates for PCs .
+.Sh МЕРЫ ПО УСТРАНЕНИЮ АППАРАТНЫХ УЯЗВИМОСТЕЙ
+В последние годы наблюдается нескончаемый поток новых аппаратных уязвимостей, в частности уязвимостей процессора, обычно вызываемых обнаруживаемыми
+микроархитектурными побочными эффектами спекулятивного выполнения, которые приводят к утечке личных данных из какого-либо другого потока или процесса, а иногда
+даже из внутреннего состояния процессора, которое обычно недоступно.  Поставщики оборудования обычно
+устраняют эти уязвимости по мере их обнаружения, выпуская обновления микрокода, 
+которые затем могут быть включены в обновления встроенного по платформы 
+.Pq исторически называемые обновлениями BIOS для ПК .
 .Pp
-The best defense overall against hardware vulnerabilities is to timely apply
-these updates when available and to disable the affected hardware's problematic
-functionalities when possible (e.g., CPU Simultaneous Multi-Threading).
-Software mitigations are only partial substitutes for these, but they can be
-helpful on out-of-support hardware or as complements for just-discovered
-vulnerabilities not yet addressed by vendors.
-Some software mitigations depend on hardware capabilities provided by a
-microcode update.
+Наилучшей защитой от аппаратных уязвимостей в целом является своевременное применение
+этих обновлений, когда они доступны, и отключение проблемных
+функций уязвимого оборудования, когда это возможно (например, одновременная многопоточность процессора).
+Программные средства устранения неполадок лишь частично заменяют их, но они могут быть
+полезны при работе с оборудованием, которое не поддерживается, или в качестве дополнения к только что обнаруженным
+уязвимостям, которые еще не устранены поставщиками.
+Некоторые программные средства устранения неполадок зависят от аппаратных возможностей, предоставляемых
+обновлением микрокода.
 .Pp
-FreeBSD's usual policy is to apply by default all OS-level mitigations that do
-not require recompilation, except those the particular hardware it is running on
-is known not to be vulnerable to
-.Pq which sometimes requires firmware updates ,
-or those that are extremely detrimental to performance in proportion to the
-protection they actually provide.
-OS-level mitigations generally can have noticeable performance impacts on
-specific workloads.
-If your threat model allows it, you may want to try disabling some of them in
-order to possibly get better performance.
-Conversely, minimizing the risks may require you to explicitly enable the most
-expensive ones.
-The description of each vulnerability/mitigation indicates whether it is enabled
-or disabled by default and under which conditions.
-It also lists the knobs to tweak to force a particular status.
+Обычная политика FreeBSD заключается в применении по умолчанию всех средств защиты на уровне операционной
+системы, которые не требуют перекомпиляции, за исключением тех, для которых известно, что конкретное оборудование, на котором она запущена,
+не уязвимо
+.Pq что иногда требует обновления встроенного ПО ,
+или те, которые оказывают крайне негативное влияние на производительность пропорционально степени
+защиты, которую они фактически обеспечивают.
+Меры по снижению уровня операционной системы, как правило, могут оказать заметное влияние на производительность
+при определенных рабочих нагрузках.
+Если ваша модель угроз позволяет это, вы можете попробовать отключить некоторые из них,
+чтобы, возможно, повысить производительность.
+И наоборот, для минимизации рисков может потребоваться явное включение наиболее
+дорогостоящих из них.
+В описании каждой уязвимости/средства ее устранения указано, включена ли она
+по умолчанию или отключена и при каких условиях.
+В нем также перечислены кнопки, которые нужно настроить, чтобы принудительно установить определенный статус.
 .Ss Zenbleed
-The
+Уязвимость
 .Dq Zenbleed
-vulnerability exclusively affects AMD processors based on the Zen2
-microarchitecture.
-In contrast with, e.g., Meltdown and the different variants of Spectre, which
-leak data by leaving microarchitectural traces, Zenbleed is a genuine hardware
-bug affecting the CPU's architectural state.
-With particular sequences of instructions whose last ones are mispredicted by
-speculative execution, it is possible to make appear in an XMM register data
-previously put in some XMM register by some preceding or concurrent task
-executing on the same physical core
-.Po disabling Simultaneous Muti-Threading
+затрагивает исключительно процессоры AMD, основанные на микроархитектуре Zen2.
+В отличие, например, от Meltdown и других вариантов Spectre, которые
+приводят к утечке данных, оставляя микроархитектурные следы, Zenbleed - это настоящая аппаратная
+ошибка, влияющая на архитектурное состояние процессора.
+С помощью определенных последовательностей команд, последние из которых неверно интерпретируются
+в результате спекулятивного выполнения, можно добиться появления в регистре XMM данных,
+ранее помещенных в какой-либо регистр XMM какой-либо предыдущей или параллельной задачей,
+выполняющейся на том же физическом ядре
+.Po таким образом, отключение Simultaneous Muti-Threading
 .Pq SMT
-is thus not a sufficient protection
+является недостаточной защитой
 .Pc .
 .Pp
-According to the vulnerability's discoverer, all Zen2-based processors are
-affected
-.Po see
+По словам того, кто обнаружил уязвимость, уязвимы все процессоры на базе Zen2
+.Po смотрите
 .Lk https://lock.cmpxchg8b.com/zenbleed.html
 .Pc .
-As of August 2023, AMD has not publicly listed any corresponding errata but has
-issued a security bulletin
-.Pq AMD-SB-7008
-entitled
+По состоянию на август 2023 года AMD не публиковала никаких соответствующих исправлений, но
+выпустила бюллетень по безопасности
+.Pq AMD-SB-7008 ,
+озаглавленный
 .Dq Cross-Process Information Leak
-indicating that platform firmware fixing the vulnerability will be distributed
-to manufacturers no sooner than the end of 2023, except for Rome processors for
-which it is already available.
-No standalone CPU microcodes have been announced so far.
-The only readily-applicable fix mentioned by the discoverer is to set a bit of
-an undocumented MSR, which reportedly completely stops XMM register leaks.
+указывающий на то, что прошивка платформы, исправляющая уязвимость, будет распространена
+среди производителей не ранее конца 2023 года, за исключением процессоров Rome, для
+которых она уже доступна.
+На данный момент не было анонсировано ни одного отдельного микрокода процессора.
+Единственное легкодоступное исправление, упомянутое discoverer, - это установка небольшого количества
+недокументированных MSR, которые, как сообщается, полностью предотвращают утечки регистров XMM.
 .Pp
 .Fx
-currently sets this bit by default on all Zen2 processors.
-In the future, it might set it by default only on those Zen2 processors whose
-microcode has not been updated to revisions fixing the vulnerability, once such
-microcode updates have been actually released and community-tested.
-To this mitigation are associated the following knobs:
+в настоящее время устанавливает этот бит по умолчанию на всех процессорах Zen2.
+В будущем он может быть установлен по умолчанию только на тех процессорах Zen2,
+микрокод которых не был обновлен до версий, устраняющих уязвимость, как только такие
+обновления микрокода будут выпущены и протестированы сообществом.
+С этим смягчением связаны следующие нобы:
 .Bl -tag -width indent
 .It Va machdep.mitigations.zenbleed.enable
-A read-write integer tunable and sysctl indicating whether the mitigation should
-be forcibly disabled (0), enabled (1) or if it is left to
+Настраиваемое целое число для чтения и записи и sysctl, указывающий,
+следует ли принудительно отключить смягчение (0), включить (1) или оставить его на
 .Fx
-to selectively apply it (2).
-Any other integer value is silently converted to and treated as value 2.
-Note that this setting is silently ignored when running on non-Zen2 processors
-to ease applying a common configuration to heterogeneous machines.
+чтобы выборочно применить его (2).
+Любое другое целочисленное значение автоматически преобразуется в значение 2.
+Обратите внимание, что этот параметр автоматически игнорируется при работе на процессорах,
+отличных от Zen2, для упрощения применения общей конфигурации к разнородным компьютерам.
 .It Va machdep.mitigations.zenbleed.state
-A read-only string indicating the current mitigation state.
-It can be either
+Строка, доступная только для чтения, указывающая текущее состояние защиты.
+Это может быть либо
 .Dq Not applicable ,
-if the processor is not Zen2-based,
+если процессор не основан на Zen2,
 .Dq Mitigation enabled
-or
+или
 .Dq Mitigation disabled .
-This state is automatically updated each time the sysctl
+Это состояние автоматически обновляется каждый раз, когда системный код
 .Va machdep.mitigations.zenbleed.enable
-is written to.
-Note that it can become inaccurate if the chicken bit is set or cleared
-directly via
+записывается в него.
+Обратите внимание, что это может привести к неточностям, если задать или очистить бит курицы непосредственно с помощью
 .Xr cpuctl 4
-.Po which includes the
+.Po который включает в себя утилиту
 .Xr cpucontrol 8
-utility
 .Pc .
 .El
 .Pp
-The performance impact and threat models related to these mitigations
-should be considered when configuring and deploying them in a
-.Fx
-system.
+Влияние на производительность и модели угроз, связанные с этими мерами по снижению
+риска, следует учитывать при их настройке и развертывании в системе
+.Fx .
 .Pp
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr elfctl 1 ,
 .Xr proccontrol 1 ,
 .Xr rtld 1 ,
