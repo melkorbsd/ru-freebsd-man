@@ -30,11 +30,11 @@
 .Dd November 20, 2022
 .Dt ORDERS 7
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm orders
-.Nd orders of magnitude
-.Sh DESCRIPTION
-The following table lists common multiples of bytes.
+.Nd порядки величины
+.Sh ОПИСАНИЕ
+В следующей таблице перечислены распространенные значения, кратные байтам.
 .Bl -column -offset 2n \
 "Kilobyte" "Prefix" "Power of 2" "Power of 10"
 .It Sy Name Ta Sy Prefix Ta Sy Power of 2 Ta Sy Power of 10
@@ -50,7 +50,7 @@ The following table lists common multiples of bytes.
 .It Quettabyte Ta QB Ta 2^100 Ta 10^30.
 El
 .Pp
-The following table lists common bit rates as a power of ten.
+В следующей таблице приведены распространенные скорости передачи данных в десятичной степени.
 .Bl -column -offset 2n \
 "Megabit per second" "Prefix" "Bit per second" "Byte per second"
 .It Sy Name Ta Sy Prefix Ta Sy Bit per second Ta Sy Byte per second
@@ -66,7 +66,7 @@ The following table lists common bit rates as a power of ten.
 .It Terabyte per second Ta TB/s Ta 8 * 10^12 Ta 1000000000000
 .El
 .Pp
-The following table lists common orders of magnitude as a power of ten.
+В следующей таблице перечислены общие порядки величины в степени десять.
 .Bl -column -offset 2n \
 "Septillionth" "Order" "Prefix" "Symbol" "Decimal"
 .It Sy Name Ta Sy Order Ta Sy Prefix Ta Sy Symbol Ta Sy Decimal
@@ -96,20 +96,20 @@ The following table lists common orders of magnitude as a power of ten.
 .It Octillion Ta 10^27 Ta ronna Ta R Ta 1000000000000000000000000000
 .It Nonillion Ta 10^30 Ta quetta Ta Q Ta 1000000000000000000000000000000
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr units 1 ,
 .Xr number 6
-.Sh STANDARDS
-There have been various attempts to standardize the set of binary prefixes.
-Organizations such as International Electrotechnical Commission
+.Sh СТАНДАРТЫ
+Предпринимались различные попытки стандартизировать набор двоичных префиксов.
+Такими организациями, как Международная электротехническая комиссия
 .Pq Tn IEC
-have proposed new prefixes such as
+были предложены новые префиксы, такие как
 .Dq kibi ,
 .Dq mebi ,
 .Dq gibi ,
-and
+и
 .Dq yobi ,
-but the adoption has been slow at best.
-.Sh AUTHORS
-This manual page was written by
-.An Jukka Ruohonen Aq Mt jruoho@netbsd.org .
+но внедрение шло в лучшем случае медленно.
+.Sh АВТОРЫ
+Эта страница руководства была написана
+.An Юкка Руохонен Aq Mt jruoho@netbsd.org .

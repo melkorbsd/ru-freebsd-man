@@ -31,20 +31,20 @@
 .Dd January 11, 2022
 .Dt CRYPTO 7
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm crypto
-.Nd OpenCrypto algorithms
-.Sh DESCRIPTION
-The in-kernel OpenCrypto framework supports several different encryption
-and authentication algorithms.
-This document describes the parameters and requirements of these algorithms.
-Unless otherwise noted, all sizes listed below are in bytes.
+.Nd алгоритмы OpenCrypto
+.Sh ОПИСАНИЕ
+Встроенная в ядро платформа OpenCrypto framework поддерживает несколько различных алгоритмов шифрования
+и аутентификации.
+В этом документе описаны параметры и требования к этим алгоритмам.
+Если не указано иное, все размеры, указанные ниже, указаны в байтах.
 .Ss Authenticators
-Authenticators compute a value (also known as a digest, hash, or tag)
-over an input of bytes.
-In-kernel requests can either compute the value for a given input,
-or verify if a given tag matches the computed tag for a given input.
-The following authentication algorithms are supported:
+Средства аутентификации вычисляют значение (также известное как дайджест, хэш или тег)
+на основе введенных байт.
+Запросы, выполняемые ядром, могут либо вычислять значение для заданных входных данных,
+либо проверять, соответствует ли данный тег вычисленному тегу для заданных входных данных.
+Поддерживаются следующие алгоритмы аутентификации:
 .Bl -column "CRYPTO_AES_CCM_CBC_MAC" "XXX" "16, 24, 32" "Digest"
 .It Sy Name Ta Sy Nonce Ta Sy Key Sizes Ta Sy Digest Ta Sy Description
 .It Dv CRYPTO_AES_CCM_CBC_MAC Ta 12 Ta 16, 24, 32 Ta 16 Ta
@@ -85,9 +85,9 @@ SHA-2 512
 SHA-2 512 HMAC
 .El
 .Ss Block Ciphers
-Block ciphers in OCF can only operate on messages whose length is an
-exact multiple of the cipher's block size.
-OCF supports the following block ciphers:
+Блочные шифры в OCF могут работать только с сообщениями, длина которых в
+точности кратна размеру блока шифра.
+OCF поддерживает следующие блочные шифры:
 .Bl -column "CRYPTO_CAMELLIA_CBC" "IV Size" "Block Size" "16, 24, 32"
 .It Sy Name Ta Sy IV Size Ta Sy Block Size Ta Sy Key Sizes Ta Sy Description
 .It Dv CRYPTO_AES_CBC Ta 16 Ta 16 Ta 16, 24, 32 Ta
@@ -101,17 +101,16 @@ IPsec NULL cipher
 .El
 .Pp
 .Dv CRYPTO_AES_XTS
-implements XEX Tweakable Block Cipher with Ciphertext Stealing
-as defined in NIST SP 800-38E.
-OCF consumers provide the first 8 bytes of the IV.
-The remaining 8 bytes are defined to be a block counter beginning at 0.
+реализует настраиваемый блочный шифр XEX с возможностью кражи зашифрованного
+текста, как определено в NIST SP 800-38E.
+Пользователи предоставляют первые 8 байт IV.
+Оставшиеся 8 байт определяются как счетчик блоков, начинающийся с 0.
 .Pp
-NOTE: The ciphertext stealing part is not implemented in all backends
-which is why this cipher requires input that is a multiple of the block
-size.
+ПРИМЕЧАНИЕ: Функция кражи зашифрованного текста реализована не во всех серверных
+системах, поэтому для этого шифра требуется ввод данных, кратный размеру блока.
 .Ss Stream Ciphers
-Stream ciphers can operate on messages with arbitrary lengths.
-OCF supports the following stream ciphers:
+Потоковые шифры могут работать с сообщениями произвольной длины.
+OCF поддерживает следующие потоковые шифры:
 .Bl -column "CRYPTO_CHACHA20" "IV Size" "16, 24, 32"
 .It Sy Name Ta Sy IV Size Ta Sy Key Sizes Ta Sy Description
 .It Dv CRYPTO_AES_ICM Ta 16 Ta 16, 24, 32 Ta
@@ -120,44 +119,42 @@ AES Counter Mode
 ChaCha20
 .El
 .Pp
-The IV for each request must be provided in
+Данные для каждого запроса должны быть предоставлены в
 .Fa crp_iv
-via the
-.Dv CRYPTO_F_IV_SEPARATE
-flag.
+с помощью флага
+.Dv CRYPTO_F_IV_SEPARATE .
 .Pp
 .Dv CRYPTO_AES_ICM
-uses the entire IV as a 128-bit big endian block counter.
-The IV sets the initial counter value for a message.
-If a consumer wishes to use an IV whose value is split into
-separate nonce and counter fields (e.g., IPsec),
-the consumer is responsible for splitting requests to handle
-counter rollover.
+использует весь IV в качестве 128-разрядного счетчика блоков с большим порядком порядковых номеров.
+IV устанавливает начальное значение счетчика для сообщения.
+Если пользователь желает использовать IV, значение которого разделено на
+отдельные поля nonce и counter (например, IPSec),
+пользователь несет ответственность за разделение запросов для обработки
+переключения счетчика.
 .Pp
 .Dv CRYPTO_CHACHA20
-accepts a 16 byte IV.
-The first 8 bytes are used as a nonce.
-The last 8 bytes are used as a 64-bit little-endian block counter.
+принимает 16-байтовое значение IV.
+Первые 8 байт используются в качестве одноразового значения.
+Последние 8 байт используются в качестве 64-разрядного счетчика блоков в порядке убывания.
 .Ss Authenticated Encryption with Associated Data Algorithms
-AEAD algorithms in OCF combine a stream cipher with an authentication
-algorithm to provide both secrecy and authentication.
-AEAD algorithms accept additional authentication data (AAD)
-in addition to the ciphertext or plaintext.
-AAD is passed to the authentication algorithm as input in a method
-defined by the specific AEAD algorithm.
+Алгоритмы AEAD в OCF сочетают потоковый шифр с
+алгоритмом аутентификации, обеспечивая как секретность, так и аутентификацию.
+Алгоритмы AEAD принимают дополнительные данные аутентификации (AAD)
+в дополнение к зашифрованному или открытому тексту.
+AAD передается алгоритму аутентификации в качестве входных данных в методе,
+определенном конкретным алгоритмом AEAD.
 .Pp
-AEAD algorithms in OCF accept a nonce that is combined with an
-algorithm-defined counter to construct the IV for the underlying
-stream cipher.
-This nonce must be provided in
+Алгоритмы AEAD в OCF принимают одноразовый код, который объединяется с определенным
+алгоритмом счетчиком для построения IV для базового
+потокового шифра.
+Этот одноразовый код должен быть указан в
 .Fa crp_iv
-via the
-.Dv CRYPTO_F_IV_SEPARATE
-flag.
-Some AEAD algorithms support multiple nonce sizes.
-The first size listed is the default nonce size.
+с помощью флага
+.Dv CRYPTO_F_IV_SEPARATE .
+Некоторые алгоритмы AEAD поддерживают несколько одноразовых размеров.
+Первый указанный размер является одноразовым размером по умолчанию.
 .Pp
-The following AEAD algorithms are supported:
+Поддерживаются следующие алгоритмы AEAD:
 .Bl -column "CRYPTO_AES_NIST_GCM_16" "12, 7-13" "16, 24, 32" "Tag"
 .It Sy Name Ta Sy Nonce Ta Sy Key Sizes Ta Sy Tag Ta Sy Description
 .It Dv CRYPTO_AES_NIST_GCM_16 Ta 12 Ta 16, 24, 32 Ta 16 Ta
@@ -169,11 +166,11 @@ ChaCha20-Poly1305
 .It Dv CRYPTO_XCHACHA20_POLY1305 Ta 24 Ta 32 Ta 16 Ta
 XChaCha20-Poly1305
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr crypto 4 ,
 .Xr crypto 9
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Страница руководства
 .Nm
-manual page first appeared in
+впервые появилась в
 .Fx 10.1 .

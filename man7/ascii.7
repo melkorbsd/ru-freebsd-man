@@ -30,15 +30,13 @@
 .Dd November 12, 2022
 .Dt ASCII 7
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm ascii
-.Nd octal, hexadecimal, decimal and binary
+.Nd восьмеричные, шестнадцатеричные, десятичные и двоичные наборы символов
 .Tn ASCII
-character sets
-.Sh DESCRIPTION
-The
-.Nm octal
-set:
+.Sh ОПИСАНИЕ
+.Nm Восьмеричный
+набор:
 .Bd -literal -offset left
 000 NUL  001 SOH  002 STX  003 ETX  004 EOT  005 ENQ  006 ACK  007 BEL
 010 BS   011 HT   012 LF   013 VT   014 FF   015 CR   016 SO   017 SI
@@ -58,9 +56,8 @@ set:
 170  x   171  y   172  z   173  {   174  |   175  }   176  ~   177 DEL
 .Ed
 .Pp
-The
-.Nm hexadecimal
-set:
+.Nm Шестнадцатеричный
+набор:
 .Bd -literal -offset left
 00 NUL   01 SOH   02 STX   03 ETX   04 EOT   05 ENQ   06 ACK   07 BEL
 08 BS    09 HT    0a LF    0b VT    0c FF    0d CR    0e SO    0f SI
@@ -80,9 +77,8 @@ set:
 78  x    79  y    7a  z    7b  {    7c  |    7d  }    7e  ~    7f DEL
 .Ed
 .Pp
-The
-.Nm decimal
-set:
+.Nm Десятичный
+набор:
 .Bd -literal -offset left
   0 NUL    1 SOH    2 STX    3 ETX    4 EOT    5 ENQ    6 ACK    7 BEL
   8 BS     9 HT    10 LF    11 VT    12 FF    13 CR    14 SO    15 SI
@@ -102,9 +98,8 @@ set:
 120  x   121  y   122  z   123  {   124  |   125  }   126  ~   127 DEL
 .Ed
 .Pp
-The
-.Nm binary
-set:
+.Nm Двоичный
+набор:
 .Bd -literal -offset left
  00     01     10     11
 
@@ -142,56 +137,56 @@ ESC      ;      [      {     11011
  US      ?      _    DEL     11111
 .Ed
 .Pp
-The full
-.Nm names
-of the control character set:
+Полный набор
+.Nm имен
+управляющих символов:
 .Bd -literal -offset left
 NUL      NULl
-SOH      Start Of Heading
-STX      Start Of Text
-ETX      End Of Text
-EOT      End Of Transmission
-ENQ      ENQuiry
-ACK      ACKnowledge
-BEL      BELl
- BS      BackSpace
- HT      Horizontal Tab
- LF      Line Feed (new line)
- VT      Vertical Tab
- FF      new page Form Feed
- CR      Carriage Return
- SO      Shift Out
- SI      Shift In
-DLE      Data Link Escape
-DC1      Device Control 1
-DC2      Device Control 2
-DC3      Device Control 3
-DC4      Device Control 4
-NAK      Negative AcKnowledge
-SYN      SYNchronous idle
-ETB      End of Transmission Block
-CAN      CANcel
- EM      End of Medium
-SUB      SUBstitute
-ESC      ESCape
- FS      File Separator
- GS      Group Separator
- RS      Record Separator
- US      Unit Separator
+SOH      Начало Заголовка(Start Of Heading)
+STX      Начало Текста(Start Of Text)
+ETX      Конец Текста(End Of Text)
+EOT      Окончание Передачи(End Of Transmission)
+ENQ      Запрос(ENQuiry)
+ACK      Подтверждение(ACKnowledge)
+BEL      Звонок(BELl)
+ BS      Возврат(BackSpace)
+ HT      Горизонтальная табуляция(Horizontal Tab)
+ LF      Перенос строки (новая строка)(Line Feed)
+ VT      Вертикальная табуляция(Vertical Tab)
+ FF      новая страница Подачи Формы(Form Feed)
+ CR      Возврат Каретки(Carriage Return)
+ SO      Сдвиг Наружу(Shift Out)
+ SI      Сдвиг Внутрь(Shift In)
+DLE      Выход из Канала Связи(Data Link Escape)
+DC1      Управление Устройством 1(Device Control 1)
+DC2      Управление Устройством 2(Device Control 2)
+DC3      Управление Устройством 3(Device Control 3)
+DC4      Управление Устройством 4(Device Control 4)
+NAK      Отрицательное Подтверждение(Negative AcKnowledge)
+SYN      Синхронизация холостого времени(SYNchronous idle)
+ETB      Конец Блока Передачи(End of Transmission Block)
+CAN      Отмена(CANcel)
+ EM      Конец средства(End of Medium)
+SUB      Замена(SUBstitute)
+ESC      Выход(ESCape)
+ FS      Разделитель Файлов(File Separator)
+ GS      Разделитель Групп(Group Separator)
+ RS      Разделитель Записей(Record Separator)
+ US      Разделитель Блоков(Unit Separator)
 .Ed
-.Sh FILES
+.Sh ФАЙЛЫ
 .Bl -tag -width /usr/share/misc/ascii -compact
 .It Pa /usr/share/misc/ascii
 .El
-.Sh STANDARDS
+.Sh СТАНДАРТЫ
 .Rs
 .%T Information Systems - Coded Character Sets - 7-Bit American National\
  Standard Code for Information Interchange (7-Bit ASCII)
 .%R INCITS 4-1986[R2017]
 .%Q InterNational Committee for Information Technology Standards
 .Re
-.Sh HISTORY
-An
+.Sh ИСТОРИЯ
+Страница руководста
 .Nm
-manual page appeared in
+появилась в
 .At v2 .
