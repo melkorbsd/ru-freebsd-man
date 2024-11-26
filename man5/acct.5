@@ -27,100 +27,100 @@
 .\"
 .\"     @(#)acct.5	8.1 (Berkeley) 6/5/93
 .\"
-.Dd February 13, 2017
+.Dd 13 февраля, 2017
 .Dt ACCT 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm acct
-.Nd execution accounting file
-.Sh SYNOPSIS
+.Nd файл учёта выполнения 
+.Sh СИНТАКСИС
 .In sys/types.h
 .In sys/acct.h
-.Sh DESCRIPTION
-The kernel maintains the following
+.Sh ОПИСАНИЕ
+Ядро поддерживает следующую
 .Fa acct
-information structure for all
-processes.
-If a process terminates, and accounting is enabled,
-the kernel calls the
+структуру информации для всех
+процессов.
+Если процесс завершает работу и учёт включён,  
+ядро вызывает
 .Xr acct 2
-function call to prepare and append the record
-to the accounting file.
+функцию для подготовки и добавления записи
+в файл учёта.  
 .Bd -literal
 #define AC_COMM_LEN 16
 
 /*
- * Accounting structure version 3 (current).
- * The first byte is always zero.
- * Time units are microseconds.
+ * Структура учёта версия 3 (текущая).
+ * Первый байт всегда равен нулю.
+ * Единицы времени — микросекунды.
  */
 
 struct acctv3 {
-	uint8_t  ac_zero;		/* zero identifies new version */
-	uint8_t  ac_version;		/* record version number */
-	uint16_t ac_len;		/* record length */
+	uint8_t  ac_zero;		/* ноль идентифицирует новую версию */
+	uint8_t  ac_version;		/* номер версии записи */
+	uint16_t ac_len;		/* длина записи */
 
-	char	  ac_comm[AC_COMM_LEN];	/* command name */
-	float	  ac_utime;		/* user time */
-	float	  ac_stime;		/* system time */
-	float	  ac_etime;		/* elapsed time */
-	time_t	  ac_btime;		/* starting time */
-	uid_t	  ac_uid;		/* user id */
-	gid_t	  ac_gid;		/* group id */
-	float	  ac_mem;		/* average memory usage */
-	float	  ac_io;		/* count of IO blocks */
-	__dev_t   ac_tty;		/* controlling tty */
+	char	  ac_comm[AC_COMM_LEN];	/* имя команды */
+	float	  ac_utime;		/* время пользователя */
+	float	  ac_stime;		/* системное время */
+	float	  ac_etime;		/* прошедшее время */
+	time_t	  ac_btime;		/* время начала */
+	uid_t	  ac_uid;		/* идентификатор пользователя */
+	gid_t	  ac_gid;		/* идентификатор группы */
+	float	  ac_mem;		/* среднее использование памяти */
+	float	  ac_io;		/* количество IO блоков */
+	__dev_t   ac_tty;		/* управляющий tty */
 
-	uint16_t ac_len2;		/* record length */
+	uint16_t ac_len2;		/* длина записи */
 	union {
-		uint32_t  ac_align;	/* force v1 compatible alignment */
+		uint32_t  ac_align;	/* выравнивание для совместимости с v1 */
 
-#define	AFORK	0x01			/* forked but not exec'ed */
-/* ASU is no longer supported */
-#define	ASU	0x02			/* used super-user permissions */
-#define	ACOMPAT	0x04			/* used compatibility mode */
-#define	ACORE	0x08			/* dumped core */
-#define	AXSIG	0x10			/* killed by a signal */
-#define ANVER	0x20			/* new record version */
+#define	AFORK	0x01			/* был вызван fork, но не exec'ed */
+/* ASU больше не поддерживается */
+#define	ASU	0x02			/* использованы права суперпользователя */
+#define	ACOMPAT	0x04			/* использован режим совместимости */
+#define	ACORE	0x08			/* создан дамп памяти */
+#define	AXSIG	0x10			/* убит сигналом */
+#define ANVER	0x20			/* новая версия записи */
 
-		uint8_t  ac_flag;	/* accounting flags */
+		uint8_t  ac_flag;	/* флаги учёта */
 	} ac_trailer;
 
 #define ac_flagx ac_trailer.ac_flag
 };
 .Ed
 .Pp
-If a terminated process was created by an
+Если завершённый процесс был создан с помощью  
 .Xr execve 2 ,
-the name of the executed file (at most ten characters of it)
-is saved in the field
+имя исполняемого файла (не более десяти символов)  
+сохраняется в поле
 .Fa ac_comm
-and its status is saved by setting one of more of the following flags in
+и его статус сохраняется путём установки одного или нескольких из следующих флагов в  
 .Fa ac_flag :
 .Dv AFORK ,
 .Dv ACOMPAT ,
 .Dv ACORE
-and
+и
 .Dv ASIG .
 .Dv ASU
-is no longer supported.
+больше не поддерживается.  
 .Dv ANVER
-is always set in the above structure.
-.Sh SEE ALSO
+всегда установлен в вышеуказанной структуре.
+.Sh СМОТРИ ТАКЖЕ
 .Xr lastcomm 1 ,
 .Xr acct 2 ,
 .Xr execve 2 ,
 .Xr sa 8
-.Sh HISTORY
-A
+.Sh ИСТОРИЯ
+Формат файла  
 .Nm
-file format appeared in
+появился в 
 .At v7 .
-The current record format was introduced on May 2007.
-It is backwards compatible with the previous format,
-which is still documented in
+Текущий формат записи был введён в мае 2007 года.  
+Он обратно совместим с предыдущим форматом,  
+который всё ещё документирован в 
 .In sys/acct.h
-and supported by
+и поддерживается командами  
 .Xr lastcomm 1
-and
+и
 .Xr sa 8 .
