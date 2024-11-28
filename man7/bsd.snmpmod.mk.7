@@ -26,90 +26,88 @@
 .\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 .\" SUCH DAMAGE.
 .\"
-.Dd January 8, 2008
+.Dd Январь 8, 2008
 .Dt BSD.SNMPMOD.MK 7
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm bsd.snmpmod.mk
-.Nd building modules for
+.Nd создание модулей для
 .Xr bsnmpd 1
-.Sh SYNOPSIS
+.Sh СИНТАКСИС
 .Fd ".include <bsd.snmpmod.mk>"
-.Sh DESCRIPTION
-The file
+.Sh ОПИСАНИЕ
+Файл
 .In bsd.snmpmod.mk
-simplifies the building of modules for the Begemot SNMP daemon,
+упрощает сборку модулей для SNMP-демона Begemot,
 .Xr bsnmpd 1 .
-It provides some common functions for building a module and
-relies on
+Он предоставляет некоторые общие функции для создания модуля и
+опирается на
 .In bsd.lib.mk ,
-which is included by
-.In bsd.snmpmod.mk
-to actually build the shared library.
+который включен в
+.In bsd.snmpmod.mk ,
+чтобы на самом деле создать общую библиотеку.
 .Pp
-The following
+Следующие переменные
 .Xr make 1
-variables control the special functions:
+управляют специальными функциями:
 .Bl -tag -width ".Va EXTRAMIBDEFS"
 .It Va MOD
-The short name of the module.
-The name of the shared library will be
+Краткое название модуля.
+Имя совместно используемой библиотеки будет
 .Pa snmp_${MOD}.so .
-There must exist a file
+Должен существовать файл
 .Pa ${MOD}_tree.def
-for compilation with
-.Xr gensnmptree 1
-which contains the definition of the MIB tree implemented by the module.
+для компиляции с
+.Xr gensnmptree 1 ,
+который содержит определение дерева MIB, реализованного модулем.
 .It Va EXTRAMIBDEFS
-A list of extra MIB definition files for
+Список дополнительных файлов определения MIB для
 .Xr gensnmptree 1 .
-This is optional.
-This file list is given to both calls to
+Это необязательно.
+Этот список файлов предоставляется обоим вызовам для
 .Xr gensnmptree 1 No \(em
-the one that extracts the symbols in
+тот, который извлекает символы из
 .Va XSYM
-from the MIB definitions and the one that
-generates the table with OIDs served by this module.
+из определений MIB и того, который
+генерирует таблицу с OID, обслуживаемыми этим модулем.
 .It Va EXTRAMIBSYMS
-A list of extra MIB definition files for
+Список дополнительных файлов определения MIB для
 .Xr gensnmptree 1 .
-This is optional.
-This file list is given only to the call to
+Это необязательно.
+Этот список файлов предоставляется только для вызова
 .Xr gensnmptree 1
-that extracts symbols from MIB definition files.
-It is useful if there are dependencies on other MIBs or for extracting global
-definitions for enumeration constants.
+который извлекает символы из файлов определений MIB.
+Это полезно, если есть зависимости от других MIB-файлов или для извлечения глобальных
+определений констант перечисления.
 .It Va XSYM
-A list of symbols to be extracted from the MIB definition files by
+Список символов, которые должны быть извлечены из файлов определений MIB с помощью
 .Xr gensnmptree 1 .
-This is optional.
+Это необязательно.
 .It Va DEFS
-A list of MIB definition files to be installed.
-This is optional.
+Список файлов определения MIB, которые необходимо установить.
+Это необязательно.
 .It Va BMIBS
-A list of textual MIBs to be installed.
-This is optional.
+Список текстовых MIB-файлов, которые необходимо установить.
+Это необязательно.
 .El
 .Pp
-Three files are automatically created from the MIB definition files and
-the
+Три файла автоматически создаются из файлов определения MIB и
 .Va XSYM
-variable:
+переменная:
 .Bl -tag -width ".Va EXTRAMIBDEFS"
 .It Pa ${MOD}_tree.c
-This contains a table with the tree implemented by the module.
-It is automatically included into the
+Здесь содержится таблица с деревом, реализованным модулем.
+Она автоматически включается в
 .Va SRCS
-variable.
+переменная.
 .It Pa ${MOD}_tree.h
-This contains preprocessor defines for all the OIDs defined by the module
-and can be included in the module's source code.
+Он содержит определения препроцессора для всех OID, определенных модулем, и может быть включен в исходный код модуля.
 .It Pa ${MOD}_oid.h
-OID preprocessor definitions for all the symbols listed in
+Определения препроцессора OID для всех символов, перечисленных в
 .Va XSYMS .
-This is to be included into the module's source code.
+Это должно быть включено в исходный код модуля.
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr bsnmpd 1 ,
 .Xr gensnmptree 1 ,
 .Xr snmpmod 3
