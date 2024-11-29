@@ -1,129 +1,130 @@
-.\" Copyright (c) 2001, 2002 Chuck Rouillard
-.\" All rights reserved.
+.\" Copyright (c) 2001, 2002 Чак Руйяр
+.\"Все права защищены.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
-.\" 3. The name of the author may not be used to endorse or promote
-.\"    products derived from this software without specific prior written
-.\"    permission.
+.\" Распространение и использование в исходном коде и двоичной форме, с использованием или без использования
+.\" модификаций, если следующие условия
+.\" соблюдаются:
+.\" 1. При распространении исходного кода должно сохраняться вышеуказанное уведомление
+.\"    об авторских правах, этот список условий и следующий дисклеймер.
+.\" 2. При распространиении в двоичной форме должно воспроизводиться уведомление об авторских правах,
+.\"    этот список условий и следующий ниже отказ от ответственности в
+.\"    документации и/или других материалах, поставляемых с дистрибутивом.
+.\" 3. Ни название университета, ни имена его участников не могут быть использованы для
+.\"    поддержки или продвижения продуктов, созданных на основе данного программного обеспечения,
+.\"    без специального предварительного письменного согласия.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS
-.\" OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-.\" WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
-.\" DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ ПРАВООБЛАДАТЕЛЯМИ И СОАВТОРАМИ ``КАК ЕСТЬ'', И 
+.\" МЫ ОТКАЗЫВАЕМСЯ ОТ ЛЮБЫХ ПОДРАЗУМЕВАЕМЫХ ОБЯЗАТЕЛЬСТВ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, 
+.\" ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ТОВАРНОЙ ПРИГОДНОСТИ И НЕПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ
+.\" ЦЕЛИ. НИ В КОЕМ СЛУЧАЕ ПРАВООБЛАДАТЕЛИ ИЛИ СОВАТОРЫ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ
+.\" ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, ОСОБЫЕ, ПОКАЗАТЕЛЬНЫЕ ИЛИ ЛОГИЧЕСКИ ВЫТЕКАЮЩИЕ
+.\" УБЫТКИ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ ИМИ, ПРИОБРЕТЕНИЕ ЗАМЕНЯЮЩИХ ТОВАРОВ ИЛИ УСЛУГ;
+.\" ПОТЕРЮ ВОЗМОЖНОСТИ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПРЕКРАЩЕНИЕ ДЕЯТЕЛЬНОСТИ)
+.\" НЕЗАВИСИМО ОТ ПРИЧИНЕННОГО УЩЕРБА И НА ОСНОВАНИИ ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО В РАМКАХ КОНТРАКТА, 
+.\" ПРЯМОЙ ОТВЕТСТВЕННОСТИ ИЛИ ДЕЛИКТА (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНОЕ), ВОЗНИКШЕГО КАКИМ-ЛИБО ОБРАЗОМ
+.\" В РЕЗУЛЬТАТЕ ИСПОЛЬЗОВАНИЯ ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ ВЫ БЫЛИ ОСВЕДОМЛЕНЫ О ВОЗМОЖНОСТИ
+.\" ТАКОГО УЩЕРБА.
 .\"
-.Dd May 1, 2010
+.Dd 1 мая, 2010 год
 .Dt PATHCHK 1
 .Os
-.Sh NAME
+.Sh НАЗВАНИЕ
 .Nm pathchk
 .Nd check pathnames
-.Sh SYNOPSIS
+.Sh СИНТАКСИС
 .Nm
 .Op Fl pP
-.Ar pathname ...
-.Sh DESCRIPTION
-The
+.Ar назваие патча ...
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility checks whether each of the specified
-.Ar pathname
-arguments is valid or portable.
+утилита проверяет, является ли каждый из указанных
+аргументов
+.Ar название патча
+допустимым или переносимым.
 .Pp
-A diagnostic message is written for each argument that:
+Диагностическое сообщение записывается для каждого аргумента , который:
 .Bl -bullet
 .It
-Is longer than
+Длиннее, чем
 .Dv PATH_MAX
-bytes.
+байт.
 .It
-Contains any component longer than
+Содержит любой компонент длиной более
 .Dv NAME_MAX
-bytes.
-(The value of
+байт.
+(Значение
 .Dv NAME_MAX
-depends on the underlying file system.)
+зависит от базовой файловой системы.)
 .It
-Contains a directory component that is not searchable.
+Содержит компонент директории, которая недоступна для поиска.
 .El
 .Pp
-It is not considered an error if a
-.Ar pathname
-argument contains a nonexistent component as long as a component by that
-name could be created.
+Это не считается ошибкой, если аргумент
+.Ar название патча
+содержит несуществующий компонент до тех пор, пока может быть создан компонент с таким
+именем.
 .Pp
-The options are as follows:
+Поддерживаемые опции:
 .Bl -tag -width indent
 .It Fl p
-Perform portability checks on the specified
-.Ar pathname
-arguments.
-Diagnostic messages will be written for each argument that:
+Выполните проверку переносимости указанных
+.Ar название патча
+аргументов.
+Выполните проверку переносимости указанного
 .Bl -bullet
 .It
-Is longer than
+Длиннее, чем
 .Dv _POSIX_PATH_MAX
 .Pq 255
-bytes.
+байт.
 .It
-Contains a component longer than
+Содержит компонент длиной более
 .Dv _POSIX_NAME_MAX
 .Pq 14
-bytes.
+байт.
 .It
-Contains any character not in the portable filename character set (that is,
-alphanumeric characters,
+Содержит любые символы, не входящие в набор символов переносимого имени файла (то есть
+буквенно-цифровые символы,
 .Ql \&. ,
 .Ql \&-
-and
+и
 .Ql _ ) .
-No component may start with the hyphen
+Ни один компонент не может начинаться с символа
 .Pq Ql \&-
-character.
+дефиса.
 .El
 .It Fl P
-In addition to the default or
+В дополнение к проверке по умолчанию или
 .Fl p
-checks, write a diagnostic for each argument that:
+напишите диагностику для каждого аргумента, который:
 .Bl -bullet
 .It
-Is empty.
+Пуст.
 .It
-Contains a component that starts with a hyphen.
+Содержит компонент, который начинается с дефиса.
 .El
 .El
-.Sh EXIT STATUS
+.Sh СТАТУС ЗАВЕРШЕНИЯ
 .Ex -std
-.Sh EXAMPLES
-Check whether the names of files in the current directory are portable to
-other
+.Sh ПРИМЕРЫ
+Проверьте, являются ли имена файлов в текущей директории переносимыми в
+другие
 .Tn POSIX
-systems:
+системы:
 .Pp
 .Dl "find . -exec pathchk -p -- {} +"
 .Sh SEE ALSO
 .Xr getconf 1 ,
 .Xr pathconf 2 ,
 .Xr stat 2
-.Sh STANDARDS
-The
+.Sh СТАНДАРТЫ
+Утилита
 .Nm
-utility conforms to
+соответствует требованиям
 .St -p1003.1-2001 .
-.Sh HISTORY
-A
+.Sh ИСТОРИЯ
+Утилита
 .Nm
-utility appeared in
+появилась в
 .Fx 5.0 .

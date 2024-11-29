@@ -24,65 +24,63 @@
 .\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 .\" SUCH DAMAGE.
 .\"
-.Dd April 12, 2023
+.Dd Сентябрь 2, 2023
 .Dt ARCH 7
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm arch
-.Nd Architecture-specific details
-.Sh DESCRIPTION
-Differences between CPU architectures and platforms supported by
+.Nd Специфичные для архитектуры детали
+.Sh ОПИСАНИЕ
+Различия между архитектурами процессоров и платформами, поддерживаемыми
 .Fx .
 .Ss Introduction
-This document is a quick reference of key ABI details of
-.Fx
-architecture ports.
-For full details consult the processor-specific ABI supplement
-documentation.
+Этот документ представляет собой краткий справочник по ключевым деталям ABI архитектурных портов
+.Fx .
+Для получения более подробной информации обратитесь к документации по дополнению ABI для конкретного процессора.
 .Pp
-If not explicitly mentioned, sizes are in bytes.
-The architecture details in this document apply to
+Если это явно не указано, размеры указаны в байтах.
+Сведения об архитектуре, приведенные в этом документе, применимы к
 .Fx 12.0
-and later, unless otherwise noted.
+и позже, если не указано иное.
 .Pp
 .Fx
-uses a flat address space.
-Variables of types
+использует единое адресное пространство.
+Переменные типов
 .Vt unsigned long ,
 .Vt uintptr_t ,
-and
+и
 .Vt size_t
-and pointers all have the same representation.
+и все указатели имеют одинаковое представление.
 .Pp
-In order to maximize compatibility with future pointer integrity mechanisms,
-manipulations of pointers as integers should be performed via
+Чтобы обеспечить максимальную совместимость с будущими механизмами обеспечения целостности указателей,
+манипуляции с указателями в виде целых чисел следует выполнять с помощью
 .Vt uintptr_t
-or
+или
 .Vt intptr_t
-and no other types.
-In particular,
+и никаких других типов.
+В частности,
 .Vt long
-and
+и
 .Vt ptrdiff_t
-should be avoided.
+следует избегать.
 .Pp
-On some architectures, e.g.,
+В некоторых архитектурах, например,
 .Dv powerpc
-and AIM variants of
+и варианте
 .Dv powerpc64 ,
-the kernel uses a separate address space.
-On other architectures, kernel and a user mode process share a
-single address space.
-The kernel is located at the highest addresses.
+созданном AIM, ядро использует разделяемое адресное пространство.
+В других архитектурах ядро и процесс пользовательского режима
+используют единое адресное пространство.
+Ядро расположено по самым высоким адресам.
 .Pp
-On each architecture, the main user mode thread's stack starts near
-the highest user address and grows down.
+В каждой архитектуре стек основного потока пользовательского режима начинается с
+самого высокого адреса пользователя и растет вниз.
 .Pp
 .Fx
-architecture support varies by release.
-This table shows currently supported CPU architectures along with the first
+поддержка архитектуры зависит от версии.
+В этой таблице показаны поддерживаемые в настоящее время архитектуры процессоров, а также первая версия
 .Fx
-release to support each architecture.
+выпуск для поддержки каждой архитектуры.
 .Bl -column -offset indent "Architecture" "Initial Release"
 .It Sy Architecture Ta Sy Initial Release
 .It aarch64     Ta 11.0
@@ -97,11 +95,11 @@ release to support each architecture.
 .It riscv64     Ta 12.0
 .El
 .Pp
-Discontinued architectures are shown in the following table.
+Архитектуры, снятые с производства, приведены в следующей таблице.
 .Bl -column -offset indent "Architecture" "Initial Release" "Final Release"
 .It Sy Architecture Ta Sy Initial Release Ta Sy Final Release
 .It alpha       Ta 3.2   Ta 6.4
-.It arm         Ta 6.0   Ta 12.x
+.It arm         Ta 6.0   Ta 12.4
 .It armeb       Ta 8.0   Ta 11.4
 .It ia64        Ta 5.0   Ta 10.4
 .It mips        Ta 8.0   Ta 13.x
@@ -115,43 +113,43 @@ Discontinued architectures are shown in the following table.
 .It mips64hf    Ta 12.0  Ta 13.x
 .It pc98        Ta 2.2   Ta 11.4
 .It riscv64sf   Ta 12.0  Ta 13.x
-.It sparc64     Ta 5.0   Ta 12.x
+.It sparc64     Ta 5.0   Ta 12.4
 .El
 .Ss Type sizes
-All
+Все
 .Fx
-architectures use some variant of the ELF (see
+архитектуры используют некоторый вариант ELF (см.
 .Xr elf 5 )
 .Sy Application Binary Interface
-(ABI) for the machine processor.
-All supported ABIs can be divided into two groups:
+(ABI) для машинного процессора.
+Все поддерживаемые ABI можно разделить на две группы:
 .Bl -tag -width "Dv ILP32"
 .It Dv ILP32
 .Vt int ,
 .Vt long ,
 .Vt void *
-types machine representations all have 4-byte size.
+все машинные представления типов имеют размер 4 байта.
 .It Dv LP64
 .Vt int
-type machine representation uses 4 bytes,
-while
+машинное представление типа использует 4 байта,
+в то время как
 .Vt long
-and
+и
 .Vt void *
-are 8 bytes.
+это 8 байт.
 .El
 .Pp
-Some machines support more than one
+Некоторые машины поддерживают более одного
 .Fx
-ABI.
-Typically these are 64-bit machines, where the
+Аби.
+Как правило, это 64-разрядные машины, где
 .Dq native
 .Dv LP64
-execution environment is accompanied by the
+среда выполнения сопровождается
 .Dq legacy
 .Dv ILP32
-environment, which was the historical 32-bit predecessor for 64-bit evolution.
-Examples are:
+среда, которая была историческим 32-разрядным предшественником 64-разрядной версии evolution.
+Примерами являются:
 .Bl -column -offset indent "powerpc64" "ILP32 counterpart"
 .It Sy LP64        Ta Sy ILP32 counterpart
 .It Dv amd64       Ta Dv i386
@@ -160,19 +158,19 @@ Examples are:
 .El
 .Pp
 .Dv aarch64
-will support execution of
+будет поддерживать выполнение
 .Dv armv6
-or
+или
 .Dv armv7
-binaries if the CPU implements
+двоичные файлы, если центральный процессор реализует
 .Dv AArch32
-execution state, however older
+состояние выполнения, каким бы старым оно ни было
 .Dv armv4
-and
+или
 .Dv armv5
-binaries aren't supported.
+двоичные файлы не поддерживаются.
 .Pp
-On all supported architectures:
+На всех поддерживаемых архитектурах:
 .Bl -column -offset -indent "long long" "Size"
 .It Sy Type Ta Sy Size
 .It short Ta 2
@@ -183,14 +181,14 @@ On all supported architectures:
 .It double Ta 8
 .El
 .Pp
-Integers are represented in two's complement.
-Alignment of integer and pointer types is natural, that is,
-the address of the variable must be congruent to zero modulo the type size.
-Most ILP32 ABIs, except
+Целые числа представлены в дополнении к двум.
+Выравнивание типов integer и pointer является естественным, то есть
+адрес переменной должен быть равен нулю по модулю размера типа.
+Большинство ILP32 Abi, за исключением
 .Dv arm ,
-require only 4-byte alignment for 64-bit integers.
+требуется выравнивание только по 4 байтам для 64-разрядных целых чисел.
 .Pp
-Machine-dependent type sizes:
+Типоразмеры, зависящие от машины:
 .Bl -column -offset indent "Architecture" "void *" "long double" "time_t"
 .It Sy Architecture Ta Sy void * Ta Sy long double Ta Sy time_t
 .It aarch64     Ta 8 Ta 16 Ta 8
@@ -206,7 +204,7 @@ Machine-dependent type sizes:
 .El
 .Pp
 .Sy time_t
-is 8 bytes on all supported architectures except i386.
+составляет 8 байт на всех поддерживаемых архитектурах, кроме i386.
 .Ss Endianness and Char Signedness
 .Bl -column -offset indent "Architecture" "Endianness" "char Signedness"
 .It Sy Architecture Ta Sy Endianness Ta Sy char Signedness
@@ -251,27 +249,27 @@ is 8 bytes on all supported architectures except i386.
 .El
 .Ss Default Tool Chain
 .Fx
-uses
+использует
 .Xr clang 1
-as the default compiler on all supported CPU architectures,
-LLVM's
+в качестве компилятора по умолчанию на всех поддерживаемых архитектурах процессоров
+LLVM использует
 .Xr ld.lld 1
-as the default linker, and
-ELF Tool Chain binary utilities such as
+как компоновщик по умолчанию, и
+Бинарные утилиты цепочки инструментов ELF, такие как
 .Xr objcopy 1
-and
+или
 .Xr readelf 1 .
 .Ss MACHINE_ARCH vs MACHINE_CPUARCH vs MACHINE
 .Dv MACHINE_CPUARCH
-should be preferred in Makefiles when the generic
-architecture is being tested.
+должно быть предпочтительным в Makefiles при тестировании универсальной
+архитектуры.
 .Dv MACHINE_ARCH
-should be preferred when there is something specific to a particular type of
-architecture where there is a choice of many, or could be a choice of many.
-Use
+следует отдавать предпочтение, когда есть что-то специфичное для определенного типа
+архитектуры, где есть выбор из многих вариантов или может быть выбор из многих.
+Воспользуйся
 .Dv MACHINE
-when referring to the kernel, interfaces dependent on a specific type of kernel
-or similar things like boot sequences.
+когда речь идет о ядре, интерфейсы зависят от определенного типа ядра
+или подобных вещей, таких как последовательности загрузки.
 .Bl -column -offset indent "Dv MACHINE" "Dv MACHINE_CPUARCH" "Dv MACHINE_ARCH"
 .It Dv MACHINE Ta Dv MACHINE_CPUARCH Ta Dv MACHINE_ARCH
 .It arm64 Ta aarch64 Ta aarch64
@@ -282,28 +280,28 @@ or similar things like boot sequences.
 .It riscv Ta riscv Ta riscv64
 .El
 .Ss Predefined Macros
-The compiler provides a number of predefined macros.
-Some of these provide architecture-specific details and are explained below.
-Other macros, including those required by the language standard, are not
-included here.
+Компилятор предоставляет ряд предопределенных макросов.
+Некоторые из них содержат сведения, относящиеся к конкретной архитектуре, и описаны ниже.
+Другие макросы, включая те, которые требуются в соответствии со стандартом языка, здесь не
+представлены.
 .Pp
-The full set of predefined macros can be obtained with this command:
+С помощью этой команды можно получить полный набор предопределенных макросов:
 .Bd -literal -offset indent
 cc -x c -dM -E /dev/null
 .Ed
 .Pp
-Common type size and endianness macros:
+Общие макросы типа, размера и порядкового номера:
 .Bl -column -offset indent "BYTE_ORDER" "Meaning"
 .It Sy Macro Ta Sy Meaning
 .It Dv __LP64__ Ta 64-bit (8-byte) long and pointer, 32-bit (4-byte) int
 .It Dv __ILP32__ Ta 32-bit (4-byte) int, long and pointer
 .It Dv BYTE_ORDER Ta Either Dv BIG_ENDIAN or Dv LITTLE_ENDIAN .
 .Dv PDP11_ENDIAN
-is not used on
+не используется на
 .Fx .
 .El
 .Pp
-Architecture-specific macros:
+Макросы, зависящие от архитектуры:
 .Bl -column -offset indent "Architecture" "Predefined macros"
 .It Sy Architecture Ta Sy Predefined macros
 .It aarch64     Ta Dv __aarch64__
@@ -318,122 +316,121 @@ Architecture-specific macros:
 .It riscv64     Ta Dv __riscv , Dv __riscv_xlen == 64
 .El
 .Pp
-Compilers may define additional variants of architecture-specific macros.
-The macros above are preferred for use in
+Компиляторы могут определять дополнительные варианты макросов, зависящих от архитектуры.
+Приведенные выше макросы предпочтительны для использования в
 .Fx .
 .Ss Important Xr make 1 variables
-Most of the externally settable variables are defined in the
+Большинство переменных, которые можно настроить извне, определены в
 .Xr build 7
-man page.
-These variables are not otherwise documented and are used extensively
-in the build system.
+справочная страница.
+Эти переменные никак иначе не документированы и широко используются
+в системе сборки.
 .Bl -tag -width "MACHINE_CPUARCH"
 .It Dv MACHINE
-Represents the hardware platform.
-This is the same as the native platform's
+Представляет аппаратную платформу.
+Это то же самое, что и для собственной платформы.
 .Xr uname 1
 .Fl m
-output.
-It defines both the userland / kernel interface, as well as the
-bootloader / kernel interface.
-It should only be used in these contexts.
-Each CPU architecture may have multiple hardware platforms it supports
-where
+выход.
+Он определяет как интерфейс пользователя / ядра, так и интерфейс
+загрузчика / ядра.
+Его следует использовать только в этих контекстах.
+Каждая архитектура процессора может иметь несколько поддерживаемых аппаратных платформ, 
+где
 .Dv MACHINE
-differs among them.
-It is used to collect together all the files from
+различается между ними.
+Используется для сбора всех файлов из
 .Xr config 8
-to build the kernel.
-It is often the same as
+для сборки ядра.
+Часто совпадает с
 .Dv MACHINE_ARCH
-just as one CPU architecture can be implemented by many different
-hardware platforms, one hardware platform may support multiple CPU
-architecture family members, though with different binaries.
-For example,
+точно так же, как одна архитектура процессора может быть реализована множеством различных
+аппаратных платформ, одна аппаратная платформа может поддерживать несколько
+членов семейства процессорных архитектур, хотя и с разными двоичными файлами.
+Например,
 .Dv MACHINE
-of i386 supported the IBM-AT hardware platform while the
+из i386 поддерживал аппаратную платформу IBM-AT, в то время как
 .Dv MACHINE
-of pc98 supported the Japanese company NEC's PC-9801 and PC-9821
-hardware platforms.
-Both of these hardware platforms supported only the
+версия pc98 поддерживала аппаратные платформы 
+японской компании NEC PC-9801 и PC-9821.
+Обе эти аппаратные платформы поддерживали только
 .Dv MACHINE_ARCH
-of i386 where they shared a common ABI, except for certain kernel /
-userland interfaces relating to underlying hardware platform
-differences in bus architecture, device enumeration and boot interface.
-Generally,
+из i386, где они использовали общий ABI, за исключением некоторых интерфейсов ядра /
+пользовательские интерфейсы, относящиеся к базовым
+различиям аппаратных платформ в архитектуре шины, перечислении устройств и интерфейсе загрузки.
+Обычно,
 .Dv MACHINE
-should only be used in src/sys and src/stand or in system imagers or
-installers.
+следует использовать только в src/sys и src/stand, а также в образах системы или
+установщиках.
 .It Dv MACHINE_ARCH
-Represents the CPU processor architecture.
-This is the same as the native platforms
+Представляет архитектуру центрального процессора.
+Это то же самое, что и для собственных платформ
 .Xr uname 1
 .Fl p
-output.
-It defines the CPU instruction family supported.
-It may also encode a variation in the byte ordering of multi-byte
-integers (endian).
-It may also encode a variation in the size of the integer or pointer.
-It may also encode a ISA revision.
-It may also encode hard versus soft floating point ABI and usage.
-It may also encode a variant ABI when the other factors do not
-uniquely define the ABI.
-It, along with
+выход.
+Он определяет поддерживаемое семейство команд процессора.
+Он также может кодировать изменение порядка байт в многобайтовых
+целых числах.
+Он также может кодировать изменение размера целого числа или указателя.
+Он также может кодировать версию ISA.
+Он также может кодировать ABI с плавающей запятой и использование.
+Он также может кодировать вариант ABI, когда другие факторы не
+определяют эту способность однозначно.
+Он, наряду с
 .Dv MACHINE ,
-defines the ABI used by the system.
-Generally, the plain CPU name specifies the most common (or at least
-first) variant of the CPU.
-This is why powerpc and powerpc64 imply 'big endian' while 'armv6' and 'armv7'
-imply little endian.
-If we ever were to support the so-called x32 ABI (using 32-bit
-pointers on the amd64 architecture), it would most likely be encoded
-as amd64-x32.
-It is unfortunate that amd64 specifies the 64-bit evolution of the x86
-platform (it matches the 'first rule') as everybody else uses x86_64.
-There is no standard name for the processor: each OS selects its own
-conventions.
+определяет ABI, используемый системой.
+Как правило, простое название процессора указывает на наиболее распространенный (или, по крайней мере, первый) вариант процессора.
+Вот почему powerpc и powerpc64 подразумевают "с большой буквы", в то время как "armv6" и "armv7"
+подразумевается короткий порядок строк в конце.
+Если бы мы когда-нибудь стали поддерживать так называемый x32 ABI (используя 32-разрядные
+указатели на архитектуре amd64), он, скорее всего, был бы закодирован
+как amd64-x32.
+К сожалению, amd64 определяет 64-разрядную
+версию платформы x86 (это соответствует "первому правилу"), поскольку все остальные используют x86_64.
+Стандартного названия для процессора не существует: каждая операционная система выбирает свои собственные
+соглашения.
 .It Dv MACHINE_CPUARCH
-Represents the source location for a given
+Представляет исходное местоположение для данного
 .Dv MACHINE_ARCH .
-It is generally the common prefix for all the MACHINE_ARCH that
-share the same implementation, though 'riscv' breaks this rule.
-While amd64 and i386 are closely related, MACHINE_CPUARCH is not x86
-for them.
-The
+Как правило, это общий префикс для всех
+MACHINE_ARCH, которые используют одну и ту же реализацию, хотя "riscv" нарушает это правило.
+Хотя amd64 и i386 тесно связаны, MACHINE_CPU ARCH
+для них не является x86.
 .Fx
-source base supports amd64 and i386 with two
-distinct source bases living in subdirectories named amd64 and i386
-(though behind the scenes there's some sharing that fits into this
-framework).
+исходная база поддерживает amd64 и i386, причем две
+разные исходные базы находятся в подкаталогах с именами amd64 и i386
+(хотя за кулисами есть некоторый общий доступ, который вписывается в эту
+структуру).
 .It Dv CPUTYPE
-Sets the flavor of
+Устанавливает flavor в
 .Dv MACHINE_ARCH
-to build.
-It is used to optimize the build for a specific CPU / core that the
-binaries run on.
-Generally, this does not change the ABI, though it can be a fine line
-between optimization for specific cases.
+для сборки.
+Используется для оптимизации сборки для конкретного процессора / ядра, 
+на котором выполняются двоичные файлы.
+Как правило, это не меняет ABI, хотя может быть тонкой гранью
+между оптимизацией для конкретных случаев.
 .It Dv TARGET
-Used to set
+Используется для установки
 .Dv MACHINE
-in the top level Makefile for cross building.
-Unused outside of that scope.
-It is not passed down to the rest of the build.
-Makefiles outside of the top level should not use it at all (though
-some have their own private copy for hysterical raisons).
+в Makefile верхнего уровня для перекрестной сборки.
+Не используется за пределами этой области.
+Он не передается в остальную часть сборки.
+Make-файлы за пределами верхнего уровня вообще не должны его использовать (хотя
+у некоторых есть своя собственная копия для истеричных изюмов).
 .It Dv TARGET_ARCH
-Used to set
+Используется для установки
 .Dv MACHINE_ARCH
-by the top level Makefile for cross building.
-Like
+с помощью Makefile верхнего уровня для кросс-билдинга.
+Похожий
 .Dv TARGET ,
-it is unused outside of that scope.
+он не используется за пределами этой области.
 .El
 .Sh SEE ALSO
 .Xr src.conf 5 ,
-.Xr build 7
+.Xr build 7 ,
+.Xr simd 7
 .Sh HISTORY
-An
+Одна
 .Nm
-manual page appeared in
+страница руководства появилась в
 .Fx 11.1 .

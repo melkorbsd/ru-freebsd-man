@@ -1,50 +1,50 @@
 '\" t
-.\"     Title: JEMALLOC
-.\"    Author: Jason Evans
-.\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
-.\"      Date: 11/10/2019
-.\"    Manual: User Manual
+.\"     Название: ДЖЕМАЛЛОК
+.\"    Автор: Джейсон Эванс
+.\" Генератор: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
+.\"      Дата: 11/10/2019
+.\"    Руководство: Руководство пользователя
 .\"    Source: jemalloc 5.2.1-0-gea6b3e973b477b8061e0076bb257dbd7f3faa756
-.\"  Language: English
+.\"  Язык: Английский
 .\"
-.TH "JEMALLOC" "3" "11/10/2019" "jemalloc 5.2.1-0-gea6b3e973b47" "User Manual"
+.TH "JEMALLOC" "3" "11/10/2019" "jemalloc 5.2.1-0-gea6b3e973b47" "Руководство пользователя"
 .\" -----------------------------------------------------------------
-.\" * Define some portability stuff
+.\" * Определите некоторые элементы переносимости
 .\" -----------------------------------------------------------------
 .\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .\" http://bugs.debian.org/507673
 .\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
 .\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .ie \n(.g .ds Aq \(aq
-.el       .ds Aq '
+.el .ds Aq '
 .\" -----------------------------------------------------------------
-.\" * set default formatting
+.\" * установить форматирование по умолчанию
 .\" -----------------------------------------------------------------
-.\" disable hyphenation
+.\" отключить дефисное написание
 .nh
-.\" disable justification (adjust text to left margin only)
+.\" отключить выравнивание (подгонять текст только под левое поле)
 .ad l
 .\" -----------------------------------------------------------------
-.\" * MAIN CONTENT STARTS HERE *
+.\" *ОСНОВНОЕ СОДЕРЖАНИЕ НАЧИНАЕТСЯ ЗДЕСЬ*
 .\" -----------------------------------------------------------------
-.SH "NAME"
-jemalloc \- general purpose memory allocation functions
+.SH "ИМЯ"
+jemalloc \- функции выделения памяти общего назначения
 .SH "LIBRARY"
 .PP
-This manual describes jemalloc 5\&.2\&.1\-0\-gea6b3e973b477b8061e0076bb257dbd7f3faa756\&. More information can be found at the
+В данном руководстве описывается jemalloc 5\&.2\&.1\-0\-gea6b3e973b477b8061e0076bb257dbd7f3faa756\&. Дополнительную информацию можно найти на сайте
 \m[blue]\fBjemalloc website\fR\m[]\&\s-2\u[1]\d\s+2\&.
 .PP
-The following configuration options are enabled in libc\*(Aqs built\-in jemalloc:
+Следующие опции конфигурации включены в libc\*(Aqs built\-in jemalloc:
 \fB\-\-enable\-fill\fR,
 \fB\-\-enable\-lazy\-lock\fR,
 \fB\-\-enable\-stats\fR,
 \fB\-\-enable\-utrace\fR,
-\fB\-\-enable\-xmalloc\fR, and
-\fB\-\-with\-malloc\-conf=abort_conf:false\fR\&. Additionally,
+\fB\-\-enable\-xmalloc\fR, и
+\fB\-\-with\-malloc\-conf=abort_conf:false\fR\&. Дополнительно,
 \fB\-\-enable\-debug\fR
-is enabled in development versions of FreeBSD (controlled by the
+включена в версиях FreeBSD для разработчиков (управляется параметром
 \fBMK_MALLOC_PRODUCTION\fR
-make variable)\&.
+переменная make)\&.
 .SH "SYNOPSIS"
 .sp
 .ft B
@@ -53,22 +53,22 @@ make variable)\&.
 #include <malloc_np\&.h>
 .fi
 .ft
-.SS "Standard API"
+.SS "Стандартный API"
 .HP \w'void\ *malloc('u
-.BI "void *malloc(size_t\ " "size" ");"
+.BI "void *malloc(size_t\ " "размер" ");"
 .HP \w'void\ *calloc('u
-.BI "void *calloc(size_t\ " "number" ", size_t\ " "size" ");"
+.BI "void *calloc(size_t\ " "число" ", size_t\ " "размер" ");"
 .HP \w'int\ posix_memalign('u
-.BI "int posix_memalign(void\ **" "ptr" ", size_t\ " "alignment" ", size_t\ " "size" ");"
+.BI "int posix_memalign(void\ **" "ptr" ", size_t\ " "выравнивание" ", size_t\ " "размер" ");"
 .HP \w'void\ *aligned_alloc('u
-.BI "void *aligned_alloc(size_t\ " "alignment" ", size_t\ " "size" ");"
+.BI "void *aligned_alloc(size_t\ " "выравнивание" ", size_t\ " "размер" ");"
 .HP \w'void\ *realloc('u
 .BI "void *realloc(void\ *" "ptr" ", size_t\ " "size" ");"
 .HP \w'void\ free('u
 .BI "void free(void\ *" "ptr" ");"
-.SS "Non\-standard API"
+.SS "Не\-стандартный API"
 .HP \w'void\ *mallocx('u
-.BI "void *mallocx(size_t\ " "size" ", int\ " "flags" ");"
+.BI "void *mallocx(size_t\ " "размер" ", int\ " "флаги" ");"
 .HP \w'void\ *rallocx('u
 .BI "void *rallocx(void\ *" "ptr" ", size_t\ " "size" ", int\ " "flags" ");"
 .HP \w'size_t\ xallocx('u
@@ -78,272 +78,272 @@ make variable)\&.
 .HP \w'void\ dallocx('u
 .BI "void dallocx(void\ *" "ptr" ", int\ " "flags" ");"
 .HP \w'void\ sdallocx('u
-.BI "void sdallocx(void\ *" "ptr" ", size_t\ " "size" ", int\ " "flags" ");"
+.BI "void sdallocx(void\ *" "ptr" ", size_t\ " "размер" ", int\ " "флаги" ");"
 .HP \w'size_t\ nallocx('u
-.BI "size_t nallocx(size_t\ " "size" ", int\ " "flags" ");"
+.BI "size_t nallocx(size_t\ " "размер" ", int\ " "флаги" ");"
 .HP \w'int\ mallctl('u
-.BI "int mallctl(const\ char\ *" "name" ", void\ *" "oldp" ", size_t\ *" "oldlenp" ", void\ *" "newp" ", size_t\ " "newlen" ");"
+.BI "int mallctl(const\ char\ *" "имя" ", void\ *" "oldp" ", size_t\ *" "oldlenp" ", void\ *" "newp" ", size_t\ *"newlen" ");"
 .HP \w'int\ mallctlnametomib('u
 .BI "int mallctlnametomib(const\ char\ *" "name" ", size_t\ *" "mibp" ", size_t\ *" "miblenp" ");"
 .HP \w'int\ mallctlbymib('u
 .BI "int mallctlbymib(const\ size_t\ *" "mib" ", size_t\ " "miblen" ", void\ *" "oldp" ", size_t\ *" "oldlenp" ", void\ *" "newp" ", size_t\ " "newlen" ");"
 .HP \w'void\ malloc_stats_print('u
-.BI "void malloc_stats_print(void\ " "(*write_cb)" "\ (void\ *,\ const\ char\ *), void\ *" "cbopaque" ", const\ char\ *" "opts" ");"
+.BI "void malloc_stats_print(void\ " "(*write_cb)"\ (void\ *,\ const\ char\ *), void\ *" "cbopaque" ", const\ char\ *" "opts" ");"
 .HP \w'size_t\ malloc_usable_size('u
 .BI "size_t malloc_usable_size(const\ void\ *" "ptr" ");"
 .HP \w'void\ (*malloc_message)('u
 .BI "void (*malloc_message)(void\ *" "cbopaque" ", const\ char\ *" "s" ");"
 .PP
 const char *\fImalloc_conf\fR;
-.SH "DESCRIPTION"
-.SS "Standard API"
+.SH "ОПИСАНИЕ"
+.SS "Стандартный API"
 .PP
-The
+Сайт
 malloc()
-function allocates
+функция выделяет
 \fIsize\fR
-bytes of uninitialized memory\&. The allocated space is suitably aligned (after possible pointer coercion) for storage of any type of object\&.
+байт неинициализированной памяти\&. Выделенное пространство выравнивается (после возможного согласования указателей) для хранения объекта любого типа\&.
 .PP
-The
+Команда
 calloc()
-function allocates space for
+выделяет место для
 \fInumber\fR
-objects, each
+объектов, каждый
 \fIsize\fR
-bytes in length\&. The result is identical to calling
+байт в длину\&. Результат идентичен вызову
 malloc()
-with an argument of
+с аргументом
 \fInumber\fR
 *
-\fIsize\fR, with the exception that the allocated memory is explicitly initialized to zero bytes\&.
+\fIsize\fR, за исключением того, что выделенная память явно инициализируется нулевым байтом\&.
 .PP
-The
+Программа
 posix_memalign()
-function allocates
+выделяет
 \fIsize\fR
-bytes of memory such that the allocation\*(Aqs base address is a multiple of
-\fIalignment\fR, and returns the allocation in the value pointed to by
-\fIptr\fR\&. The requested
-\fIalignment\fR
-must be a power of 2 at least as large as
+байт памяти так, чтобы базовый адрес распределения\*(Aqs был кратен
+\fIвыравнивание\fR, и возвращает выделение в значении, на которое указывает
+\fIptr\fR\&. Запрашиваемый
+\fIвыравнивание\fR
+должно быть не меньше, чем
 sizeof(\fBvoid *\fR)\&.
 .PP
-The
+Сайт
 aligned_alloc()
-function allocates
+функция выделяет
 \fIsize\fR
-bytes of memory such that the allocation\*(Aqs base address is a multiple of
-\fIalignment\fR\&. The requested
-\fIalignment\fR
-must be a power of 2\&. Behavior is undefined if
-\fIsize\fR
-is not an integral multiple of
-\fIalignment\fR\&.
+байт памяти таким образом, чтобы базовый адрес выделения\*(Aqs был кратен
+\fIвыравнивание\fR\&. Запрашиваемый
+\fIвыравнивание\fR
+должно быть кратным 2\&. Поведение не определено, если
+\fIразмер\fR
+не является целочисленным кратным
+\fIвыравнивание\fR\&.
 .PP
-The
+Сайт
 realloc()
-function changes the size of the previously allocated memory referenced by
+изменяет размер ранее выделенной памяти, на которую ссылается
 \fIptr\fR
-to
+на
 \fIsize\fR
-bytes\&. The contents of the memory are unchanged up to the lesser of the new and old sizes\&. If the new size is larger, the contents of the newly allocated portion of the memory are undefined\&. Upon success, the memory referenced by
+байт\&. Содержимое памяти остается неизменным до меньшего из нового и старого размеров\&. Если новый размер больше, то содержимое вновь выделенной части памяти не определено\&. В случае успеха память, на которую ссылается
 \fIptr\fR
-is freed and a pointer to the newly allocated memory is returned\&. Note that
+освобождается и возвращается указатель на вновь выделенную память\&. Обратите внимание, что
 realloc()
-may move the memory allocation, resulting in a different return value than
-\fIptr\fR\&. If
+может переместить выделение памяти, что приведет к другому возвращаемому значению, чем
+\fIptr\fR\&. Если
 \fIptr\fR
-is
-\fBNULL\fR, the
+это
+\fBNULL\fR, то
 realloc()
-function behaves identically to
+ведет себя так же, как и
 malloc()
-for the specified size\&.
+для указанного размера\&.
 .PP
-The
-free()
-function causes the allocated memory referenced by
+Функция
+освободить()
+приводит к тому, что выделенная память, на которую ссылается
 \fIptr\fR
-to be made available for future allocations\&. If
+становится доступной для будущих выделений\&. Если
 \fIptr\fR
-is
-\fBNULL\fR, no action occurs\&.
-.SS "Non\-standard API"
+это
+\fBNULL\fR, никаких действий не происходит\&.
+.SS "Не\-стандартный API"
 .PP
-The
+Сайт
 mallocx(),
 rallocx(),
 xallocx(),
 sallocx(),
 dallocx(),
-sdallocx(), and
+sdallocx() и
 nallocx()
-functions all have a
+все функции имеют
 \fIflags\fR
-argument that can be used to specify options\&. The functions only check the options that are contextually relevant\&. Use bitwise or (|) operations to specify one or more of the following:
+аргумент, который можно использовать для указания опций\&. Функции проверяют только те опции, которые имеют контекстное значение\&. Используйте побитовые операции или (|), чтобы указать один или несколько из следующих параметров:
 .PP
-\fBMALLOCX_LG_ALIGN(\fR\fB\fIla\fR\fR\fB) \fR
+\fBMALLOCX_LG_ALIGN(\fR\fB\fIla\fR\fR\fB)\fR
 .RS 4
-Align the memory allocation to start at an address that is a multiple of
-(1 << \fIla\fR)\&. This macro does not validate that
+Выровняйте распределение памяти, чтобы она начиналась с адреса, кратного
+(1 << \fIla\fR)\&. Этот макрос не проверяет, что
 \fIla\fR
-is within the valid range\&.
+находится в допустимом диапазоне\&.
 .RE
 .PP
-\fBMALLOCX_ALIGN(\fR\fB\fIa\fR\fR\fB) \fR
+\fBMALLOCX_ALIGN(\fR\fB\fIa\fR\fR\fB)\fR
 .RS 4
-Align the memory allocation to start at an address that is a multiple of
-\fIa\fR, where
+Выравнивание распределения памяти для начала по адресу, который кратен
+\fIa\fR, где
 \fIa\fR
-is a power of two\&. This macro does not validate that
+является степенью двойки\&. Этот макрос не подтверждает, что
 \fIa\fR
-is a power of 2\&.
+является мощностью 2\&.
 .RE
 .PP
 \fBMALLOCX_ZERO\fR
 .RS 4
-Initialize newly allocated memory to contain zero bytes\&. In the growing reallocation case, the real size prior to reallocation defines the boundary between untouched bytes and those that are initialized to contain zero bytes\&. If this macro is absent, newly allocated memory is uninitialized\&.
+Инициализируйте вновь выделенную память, чтобы она содержала нулевые байты\&. В случае растущего перераспределения реальный размер до перераспределения определяет границу между нетронутыми байтами и теми, которые инициализируются как содержащие нулевые байты\&. Если этот макрос отсутствует, вновь выделенная память не инициализируется\&.
 .RE
 .PP
-\fBMALLOCX_TCACHE(\fR\fB\fItc\fR\fR\fB) \fR
-.RS 4
-Use the thread\-specific cache (tcache) specified by the identifier
-\fItc\fR, which must have been acquired via the
-tcache\&.create
-mallctl\&. This macro does not validate that
-\fItc\fR
-specifies a valid identifier\&.
-.RE
-.PP
-\fBMALLOCX_TCACHE_NONE\fR
-.RS 4
-Do not use a thread\-specific cache (tcache)\&. Unless
 \fBMALLOCX_TCACHE(\fR\fB\fItc\fR\fR\fB)\fR
-or
+.RS 4
+Использование потокового\-специфического кэша (tcache), указанного идентификатором
+\fItc\fR, который должен быть получен с помощью функции
+tcache\&.create
+mallctl\&. Этот макрос не подтверждает, что
+\fItc\fR
+указывает действительный идентификатор\&.
+.RE
+.PP
 \fBMALLOCX_TCACHE_NONE\fR
-is specified, an automatically managed tcache will be used under many circumstances\&. This macro cannot be used in the same
+.RS 4
+Не используйте потоковый\-специфический кэш (tcache)\&. Если только
+\fBMALLOCX_TCACHE(\fR\fB\fItc\fR\fR\fB)\fR
+или
+\fBMALLOCX_TCACHE_NONE\fR
+указан, то автоматически управляемый tcache будет использоваться во многих обстоятельствах\&. Этот макрос не может быть использован в одном и том же
 \fIflags\fR
-argument as
+аргументе, как
 \fBMALLOCX_TCACHE(\fR\fB\fItc\fR\fR\fB)\fR\&.
 .RE
 .PP
-\fBMALLOCX_ARENA(\fR\fB\fIa\fR\fR\fB) \fR
+\fBMALLOCX_ARENA(\fR\fB\fIa\fR\fR\fB)\fR
 .RS 4
-Use the arena specified by the index
-\fIa\fR\&. This macro has no effect for regions that were allocated via an arena other than the one specified\&. This macro does not validate that
+Используйте арену, указанную индексом
+\fIa\fR\&. Этот макрос не действует для регионов, которые были распределены через арену, отличную от указанной\&. Этот макрос не подтверждает, что
 \fIa\fR
-specifies an arena index in the valid range\&.
+указывает индекс арены в допустимом диапазоне\&.
 .RE
 .PP
-The
+Макрос
 mallocx()
-function allocates at least
+выделяет не менее
 \fIsize\fR
-bytes of memory, and returns a pointer to the base address of the allocation\&. Behavior is undefined if
+байт памяти и возвращает указатель на базовый адрес выделения\&. Поведение не определено, если
 \fIsize\fR
-is
+это
 \fB0\fR\&.
 .PP
-The
+Программа
 rallocx()
-function resizes the allocation at
+изменяет размер выделения по адресу
 \fIptr\fR
-to be at least
+по крайней мере, до
 \fIsize\fR
-bytes, and returns a pointer to the base address of the resulting allocation, which may or may not have moved from its original location\&. Behavior is undefined if
+байт, и возвращает указатель на базовый адрес полученного распределения, которое может переместиться из своего первоначального местоположения\&, а может и нет. Поведение не определено, если
 \fIsize\fR
-is
+это
 \fB0\fR\&.
 .PP
-The
+Сайт
 xallocx()
-function resizes the allocation at
+изменяет размер выделенной области на
 \fIptr\fR
-in place to be at least
+на месте, чтобы быть по крайней мере
 \fIsize\fR
-bytes, and returns the real size of the allocation\&. If
+байт, и возвращает реальный размер выделения\&. Если
 \fIextra\fR
-is non\-zero, an attempt is made to resize the allocation to be at least
+не равно \fIsize\fR, то предпринимается попытка изменить размер выделения, чтобы оно было не менее
 (\fIsize\fR + \fIextra\fR)
-bytes, though inability to allocate the extra byte(s) will not by itself result in failure to resize\&. Behavior is undefined if
+байт, хотя невозможность выделить лишний байт(ы) сама по себе не приведет к неудаче в изменении размера\&. Поведение не определено, если
 \fIsize\fR
-is
-\fB0\fR, or if
+это
+\fB0\fR, или если
 (\fIsize\fR + \fIextra\fR > \fBSIZE_T_MAX\fR)\&.
 .PP
-The
+Программа
 sallocx()
-function returns the real size of the allocation at
+возвращает реальный размер выделения по адресу
 \fIptr\fR\&.
 .PP
-The
+Функция
 dallocx()
-function causes the memory referenced by
+вызывает память, на которую ссылается
 \fIptr\fR
-to be made available for future allocations\&.
+становится доступной для будущих выделений\&.
 .PP
-The
+Функция
 sdallocx()
-function is an extension of
+является расширением функции
 dallocx()
-with a
+с
 \fIsize\fR
-parameter to allow the caller to pass in the allocation size as an optimization\&. The minimum valid input size is the original requested size of the allocation, and the maximum valid input size is the corresponding value returned by
+позволяющим вызывающей стороне передавать размер выделения как оптимизацию\&. Минимальным допустимым входным размером является исходный запрашиваемый размер выделения, а максимальным допустимым входным размером является соответствующее значение, возвращаемое функцией
 nallocx()
-or
+или
 sallocx()\&.
 .PP
-The
+Адрес
 nallocx()
-function allocates no memory, but it performs the same size computation as the
+не выделяет память, но выполняет те же вычисления размера, что и функция
 mallocx()
-function, and returns the real size of the allocation that would result from the equivalent
+и возвращает реальный размер выделения, который был бы получен в результате эквивалентной операции
 mallocx()
-function call, or
+или
 \fB0\fR
-if the inputs exceed the maximum supported size class and/or alignment\&. Behavior is undefined if
+если вводимые данные превышают максимально поддерживаемый класс размера и/или выравнивание\&. Поведение не определено, если
 \fIsize\fR
-is
+это
 \fB0\fR\&.
 .PP
-The
+Программа
 mallctl()
-function provides a general interface for introspecting the memory allocator, as well as setting modifiable parameters and triggering actions\&. The period\-separated
-\fIname\fR
-argument specifies a location in a tree\-structured namespace; see the
+предоставляет общий интерфейс для интроспекции аллокатора памяти, а также для установки изменяемых параметров и запуска действий\&. Период\-разделенный
+\fИмя\fR
+задает место в пространстве имен, структурированном в виде дерева; см.
 MALLCTL NAMESPACE
-section for documentation on the tree contents\&. To read a value, pass a pointer via
+раздел документации по содержимому дерева\&. Чтобы прочитать значение, передайте указатель через
 \fIoldp\fR
-to adequate space to contain the value, and a pointer to its length via
-\fIoldlenp\fR; otherwise pass
+на пространство, достаточное для размещения значения, и указатель на его длину через
+\fIoldlenp\fR; в противном случае передайте
 \fBNULL\fR
-and
-\fBNULL\fR\&. Similarly, to write a value, pass a pointer to the value via
-\fInewp\fR, and its length via
-\fInewlen\fR; otherwise pass
+и
+\fBNULL\fR\&. Аналогично, чтобы записать значение, передайте указатель на него через
+\fInewp\fR, и его длину через
+\fInewlen\fR; в противном случае передайте
 \fBNULL\fR
-and
+и
 \fB0\fR\&.
 .PP
-The
+Программа
 mallctlnametomib()
-function provides a way to avoid repeated name lookups for applications that repeatedly query the same portion of the namespace, by translating a name to a
+предоставляет возможность избежать повторного поиска имен для приложений, которые многократно запрашивают одну и ту же часть пространства имен, путем преобразования имени в
 \(lqManagement Information Base\(rq
-(MIB) that can be passed repeatedly to
-mallctlbymib()\&. Upon successful return from
+(MIB), которая может быть многократно передана в
+mallctlbymib()\&. После успешного возврата из
 mallctlnametomib(),
 \fImibp\fR
-contains an array of
+содержит массив
 \fI*miblenp\fR
-integers, where
+целых чисел, где
 \fI*miblenp\fR
-is the lesser of the number of components in
+это меньшее из числа компонентов в
 \fIname\fR
-and the input value of
-\fI*miblenp\fR\&. Thus it is possible to pass a
+и входное значение
+\fI*miblenp\fR\&. Таким образом, можно передать
 \fI*miblenp\fR
-that is smaller than the number of period\-separated name components, which results in a partial MIB that can be used as the basis for constructing a complete MIB\&. For name components that are integers (e\&.g\&. the 2 in
-arenas\&.bin\&.2\&.size), the corresponding MIB component will always be that integer\&. Therefore, it is legitimate to construct code like the following:
+меньшее, чем количество компонентов имен, разделенных периодом\&, что приводит к частичной MIB, которая может быть использована в качестве основы для построения полной MIB\&. Для компонентов имен, которые являются целыми числами (e\&.g\&. the 2 in
+arenas\&.bin\&.2\&.size), соответствующий компонент MIB всегда будет целым числом\&. Поэтому вполне законно построить код, подобный следующему:
 .sp
 .if n \{\
 .RS 4
@@ -364,7 +364,7 @@ for (i = 0; i < nbins; i++) {
 	mib[2] = i;
 	len = sizeof(bin_size);
 	mallctlbymib(mib, miblen, (void *)&bin_size, &len, NULL, 0);
-	/* Do something with bin_size\&.\&.\&. */
+	/* Сделайте что-нибудь с bin_size\&.\&.\&.\&. */
 }
 .fi
 .if n \{\
@@ -374,147 +374,147 @@ for (i = 0; i < nbins; i++) {
 .RS 4
 .RE
 .PP
-The
+Программа
 malloc_stats_print()
-function writes summary statistics via the
+записывает сводную статистику через функцию
 \fIwrite_cb\fR
-callback function pointer and
+указатель функции обратного вызова и
 \fIcbopaque\fR
-data passed to
-\fIwrite_cb\fR, or
+данные, переданные в
+\fIwrite_cb\fR, или
 malloc_message()
-if
+если
 \fIwrite_cb\fR
-is
-\fBNULL\fR\&. The statistics are presented in human\-readable form unless
+является
+\fBNULL\fR\&. Статистика представлена в человекочитаемом виде, если только
 \(lqJ\(rq
-is specified as a character within the
+указан как символ в
 \fIopts\fR
-string, in which case the statistics are presented in
-\m[blue]\fBJSON format\fR\m[]\&\s-2\u[2]\d\s+2\&. This function can be called repeatedly\&. General information that never changes during execution can be omitted by specifying
+в этом случае статистика представляется в виде
+\m[blue]\fBJSON format\fR\m[]\&\s-2\u[2]\d\s+2\&. Эту функцию можно вызывать многократно\&. Общую информацию, которая никогда не меняется во время выполнения, можно опустить, указав
 \(lqg\(rq
-as a character within the
+в качестве символа внутри
 \fIopts\fR
-string\&. Note that
+строки\&. Обратите внимание, что
 malloc_stats_print()
-uses the
+использует
 mallctl*()
-functions internally, so inconsistent statistics can be reported if multiple threads use these functions simultaneously\&. If
+поэтому при одновременном использовании этих функций несколькими потоками может быть получена противоречивая статистика\&. Если
 \fB\-\-enable\-stats\fR
-is specified during configuration,
+указано во время настройки,
 \(lqm\(rq,
-\(lqd\(rq, and
+\(lqd\(rq, и
 \(lqa\(rq
-can be specified to omit merged arena, destroyed merged arena, and per arena statistics, respectively;
+могут быть указаны, чтобы опустить статистику по объединенной арене, разрушенной объединенной арене и по каждой арене, соответственно;
 \(lqb\(rq
-and
+и
 \(lql\(rq
-can be specified to omit per size class statistics for bins and large objects, respectively;
+могут быть указаны, чтобы опустить статистику по размерному классу для бинов и крупных объектов, соответственно;
 \(lqx\(rq
-can be specified to omit all mutex statistics;
+можно указать, чтобы опустить всю статистику по мьютексам;
 \(lqe\(rq
-can be used to omit extent statistics\&. Unrecognized characters are silently ignored\&. Note that thread caching may prevent some statistics from being completely up to date, since extra locking would be required to merge counters that track thread cache operations\&.
+может быть использован для опускания статистики экстентов\&. Нераспознанные символы игнорируются\&. Обратите внимание, что кэширование потоков может помешать полностью обновить некоторые статистические данные, поскольку для объединения счетчиков, отслеживающих операции с кэшем потоков, потребуется дополнительная блокировка\&.
 .PP
-The
+Сайт
 malloc_usable_size()
-function returns the usable size of the allocation pointed to by
-\fIptr\fR\&. The return value may be larger than the size that was requested during allocation\&. The
+возвращает полезный размер выделения, на которое указывает
+\fIptr\fR\&. Возвращаемое значение может быть больше, чем размер, который был запрошен при выделении\&. Для этого используется
 malloc_usable_size()
-function is not a mechanism for in\-place
-realloc(); rather it is provided solely as a tool for introspection purposes\&. Any discrepancy between the requested allocation size and the size reported by
+не является механизмом для \-местного
+realloc(); скорее она предоставляется исключительно как инструмент для целей интроспекции\&. Любое несоответствие между запрошенным размером выделения и размером, сообщенным функцией
 malloc_usable_size()
-should not be depended on, since such behavior is entirely implementation\-dependent\&.
-.SH "TUNING"
+не следует полагаться, поскольку такое поведение полностью зависит от реализации\&.
+.SH "ТЮНИНГ"
 .PP
-Once, when the first call is made to one of the memory allocation routines, the allocator initializes its internals based in part on various options that can be specified at compile\- or run\-time\&.
+Однажды, при первом обращении к одной из процедур выделения памяти, аллокатор инициализирует свои внутренние компоненты, частично основываясь на различных опциях, которые могут быть указаны при компиляции\- или запуске\-времени\&.
 .PP
-The string specified via
-\fB\-\-with\-malloc\-conf\fR, the string pointed to by the global variable
-\fImalloc_conf\fR, the
+Строка, указанная через
+\fB\-\-with\-malloc\-conf\fR, строка, на которую указывает глобальная переменная
+\fImalloc_conf\fR, строка, на которую указывает глобальная переменная
 \(lqname\(rq
-of the file referenced by the symbolic link named
-/etc/malloc\&.conf, and the value of the environment variable
-\fBMALLOC_CONF\fR, will be interpreted, in that order, from left to right as options\&. Note that
+файла, на который ссылается символическая ссылка с именем
+/etc/malloc\&.conf, и значение переменной окружения
+\fBMALLOC_CONF\fR, будут интерпретироваться, в этом порядке, слева направо, как опции\&. Обратите внимание, что
 \fImalloc_conf\fR
-may be read before
+может быть прочитан до
 main()
-is entered, so the declaration of
+поэтому объявление
 \fImalloc_conf\fR
-should specify an initializer that contains the final value to be read by jemalloc\&.
+должно содержать инициализатор, содержащий конечное значение, которое будет прочитано jemalloc\&.
 \fB\-\-with\-malloc\-conf\fR
-and
+и
 \fImalloc_conf\fR
-are compile\-time mechanisms, whereas
+являются механизмами времени компиляции, в то время как
 /etc/malloc\&.conf
-and
+и
 \fBMALLOC_CONF\fR
-can be safely set any time prior to program invocation\&.
+могут быть безопасно установлены в любое время до вызова программы\&.
 .PP
-An options string is a comma\-separated list of option:value pairs\&. There is one key corresponding to each
-opt\&.*
-mallctl (see the
-MALLCTL NAMESPACE
-section for options documentation)\&. For example,
+Строка опций представляет собой список пар опция:значение, разделенных запятыми\&. Каждой паре опций соответствует один ключ
+опции\&.*.
+mallctl (см.
+ПРОСТРАНСТВО ИМЕН MALLCTL
+раздел документации по опциям)\&. Например,
 abort:true,narenas:1
-sets the
+устанавливает
 opt\&.abort
-and
+и
 opt\&.narenas
-options\&. Some options have boolean values (true/false), others have integer values (base 8, 10, or 16, depending on prefix), and yet others have raw string values\&.
-.SH "IMPLEMENTATION NOTES"
+опции\&. Некоторые опции имеют булевые значения (true/false), другие - целочисленные значения (base 8, 10 или 16, в зависимости от префикса), третьи - необработанные строковые значения\&.
+.SH "ЗАМЕТКИ ПО РЕАЛИЗАЦИИ"
 .PP
-Traditionally, allocators have used
+Традиционно аллокаторы использовали
 \fBsbrk\fR(2)
-to obtain memory, which is suboptimal for several reasons, including race conditions, increased fragmentation, and artificial limitations on maximum usable memory\&. If
+для получения памяти, что является неоптимальным по нескольким причинам, включая условия гонки, повышенную фрагментацию и искусственные ограничения на максимальное количество используемой памяти\&. Если
 \fBsbrk\fR(2)
-is supported by the operating system, this allocator uses both
+поддерживается операционной системой, этот аллокатор использует как
 \fBmmap\fR(2)
-and
-\fBsbrk\fR(2), in that order of preference; otherwise only
+и
+\fBsbrk\fR(2), в этом порядке предпочтения; в противном случае только
 \fBmmap\fR(2)
-is used\&.
+используется\&.
 .PP
-This allocator uses multiple arenas in order to reduce lock contention for threaded programs on multi\-processor systems\&. This works well with regard to threading scalability, but incurs some costs\&. There is a small fixed per\-arena overhead, and additionally, arenas manage memory completely independently of each other, which means a small fixed increase in overall memory fragmentation\&. These overheads are not generally an issue, given the number of arenas normally used\&. Note that using substantially more arenas than the default is not likely to improve performance, mainly due to reduced cache performance\&. However, it may make sense to reduce the number of arenas if an application does not make much use of the allocation functions\&.
+Этот аллокатор использует несколько арен, чтобы уменьшить количество блокировок для многопоточных программ на многопроцессорных системах\&. Это хорошо работает с точки зрения масштабируемости потоков, но влечет за собой некоторые издержки\&. Есть небольшие фиксированные накладные расходы на каждую арену, и, кроме того, арены управляют памятью совершенно независимо друг от друга, что означает небольшое фиксированное увеличение общей фрагментации памяти\&. Эти накладные расходы обычно не являются проблемой, учитывая количество обычно используемых арен\&. Обратите внимание, что использование значительно большего количества арен, чем по умолчанию, вряд ли повысит производительность, в основном из-за снижения производительности кэша\&. Однако, возможно, имеет смысл уменьшить количество арен, если приложение не использует функции выделения\&.
 .PP
-In addition to multiple arenas, this allocator supports thread\-specific caching, in order to make it possible to completely avoid synchronization for most allocation requests\&. Such caching allows very fast allocation in the common case, but it increases memory usage and fragmentation, since a bounded number of objects can remain allocated in each thread cache\&.
+В дополнение к нескольким аренам, этот аллокатор поддерживает потокозависимое кэширование\&, что позволяет полностью избежать синхронизации для большинства запросов на выделение\&. Такое кэширование обеспечивает очень быстрое выделение в общем случае, но увеличивает использование памяти и фрагментацию, поскольку в кэше каждого потока может оставаться ограниченное количество объектов\&.
 .PP
-Memory is conceptually broken into extents\&. Extents are always aligned to multiples of the page size\&. This alignment makes it possible to find metadata for user objects quickly\&. User objects are broken into two categories according to size: small and large\&. Contiguous small objects comprise a slab, which resides within a single extent, whereas large objects each have their own extents backing them\&.
+Память концептуально разбивается на экстенты\&. Экстенты всегда выровнены по кратному размеру страницы\&. Такое выравнивание позволяет быстро находить метаданные для пользовательских объектов\&. Пользовательские объекты делятся на две категории по размеру: маленькие и большие\&. Смежные малые объекты составляют слэб, который находится в одном экстенте, в то время как большие объекты имеют свои собственные экстенты, которые их поддерживают\&.
 .PP
-Small objects are managed in groups by slabs\&. Each slab maintains a bitmap to track which regions are in use\&. Allocation requests that are no more than half the quantum (8 or 16, depending on architecture) are rounded up to the nearest power of two that is at least
-sizeof(\fBdouble\fR)\&. All other object size classes are multiples of the quantum, spaced such that there are four size classes for each doubling in size, which limits internal fragmentation to approximately 20% for all but the smallest size classes\&. Small size classes are smaller than four times the page size, and large size classes extend from four times the page size up to the largest size class that does not exceed
+Малые объекты управляются группами с помощью слэбов\&. Каждый слэб поддерживает битовую карту, чтобы отслеживать, какие регионы используются\&. Запросы на выделение, не превышающие половину кванта (8 или 16, в зависимости от архитектуры), округляются до ближайшей степени двойки, которая не меньше
+sizeof(\fBdouble\fR)\&. Все остальные классы размеров объектов кратны кванту, разделены таким образом, что на каждое удвоение размера приходится четыре класса размеров, что ограничивает внутреннюю фрагментацию примерно до 20% для всех классов размеров, кроме самых маленьких\&. Малые размерные классы меньше, чем четырехкратный размер страницы, а большие размерные классы простираются от четырехкратного размера страницы до самого большого размерного класса, который не превышает
 \fBPTRDIFF_MAX\fR\&.
 .PP
-Allocations are packed tightly together, which can be an issue for multi\-threaded applications\&. If you need to assure that allocations do not suffer from cacheline sharing, round your allocation requests up to the nearest multiple of the cacheline size, or specify cacheline alignment when allocating\&.
+Выделения упаковываются плотно друг к другу, что может быть проблемой для многопоточных приложений\&. Если вам нужно убедиться, что выделения не страдают от разделения кэшлайна, округляйте запросы на выделение до ближайшего кратного размера кэшлайна или указывайте выравнивание кэшлайна при выделении\&.
 .PP
-The
+Сайт
 realloc(),
-rallocx(), and
+rallocx() и
 xallocx()
-functions may resize allocations without moving them under limited circumstances\&. Unlike the
-*allocx()
-API, the standard API does not officially round up the usable size of an allocation to the nearest size class, so technically it is necessary to call
+могут изменять размер выделенных ресурсов без их перемещения при определенных обстоятельствах. В отличие от
+* allocx()
+API, стандартный API формально не округляет полезный размер выделения до ближайшего класса размера, поэтому технически необходимо вызвать
 realloc()
-to grow e\&.g\&. a 9\-byte allocation to 16 bytes, or shrink a 16\-byte allocation to 9 bytes\&. Growth and shrinkage trivially succeeds in place as long as the pre\-size and post\-size both round up to the same size class\&. No other API guarantees are made regarding in\-place resizing, but the current implementation also tries to resize large allocations in place, as long as the pre\-size and post\-size are both large\&. For shrinkage to succeed, the extent allocator must support splitting (see
-arena\&.<i>\&.extent_hooks)\&. Growth only succeeds if the trailing memory is currently available, and the extent allocator supports merging\&.
+чтобы увеличить размер 9-байтового файла до 16 байт или уменьшить размер 16-байтового файла до 9 байт. Увеличение и сжатие обычно выполняются успешно, если предварительный размер и последующий размер соответствуют одному и тому же классу размеров. Текущая реализация также пытается изменить размер больших распределений на месте, если предварительный размер и последующий размер являются большими. Чтобы сжатие было успешным, распределитель экстента должен поддерживать разделение (см.
+arena\&.< i>\&.extent_hooks)\&. Расширение выполняется успешно только в том случае, если конечная память в данный момент доступна, а распределитель расширений поддерживает слияние.
 .PP
-Assuming 4 KiB pages and a 16\-byte quantum on a 64\-bit system, the size classes in each category are as shown in
-Table 1\&.
+Предполагая, что страницы размером 4 КБАЙТ и объем в 16 байт в 64-разрядной системе, классы размера в каждой категории такие, как показано в
+Таблице 1\&.
 .sp
-.it 1 an-trap
-.nr an-no-space-flag 1
-.nr an-break-flag 1
-.br
-.B Table\ \&1.\ \&Size classes
+. it 1 и-trap
+. NR и-no-space-flag 1
+. БЕЗ флага прерывания 1
+.
+Таблица br .B\\ &1.\ \ & Классы размеров
 .TS
-allbox tab(:);
+Вкладка allbox(:);
 lB rB lB.
 T{
-Category
-T}:T{
-Spacing
-T}:T{
-Size
-T}
+Категория
+T}: T{
+Расстояние
+T}: T{
+Размер
+Т}
 .T&
 l r l
 ^ r l
@@ -542,7 +542,7 @@ l r l
 ^ r l
 ^ r l.
 T{
-Small
+Маленький 
 T}:T{
 lg
 T}:T{
@@ -589,7 +589,7 @@ T}:T{
 [10 KiB, 12 KiB, 14 KiB]
 T}
 T{
-Large
+Огромный 
 T}:T{
 2 KiB
 T}:T{
@@ -672,365 +672,365 @@ T}:T{
 T}
 .TE
 .sp 1
-.SH "MALLCTL NAMESPACE"
+.SH "ПРОСТРАНСТВО ИМЕН MALLCTL"
 .PP
-The following names are defined in the namespace accessible via the
+Следующие имена определены в пространстве имен, доступном через
 mallctl*()
-functions\&. Value types are specified in parentheses, their readable/writable statuses are encoded as
+функции\&. Типы значений указаны в круглых скобках, их статусы для чтения/записи кодируются как
 rw,
 r\-,
-\-w, or
-\-\-, and required build configuration flags follow, if any\&. A name element encoded as
+\-w или
+\-\-, и за ними следуют обязательные флаги конфигурации сборки, если таковые имеются\&. Элемент name, закодированный как
 <i>
-or
+или
 <j>
-indicates an integer component, where the integer varies from 0 to some upper value that must be determined via introspection\&. In the case of
+, указывает на целочисленный компонент, где целое число изменяется от 0 до некоторого верхнего значения, которое должно быть определено с помощью самоанализа\&. В случае
 stats\&.arenas\&.<i>\&.*
-and
-arena\&.<i>\&.{initialized,purge,decay,dss},
+и
+arena\&.<i>\&.{инициализировано, очистка,распад,dss},
 <i>
-equal to
+равно
 \fBMALLCTL_ARENAS_ALL\fR
-can be used to operate on all arenas or access the summation of statistics from all arenas; similarly
+может использоваться для работы на всех аренах или для доступа к суммированию статистических данных со всех арен; аналогично
 <i>
-equal to
-\fBMALLCTL_ARENAS_DESTROYED\fR
-can be used to access the summation of statistics from all destroyed arenas\&. These constants can be utilized either via
-mallctlnametomib()
-followed by
-mallctlbymib(), or via code such as the following:
+значение, равное
+\fBMALLCTL_ARENAS_DESTROYED\
+, может быть использовано для доступа к суммированию статистики по всем уничтоженным аренам\&. Эти константы могут быть использованы либо через
+mallctlnametomib(), либо через mallctlnametomib().
+за которым следует
+mallctlbymib(), или с помощью такого кода, как следующий:
 .sp
 .if n \{\
 .RS 4
 .\}
 .nf
-#define STRINGIFY_HELPER(x) #x
-#define STRINGIFY(x) STRINGIFY_HELPER(x)
+#определить STRINGIFY_HELPER(x) #x
+#определить STRINGIFY(x) STRINGIFY_HELPER(x)
 
-mallctl("arena\&." STRINGIFY(MALLCTL_ARENAS_ALL) "\&.decay",
-    NULL, NULL, NULL, 0);
+mallctl("арена\&." STRINGIFY(MALLCTL_ARENAS_ALL) "\&.распад",
+NULL, NULL, NULL, 0);
 .fi
-.if n \{\
+.если n \{\
 .RE
 .\}
 .sp
-Take special note of the
-epoch
-mallctl, which controls refreshing of cached dynamic statistics\&.
-.PP
-version (\fBconst char *\fR) r\-
+Обратите особое внимание на
+эпоху
+mallctl, который управляет обновлением кэшированной динамической статистики\&.
+.
+Версия PP (\fBconst char *\fR) r\-
 .RS 4
-Return the jemalloc version string\&.
+Возвращает строку версии jemalloc\&.
 .RE
 .PP
 epoch (\fBuint64_t\fR) rw
 .RS 4
-If a value is passed in, refresh the data from which the
+Если передано значение, обновите данные, на основе которых функции
 mallctl*()
-functions report values, and increment the epoch\&. Return the current epoch\&. This is useful for detecting whether another thread caused a refresh\&.
+сообщают значения, и увеличьте значение epoch\&. Возвращает текущую эпоху\&. Это полезно для определения того, вызвал ли другой поток обновление\&.
 .RE
 .PP
 background_thread (\fBbool\fR) rw
 .RS 4
-Enable/disable internal background worker threads\&. When set to true, background threads are created on demand (the number of background threads will be no more than the number of CPUs or active arenas)\&. Threads run periodically, and handle
-purging
-asynchronously\&. When switching off, background threads are terminated synchronously\&. Note that after
+Включение/выключение внутренних фоновых рабочих потоков\&. Если установлено значение true, фоновые потоки создаются по требованию (количество фоновых потоков не будет превышать количество процессоров или активных площадок)\&. Потоки запускаются периодически и обрабатывают
+очистку
+асинхронно\&. При выключении фоновые потоки завершаются синхронно\&. Обратите внимание, что после выполнения функции
 \fBfork\fR(2)
-function, the state in the child process will be disabled regardless the state in parent process\&. See
-stats\&.background_thread
-for related stats\&.
+состояние дочернего процесса будет отключено независимо от состояния родительского процесса\&. Смотрите
+статистику \&.background_thread
+для получения соответствующей статистики \&.
 opt\&.background_thread
-can be used to set the default option\&. This option is only available on selected pthread\-based platforms\&.
+может использоваться для установки параметра по умолчанию\&. Этот параметр доступен только на выбранных платформах, основанных на pthread\&.
 .RE
 .PP
 max_background_threads (\fBsize_t\fR) rw
 .RS 4
-Maximum number of background worker threads that will be created\&. This value is capped at
-opt\&.max_background_threads
-at startup\&.
+Максимальное количество фоновых рабочих потоков, которые будут созданы\&. Это значение ограничено
+параметром opt\&.max_background_threads
+при запуске\&.
 .RE
 .PP
 config\&.cache_oblivious (\fBbool\fR) r\-
 .RS 4
-\fB\-\-enable\-cache\-oblivious\fR
-was specified during build configuration\&.
+\fB\-включить\-кэширование\-забвение\fR
+было указано при настройке сборки\&.
 .RE
 .PP
 config\&.debug (\fBbool\fR) r\-
 .RS 4
 \fB\-\-enable\-debug\fR
-was specified during build configuration\&.
+был указан при сборке конфигурации\&.
 .RE
 .PP
 config\&.fill (\fBbool\fR) r\-
 .RS 4
 \fB\-\-enable\-fill\fR
-was specified during build configuration\&.
+был указан при настройке сборки\&.
 .RE
 .PP
 config\&.lazy_lock (\fBbool\fR) r\-
 .RS 4
 \fB\-\-enable\-lazy\-lock\fR
-was specified during build configuration\&.
+был указан при настройке сборки\&.
 .RE
 .PP
 config\&.malloc_conf (\fBconst char *\fR) r\-
 .RS 4
-Embedded configure\-time\-specified run\-time options string, empty unless
+Встроенная строка параметров configure\-time\-specified run\-time, пустая, если только при сборке конфигурации не было указано
 \fB\-\-with\-malloc\-conf\fR
-was specified during build configuration\&.
+.
 .RE
 .PP
 config\&.prof (\fBbool\fR) r\-
 .RS 4
 \fB\-\-enable\-prof\fR
-was specified during build configuration\&.
+был указан при сборке конфигурации\&.
 .RE
 .PP
 config\&.prof_libgcc (\fBbool\fR) r\-
 .RS 4
-\fB\-\-disable\-prof\-libgcc\fR
-was not specified during build configuration\&.
+\fB\-\-отключить\-prof\-libgcc\fR
+не был указан при настройке сборки\&.
 .RE
 .PP
 config\&.prof_libunwind (\fBbool\fR) r\-
 .RS 4
 \fB\-\-enable\-prof\-libunwind\fR
-was specified during build configuration\&.
+был указан во время настройки сборки\&.
 .RE
 .PP
 config\&.stats (\fBbool\fR) r\-
 .RS 4
 \fB\-\-enable\-stats\fR
-was specified during build configuration\&.
+был указан при настройке сборки\&.
 .RE
 .PP
 config\&.utrace (\fBbool\fR) r\-
 .RS 4
-\fB\-\-enable\-utrace\fR
-was specified during build configuration\&.
+\fB\-\-включить\-utrace\fR
+был указан при сборке конфигурации\&.
 .RE
 .PP
 config\&.xmalloc (\fBbool\fR) r\-
 .RS 4
 \fB\-\-enable\-xmalloc\fR
-was specified during build configuration\&.
+был указан при сборке конфигурации\&.
 .RE
 .PP
 opt\&.abort (\fBbool\fR) r\-
 .RS 4
-Abort\-on\-warning enabled/disabled\&. If true, most warnings are fatal\&. Note that runtime option warnings are not included (see
+Прерывание работы\-включено\-предупреждение включено/отключено\&. Если значение true, большинство предупреждений являются фатальными\&. Обратите внимание, что предупреждения о параметрах среды выполнения не включены (см.
 opt\&.abort_conf
-for that)\&. The process will call
+для этого)\&. Процесс вызовет
 \fBabort\fR(3)
-in these cases\&. This option is disabled by default unless
+в этих случаях\&. По умолчанию эта опция отключена, если только при настройке не указано
 \fB\-\-enable\-debug\fR
-is specified during configuration, in which case it is enabled by default\&.
+, и в этом случае она включена по умолчанию\&.
 .RE
 .PP
 opt\&.confirm_conf (\fBbool\fR) r\-
 .RS 4
-Confirm\-runtime\-options\-when\-program\-starts enabled/disabled\&. If true, the string specified via
-\fB\-\-with\-malloc\-conf\fR, the string pointed to by the global variable
-\fImalloc_conf\fR, the
-\(lqname\(rq
-of the file referenced by the symbolic link named
-/etc/malloc\&.conf, and the value of the environment variable
-\fBMALLOC_CONF\fR, will be printed in order\&. Then, each option being set will be individually printed\&. This option is disabled by default\&.
+Подтвердите\-время выполнения\-параметры\-при запуске\-программы\-включено/отключено\&. Если значение true, строка, указанная через
+\fB\-\-с помощью\-malloc\-conf\fR, строки, на которую указывает глобальная переменная
+\fImalloc_conf\fR, имени
+файла, на который ссылается
+символическая ссылка с именем
+/etc/malloc\&.conf и значение переменной окружения
+\fBMALLOC_CONF\fR, будут напечатаны по порядку\&. Затем каждый заданный параметр будет напечатан индивидуально\&. По умолчанию этот параметр отключен\&.
 .RE
 .PP
 opt\&.abort_conf (\fBbool\fR) r\-
 .RS 4
-Abort\-on\-invalid\-configuration enabled/disabled\&. If true, invalid runtime options are fatal\&. The process will call
+Прерывание\-включено\-недопустимо\-конфигурация включена/отключена\&. Если значение true, недопустимые параметры среды выполнения являются фатальными\&. В этих случаях процесс вызовет
 \fBabort\fR(3)
-in these cases\&. This option is disabled by default unless
+\&. По умолчанию эта опция отключена, если только при настройке не указано
 \fB\-\-enable\-debug\fR
-is specified during configuration, in which case it is enabled by default\&.
+, и в этом случае она включена по умолчанию\&.
 .RE
 .PP
 opt\&.metadata_thp (\fBconst char *\fR) r\-
 .RS 4
-Controls whether to allow jemalloc to use transparent huge page (THP) for internal metadata (see
-stats\&.metadata)\&.
-\(lqalways\(rq
-allows such usage\&.
+Определяет, разрешать ли jemalloc использовать прозрачную огромную страницу (THP) для внутренних метаданных (смотрите
+статистику\&.metadata)\&.
+\(lq всегда\(rq
+разрешает такое использование\&.
 \(lqauto\(rq
-uses no THP initially, but may begin to do so when metadata usage reaches certain level\&. The default is
+изначально не использует THP, но может начать использовать его, когда использование метаданных достигнет определенного уровня\&. Значение по умолчанию -
 \(lqdisabled\(rq\&.
 .RE
 .PP
 opt\&.retain (\fBbool\fR) r\-
 .RS 4
-If true, retain unused virtual memory for later reuse rather than discarding it by calling
+Если значение равно true, сохраните неиспользуемую виртуальную память для последующего повторного использования, а не отбрасывайте ее с помощью вызова
 \fBmunmap\fR(2)
-or equivalent (see
-stats\&.retained
-for related details)\&. It also makes jemalloc use
+или эквивалентный (смотрите
+статистику\&.сохранено
+для получения дополнительной информации)\&. Это также заставляет jemalloc использовать
 \fBmmap\fR(2)
-or equivalent in a more greedy way, mapping larger chunks in one go\&. This option is disabled by default unless discarding virtual memory is known to trigger platform\-specific performance problems, namely 1) for [64\-bit] Linux, which has a quirk in its virtual memory allocation algorithm that causes semi\-permanent VM map holes under normal jemalloc operation; and 2) for [64\-bit] Windows, which disallows split / merged regions with
-\fI\fBMEM_RELEASE\fR\fR\&. Although the same issues may present on 32\-bit platforms as well, retaining virtual memory for 32\-bit Linux and Windows is disabled by default due to the practical possibility of address space exhaustion\&.
+или эквивалентно более жадным способом, отображающим большие фрагменты за один раз \&. По умолчанию эта опция отключена, если только не известно, что отказ от виртуальной памяти вызывает проблемы с производительностью, зависящие от платформы, а именно: 1) для [64-разрядной] Linux, у которой есть особенность в алгоритме распределения виртуальной памяти, которая приводит к полупостоянным дырам в карте виртуальной машины при обычной работе jemalloc; и 2) для [64-разрядной] Windows, которая запрещает разделение / объединение областей с
+\fI\fBMEM_RELEASE\fR\fR\&. Хотя те же проблемы могут возникать и на 32-разрядных платформах, сохранение виртуальной памяти для 32-разрядных Linux и Windows по умолчанию отключено из-за практической возможности исчерпания адресного пространства.
 .RE
 .PP
 opt\&.dss (\fBconst char *\fR) r\-
 .RS 4
-dss (\fBsbrk\fR(2)) allocation precedence as related to
-\fBmmap\fR(2)
-allocation\&. The following settings are supported if
+dss (\fBsbrk\fR(2)) приоритет распределения, связанный с
+распределением \fBmmap\fR(2)
+\&. Следующие настройки поддерживаются, если
 \fBsbrk\fR(2)
-is supported by the operating system:
+поддерживается операционной системой:
 \(lqdisabled\(rq,
-\(lqprimary\(rq, and
-\(lqsecondary\(rq; otherwise only
+\(lqprimary\(rq и
+\(lqsecondary\(rq; в противном случае поддерживается только
 \(lqdisabled\(rq
-is supported\&. The default is
+\&. По умолчанию используется
 \(lqsecondary\(rq
-if
+если
 \fBsbrk\fR(2)
-is supported by the operating system;
+поддерживается операционной системой;
 \(lqdisabled\(rq
-otherwise\&.
+в противном случае\&.
 .RE
 .PP
 opt\&.narenas (\fBunsigned\fR) r\-
 .RS 4
-Maximum number of arenas to use for automatic multiplexing of threads and arenas\&. The default is four times the number of CPUs, or one if there is a single CPU\&.
+Максимальное количество областей, используемое для автоматического мультиплексирования потоков и областей\&. По умолчанию количество процессоров в четыре раза больше или равно одному, если имеется один процессор\&.
 .RE
 .PP
-opt\&.oversize_threshold (\fBsize_t\fR) r\-
+opt\&.превышение порогового значения (\fBsize_t\fR) r\-
 .RS 4
-The threshold in bytes of which requests are considered oversize\&. Allocation requests with greater sizes are fulfilled from a dedicated arena (automatically managed, however not within
-narenas), in order to reduce fragmentation by not mixing huge allocations with small ones\&. In addition, the decay API guarantees on the extents greater than the specified threshold may be overridden\&. Note that requests with arena index specified via
-\fBMALLOCX_ARENA\fR, or threads associated with explicit arenas will not be considered\&. The default threshold is 8MiB\&. Values not within large size classes disables this feature\&.
+Порог в байтах, при превышении которого запросы считаются слишком большими\&. Запросы на выделение ресурсов большего размера выполняются из выделенной области (управляемой автоматически, но не внутри
+narenas), чтобы уменьшить фрагментацию, не смешивая огромные объемы выделений с небольшими\&. Кроме того, API decay гарантирует, что значения, превышающие указанный порог, могут быть переопределены\&. Обратите внимание, что запросы с индексом arena, указанным через
+\fBMALLOCX_ARENA\fR, или потоки, связанные с явными аренами, рассматриваться не будут\&. Пороговое значение по умолчанию равно 8 Мб\&. Значения, не относящиеся к классам большого размера, отключают эту функцию\&.
 .RE
 .PP
 opt\&.percpu_arena (\fBconst char *\fR) r\-
 .RS 4
-Per CPU arena mode\&. Use the
+Для каждого режима арены процессора\&. Используйте параметр
 \(lqpercpu\(rq
-setting to enable this feature, which uses number of CPUs to determine number of arenas, and bind threads to arenas dynamically based on the CPU the thread runs on currently\&.
+, чтобы включить эту функцию, которая использует количество процессоров для определения количества областей и динамически привязывает потоки к областям на основе процессора, на котором поток выполняется в данный момент\&.
 \(lqphycpu\(rq
-setting uses one arena per physical CPU, which means the two hyper threads on the same CPU share one arena\&. Note that no runtime checking regarding the availability of hyper threading is done at the moment\&. When set to
-\(lqdisabled\(rq, narenas and thread to arena association will not be impacted by this option\&. The default is
+при настройке используется одна область для каждого физического процессора, что означает, что два гиперпотока на одном процессоре совместно используют одну область\&. Обратите внимание, что в данный момент проверка доступности hyper threading во время выполнения не выполняется\&. Если для параметра установлено значение
+\(lqdisabled\(rq, этот параметр не повлияет на связь narenas и thread to arena\&. Значение по умолчанию -
 \(lqdisabled\(rq\&.
 .RE
 .PP
 opt\&.background_thread (\fBbool\fR) r\-
 .RS 4
-Internal background worker threads enabled/disabled\&. Because of potential circular dependencies, enabling background thread using this option may cause crash or deadlock during initialization\&. For a reliable way to use this feature, see
+Включены/отключены внутренние фоновые рабочие потоки\&. Из-за возможных циклических зависимостей включение фонового потока с помощью этой опции может привести к сбою или взаимоблокировке во время инициализации\&. Надежный способ использования этой функции приведен в разделе
 background_thread
-for dynamic control options and details\&. This option is disabled by default\&.
+для получения подробной информации о параметрах динамического управления\&. По умолчанию эта опция отключена\&.
 .RE
 .PP
 opt\&.max_background_threads (\fBsize_t\fR) r\-
 .RS 4
-Maximum number of background threads that will be created if
-background_thread
-is set\&. Defaults to number of cpus\&.
+Максимальное количество фоновых потоков, которые будут созданы, если
+
+задан параметр background_thread\&. По умолчанию задано количество процессоров\&.
 .RE
 .PP
 opt\&.dirty_decay_ms (\fBssize_t\fR) r\-
 .RS 4
-Approximate time in milliseconds from the creation of a set of unused dirty pages until an equivalent set of unused dirty pages is purged (i\&.e\&. converted to muzzy via e\&.g\&.
-madvise(\fI\&.\&.\&.\fR\fI\fBMADV_FREE\fR\fR)
-if supported by the operating system, or converted to clean otherwise) and/or reused\&. Dirty pages are defined as previously having been potentially written to by the application, and therefore consuming physical memory, yet having no current use\&. The pages are incrementally purged according to a sigmoidal decay curve that starts and ends with zero purge rate\&. A decay time of 0 causes all unused dirty pages to be purged immediately upon creation\&. A decay time of \-1 disables purging\&. The default decay time is 10 seconds\&. See
-arenas\&.dirty_decay_ms
-and
+Приблизительное время в миллисекундах с момента создания набора неиспользуемых грязных страниц до удаления эквивалентного набора неиспользуемых грязных страниц (т.е. преобразуется в muzzy через e\&.g\&.
+мэдвайз(\fI\&.\&.\&.\fR\fI\fBMADV_FREE\fR\fR)
+если поддерживается операционной системой или преобразован в чистый иным образом) и/или используется повторно\&. "Грязные" страницы определяются как ранее потенциально записанные приложением и, следовательно, занимающие физическую память, но не используемые в настоящее время\&. Страницы очищаются постепенно в соответствии с сигмоидальной кривой затухания, которая начинается и заканчивается нулевой скоростью очистки \&. При времени затухания, равном 0, все неиспользуемые загрязненные страницы удаляются сразу после создания\&. Время затухания, равное \-1, отключает очистку\&. Время затухания по умолчанию равно 10 секундам\&. Смотрите
+арены\&.dirty_decay_ms
+и
 arena\&.<i>\&.dirty_decay_ms
-for related dynamic control options\&. See
-opt\&.muzzy_decay_ms
-for a description of muzzy pages\&.for a description of muzzy pages\&. Note that when the
-oversize_threshold
-feature is enabled, the arenas reserved for oversize requests may have its own default decay settings\&.
+для получения информации о соответствующих параметрах динамического управления\&. Описание muzzy pages\& смотрите в разделе
+opt\&.muzzy_decay_ms.
+для описания muzzy pages\&. Обратите внимание, что когда
+включена
+функция oversize_threshold, арены, зарезервированные для запросов на увеличение размера, могут иметь свои собственные настройки затухания по умолчанию\&.
 .RE
 .PP
-opt\&.muzzy_decay_ms (\fBssize_t\fR) r\-
+опция\&.muzzy_decay_ms (\fBssize_t\fR) r\-
 .RS 4
-Approximate time in milliseconds from the creation of a set of unused muzzy pages until an equivalent set of unused muzzy pages is purged (i\&.e\&. converted to clean) and/or reused\&. Muzzy pages are defined as previously having been unused dirty pages that were subsequently purged in a manner that left them subject to the reclamation whims of the operating system (e\&.g\&.
-madvise(\fI\&.\&.\&.\fR\fI\fBMADV_FREE\fR\fR)), and therefore in an indeterminate state\&. The pages are incrementally purged according to a sigmoidal decay curve that starts and ends with zero purge rate\&. A decay time of 0 causes all unused muzzy pages to be purged immediately upon creation\&. A decay time of \-1 disables purging\&. The default decay time is 10 seconds\&. See
-arenas\&.muzzy_decay_ms
-and
+Приблизительное время в миллисекундах с момента создания набора неиспользуемых размытых страниц до удаления эквивалентного набора неиспользуемых размытых страниц (т.е. преобразования в clean) и/или повторного использования. Нечеткие страницы определяются как ранее бывшие неиспользуемыми грязными страницами, которые впоследствии были удалены таким образом, что они были подвержены капризам операционной системы по исправлению (например, \&.g\&.
+madvise(\fI\&.\&.\&.\fR\fI\fBMADV_FREE\fR\fR)), и, следовательно, находится в неопределенном состоянии\&. Страницы очищаются постепенно в соответствии с сигмоидальной кривой затухания, которая начинается и заканчивается нулевой скоростью очистки \&. При времени затухания, равном 0, все неиспользуемые страницы muzzy будут удалены сразу после создания \&. Время затухания, равное \-1, отключает очистку\&. Время затухания по умолчанию равно 10 секундам\&. Смотрите
+разделы arenas\&.muzzy_decay_ms
+и
 arena\&.<i>\&.muzzy_decay_ms
-for related dynamic control options\&.
+для получения информации о соответствующих параметрах динамического управления.
 .RE
 .PP
-opt\&.lg_extent_max_active_fit (\fBsize_t\fR) r\-
+опция\&.lg_extent_max_active_fit (\fBsize_t\fR) r\-
 .RS 4
-When reusing dirty extents, this determines the (log base 2 of the) maximum ratio between the size of the active extent selected (to split off from) and the size of the requested allocation\&. This prevents the splitting of large active extents for smaller allocations, which can reduce fragmentation over the long run (especially for non\-active extents)\&. Lower value may reduce fragmentation, at the cost of extra active extents\&. The default value is 6, which gives a maximum ratio of 64 (2^6)\&.
+При повторном использовании измененных экстентов это определяет (логарифмическая база 2) максимальное соотношение между размером выбранного активного экстента (от которого нужно отделиться) и размером запрошенного выделения\&. Это предотвращает разделение больших активных экстентов на более мелкие, что может уменьшить фрагментацию в долгосрочной перспективе (особенно для неактивных экстентов). Меньшее значение может уменьшить фрагментацию за счет дополнительных активных экстентов. Значение по умолчанию равно 6, что дает максимальное соотношение 64 (2^6)\&.
 .RE
 .PP
 opt\&.stats_print (\fBbool\fR) r\-
 .RS 4
-Enable/disable statistics printing at exit\&. If enabled, the
-malloc_stats_print()
-function is called at program exit via an
-\fBatexit\fR(3)
-function\&.
+Включить/отключить печать статистики при выходе из программы\&. Если функция включена,
+то функция malloc_stats_print()
+вызывается при выходе из программы
+с помощью функции \fBatexit\fR(3)
+\&.
 opt\&.stats_print_opts
-can be combined to specify output options\&. If
-\fB\-\-enable\-stats\fR
-is specified during configuration, this has the potential to cause deadlock for a multi\-threaded process that exits while one or more threads are executing in the memory allocation functions\&. Furthermore,
+можно комбинировать для указания параметров вывода\&. Если
+во время настройки указано значение \fB\-\-enable\-stats\fR
+, это может привести к взаимоблокировке многопоточного процесса, который завершается во время выполнения одного или нескольких потоков в функциях выделения памяти\&. Кроме того,
 atexit()
-may allocate memory during application initialization and then deadlock internally when jemalloc in turn calls
-atexit(), so this option is not universally usable (though the application can register its own
-atexit()
-function with equivalent functionality)\&. Therefore, this option should only be used with care; it is primarily intended as a performance tuning aid during application development\&. This option is disabled by default\&.
+может выделять память во время инициализации приложения, а затем внутренне блокироваться, когда jemalloc, в свою очередь, вызывает
+atexit(), поэтому эта опция не является универсальной (хотя приложение может зарегистрировать свою собственную
+функцию atexit()
+с эквивалентной функциональностью)\&. Поэтому эту опцию следует использовать с осторожностью; в первую очередь она предназначена для настройки производительности при разработке приложений\&. По умолчанию эта опция отключена\&.
 .RE
 .PP
 opt\&.stats_print_opts (\fBconst char *\fR) r\-
 .RS 4
-Options (the
+Параметры (строка
 \fIopts\fR
-string) to pass to the
+) для передачи в
 malloc_stats_print()
-at exit (enabled through
-opt\&.stats_print)\&. See available options in
-malloc_stats_print()\&. Has no effect unless
-opt\&.stats_print
-is enabled\&. The default is
+при выходе (включается через
+opt\&.stats_print)\&. Смотрите доступные параметры в
+malloc_stats_print()\&. Не действует, если
+не включена функция opt\&.stats_print
+\&. Значение по умолчанию -
 \(lq\(rq\&.
 .RE
 .PP
-opt\&.junk (\fBconst char *\fR) r\- [\fB\-\-enable\-fill\fR]
+opt\&.junk (\fBconst char *\fR) r\- [\fB\-\-включить\-заполнение\fR]
 .RS 4
-Junk filling\&. If set to
-\(lqalloc\(rq, each byte of uninitialized allocated memory will be initialized to
-0xa5\&. If set to
-\(lqfree\(rq, all deallocated memory will be initialized to
-0x5a\&. If set to
-\(lqtrue\(rq, both allocated and deallocated memory will be initialized, and if set to
-\(lqfalse\(rq, junk filling be disabled entirely\&. This is intended for debugging and will impact performance negatively\&. This option is
+Ненужное заполнение\&. Если задано значение
+\(lqalloc\(rq, каждый байт неинициализированной выделенной памяти будет инициализирован значением
+0xa5\&. Если задано значение
+\(lqfree\(rq, вся освобожденная память будет инициализирована значением
+0x5a\&. Если задано значение
+\(lqtrue\(rq, будет инициализирована как выделенная, так и освобожденная память, и если установлено значение
+\(lqfalse\(rq, заполнение нежелательной информацией будет полностью отключено\&. Это предназначено для отладки и негативно повлияет на производительность\&. По умолчанию этот параметр
 \(lqfalse\(rq
-by default unless
+, если только
 \fB\-\-enable\-debug\fR
-is specified during configuration, in which case it is
-\(lqtrue\(rq
-by default\&.
+указывается при настройке, и в этом случае
+по умолчанию это \(lqtrue\(rq
+\&.
 .RE
 .PP
-opt\&.zero (\fBbool\fR) r\- [\fB\-\-enable\-fill\fR]
+opt\&.zero (\fBbool\fR) r\- [\fB\-\-включить\-заполнение\fR]
 .RS 4
-Zero filling enabled/disabled\&. If enabled, each byte of uninitialized allocated memory will be initialized to 0\&. Note that this initialization only happens once for each byte, so
+Заполнение нулем включено/отключено\&. Если включено, каждый байт неинициализированной выделенной памяти будет инициализирован равным 0\&. Обратите внимание, что эта инициализация выполняется только один раз для каждого байта, поэтому
 realloc()
-and
+и
 rallocx()
-calls do not zero memory that was previously allocated\&. This is intended for debugging and will impact performance negatively\&. This option is disabled by default\&.
+вызовы не приводят к обнулению ранее выделенной памяти\&. Это предназначено для отладки и негативно повлияет на производительность\&. По умолчанию эта опция отключена\&.
 .RE
 .PP
-opt\&.utrace (\fBbool\fR) r\- [\fB\-\-enable\-utrace\fR]
+выбрать\&.utrace (\fBbool\fR) r\- [\fB\-\-включить\-utrace\fR]
 .RS 4
-Allocation tracing based on
+Трассировка распределения на основе
 \fButrace\fR(2)
-enabled/disabled\&. This option is disabled by default\&.
+включена/отключена\&. По умолчанию эта опция отключена\&.
 .RE
 .PP
-opt\&.xmalloc (\fBbool\fR) r\- [\fB\-\-enable\-xmalloc\fR]
+выберите\&.xmalloc (\fBbool\fR) r\- [\fB\-\-включить\-xmalloc\fR]
 .RS 4
-Abort\-on\-out\-of\-memory enabled/disabled\&. If enabled, rather than returning failure for any allocation function, display a diagnostic message on
+Отмена включения/выключения памяти включена/отключена\&. Если эта функция включена, вместо того, чтобы возвращать ошибку для какой-либо функции распределения, отобразите диагностическое сообщение на
 \fBSTDERR_FILENO\fR
-and cause the program to drop core (using
-\fBabort\fR(3))\&. If an application is designed to depend on this behavior, set the option at compile time by including the following in the source code:
+и заставьте программу завершить работу с ядром (используя
+\fBabort\fR(3))\&. Если приложение разработано таким образом, чтобы оно зависело от этого поведения, установите этот параметр во время компиляции, включив в исходный код следующее:
 .sp
-.if n \{\
+.если n \{\
 .RS 4
 .\}
 .nf
@@ -1040,1205 +1040,1204 @@ malloc_conf = "xmalloc:true";
 .RE
 .\}
 .sp
-This option is disabled by default\&.
+По умолчанию эта опция отключена\&.
 .RE
 .PP
 opt\&.tcache (\fBbool\fR) r\-
 .RS 4
-Thread\-specific caching (tcache) enabled/disabled\&. When there are multiple threads, each thread uses a tcache for objects up to a certain size\&. Thread\-specific caching allows many allocations to be satisfied without performing any thread synchronization, at the cost of increased memory use\&. See the
-opt\&.lg_tcache_max
-option for related tuning information\&. This option is enabled by default\&.
+Включено/отключено кэширование, зависящее от потока (tcache). При наличии нескольких потоков каждый поток использует tcache для объектов определенного размера. Кэширование, зависящее от потока, позволяет выполнять множество распределений без выполнения какой-либо синхронизации потоков за счет увеличения использования памяти. Смотрите параметр
+opt.
+lg_tcache_max для получения дополнительной информации о настройке. Эта опция включена по умолчанию\&.
 .RE
 .PP
 opt\&.lg_tcache_max (\fBsize_t\fR) r\-
 .RS 4
-Maximum size class (log base 2) to cache in the thread\-specific cache (tcache)\&. At a minimum, all small size classes are cached, and at a maximum all large size classes are cached\&. The default maximum is 32 KiB (2^15)\&.
+Класс максимального размера (база журнала 2) для кэширования в кэше, специфичном для потока (tcache)\&. Как минимум, кэшируются все классы малого размера, а как максимум - все классы большого размера\&. Максимальный размер по умолчанию равен 32 КБ (2^15)\&.
 .RE
 .PP
 opt\&.thp (\fBconst char *\fR) r\-
 .RS 4
-Transparent hugepage (THP) mode\&. Settings "always", "never" and "default" are available if THP is supported by the operating system\&. The "always" setting enables transparent hugepage for all user memory mappings with
-\fI\fBMADV_HUGEPAGE\fR\fR; "never" ensures no transparent hugepage with
-\fI\fBMADV_NOHUGEPAGE\fR\fR; the default setting "default" makes no changes\&. Note that: this option does not affect THP for jemalloc internal metadata (see
-opt\&.metadata_thp); in addition, for arenas with customized
-extent_hooks, this option is bypassed as it is implemented as part of the default extent hooks\&.
+Режим прозрачной огромной страницы (THP)\&. Настройки "всегда", "никогда" и "по умолчанию" доступны, если THP поддерживается операционной системой\&. Настройка "всегда" обеспечивает прозрачность hugepage для всех сопоставлений пользовательской памяти с
+\fI\fBMADV_HUGEPAGE\fR\fR; "никогда" не гарантирует отсутствие прозрачной огромной страницы с
+\fI\fBMADV_NOHUGEPAGE\fR\fR; значение по умолчанию "по умолчанию" не вносит изменений\&. Обратите внимание, что: этот параметр не влияет на THP для внутренних метаданных jemalloc (см.
+opt\&.metadata_thp); кроме того, для арен с настраиваемыми
+extent_hooks этот параметр не используется, поскольку он реализован как часть настроек extent по умолчанию.
 .RE
 .PP
 opt\&.prof (\fBbool\fR) r\- [\fB\-\-enable\-prof\fR]
 .RS 4
-Memory profiling enabled/disabled\&. If enabled, profile memory allocation activity\&. See the
+Профилирование памяти включено/отключено\&. Если включено, активируется выделение памяти профиля\&. Смотрите опцию
 opt\&.prof_active
-option for on\-the\-fly activation/deactivation\&. See the
-opt\&.lg_prof_sample
-option for probabilistic sampling control\&. See the
-opt\&.prof_accum
-option for control of cumulative sample reporting\&. See the
-opt\&.lg_prof_interval
-option for information on interval\-triggered profile dumping, the
-opt\&.prof_gdump
-option for information on high\-water\-triggered profile dumping, and the
+для быстрой активации/деактивации. Смотрите
+пример opt\&.lg_prof_sample
+опция для вероятностного контроля выборки\&. Смотрите опцию
+opt\&.
+prof_accum для контроля отчетов о совокупной выборке\&. Смотрите параметр
+opt\&.
+lg_prof_interval для получения информации об интервальном сбросе профиля, параметр
+opt\&.
+prof_gdump для получения информации о сбросе профиля, вызванном паводком, и параметр
 opt\&.prof_final
-option for final profile dumping\&. Profile output is compatible with the
+для окончательного сброса профиля. Вывод профиля совместим с командой
 \fBjeprof\fR
-command, which is based on the
+, которая основана на
 \fBpprof\fR
-that is developed as part of the
-\m[blue]\fBgperftools package\fR\m[]\&\s-2\u[3]\d\s+2\&. See
-HEAP PROFILE FORMAT
-for heap profile format documentation\&.
+, разработанной как часть
+пакета \m[blue]\fBgperftools\fR\m[]\&\s-2\u[3]\d\s+2\&. Видеть
+ФОРМАТ ПРОФИЛЯ КУЧИ
+для документации по формату профиля кучи\&.
 .RE
 .PP
 opt\&.prof_prefix (\fBconst char *\fR) r\- [\fB\-\-enable\-prof\fR]
 .RS 4
-Filename prefix for profile dumps\&. If the prefix is set to the empty string, no automatic dumps will occur; this is primarily useful for disabling the automatic final heap dump (which also disables leak reporting, if enabled)\&. The default prefix is
-jeprof\&.
+Префикс имени файла для дампов профиля\&. Если для префикса задана пустая строка, автоматические дампы не будут выполняться; это в первую очередь полезно для отключения автоматического окончательного дампа кучи (который также отключает отчеты об утечках, если включен)\&. Префикс
+по умолчанию - jeprof\&.
 .RE
 .PP
 opt\&.prof_active (\fBbool\fR) r\- [\fB\-\-enable\-prof\fR]
 .RS 4
-Profiling activated/deactivated\&. This is a secondary control mechanism that makes it possible to start the application with profiling enabled (see the
+Профилирование активировано/деактивировано\&. Это дополнительный механизм управления, который позволяет запускать приложение с включенным профилированием (см. опцию
 opt\&.prof
-option) but inactive, then toggle profiling at any time during program execution with the
-prof\&.active
-mallctl\&. This option is enabled by default\&.
+), но неактивным, а затем переключать профилирование в любое время во время выполнения программы с
+помощью prof\&.active
+mallctl\&. Эта опция включена по умолчанию\&.
 .RE
 .PP
 opt\&.prof_thread_active_init (\fBbool\fR) r\- [\fB\-\-enable\-prof\fR]
 .RS 4
-Initial setting for
-thread\&.prof\&.active
-in newly created threads\&. The initial setting for newly created threads can also be changed during execution via the
+Начальная настройка для
+потока\&.prof\&.active
+во вновь созданных потоках\&. Начальная настройка для вновь созданных потоков также может быть изменена во время выполнения с помощью
 prof\&.thread_active_init
-mallctl\&. This option is enabled by default\&.
+mallctl\&. Эта опция включена по умолчанию\&.
 .RE
 .PP
-opt\&.lg_prof_sample (\fBsize_t\fR) r\- [\fB\-\-enable\-prof\fR]
+opt\&.lg_prof_sample (\fBsize_t\fR) r\- [\fB\-\-включить\-prof\fR]
 .RS 4
-Average interval (log base 2) between allocation samples, as measured in bytes of allocation activity\&. Increasing the sampling interval decreases profile fidelity, but also decreases the computational overhead\&. The default sample interval is 512 KiB (2^19 B)\&.
+Средний интервал (логарифмическая база 2) между выборками распределения, измеряемый в байтах активности распределения\&. Увеличение интервала выборки снижает точность профиля, но также уменьшает вычислительную нагрузку\&. Интервал выборки по умолчанию равен 512 КБ (2^19 Бит)\&.
 .RE
 .PP
-opt\&.prof_accum (\fBbool\fR) r\- [\fB\-\-enable\-prof\fR]
+opt\&.prof_accum (\fBbool\fR) r\- [\fB\-\-включить\-prof\fR]
 .RS 4
-Reporting of cumulative object/byte counts in profile dumps enabled/disabled\&. If this option is enabled, every unique backtrace must be stored for the duration of execution\&. Depending on the application, this can impose a large memory overhead, and the cumulative counts are not always of interest\&. This option is disabled by default\&.
+Отображение суммарного количества объектов/байт в дампах профилей включено/отключено\&. Если эта опция включена, каждая уникальная обратная трассировка должна сохраняться в течение всего времени выполнения\&. В зависимости от приложения это может привести к большим затратам памяти, а суммарные значения не всегда представляют интерес\&. По умолчанию эта опция отключена\&.
 .RE
 .PP
-opt\&.lg_prof_interval (\fBssize_t\fR) r\- [\fB\-\-enable\-prof\fR]
+opt\&.lg_prof_interval (\fBssize_t\fR) r\- [\fB\-\-включить\-prof\fR]
 .RS 4
-Average interval (log base 2) between memory profile dumps, as measured in bytes of allocation activity\&. The actual interval between dumps may be sporadic because decentralized allocation counters are used to avoid synchronization bottlenecks\&. Profiles are dumped to files named according to the pattern
-<prefix>\&.<pid>\&.<seq>\&.i<iseq>\&.heap, where
-<prefix>
-is controlled by the
-opt\&.prof_prefix
-option\&. By default, interval\-triggered profile dumping is disabled (encoded as \-1)\&.
+Средний интервал (база журнала 2) между сбросами профиля памяти, измеряемый в байтах активности выделения памяти\&. Фактический интервал между сбросами может быть нерегулярным, поскольку для предотвращения проблем синхронизации используются децентрализованные счетчики выделения памяти\&. Профили сбрасываются в файлы, названные в соответствии с шаблоном
+<префикс>\&.<pid>\&.<seq>\&.i<iseq>\&.heap, где
+<префикс>
+управляется параметром
+opt\&.
+prof_prefix\&. По умолчанию интервальный сброс профиля отключен (кодируется как \-1)\&.
 .RE
 .PP
 opt\&.prof_gdump (\fBbool\fR) r\- [\fB\-\-enable\-prof\fR]
 .RS 4
-Set the initial state of
-prof\&.gdump, which when enabled triggers a memory profile dump every time the total virtual memory exceeds the previous maximum\&. This option is disabled by default\&.
+Задает начальное состояние
+prof\&.gdump, который, если включен, запускает сброс профиля памяти каждый раз, когда общий объем виртуальной памяти превышает предыдущий максимум\&. По умолчанию эта опция отключена\&.
 .RE
 .PP
-opt\&.prof_final (\fBbool\fR) r\- [\fB\-\-enable\-prof\fR]
+opt\&.prof_final (\fBbool\fR) r\- [\fB\-\-включить\-prof\fR]
 .RS 4
-Use an
-\fBatexit\fR(3)
-function to dump final memory usage to a file named according to the pattern
-<prefix>\&.<pid>\&.<seq>\&.f\&.heap, where
-<prefix>
-is controlled by the
-opt\&.prof_prefix
-option\&. Note that
+Используйте
+функцию \fBatexit\fR(3)
+для сброса конечного объема используемой памяти в файл, названный в соответствии с шаблоном
+<префикс>\&.<pid>\&.<seq>\&.f\&.heap, где
+<префикс>
+управляется параметром
+opt\&.
+prof_prefix\&. Обратите внимание, что
 atexit()
-may allocate memory during application initialization and then deadlock internally when jemalloc in turn calls
-atexit(), so this option is not universally usable (though the application can register its own
-atexit()
-function with equivalent functionality)\&. This option is disabled by default\&.
+может выделять память во время инициализации приложения, а затем внутренне блокироваться, когда jemalloc, в свою очередь, вызывает
+atexit(), поэтому эта опция не является универсальной (хотя приложение может зарегистрировать свою собственную
+функцию atexit()
+с эквивалентной функциональностью)\&. По умолчанию эта опция отключена\&.
 .RE
 .PP
-opt\&.prof_leak (\fBbool\fR) r\- [\fB\-\-enable\-prof\fR]
+opt\&.prof_leak (\fBbool\fR) r\- [\fB\-\-включить\-prof\fR]
 .RS 4
-Leak reporting enabled/disabled\&. If enabled, use an
-\fBatexit\fR(3)
-function to report memory leaks detected by allocation sampling\&. See the
-opt\&.prof
-option for information on analyzing heap profile output\&. This option is disabled by default\&.
-.RE
+Сообщения об утечках включены/отключены\&. Если функция включена, используйте
+функцию \fBatexit\fR(3)
+для сообщения об утечках памяти, обнаруженных при выборке распределения\&. 
+
+Информацию об анализе выходных данных профиля кучи смотрите в опции opt\&.prof. По умолчанию эта опция отключена\&.
+Поток .RE
 .PP
-thread\&.arena (\fBunsigned\fR) rw
+\&.arena (\fBunsigned\fR) rw
 .RS 4
-Get or set the arena associated with the calling thread\&. If the specified arena was not initialized beforehand (see the
+Получите или задайте арену, связанную с вызывающим потоком\&. Если указанная арена не была инициализирована заранее (см.
 arena\&.i\&.initialized
-mallctl), it will be automatically initialized as a side effect of calling this interface\&.
+mallctl), она будет инициализирована автоматически как побочный эффект вызова этого интерфейса\&.
 .RE
 .PP
-thread\&.allocated (\fBuint64_t\fR) r\- [\fB\-\-enable\-stats\fR]
+поток\&.выделенный (\fBuint64_t\fR) r\- [\fB\-\-enable\-stats\fR]
 .RS 4
-Get the total number of bytes ever allocated by the calling thread\&. This counter has the potential to wrap around; it is up to the application to appropriately interpret the counter in such cases\&.
-.RE
+Возвращает общее количество байт, когда-либо выделенных вызывающим потоком\&. Этот счетчик может быть изменен; в таких случаях приложение должно соответствующим образом интерпретировать показания счетчика\&.
+Поток .RE
 .PP
-thread\&.allocatedp (\fBuint64_t *\fR) r\- [\fB\-\-enable\-stats\fR]
+\&.allocatedp (\fBuint64_t *\fR) r\- [\fB\-\-enable\-stats\fR]
 .RS 4
-Get a pointer to the the value that is returned by the
-thread\&.allocated
-mallctl\&. This is useful for avoiding the overhead of repeated
-mallctl*()
-calls\&.
-.RE
+Получаем указатель на значение, возвращаемое
+потоком\&.выделяем
+mallctl\&. Это полезно для того, чтобы избежать дополнительных затрат на повторные
+вызовы mallctl*()
+\&.
+Поток .RE
 .PP
-thread\&.deallocated (\fBuint64_t\fR) r\- [\fB\-\-enable\-stats\fR]
+\&.освобожден (\fBuint64_t\fR) r\- [\fB\-\-enable\-stats\fR]
 .RS 4
-Get the total number of bytes ever deallocated by the calling thread\&. This counter has the potential to wrap around; it is up to the application to appropriately interpret the counter in such cases\&.
+Получите общее количество байт, когда-либо освобожденных вызывающим потоком\&. Этот счетчик может быть изменен; в таких случаях приложение должно соответствующим образом интерпретировать счетчик\&.
 .RE
 .PP
 thread\&.deallocatedp (\fBuint64_t *\fR) r\- [\fB\-\-enable\-stats\fR]
 .RS 4
-Get a pointer to the the value that is returned by the
-thread\&.deallocated
-mallctl\&. This is useful for avoiding the overhead of repeated
-mallctl*()
-calls\&.
+Возвращает указатель на значение, возвращаемое программой
+thread\&.освободил
+mallctl\&. Это полезно для того, чтобы избежать накладных расходов на повторные
+вызовы 
+\&. .RE
+.PP
+поток\&.tcache\&.включен (\fBbool\fR) rw
+.RS 4
+Включить/отключить вызывающий поток\*(Aqs tcache\&. Tcache неявно сбрасывается как побочный эффект отключения (см.
+thread\&.tcache\&.сброс)\&.
 .RE
 .PP
-thread\&.tcache\&.enabled (\fBbool\fR) rw
-.RS 4
-Enable/disable calling thread\*(Aqs tcache\&. The tcache is implicitly flushed as a side effect of becoming disabled (see
-thread\&.tcache\&.flush)\&.
+thread\&.tcache\&.сброс (\fBvoid\fR) \-\-
+.4 рупии
+Очистить вызывающий поток\*(Aqs thread\-specific cache (tcache)\&. Этот интерфейс освобождает все кэшированные объекты и внутренние структуры данных, связанные с вызывающим потоком\*(Aqs tcache\&. Обычно этот интерфейс вызывать не нужно, поскольку происходит автоматическая периодическая инкрементная сборка мусора, и кэш потока автоматически удаляется, когда поток завершает работу\&. Однако сборка мусора запускается при выполнении операции выделения, поэтому поток, который прекращает выделение/отмену, может сохранять свой кэш на неопределенный срок, и в этом случае разработчик может счесть полезной ручную очистку\&.
 .RE
 .PP
-thread\&.tcache\&.flush (\fBvoid\fR) \-\-
+thread\&.prof\&.name (\fBconst char *\fR) r\- или \-w [\fB\-включить\-prof\fR]
 .RS 4
-Flush calling thread\*(Aqs thread\-specific cache (tcache)\&. This interface releases all cached objects and internal data structures associated with the calling thread\*(Aqs tcache\&. Ordinarily, this interface need not be called, since automatic periodic incremental garbage collection occurs, and the thread cache is automatically discarded when a thread exits\&. However, garbage collection is triggered by allocation activity, so it is possible for a thread that stops allocating/deallocating to retain its cache indefinitely, in which case the developer may find manual flushing useful\&.
-.RE
-.PP
-thread\&.prof\&.name (\fBconst char *\fR) r\- or \-w [\fB\-\-enable\-prof\fR]
-.RS 4
-Get/set the descriptive name associated with the calling thread in memory profile dumps\&. An internal copy of the name string is created, so the input string need not be maintained after this interface completes execution\&. The output string of this interface should be copied for non\-ephemeral uses, because multiple implementation details can cause asynchronous string deallocation\&. Furthermore, each invocation of this interface can only read or write; simultaneous read/write is not supported due to string lifetime limitations\&. The name string must be nil\-terminated and comprised only of characters in the sets recognized by
+Получает/задает описательное имя, связанное с вызывающим потоком, в дампах профиля памяти\&. Создается внутренняя копия строки имени, поэтому нет необходимости поддерживать входную строку после завершения выполнения этого интерфейса\&. Выходную строку этого интерфейса следует скопировать для неэфемерных целей, поскольку множественные детали реализации могут привести к асинхронному освобождению строки. Кроме того, каждый вызов этого интерфейса может выполнять только чтение или запись; одновременное чтение/запись не поддерживается из-за ограничений срока службы строки. Строка имени должна заканчиваться нулем и состоять только из символов из наборов, распознаваемых
 \fBisgraph\fR(3)
-and
+и
 \fBisblank\fR(3)\&.
-.RE
+Поток .RE
 .PP
-thread\&.prof\&.active (\fBbool\fR) rw [\fB\-\-enable\-prof\fR]
+\&.prof\&.active (\fBbool\fR) rw [\fB\-\-enable\-prof\fR]
 .RS 4
-Control whether sampling is currently active for the calling thread\&. This is an activation mechanism in addition to
-prof\&.active; both must be active for the calling thread to sample\&. This flag is enabled by default\&.
+Определяет, активна ли выборка в данный момент для вызывающего потока\&. Это механизм активации в дополнение к
+prof\&.active; оба они должны быть активны, чтобы вызывающий поток выполнял выборку\&. Этот флаг включен по умолчанию\&.
 .RE
 .PP
 tcache\&.create (\fBunsigned\fR) r\-
 .RS 4
-Create an explicit thread\-specific cache (tcache) and return an identifier that can be passed to the
-\fBMALLOCX_TCACHE(\fR\fB\fItc\fR\fR\fB)\fR
-macro to explicitly use the specified cache rather than the automatically managed one that is used by default\&. Each explicit cache can be used by only one thread at a time; the application must assure that this constraint holds\&.
+Создайте явный кэш для конкретного потока (tcache) и верните идентификатор, который может быть передан в
+Макрос \fBMALLOCX_TCACHE(\fR\fB\fItc\fR\fR\fB)\fR
+для явного использования указанного кэша, а не автоматически управляемого, который используется по умолчанию\&. Каждый явный кэш может использоваться только одним потоком одновременно; приложение должно гарантировать, что это ограничение выполняется\&.
 .RE
 .PP
 tcache\&.flush (\fBunsigned\fR) \-w
 .RS 4
-Flush the specified thread\-specific cache (tcache)\&. The same considerations apply to this interface as to
-thread\&.tcache\&.flush, except that the tcache will never be automatically discarded\&.
+Очистите указанный кэш, относящийся к конкретному потоку (tcache). К этому интерфейсу применимы те же соображения
+, что и к thread.tcache.очистите, за исключением того, что tcache никогда не будет автоматически удален.
 .RE
 .PP
-tcache\&.destroy (\fBunsigned\fR) \-w
+tcache\и.destroy (\fBunsigned\fR) \-w
 .RS 4
-Flush the specified thread\-specific cache (tcache) and make the identifier available for use during a future tcache creation\&.
+Очистите указанный кэш для конкретного потока (tcache) и сделайте идентификатор доступным для использования при создании tcache в будущем.
 .RE
 .PP
 arena\&.<i>\&.initialized (\fBbool\fR) r\-
 .RS 4
-Get whether the specified arena\*(Aqs statistics are initialized (i\&.e\&. the arena was initialized prior to the current epoch)\&. This interface can also be nominally used to query whether the merged statistics corresponding to
+Определяет, инициализирована ли указанная статистика арены\*(Aqs (т.е. арена была инициализирована до текущей эпохи)\&. Этот интерфейс также может быть номинально использован для запроса, инициализированы ли объединенные статистические данные, соответствующие
 \fBMALLCTL_ARENAS_ALL\fR
-are initialized (always true)\&.
+(всегда true)\&.
 .RE
 .PP
-arena\&.<i>\&.decay (\fBvoid\fR) \-\-
+арена\&.<i>\&.распад (\fBvoid\fR) \-\-
 .RS 4
-Trigger decay\-based purging of unused dirty/muzzy pages for arena <i>, or for all arenas if <i> equals
-\fBMALLCTL_ARENAS_ALL\fR\&. The proportion of unused dirty/muzzy pages to be purged depends on the current time; see
+Запускаем очистку неиспользуемых грязных страниц на основе decay для арены <i> или для всех арен, если <i> равно
+\fBMALLCTL_ARENAS_ALL\fR\&. Доля неиспользуемых грязных/мутных страниц, подлежащих удалению, зависит от текущего времени; подробности смотрите в разделах
 opt\&.dirty_decay_ms
-and
+и
 opt\&.muzy_decay_ms
-for details\&.
+.
 .RE
 .PP
-arena\&.<i>\&.purge (\fBvoid\fR) \-\-
+arena\&.<i>\&.очистить (\fBvoid\fR) \-\-
 .RS 4
-Purge all unused dirty pages for arena <i>, or for all arenas if <i> equals
+Удалить все неиспользуемые грязные страницы для arena <i> или для всех арен, если <i> равно
 \fBMALLCTL_ARENAS_ALL\fR\&.
 .RE
 .PP
-arena\&.<i>\&.reset (\fBvoid\fR) \-\-
+арена\&.<i>\&.сброс (\fBvoid\fR) \-\-
 .RS 4
-Discard all of the arena\*(Aqs extant allocations\&. This interface can only be used with arenas explicitly created via
-arenas\&.create\&. None of the arena\*(Aqs discarded/cached allocations may accessed afterward\&. As part of this requirement, all thread caches which were used to allocate/deallocate in conjunction with the arena must be flushed beforehand\&.
+Удалите все существующие распределения arena\*(Aqs)\&. Этот интерфейс можно использовать только с аренами, явно созданными с помощью
+arenas\&.create\&. Ни к одному из удаленных/кэшированных распределений arena\*(Aqs) не может быть получен доступ позже \&. В соответствии с этим требованием все кэши потоков, которые использовались для выделения/освобождения ресурсов в сочетании с arena, должны быть предварительно очищены\&.
 .RE
 .PP
-arena\&.<i>\&.destroy (\fBvoid\fR) \-\-
+арена\&.<i>\&.уничтожить (\fBvoid\fR) \-\-
 .RS 4
-Destroy the arena\&. Discard all of the arena\*(Aqs extant allocations using the same mechanism as for
+Уничтожить арену\&. Удалите все существующие распределения arena\*(Aqs, используя тот же механизм, что и для
 arena\&.<i>\&.reset
-(with all the same constraints and side effects), merge the arena stats into those accessible at arena index
-\fBMALLCTL_ARENAS_DESTROYED\fR, and then completely discard all metadata associated with the arena\&. Future calls to
+(со всеми теми же ограничениями и побочными эффектами), объедините статистику арены со статистикой, доступной по адресу arena index
+\fBMALLCTL_ARENAS_DESTROYED\fR, а затем полностью удалите все метаданные, связанные с ареной\&. Будущие вызовы
 arenas\&.create
-may recycle the arena index\&. Destruction will fail if any threads are currently associated with the arena as a result of calls to
+могут привести к повторному использованию индекса arena\&. Уничтожение завершится ошибкой, если какие-либо потоки в настоящее время связаны с arena в результате вызовов
 thread\&.arena\&.
 .RE
 .PP
-arena\&.<i>\&.dss (\fBconst char *\fR) rw
+арена\&.<i>\&.dss (\fBconst char *\fR) rw
 .RS 4
-Set the precedence of dss allocation as related to mmap allocation for arena <i>, or for all arenas if <i> equals
-\fBMALLCTL_ARENAS_ALL\fR\&. See
-opt\&.dss
-for supported settings\&.
+Установите приоритет распределения dss в соответствии с распределением mmap для арены <i> или для всех арен, если <i> равно
+\fBMALLCTL_ARENAS_ALL\fR\&. Видеть
+выберите\&.dss
+для поддерживаемых настроек\&.
 .RE
 .PP
 arena\&.<i>\&.dirty_decay_ms (\fBssize_t\fR) rw
 .RS 4
-Current per\-arena approximate time in milliseconds from the creation of a set of unused dirty pages until an equivalent set of unused dirty pages is purged and/or reused\&. Each time this interface is set, all currently unused dirty pages are considered to have fully decayed, which causes immediate purging of all unused dirty pages unless the decay time is set to \-1 (i\&.e\&. purging disabled)\&. See
-opt\&.dirty_decay_ms
-for additional information\&.
+Текущее приблизительное время в миллисекундах с момента создания набора неиспользуемых "грязных" страниц до удаления и/или повторного использования эквивалентного набора неиспользуемых "грязных" страниц. Каждый раз, когда устанавливается этот интерфейс, все неиспользуемые в данный момент грязные страницы считаются полностью удаленными, что приводит к немедленной очистке всех неиспользуемых ненужных страниц, если только время удаления не установлено на \-1 (т.е. очистка отключена)\&. Смотрите
+раздел opt\&.dirty_decay_ms
+для получения дополнительной информации\&.
 .RE
 .PP
-arena\&.<i>\&.muzzy_decay_ms (\fBssize_t\fR) rw
+арена\&.<i>\&.muzzy_decay_ms (\fBssize_t\fR) rw
 .RS 4
-Current per\-arena approximate time in milliseconds from the creation of a set of unused muzzy pages until an equivalent set of unused muzzy pages is purged and/or reused\&. Each time this interface is set, all currently unused muzzy pages are considered to have fully decayed, which causes immediate purging of all unused muzzy pages unless the decay time is set to \-1 (i\&.e\&. purging disabled)\&. See
-opt\&.muzzy_decay_ms
-for additional information\&.
+Текущее приблизительное время в миллисекундах с момента создания набора неиспользуемых размытых страниц до удаления и/или повторного использования эквивалентного набора неиспользуемых размытых страниц. Каждый раз, когда устанавливается этот интерфейс, все неиспользуемые в данный момент страницы muzzy считаются полностью удаленными, что приводит к немедленной очистке всех неиспользуемых страниц muzzy, если только время удаления не установлено на \-1 (т.е. очистка отключена)\&. Смотрите
+раздел opt\&.muzzy_decay_ms
+для получения дополнительной информации\&.
 .RE
 .PP
 arena\&.<i>\&.retain_grow_limit (\fBsize_t\fR) rw
 .RS 4
-Maximum size to grow retained region (only relevant when
-opt\&.retain
-is enabled)\&. This controls the maximum increment to expand virtual memory, or allocation through
-arena\&.<i>extent_hooks\&. In particular, if customized extent hooks reserve physical memory (e\&.g\&. 1G huge pages), this is useful to control the allocation hook\*(Aqs input size\&. The default is no limit\&.
+Максимальный размер для увеличения сохраняемой области (актуален только при
+выборе \&.сохранить
+включен)\&. Этот параметр определяет максимальное увеличение объема виртуальной памяти или выделение с помощью
+arena\&.<i>extent_hooks\&. В частности, если настроенные перехватчики экстента резервируют физическую память (например, \&.g\&. 1G огромных страниц), это полезно для управления параметром выделения\* (размер входного файла Aqs\&. Значение по умолчанию - без ограничений\&.
 .RE
 .PP
-arena\&.<i>\&.extent_hooks (\fBextent_hooks_t *\fR) rw
+arena\&.<i>\&.расширение_хуков (\fBextent_hooks_t *\fR) rw
 .RS 4
-Get or set the extent management hook functions for arena <i>\&. The functions must be capable of operating on all extant extents associated with arena <i>, usually by passing unknown extents to the replaced functions\&. In practice, it is feasible to control allocation for arenas explicitly created via
+Получите или установите функции перехвата управления экстентами для arena <i>\&. Функции должны быть способны работать со всеми существующими экстентами, связанными с arena <i>, обычно путем передачи неизвестных экстентов заменяемым функциям\&. На практике возможно управлять распределением для арен, явно созданных с помощью
 arenas\&.create
-such that all extents originate from an application\-supplied extent allocator (by specifying the custom extent hook functions during arena creation)\&. However, the API guarantees for the automatically created arenas may be relaxed \-\- hooks set there may be called in a "best effort" fashion; in addition there may be extents created prior to the application having an opportunity to take over extent allocation\&.
+таким образом, все экстенты берутся из предоставленного приложением распределителя экстентов (путем указания пользовательских функций привязки экстентов во время создания арены). Тем не менее, гарантии API для автоматически созданных областей могут быть ослаблены \-\- установленные там перехватчики могут быть вызваны "по максимуму"; кроме того, могут быть экстенты, созданные до того, как приложение получит возможность взять на себя распределение экстентов\&.
 .sp
-.if n \{\
+.если n \{\
 .RS 4
 .\}
 .nf
-typedef extent_hooks_s extent_hooks_t;
-struct extent_hooks_s {
-	extent_alloc_t		*alloc;
-	extent_dalloc_t		*dalloc;
-	extent_destroy_t	*destroy;
-	extent_commit_t		*commit;
-	extent_decommit_t	*decommit;
-	extent_purge_t		*purge_lazy;
-	extent_purge_t		*purge_forced;
-	extent_split_t		*split;
-	extent_merge_t		*merge;
+определение типа extent_hooks_s extent_hooks_t;
+структура extent_hooks_s {
+extent_alloc_t *alloc;
+	extent_dalloc_t *dalloc;
+	extent_destroy_t *уничтожить;
+	extent_commit_t *зафиксировать;
+	extent_decommit_t *отменить фиксацию;
+	extent_purge_t *очистить глаза;
+	extent_purge_t *очистить принудительно;
+	extent_split_t *разделить;
+	extent_merge_t *объединить;
 };
 .fi
-.if n \{\
+.если n \{\
 .RE
 .\}
 .sp
-The
+То
 \fBextent_hooks_t\fR
-structure comprises function pointers which are described individually below\&. jemalloc uses these functions to manage extent lifetime, which starts off with allocation of mapped committed memory, in the simplest case followed by deallocation\&. However, there are performance and platform reasons to retain extents for later reuse\&. Cleanup attempts cascade from deallocation to decommit to forced purging to lazy purging, which gives the extent management functions opportunities to reject the most permanent cleanup operations in favor of less permanent (and often less costly) operations\&. All operations except allocation can be universally opted out of by setting the hook pointers to
-\fBNULL\fR, or selectively opted out of by returning failure\&. Note that once the extent hook is set, the structure is accessed directly by the associated arenas, so it must remain valid for the entire lifetime of the arenas\&.
+структура содержит указатели на функции, которые описаны отдельно ниже\&. jemalloc использует эти функции для управления временем жизни экстента, которое начинается с выделения отображенной выделенной памяти, в простейшем случае за которым следует освобождение\&. Однако существуют соображения производительности и платформы для сохранения экстентов для последующего повторного использования\&. Попытки очистки каскадно переходят от освобождения к выводу из эксплуатации, от принудительной очистки к отложенной очистке, что дает функциям управления масштабами возможность отказаться от наиболее постоянных операций очистки в пользу менее постоянных (и часто менее дорогостоящих) операций\&. Все операции, кроме распределения, можно универсально отключить, установив указатели перехвата в
+\fBNULL\fR, или выборочно отключить, вернув failure\&. Обратите внимание, что после установки привязки к экстенту к структуре напрямую обращаются связанные области, поэтому она должна оставаться действительной в течение всего срока службы областей\&.
 .HP \w'typedef\ void\ *(extent_alloc_t)('u
-.BI "typedef void *(extent_alloc_t)(extent_hooks_t\ *" "extent_hooks" ", void\ *" "new_addr" ", size_t\ " "size" ", size_t\ " "alignment" ", bool\ *" "zero" ", bool\ *" "commit" ", unsigned\ " "arena_ind" ");"
+.BI "typedef void *(extent_alloc_t)(extent_hooks_t\ * " "расширенные ссылки" ", void\ *" "new_addr" ", size_t " "размер" ", size_t " "выравнивание" ", bool\ *"ноль", bool\ *"фиксация", неподписанный\ "arena_ind");"
 .sp
-.if n \{\
+.если n \{\
 .RS 4
 .\}
 .nf
 .fi
-.if n \{\
+.если n \{\
 .RE
 .\}
 .sp
-An extent allocation function conforms to the
-\fBextent_alloc_t\fR
-type and upon success returns a pointer to
+Функция выделения экстента соответствует
+типу \fBextent_alloc_t\fR
+и в случае успеха возвращает указатель на
 \fIsize\fR
-bytes of mapped memory on behalf of arena
+байт отображенной памяти от имени arena
 \fIarena_ind\fR
-such that the extent\*(Aqs base address is a multiple of
-\fIalignment\fR, as well as setting
+таким образом, чтобы базовый адрес extent\*(Aqs был кратен
+\fIalignment\fR, а также настройка
 \fI*zero\fR
-to indicate whether the extent is zeroed and
+указывает, обнулен ли экстент, и
 \fI*commit\fR
-to indicate whether the extent is committed\&. Upon error the function returns
+указывает, зафиксирован ли экстент\&. При ошибке функция возвращает
 \fBNULL\fR
-and leaves
-\fI*zero\fR
-and
-\fI*commit\fR
-unmodified\&. The
+и завершает работу
+\fI*ноль\fR
+и
+\fI*фиксация\fR
+без изменений\&. Параметр
 \fIsize\fR
-parameter is always a multiple of the page size\&. The
-\fIalignment\fR
-parameter is always a power of two at least as large as the page size\&. Zeroing is mandatory if
-\fI*zero\fR
-is true upon function entry\&. Committing is mandatory if
+всегда кратен размеру страницы\&. То
+Параметр \fIalignment\fR
+всегда имеет степень двойки, по крайней мере, равную размеру страницы\&. Обнуление обязательно, если
+значение \fI*zero\fR
+равно true при вводе функции\&. Фиксация обязательна, если
 \fI*commit\fR
-is true upon function entry\&. If
+имеет значение true при вводе функции\&. Если
 \fInew_addr\fR
-is not
-\fBNULL\fR, the returned pointer must be
+не имеет значения
+\fBNULL\fR, возвращаемый указатель должен быть
 \fInew_addr\fR
-on success or
+в случае успеха или
 \fBNULL\fR
-on error\&. Committed memory may be committed in absolute terms as on a system that does not overcommit, or in implicit terms as on a system that overcommits and satisfies physical memory needs on demand via soft page faults\&. Note that replacing the default extent allocation function makes the arena\*(Aqs
+при ошибке\&. Выделенная память может быть выделена в абсолютном выражении, как в системе, которая не перегружает, или в неявном выражении, как в системе, которая перегружает и удовлетворяет потребности в физической памяти по требованию с помощью программных ошибок страницы\&. Обратите внимание, что замена функции выделения экстента по умолчанию делает параметр arena\*(Aqs
 arena\&.<i>\&.dss
-setting irrelevant\&.
+неактуальным\&.
 .HP \w'typedef\ bool\ (extent_dalloc_t)('u
-.BI "typedef bool (extent_dalloc_t)(extent_hooks_t\ *" "extent_hooks" ", void\ *" "addr" ", size_t\ " "size" ", bool\ " "committed" ", unsigned\ " "arena_ind" ");"
+.BI "typedef bool (extent_dalloc_t)(extent_hooks_t\ * "расширенные ссылки", void\ * "адрес", size_t\ "размер", bool\ "зафиксирован", без знака\ " "арена_инд" ");"
 .sp
-.if n \{\
+.если n \{\
 .RS 4
 .\}
 .nf
 .fi
-.if n \{\
+.если n \{\
 .RE
 .\}
 .sp
-An extent deallocation function conforms to the
-\fBextent_dalloc_t\fR
-type and deallocates an extent at given
+Функция освобождения экстента соответствует
+типу \fBextent_dalloc_t\fR
+и освобождает экстент в заданное время.
 \fIaddr\fR
-and
+и
 \fIsize\fR
-with
-\fIcommitted\fR/decommited memory as indicated, on behalf of arena
-\fIarena_ind\fR, returning false upon success\&. If the function returns true, this indicates opt\-out from deallocation; the virtual memory mapping associated with the extent remains mapped, in the same commit state, and available for future use, in which case it will be automatically retained for later reuse\&.
+с помощью
+\fIcommitted\fR/списанной памяти, как указано, от имени arena
+\fIarena_ind\fR, возвращая значение false в случае успеха\&. Если функция возвращает значение true, это указывает на отказ от освобождения; сопоставление виртуальной памяти, связанное с экстентом, остается сопоставленным, в том же состоянии фиксации и доступным для использования в будущем, и в этом случае оно будет автоматически сохранено для последующего повторного использования.
 .HP \w'typedef\ void\ (extent_destroy_t)('u
-.BI "typedef void (extent_destroy_t)(extent_hooks_t\ *" "extent_hooks" ", void\ *" "addr" ", size_t\ " "size" ", bool\ " "committed" ", unsigned\ " "arena_ind" ");"
+.BI "typedef void (extent_destroy_t)(extent_hooks_t\ * "экстент_хуки", void\ * "адрес", size_t\ "размер", bool\ "зафиксирован", unsigned\ "arena_ind");"
 .sp
-.if n \{\
+.если n \{\
 .RS 4
 .\}
 .nf
 .fi
-.if n \{\
+.если n \{\
 .RE
 .\}
 .sp
-An extent destruction function conforms to the
-\fBextent_destroy_t\fR
-type and unconditionally destroys an extent at given
+Функция уничтожения экстента соответствует
+типу \fBextent_destroy_t\fR
+и безоговорочно уничтожает экстент при заданном
 \fIaddr\fR
-and
+и
 \fIsize\fR
-with
-\fIcommitted\fR/decommited memory as indicated, on behalf of arena
-\fIarena_ind\fR\&. This function may be called to destroy retained extents during arena destruction (see
+с помощью
+\fIcommitted\fR/удаленная память, как указано, от имени arena
+\fIarena_ind\fR\&. Эта функция может быть вызвана для уничтожения сохраненных экстентов во время уничтожения arena (см.
 arena\&.<i>\&.destroy)\&.
 .HP \w'typedef\ bool\ (extent_commit_t)('u
-.BI "typedef bool (extent_commit_t)(extent_hooks_t\ *" "extent_hooks" ", void\ *" "addr" ", size_t\ " "size" ", size_t\ " "offset" ", size_t\ " "length" ", unsigned\ " "arena_ind" ");"
+.BI "typedef bool (extent_commit_t)(extent_hooks_t\ * "расширенные крючки", void\ * "адрес", size_t\ "размер", size_t\ "смещение", size_t\ " "длина" ", без знака\ " "arena_ind" ");"
 .sp
-.if n \{\
+.если n \{\
 .RS 4
 .\}
 .nf
 .fi
-.if n \{\
+.если n \{\
 .RE
 .\}
 .sp
-An extent commit function conforms to the
-\fBextent_commit_t\fR
-type and commits zeroed physical memory to back pages within an extent at given
+Функция фиксации экстента соответствует
+типу \fBextent_commit_t\fR
+и фиксирует обнуленную физическую память для возврата страниц в пределах экстента в заданное время.
 \fIaddr\fR
-and
+и
 \fIsize\fR
-at
-\fIoffset\fR
-bytes, extending for
+в
+
+байтах \fIoffset\fR, расширяясь на
 \fIlength\fR
-on behalf of arena
-\fIarena_ind\fR, returning false upon success\&. Committed memory may be committed in absolute terms as on a system that does not overcommit, or in implicit terms as on a system that overcommits and satisfies physical memory needs on demand via soft page faults\&. If the function returns true, this indicates insufficient physical memory to satisfy the request\&.
+от имени arena
+\fIarena_ind\fR, возвращающий значение false в случае успеха\&. Выделенная память может быть выделена в абсолютном выражении, как в системе, которая не перегружает, или в неявном выражении, как в системе, которая перегружает и удовлетворяет потребности в физической памяти по требованию с помощью программных ошибок страницы\&. Если функция возвращает значение true, это указывает на недостаточность физической памяти для выполнения запроса\&.
 .HP \w'typedef\ bool\ (extent_decommit_t)('u
-.BI "typedef bool (extent_decommit_t)(extent_hooks_t\ *" "extent_hooks" ", void\ *" "addr" ", size_t\ " "size" ", size_t\ " "offset" ", size_t\ " "length" ", unsigned\ " "arena_ind" ");"
+.BI "typedef bool (extent_decommit_t)(extent_hooks_t\ * "расширенные крючки", void\ * "адрес", size_t\ "размер", size_t\ "смещение", size_t\ " "длина" ", без знака\ " "arena_ind" ");"
 .sp
-.if n \{\
+.если n \{\
 .RS 4
 .\}
 .nf
 .fi
-.if n \{\
+.если n \{\
 .RE
 .\}
 .sp
-An extent decommit function conforms to the
-\fBextent_decommit_t\fR
-type and decommits any physical memory that is backing pages within an extent at given
+Функция удаления экстента соответствует
+типу \fBextent_decommit_t\fR
+и удаляет любую физическую память, которая поддерживает страницы в пределах экстента в данный момент
 \fIaddr\fR
-and
+и
 \fIsize\fR
-at
-\fIoffset\fR
-bytes, extending for
+в
+
+байтах \fIoffset\fR, расширяясь на
 \fIlength\fR
-on behalf of arena
-\fIarena_ind\fR, returning false upon success, in which case the pages will be committed via the extent commit function before being reused\&. If the function returns true, this indicates opt\-out from decommit; the memory remains committed and available for future use, in which case it will be automatically retained for later reuse\&.
+от имени arena
+\fIarena_ind\fR, возвращающий значение false в случае успеха, и в этом случае страницы будут зафиксированы с помощью функции extent commit перед повторным использованием\&. Если функция возвращает значение true, это указывает на отказ от удаления; память остается выделенной и доступной для использования в будущем, и в этом случае она будет автоматически сохранена для последующего повторного использования.
 .HP \w'typedef\ bool\ (extent_purge_t)('u
-.BI "typedef bool (extent_purge_t)(extent_hooks_t\ *" "extent_hooks" ", void\ *" "addr" ", size_t\ " "size" ", size_t\ " "offset" ", size_t\ " "length" ", unsigned\ " "arena_ind" ");"
+.BI "typedef bool (extent_purge_t)(extent_hooks_t\ * "расширенные крючки", void\ * "адрес", size_t\ "размер", size_t\ "смещение", size_t\ " "длина" ", без знака\ " "arena_ind" ");"
 .sp
-.if n \{\
+.если n \{\
 .RS 4
 .\}
 .nf
 .fi
-.if n \{\
+.если n \{\
 .RE
 .\}
 .sp
-An extent purge function conforms to the
-\fBextent_purge_t\fR
-type and discards physical pages within the virtual memory mapping associated with an extent at given
+Функция очистки экстента соответствует
+типу \fBextent_purge_t\fR
+и удаляет физические страницы в отображении виртуальной памяти, связанном с экстентом в данный момент времени.
 \fIaddr\fR
-and
+и
 \fIsize\fR
-at
-\fIoffset\fR
-bytes, extending for
+в
+
+байтах \fIoffset\fR, расширяясь на
 \fIlength\fR
-on behalf of arena
-\fIarena_ind\fR\&. A lazy extent purge function (e\&.g\&. implemented via
-madvise(\fI\&.\&.\&.\fR\fI\fBMADV_FREE\fR\fR)) can delay purging indefinitely and leave the pages within the purged virtual memory range in an indeterminite state, whereas a forced extent purge function immediately purges, and the pages within the virtual memory range will be zero\-filled the next time they are accessed\&. If the function returns true, this indicates failure to purge\&.
+от имени arena
+\fIarena_ind\fR\&. Функция отложенной очистки экстента (например, реализованная с помощью
+мэдвайз(\fI\&.\&.\&.\ fR\fI\fBMADV_FREE\fR\fR)) может задержать очистку на неопределенный срок и оставить страницы в пределах очищенного диапазона виртуальной памяти в неопределенном состоянии, в то время как функция принудительной очистки экстента немедленно очищает страницы в виртуальной памяти. диапазон будет заполнен нулем при следующем обращении к ним. Если функция возвращает значение true, это указывает на ошибку очистки\&.
 .HP \w'typedef\ bool\ (extent_split_t)('u
-.BI "typedef bool (extent_split_t)(extent_hooks_t\ *" "extent_hooks" ", void\ *" "addr" ", size_t\ " "size" ", size_t\ " "size_a" ", size_t\ " "size_b" ", bool\ " "committed" ", unsigned\ " "arena_ind" ");"
+.BI "typedef bool (extent_split_t)(extent_hooks_t\ * "расширенные ссылки", void\ * "адрес", size_t\ "размер", size_t\ "размер_а", size_t\ "размер_b", bool\ "зафиксирован", без знака\ " "арена_инд" ");"
 .sp
-.if n \{\
+.если n \{\
 .RS 4
 .\}
 .nf
 .fi
-.if n \{\
+.если n \{\
 .RE
 .\}
 .sp
-An extent split function conforms to the
-\fBextent_split_t\fR
-type and optionally splits an extent at given
+Функция разделения экстента соответствует
+типу \fBextent_split_t\fR
+и при необходимости разбивает экстент на заданные значения.
 \fIaddr\fR
-and
+и
 \fIsize\fR
-into two adjacent extents, the first of
-\fIsize_a\fR
-bytes, and the second of
-\fIsize_b\fR
-bytes, operating on
-\fIcommitted\fR/decommitted memory as indicated, on behalf of arena
-\fIarena_ind\fR, returning false upon success\&. If the function returns true, this indicates that the extent remains unsplit and therefore should continue to be operated on as a whole\&.
+разделяются на два смежных экстента, первый из
+которых состоит из
+байтов \fIsize_a\fR, а второй - из
+байтов \fIsize_b\fR
+, работающих в
+памяти \fIcommitted\fR/списанной памяти, как указано, от имени arena
+\fIarena_ind\fR, возвращающая значение false в случае успеха\&. Если функция возвращает значение true, это означает, что экстент остается неразделенным и, следовательно, с ним следует продолжать работать как с целым\&.
 .HP \w'typedef\ bool\ (extent_merge_t)('u
-.BI "typedef bool (extent_merge_t)(extent_hooks_t\ *" "extent_hooks" ", void\ *" "addr_a" ", size_t\ " "size_a" ", void\ *" "addr_b" ", size_t\ " "size_b" ", bool\ " "committed" ", unsigned\ " "arena_ind" ");"
+.BI "typedef bool (extent_merge_t)(extent_hooks_t\ * "расширенные крючки" ", void\ * " "addr_a" ", size_t\ " "size_a" ", void\ *" "addr_b" ", size_t\ " "size_b" ", bool " "зафиксирован" ", unsigned " " "arena_ind" ");"
 .sp
-.if n \{\
+.если n \{\
 .RS 4
 .\}
 .nf
 .fi
-.if n \{\
+.если n \{\
 .RE
 .\}
 .sp
-An extent merge function conforms to the
+Функция слияния экстентов соответствует
 \fBextent_merge_t\fR
-type and optionally merges adjacent extents, at given
+введите и, при необходимости, объедините смежные экстенты с заданными
 \fIaddr_a\fR
-and
+и
 \fIsize_a\fR
-with given
+с заданными
 \fIaddr_b\fR
-and
+и
 \fIsize_b\fR
-into one contiguous extent, operating on
-\fIcommitted\fR/decommitted memory as indicated, on behalf of arena
-\fIarena_ind\fR, returning false upon success\&. If the function returns true, this indicates that the extents remain distinct mappings and therefore should continue to be operated on independently\&.
+объединяются в один непрерывный экстент, работающий с
+\fIcommitted\fR/списанной памятью, как указано, от имени arena
+\fIarena_ind\fR, возвращающая значение false в случае успеха\&. Если функция возвращает значение true, это означает, что экстенты остаются различными отображениями и, следовательно, должны по-прежнему обрабатываться независимо\&.
 .RE
 .PP
-arenas\&.narenas (\fBunsigned\fR) r\-
+арены\&.narenas (\fBunsigned\fR) r\-
 .RS 4
-Current limit on number of arenas\&.
+Текущее ограничение на количество арен\&.
 .RE
 .PP
-arenas\&.dirty_decay_ms (\fBssize_t\fR) rw
+арены\&.dirty_decay_ms (\fBssize_t\fR) rw
 .RS 4
-Current default per\-arena approximate time in milliseconds from the creation of a set of unused dirty pages until an equivalent set of unused dirty pages is purged and/or reused, used to initialize
-arena\&.<i>\&.dirty_decay_ms
-during arena creation\&. See
-opt\&.dirty_decay_ms
-for additional information\&.
+Текущее значение по умолчанию для каждой арены - приблизительное время в миллисекундах от создания набора неиспользуемых "грязных" страниц до удаления и/или повторного использования эквивалентного набора неиспользуемых "грязных" страниц, используемое для инициализации
+arena.<i>.dirty_decay_ms
+во время создания arena. Смотрите
+раздел opt\&.dirty_decay_ms
+для получения дополнительной информации\&.
 .RE
 .PP
-arenas\&.muzzy_decay_ms (\fBssize_t\fR) rw
+арены\&.muzzy_decay_ms (\fBssize_t\fR) rw
 .RS 4
-Current default per\-arena approximate time in milliseconds from the creation of a set of unused muzzy pages until an equivalent set of unused muzzy pages is purged and/or reused, used to initialize
+Текущее значение по умолчанию для\-arena приблизительное время в миллисекундах с момента создания набора неиспользуемых muzzy-страниц до удаления и/или повторного использования эквивалентного набора неиспользуемых muzzy-страниц, используемое для инициализации
 arena\&.<i>\&.muzzy_decay_ms
-during arena creation\&. See
-opt\&.muzzy_decay_ms
-for additional information\&.
+во время создания арены\&. 
+Дополнительную информацию смотрите в разделе opt\&.muzzy_decay_ms
+\&.
 .RE
 .PP
-arenas\&.quantum (\fBsize_t\fR) r\-
+арены\&.quantum (\fBsize_t\fR) r\-
 .RS 4
-Quantum size\&.
+Квантовый размер\&.
 .RE
 .PP
-arenas\&.page (\fBsize_t\fR) r\-
+арены\&.страница (\fBsize_t\fR) r\-
 .RS 4
-Page size\&.
+Размер страницы\&.
 .RE
 .PP
 arenas\&.tcache_max (\fBsize_t\fR) r\-
 .RS 4
-Maximum thread\-cached size class\&.
+Максимальный размер потока\- класс кэшированного размера\&.
 .RE
 .PP
-arenas\&.nbins (\fBunsigned\fR) r\-
+арены\&.nbins (\fBunsigned\fR) r\-
 .RS 4
-Number of bin size classes\&.
+Количество классов размера ячейки\&.
 .RE
 .PP
-arenas\&.nhbins (\fBunsigned\fR) r\-
+арены\&.nhbins (\fBunsigned\fR) r\-
 .RS 4
-Total number of thread cache bin size classes\&.
+Общее количество классов размера ячейки кэша потоков\&.
 .RE
 .PP
-arenas\&.bin\&.<i>\&.size (\fBsize_t\fR) r\-
+арены\&.bin\&.<i>\&.размер (\fBsize_t\fR) r\-
 .RS 4
-Maximum size supported by size class\&.
+Максимальный размер, поддерживаемый размерным классом\&.
 .RE
 .PP
-arenas\&.bin\&.<i>\&.nregs (\fBuint32_t\fR) r\-
+арены\&.bin\&.<i>\&.nregs (\fBuint32_t\fR) r\-
 .RS 4
-Number of regions per slab\&.
+Количество областей на слэбе\&.
 .RE
 .PP
-arenas\&.bin\&.<i>\&.slab_size (\fBsize_t\fR) r\-
+arenas\&.bin\&.<i>\&.размер_слоя (\fBsize_t\fR) r\-
 .RS 4
-Number of bytes per slab\&.
+Количество байт на слое\&.
 .RE
 .PP
-arenas\&.nlextents (\fBunsigned\fR) r\-
+арены\&.nlextents (\без подписи\fR) r\-
 .RS 4
-Total number of large size classes\&.
+Общее количество классов большого размера\&.
 .RE
 .PP
-arenas\&.lextent\&.<i>\&.size (\fBsize_t\fR) r\-
+арены\&.lextent\&.<i>\&.размер (\fBsize_t\fR) r\-
 .RS 4
-Maximum size supported by this large size class\&.
+Максимальный размер, поддерживаемый этим классом больших размеров\&.
 .RE
 .PP
-arenas\&.create (\fBunsigned\fR, \fBextent_hooks_t *\fR) rw
+арены\&.create (\fBunsigned\fR, \fBextent_hooks_t *\fR) rw
 .RS 4
-Explicitly create a new arena outside the range of automatically managed arenas, with optionally specified extent hooks, and return the new arena index\&.
+Явно создайте новую арену за пределами диапазона автоматически управляемых арен с необязательно указанными привязками к экстенту и верните новый индекс арены\&.
 .RE
 .PP
-arenas\&.lookup (\fBunsigned\fR, \fBvoid*\fR) rw
+arenas\&.поиск (\fBunsigned\fR, \fBvoid*\fR) rw
 .RS 4
-Index of the arena to which an allocation belongs to\&.
+Индекс области, к которой относится распределение\&.
 .RE
 .PP
 prof\&.thread_active_init (\fBbool\fR) rw [\fB\-\-enable\-prof\fR]
 .RS 4
-Control the initial setting for
-thread\&.prof\&.active
-in newly created threads\&. See the
-opt\&.prof_thread_active_init
-option for additional information\&.
+Контролируйте начальную настройку для
+потока\&.prof\&.active
+во вновь созданных потоках\&. 
+Дополнительную информацию смотрите в опции opt\&.prof_thread_active_init
+\&.
 .RE
 .PP
 prof\&.active (\fBbool\fR) rw [\fB\-\-enable\-prof\fR]
 .RS 4
-Control whether sampling is currently active\&. See the
-opt\&.prof_active
-option for additional information, as well as the interrelated
-thread\&.prof\&.active
+Определяет, активна ли выборка в данный момент\&. Смотрите параметр
+opt\&.
+prof_active для получения дополнительной информации, а также взаимосвязанный
+поток\&.prof\&.active
 mallctl\&.
 .RE
 .PP
 prof\&.dump (\fBconst char *\fR) \-w [\fB\-\-enable\-prof\fR]
 .RS 4
-Dump a memory profile to the specified file, or if NULL is specified, to a file according to the pattern
-<prefix>\&.<pid>\&.<seq>\&.m<mseq>\&.heap, where
-<prefix>
-is controlled by the
-opt\&.prof_prefix
-option\&.
+Сбросьте профиль памяти в указанный файл или, если указано значение NULL, в файл в соответствии с шаблоном
+<префикс>\&.<pid>\&.<seq>\&.m<mseq>\&.heap, где
+<префикс>
+управляется параметром
+opt\&.
+prof_prefix\&.
 .RE
 .PP
 prof\&.gdump (\fBbool\fR) rw [\fB\-\-enable\-prof\fR]
 .RS 4
-When enabled, trigger a memory profile dump every time the total virtual memory exceeds the previous maximum\&. Profiles are dumped to files named according to the pattern
-<prefix>\&.<pid>\&.<seq>\&.u<useq>\&.heap, where
-<prefix>
-is controlled by the
-opt\&.prof_prefix
-option\&.
+Если эта функция включена, запускайте сброс профиля памяти каждый раз, когда общий объем виртуальной памяти превышает предыдущий максимум\&. Профили сбрасываются в файлы, названные в соответствии с шаблоном
+<префикс>\&.<pid>\&.<seq>\&.u<useq>\&.heap, где
+<префикс>
+управляется параметром
+opt\&.
+prof_prefix\&.
 .RE
 .PP
-prof\&.reset (\fBsize_t\fR) \-w [\fB\-\-enable\-prof\fR]
+prof\и.reset (\fBsize_t\fR) \-w [\fB\-\-enable\-prof\fR]
 .RS 4
-Reset all memory profile statistics, and optionally update the sample rate (see
+Сбросьте всю статистику профиля памяти и, при необходимости, обновите частоту дискретизации (см.
 opt\&.lg_prof_sample
-and
+и
 prof\&.lg_sample)\&.
 .RE
 .PP
 prof\&.lg_sample (\fBsize_t\fR) r\- [\fB\-\-enable\-prof\fR]
 .RS 4
-Get the current sample rate (see
+Получить текущую частоту дискретизации (см.
 opt\&.lg_prof_sample)\&.
 .RE
 .PP
-prof\&.interval (\fBuint64_t\fR) r\- [\fB\-\-enable\-prof\fR]
+prof\&.интервал (\fBuint64_t\fR) r\- [\fB\-\-включить\-prof\fR]
 .RS 4
-Average number of bytes allocated between interval\-based profile dumps\&. See the
-opt\&.lg_prof_interval
-option for additional information\&.
+Среднее количество байт, выделяемых между дампами профиля на основе интервалов. 
+
+Дополнительную информацию смотрите в параметре opt.lg_prof_interval.
 .RE
 .PP
-stats\&.allocated (\fBsize_t\fR) r\- [\fB\-\-enable\-stats\fR]
+stats\&.выделено (\fBsize_t\fR) r\- [\fB\-\-enable\-статистика\fR]
 .RS 4
-Total number of bytes allocated by the application\&.
+Общее количество байт, выделенных приложением\&.
 .RE
 .PP
 stats\&.active (\fBsize_t\fR) r\- [\fB\-\-enable\-stats\fR]
 .RS 4
-Total number of bytes in active pages allocated by the application\&. This is a multiple of the page size, and greater than or equal to
-stats\&.allocated\&. This does not include
+Общее количество байт на активных страницах, выделенных приложением\&. Это значение кратно размеру страницы и больше или равно
+статистика\&.выделено\&. Сюда не входят
 stats\&.arenas\&.<i>\&.pdirty,
-stats\&.arenas\&.<i>\&.pmuzzy, nor pages entirely devoted to allocator metadata\&.
+stats\&.arenas\&.<i>\&.pmuzzy, а также страницы, полностью посвященные метаданным распределителя.
 .RE
 .PP
-stats\&.metadata (\fBsize_t\fR) r\- [\fB\-\-enable\-stats\fR]
+статистика\и.метаданные (\fBsize_t\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Total number of bytes dedicated to metadata, which comprise base allocations used for bootstrap\-sensitive allocator metadata structures (see
-stats\&.arenas\&.<i>\&.base) and internal allocations (see
-stats\&.arenas\&.<i>\&.internal)\&. Transparent huge page (enabled with
-opt\&.metadata_thp) usage is not considered\&.
+Общее количество байт, выделенных для метаданных, которые включают базовые распределения, используемые для структур метаданных распределителя, зависящих от bootstrap (см.
+stats\&.arenas\&.<i>\&.base) и внутренние распределения (см.
+stats\&.arenas\&.<i>\&.internal).\&. Использование прозрачной огромной страницы (включенной с
+помощью опции\&.metadata_thp) не учитывается\&.
 .RE
 .PP
-stats\&.metadata_thp (\fBsize_t\fR) r\- [\fB\-\-enable\-stats\fR]
+статистика\&.metadata_thp (\fBsize_t\fR) r\- [\fB\-\-enable\-статистика\fR]
 .RS 4
-Number of transparent huge pages (THP) used for metadata\&. See
-stats\&.metadata
-and
-opt\&.metadata_thp) for details\&.
+Количество прозрачных огромных страниц (THP), используемых для метаданных\&. 
+Подробности смотрите в статьях\&.metadata
+и
+opt\&.metadata_thp).
 .RE
 .PP
-stats\&.resident (\fBsize_t\fR) r\- [\fB\-\-enable\-stats\fR]
+статистика\&.resident (\fBsize_t\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Maximum number of bytes in physically resident data pages mapped by the allocator, comprising all pages dedicated to allocator metadata, pages backing active allocations, and unused dirty pages\&. This is a maximum rather than precise because pages may not actually be physically resident if they correspond to demand\-zeroed virtual memory that has not yet been touched\&. This is a multiple of the page size, and is larger than
-stats\&.active\&.
+Максимальное количество байт на физически постоянных страницах данных, отображаемых распределителем, включая все страницы, посвященные метаданным распределителя, страницы, поддерживающие активное распределение, и неиспользуемые "грязные" страницы\&. Это скорее максимальное значение, чем точное, поскольку страницы могут фактически не быть физически резидентными, если они соответствуют виртуальной памяти с нулевым значением по требованию, которая еще не была затронута. Это кратно размеру страницы и больше, чем
+stats.active.
 .RE
 .PP
-stats\&.mapped (\fBsize_t\fR) r\- [\fB\-\-enable\-stats\fR]
+stats\&.mapped (\fBsize_t\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Total number of bytes in active extents mapped by the allocator\&. This is larger than
-stats\&.active\&. This does not include inactive extents, even those that contain unused dirty pages, which means that there is no strict ordering between this and
-stats\&.resident\&.
+Общее количество байт в активных экстентах, отображаемых распределителем\&. Это больше, чем
+stats\&.active\&. Это не включает неактивные экстенты, даже те, которые содержат неиспользуемые грязные страницы, что означает, что между этим и
+stats\&.resident\& нет строгой упорядоченности.
 .RE
 .PP
-stats\&.retained (\fBsize_t\fR) r\- [\fB\-\-enable\-stats\fR]
+статистика\&.сохранено (\fBsize_t\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Total number of bytes in virtual memory mappings that were retained rather than being returned to the operating system via e\&.g\&.
+Общее количество байт в отображениях виртуальной памяти, которые были сохранены, а не возвращены операционной системе через e\&.g\&.
 \fBmunmap\fR(2)
-or similar\&. Retained virtual memory is typically untouched, decommitted, or purged, so it has no strongly associated physical memory (see
-extent hooks
-for details)\&. Retained memory is excluded from mapped memory statistics, e\&.g\&.
-stats\&.mapped\&.
+или что-то подобное\&. Сохраняемая виртуальная память обычно не затрагивается, выводится из эксплуатации или очищается, поэтому она не имеет строго связанной физической памяти (подробности смотрите в
+разделе привязки
+к экстенту)\&. Сохраняемая память исключается из статистики сопоставленной памяти, например, \&.
+статистика\&.сопоставлено\&.
 .RE
 .PP
-stats\&.background_thread\&.num_threads (\fBsize_t\fR) r\- [\fB\-\-enable\-stats\fR]
+stats\&.background_thread\&.num_threads (\fBsize_t\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Number of
-background threads
-running currently\&.
+Количество
+фоновых потоков
+, запущенных в данный момент\&.
 .RE
 .PP
-stats\&.background_thread\&.num_runs (\fBuint64_t\fR) r\- [\fB\-\-enable\-stats\fR]
+stats\&.background_thread\&.num_runs (\fBuint64_t\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Total number of runs from all
-background threads\&.
+Общее количество запусков из всех
+фоновых потоков\&.
 .RE
 .PP
-stats\&.background_thread\&.run_interval (\fBuint64_t\fR) r\- [\fB\-\-enable\-stats\fR]
+статистика\&.background_thread\&.run_interval (\fBuint64_t\fR) r\- [\fB\-\-enable\-статистика\fR]
 .RS 4
-Average run interval in nanoseconds of
-background threads\&.
+Средний интервал выполнения
+фоновых потоков в наносекундах\&.
 .RE
 .PP
-stats\&.mutexes\&.ctl\&.{counter}; (\fBcounter specific type\fR) r\- [\fB\-\-enable\-stats\fR]
+статистика\&.мьютексы\&.ctl\&.{счетчик}; (конкретный тип счетчика\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Statistics on
-\fIctl\fR
-mutex (global scope; mallctl related)\&.
-{counter}
-is one of the counters below:
+Статистика по
+мьютексу \fIctl\fR
+(глобальная область действия; связан с mallctl)\&.
+{счетчик}
+- это один из приведенных ниже счетчиков:
 .PP
 .RS 4
 \fInum_ops\fR
-(\fBuint64_t\fR): Total number of lock acquisition operations on this mutex\&.
+(\fBuint64_t\fR): Общее количество операций получения блокировки для этого мьютекса\&.
 .sp
 \fInum_spin_acq\fR
-(\fBuint64_t\fR): Number of times the mutex was spin\-acquired\&. When the mutex is currently locked and cannot be acquired immediately, a short period of spin\-retry within jemalloc will be performed\&. Acquired through spin generally means the contention was lightweight and not causing context switches\&.
+(\fBuint64_t\fR): Количество раз, когда мьютекс был повторно получен\&. Если мьютекс в данный момент заблокирован и не может быть получен немедленно, будет выполнена короткая повторная попытка в jemalloc\&. Полученный с помощью spin, как правило, означает, что конфликт был незначительным и не вызывал переключения контекста\&.
 .sp
 \fInum_wait\fR
-(\fBuint64_t\fR): Number of times the mutex was wait\-acquired, which means the mutex contention was not solved by spin\-retry, and blocking operation was likely involved in order to acquire the mutex\&. This event generally implies higher cost / longer delay, and should be investigated if it happens often\&.
+(\fBuint64_t\fR): Количество раз, когда мьютекс был получен в режиме ожидания, что означает, что конфликт мьютексов не был разрешен повторной попыткой, и, вероятно, для получения мьютекса была задействована операция блокировки. Это событие обычно влечет за собой более высокую стоимость / более длительную задержку, и его следует расследовать, если оно случается часто\&.
 .sp
 \fImax_wait_time\fR
-(\fBuint64_t\fR): Maximum length of time in nanoseconds spent on a single wait\-acquired lock operation\&. Note that to avoid profiling overhead on the common path, this does not consider spin\-acquired cases\&.
+(\fBuint64_t\fR): Максимальное время в наносекундах, затрачиваемое на одну операцию блокировки, полученную в результате ожидания\&. Обратите внимание, что во избежание накладных расходов на профилирование в общем пути, при этом не учитываются случаи, полученные в результате повторной обработки\&.
 .sp
-\fItotal_wait_time\fR
-(\fBuint64_t\fR): Cumulative time in nanoseconds spent on wait\-acquired lock operations\&. Similarly, spin\-acquired cases are not considered\&.
+\Общее время ожидания\fR
+(\fBuint64_t\fR): Суммарное время в наносекундах, затраченное на операции блокировки, связанные с ожиданием\&. Аналогично, случаи, связанные с повторным использованием, не учитываются\&.
 .sp
 \fImax_num_thds\fR
-(\fBuint32_t\fR): Maximum number of threads waiting on this mutex simultaneously\&. Similarly, spin\-acquired cases are not considered\&.
+(\fBuint32_t\fR): Максимальное количество потоков, ожидающих этот мьютекс одновременно\&. Аналогично, случаи, полученные с помощью spin, не рассматриваются\&.
 .sp
 \fInum_owner_switch\fR
-(\fBuint64_t\fR): Number of times the current mutex owner is different from the previous one\&. This event does not generally imply an issue; rather it is an indicator of how often the protected data are accessed by different threads\&.
+(\fBuint64_t\fR): Количество раз, когда текущий владелец мьютекса отличается от предыдущего\&. Это событие обычно не означает проблему; скорее, это показатель того, как часто разные потоки обращаются к защищенным данным\&
 .RE
 .RE
 .PP
-stats\&.mutexes\&.background_thread\&.{counter} (\fBcounter specific type\fR) r\- [\fB\-\-enable\-stats\fR]
+статистика\&.мьютексы\&.background_thread\&.{счетчик} (\fBcounter определенного типа\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Statistics on
-\fIbackground_thread\fR
-mutex (global scope;
-background_thread
-related)\&.
-{counter}
-is one of the counters in
-mutex profiling counters\&.
+Статистика по
+мьютексу \fIbackground_thread\fR
+(глобальная область действия;
+
+связанная с фоновым потоком)\&.
+{счетчик}
+является одним из счетчиков в
+счетчиках профилирования мьютексов\&.
 .RE
 .PP
-stats\&.mutexes\&.prof\&.{counter} (\fBcounter specific type\fR) r\- [\fB\-\-enable\-stats\fR]
+статистика\&.мьютексы\&.prof\&.{счетчик} (\fBcounter определенного типа\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Statistics on
-\fIprof\fR
-mutex (global scope; profiling related)\&.
-{counter}
-is one of the counters in
-mutex profiling counters\&.
+Статистика по
+мьютексу \fIprof\fR
+(глобальная область видимости; связана с профилированием)\&.
+{счетчик}
+является одним из счетчиков в
+счетчиках профилирования мьютекса\&.
 .RE
 .PP
-stats\&.mutexes\&.reset (\fBvoid\fR) \-\- [\fB\-\-enable\-stats\fR]
+статистика\&.мьютексы\&.сброс (\fBvoid\fR) \-\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Reset all mutex profile statistics, including global mutexes, arena mutexes and bin mutexes\&.
-.RE
+Сбросить всю статистику профиля мьютекса, включая глобальные мьютексы, мьютексы arena и мьютексы bin\&.
+Статистика .RE
 .PP
-stats\&.arenas\&.<i>\&.dss (\fBconst char *\fR) r\-
+\&.арены\&.<i>\&.dss (\fBconst char *\fR) r\-
 .RS 4
-dss (\fBsbrk\fR(2)) allocation precedence as related to
-\fBmmap\fR(2)
-allocation\&. See
-opt\&.dss
-for details\&.
-.RE
+dss (\fBsbrk\fR(2)) приоритет распределения, связанный с
+распределением \fBmmap\fR(2)
+. 
+Подробности смотрите в opt\&.dss
+.
+Статистика .RE
 .PP
-stats\&.arenas\&.<i>\&.dirty_decay_ms (\fBssize_t\fR) r\-
+\&.арены\&.<i>\&.dirty_decay_ms (\fBssize_t\fR) r\-
 .RS 4
-Approximate time in milliseconds from the creation of a set of unused dirty pages until an equivalent set of unused dirty pages is purged and/or reused\&. See
+Приблизительное время в миллисекундах с момента создания набора неиспользуемых "грязных" страниц до удаления и/или повторного использования эквивалентного набора неиспользуемых "грязных" страниц\&. Подробности смотрите в разделе
 opt\&.dirty_decay_ms
-for details\&.
+\&.
 .RE
 .PP
-stats\&.arenas\&.<i>\&.muzzy_decay_ms (\fBssize_t\fR) r\-
+статистика\&.арены\&.<i>\&.muzzy_decay_ms (\fBssize_t\fR) r\-
 .RS 4
-Approximate time in milliseconds from the creation of a set of unused muzzy pages until an equivalent set of unused muzzy pages is purged and/or reused\&. See
+Приблизительное время в миллисекундах с момента создания набора неиспользуемых muzzy-страниц до удаления и/или повторного использования эквивалентного набора неиспользуемых muzzy-страниц\&. Подробности смотрите в разделе
 opt\&.muzzy_decay_ms
-for details\&.
-.RE
+\&.
+Статистика .RE
 .PP
-stats\&.arenas\&.<i>\&.nthreads (\fBunsigned\fR) r\-
+\&.arenas\&.<i>\&.nthreads (\fBunsigned\fR) r\-
 .RS 4
-Number of threads currently assigned to arena\&.
-.RE
+Количество потоков, назначенных на данный момент arena\&.
+Статистика .RE
 .PP
-stats\&.arenas\&.<i>\&.uptime (\fBuint64_t\fR) r\-
+\&.арены\&.<i>\&.время безотказной работы (\fBuint64_t\fR) r\-
 .RS 4
-Time elapsed (in nanoseconds) since the arena was created\&. If <i> equals
+Время, прошедшее (в наносекундах) с момента создания арены\&. Если <i> равно
 \fB0\fR
-or
-\fBMALLCTL_ARENAS_ALL\fR, this is the uptime since malloc initialization\&.
-.RE
+или
+\fBMALLCTL_ARENAS_ALL\fR, это время безотказной работы с момента инициализации malloc\&.
+Статистика .RE
 .PP
-stats\&.arenas\&.<i>\&.pactive (\fBsize_t\fR) r\-
+\&.arenas\&.<i>\&.pactive (\fBsize_t\fR) r\-
 .RS 4
-Number of pages in active extents\&.
-.RE
+Количество страниц в активных экстентах\&.
+Статистика .RE
 .PP
-stats\&.arenas\&.<i>\&.pdirty (\fBsize_t\fR) r\-
+\&.арены\&.<i>\&.плотность (\fBsize_t\fR) r\-
 .RS 4
-Number of pages within unused extents that are potentially dirty, and for which
-madvise()
-or similar has not been called\&. See
-opt\&.dirty_decay_ms
-for a description of dirty pages\&.
-.RE
+Количество страниц в неиспользуемых экстентах, которые потенциально могут быть загрязнены и для которых
+не была вызвана функция madvise()
+или аналогичная функция\&. 
+Описание загрязненных страниц см. в opt\&.dirty_decay_ms
+.
+Статистика .RE
 .PP
-stats\&.arenas\&.<i>\&.pmuzzy (\fBsize_t\fR) r\-
+\&.arenas\&.<i>\&.pmuzzy (\fBsize_t\fR) r\-
 .RS 4
-Number of pages within unused extents that are muzzy\&. See
+Количество страниц в неиспользуемых пространствах, которые являются нечеткими\&. Смотрите
 opt\&.muzzy_decay_ms
-for a description of muzzy pages\&.
+для описания muzzy pages\&.
 .RE
 .PP
-stats\&.arenas\&.<i>\&.mapped (\fBsize_t\fR) r\- [\fB\-\-enable\-stats\fR]
+статистика\&.арены\&.<i>\&.отображено (\fBsize_t\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Number of mapped bytes\&.
+Количество отображенных байт\&.
 .RE
 .PP
-stats\&.arenas\&.<i>\&.retained (\fBsize_t\fR) r\- [\fB\-\-enable\-stats\fR]
+статистика\&.арены\&.<i>\&.сохранено (\fBsize_t\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Number of retained bytes\&. See
-stats\&.retained
-for details\&.
+Количество сохраненных байт\&. Подробности смотрите в разделе
+статистика\&.сохранено
+\&.
 .RE
 .PP
-stats\&.arenas\&.<i>\&.extent_avail (\fBsize_t\fR) r\- [\fB\-\-enable\-stats\fR]
+статистика\&.арены\&.<i>\&.extent_avail (\fBsize_t\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Number of allocated (but unused) extent structs in this arena\&.
+Количество выделенных (но неиспользуемых) структур экстентов в этой области\&.
 .RE
 .PP
-stats\&.arenas\&.<i>\&.base (\fBsize_t\fR) r\- [\fB\-\-enable\-stats\fR]
+статистика\&.арены\&.<i>\&.база (\fBsize_t\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Number of bytes dedicated to bootstrap\-sensitive allocator metadata structures\&.
+Количество байт, выделенных для структур метаданных распределителя, чувствительных к bootstrap\&.
 .RE
 .PP
-stats\&.arenas\&.<i>\&.internal (\fBsize_t\fR) r\- [\fB\-\-enable\-stats\fR]
+статистика\&.арены\&.<i>\&.internal (\fBsize_t\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Number of bytes dedicated to internal allocations\&. Internal allocations differ from application\-originated allocations in that they are for internal use, and that they are omitted from heap profiles\&.
+Количество байт, выделенных для внутренних распределений\&. Внутренние распределения отличаются от распределений, созданных приложением, тем, что они предназначены для внутреннего использования и не указаны в профилях кучи\&.
 .RE
 .PP
-stats\&.arenas\&.<i>\&.metadata_thp (\fBsize_t\fR) r\- [\fB\-\-enable\-stats\fR]
+статистика\&.арены\&.<i>\&.metadata_thp (\fBsize_t\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Number of transparent huge pages (THP) used for metadata\&. See
+Количество прозрачных огромных страниц (THP), используемых для метаданных\&. Подробнее смотрите в разделе
 opt\&.metadata_thp
-for details\&.
+\&.
 .RE
 .PP
-stats\&.arenas\&.<i>\&.resident (\fBsize_t\fR) r\- [\fB\-\-enable\-stats\fR]
+статистика\&.арены\&.<i>\&.резидент (\fBsize_t\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Maximum number of bytes in physically resident data pages mapped by the arena, comprising all pages dedicated to allocator metadata, pages backing active allocations, and unused dirty pages\&. This is a maximum rather than precise because pages may not actually be physically resident if they correspond to demand\-zeroed virtual memory that has not yet been touched\&. This is a multiple of the page size\&.
+Максимальное количество байт на физически постоянных страницах данных, отображаемых arena, включая все страницы, посвященные метаданным распределителя, страницы, поддерживающие активные распределения, и неиспользуемые "грязные" страницы\&. Это скорее максимальное значение, чем точное, поскольку страницы могут фактически не быть физически резидентными, если они соответствуют виртуальной памяти с нулевым значением, которая еще не была затронута. Это кратно размеру страницы.
+Статистика .RE
+.PP
+\&.arenas\&.<i>\&.dirty_npurge (\fBuint64_t\fR) r\- [\fB\-\-включить\-статистику\fR]
+.RS 4
+Количество выполненных операций очистки загрязненных страниц\&.
 .RE
 .PP
-stats\&.arenas\&.<i>\&.dirty_npurge (\fBuint64_t\fR) r\- [\fB\-\-enable\-stats\fR]
+статистика\&.арены\&.<i>\&.dirty_nmadvise (\fBuint64_t\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Number of dirty page purge sweeps performed\&.
-.RE
+Количество
+вызовов madvise()
+или аналогичных им, выполненных для очистки грязных страниц\&.
+Статистика .RE
 .PP
-stats\&.arenas\&.<i>\&.dirty_nmadvise (\fBuint64_t\fR) r\- [\fB\-\-enable\-stats\fR]
+\&.арены\&.<i>\&.dirty_purged (\fBuint64_t\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Number of
+Количество удаленных грязных страниц\&.
+Статистика .RE
+.PP
+\&.arenas\&.<i>\&.muzzy_npurge (\fBuint64_t\fR) r\- [\fB\-\-включить\-статистику\fR]
+.RS 4
+Количество выполненных операций очистки страниц с помутнением памяти\&.
+Статистика .RE
+.PP
+\&.arenas\&.<i>\&.muzzy_nmadvise (\fBuint64_t\fR) r\- [\fB\-\-включить\-статистику\fR]
+.RS 4
+Количество
 madvise()
-or similar calls made to purge dirty pages\&.
+или аналогичные вызовы, выполняемые для очистки запутанных страниц\&.
+Статистика .RE
+.PP
+\&.арены\&.<i>\&.muzzy_purged (\fBuint64_t\fR) r\- [\fB\-\-включить\-статистику\fR]
+.RS 4
+Количество удаленных запутанных страниц\&.
+Статистика .RE
+.PP
+\&.арены\&.<i>\&.маленькие\&.выделенные (\fBsize_t\fR) r\- [\fB\-\-включить\-статистику\fR]
+.RS 4
+Количество байт, выделяемых в данный момент небольшими объектами\&.
+Статистика .RE
+.PP
+\&.arenas\&.<i>\&.small\&.nmalloc (\fBuint64_t\fR) r\- [\fB\-\-включить\-статистику\fR]
+.RS 4
+Суммарное количество раз, когда с арены запрашивалось небольшое распределение ресурсов (ячейки Aqs, заполнять ли соответствующий tcache, если
+выбрать \&.tcache
+включен, или для непосредственного удовлетворения запроса на выделение в противном случае\&.
+Статистика .RE
+.PP
+\&.arenas\&.<i>\&.small\&.ndalloc (\fBuint64_t\fR) r\- [\fB\-\-включить\-статистику\fR]
+.RS 4
+Общее количество раз, когда небольшое распределение возвращалось в arena\*(ячейки Aqs), независимо от того, очищать ли соответствующий tcache, если
+включена функция opt\&.tcache
+, или напрямую освобождать распределение в противном случае\&.
+Статистика .RE
+.PP
+\&.arenas\&.<i>\&.small\&.nrequests (\fBuint64_t\fR) r\- [\fB\-\-enable\-stats\fR]
+.RS 4
+Суммарное количество запросов на распределение, удовлетворенных всеми классами размера ячейки\&.
 .RE
 .PP
-stats\&.arenas\&.<i>\&.dirty_purged (\fBuint64_t\fR) r\- [\fB\-\-enable\-stats\fR]
+статистика\&.арены\&.<i>\&.малые\&.заполнения (\fBuint64_t\fR) r\- [\fB\-\-включить\-статистику\fR]
+.4 доллара
+Совокупное количество заполнений tcache всеми классами малого размера\&.
+Статистика .RE
+.PP
+\&.arenas\&.<i>\&.small\&.nflushes (\fBuint64_t\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Number of dirty pages purged\&.
+Совокупное количество сбросов tcache всеми малогабаритными классами\&.
+Статистика .RE
+.PP
+\&.арены\&.<i>\&.большие\&.выделенные (\fBsize_t\fR) r\- [\fB\-\-включить\-статистику\fR]
+.RS 4
+Количество байт, выделяемых в данный момент крупными объектами\&.
+Статистика .RE
+.PP
+\&.arenas\&.<i>\&.large\&.nmalloc (\fBuint64_t\fR) r\- [\fB\-\-включить\-статистику\fR]
+.RS 4
+Суммарное количество раз, когда из арены был выделен большой объем, независимо от того, нужно ли заполнять соответствующий tcache, если
+опция \&.tcache
+включена и класс размера находится в пределах кэшируемого диапазона, или напрямую удовлетворять запрос на выделение в противном случае\&.
+Статистика .RE
+.PP
+\&.arenas\&.<i>\&.large\&.ndalloc (\fBuint64_t\fR) r\- [\fB\-\-включить\-статистику\fR]
+.RS 4
+Общее количество раз, когда большой объем данных был возвращен на арену, следует ли очистить соответствующий tcache, если
+включена функция opt\&.tcache
+и класс размера находится в пределах кэшируемого диапазона, или напрямую освободить выделение в противном случае\&.
 .RE
 .PP
-stats\&.arenas\&.<i>\&.muzzy_npurge (\fBuint64_t\fR) r\- [\fB\-\-enable\-stats\fR]
+статистика\&.арены\&.<i>\&.большие\&.запросы (\fBuint64_t\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Number of muzzy page purge sweeps performed\&.
+Совокупное количество запросов на выделение, удовлетворенных всеми крупногабаритными классами\&.
+Статистика .RE
+.PP
+\&.арены\&.<i>\&.большие\&.nfills (\fBuint64_t\fR) r\- [\fB\-\-включить\-статистику\fR]
+.RS 4
+Совокупное количество заполнений tcache всеми классами большого размера\&.
+Статистика .RE
+.PP
+\&.arenas\&.<i>\&.large\&.n сбрасывает (\fBuint64_t\fR) r\- [\fB\-\-включить\-статистику\fR]
+.RS 4
+Суммарное количество сбросов tcache всеми классами большого размера\&.
 .RE
 .PP
-stats\&.arenas\&.<i>\&.muzzy_nmadvise (\fBuint64_t\fR) r\- [\fB\-\-enable\-stats\fR]
+статистика\&.арены\&.<i>\&.ячейки\&.<j>\&.nmalloc (\fBuint64_t\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Number of
-madvise()
-or similar calls made to purge muzzy pages\&.
+Общее количество раз, когда область ячейки соответствующего класса размера выделялась из arena, независимо от того, заполнялся ли соответствующий tcache, если
+включена функция opt\&.tcache
+, или для непосредственного удовлетворения запроса на выделение в противном случае\&.
 .RE
 .PP
-stats\&.arenas\&.<i>\&.muzzy_purged (\fBuint64_t\fR) r\- [\fB\-\-enable\-stats\fR]
+статистика\&.арены\&.<i>\&.ячейки\&.<j>\&.ndalloc (\fBuint64_t\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Number of muzzy pages purged\&.
+Общее количество раз, когда область хранилища соответствующего класса размера возвращалась на арену, следует ли очищать соответствующий tcache, если
+выбрать \&.tcache
+включен, или напрямую освободить выделение в противном случае\&.
 .RE
 .PP
-stats\&.arenas\&.<i>\&.small\&.allocated (\fBsize_t\fR) r\- [\fB\-\-enable\-stats\fR]
+статистика\&.арены\&.<i>\&.ячейки\&.<j>\&.nrequests (\fBuint64_t\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Number of bytes currently allocated by small objects\&.
+Совокупное количество запросов на выделение, удовлетворенных областями ячеек соответствующего класса размера\&.
 .RE
 .PP
-stats\&.arenas\&.<i>\&.small\&.nmalloc (\fBuint64_t\fR) r\- [\fB\-\-enable\-stats\fR]
+статистика\&.арены\&.<i>\&.ячейки\&.<j>\&.текущие значения (\fBsize_t\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Cumulative number of times a small allocation was requested from the arena\*(Aqs bins, whether to fill the relevant tcache if
-opt\&.tcache
-is enabled, or to directly satisfy an allocation request otherwise\&.
+Текущее количество регионов для этого размерного класса\&.
+Статистика .RE
+.PP
+\&.арены\&.<i>\&.ячейки\&.<j>\&.nfills (\fBuint64_t\fR) r\-
+.RS 4
+Общее количество заполнений кэша tcache\&.
+Статистика .RE
+.PP
+\&.арены\&.<i>\&.ячейки\&.<j>\&.n очищается (\fBuint64_t\fR) r\-
+.RS 4
+Суммарное количество очищений tcache\&.
+Статистика .RE
+.PP
+\&.arenas\&.<i>\&.bins\&.<j>\&.nslabs (\fBuint64_t\fR) r\- [\fB\-\-включить\-статистику\fR]
+.RS 4
+Общее количество созданных плит\&.
 .RE
 .PP
-stats\&.arenas\&.<i>\&.small\&.ndalloc (\fBuint64_t\fR) r\- [\fB\-\-enable\-stats\fR]
-.RS 4
-Cumulative number of times a small allocation was returned to the arena\*(Aqs bins, whether to flush the relevant tcache if
-opt\&.tcache
-is enabled, or to directly deallocate an allocation otherwise\&.
+статистика\&.арены\&.<i>\&.ячейки\&.<j>\&.nreslabs (\fBuint64_t\fR) r\- [\fB\-\-включить\-статистику\fR]
+.Рупий 4
+Суммарное количество раз, когда текущая таблица, из которой выполняется выделение, изменялась\&.
 .RE
 .PP
-stats\&.arenas\&.<i>\&.small\&.nrequests (\fBuint64_t\fR) r\- [\fB\-\-enable\-stats\fR]
+статистика\&.арены\&.<i>\&.ячейки\&.<j>\&.curslabs (\fBsize_t\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Cumulative number of allocation requests satisfied by all bin size classes\&.
+Текущее количество плит\&.
 .RE
 .PP
-stats\&.arenas\&.<i>\&.small\&.nfills (\fBuint64_t\fR) r\- [\fB\-\-enable\-stats\fR]
+статистика\&.арены\&.<i>\&.ячейки\&.<j>\&.nonfull_slabs (\fBsize_t\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Cumulative number of tcache fills by all small size classes\&.
+Текущее количество незаполненных плит\&.
+Статистика .RE
+.PP
+\&.арены\&.<i>\&.ячейки\&.<j>\&.мьютекс\&.{счетчик} (\fBcounter определенного типа\fR) r\- [\fB\-\-включить\-статистику\fR]
+.RS 4
+Статистика по
+мьютексу \fIarena\&.<i>\&.bins\&.<j>\fR
+(область действия ячейки arena; связанная с работой ячейки)\&.
+{счетчик}
+является одним из счетчиков в
+счетчиках профилирования мьютекса\&.
 .RE
 .PP
-stats\&.arenas\&.<i>\&.small\&.nflushes (\fBuint64_t\fR) r\- [\fB\-\-enable\-stats\fR]
+статистика\&.арены\&.<i>\&.экстенты\&.<j>\&.n{тип экстента} (\fBsize_t\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Cumulative number of tcache flushes by all small size classes\&.
+Количество экстентов данного типа в этой области в корзине соответствует индексу размера страницы <j>\&. Тип экстента может быть изменен: "грязный", "размытый" или "сохраненный"\&.
 .RE
 .PP
-stats\&.arenas\&.<i>\&.large\&.allocated (\fBsize_t\fR) r\- [\fB\-\-enable\-stats\fR]
-.RS 4
-Number of bytes currently allocated by large objects\&.
+статистика\&.арены\&.<i>\&.экстенты\&.<j>\&.{extent_type}_bytes (\fBsize_t\fR) r\- [\fB\-\-включить\-статистику\fR]
+.Рупий 4
+Сумма байтов, управляемых экстентами данного типа в этой области, в корзине, соответствующей индексу размера страницы <j>\&. Тип экстента может быть одним из следующих: "грязный", "размытый" или "сохраненный"\&.
 .RE
 .PP
-stats\&.arenas\&.<i>\&.large\&.nmalloc (\fBuint64_t\fR) r\- [\fB\-\-enable\-stats\fR]
+статистика\&.арены\&.<i>\&.лексиконы\&.<j>\&.nmalloc (\fBuint64_t\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Cumulative number of times a large extent was allocated from the arena, whether to fill the relevant tcache if
-opt\&.tcache
-is enabled and the size class is within the range being cached, or to directly satisfy an allocation request otherwise\&.
+Общее количество раз, когда на арене выделялась большая часть соответствующего размерного класса, независимо от того, нужно ли заполнять соответствующий tcache, если
+включена функция opt\&.tcache
+и размерный класс находится в пределах кэшируемого диапазона, или напрямую удовлетворять запрос на выделение в противном случае\&.
 .RE
 .PP
-stats\&.arenas\&.<i>\&.large\&.ndalloc (\fBuint64_t\fR) r\- [\fB\-\-enable\-stats\fR]
-.RS 4
-Cumulative number of times a large extent was returned to the arena, whether to flush the relevant tcache if
-opt\&.tcache
-is enabled and the size class is within the range being cached, or to directly deallocate an allocation otherwise\&.
+статистика\&.арены\&.<i>\&.лексиконы\&.<j>\&.ndalloc (\fBuint64_t\fR) r\- [\fB\-\-включить\-статистику\fR]
+.Рупий 4
+Общее количество раз, когда большая часть соответствующего класса размера возвращалась на арену, зависело от того, очищать ли соответствующий tcache, если
+опция \&.tcache
+включена и класс размера находится в пределах кэшируемого диапазона, или напрямую освобождать выделение в противном случае\&.
 .RE
 .PP
-stats\&.arenas\&.<i>\&.large\&.nrequests (\fBuint64_t\fR) r\- [\fB\-\-enable\-stats\fR]
+статистика\&.арены\&.<i>\&.лексиконы\&.<j>\&.nrequests (\fBuint64_t\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Cumulative number of allocation requests satisfied by all large size classes\&.
+Совокупное количество запросов на выделение, удовлетворенных большими экстентами соответствующего класса размера\&.
 .RE
 .PP
-stats\&.arenas\&.<i>\&.large\&.nfills (\fBuint64_t\fR) r\- [\fB\-\-enable\-stats\fR]
+статистика\&.арены\&.<i>\&.лекстенты\&.<j>\&.curlextents (\fBsize_t\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Cumulative number of tcache fills by all large size classes\&.
+Текущее количество крупных распределений для этого размерного класса\&.
+Статистика .RE
+.PP
+\&.арены\&.<i>\&.мьютексы\&.большие\&.{счетчик} (\fBcounter определенного типа\fR) r\- [\fB\-\-включить\-статистику\fR]
+.RS 4
+Статистика по
+мьютексу \fIarena\&.<i>\&.large\fR
+(область действия арены; связано с большим распределением ресурсов)\&.
+{счетчик}
+является одним из счетчиков в
+счетчиках профилирования мьютексов\&.
+Статистика .RE
+.PP
+\&.арены\&.<i>\&.мьютексы\&.extent_avail\&.{счетчик} (\fBcounter определенного типа\fR) r\- [\fB\-\-включить\-статистику\fR]
+.RS 4
+Статистика по
+\fIarena\&.<i>\&.extent_avail \
+для мьютекса (область видимости арены; связанная с доступностью степень)\&.
+{счетчик}
+является одним из счетчиков в
+счетчиках профилирования мьютекса\&.
+Статистика .RE
+.PP
+\&.арены\&.<i>\&.мьютексы\&.расширение_дирти\&.{счетчик} (\fBcounter определенного типа\fR) r\- [\fB\-\-включить\-статистику\fR]
+.RS 4
+Статистика по
+мьютексу \fIarena\&.<i>\&.extents_dirty\fR
+(область действия арены, связанная с грязными экстентами)\&.
+{счетчик}
+является одним из счетчиков в
+счетчиках профилирования мьютексов\&.
+Статистика .RE
+.PP
+\&.арены\&.<i>\&.мьютексы\&.расширение_музыки\&.{счетчик} (\fBcounter определенного типа\fR) r\- [\fB\-\-включить\-статистику\fR]
+.RS 4
+Статистика по
+\fIarena\&.<i>\&.extents_muzzy \
+использует мьютекс (область видимости арены; связанные с ней масззи-экстенты)\&.
+{счетчик}
+является одним из счетчиков в
+счетчиках профилирования мьютексов\&.
 .RE
 .PP
-stats\&.arenas\&.<i>\&.large\&.nflushes (\fBuint64_t\fR) r\- [\fB\-\-enable\-stats\fR]
+статистика\&.арены\&.<i>\&.мьютексы\&.сохраненные значения\&.{счетчик} (\fBcounter определенного типа\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Cumulative number of tcache flushes by all large size classes\&.
-.RE
+Статистика по
+мьютексу \fIarena\&.<i>\&.extents_retained\fR
+(область действия арены; связанные с сохраненными экстентами)\&.
+{счетчик}
+является одним из счетчиков в
+счетчиках профилирования мьютексов\&.
+Статистика .RE
 .PP
-stats\&.arenas\&.<i>\&.bins\&.<j>\&.nmalloc (\fBuint64_t\fR) r\- [\fB\-\-enable\-stats\fR]
+\&.арены\&.<i>\&.мьютексы\&.decay_dirty\&.{счетчик} (\fBcounter определенного типа\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Cumulative number of times a bin region of the corresponding size class was allocated from the arena, whether to fill the relevant tcache if
-opt\&.tcache
-is enabled, or to directly satisfy an allocation request otherwise\&.
-.RE
+Статистика по
+\fIarena\&.<i>\&.мьютекс decay_dirty \fR
+(область действия arena; относится к "грязным страницам")\&.
+{счетчик}
+- это один из счетчиков в
+счетчиках профилирования мьютексов\&.
+Статистика .RE
 .PP
-stats\&.arenas\&.<i>\&.bins\&.<j>\&.ndalloc (\fBuint64_t\fR) r\- [\fB\-\-enable\-stats\fR]
+\&.арены\&.<i>\&.мьютексы\&.decay_muzzy\&.{счетчик} (\fBcounter определенного типа\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Cumulative number of times a bin region of the corresponding size class was returned to the arena, whether to flush the relevant tcache if
-opt\&.tcache
-is enabled, or to directly deallocate an allocation otherwise\&.
-.RE
-.PP
-stats\&.arenas\&.<i>\&.bins\&.<j>\&.nrequests (\fBuint64_t\fR) r\- [\fB\-\-enable\-stats\fR]
-.RS 4
-Cumulative number of allocation requests satisfied by bin regions of the corresponding size class\&.
-.RE
-.PP
-stats\&.arenas\&.<i>\&.bins\&.<j>\&.curregs (\fBsize_t\fR) r\- [\fB\-\-enable\-stats\fR]
-.RS 4
-Current number of regions for this size class\&.
-.RE
-.PP
-stats\&.arenas\&.<i>\&.bins\&.<j>\&.nfills (\fBuint64_t\fR) r\-
-.RS 4
-Cumulative number of tcache fills\&.
-.RE
-.PP
-stats\&.arenas\&.<i>\&.bins\&.<j>\&.nflushes (\fBuint64_t\fR) r\-
-.RS 4
-Cumulative number of tcache flushes\&.
-.RE
-.PP
-stats\&.arenas\&.<i>\&.bins\&.<j>\&.nslabs (\fBuint64_t\fR) r\- [\fB\-\-enable\-stats\fR]
-.RS 4
-Cumulative number of slabs created\&.
-.RE
-.PP
-stats\&.arenas\&.<i>\&.bins\&.<j>\&.nreslabs (\fBuint64_t\fR) r\- [\fB\-\-enable\-stats\fR]
-.RS 4
-Cumulative number of times the current slab from which to allocate changed\&.
-.RE
-.PP
-stats\&.arenas\&.<i>\&.bins\&.<j>\&.curslabs (\fBsize_t\fR) r\- [\fB\-\-enable\-stats\fR]
-.RS 4
-Current number of slabs\&.
-.RE
-.PP
-stats\&.arenas\&.<i>\&.bins\&.<j>\&.nonfull_slabs (\fBsize_t\fR) r\- [\fB\-\-enable\-stats\fR]
-.RS 4
-Current number of nonfull slabs\&.
-.RE
-.PP
-stats\&.arenas\&.<i>\&.bins\&.<j>\&.mutex\&.{counter} (\fBcounter specific type\fR) r\- [\fB\-\-enable\-stats\fR]
-.RS 4
-Statistics on
-\fIarena\&.<i>\&.bins\&.<j>\fR
-mutex (arena bin scope; bin operation related)\&.
+Статистика по
+мьютексу \fIarena\&.<i>\&.decay_muzzy \fR
+(область действия арены; распад для связанных с muzzy страниц)\&.
 {counter}
-is one of the counters in
-mutex profiling counters\&.
+- это один из счетчиков в
+счетчиках профилирования мьютекса\&.
+Статистика .RE
+.PP
+\&.арены\&.<i>\&.мьютексы\&.база\&.{счетчик} (\fBcounter определенного типа\fR) r\- [\fB\-\-включить\-статистику\fR]
+.RS 4
+Статистика по
+\fIarena\&.<i>\&.базовый мьютекс\fR
+(область действия arena; связанный с базовым распределителем)\&.
+{счетчик}
+является одним из счетчиков в
+счетчиках профилирования мьютексов\&.
 .RE
 .PP
-stats\&.arenas\&.<i>\&.extents\&.<j>\&.n{extent_type} (\fBsize_t\fR) r\- [\fB\-\-enable\-stats\fR]
+статистика\&.арены\&.<i>\&.мьютексы\&.tcache_list\&.{счетчик} (\fBcounter определенного типа\fR) r\- [\fB\-\-включить\-статистику\fR]
 .RS 4
-Number of extents of the given type in this arena in the bucket corresponding to page size index <j>\&. The extent type is one of dirty, muzzy, or retained\&.
-.RE
-.PP
-stats\&.arenas\&.<i>\&.extents\&.<j>\&.{extent_type}_bytes (\fBsize_t\fR) r\- [\fB\-\-enable\-stats\fR]
-.RS 4
-Sum of the bytes managed by extents of the given type in this arena in the bucket corresponding to page size index <j>\&. The extent type is one of dirty, muzzy, or retained\&.
-.RE
-.PP
-stats\&.arenas\&.<i>\&.lextents\&.<j>\&.nmalloc (\fBuint64_t\fR) r\- [\fB\-\-enable\-stats\fR]
-.RS 4
-Cumulative number of times a large extent of the corresponding size class was allocated from the arena, whether to fill the relevant tcache if
-opt\&.tcache
-is enabled and the size class is within the range being cached, or to directly satisfy an allocation request otherwise\&.
-.RE
-.PP
-stats\&.arenas\&.<i>\&.lextents\&.<j>\&.ndalloc (\fBuint64_t\fR) r\- [\fB\-\-enable\-stats\fR]
-.RS 4
-Cumulative number of times a large extent of the corresponding size class was returned to the arena, whether to flush the relevant tcache if
-opt\&.tcache
-is enabled and the size class is within the range being cached, or to directly deallocate an allocation otherwise\&.
-.RE
-.PP
-stats\&.arenas\&.<i>\&.lextents\&.<j>\&.nrequests (\fBuint64_t\fR) r\- [\fB\-\-enable\-stats\fR]
-.RS 4
-Cumulative number of allocation requests satisfied by large extents of the corresponding size class\&.
-.RE
-.PP
-stats\&.arenas\&.<i>\&.lextents\&.<j>\&.curlextents (\fBsize_t\fR) r\- [\fB\-\-enable\-stats\fR]
-.RS 4
-Current number of large allocations for this size class\&.
-.RE
-.PP
-stats\&.arenas\&.<i>\&.mutexes\&.large\&.{counter} (\fBcounter specific type\fR) r\- [\fB\-\-enable\-stats\fR]
-.RS 4
-Statistics on
-\fIarena\&.<i>\&.large\fR
-mutex (arena scope; large allocation related)\&.
+Статистика по
+мьютексу \fIarena\&.<i>\&.tcache_list\fR
+(область действия арены; привязка tcache к арене)\&. Ожидается, что к этому мьютексу будут обращаться реже\&.
 {counter}
-is one of the counters in
-mutex profiling counters\&.
+- это один из счетчиков в
+счетчиках профилирования мьютекса\&.
 .RE
+.SH "ФОРМАТ ПРОФИЛЯ КУЧИ"
 .PP
-stats\&.arenas\&.<i>\&.mutexes\&.extent_avail\&.{counter} (\fBcounter specific type\fR) r\- [\fB\-\-enable\-stats\fR]
-.RS 4
-Statistics on
-\fIarena\&.<i>\&.extent_avail \fR
-mutex (arena scope; extent avail related)\&.
-{counter}
-is one of the counters in
-mutex profiling counters\&.
-.RE
-.PP
-stats\&.arenas\&.<i>\&.mutexes\&.extents_dirty\&.{counter} (\fBcounter specific type\fR) r\- [\fB\-\-enable\-stats\fR]
-.RS 4
-Statistics on
-\fIarena\&.<i>\&.extents_dirty \fR
-mutex (arena scope; dirty extents related)\&.
-{counter}
-is one of the counters in
-mutex profiling counters\&.
-.RE
-.PP
-stats\&.arenas\&.<i>\&.mutexes\&.extents_muzzy\&.{counter} (\fBcounter specific type\fR) r\- [\fB\-\-enable\-stats\fR]
-.RS 4
-Statistics on
-\fIarena\&.<i>\&.extents_muzzy \fR
-mutex (arena scope; muzzy extents related)\&.
-{counter}
-is one of the counters in
-mutex profiling counters\&.
-.RE
-.PP
-stats\&.arenas\&.<i>\&.mutexes\&.extents_retained\&.{counter} (\fBcounter specific type\fR) r\- [\fB\-\-enable\-stats\fR]
-.RS 4
-Statistics on
-\fIarena\&.<i>\&.extents_retained \fR
-mutex (arena scope; retained extents related)\&.
-{counter}
-is one of the counters in
-mutex profiling counters\&.
-.RE
-.PP
-stats\&.arenas\&.<i>\&.mutexes\&.decay_dirty\&.{counter} (\fBcounter specific type\fR) r\- [\fB\-\-enable\-stats\fR]
-.RS 4
-Statistics on
-\fIarena\&.<i>\&.decay_dirty \fR
-mutex (arena scope; decay for dirty pages related)\&.
-{counter}
-is one of the counters in
-mutex profiling counters\&.
-.RE
-.PP
-stats\&.arenas\&.<i>\&.mutexes\&.decay_muzzy\&.{counter} (\fBcounter specific type\fR) r\- [\fB\-\-enable\-stats\fR]
-.RS 4
-Statistics on
-\fIarena\&.<i>\&.decay_muzzy \fR
-mutex (arena scope; decay for muzzy pages related)\&.
-{counter}
-is one of the counters in
-mutex profiling counters\&.
-.RE
-.PP
-stats\&.arenas\&.<i>\&.mutexes\&.base\&.{counter} (\fBcounter specific type\fR) r\- [\fB\-\-enable\-stats\fR]
-.RS 4
-Statistics on
-\fIarena\&.<i>\&.base\fR
-mutex (arena scope; base allocator related)\&.
-{counter}
-is one of the counters in
-mutex profiling counters\&.
-.RE
-.PP
-stats\&.arenas\&.<i>\&.mutexes\&.tcache_list\&.{counter} (\fBcounter specific type\fR) r\- [\fB\-\-enable\-stats\fR]
-.RS 4
-Statistics on
-\fIarena\&.<i>\&.tcache_list\fR
-mutex (arena scope; tcache to arena association related)\&. This mutex is expected to be accessed less often\&.
-{counter}
-is one of the counters in
-mutex profiling counters\&.
-.RE
-.SH "HEAP PROFILE FORMAT"
-.PP
-Although the heap profiling functionality was originally designed to be compatible with the
+Хотя функциональность профилирования кучи изначально была разработана для обеспечения совместимости с командой
 \fBpprof\fR
-command that is developed as part of the
-\m[blue]\fBgperftools package\fR\m[]\&\s-2\u[3]\d\s+2, the addition of per thread heap profiling functionality required a different heap profile format\&. The
+, которая разработана как часть
+пакета \m[blue]\fBgperftools\fR\m[]\&\s-2\u[3]\d\s+2, добавление для каждой функции профилирования кучи потоков требовался другой формат профиля кучи\&. Команда
 \fBjeprof\fR
-command is derived from
-\fBpprof\fR, with enhancements to support the heap profile format described here\&.
+является производной от
+\fBpprof\fR, с улучшениями для поддержки описанного здесь формата профиля кучи\&.
 .PP
-In the following hypothetical heap profile,
-\fB[\&.\&.\&.]\fR
-indicates elision for the sake of compactness\&.
+В следующем гипотетическом профиле
+кучи \fB[\&.\&.\&.]\fR
+указывает на исключение в целях компактности\&.
 .sp
-.if n \{\
+.если n \{\
 .RS 4
 .\}
 .nf
 heap_v2/524288
-  t*: 28106: 56637512 [0: 0]
+  т*: 28106: 56637512 [0: 0]
   [\&.\&.\&.]
   t3: 352: 16777344 [0: 0]
   [\&.\&.\&.]
-  t99: 17754: 29341640 [0: 0]
+t99: 17754: 29341640 [0: 0]
   [\&.\&.\&.]
 @ 0x5f86da8 0x5f5a1dc [\&.\&.\&.] 0x29e4d4e 0xa200316 0xabb2988 [\&.\&.\&.]
   t*: 13: 6688 [0: 0]
@@ -2246,239 +2245,239 @@ heap_v2/524288
   t99: 1: 192 [0: 0]
 [\&.\&.\&.]
 
-MAPPED_LIBRARIES:
+ОТОБРАЖЕННЫЕ_БИБЛИОТЕКИ:
 [\&.\&.\&.]
-.fi
-.if n \{\
+. fi
+.если n \{\
 .RE
 .\}
 .sp
-The following matches the above heap profile, but most tokens are replaced with
-\fB<description>\fR
-to indicate descriptions of the corresponding fields\&.
+Следующее соответствует приведенному выше профилю кучи, но большинство токенов заменены на
+\fB<описание>\fR
+, чтобы указать описания соответствующих полей\&.
 .sp
-.if n \{\
+.если n \{\
 .RS 4
 .\}
 .nf
 <heap_profile_format_version>/<mean_sample_interval>
-  <aggregate>: <curobjs>: <curbytes> [<cumobjs>: <cumbytes>]
+  <агрегат>: <curobjs>: <curbytes> [<cumobjs>: <cumbytes>]
   [\&.\&.\&.]
-  <thread_3_aggregate>: <curobjs>: <curbytes>[<cumobjs>: <cumbytes>]
+  <thread_3_aggregate>: <curobjs>: <curbytes>[<cumobjs>: <кумбайт>]
   [\&.\&.\&.]
-  <thread_99_aggregate>: <curobjs>: <curbytes>[<cumobjs>: <cumbytes>]
+  <thread_99_aggregate>: <curobjs>: <curbytes>[<cumobjs>: <кумбайт>]
   [\&.\&.\&.]
-@ <top_frame> <frame> [\&.\&.\&.] <frame> <frame> <frame> [\&.\&.\&.]
-  <backtrace_aggregate>: <curobjs>: <curbytes> [<cumobjs>: <cumbytes>]
-  <backtrace_thread_3>: <curobjs>: <curbytes> [<cumobjs>: <cumbytes>]
-  <backtrace_thread_99>: <curobjs>: <curbytes> [<cumobjs>: <cumbytes>]
+@ <верхний_фрейм> <рамка> [\&.\&.\&.] <рамка> <рамка> <рамка> [\&.\&.\&.]
+  <backtrace_aggregate>: <curobjs>: <curbytes> [<cumobjs>: <кумбайт>]
+  <backtrace_thread_3>: <curobjs>: <curbytes> [<cumobjs>: <кумбайт>]
+  <backtrace_thread_99>: <curobjs>: <curbytes> [<cumobjs>: <кумбайт>]
 [\&.\&.\&.]
 
-MAPPED_LIBRARIES:
+СОПОСТАВЛЕННЫЕ БИБЛИОТЕКИ:
 </proc/<pid>/maps>
 .fi
-.if n \{\
+.если n \{\
 .RE
 .\}
-.SH "DEBUGGING MALLOC PROBLEMS"
+.SH "ОТЛАДКА ПРОБЛЕМ С MALLOC"
 .PP
-When debugging, it is a good idea to configure/build jemalloc with the
+При отладке рекомендуется настроить/создать jemalloc с параметрами
 \fB\-\-enable\-debug\fR
-and
+и
 \fB\-\-enable\-fill\fR
-options, and recompile the program with suitable options and symbols for debugger support\&. When so configured, jemalloc incorporates a wide variety of run\-time assertions that catch application errors such as double\-free, write\-after\-free, etc\&.
-.PP
-Programs often accidentally depend on
-\(lquninitialized\(rq
-memory actually being filled with zero bytes\&. Junk filling (see the
-opt\&.junk
-option) tends to expose such bugs in the form of obviously incorrect results and/or coredumps\&. Conversely, zero filling (see the
+и перекомпилировать программу с подходящими параметрами и символами для поддержки отладчика\&. При такой настройке jemalloc включает в себя широкий спектр утверждений во время выполнения, которые выявляют ошибки приложения, такие как double\-free, write\-after\-free и т.д.\&.
+
+Программы .PP часто случайно зависят от
+того, что неинициализированная память rq
+на самом деле заполнена нулевыми байтами. Ненужное заполнение (см.
+вариант \&.junk
+option) приводит к выявлению таких ошибок в виде явно неверных результатов и/или сбоев в работе\&. И наоборот, нулевое заполнение (см. опцию
 opt\&.zero
-option) eliminates the symptoms of such bugs\&. Between these two options, it is usually possible to quickly detect, diagnose, and eliminate such bugs\&.
+) устраняет признаки таких ошибок\&. Используя эти два варианта, обычно можно быстро обнаружить, диагностировать и устранить такие ошибки\&.
 .PP
-This implementation does not provide much detail about the problems it detects, because the performance impact for storing such information would be prohibitive\&.
-.SH "DIAGNOSTIC MESSAGES"
+Данная реализация не содержит подробных сведений о проблемах, которые она обнаруживает, поскольку хранение такой информации негативно скажется на производительности \&.
+.SH "ДИАГНОСТИЧЕСКИЕ СООБЩЕНИЯ"
 .PP
-If any of the memory allocation/deallocation functions detect an error or warning condition, a message will be printed to file descriptor
-\fBSTDERR_FILENO\fR\&. Errors will result in the process dumping core\&. If the
-opt\&.abort
-option is set, most warnings are treated as errors\&.
+Если какая-либо из функций выделения/освобождения памяти обнаружит ошибку или предупреждение, в дескриптор файла будет выведено сообщение
+\fBSTDERR_FILENO\fR\&. Ошибки приведут к тому, что процесс сбросит ядро\&. Если
+установлен параметр opt\&.abort
+, большинство предупреждений обрабатываются как ошибки\&.
 .PP
-The
+Переменная
 \fImalloc_message\fR
-variable allows the programmer to override the function which emits the text strings forming the errors and warnings if for some reason the
-\fBSTDERR_FILENO\fR
-file descriptor is not suitable for this\&.
+позволяет программисту переопределить функцию, которая выдает текстовые строки, формирующие ошибки и предупреждения, если по какой-либо причине
+файловый дескриптор \fBSTDERR_FILENO\fR
+не подходит для этого\&.
 malloc_message()
-takes the
-\fIcbopaque\fR
-pointer argument that is
+принимает
+аргумент указателя \fIcbopaque\fR
+, который равен
 \fBNULL\fR
-unless overridden by the arguments in a call to
-malloc_stats_print(), followed by a string pointer\&. Please note that doing anything which tries to allocate memory in this function is likely to result in a crash or deadlock\&.
+если это не переопределено аргументами в вызове
+функции malloc_stats_print(), за которыми следует строковый указатель\&. Пожалуйста, обратите внимание, что любые действия, которые пытаются выделить память в этой функции, могут привести к сбою или взаимоблокировке\&.
 .PP
-All messages are prefixed by
+Все сообщения имеют префикс
 \(lq<jemalloc>: \(rq\&.
-.SH "RETURN VALUES"
-.SS "Standard API"
+.SH "ВОЗВРАЩАЕМЫЕ ЗНАЧЕНИЯ"
+.SS "Стандартный API"
 .PP
-The
+Функции
 malloc()
-and
+и
 calloc()
-functions return a pointer to the allocated memory if successful; otherwise a
-\fBNULL\fR
-pointer is returned and
+в случае успеха функции возвращают указатель на выделенную память; в противном
+случае возвращается указатель \fBNULL\fR
+и
 \fIerrno\fR
-is set to
+присваивается значение
 ENOMEM\&.
 .PP
-The
+Функция
 posix_memalign()
-function returns the value 0 if successful; otherwise it returns an error value\&. The
+в случае успеха функция возвращает значение 0; в противном случае она возвращает значение ошибки\&. Функция
 posix_memalign()
-function will fail if:
+завершится ошибкой, если:
 .PP
 EINVAL
 .RS 4
-The
+Параметр
 \fIalignment\fR
-parameter is not a power of 2 at least as large as
+не имеет степени 2, по крайней мере, такой же большой, как
 sizeof(\fBvoid *\fR)\&.
 .RE
 .PP
 ENOMEM
 .RS 4
-Memory allocation error\&.
+Ошибка выделения памяти\&.
 .RE
 .PP
-The
+Функция
 aligned_alloc()
-function returns a pointer to the allocated memory if successful; otherwise a
+в случае успеха возвращает указатель на выделенную память; в противном
+случае
+возвращается указатель
 \fBNULL\fR
-pointer is returned and
-\fIerrno\fR
-is set\&. The
+и устанавливается значение \fIerrno\fR\&. Функция
 aligned_alloc()
-function will fail if:
+завершится ошибкой, если:
 .PP
 EINVAL
 .RS 4
-The
+Параметр
 \fIalignment\fR
-parameter is not a power of 2\&.
+не имеет степени 2\&.
 .RE
 .PP
 ENOMEM
 .RS 4
-Memory allocation error\&.
-.RE
-.PP
-The
-realloc()
-function returns a pointer, possibly identical to
-\fIptr\fR, to the allocated memory if successful; otherwise a
-\fBNULL\fR
-pointer is returned, and
+Ошибка выделения памяти\&.
+ПОВТОРИТЕ
+
+использование функции realloc
+()
+функция возвращает указатель, возможно, идентичный
+\fIptr\fR, на выделенную память в случае успеха; в противном
+случае возвращается указатель \fBNULL\fR
+, а
 \fIerrno\fR
-is set to
+присваивается значение
 ENOMEM
-if the error was the result of an allocation failure\&. The
+, если ошибка была результатом сбоя выделения\&. Функция
 realloc()
-function always leaves the original buffer intact when an error occurs\&.
+всегда оставляет исходный буфер нетронутым при возникновении ошибки\&.
 .PP
-The
+Функция
 free()
-function returns no value\&.
-.SS "Non\-standard API"
+не возвращает значения\&.
+.SS "Нестандартный API"
 .PP
-The
+Функции
 mallocx()
-and
+и
 rallocx()
-functions return a pointer to the allocated memory if successful; otherwise a
-\fBNULL\fR
-pointer is returned to indicate insufficient contiguous memory was available to service the allocation request\&.
+возвращают указатель на выделенную память в случае успеха; в противном
+случае \fBNULL\fR
+возвращается указатель, указывающий на то, что для обслуживания запроса на выделение было доступно недостаточно непрерывной памяти\&.
 .PP
-The
+Функция
 xallocx()
-function returns the real size of the resulting resized allocation pointed to by
-\fIptr\fR, which is a value less than
+возвращает реальный размер результирующего распределения с измененным размером, на который указывает
+\fIptr\fR, что является значением меньшим, чем
 \fIsize\fR
-if the allocation could not be adequately grown in place\&.
+, если распределение не удалось соответствующим образом увеличить на месте\&.
 .PP
-The
+Функция
 sallocx()
-function returns the real size of the allocation pointed to by
+возвращает реальный размер распределения, на который указывает
 \fIptr\fR\&.
 .PP
-The
+Функция
 nallocx()
-returns the real size that would result from a successful equivalent
-mallocx()
-function call, or zero if insufficient memory is available to perform the size computation\&.
+возвращает реальный размер, который был бы получен в результате успешного выполнения эквивалентной
+функции mallocx()
+вызов функции или ноль, если недостаточно доступной памяти для выполнения вычисления размера\&.
 .PP
-The
+Функции
 mallctl(),
-mallctlnametomib(), and
+mallctlnametomib() и
 mallctlbymib()
-functions return 0 on success; otherwise they return an error value\&. The functions will fail if:
+возвращают значение 0 в случае успешного выполнения; в противном случае они возвращают значение ошибки\&. Функции завершатся ошибкой, если:
 .PP
 EINVAL
 .RS 4
 \fInewp\fR
-is not
-\fBNULL\fR, and
+не является
+\fBNULL\fR, а
 \fInewlen\fR
-is too large or too small\&. Alternatively,
+слишком велик или слишком мал\&. В качестве альтернативы,
 \fI*oldlenp\fR
-is too large or too small; in this case as much data as possible are read despite the error\&.
+слишком большой или слишком маленький; в этом случае считывается как можно больше данных, несмотря на ошибку\&.
 .RE
 .PP
 ENOENT
 .RS 4
 \fIname\fR
-or
+или
 \fImib\fR
-specifies an unknown/invalid value\&.
+указывает неизвестное/недопустимое значение\&.
 .RE
 .PP
 EPERM
 .RS 4
-Attempt to read or write void value, or attempt to write read\-only value\&.
+Попытка считывания или записи недействительного значения или попытка записи значения, доступного только для чтения.
 .RE
 .PP
 EAGAIN
 .RS 4
-A memory allocation failure occurred\&.
+Произошел сбой выделения памяти.
 .RE
 .PP
 EFAULT
 .RS 4
-An interface with side effects failed in some way not directly related to
+Произошел сбой интерфейса с побочными эффектами, не связанными напрямую с
 mallctl*()
-read/write processing\&.
+обработка чтения/записи\&.
 .RE
 .PP
-The
+Функция
 malloc_usable_size()
-function returns the usable size of the allocation pointed to by
+возвращает полезный размер распределения, на который указывает
 \fIptr\fR\&.
-.SH "ENVIRONMENT"
+.SH "СРЕДА"
 .PP
-The following environment variable affects the execution of the allocation functions:
+Следующая переменная среды влияет на выполнение функций распределения:
 .PP
 \fBMALLOC_CONF\fR
 .RS 4
-If the environment variable
+Если переменная окружения
 \fBMALLOC_CONF\fR
-is set, the characters it contains will be interpreted as options\&.
+если значение задано, содержащиеся в нем символы будут интерпретироваться как опции\&.
 .RE
-.SH "EXAMPLES"
+.SH "ПРИМЕРЫ"
 .PP
-To dump core whenever a problem occurs:
+Для удаления ядра при возникновении проблемы:
 .sp
-.if n \{\
+.если n \{\
 .RS 4
 .\}
 .nf
@@ -2487,19 +2486,19 @@ ln \-s \*(Aqabort:true\*(Aq /etc/malloc\&.conf
 .if n \{\
 .RE
 .\}
-.PP
-To specify in the source that only one arena should be automatically created:
+.PP ) . Если нет, то это ошибка.
+Указать в источнике, что автоматически должна быть создана только одна арена:
 .sp
-.if n \{\
+.если n \{\
 .RS 4
 .\}
 .nf
-malloc_conf = "narenas:1";
+malloc_conf = "арены:1";
 .fi
-.if n \{\
+.если n \{\
 .RE
 .\}
-.SH "SEE ALSO"
+.SH "СМОТРИ ТАКЖЕ"
 .PP
 \fBmadvise\fR(2),
 \fBmmap\fR(2),
@@ -2508,53 +2507,53 @@ malloc_conf = "narenas:1";
 \fBalloca\fR(3),
 \fBatexit\fR(3),
 \fBgetpagesize\fR(3)
-.SH "STANDARDS"
+.SH "СТАНДАРТЫ"
 .PP
-The
-malloc(),
+
+- это функции malloc(),
 calloc(),
-realloc(), and
-free()
-functions conform to ISO/IEC 9899:1990 (\(lqISO C90\(rq)\&.
+realloc() и
+free().
+функции соответствуют стандарту ISO/IEC 9899:1990 (\(lqISO C90\(rq)\&.
+.
+
+УКАЖИТЕ posix_memalign()
+функция соответствует стандарту IEEE Std 1003\&.1\-2001 (\(lqPOSIX\&.1\(rq)\&.
+.SH "ИСТОРИЯ"
 .PP
-The
-posix_memalign()
-function conforms to IEEE Std 1003\&.1\-2001 (\(lqPOSIX\&.1\(rq)\&.
-.SH "HISTORY"
-.PP
-The
+Функции
 malloc_usable_size()
-and
+и
 posix_memalign()
-functions first appeared in FreeBSD 7\&.0\&.
+впервые появились во FreeBSD 7\&.0\&.
 .PP
-The
+Функции
 aligned_alloc(),
-malloc_stats_print(), and
+malloc_stats_print() и
 mallctl*()
-functions first appeared in FreeBSD 10\&.0\&.
+впервые появились во FreeBSD 10\&.0\&.
 .PP
-The
+Функции
 *allocx()
-functions first appeared in FreeBSD 11\&.0\&.
-.SH "AUTHOR"
+впервые появились во FreeBSD 11\&.0\&.
+.SH "АВТОР"
 .PP
-\fBJason Evans\fR
+\Джейсон Эванс\fR
 .RS 4
 .RE
-.SH "NOTES"
+.SH "ПРИМЕЧАНИЯ"
 .IP " 1." 4
-jemalloc website
-.RS 4
+Веб-сайт
+jemalloc .RS 4
 \%http://jemalloc.net/
 .RE
 .IP " 2." 4
-JSON format
+Формат JSON
 .RS 4
 \%http://www.json.org/
 .RE
 .IP " 3." 4
-gperftools package
+пакет gperftools
 .RS 4
 \%http://code.google.com/p/gperftools/
 .RE

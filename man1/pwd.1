@@ -34,93 +34,91 @@
 .Dd May 22, 2023
 .Dt PWD 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm pwd
-.Nd return working directory name
-.Sh SYNOPSIS
+.Nd возвращает имя текущего каталога
+.Sh СИНТАКСИС
 .Nm
 .Op Fl L | P
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility writes the absolute pathname of the current working directory to
-the standard output.
+утилита записывает абсолютный путь к текущему рабочему каталогу в
+стандартный вывод.
 .Pp
-Some shells may provide a builtin
-.Nm
-command which is similar or identical to this utility.
-Consult the
-.Xr builtin 1
-manual page.
+Некоторые оболочки могут содержать встроенную команду
+.Nm ,
+которая похожа или идентична этой утилите.
+Обратитесь к странице руководства
+.Xr builtin 1 .
 .Pp
-The options are as follows:
+Возможны следующие варианты:
 .Bl -tag -width indent
 .It Fl L
-Display the logical current working directory.
-.It Fl P
-Display the physical current working directory (all symbolic links resolved).
+Отображает логический текущий рабочий каталог
+Отображет текущий физический рабочий каталог (все символьные ссылки разрешены).
 .El
 .Pp
-If no options are specified, the
+Если никакие параметры не указаны, то параметр
 .Fl P
-option is assumed.
-.Sh ENVIRONMENT
-Environment variables used by
+предполагается.
+.Sh ОКРУЖЕНИЕ
+Переменные среды, используемые
 .Nm :
 .Bl -tag -width ".Ev PWD"
 .It Ev PWD
-Logical current working directory.
+Текущий логический рабочий кататлог.
 .El
-.Sh EXIT STATUS
+.Sh СТАТУС ЗАВЕРШЕНИЯ
 .Ex -std
-.Sh EXAMPLES
-Show current working directory with symbolic links resolved:
+.Sh ПРИМЕРЫ
+Показать текущий рабочий каталог с разрешенными символическими ссылками:
 .Bd -literal -offset indent
 $ /bin/pwd
 /usr/src/sys/kern
 .Ed
 .Pp
-Show the logical current directory.
-Then use
+Показывает текущий логический каталог.
+Затем используйте
 .Xr file 1
-to inspect the
+чтобы просмотреть
 .Pa /sys
-directory:
+диреторию:
 .Bd -literal -offset indent
 $ /bin/pwd -L
 /sys/kern
 $ file /sys
 /sys: symbolic link to usr/src/sys
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr builtin 1 ,
 .Xr cd 1 ,
 .Xr csh 1 ,
 .Xr realpath 1 ,
 .Xr sh 1 ,
 .Xr getcwd 3
-.Sh STANDARDS
+.Sh СТАНДАРТЫ
 The
 .Nm
 utility conforms to
 .St -p1003.1-2001 .
 .Sh HISTORY
-The
+Команда
 .Nm
-command appeared in
+появилась в
 .At v5 .
-.Sh BUGS
-In
+.Sh ОШИБКИ
+В
 .Xr csh 1
-the command
+команда
 .Ic dirs
-is always faster because it is built into that shell.
-However, it can give a different answer in the rare case
-that the current directory or a containing directory was moved after
-the shell descended into it.
+всегда работает быстрее, потому что она встроена в эту оболочку.
+Однако это может дать другой ответ в том редком случае,
+когда текущий каталог или содержащий его каталог был перемещен после
+того, как в него вошла оболочка.
 .Pp
-The
+Параметр
 .Fl L
-option does not work unless the
+не работает, если только
 .Ev PWD
-environment variable is exported by the shell.
+переменная окружения экспортируется командной оболочкой.

@@ -1,262 +1,256 @@
 .\"-
-.\" Copyright (c) 1989, 1990, 1993
-.\"	The Regents of the University of California.  All rights reserved.
+.\" Авторское право (c) 1989, 1990, 1993
+.\"	Ректоры Калифорнийского университета. Все права защищены.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
-.\" 3. Neither the name of the University nor the names of its contributors
-.\"    may be used to endorse or promote products derived from this software
-.\"    without specific prior written permission.
+.\" Разрешение на распространение и использование в исходной и бинарной формах,
+.\" с изменениями или без них, разрешается при условии соблюдения следующих условий:
+.\" 1. Распространение исходного кода должно сохранять приведенное выше уведомление о копирайте,
+.\"    этот список условий и следующий отказ от ответственности.
+.\" 2. Распространение в бинарной форме должно воспроизводить приведенное выше уведомление о копирайте,
+.\"    этот список условий и следующий отказ от ответственности в
+.\"    документации и/или других материалах, предоставляемых вместе с распространением.
+.\" 3. Ни название университета, ни имена его участников
+.\"    не могут использоваться для продвижения производных продуктов
+.\"    без явного предварительного письменного разрешения.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
-.\"
-.\"     @(#)df.1	8.3 (Berkeley) 5/8/95
-.\"
-.Dd March 29, 2023
+.\" ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЕНО РЕГЕНТАМИ И УЧАСТНИКАМИ «КАК ЕСТЬ», И
+.\" ЛЮБЫЕ ПРЯМЫЕ ИЛИ КОСВЕННЫЕ ГАРАНТИИ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ,
+.\" ГАРАНТИЯМИ ТОВАРНОЙ ПРИГОДНОСТИ И СООТВЕТСТВИЯ КОНКРЕТНОЙ ЦЕЛИ,
+.\" ОТКАЗЫВАЮТСЯ. В НИКАКОМ СЛУЧАЕ РЕГЕНТЫ ИЛИ УЧАСТНИКИ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ
+.\" ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, СПЕЦИАЛЬНЫЕ, ПОКАЗАТЕЛЬНЫЕ ИЛИ ПОСЛЕДУЮЩИЕ
+.\" УЩЕРБЫ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПРИОБРЕТЕНИЕМ ЗАМЕЩАЮЩИХ ТОВАРОВ
+.\" ИЛИ УСЛУГ; УТРАТОЙ ПРАВА ПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ЛИБО ПРЕРЫВАНИЕМ ДЕЯТЕЛЬНОСТИ)
+.\" НЕЗАВИСИМО ОТ ТОГО, НА КАКОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, ДОГОВОРНОЙ, СТРОГОЙ
+.\" ОТВЕТСТВЕННОСТИ ИЛИ ДЕЛИКТНОЙ (ВКЛЮЧАЯ НЕБРЕЖНОСТЬ ИЛИ ИНОЕ)
+.\" ОСНОВЫВАЕТСЯ ЛИСПОЛЬЗОВАНИЕ ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ БЫЛО СООБЩЕНО О
+.\" ВОЗМОЖНОСТИ ТАКОГО УЩЕРБА.
+."
+." @(#)df.1 8.3 (Беркли) 5/8/95
+."
+.Dd 29 марта 2023 г.
 .Dt DF 1
 .Os
-.Sh NAME
+.Sh НАЗВАНИЕ
 .Nm df
-.Nd display free disk space
-.Sh SYNOPSIS
+.Nd отображение свободного дискового пространства
+.Sh СИНТАКСИС
 .Nm
 .Op Fl -libxo
 .Op Fl b | g | H | h | k | m | P
 .Op Fl acilnT
-.Op Fl \&,
+.Op Fl &,
 .Op Fl t Ar type
-.Op Ar file | filesystem ...
-.Sh DESCRIPTION
-The
+.Op Ar file | file system ...
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility
-displays statistics about the amount of free disk space on the specified
-mounted
+отображает статистику о количестве свободного дискового пространства
+на указанной смонтированной
 .Ar file system
-or on the file system of which
+или на файловой системе, частью которой является
 .Ar file
-is a part.
-By default block counts are displayed with an assumed block size of
-512 bytes.
-If neither a file or a file system operand is specified,
-statistics for all mounted file systems are displayed
-(subject to the
+.
+По умолчанию количество блоков отображается с предполагаемым размером блока 512 байт.
+Если не указан ни файл, ни файловая система,
+отображается статистика для всех смонтированных файловых систем
+(в соответствии с опцией
 .Fl t
-option below).
+ниже).
 .Pp
-The following options are available:
+Доступны следующие параметры:
 .Bl -tag -width indent
 .It Fl -libxo
-Generate output via
+Генерировать вывод через
 .Xr libxo 3
-in a selection of different human and machine readable formats.
-See
+в различных форматах, читаемых человеком и машиной.
+См.
 .Xr xo_parse_args 3
-for details on command line arguments.
+для получения подробной информации об аргументах командной строки.
 .It Fl a
-Show all mount points, including those that were mounted with the
+Показать все точки монтирования, включая те, которые были смонтированы с флагом
 .Dv MNT_IGNORE
-flag.
-This is implied for file systems specified on the command line.
+.
+Это подразумевается для файловых систем, указанных в командной строке.
 .It Fl b
-Explicitly use 512 byte blocks, overriding any
+Явно использовать блоки размером 512 байт, переопределяя любую спецификацию
 .Ev BLOCKSIZE
-specification from the environment.
-This is the same as the
+из среды.
+Это то же самое, что и опция
 .Fl P
-option.
-The
+.
+Опция
 .Fl k
-option overrides this option.
+переопределяет эту опцию.
 .It Fl c
-Display a grand total.
+Показать общий итог.
 .It Fl g
-Use 1073741824 byte (1 Gibibyte) blocks rather than the default.
-This overrides any
+Использовать блоки размером 1073741824 байта (1 Гигабайт) вместо значения по умолчанию.
+Это переопределяет любую спецификацию
 .Ev BLOCKSIZE
-specification from the environment.
+из среды.
 .It Fl h
-.Dq Human-readable
-output.
-Use unit suffixes: Byte, Kibibyte, Mebibyte, Gibibyte, Tebibyte and
-Pebibyte (based on powers of 1024) in order to reduce the number of
-digits to four or fewer.
+.Dq Читаемый человеком
+вывод.
+Используйте суффиксы единиц: байт, Килобайт, Мегабайт, Гигабайт, Терабайт и
+Петабайт (на основе степеней 1024), чтобы уменьшить количество цифр до четырех или менее.
 .It Fl H , Fl Fl si
-Same as
+То же, что и
 .Fl h
-but based on powers of 1000.
+, но на основе степеней 1000.
 .It Fl i
-Include statistics on the number of free and used inodes.
-In conjunction with the
+Включить статистику по количеству свободных и использованных инодов.
+В сочетании с опциями
 .Fl h
-or
+или
 .Fl H
-options, the number of inodes is scaled by powers of 1000.
-In case the filesystem has no inodes then
+количество инодов масштабируется степенями 1000.
+В случае, если файловая система не имеет инодов, то вместо процента использования отображается
 .Sq -
-is displayed instead of the usage percentage.
+.
 .It Fl k
-Use 1024 byte (1 Kibibyte) blocks rather than the default.
-This overrides the
+Использовать блоки размером 1024 байта (1 Килобайт) вместо значения по умолчанию.
+Это переопределяет опцию
 .Fl P
-option and any
+и любую спецификацию
 .Ev BLOCKSIZE
-specification from the environment.
+из среды.
 .It Fl l
-Select locally-mounted file system for display.
-If used in combination with the
+Выбрать локально смонтированную файловую систему для отображения.
+При использовании в сочетании с опцией
 .Fl t Ar type
-option, file system types will be added or excluded acccording to the
-parameters of that option.
+, типы файловых систем будут добавляться или исключаться в соответствии с
+параметрами этой параметры.
 .It Fl m
-Use 1048576 byte (1 Mebibyte) blocks rather than the default.
-This overrides any
+Использовать блоки размером 1048576 байт (1 Мегабайт) вместо значения по умолчанию.
+Это переопределяет любую спецификацию
 .Ev BLOCKSIZE
-specification from the environment.
+из среды.
 .It Fl n
-Print out the previously obtained statistics from the file systems.
-This option should be used if it is possible that one or more
-file systems are in a state such that they will not be able to provide
-statistics without a long delay.
-When this option is specified,
+Распечатать ранее полученную статистику из файловых систем.
+Эту опцию следует использовать, если возможно, что одна или несколько
+файловых систем находятся в таком состоянии, что они не смогут предоставить
+статистику без длительной задержки.
+Когда указана эта опция,
 .Nm
-will not request new statistics from the file systems, but will respond
-with the possibly stale statistics that were previously obtained.
+не будет запрашивать новую статистику у файловых систем, а ответит
+возможно устаревшей статистикой, которая была получена ранее.
 .It Fl P
-Explicitly use 512 byte blocks, overriding any
+Явно использовать блоки размером 512 байт, переопределяя любую спецификацию
 .Ev BLOCKSIZE
-specification from the environment.
-This is the same as the
+из среды.
+Это то же самое, что и опция
 .Fl b
-option.
-The
+.
+Опция
 .Fl k
-option overrides this option.
+переопределяет эту опцию.
 .It Fl t Ar type
-Select file systems to display.
-More than one type may be specified in a comma separated list.
-The list of file system types can be prefixed with
+Выбрать файловые системы для отображения.
+Можно указать несколько типов в списке, разделенном запятыми.
+Список типов файловых систем может иметь префикс
 .Dq no
-to specify the file system types for which action should
+, чтобы указать типы файловых систем, для которых действие
 .Em not
-be taken.
-If used in combination with the
+должно выполняться.
+При использовании в сочетании с опцией
 .Fl l
-option, the parameters of this option will modify the list of
-locally-mounted file systems selected by the
+параметры этой параметры будут изменять список
+локально смонтированных файловых систем, выбранных опцией
 .Fl l
-option.
-For example, the
+.
+Например, команда
 .Nm
-command:
+:
 .Bd -literal -offset indent
 df -t nonfs,nullfs
 .Ed
 .Pp
-lists all file systems except those of type NFS and NULLFS.
-The
+выводит список всех файловых систем, кроме тех, которые относятся к типам NFS и NULLFS.
+Команда
 .Xr lsvfs 1
-command can be used to find out the types of file systems
-that are available on the system.
+может быть использована для выяснения типов файловых систем
+, которые доступны в системе.
 .It Fl T
-Include file system type.
+Включить тип файловой системы.
 .It Fl ,
-(Comma) Print sizes grouped and separated by thousands using the
-non-monetary separator returned by
-.Xr localeconv 3 ,
-typically a comma or period.
-If no locale is set, or the locale does not have a non-monetary separator, this
-option has no effect.
+(Запятая) Выводить размеры, сгруппированные и разделенные тысячами, используя
+немонетарный разделитель, возвращаемый
+.Xr localeconv 3
+, обычно запятую или точку.
+Если локаль не установлена или локаль не имеет немонетарного разделителя, эта
+опция не имеет эффекта.
 .El
-.Sh ENVIRONMENT
+.Sh ОКРУЖАЮЩАЯ СРЕДА
 .Bl -tag -width BLOCKSIZE
 .It Ev BLOCKSIZE
-Specifies the units in which to report block counts.
-This uses
-.Xr getbsize 3 ,
-which allows units of bytes or numbers scaled with the letters
+Указывает единицы, в которых следует сообщать количество блоков.
+Это использует
+.Xr getbsize 3
+, что позволяет использовать единицы байтов или числа, масштабированные с помощью букв
 .Em k
-(for multiples of 1024 bytes),
+(для кратных 1024 байтам),
 .Em m
-(for multiples of 1048576 bytes) or
+(для кратных 1048576 байтам) или
 .Em g
-(for gibibytes).
-The allowed range is 512 bytes to 1 GB.
-If the value is outside, it will be set to the appropriate limit.
+(для гигабайтов).
+Допустимый диапазон - от 512 байт до 1 ГБ.
+Если значение выходит за пределы, оно будет установлено на соответствующий предел.
 .El
-.Sh EXAMPLES
-Show human readable free disk space for all mount points including file system
-type:
+.Sh ПРИМЕРЫ
+Показать читаемое человеком свободное дисковое пространство для всех точек монтирования, включая тип файловой системы:
 .Bd -literal -offset indent
 $ df -ahT
-Filesystem   Type        Size    Used   Avail Capacity  Mounted on
-/dev/ada1p2  ufs         213G    152G     44G    78%    /
-devfs        devfs       1.0K    1.0K      0B   100%    /dev
-/dev/ada0p1  ufs         1.8T    168G    1.5T    10%    /data
-linsysfs     linsysfs    4.0K    4.0K      0B   100%    /compat/linux/sys
-/dev/da0     msdosfs     7.6G    424M    7.2G     5%    /mnt/usb
+Файловая_система Тип Размер Использовано Доступно Вместимость Смонтировано_на
+/dev/ada1p2 ufs 213G 152G 44G 78% /
+devfs devfs 1.0K 1.0K 0B 100% /dev
+/dev/ada0p1 ufs 1.8T 168G 1.5T 10% /data
+linsysfs linsysfs 4.0K 4.0K 0B 100% /compat/linux/sys
+/dev/da0 msdosfs 7.6G 424M 7.2G 5% /mnt/usb
 .Ed
 .Pp
-Show previously collected data including inode statistics except for devfs or
-linsysfs file systems.
-Note that the
+Показать ранее собранные данные, включая статистику инодов, за исключением файловых систем devfs или
+linsysfs.
+Обратите внимание, что префикс
 .Dq no
-prefix affects all the file systems in the list and the
+влияет на все файловые системы в списке, а опция
 .Fl t
-option can be specified only once:
+может быть указана только один раз:
 .Bd -literal -offset indent
 $ df -i -n -t nodevfs,linsysfs
-Filesystem   1K-blocks      Used      Avail Capacity iused     ifree %iused
-Mounted on
-/dev/ada1p2  223235736 159618992   45757888    78% 1657590  27234568    6%   /
-/dev/ada0p1 1892163184 176319420 1564470712    10% 1319710 243300576    1%
+Файловая_система 1K-блоки Использовано Доступно Вместимость iused ifree %iused
+Смонтировано_на
+/dev/ada1p2 223235736 159618992 45757888 78% 1657590 27234568 6% /
+/dev/ada0p1 1892163184 176319420 1564470712 10% 1319710 243300576 1%
 /data
-/dev/da0       7989888    433664    7556224     5%       0         0  100%
+/dev/da0 7989888 433664 7556224 5% 0 0 100%
 /mnt/usb
 .Ed
 .Pp
-Show human readable information for the file system containing the file
+Показать читаемую человеком информацию для файловой системы, содержащей файл
 .Pa /etc/rc.conf :
 .Bd -literal -offset indent
 $ df -h /etc/rc.conf
-Filesystem     Size    Used   Avail Capacity  Mounted on
-/dev/ada1p2    213G    152G     44G    78%    /
+Файловая_система Размер Использовано Доступно Вместимость Смонтировано_на
+/dev/ada1p2 213G 152G 44G 78% /
 .Ed
 .Pp
-Same as above but specifying some file system:
+То же, что и выше, но с указанием некоторой файловой системы:
 .Bd -literal -offset indent
 $ df -h /dev/ada1p2
-Filesystem     Size    Used   Avail Capacity  Mounted on
-/dev/ada1p2    213G    152G     44G    78%    /
+Файловая_система Размер Использовано Доступно Вместимость Смонтировано_на
+/dev/ada1p2 213G 152G 44G 78% /
 .Ed
-.Sh NOTES
-For non-Unix file systems, the reported values of used and free inodes
-may have a different meaning than that of used and available files and
-directories.
-An example is msdosfs, which in the case of FAT12 or FAT16 file systems
-reports the number of available and free root directory entries instead
-of inodes
+.Sh ПРИМЕЧАНИЯ
+Для файловых систем, отличных от Unix, сообщаемые значения использованных и свободных инодов
+могут иметь другое значение, чем значения использованных и доступных файлов и
+каталогов.
+Примером является msdosfs, которая в случае файловых систем FAT12 или FAT16
+сообщает количество доступных и свободных записей корневого каталога вместо инодов
 .Po
-where 1 to 21 such directory entries are required to store
-each file or directory name or disk label
+, где от 1 до 21 такой записи каталога требуется для хранения
+каждого имени файла или каталога или метки диска
 .Pc .
-.Sh SEE ALSO
+.Sh СМ. ТАКЖЕ
 .Xr lsvfs 1 ,
 .Xr quota 1 ,
 .Xr fstatfs 2 ,
@@ -272,36 +266,36 @@ each file or directory name or disk label
 .Xr pstat 8 ,
 .Xr quot 8 ,
 .Xr swapinfo 8
-.Sh STANDARDS
-With the exception of most options,
-the
+.Sh СТАНДАРТЫ
+За исключением большинства опций,
+утилита
 .Nm
-utility conforms to
-.St -p1003.1-2004 ,
-which defines only the
+соответствует
+.St -p1003.1-2004
+, который определяет только параметры
 .Fl k , P
-and
+и
 .Fl t
-options.
-.Sh HISTORY
-A
+.
+.Sh ИСТОРИЯ
+Команда
 .Nm
-command appeared in
+появилась в
 .At v1 .
-.Sh BUGS
-The
+.Sh ОШИБКИ
+Флаг
 .Fl n
-flag is ignored if a file or file system is specified.
-Also, if a mount
-point is not accessible by the user, it is possible that the file system
-information could be stale.
+игнорируется, если указан файл или файловая система.
+Кроме того, если точка монтирования
+недоступна для пользователя, возможно, что информация о файловой системе
+может быть устаревшей.
 .Pp
-The
+параметры
 .Fl b
-and
+и
 .Fl P
-options are identical.
-The former comes from the BSD tradition, and the latter is required
-for
+идентичны.
+Первая происходит из традиции BSD, а вторая требуется
+для соответствия
 .St -p1003.1-2004
 conformity.

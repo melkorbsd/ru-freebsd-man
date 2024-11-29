@@ -12,10 +12,10 @@
 .\"	$Id: vacation.1,v 8.35 2013-11-22 20:52:02 ca Exp $
 .\"
 .TH VACATION 1 "$Date: 2013-11-22 20:52:02 $"
-.SH NAME
+.SH ИМЯ
 vacation
-\- E-mail auto-responder
-.SH SYNOPSIS
+\- авто-ответчик для E-mail
+.SH СИНТАКСИС
 .B vacation
 .RB [ \-a
 .IR alias ]
@@ -42,218 +42,204 @@ vacation
 .RB [ \-x ]
 .RB [ \-z ]
 .I login
-.SH DESCRIPTION
+.SH ОПИСАНИЕ
 .B Vacation
-returns a message,
+возвращает сообщение,
 .IR ~/.vacation.msg
-by default, to the sender informing them that you are currently not
-reading your mail.
-The message is only sent to each sender once per reply interval (see
+по умолчанию, отправитель информируется о том, что Вы в данный момент не
+читаете свою почту.
+Сообщение отправляется каждому отправителю только только один раз в течение интервала ответа (смотрите
 .B \-r
-below).
-The intended use is in a
+ниже).
+Информация о предполагаемом использовании находится в файле
 .I .forward
-file.  For example, your
+Например, Ваш файл
 .I .forward
-file might have:
+может содержать:
 .IP
 \eeric, "|/usr/bin/vacation -a allman eric"
 .PP
-which would send messages to you (assuming your login name was eric) and
-reply to any messages for
+который отправлял бы Вам (полагая, что Ваше имя пользователя eric) и
+отвечал бы на любые сообщения для
 ``eric''
-or
+или
 ``allman''.
 .PP
-Available options:
+Доступные параметры:
 .TP
 .BI \-a " alias"
-Handle messages for
+Обрабатывает сообщения для псевдонима
 .I alias
-in the same manner as those received for the user's
-login name.
+таким же образом, как и полученные сообщения на имя пользователя.
 .TP
 .BI \-C " cfpath"
-Specify pathname of the sendmail configuration file.
-This option is ignored if
+Указывает путь к файлу конфигурации отправляемого письма.  
+Этот параметр игнорируется, если указан ключ
 .B \-U
-is specified.
-This option defaults to the standard sendmail configuration file,
-located at /etc/mail/sendmail.cf on most systems.
+Этот параметр по умолчанию использует стандартный файл конфигурации отправляемого письма, 
+находящийся в большинстве систем по адресу /etc/mail/sendmail.cf.
 .TP
 .B \-d
-Send error/debug messages to stderr instead of syslog.
-Otherwise, fatal errors, such as calling
+Отправляет сообщения об ошибках/отладке в stderr вместо syslog.
+В противном случае, фатальные ошибки, такие как вызов
 .B vacation
-with incorrect arguments, or with non-existent
+с ложными параметрами или с несуществующими именами пользователей в параметрах
 .IR login s,
-are logged in the system log file, using
-syslog(8).
-This should only be used on the command line, not in your
-.I .forward
-file.
+регистрируются в системном журнале с помощью
+.Xr syslog 8 .
+Этот параметр должен быть использован только в командной строке, а не в Вашем файле
+.I .forward .
 .TP
 .BI \-f " filename"
-Use
+Использовать
 .I filename
-as name of the database instead of
+в качестве имени базы данных вместо
 .IR ~/.vacation.db
-or
+или
 .IR ~/.vacation.{dir,pag} .
-Unless the
+Если только
 .I filename
-starts with / it is relative to ~.
+не начинается с / не относится к ~.
 .TP
 .B \-i
-Initialize the vacation database files.  It should be used
-before you modify your
-.I .forward
-file.
-This should only be used on the command line, not in your
-.I .forward
-file.
+Инициализировать файлы базы данных. Этот параметр должен использоваться
+прежде, чем вы измените ваш файл
+.I .forward .
+Этот параметр должен использоваться только в командной строке, а не в Вашем файле
+.I .forward .
 .TP
 .B \-I
-Same as
+Такой же параметр, что и
 .B \-i
-(for backwards compatibility).
-This should only be used on the command line, not in your
-.I .forward
-file.
+(для обратной совместимости).
+Этот параметр должен использоваться только в командной строке, а не в Вашем файле
+.I .forward .
 .TP
 .B \-j
-Respond to the message regardless of whether the login is listed as
-a recipient for the message.
-Do not use this flag unless you are sure of the consequences.
-For example, this will cause
+Отвечает на сообщение независимо от того, указано ли имя пользователя (login) в качестве 
+получателя сообщения.
+Не используйте эту команду, если вы не уверены в последствиях.
+Например, это может вынудить
 .i vacation
-to reply to mailing list messages which may result in removing
-you from the list.
+отвечать на сообщения из списка рассылка, что может привести к удалению
+вас из списка.
 .TP
 .B \-l
-List the content of the vacation database file including the address
-and the associated time of the last auto-response to that address.
-This should only be used on the command line, not in your
-.I .forward
-file.
+Отображать содержимое файла из базы данных vacation, включая адрес
+и связанное с ним время последнего автоматического ответа на этот адрес.
+Этот параметр должен использоваться только в командной строке, а не в Вашем файле
+.I .forward .
 .TP
 .BI \-m " filename"
-Use
+Использовать
 .I filename
-as name of the file containing the message to send instead of
+в качестве имени файла, содержащего сообщение, отправляемое вместо
 .IR ~/.vacation.msg .
-Unless the
+Если только
 .I filename
-starts with / it is relative to ~.
+не начинается с / не относится к ~.
 .TP
 .BI \-R " returnaddr"
-Set the reply envelope sender address
+Задать адрес отправителя в качестве адреса для ответа
 .TP
 .BI \-r " interval"
-Set the reply interval to
+Установить интервал для ответа длительностью
 .I interval
-days.  The default is one week.
-An interval of ``0'' or
+дней.  Значение по умолчанию равно одной неделе.
+Интервал ``0'' или
 ``infinite''
-(actually, any non-numeric character) will never send more than
-one reply.
-The
+(на самом деле, любой не-числовой символ) никогда не отправит больше
+одного ответа.
+Параметр
 .B \-r
-option should only be used when the vacation database is initialized
-(see
+должен использоваться только тогда, когда база данных vacation запущена
+(смотрите
 .B \-i
-above).
+выше).
 .TP
 .BI \-s " address"
-Use
+Использовать
 .I address
-instead of the incoming message sender address on the
+вместо входящего сообщения в строке
 .I From
-line as the recipient for the vacation message.
+в качестве получателя сообщения vacation.
 .TP
 .BI \-t " time"
-Ignored, available only for compatibility with Sun's
-vacation program.
+Игнорируется, доступно только для совместимости с программой Sun's vacation.
 .TP
 .B \-U
-Do not attempt to lookup
+Не пытаться искать
 .I login
-in the password file.
-The -f and -m options must be used to specify the database and message file
-since there is no home directory for the default settings for these options.
+в файле паролей.
+Параметры -f и -m должны использоваться для указания файлов базы данных и файла сообщения,
+так как домашний каталог не задан по умолчанию для этих параметров.
 .TP
 .B \-x
-Reads an exclusion list from stdin (one address per line).
-Mails coming from an address
-in this exclusion list won't get a reply by
+Читать список исключений из stdin (по одному адресу на строку).
+Письма, поступающие с адреса 
+из этого списка исключений, останутся без ответа от
 .BR vacation .
-It is possible to exclude complete domains by specifying
+Возможно исключить полные домены, указав
 ``@domain''
-as element of the exclusion list.
-This should only be used on the command line, not in your
-.I .forward
-file.
+в качестве элемента списка исключений.
+Этот параметр должен использоваться только в командной строке, а не в Вашем файле
+.I .forward .
 .TP
 .B \-z
-Set the sender of the vacation message to
+Установить в качестве отправителя сообщения от vacation
 ``<>''
-instead of the user.
-This probably violates the RFCs since vacation messages are
-not required by a standards-track RFC to have a null reverse-path.
+вместо пользователя.
+Это, вероятно, нарушает требования RFC, поскольку стандарт не требует, чтобы сообщения от vacation
+содержали нулевой обратный путь.
 .PP
 .B Vacation
-reads the first line from the standard input for a
-UNIX
+читает первую строку из стандартного ввода UNIX
+(строку ``From'' ) для определения 
+отправителя. Sendmail(8) включает строку
 ``From''
-line to determine the sender.
-Sendmail(8)
-includes this
-``From''
-line automatically.
+автоматически.
 .PP
-No message will be sent unless
+Сообщение не будет отправлено, если только
 .I login
-(or an
+(или
 .I alias
-supplied using the
-.B \-a
-option) is part of either the
+указанный с помощью параметра
+.B \-a )
+не является частью заголовков письма
 ``To:''
-or
-``Cc:''
-headers of the mail.
-No messages from
+или
+``Cc:'' .
+Ни на какие сообщения от
 ``???-REQUEST'',
 ``???-RELAY'',
 ``???-OWNER'',
-``OWNER-???'',
 ``Postmaster'',
 ``UUCP'',
 ``MAILER'',
-or
+или
 ``MAILER-DAEMON''
-will be replied to (where these strings are
-case insensitive) nor is a notification sent if a
+не будут даны ответы (регистр в этих строках
+имеет значение) и они не получат уведомлений в случает, если строки
 ``Precedence: bulk''
-or
+или
 ``Precedence: junk''
-line is included in the mail headers.
-The people who have sent you messages are maintained as a
+включенs в заголовок письма.
+Люди, которые отправляли Вам сообщения, хранятся в базах данных
 db(3)
-or
+или
 dbm(3)
-database in the file
+файлов
 .I .vacation.db
-or
+или
 .I .vacation.{dir,pag}
-in your home directory.
+в Вашем домашнем каталоге.
 .PP
 .B Vacation
-expects a file
+ожидает наличия файла
 .IR .vacation.msg ,
-in your home directory, containing a message to be sent back to each
-sender.  It should be an entire message (including headers).  For
-example, it might contain:
+в вашем домашнем каталоге, содержащего сообщение, отправляемое обратно каждому
+отправителю. Это должно быть полноценное сообщения (включая заголовки).
+Например, оно может содержать:
 .IP
 .nf
 From: eric@CS.Berkeley.EDU (Eric Allman)
@@ -261,25 +247,25 @@ Subject: I am on vacation
 Delivered-By-The-Graces-Of: The Vacation program
 Precedence: bulk
 
-I am on vacation until July 22.  If you have something urgent,
-please contact Keith Bostic <bostic@CS.Berkeley.EDU>.
+I am on vacation until July 22. If you have something urgent,
+please contact Keith Bostic bostic@CS.Berkeley.EDU.
 --eric
 .fi
-.SH FILES
+.SH ФАЙЛЫ
 .TP 1.8i
 ~/.vacation.db
-default database file for db(3)
+файл базы данных по умолчанию для db(3)
 .TP 1.8i
 ~/.vacation.{dir,pag}
-default database file for dbm(3)
+файл базы данных по умолчанию для dbm(3)
 .TP
 ~/.vacation.msg
-default message to send
-.SH SEE ALSO
-sendmail(8),
-syslog(8)
-.SH HISTORY
-The
+сообщение для отправки по умолчанию
+.SH СМОТРИТЕ ТАКЖЕ
+.Xr sendmail 8 ,
+.Xr syslog 8 ,
+.SH ИСТОРИЯ
+Команда
 .B vacation
-command appeared in
+появилась в
 4.3BSD.

@@ -1,1056 +1,1056 @@
 .\"-
 .\" Copyright (c) 2000 Brian Somers <brian@Awfulhak.org>
-.\" All rights reserved.
+.\" Все права защищены.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
+.\" Распространение и использование в исходных и двоичных формах, с или без
+.\" модификацией, разрешены при соблюдении следующих условий
+.\" соблюдены:
+.\" 1. Перераспределение исходного кода должно сохранять вышеуказанное уведомление об авторских правах
+.\" уведомление об авторских правах, этот список условий и следующий отказ от ответственности.
+.\" 2. Перераспределение в двоичной форме должно воспроизводить вышеуказанное уведомление об авторских правах
+.\" уведомление об авторских правах, этот список условий и следующий отказ от ответственности в
+.\" документации и/или других материалах, поставляемых вместе с дистрибутивом.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ АВТОРОМ И РАЗРАБОТЧИКАМИ "КАК ЕСТЬ" И
+.\" ЛЮБЫЕ ЯВНЫЕ ИЛИ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ
+.\" ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ТОВАРНОГО СОСТОЯНИЯ И ПРИГОДНОСТИ ДЛЯ КОНКРЕТНОЙ ЦЕЛИ
+.\" НЕ ПРИНИМАЮТСЯ.  НИ ПРИ КАКИХ ОБСТОЯТЕЛЬСТВАХ АВТОР ИЛИ СОАВТОРЫ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ
+.\" ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, СПЕЦИАЛЬНЫЕ, ПРИМЕРНЫЕ ИЛИ КОСВЕННЫЕ УБЫТКИ.
+.\" УЩЕРБ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПРИОБРЕТЕНИЕ ТОВАРОВ-ЗАМЕНИТЕЛЕЙ
+.\" ИЛИ УСЛУГИ; ПОТЕРЮ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПЕРЕРЫВ В РАБОТЕ)
+.\" НЕЗАВИСИМО ОТ ПРИЧИН И ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО КОНТРАКТ, СТРОГИЙ
+.\" ОТВЕТСТВЕННОСТИ, ИЛИ ДЕЛИКТА (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНОЕ), ВОЗНИКАЮЩИХ КАКИМ-ЛИБО ОБРАЗОМ
+.\" В СВЯЗИ С ИСПОЛЬЗОВАНИЕМ ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ ВЫ БЫЛИ ПРЕДУПРЕЖДЕНЫ О ВОЗМОЖНОСТИ
+.\" ТАКОГО УЩЕРБА.
 .\"
-.Dd March 9, 2022
+.Dd 9 марта 2022 г.
 .Dt PERIODIC.CONF 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm periodic.conf
-.Nd periodic job configuration information
-.Sh DESCRIPTION
-The file
+.Nd информация о конфигурации периодических заданий
+.Sh ОПИСАНИЕ
+Файл
 .Nm
-contains a description of how daily, weekly and monthly system maintenance
-jobs should run.
-It resides in the
+содержит описание того, как должны выполняться ежедневные, еженедельные и ежемесячные задания по обслуживанию системы
+ежедневного, еженедельного и ежемесячного обслуживания системы.
+Он находится в папке
 .Pa /etc/defaults
-directory and parts may be overridden by a file of the same name in
+и его части могут быть переопределены одноименным файлом в каталоге
 .Pa /etc ,
-which itself may be overridden by the
+который сам может быть переопределен файлом
 .Pa /etc/periodic.conf.local
-file.
+файл.
 .Pp
-The
+Файл
 .Nm
-file
-is actually sourced as a shell script from each of the periodic scripts
-and is intended to simply provide default configuration variables.
+файл
+на самом деле создается как сценарий оболочки из каждого периодического сценария
+и предназначен просто для предоставления переменных конфигурации по умолчанию.
 .Pp
-The following variables are used by
+Следующие переменные используются
 .Xr periodic 8
-itself:
+самостоятельно:
 .Bl -tag -offset 4n -width 2n
 .It Va local_periodic
 .Pq Vt str
-List of directories to search for periodic scripts.
-This list is always prefixed with
+Список каталогов для поиска периодических скриптов.
+Этот список всегда имеет префикс
 .Pa /etc/periodic ,
-and is only used when an argument to
+и используется только в качестве аргумента к
 .Xr periodic 8
-is not an absolute directory name.
+не является абсолютным именем каталога.
 .It Ao Ar dir Ac Ns Va _output
-.Pq Vt path No or Vt list
-What to do with the output of the scripts executed from
-the directory
+.Pq Vt путь Нет или список Vt
+Что делать с выводом скриптов, выполняемых из
+каталога
 .Ar dir .
-If this variable is set to an absolute path name, output is logged to
-that file, otherwise it is taken as one or more space separated email
-addresses and mailed to those users.
-If this variable is not set or is empty, output is sent to standard output.
+Если эта переменная имеет абсолютное имя пути, вывод записывается в
+этот файл, в противном случае он будет принят как один или несколько адресов электронной почты, разделенных пробелами
+и рассылается этим пользователям.
+Если эта переменная не задана или пуста, вывод отправляется в стандартный вывод.
 .Pp
-For an unattended machine, suitable values for
-.Va daily_output ,
+Для необслуживаемой машины подходящие значения для
+.Va ежедневный_вывод ,
 .Va weekly_output ,
-and
+и
 .Va monthly_output
-might be
+могут быть следующими
 .Dq Li /var/log/daily.log ,
 .Dq Li /var/log/weekly.log ,
-and
+и
 .Dq Li /var/log/monthly.log
-respectively, as
+соответственно, как
 .Xr newsyslog 8
-will rotate these files (if they exists) at the appropriate times.
+будет поворачивать эти файлы (если они существуют) в соответствующее время.
 .It Ao Ar dir Ac Ns Va _show_success
 .It Ao Ar dir Ac Ns Va _show_info
 .It Ao Ar dir Ac Ns Va _show_badconfig
 .Pq Vt bool
-These variables control whether
+Эти переменные контролируют, будет ли
 .Xr periodic 8
-will mask the output of the executed scripts based on their return code
-(where
+будет маскировать вывод выполняемых скриптов на основе их кода возврата
+(где
 .Ar dir
-is the base directory name in which each script resides).
-If the return code of a script is
+это имя базового каталога, в котором находится каждый скрипт).
+Если код возврата скрипта
 .Sq 0
-and
+и
 .Ao Ar dir Ac Ns Va _show_success
-is set to
+установлено значение
 .Dq Li NO ,
 .Xr periodic 8
-will mask the script's output.
-If the return code of a script is
+будет маскировать вывод скрипта.
+Если код возврата сценария равен
 .Sq 1
-and
+и
 .Ao Ar dir Ac Ns Va _show_info
-is set to
+установлено значение
 .Dq Li NO ,
 .Xr periodic 8
-will mask the script's output.
-If the return code of a script is
+будет маскировать вывод скрипта.
+Если код возврата сценария равен
 .Sq 2
-and
+и
 .Ao Ar dir Ac Ns Va _show_badconfig
-is set to
+установлено значение
 .Dq Li NO ,
 .Xr periodic 8
-will mask the script's output.
-If these variables are set to neither
+будет маскировать вывод скрипта.
+Если для этих переменных не установлено значение
 .Dq Li YES
-nor
+ни
 .Dq Li NO ,
-they default to
+то по умолчанию они принимают значение
 .Dq Li YES ,
 .Dq Li YES
-and
+и
 .Dq Li NO
-respectively.
+соответственно.
 .Pp
-Refer to the
+Обратитесь к
 .Xr periodic 8
-manual page for how script return codes are interpreted.
-.It Va anticongestion_sleeptime
+о том, как интерпретируются коды возврата сценария.
+.It Va антиконгестия_время сна
 .Pq Vt int
-The maximum number of seconds to randomly sleep in order to smooth bursty loads
-on a shared resource, such as a download mirror.
+Максимальное количество секунд случайного сна для сглаживания скачкообразных нагрузок
+на общий ресурс, например зеркало загрузки.
 .El
 .Pp
-The following variables are used by the standard scripts that reside in
+Следующие переменные используются стандартными скриптами, находящимися в папке
 .Pa /etc/periodic/daily :
 .Bl -tag -offset 4n -width 2n
 .It Va daily_clean_disks_enable
 .Pq Vt bool
-Set to
+Установить на
 .Dq Li YES
-if you want to remove all files matching
+если вы хотите удалить все файлы, соответствующие
 .Va daily_clean_disks_files
-daily.
+ежедневно.
 .It Va daily_clean_disks_files
 .Pq Vt str
-Set to a list of file names to match.
-Wild cards are permitted.
+Устанавливается в список имен файлов для проверки.
+Допускаются дикие символы.
 .It Va daily_clean_disks_days
 .Pq Vt num
-When
+Когда
 .Va daily_clean_disks_enable
-is set to
+установлено значение
 .Dq Li YES ,
-this must also be set to the number of days old that a file's access
-and modification times must be before it is deleted.
+это значение также должно соответствовать количеству дней, в течение которых время доступа к файлу
+и модификации файла, прежде чем он будет удален.
 .It Va daily_clean_disks_verbose
 .Pq Vt bool
-Set to
+Установить в
 .Dq Li YES
-if you want the removed files to be reported in your daily output.
+если вы хотите, чтобы об удаленных файлах сообщалось в ежедневном выводе.
 .It Va daily_clean_tmps_enable
 .Pq Vt bool
-Set to
+Установите значение
 .Dq Li YES
-if you want to clear temporary directories daily.
+если вы хотите ежедневно очищать временные каталоги.
 .It Va daily_clean_tmps_dirs
 .Pq Vt str
-Set to the list of directories to clear if
+Устанавливается в список каталогов, которые нужно очистить, если
 .Va daily_clean_tmps_enable
-is set to
+установлено значение
 .Dq Li YES .
 .It Va daily_clean_tmps_days
 .Pq Vt num
-When
+Когда
 .Va daily_clean_tmps_enable
-is set, this must also be set to the number of days old that a file's access
-and modification times must be before it is deleted.
+установлено, это значение также должно соответствовать количеству дней, в течение которых время доступа к файлу
+и модификации, прежде чем он будет удален.
 .It Va daily_clean_tmps_ignore
 .Pq Vt str
-Set to the list of files that should not be deleted when
+Устанавливается в список файлов, которые не должны удаляться, когда
 .Va daily_clean_tmps_enable
-is set to
+установлен в
 .Dq Li YES .
-Wild card characters are permitted.
+Символы дикой карты разрешены.
 .It Va daily_clean_tmps_verbose
 .Pq Vt bool
-Set to
+Устанавливается в
 .Dq Li YES
-if you want the removed files to be reported in your daily output.
+если вы хотите, чтобы об удаленных файлах сообщалось в ежедневном выводе.
 .It Va daily_clean_preserve_enable
 .Pq Vt bool
-Set to
+Установите значение
 .Dq Li YES
-if you wish to remove old files from
+если вы хотите удалить старые файлы из
 .Pa /var/preserve .
 .It Va daily_clean_preserve_days
 .Pq Vt num
-Set to the number of days that files must not have been modified before
-they are deleted.
+Устанавливает количество дней, в течение которых файлы не должны быть изменены, прежде чем
+они будут удалены.
 .It Va daily_clean_preserve_verbose
 .Pq Vt bool
-Set to
+Устанавливает значение
 .Dq Li YES
-if you want the removed files to be reported in your daily output.
+если вы хотите, чтобы об удаленных файлах сообщалось в ежедневном выводе.
 .It Va daily_clean_msgs_enable
 .Pq Vt bool
-Set to
+Установите значение
 .Dq Li YES
-if you wish old system messages to be purged.
+если вы хотите, чтобы старые системные сообщения удалялись.
 .It Va daily_clean_msgs_days
 .Pq Vt num
-Set to the number of days that files must not have been modified before
-they are deleted.
-If this variable is left blank, the
+Устанавливает количество дней, в течение которых файлы не должны быть изменены, прежде чем
+они будут удалены.
+Если оставить эту переменную пустой, то
 .Xr msgs 1
-default is used.
+используется значение по умолчанию.
 .It Va daily_clean_rwho_enable
 .Pq Vt bool
-Set to
+Установить значение
 .Dq Li YES
-if you wish old files in
+если вы хотите, чтобы старые файлы в
 .Pa /var/who
-to be purged.
+должны быть очищены.
 .It Va daily_clean_rwho_days
 .Pq Vt num
-Set to the number of days that files must not have been modified before
-they are deleted.
+Устанавливает количество дней, в течение которых файлы не должны быть изменены, прежде чем
+они будут удалены.
 .It Va daily_clean_rwho_verbose
 .Pq Vt bool
-Set to
+Устанавливает значение
 .Dq Li YES
-if you want the removed files to be reported in your daily output.
+если вы хотите, чтобы об удаленных файлах сообщалось в ежедневном выводе.
 .It Va daily_clean_hoststat_enable
 .Pq Vt bool
-Set to
+Установите значение
 .Dq Li YES
-to run
+чтобы запустить
 .Nm sendmail Fl bH
-to automatically purge stale entries from
+для автоматической очистки устаревших записей из
 .Xr sendmail 8 Ns 's
-host status cache.
-Files will be deleted using the same criteria as
+кэша состояния хоста.
+Файлы будут удаляться по тем же критериям, что и
 .Xr sendmail 8
-would normally use when determining whether to believe the cached information,
-as configured in
+обычно используются при определении того, стоит ли верить кэшированной информации,
+как настроено в
 .Pa /etc/mail/sendmail.cf .
 .It Va daily_backup_efi_enable
 .Pq Vt bool
-Set to
+Установить в
 .Dq Li YES
-to create backup of EFI System Partition (ESP).
+для создания резервной копии системного раздела EFI (ESP).
 .It Va daily_backup_gmirror_enable
 .Pq Vt bool
-Set to
+Установите значение
 .Dq Li YES
-to create backup of gmirror information (i.e., output of
+для создания резервной копии информации gmirror (т. е. вывода
 .Nm gmirror Cm list ) ,
-see
+см.
 .Xr gmirror 8 .
 .It Va daily_backup_gmirror_verbose
 .Pq Vt bool
-Set to
+Установить на
 .Dq Li YES
-to report a diff between the new backup and the existing backup
-in the daily output.
+чтобы сообщить о разнице между новой и существующей резервной копией
+в ежедневном выводе.
 .It Va daily_backup_gpart_enable
 .Pq Vt bool
-Set to
+Установите значение
 .Dq Li YES
-to create backups of partition tables, and bootcode partition contents.
+для создания резервных копий таблиц разделов и содержимого разделов bootcode.
 .It Va daily_backup_gpart_verbose
 .Pq Vt bool
-Set to
+Установите значение
 .Dq Li YES
-to be verbose if existing backups for kern.geom.conftxt or the partition tables differ
-from the new backups.
+быть подробным, если существующие резервные копии kern.geom.conftxt или таблиц разделов отличаются
+от новых резервных копий.
 .It Va daily_backup_passwd_enable
 .Pq Vt bool
-Set to
+Установить значение
 .Dq Li YES
-if you want the
+если вы хотите, чтобы
 .Pa /etc/master.passwd
-and
+и
 .Pa /etc/group
-files backed up and reported on.
-Reporting consists of checking both files for modifications and running
+резервные копии файлов и отчеты о них.
+Отчетность заключается в проверке обоих файлов на наличие изменений и выполнении команды
 .Xr chkgrp 8
-on the
-.Pa group
-file.
+на
+группа .Pa
+файла.
 .It Va daily_backup_aliases_enable
 .Pq Vt bool
-Set to
+Установить значение
 .Dq Li YES
-if you want the
+если вы хотите, чтобы
 .Pa /etc/mail/aliases
-file backed up and modifications to be displayed in your daily output.
+резервное копирование файла и отображение изменений в ежедневном выводе.
 .It Va daily_backup_zfs_enable
 .Pq Vt bool
-Set to
+Установите значение
 .Dq Li YES
-to create backup of the output generated from the
+чтобы создать резервную копию выходных данных, сгенерированных из
 .Xr zfs-list 8
-and
+и
 .Xr zpool-list 8
-utilities.
+утилиты.
 .It Va daily_backup_zfs_list_flags
 .Pq Vt str
-Set to the arguments for the
+Устанавливается в качестве аргументов для
 .Xr zfs-list 8
-utility.
-The default is standard behavior.
+утилиты.
+По умолчанию используется стандартное поведение.
 .It Va daily_backup_zpool_list_flags
 .Pq Vt str
-Set to the arguments for the
+Устанавливается в качестве аргументов для утилиты
 .Xr zpool-list 8
-utility.
-The default is
+утилиты.
+По умолчанию
 .Fl v .
 .It Va daily_backup_zfs_props_enable
 .Pq Vt bool
-Set to
+Установить значение
 .Dq Li YES
-to create backup of the output generated from the
+для создания резервной копии выходных данных, полученных в результате выполнения команды
 .Xr zfs-get 8
-and
+и
 .Xr zpool-get 8
-utilities.
+утилиты.
 .It Va daily_backup_zfs_get_flags
 .Pq Vt str
-Set to the arguments for the
+Устанавливается в качестве аргументов для
 .Xr zfs-get 8
-utility.
-The default is
+утилиты.
+По умолчанию
 .Cm all .
 .It Va daily_backup_zpool_get_flags
 .Pq Vt str
-Set to the arguments for the
+Устанавливается в качестве аргументов для
 .Xr zpool-get 8
-utility.
-The default is
+утилиты.
+По умолчанию
 .Cm all .
 .It Va daily_backup_zfs_verbose
 .Pq Vt bool
-Set to
+Установить значение
 .Dq Li YES
-to report a diff between the new backup and the existing backup
-in the daily output.
+чтобы сообщить о разнице между новой и существующей резервной копией
+в ежедневном выводе.
 .It Va daily_calendar_enable
 .Pq Vt bool
-Set to
+Установите значение
 .Dq Li YES
-if you want to run
-.Nm calendar Fl a
-daily.
+если вы хотите запустить
+.Nm календарь Fl а
+ежедневно.
 .It Va daily_accounting_enable
 .Pq Vt bool
-Set to
+Установите значение
 .Dq Li YES
-if you want to rotate your daily process accounting files.
-No rotations are necessary unless
+если вы хотите ротировать файлы ежедневного учета процесса.
+Ротация не требуется, если
 .Va accounting_enable
-is enabled in
+включен в
 .Xr rc.conf 5 .
 .It Va daily_accounting_compress
 .Pq Vt bool
-Set to
+Устанавливается в
 .Dq Li YES
-if you want your daily accounting files to be compressed using
+если вы хотите, чтобы файлы ежедневного учета были сжаты с помощью
 .Xr gzip 1 .
 .It Va daily_accounting_save
 .Pq Vt num
-When
+Когда
 .Va daily_accounting_enable
-is set, this may also be set to the number of daily accounting files that are
-to be saved.
-The default is
+установлено, это значение также может быть установлено как количество файлов ежедневного учета, которые
+должны быть сохранены.
+По умолчанию
 .Dq Li 3 .
 .It Va daily_accounting_flags
 .Pq Vt str
-Set to the arguments to pass to the
+Задается аргументами, которые необходимо передать в программу
 .Xr sa 8
-utility (in addition to
+(в дополнение к
 .Fl s )
-when
+, когда
 .Va daily_accounting_enable
-is set to
+установлен на
 .Dq Li YES .
-The default is
+По умолчанию
 .Fl q .
 .It Va daily_status_disks_enable
 .Pq Vt bool
-Set to
+Установить на
 .Dq Li YES
-if you want to run
+если вы хотите запустить
 .Xr df 1
-(with the arguments supplied in
+(с аргументами, указанными в
 .Va daily_status_disks_df_flags )
-and
+и
 .Nm dump Fl W .
 .It Va daily_status_disks_df_flags
 .Pq Vt str
-Set to the arguments for the
+Устанавливаются в качестве аргументов для
 .Xr df 1
-utility when
+когда
 .Va daily_status_disks_enable
-is set to
+установлено значение
 .Dq Li YES .
-The default is
+По умолчанию
 .Fl l Fl h .
 .It Va daily_status_zfs_enable
 .Pq Vt bool
-Set to
+Установить на
 .Dq Li YES
-if you want to run
+если вы хотите запустить
 .Nm zpool Cm status
-on your
+на вашем
 .Xr zfs 8
-pools.
+пулов.
 .It Va daily_status_zfs_zpool_list_enable
 .Pq Vt bool
-Set to
+Установите значение
 .Dq Li YES
-if you want to run
+если вы хотите запустить
 .Nm zpool Cm list
-on your
+на вашем
 .Xr zfs 8
-pools.
-Requires
+пулов.
+Требуется
 .Va daily_status_zfs_enable
-to be set to
+должно быть установлено значение
 .Li YES .
 .It Va daily_status_gmirror_enable
 .Pq Vt bool
-Set to
+Установить на
 .Dq Li YES
-if you want to run
+если вы хотите запустить
 .Nm gmirror Cm status
-on your
+на вашем
 .Xr gmirror 8
-devices.
+устройства.
 .It Va daily_status_graid3_enable
 .Pq Vt bool
-Set to
+Установите значение
 .Dq Li YES
-if you want to run
+если вы хотите запустить
 .Nm graid3 Cm status
-on your
+на вашем
 .Xr graid3 8
-devices.
+устройствах.
 .It Va daily_status_gstripe_enable
 .Pq Vt bool
-Set to
+Установите значение
 .Dq Li YES
-if you want to run
+если вы хотите запустить
 .Nm gstripe Cm status
-on your
+на вашем
 .Xr gstripe 8
-devices.
+устройствах.
 .It Va daily_status_gconcat_enable
 .Pq Vt bool
-Set to
+Установите значение
 .Dq Li YES
-if you want to run
+если вы хотите запустить
 .Nm gconcat Cm status
-on your
+на вашем
 .Xr gconcat 8
-devices.
+устройства.
 .It Va daily_status_mfi_enable
 .Pq Vt bool
-Set to
+Установите значение
 .Dq Li YES
-if you want to run
+если вы хотите запустить
 .Nm mfiutil Cm status
-on your
+на вашем
 .Xr mfi 4
-devices.
+устройствах.
 .It Va daily_status_network_enable
 .Pq Vt bool
-Set to
+Установите значение
 .Dq Li YES
-if you want to run
+если вы хотите запустить
 .Nm netstat Fl i .
 .It Va daily_status_network_netstat_flags
 .Pq Vt str
-Set to additional arguments for the
+Устанавливается в качестве дополнительных аргументов для
 .Xr netstat 1
-utility when
+когда
 .Va daily_status_network_enable
-is set to
+установлено значение
 .Dq Li YES .
-The default is
+По умолчанию
 .Fl d W .
 .It Va daily_status_network_usedns
 .Pq Vt bool
-Set to
+Установить на
 .Dq Li YES
-if you want to run
+если вы хотите запустить
 .Xr netstat 1
-without the
+без
 .Fl n
-option (to do DNS lookups).
+(для выполнения поиска DNS).
 .It Va daily_status_uptime_enable
 .Pq Vt bool
-Set to
+Установить на
 .Dq Li YES
-if you want to run
+если вы хотите запустить
 .Xr uptime 1
-(or
+(или
 .Xr ruptime 1
-if
+если
 .Va rwhod_enable
-is set to
+установлен в
 .Dq Li YES
-in
+в
 .Pa /etc/rc.conf ) .
 .It Va daily_status_mailq_enable
 .Pq Vt bool
-Set to
+Установить на
 .Dq Li YES
-if you want to run
+если вы хотите запустить
 .Xr mailq 1 .
 .It Va daily_status_mailq_shorten
 .Pq Vt bool
-Set to
+Установить на
 .Dq Li YES
-if you want to shorten the
+если вы хотите сократить
 .Xr mailq 1
-output when
+вывод, когда
 .Va daily_status_mailq_enable
-is set to
+установлен на
 .Dq Li YES .
 .It Va daily_status_include_submit_mailq
 .Pq Vt bool
-Set to
+Установлено на
 .Dq Li YES
-if you also want to run
+если вы также хотите запустить
 .Xr mailq 1
-on the submit mail queue when
+для очереди отправки почты, когда
 .Va daily_status_mailq_enable
-is set to
+установлено значение
 .Dq Li YES .
-This may not work with MTAs other than
+Это может не работать с MTA, отличными от
 .Xr sendmail 8 .
 .It Va daily_status_security_enable
 .Pq Vt bool
-Set to
+Установить на
 .Dq Li YES
-if you want to run the security check.
-The security check is another set of
-.Xr periodic 8
-scripts.
-The system defaults are in
+если вы хотите запустить проверку безопасности.
+Проверка безопасности - это еще один набор
+.Xr периодических 8
+скриптов.
+Системные настройки по умолчанию находятся в
 .Pa /etc/periodic/security .
-Local scripts should be placed in
+Локальные скрипты должны быть размещены в
 .Pa /usr/local/etc/periodic/security .
-See the
+См.
 .Xr periodic 8
-manual page for more information.
+для получения дополнительной информации.
 .It Va daily_status_security_inline
 .Pq Vt bool
-Set to
+Установить на
 .Dq Li YES
-if you want the security check output inline.
-The default is to either mail or log the output according to the value of
+если вы хотите, чтобы проверка безопасности выводилась в виде строки.
+По умолчанию вывод отправляется по почте или записывается в журнал в зависимости от значения параметра
 .Va daily_status_security_output .
 .It Va daily_status_security_output
 .Pq Vt str
-Where to send the output of the security check if
+Куда отправлять результаты проверки безопасности, если
 .Va daily_status_security_inline
-is set to
+установлено значение
 .Dq Li NO .
-This variable behaves in the same way as the
+Эта переменная ведет себя так же, как и переменная
 .Va *_output
-variables above, namely it can be set either to one or more email addresses
-or to an absolute file name.
+переменные выше, а именно: она может быть установлена либо на один или несколько адресов электронной почты
+либо на абсолютное имя файла.
 .It Va daily_status_mail_rejects_enable
 .Pq Vt bool
-Set to
+Установить в
 .Dq Li YES
-if you want to summarise mail rejections logged to
+если вы хотите просуммировать отклонения почты, зарегистрированные в
 .Pa /var/log/maillog
-for the previous day.
+за предыдущий день.
 .It Va daily_status_mail_rejects_logs
 .Pq Vt num
-Set to the number of maillog files that should be checked
-for yesterday's mail rejects.
+Устанавливает количество файлов maillog, которые должны быть проверены
+на предмет вчерашних отклонений почты.
 .It Va daily_status_ntpd_enable
 .Pq Vt bool
-Set to
+Установить значение
 .Dq Li YES
-if you want to enable NTP status check.
+если вы хотите включить проверку состояния NTP.
 .It Va daily_status_world_kernel
 .Pq Vt bool
-Set to
+Установите значение
 .Dq Li YES
-to check the running userland and kernel are in sync.
+для проверки синхронизации запущенного пользовательского окружения и ядра.
 .It Va daily_queuerun_enable
 .Pq Vt bool
-Set to
+Устанавливается в
 .Dq Li YES
-if you want to manually run the mail queue at least once a day.
+если вы хотите вручную запускать почтовую очередь хотя бы раз в день.
 .It Va daily_submit_queuerun
 .Pq Vt bool
-Set to
+Установите значение
 .Dq Li YES
-if you also want to manually run the submit mail queue at least once a day
-when
+если вы также хотите вручную запускать очередь отправки почты не реже одного раза в день.
+когда
 .Va daily_queuerun_enable
-is set to
+установлено значение
 .Dq Li YES .
 .It Va daily_scrub_zfs_enable
 .Pq Vt bool
-Set to
+Установлено на
 .Dq Li YES
-if you want to run a zfs scrub periodically.
+если вы хотите периодически запускать скраб zfs.
 .It Va daily_scrub_zfs_pools
 .Pq Vt str
-A space separated list of names of zfs pools to scrub.
-If the list is empty or not set, all zfs pools are scrubbed.
+Список имен пулов zfs для очистки, разделенный пробелами.
+Если список пуст или не задан, будут очищены все пулы zfs.
 .It Va daily_scrub_zfs_default_threshold
 .Pq Vt int
-Number of days between a scrub if no pool-specific threshold is set.
-If not set, the default value is 35, corresponding to 5 weeks.
+Количество дней между скрабами, если не задан порог для конкретного пула.
+Если порог не задан, по умолчанию используется значение 35, что соответствует 5 неделям.
 .It Va daily_scrub_zfs_ Ns Ao Ar poolname Ac Ns Va _threshold
 .Pq Vt int
-The same as
+То же, что и
 .Va daily_scrub_zfs_default_threshold
-but specific to the pool
-.Ao Ar poolname Ac Ns .
+но для конкретного пула
+.Ao Ar имя пула Ac Ns .
 .It Va daily_local
 .Pq Vt str
-Set to a list of extra scripts that should be run after all other
-daily scripts.
-All scripts must be absolute path names.
+Устанавливается в список дополнительных сценариев, которые должны выполняться после всех остальных
+ежедневных скриптов.
+Все сценарии должны быть именами абсолютных путей.
 .El
 .Pp
-The following variables are used by the standard scripts that reside in
+Следующие переменные используются стандартными скриптами, которые находятся в папке
 .Pa /etc/periodic/weekly :
 .Bl -tag -offset 4n -width 2n
 .It Va weekly_locate_enable
 .Pq Vt bool
-Set to
+Установить на
 .Dq Li YES
-if you want to run
+если вы хотите запустить
 .Pa /usr/libexec/locate.updatedb .
-This script is run using
+Этот скрипт запускается с помощью
 .Nm nice Fl 5
-as user
+как пользователь
 .Dq Li nobody ,
-and generates the table used by the
+и генерирует таблицу, используемую программой
 .Xr locate 1
-command.
+командой.
 .It Va weekly_whatis_enable
 .Pq Vt bool
-Set to
+Установить значение
 .Dq Li YES
-if you want to run
+если вы хотите запустить
 .Pa /usr/libexec/makewhatis.local .
-This script regenerates the database used by the
+Этот скрипт регенерирует базу данных, используемую программой
 .Xr apropos 1
-command.
+командой.
 .It Va weekly_noid_enable
 .Pq Vt bool
-Set to
+Установить значение
 .Dq Li YES
-if you want to locate orphaned files on the system.
-An orphaned file is one with an invalid owner or group.
+если вы хотите находить осиротевшие файлы в системе.
+Осиротевший файл - это файл с неправильным владельцем или группой.
 .It Va weekly_noid_dirs
 .Pq Vt str
-A list of directories under which orphaned files are searched for.
-This would usually be set to
+Список каталогов, в которых будут искаться осиротевшие файлы.
+Обычно это значение имеет вид
 .Pa / .
 .It Va weekly_status_security_enable
 .Pq Vt bool
-Weekly counterpart of
+Недельный аналог
 .Va daily_status_security_enable .
 .It Va weekly_status_security_inline
 .Pq Vt bool
-Weekly counterpart of
+Еженедельный аналог
 .Va daily_status_security_inline .
 .It Va weekly_status_security_output
 .Pq Vt str
-Weekly counterpart of
+Еженедельный аналог
 .Va daily_status_security_output .
 .It Va weekly_status_pkg_enable
 .Pq Vt bool
-Set to
+Установить на
 .Dq Li YES
-if you want to use
+если вы хотите использовать
 .Xr pkg-version 8
-to list installed packages which are out of date.
+для перечисления установленных пакетов, которые устарели.
 .It Va pkg_version
 .Pq Vt str
-When
+Когда
 .Va weekly_status_pkg_enable
-is set to
+установлено значение
 .Dq Li YES ,
-this variable specifies the program that is used to determine the out of
-date packages.
-If unset, the
+эта переменная задает программу, которая используется для определения устаревших
+устаревших пакетов.
+Если значение не установлено, то для определения устаревших пакетов используется программа
 .Xr pkg-version 8
-program is used.
-As an example, this variable might be set to
+используется программа .Xr pkg-version 8.
+В качестве примера, эта переменная может быть установлена в значение
 .Dq Li portversion
-if the
+если
 .Pa ports/sysutils/portupgrade
-port has been installed.
+был установлен порт.
 .It Va pkg_version_index
 .Pq Vt str
-This variable specifies the
+Эта переменная определяет
 .Pa INDEX
-file from
+файл из
 .Pa /usr/ports
-that should be used by
-.Xr pkg-version 8 .
-Because the dependency tree may be substantially different between versions of
+который должен использоваться
+.Xr pkg-версии 8 .
+Поскольку дерево зависимостей может существенно отличаться между версиями
 .Fx ,
-there may be more than one
+может существовать более одного
 .Pa INDEX
-file in
+файл в
 .Pa /usr/ports .
 .Pp
-Note, if the
+Обратите внимание, если
 .Va pkg_version
-variable is set to
+переменная установлена в значение
 .Dq Li portversion ,
-it will also be necessary to arrange that the correct
+необходимо также установить правильное значение
 .Pa INDEX
-file is specified
-using environment variables and that
+файл указан
+с помощью переменных окружения и чтобы
 .Va pkg_version_index
-is cleared in
+очищен в
 .Pa /etc/periodic.conf
 .Pq Dq Li pkg_version_index= .
 .It Va weekly_local
 .Pq Vt str
-Set to a list of extra scripts that should be run after all other
-weekly scripts.
-All scripts must be absolute path names.
+Устанавливается в список дополнительных скриптов, которые должны выполняться после всех остальных
+еженедельных скриптов.
+Все скрипты должны иметь абсолютные имена путей.
 .El
 .Pp
-The following variables are used by the standard scripts that reside in
+Следующие переменные используются стандартными скриптами, которые находятся в папке
 .Pa /etc/periodic/monthly :
 .Bl -tag -offset 4n -width 2n
 .It Va monthly_accounting_enable
 .Pq Vt bool
-Set to
+Установить значение
 .Dq Li YES
-if you want to do login accounting using the
+если вы хотите вести учет по логину, используя
 .Xr ac 8
-command.
+команда.
 .It Va monthly_status_security_enable
 .Pq Vt bool
-Monthly counterpart of
+Ежемесячный аналог команды
 .Va daily_status_security_enable .
 .It Va monthly_status_security_inline
 .Pq Vt bool
-Monthly counterpart of
+Ежемесячный аналог
 .Va daily_status_security_inline .
 .It Va monthly_status_security_output
 .Pq Vt str
-Monthly counterpart of
+Ежемесячный аналог
 .Va daily_status_security_output .
 .It Va monthly_local
 .Pq Vt str
-Set to a list of extra scripts that should be run after all other
-monthly scripts.
-All scripts must be absolute path names.
+Устанавливается в список дополнительных сценариев, которые должны выполняться после всех остальных
+ежемесячных скриптов.
+Все скрипты должны иметь абсолютные имена путей.
 .El
 .Pp
-The following variables are used by the standard scripts that reside in
+Следующие переменные используются стандартными сценариями, которые находятся в папке
 .Pa /etc/periodic/security .
-Those scripts are usually run from daily
+Эти скрипты обычно запускаются ежедневно
 .Pq Va daily_status_security_enable ,
-weekly
+еженедельно
 .Pq Va weekly_status_security_enable ,
-and monthly
+и ежемесячно
 .Pq Va monthly_status_security_enable
-periodic hooks.
-The
+периодические крючки.
+Адрес
 .Va ..._period
-of each script can be configured as
-.Dq daily ,
-.Dq weekly ,
-.Dq monthly
-or
+каждого сценария может быть настроен как
+.Dq ежедневно ,
+.Dq еженедельно ,
+.Dq ежемесячно
+или
 .Dq NO .
-Note that when periodic security scripts are run from
+Обратите внимание, что если периодические сценарии безопасности запускаются из
 .Xr crontab 5 ,
-they will be always run unless their
+они будут выполняться всегда, если только не будет установлено
 .Va ..._enable
-or
+или
 .Va ..._period
-variable is set to
+переменной установлено значение
 .Dq NO .
 .Bl -tag -offset 4n -width 2n
 .It Va security_status_diff_flags
 .Pq Vt str
-Set to the arguments to pass to the
+Устанавливается в аргументы, которые необходимо передать в программу
 .Xr diff 1
-utility when generating differences.
-The default is
+при генерации различий.
+По умолчанию
 .Fl b u .
 .It Va security_status_chksetuid_enable
 .Pq Vt bool
-Set to
+Установите значение
 .Dq Li YES
-to compare the modes and modification times of setuid executables with
-the previous day's values.
+для сравнения режимов и времени модификации исполняемых файлов setuid со значениями
+со значениями предыдущего дня.
 .It Va security_status_chksetuid_period
 .Pq Vt str
-Set to either
-.Dq Li daily ,
-.Dq Li weekly ,
-.Dq Li monthly
-or
+Установите либо
+.Dq Li ежедневно ,
+.Dq Li еженедельно ,
+.Dq Li ежемесячно
+или
 .Dq Li NO .
 .It Va security_status_chkportsum_enable
 .Pq Vt bool
-Set to
+Установить на
 .Dq Li YES
-to verify checksums of all installed packages against the known checksums in
+для проверки контрольных сумм всех установленных пакетов по известным контрольным суммам в
 .Pa /var/db/pkg .
 .It Va security_status_chkportsum_period
 .Pq Vt str
-Set to either
-.Dq Li daily ,
-.Dq Li weekly ,
-.Dq Li monthly
-or
+Установите либо
+.Dq Li ежедневно ,
+.Dq Li еженедельно ,
+.Dq Li ежемесячно
+или
 .Dq Li NO .
 .It Va security_status_neggrpperm_enable
 .Pq Vt bool
-Set to
+Установить на
 .Dq Li YES
-to check for files where the group of a file has less permissions than
-the world at large.
-When users are in more than 14 supplemental groups these negative
-permissions may not be enforced via NFS shares.
+для проверки файлов, в которых группа файла имеет меньше прав, чем
+чем в целом по миру.
+Если пользователи входят в более чем 14 дополнительных групп, эти отрицательные
+разрешения могут не выполняться через общие ресурсы NFS.
 .It Va security_status_neggrpperm_period
 .Pq Vt str
-Set to either
-.Dq Li daily ,
-.Dq Li weekly ,
-.Dq Li monthly
-or
+Установите либо
+.Dq Li ежедневно ,
+.Dq Li еженедельно ,
+.Dq Li ежемесячно
+или
 .Dq Li NO .
 .It Va security_status_chkmounts_enable
 .Pq Vt bool
-Set to
+Установить на
 .Dq Li YES
-to check for changes mounted file systems to the previous day's values.
+для проверки изменений смонтированных файловых систем по отношению к значениям предыдущего дня.
 .It Va security_status_chkmounts_period
 .Pq Vt str
-Set to either
-.Dq Li daily ,
-.Dq Li weekly ,
-.Dq Li monthly
-or
+Установите значение либо
+.Dq Li ежедневно ,
+.Dq Li еженедельно ,
+.Dq Li ежемесячно
+или
 .Dq Li NO .
 .It Va security_status_noamd
 .Pq Vt bool
-Set to
+Установить на
 .Dq Li YES
-if you want to ignore
+если вы хотите игнорировать
 .Xr amd 8
-mounts when comparing against yesterday's file system mounts in the
+монтирования при сравнении со вчерашними монтированиями файловой системы в файле
 .Va security_status_chkmounts_enable
-check.
+проверка.
 .It Va security_status_chkuid0_enable
 .Pq Vt bool
-Set to
+Установите значение
 .Dq Li YES
-to check
+для проверки
 .Pa /etc/master.passwd
-for accounts with UID 0.
+на наличие учетных записей с UID 0.
 .It Va security_status_chkuid0_period
 .Pq Vt str
-Set to either
-.Dq Li daily ,
-.Dq Li weekly ,
-.Dq Li monthly
-or
+Установите либо
+.Dq Li ежедневно ,
+.Dq Li еженедельно ,
+.Dq Li ежемесячно
+или
 .Dq Li NO .
 .It Va security_status_passwdless_enable
 .Pq Vt bool
-Set to
+Установить на
 .Dq Li YES
-to check
+для проверки
 .Pa /etc/master.passwd
-for accounts with empty passwords.
+на наличие учетных записей с пустыми паролями.
 .It Va security_status_passwdless_period
 .Pq Vt str
-Set to either
-.Dq Li daily ,
-.Dq Li weekly ,
-.Dq Li monthly
-or
+Установите либо
+.Dq Li ежедневно ,
+.Dq Li еженедельно ,
+.Dq Li ежемесячно
+или
 .Dq Li NO .
 .It Va security_status_logincheck_enable
 .Pq Vt bool
-Set to
+Установить на
 .Dq Li YES
-to check
+для проверки
 .Pa /etc/login.conf
-ownership, see
+права собственности, см.
 .Xr login.conf 5
-for more information.
+для получения дополнительной информации.
 .It Va security_status_logincheck_period
 .Pq Vt str
-Set to either
-.Dq Li daily ,
-.Dq Li weekly ,
-.Dq Li monthly
-or
+Установите либо
+.Dq Li ежедневно ,
+.Dq Li еженедельно ,
+.Dq Li ежемесячно
+или
 .Dq Li NO .
 .It Va security_status_ipfwdenied_enable
 .Pq Vt bool
-Set to
+Установить на
 .Dq Li YES
-to show log entries for packets denied by
+для отображения записей в журнале для пакетов, запрещенных
 .Xr ipfw 8
-since yesterday's check.
+с момента вчерашней проверки.
 .It Va security_status_ipfwdenied_period
 .Pq Vt str
-Set to either
-.Dq Li daily ,
-.Dq Li weekly ,
-.Dq Li monthly
-or
+Установите либо
+.Dq Li ежедневно ,
+.Dq Li еженедельно ,
+.Dq Li ежемесячно
+или
 .Dq Li NO .
 .It Va security_status_ipfdenied_enable
 .Pq Vt bool
-Set to
+Установить на
 .Dq Li YES
-to show log entries for packets denied by
+для отображения записей в журнале для пакетов, запрещенных
 .Xr ipf 8
-since yesterday's check.
+с момента вчерашней проверки.
 .It Va security_status_ipfdenied_period
 .Pq Vt str
-Set to either
-.Dq Li daily ,
-.Dq Li weekly ,
-.Dq Li monthly
-or
+Установите либо
+.Dq Li ежедневно ,
+.Dq Li еженедельно ,
+.Dq Li ежемесячно
+или
 .Dq Li NO .
 .It Va security_status_pfdenied_enable
 .Pq Vt bool
-Set to
+Установить на
 .Dq Li YES
-to show log entries for packets denied by
+для отображения записей в журнале для пакетов, запрещенных
 .Xr pf 4
-since yesterday's check.
+с момента вчерашней проверки.
 .It Va security_status_pfdenied_additionalanchors
 .Pq Vt str
-Space-separated list of additional anchors whose denied packets log entries to
-show.
-The main ruleset (i.e., the empty-string anchor) and any
-.Xr blacklistd 8
-anchors, if present, are always shown.
+Разделенный пробелами список дополнительных якорей, записи журнала запрещенных пакетов которых необходимо
+показать.
+Основной набор правил (т. е. якорь с пустой строкой) и любые
+.Xr черный списокd 8
+если они присутствуют, всегда показываются.
 .It Va security_status_pfdenied_period
 .Pq Vt str
-Set to either
-.Dq Li daily ,
-.Dq Li weekly ,
-.Dq Li monthly
-or
+Устанавливается либо на
+.Dq Li ежедневно ,
+.Dq Li еженедельно ,
+.Dq Li ежемесячно
+или
 .Dq Li NO .
 .It Va security_status_ipfwlimit_enable
 .Pq Vt bool
-Set to
+Установить на
 .Dq Li YES
-to display
+для отображения
 .Xr ipfw 8
-rules that have reached their verbosity limit.
+правила, достигшие предела сложности.
 .It Va security_status_ipfwlimit_period
 .Pq Vt str
-Set to either
-.Dq Li daily ,
-.Dq Li weekly ,
-.Dq Li monthly
-or
+Установите либо
+.Dq Li ежедневно ,
+.Dq Li еженедельно ,
+.Dq Li ежемесячно
+или
 .Dq Li NO .
 .It Va security_status_kernelmsg_enable
 .Pq Vt bool
-Set to
+Установить на
 .Dq Li YES
-to show new
+для отображения нового
 .Xr dmesg 8
-entries since yesterday's check.
+с момента вчерашней проверки.
 .It Va security_status_kernelmsg_period
 .Pq Vt str
-Set to either
-.Dq Li daily ,
-.Dq Li weekly ,
-.Dq Li monthly
-or
+Установите либо
+.Dq Li ежедневно ,
+.Dq Li еженедельно ,
+.Dq Li ежемесячно
+или
 .Dq Li NO .
 .It Va security_status_loginfail_enable
 .Pq Vt bool
-Set to
+Установить на
 .Dq Li YES
-to display failed logins from
+для отображения неудачных логинов из
 .Pa /var/log/messages
-in the previous day.
+за предыдущий день.
 .It Va security_status_loginfail_period
 .Pq Vt str
-Set to either
-.Dq Li daily ,
-.Dq Li weekly ,
-.Dq Li monthly
-or
+Установите либо
+.Dq Li ежедневно ,
+.Dq Li еженедельно ,
+.Dq Li ежемесячно
+или
 .Dq Li NO .
 .It Va security_status_tcpwrap_enable
 .Pq Vt bool
-Set to
+Установить на
 .Dq Li YES
-to display connections denied by tcpwrappers (see
+для отображения соединений, запрещённых tcpwrappers (см.
 .Xr hosts_access 5 )
-from
+из
 .Pa /var/log/messages
-during the previous day.
+в течение предыдущего дня.
 .It Va security_status_tcpwrap_period
 .Pq Vt str
-Set to either
-.Dq Li daily ,
-.Dq Li weekly ,
-.Dq Li monthly
-or
+Установите либо
+.Dq Li ежедневно ,
+.Dq Li еженедельно ,
+.Dq Li ежемесячно
+или
 .Dq Li NO .
 .El
-.Sh FILES
+.Sh ФАЙЛЫ
 .Bl -tag -width ".Pa /etc/defaults/periodic.conf"
 .It Pa /etc/defaults/periodic.conf
-The default configuration file.
-This file contains all default variables and values.
+Файл конфигурации по умолчанию.
+Этот файл содержит все переменные и значения по умолчанию.
 .It Pa /etc/periodic.conf
-The usual system specific variable override file.
+Обычный файл переопределения переменных, специфичных для системы.
 .It Pa /etc/periodic.conf.local
-An additional override file, useful when
+Дополнительный файл переопределения, полезный, когда
 .Pa /etc/periodic.conf
-is shared or distributed.
+является общим или распространяемым.
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ 
 .Xr apropos 1 ,
-.Xr calendar 1 ,
+.Xr календарь 1 ,
 .Xr df 1 ,
 .Xr diff 1 ,
 .Xr gzip 1 ,
@@ -1068,10 +1068,10 @@ is shared or distributed.
 .Xr periodic 8 ,
 .Xr pkg-version 8 ,
 .Xr sendmail 8
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ 
+Сайт
 .Nm
-file appeared in
+появился в
 .Fx 4.1 .
-.Sh AUTHORS
-.An Brian Somers Aq Mt brian@Awfulhak.org
+.Sh АВТОРЫ
+.An Брайан Сомерс Aq Mt brian@Awfulhak.org

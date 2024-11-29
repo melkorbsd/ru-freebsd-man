@@ -26,127 +26,126 @@
 .Dd April 18, 2020
 .Dt ZFSD 8
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm zfsd
-.Nd ZFS fault management daemon
-.Sh SYNOPSIS
+.Nd Демон управления сбоями ZFS
+.Sh СИНТАКСИС
 .Nm
 .Op Fl d
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 .Nm
-attempts to resolve ZFS faults that the kernel can't resolve by itself.
-It listens to
-.Xr devctl 4
-events, which are how the kernel notifies userland of events such as I/O
-errors and disk removals.
+пытается устранить ошибки ZFS, которые ядро не может устранить самостоятельно.
+Оно прослушивает события
+.Xr devctl 4 ,
+с помощью которых ядро уведомляет пользователей о таких событиях, как ошибки ввода-вывода
+и удаление диска.
 .Nm
-attempts to resolve these faults by activating or deactivating hot spares
-and onlining offline vdevs.
+пытается устранить эти неисправности, активируя или деактивируя горячие запасные
+части и подключая автономные vdevs в режиме онлайн.
 .Pp
-The following options are available:
+Доступны следующие параметры:
 .Bl -tag -width indent
 .It Fl d
-Run in the foreground instead of daemonizing.
+Запускается на переднем плане вместо демонстрации.
 .El
 .Pp
-System administrators never interact with
-.Nm
-directly.
-Instead, they control its behavior indirectly through zpool configuration.
-There are two ways to influence
+Системные администраторы никогда не взаимодействуют непосредственнос
+.Nm .
+Вместо этого они управляют его поведением косвенно через конфигурацию zpool.
+Есть два способа повлиять на
 .Nm :
-assigning hotspares and setting pool properties.
-Currently, only the
-.Em autoreplace
-property has any effect.
-See
+назначением горячих точек и настройкой свойств пула.
+В настоящее время только свойство
+.Em автоматического замещения
+имеет какой-либо эффект.
+Смотрите
 .Xr zpool 8
-for details.
+для получения подробной информации.
 .Pp
 .Nm
-will attempt to resolve the following types of fault:
+пытается устранить следующие типы неисправностей:
 .Bl -tag -width a
 .It device removal
-When a leaf vdev disappears,
+Когда лист vdev исчезает,
 .Nm
-will activate any available hotspare.
+активирует любой доступный hotspare.
 .It device arrival
-When a new GEOM device appears,
+При появлении нового устройства GEOM,
 .Nm
-will attempt to read its ZFS label, if any.
-If it matches a previously removed vdev on an active pool,
+попытается прочитать его ZFS-метку, если таковая имеется.
+Если она соответствует ранее удаленному vdev в активном пуле,
 .Nm
-will online it.
-Once resilvering completes, any active hotspare will detach automatically.
+подключит его к сети.
+Как только повторное подключение завершится, все активные hotspare будут автоматически отключены.
 .Pp
-If the new device has no ZFS label but its physical path matches the
-physical path of a previously removed vdev on an active pool, and that
-pool has the autoreplace property set, then
+Если у нового устройства нет метки ZFS, но его физический путь совпадает с
+физическим путем к ранее удаленному vdev в активном пуле и для этого
+пула установлено свойство autoreplace, то
 .Nm
-will replace the missing vdev with the newly arrived device.
-Once resilvering completes, any active hotspare will detach automatically.
+заменит отсутствующий vdev на вновь поступившее устройство.
+После завершения повторного подключения все активные hotspare будут автоматически отключены.
 .It vdev degrade or fault events
-If a vdev becomes degraded or faulted,
+Если vdev становится неисправным,
 .Nm
-will activate any available hotspare.
+активирует любой доступный hotspare.
 .It I/O errors
-If a leaf vdev generates more than 50 I/O errors in a 60 second period, then
+Если конечный vdev генерирует более 50 ошибок ввода-вывода за 60 секунд, то
 .Nm
-will mark that vdev as
+пометит этот vdev как
 .Em FAULTED .
-ZFS will no longer issue any I/Os to it.
+ZFS больше не будет выполнять никаких операций ввода-вывода для него.
 .Nm
-will activate a hotspare if one is available.
+активирует резервную копию, если таковая имеется.
 .It Checksum errors
-If a leaf vdev generates more than 50 checksum errors in a 60 second
-period, then
+Если конечный vdev генерирует более 50 ошибок контрольной суммы за 60
+секунд, то
 .Nm
-will mark that vdev as
+пометит этот vdev как
 .Em DEGRADED .
-ZFS will still use it, but zfsd will activate a spare anyway.
+ZFS по-прежнему будет использовать его, но zfsd все равно активирует запасной.
 .It Spare addition
-If the system administrator adds a hotspare to a pool that is already degraded,
+Если системный администратор добавляет hotspare в пул, который уже поврежден,
 .Nm
-will activate the spare.
+активирует запасной.
 .It Resilver complete
 .Nm
-will detach any hotspare once a permanent replacement finishes resilvering.
+отсоединит все запасные части, как только будет завершена постоянная замена.
 .It Physical path change
-If the physical path of an existing disk changes,
+Если физический путь к существующему диску изменится,
 .Nm
-will attempt to replace any missing disk with the same physical path,
-if its pool's autoreplace property is set.
+попытается заменить любой отсутствующий диск тем же физическим путем,
+если задано свойство autoreplace для его пула.
 .El
 .Pp
 .Nm
-will log interesting events and its actions to syslog with facility
-.Em daemon
-and identity
+будет легко регистрировать интересные события и свои действия в системном журнале
+.Em демона
+и идентично
 .Op zfsd .
 .El
-.Sh FILES
+.Sh ФАЙЛЫ
 .Bl -tag -width a -compact
 .It Pa /var/db/zfsd/cases
-When
+Когда
 .Nm
-exits, it serializes any unresolved casefiles here,
-then reads them back in when next it starts up.
+завершает работу, он сериализует все неразрешенные файлы обращений здесь,
+а затем считывает их обратно при следующем запуске.
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr devctl 4 ,
 .Xr zpool 8
-.Sh HISTORY
+.Sh ИСТОРИЯ
 .Nm
-first appeared in
+впервые появился в
 .Fx 11.0 .
-.Sh AUTHORS
+.Sh АВТОРЫ
 .Nm
-was originally written by
-.An Justin Gibbs Aq Mt gibbs@FreeBSD.org
-and
-.An Alan Somers Aq Mt asomers@FreeBSD.org
-.Sh TODO
-In the future,
+первоначально была написана
+.An Джастином Гиббсом, штат Массачусетс gibbs@FreeBSD.org
+и
+.An Аланом Сомерсом, штат Массачусетс asomers@FreeBSD.org
+.Sh В РАЗРАБОТКЕ
+В будущем, в
 .Nm
-should be able to resume a pool that became suspended due to device
-removals, if enough missing devices have returned.
+должна быть возможность возобновить работу пула, который был приостановлен из-за
+удаления устройств, если было возвращено достаточное количество отсутствующих устройств.

@@ -21,66 +21,66 @@
 .\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 .\" SUCH DAMAGE.
 .\"
-.Dd April 27, 2020
-.Dt UNIONFS 5
-.Os
-.Sh NAME
+.От 27 апреля 2020 г.
+.Dt UNIONFS 5 
+.Os 
+.Sh ИМЯ 
 .Nm unionfs
 .Nd "UNION FS"
-.Sh SYNOPSIS
-To compile this driver into the kernel,
-place the following lines in your
-kernel configuration file:
-.Bd -ragged -offset indent
+.Sh КРАТКОЕ ОПИСАНИЕ
+Чтобы скомпилировать этот драйвер в ядро, 
+поместите следующие строки в свой файл конфигурации 
+ядра:
+.Bd -ragged -offset indent 
 .Cd "option UNIONFS"
-.Ed
-.Pp
-Alternatively, to load the driver as a
-module at boot time, place the following line in
+.Ed 
+.Pp 
+В качестве альтернативы, чтобы загрузить драйвер как модуль 
+во время загрузки, поместите следующую строку в файл
 .Xr loader.conf 5 :
-.Bd -literal -offset indent
+.Bd -буквенный отступ со смещением 
 unionfs_load="YES"
-.Ed
-.Sh DESCRIPTION
-The UNIONFS driver is an implementation of a stackable unification filesystem.
-.Sh SEE ALSO
+.Ed 
+.Sh ОПИСАНИЕ
+Драйвер UNIONFS представляет собой реализацию стекируемой файловой системы unification.
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr mount_unionfs 8
-.Sh STANDARDS
-.Rs
-.%T Union mounts in 4.4BSD-Lite
-.%A J. S. Pendry
-.%A M. K. McKusick
-.%R Proceedings of the USENIX Technical Conference on UNIX and Advanced Computing Systems
-.%D December 1995
-.Re
-.Pp
-.Rs
-.%T Jails: Confining the omnipotent root
-.%A P. H. Kamp
-.%A R. N. M. Watson
-.%R Proceedings of the Second International System Administration and Networking Conference (SANE2000)
-.%D May 2000
-.Re
-.Sh HISTORY
-The
-.Nm
-device driver first appeared in
+.Sh СТАНДАРТЫ 
+.Rs 
+.%T Union монтируется в версии 4.4 BSD-Lite
+.%A Дж. С. Пендри 
+.%A М. К. МаКкусик
+.%R Материалы технической конференции USENIX по UNIX и передовым вычислительным системам
+.%D Декабрь 1995 г. 
+.Re 
+.Pp 
+.Rs 
+.%T Тюрьмы: заключение всемогущего рута 
+.%A П. Х. Камп
+.%A Р. Н . М. Уотсон 
+.%R Материалы Второй Международной конференции по системному администрированию и сетевым технологиям (SANE2000)
+.%D Май 2000 г.
+.Re 
+.Sh ИСТОРИЯ 
+Драйвер устройства 
+.Nm 
+впервые появился в версии 
 .Fx 5.0 .
-.Sh AUTHORS
+.Sh АВТОРЫ
 .An -nosplit
 The
-.Nm
-device driver was written by Jan-Simon Pendry for
-.Bx 4.4
-and
-.An Masanori OZAWA Aq Mt ozawa@ongs.co.jp
-reimplemented the handling of the locking for
+.Nm 
+драйвер устройства был написан Яном-Саймоном Пендри для 
+.Bx 4.4 
+и 
+.Масанори ОЗАВА, Aq Mt ozawa@ongs.co.jp 
+переопределено управление блокировкой для 
 .Fx 7.0 .
-The manual page was written by
-.An Gordon Bergling Aq Mt gbe@FreeBSD.org .
-.Sh BUGS
-Please see the
-.Xr mount_unionfs 8
-manual page for a list of bugs regarding the
-.Nm
-filesystem.
+Страница руководства написана
+.An Гордоном Берглингом, Aq Mt gbe@FreeBSD.org .
+.ИСПРАВЛЕНЫ ОШИБКИ
+Пожалуйста, ознакомьтесь со списком ошибок, касающихся файловой системы 
+.Xr mount_unionfs 8 
+на странице руководства для получения списка ошибок, касающихся файловой системы 
+.Nm 
+.

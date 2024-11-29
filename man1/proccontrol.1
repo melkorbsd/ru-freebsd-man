@@ -1,141 +1,141 @@
 .\" Copyright (c) 2019 The FreeBSD Foundation, Inc.
 .\" All rights reserved.
 .\"
-.\" This documentation was written by
-.\" Konstantin Belousov <kib@FreeBSD.org> under sponsorship
-.\" from the FreeBSD Foundation.
+.\" Эта документация была написана 
+.\" Константином Белоусовым <kib@FreeBSD.org> при спонсорской поддержке
+.\" FreeBSD Foundation.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
+.\" Распространение и использование в исходном коде и двоичной форме, с использованием или без использования
+.\" модификаций, если следующие условия
+.\" соблюдаются:
+.\" 1. При распространении исходного кода должно сохраняться вышеуказанное уведомление
+.\"    об авторских правах, этот список условий и следующий дисклеймер.
+.\" 2. При распространиении в двоичной форме должно воспроизводиться уведомление об авторских правах,
+.\"    этот список условий и следующий ниже отказ от ответственности в
+.\"    документации и/или других материалах, поставляемых с дистрибутивом.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE AUTHORS AND CONTRIBUTORS ``AS IS'' AND
-.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHORS OR CONTRIBUTORS BE LIABLE
-.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ ПРАВООБЛАДАТЕЛЯМИ И СОАВТОРАМИ ``КАК ЕСТЬ'', И 
+.\" МЫ ОТКАЗЫВАЕМСЯ ОТ ЛЮБЫХ ПОДРАЗУМЕВАЕМЫХ ОБЯЗАТЕЛЬСТВ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, 
+.\" ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ТОВАРНОЙ ПРИГОДНОСТИ И НЕПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ
+.\" ЦЕЛИ. НИ В КОЕМ СЛУЧАЕ ПРАВООБЛАДАТЕЛИ ИЛИ СОВАТОРЫ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ
+.\" ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, ОСОБЫЕ, ПОКАЗАТЕЛЬНЫЕ ИЛИ ЛОГИЧЕСКИ ВЫТЕКАЮЩИЕ
+.\" УБЫТКИ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ ИМИ, ПРИОБРЕТЕНИЕ ЗАМЕНЯЮЩИХ ТОВАРОВ ИЛИ УСЛУГ;
+.\" ПОТЕРЮ ВОЗМОЖНОСТИ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПРЕКРАЩЕНИЕ ДЕЯТЕЛЬНОСТИ)
+.\" НЕЗАВИСИМО ОТ ПРИЧИНЕННОГО УЩЕРБА И НА ОСНОВАНИИ ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО В РАМКАХ КОНТРАКТА, 
+.\" ПРЯМОЙ ОТВЕТСТВЕННОСТИ ИЛИ ДЕЛИКТА (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНОЕ), ВОЗНИКШЕГО КАКИМ-ЛИБО ОБРАЗОМ
+.\" В РЕЗУЛЬТАТЕ ИСПОЛЬЗОВАНИЯ ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ ВЫ БЫЛИ ОСВЕДОМЛЕНЫ О ВОЗМОЖНОСТИ
+.\" ТАКОГО УЩЕРБА.
 .\"
-.Dd October 5, 2023
+.Dd 5 октября, 2023 год
 .Dt PROCCONTROL 1
 .Os
-.Sh NAME
+.Sh НАЗВАНИЕ
 .Nm proccontrol
 .Nd Control some process execution aspects
-.Sh SYNOPSIS
+.Sh СИНТАКСИС
 .Nm
-.Fl m Ar mode
-.Op Fl s Ar control
+.Fl m Ar режим
+.Op Fl s Ar контроль
 .Op Fl q
-.Fl p Ar pid | command
-.Sh DESCRIPTION
-The
+.Fl p Ar идентификатор_процесса | команда
+.Sh ОПИСАНИЕ
+Команда
 .Nm
-command modifies the execution parameter of existing process
-specified by the
-.Ar pid
-argument, or starts execution of the new program
-.Ar command
-with the execution parameter set for it.
+изменяет параметр выполнения существующего процесса,
+указанного аргументом
+.Ar идентификатор_процесса ,
+или запускает выполнение новой программы
+.Ar команда
+с установленным для неё параметром выполнения.
 .Pp
-Which execution parameter is changed, selected by the mandatory
-parameter
-.Ar mode .
-Possible values for
-.Ar mode
-are:
+Какой параметр выполнения изменяется, определяется обязательным
+параметром
+.Ar режим .
+Возможные значения для
+.Ar режим
+следующие:
 .Bl -tag -width trapcap
 .It Ar aslr
-Control the Address Space Layout Randomization.
-Only applicable to the new process spawned.
+Управление рандомизацией расположения адресного пространства.
+Применимо только к вновь созданному процессу.
 .It Ar trace
-Control the permission for debuggers to attach.
-Note that process is only allowed to enable tracing for itself,
-not for any other process.
+Управление разрешением на подключение отладчиков.
+Обратите внимание, что процесс может разрешить трассировку только для себя,
+а не для любого другого процесса.
 .It Ar trapcap
-Controls the signalling of capability mode access violations.
+Управляет сигнализацией о нарушениях режима работы с возможностями.
 .It Ar protmax
-Controls the implicit PROT_MAX application for
+Управляет неявным применением приложения PROT_MAX для
 .Xr mmap 2 .
 .It Ar nonewprivs
-Controls disabling the setuid and sgid bits for
+Управляет отключением битов setuid и sgid для
 .Xr execve 2 .
 .It Ar wxmap
-Controls the write exclusive execute mode for mappings.
+Управляет режимом исключительной записи при выполнении отображений.
 .It Ar kpti
-Controls the KPTI enable, AMD64 only.
+Управляет включением KPTI, только для AMD64.
 .It Ar la48
-Control limiting usermode process address space to 48 bits of address,
-AMD64 only, on machines capable of 57-bit addressing.
+Контролирует ограничение адресного пространства процесса в пользовательском режиме до 48 бит адреса,
+только для AMD64, на машинах, способных к 57-битной адресации.
 .El
 .Pp
-The
-.Ar control
-specifies if the selected
-.Ar mode
-should be enabled or disabled.
-Possible values are
+Аргумент
+.Ar контроль
+указывает, должен ли выбранный
+.Ar режим
+быть включен или отключен.
+Возможные значения:
 .Ar enable
-and
+и
 .Ar disable ,
-with the default value being
-.Ar enable
-if not specified.
-See
+при этом значение по умолчанию -
+.Ar enable ,
+если не указано.
+Смотрите
 .Xr procctl 2
-for detailed description of each mode effects and interaction with other
-process control facilities.
+для детального описания эффектов каждого режима и взаимодействия с другими
+средствами управления процессами.
 .Pp
-The
+Переключатель
 .Fl q
-switch makes the utility query and print the current setting for
-the selected mode.
-The
+заставляет утилиту запрашивать и печатать текущую настройку для
+выбранного режима.
+Опция
 .Fl q
-requires the query target process specification with
+требует указания процесса-цели запроса с помощью
 .Fl p .
-.Sh EXIT STATUS
+.Sh СТАТУС ЗАВЕРШЕНИЯ
 .Ex -std
-.Sh EXAMPLES
+.Sh ПРИМЕРЫ
 .Bl -bullet
 .It
-To disable debuggers attachment to the process 1020, execute
+Чтобы отключить возможность подключения отладчиков к процессу 1020, выполните
 .Dl "proccontrol -m trace -s disable -p 1020"
 .It
-To execute the
+Чтобы выполнить программу
 .Xr uniq 1
-program in a mode where capability access violations cause
+в режиме, при котором нарушения доступа к возможностям вызывают
 .Dv SIGTRAP
-delivery, do
+доставку, сделайте
 .Dl "proccontrol -m trapcap uniq"
 .It
-To query the current ASLR enablement mode for the running
-process 1020, do
+Чтобы запросить текущий режим включения ASLR для запущенного
+процесса 1020, сделайте
 .Dl "proccontrol -m aslr -q -p 1020"
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr kill 2 ,
 .Xr procctl 2 ,
 .Xr ptrace 2 ,
 .Xr mitigations 7
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Команда
 .Nm
-command appeared in
+появилась в
 .Fx 10.0 .
-.Sh AUTHORS
-The
+.Sh АВТОРЫ
+Команда
 .Nm
-command and this manual page were written by
+и эта страница мануала были написаны
 .An Konstantin Belousov Aq Mt kib@freebsd.org
-under sponsorship from The FreeBSD Foundation.
+при спонсорской поддержке FreeBSD Foundation.

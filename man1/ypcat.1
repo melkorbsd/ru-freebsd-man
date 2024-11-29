@@ -26,47 +26,45 @@
 .\" (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 .\" THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 .\"
-.Dd September 3, 2015
+.Dd Сентябрь 3, 2015
 .Dt YPCAT 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm ypcat
-.Nd print the values of all keys in a NIS database
-.Sh SYNOPSIS
+.Nd выводит значение каждого ключа в базе данных NIS
+.Sh СИНТАКСИС
 .Nm
 .Op Fl kt
-.Op Fl d Ar domainname
-.Ar mapname
+.Op Fl d Ar имя домена
+.Ar имя карты
 .Nm
 .Fl x
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 The
 .Nm
-utility prints out the values of all keys from the
-.Tn NIS
-database specified by
+утилита выводит значения каждого ключа в базе данных,
+отсортированные по атрибуту
 .Ar mapname ,
-which may be a map name or a map nickname.
+Который может быть названием или псевдонимом карты. 
 .Pp
-The options are as follows:
+Параметры представляют из себя следующее:
 .Bl -tag -width indent
 .It Fl d Ar domainname
-Specify a domain other than the default domain.
+Указывает домен, отличный от домена по умолчанию.
 .It Fl k
-Display map keys.
-This option is useful with maps in which the values are null or the key
-is not part of the value.
+Отображает ключи карты.
+Этот параметр полезен с картами, в которых значения равны нулю или с картами, в которых ключ не является частью значения.
 .It Fl t
-Inhibit translation of map nicknames
-to their corresponding map names.
+Запрещает перевод псевдонимов карт 
+в их соответствующие имена.
 .It Fl x
-Display the map nickname table.
+Отображает таблицу псевдонимов карт.
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr domainname 1 ,
 .Xr ypmatch 1 ,
 .Xr yp 8 ,
 .Xr ypbind 8 ,
 .Xr ypset 8
-.Sh AUTHORS
-.An Theo De Raadt Aq Mt deraadt@theos.com .
+.Sh АВТОРЫ
+.An Тео де Раадт Aq Mt deraadt@theos.com .

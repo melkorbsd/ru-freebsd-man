@@ -30,36 +30,35 @@
 .Dt ZFS-WAIT 8
 .Os
 .
-.Sh NAME
+.Sh ИМЯ
 .Nm zfs-wait
-.Nd wait for activity in ZFS filesystem to stop
-.Sh SYNOPSIS
+.Nd дождаться прекращения активности в файловой системе ZFS
+.Sh СИНТАКСИС
 .Nm zfs
 .Cm wait
 .Op Fl t Ar activity Ns Oo , Ns Ar activity Ns Oc Ns …
 .Ar filesystem
 .
-.Sh DESCRIPTION
-Waits until all background activity of the given types has ceased in the given
-filesystem.
-The activity could cease because it has completed or because the filesystem has
-been destroyed or unmounted.
-If no activities are specified, the command waits until background activity of
-every type listed below has ceased.
-If there is no activity of the given types in progress, the command returns
-immediately.
+.Sh ОПИСАНИЕ
+Ожидает, пока в данной файловой системе не прекратятся все фоновые действия заданных типов.
+Действие может прекратиться из-за его завершения или из-за того, что файловая
+система была уничтожена или размонтирована.
+Если не указано никаких действий, команда ожидает, пока фоновая активность
+каждого из перечисленных ниже типов не прекратится.
+Если действия указанных типов не выполняются, команда
+немедленно возвращается.
 .Pp
-These are the possible values for
-.Ar activity ,
-along with what each one waits for:
+Это возможные значения
+.Ar активности ,
+а также то, чего ожидает каждый из них:
 .Bl -tag -compact -offset Ds -width "deleteq"
 .It Sy deleteq
-The filesystem's internal delete queue to empty
+Внутренняя очередь удаления файловой системы опустеет
 .El
 .Pp
-Note that the internal delete queue does not finish draining until
-all large files have had time to be fully destroyed and all open file
-handles to unlinked files are closed.
+Обратите внимание, что внутренняя очередь удаления не завершает работу до тех пор, пока не
+будут полностью уничтожены все большие файлы и не будут закрыты все открытые файловые
+дескрипторы для несвязанных файлов.
 .
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr lsof 8

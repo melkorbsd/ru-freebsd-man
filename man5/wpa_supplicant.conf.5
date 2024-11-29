@@ -25,568 +25,568 @@
 .Dd March 16, 2022
 .Dt WPA_SUPPLICANT.CONF 5
 .Os
-.Sh NAME
-.Nm wpa_supplicant.conf
-.Nd configuration file for
+.Sh ИМЯ 
+.Nm wpa_supplicant.conf 
+.Найдите файл конфигурации для
 .Xr wpa_supplicant 8
-.Sh DESCRIPTION
-The
-.Xr wpa_supplicant 8
-utility is an implementation of the WPA Supplicant component,
-i.e., the part that runs in the client stations.
-It implements WPA key negotiation with a WPA Authenticator
-and EAP authentication with Authentication Server using
-configuration information stored in a text file.
+.Sh ОПИСАНИЕ
+Утилита 
+.Xr wpa_supplicant 8 
+является реализацией компонента WPA supplicant, 
+то есть той части, которая выполняется на клиентских станциях.
+Он реализует согласование ключа WPA с аутентификатором WPA 
+и аутентификацию EAP с сервером аутентификации, используя 
+информацию о конфигурации, хранящуюся в текстовом файле.
 .Pp
-The configuration file consists of optional global parameter
-settings and one or more network blocks, e.g.\&
-one for each used SSID.
-The
-.Xr wpa_supplicant 8
-utility
-will automatically select the best network based on the order of
-the network blocks in the configuration file, network security level
-(WPA/WPA2 is preferred), and signal strength.
-Comments are indicated with the
-.Ql #
-character; all text to the
-end of the line will be ignored.
-.Sh GLOBAL PARAMETERS
-Default parameters used by
-.Xr wpa_supplicant 8
-may be overridden by specifying
+Файл конфигурации состоит из необязательных глобальных параметров 
+настроек и одного или нескольких сетевых блоков, например \& 
+по одному для каждого используемого SSID.
+Утилита 
+.Xr wpa_supplicant 8 
+
+автоматически выберет лучшую сеть на основе порядка 
+сетевых блоков в файле конфигурации, уровня сетевой безопасности.
+(Предпочтительнее WPA / WPA2) и уровень сигнала.
+Комментарии обозначаются символом 
+.Ql # 
+; весь текст до 
+конца строки будет проигнорирован.
+.Sh ГЛОБАЛЬНЫЕ ПАРАМЕТРЫ
+Параметры по умолчанию, используемые
+.Xr wpa_supplicant 8 
+может быть переопределен путем указания 
 .Pp
-.Dl parameter=value
+.Dl parameter=value 
+.Pp 
+в файле конфигурации (обратите внимание, что пробелы не допускаются).
+Значения со встроенными пробелами должны быть заключены в кавычки.
 .Pp
-in the configuration file (note no spaces are allowed).
-Values with embedded spaces must be enclosed in quote marks.
-.Pp
-The following parameters are recognized:
+Распознаются следующие параметры:
 .Bl -tag -width indent
-.It Va ctrl_interface
-The pathname of the directory in which
-.Xr wpa_supplicant 8
-creates
-.Ux
-domain socket files for communication
-with frontend programs such as
+.It ctrl_interface
+Путь к каталогу, в котором
+.Xr wpa_supplicant 8 
+создает 
+.Ux 
+файлы доменных сокетов для обмена данными 
+с интерфейсными программами, такими как
 .Xr wpa_cli 8 .
-.It Va ctrl_interface_group
-A group name or group ID to use in setting protection on the
-control interface file.
-This can be set to allow non-root users to access the
-control interface files.
-If no group is specified, the group ID of the control interface
-is not modified and will, typically, be the
-group ID of the directory in which the socket is created.
-.It Va eapol_version
-The IEEE 802.1x/EAPOL protocol version to use; either 1 (default) or 2.
-The
+.It ctrl_interface_group ва 
+Имя группы или идентификатор группы для применения В установка защиты на
+файл интерфейс управления.
+Это может быть установлено, чтобы разрешить пользователям, не имеющим права root, доступ к файлам интерфейса управления 
+.
+Если группа не указана, идентификатор группы интерфейса управления 
+не изменяется и обычно будет равен 
+идентификатору группы каталога, в котором создан сокет.
+.It eapol_version
+Используемая версия протокола IEEE 802.1x / EAPOL; либо 1 (по умолчанию), либо 2.
+Утилита 
+.Xr wpa_supplicant 8 
+
+реализована в соответствии с IEEE 802-1X-REV-d8, который определяет
+Версию EAPOL равной 2.
+Однако некоторые точки доступа не работают с 
+этой версией, поэтому по умолчанию
 .Xr wpa_supplicant 8
-utility
-is implemented according to IEEE 802-1X-REV-d8 which defines
-EAPOL version to be 2.
-However, some access points do not work when presented with
-this version so by default
-.Xr wpa_supplicant 8
-will announce that it is using EAPOL version 1.
-If version 2 must be announced for correct operation with an
-access point, this value may be set to 2.
-.It Va ap_scan
-Access point scanning and selection control; one of 0, 1 (default), or 2.
-Only setting 1 should be used with the
-.Xr wlan 4
-module; the other settings are for use on other operating systems.
+сообщит, что он использует EAPOL версии 1.
+Если для корректной работы с точкой доступа должна быть объявлена версия 2. 
+это значение может быть установлено равным 2.
+.It ap_scan
+Контроль сканирования и выбора точки доступа; одно из значений 0, 1 (по умолчанию) или 2.
+Для параметра 
+следует использовать только значение 1 .Xr wlan 4 
+модуль; остальные настройки предназначены для использования в других операционных системах.
 .It Va fast_reauth
-EAP fast re-authentication; either 1 (default) or 0.
-Control fast re-authentication support in EAP methods that support it.
-.El
-.Sh NETWORK BLOCKS
-Each potential network/access point should have a
-.Dq "network block"
-that describes how to identify it and how to set up security.
-When multiple network blocks are listed in a configuration file,
-the highest priority one is selected for use or, if multiple networks
-with the same priority are identified, the first one listed in the
-configuration file is used.
-.Pp
-A network block description is of the form:
+Быструю повторную аутентификацию EAP; либо 1 (по умолчанию), либо 0.
+Управляйте поддержкой быстрой повторной аутентификации в методах EAP, которые ее поддерживают.
+.El 
+.Sh СЕТЕВЫЕ БЛОКИ
+Каждая потенциальная сеть / точка доступа должна иметь 
+.Dq "сетевой блок" 
+который описывает, как его идентифицировать и как настроить безопасность.
+Когда в файле конфигурации указано несколько сетевых блоков, 
+для использования выбирается блок с наивысшим приоритетом или, если определено несколько сетей 
+с одинаковым приоритетом, используется первый блок, указанный в файле конфигурации 
+.
+.Pp 
+Описание сетевого блока имеет вид:
 .Bd -literal -offset indent
-network={
-	parameter=value
-	...
+сеть ={
+ параметр =значение
+ ...
 }
-.Ed
-.Pp
-(note the leading
+.Ed 
+.Pp 
+(обратите внимание на начало 
 .Qq Li "network={"
-may have no spaces).
-The block specification contains one or more parameters
-from the following list:
+может не содержать пробелов).
+Спецификация блока содержит один или несколько параметров 
+из следующего списка:
 .Bl -tag -width indent
-.It Va ssid No (required)
-Network name (as announced by the access point).
+.It Va ssid No (обязательно)
+Имя сети (указанное точкой доступа).
 An
-.Tn ASCII
-or hex string enclosed in quotation marks.
+.Tn ASCII 
+или шестнадцатеричная строка, заключенная в кавычки.
 .It Va scan_ssid
-SSID scan technique; 0 (default) or 1.
-Technique 0 scans for the SSID using a broadcast Probe Request frame.
-Technique 1 uses directed Probe Request frames, sent to each configured SSID.
-Access points that cloak themselves by not broadcasting their SSID require
-technique 1.
-Beware that this technique can cause scanning to take longer to complete,
-and exposes the list of configured network SSIDs to eavesdroppers.
+Метод сканирования SSID; 0 (по умолчанию) или 1.
+Метод 0 сканирует SSID с использованием широковещательного кадра запроса проверки.
+Метод 1 использует направленные кадры запроса проверки, отправляемые на каждый настроенный SSID.
+Точки доступа, которые маскируются, не передавая свой SSID, требуют 
+техника 1.
+Помните, что этот метод может привести к тому, что сканирование может занять больше времени, 
+и предоставляет список настроенных сетевых SSID для прослушивания.
 .It Va bssid
-Network BSSID (typically the MAC address of the access point).
-.It Va priority
-The priority of a network when selecting among multiple networks;
-a higher value means a network is more desirable.
-By default networks have priority 0.
-When multiple networks with the same priority are considered
-for selection, other information such as security policy and
-signal strength are used to select one.
+Сетевой BSSID (обычно MAC-адрес точки доступа).
+.It имеет приоритет.
+Приоритет сети при выборе из нескольких сетей.;
+более высокое значение означает, что сеть является более желательной.
+По умолчанию сети имеют приоритет 0.
+Когда рассматривается несколько сетей с одинаковым приоритетом. 
+для выбора одной из них используется другая информация, такая как политика безопасности и 
+уровень сигнала.
 .It Va mode
-IEEE 802.11 operation mode; either 0 (infrastructure, default) or 1 (IBSS).
-Note that IBSS (adhoc) mode can only be used with
-.Va key_mgmt
-set to
-.Li NONE
-(plaintext and static WEP), or
-.Va key_mgmt
-set to
-.Li WPA-NONE
-(fixed group key TKIP/CCMP).
-In addition,
+Рабочий режим IEEE 802.11; либо 0 (инфраструктура, по умолчанию), либо 1 (IBSS).
+Обратите внимание, что режим IBSS (adhoc) можно использовать только с
+.Va key_mgmt 
+установить в
+.Li НЕТ
+(открытый текст и статический WEP), или
+.Va key_mgmt 
+установлено значение
+.Li WPA-НЕТ
+(фиксированный групповой ключ TKIP /CCMP).
+Кроме того, 
 .Va ap_scan
-has to be set to 2 for IBSS.
-.Li WPA-NONE
-requires
-.Va proto
-set to WPA,
-.Va key_mgmt
-set to WPA-NONE,
-.Va pairwise
-set to NONE,
-.Va group
-set to either
-CCMP or TKIP (but not both), and
-.Va psk
-must also be set.
+должно быть установлено значение 2 для IBSS.
+.Li WPA-НЕТ 
+требуется
+.Va proto 
+установлено значение WPA,
+.Va key_mgmt 
+установлено значение WPA-NONE, 
+.Va попарно 
+установлено значение NONE, 
+.Va group 
+установлено значение либо
+CCMP, либо TKIP (но не оба), и 
+.Va psk 
+также должен быть установлен.
 .It Va proto
-List of acceptable protocols; one or more of:
-.Li WPA
-(IEEE 802.11i/D3.0)
-and
-.Li RSN
+Список допустимых протоколов; один или несколько из:
+.Li WPA 
+(IEEE 802.11i / D3.0)
+и 
+.Li RSN 
 (IEEE 802.11i).
-.Li WPA2
-is another name for
-.Li RSN .
-If not set this defaults to
+.Li WPA2 
+- другое название для
+.Li RSN.
+Если нет, установите значение по умолчанию равным 
 .Qq Li "WPA RSN" .
-.It Va key_mgmt
-List of acceptable key management protocols; one or more of:
+.It Использует key_mgmt
+Список допустимых протоколов управления ключами; один или несколько из:
 .Li WPA-PSK
-(WPA pre-shared key),
+(предварительно разделяемый ключ WPA),
 .Li WPA-EAP
-(WPA using EAP authentication),
+(WPA с использованием аутентификации EAP), 
 .Li IEEE8021X
-(IEEE 802.1x using EAP authentication and,
-optionally, dynamically generated WEP keys),
-.Li NONE
-(plaintext or static WEP keys).
-If not set this defaults to
-.Qq Li "WPA-PSK WPA-EAP" .
+(IEEE 802.1x с использованием аутентификации EAP и, 
+необязательно, динамически генерируемых ключей WEP),
+.Li НЕТ
+(открытый текст или статические ключи WEP).
+Если нет, установите значение по умолчанию равным 
+.Qq Li "WPA-PSK, WPA-EAP" .
 .It Va auth_alg
-List of allowed IEEE 802.11 authentication algorithms; one or more of:
+Список разрешенных алгоритмов аутентификации IEEE 802.11; один или несколько из:
 .Li OPEN
-(Open System authentication, required for WPA/WPA2),
+(Аутентификация с открытой системой, требуется для WPA /WPA2), 
 .Li SHARED
-(Shared Key authentication),
+(Аутентификация с общим ключом), 
 .Li LEAP
-(LEAP/Network EAP).
-If not set automatic selection is used (Open System with LEAP
-enabled if LEAP is allowed as one of the EAP methods).
+(LEAP / Сетевой EAP).
+Если не задано, используется автоматический выбор (откройте систему с помощью LEAP 
+включено, если LEAP разрешен как один из методов EAP).
 .It Va pairwise
-List of acceptable pairwise (unicast) ciphers for WPA; one or more of:
+Список допустимых попарных (одноадресных) шифров для WPA; один или несколько из:
 .Li CCMP
-(AES in Counter mode with CBC-MAC, RFC 3610, IEEE 802.11i/D7.0),
+(AES в режиме счетчика с CBC-MAC, RFC 3610, IEEE 802.11i /D7.0),
 .Li TKIP
-(Temporal Key Integrity Protocol, IEEE 802.11i/D7.0),
-.Li NONE
-(deprecated).
-If not set this defaults to
+(Протокол целостности временного ключа, IEEE 802.11i / D7.0),
+.Li НЕТ 
+(устарело).
+Если нет, установите значение по умолчанию равным 
 .Qq Li "CCMP TKIP" .
 .It Va group
-List of acceptable group (multicast) ciphers for WPA; one or more of:
+Список допустимых групповых (многоадресных) шифров для WPA; один или несколько из:
 .Li CCMP
-(AES in Counter mode with CBC-MAC, RFC 3610, IEEE 802.11i/D7.0),
+(AES в режиме счетчика с CBC-MAC, RFC 3610, IEEE 802.11i /D7.0),
 .Li TKIP
-(Temporal Key Integrity Protocol, IEEE 802.11i/D7.0),
+(Протокол целостности временного ключа, IEEE 802.11i / D7.0),
 .Li WEP104
-(WEP with 104-bit key),
+(WEP со 104-битным ключом),
 .Li WEP40
-(WEP with 40-bit key).
-If not set this defaults to
-.Qq Li "CCMP TKIP WEP104 WEP40" .
+(WEP с 40-битным ключом).
+Если нет, установите значение по умолчанию равным 
+.Qq Li "CCMP TKIP WEP104 WEP40".
 .It Va psk
-WPA preshared key used in WPA-PSK mode.
-The key is specified as 64 hex digits or as
-an 8-63 character
+Предварительно разделенный ключ WPA, используемый в режиме WPA-PSK.
+Ключ задается в виде 64 шестнадцатеричных цифр или в виде 
+символа 8-63
 .Tn ASCII
-passphrase.
-.Tn ASCII
-passphrases are dynamically converted to a 256-bit key at runtime
-using the network SSID, or they can be statically converted at
-configuration time using
-the
+кодовая фраза.
+.Tn ASCII 
+ключевые фразы динамически преобразуется в 256-битный ключ во время выполнения
+используя SSID сети, или они могут быть статически конвертированы по
+время configuration с помощью
+утилиты
 .Xr wpa_passphrase 8
-utility.
+.
 .It Va eapol_flags
-Dynamic WEP key usage for non-WPA mode, specified as a bit field.
-Bit 0 (1) forces dynamically generated unicast WEP keys to be used.
-Bit 1 (2) forces dynamically generated broadcast WEP keys to be used.
-By default this is set to 3 (use both).
+Динамическое использование ключа WEP для режима, отличного от WPA, указанное в виде битового поля.
+Бит 0 (1) принудительно использует динамически генерируемые одноадресные ключи WEP.
+Бит 1 (2) принудительно использует динамически генерируемые широковещательные ключи WEP.
+По умолчанию для этого значения установлено значение 3 (используйте оба).
 .It Va eap
-List of acceptable EAP methods; one or more of:
+Список приемлемых методов EAP; один или несколько из:
 .Li MD5
-(EAP-MD5, cannot be used with WPA,
-used only as a Phase 2 method with EAP-PEAP or EAP-TTLS),
+(EAP-MD5, не может использоваться с WPA, 
+используется только как метод фазы 2 с EAP-PEAP или EAP-TTLS),
 .Li MSCHAPV2
-(EAP-MSCHAPV2, cannot be used with WPA;
-used only as a Phase 2 method with EAP-PEAP or EAP-TTLS),
-.Li OTP
-(EAP-OTP, cannot be used with WPA;
-used only as a Phase 2 metod with EAP-PEAP or EAP-TTLS),
-.Li GTC
-(EAP-GTC, cannot be used with WPA;
-used only as a Phase 2 metod with EAP-PEAP or EAP-TTLS),
-.Li TLS
-(EAP-TLS, client and server certificate),
+(EAP-MSCHAPV2, не может использоваться с WPA;
+используется только как метод фазы 2 с EAP-PEAP или EAP-TTLS),
+.Li OTP 
+(EAP-OTP, не может использоваться с WPA;
+используется только как метод фазы 2 с EAP-PEAP или EAP-TTLS),
+.Li GTC 
+(EAP-GTC, не может использоваться с WPA;
+используется только как метод фазы 2 с EAP-PEAP или EAP-TTLS),
+.Li TLS 
+(EAP-TLS, сертификат клиента и сервера),
 .Li PEAP
-(EAP-PEAP, with tunneled EAP authentication),
-.Li TTLS
-(EAP-TTLS, with tunneled EAP or PAP/CHAP/MSCHAP/MSCHAPV2 authentication).
-If not set this defaults to all available methods compiled in to
+(EAP-PEAP, с туннельной аутентификацией EAP), 
+.Li TTLS 
+(EAP-TTLS с туннельной аутентификацией EAP или PAP/ CHAP / MSCHAP / MSCHAPV2).
+Если нет, установите значение по умолчанию для всех доступных методов, скомпилированных в to
 .Xr wpa_supplicant 8 .
-Note that by default
-.Xr wpa_supplicant 8
-is compiled with EAP support; see
-.Xr make.conf 5
-for the
-.Va NO_WPA_SUPPLICANT_EAPOL
-configuration variable that can be used to disable EAP support.
-.It Va identity
-Identity string for EAP.
-.It Va anonymous_identity
-Anonymous identity string for EAP (to be used as the unencrypted identity
-with EAP types that support different tunneled identities; e.g.\& EAP-TTLS).
-.It Va mixed_cell
-Configure whether networks that allow both plaintext and encryption
-are allowed when selecting a BSS from the scan results.
-By default this is set to 0 (disabled).
+Обратите внимание, что по умолчанию
+.Xr wpa_supplicant 8 
+скомпилирован с поддержкой EAP; см.
+.Xr make.conf 5 
+для получения информации о 
+.Va NO_WPA_SUPPLICANT_EAPOL 
+конфигурационная переменная, которую можно использовать для отключения поддержки EAP.
+.It Использует identity
+Строка идентификатора для EAP.
+.It использует anonymous_identity
+Анонимная строка идентификатора для EAP (будет использоваться в качестве незашифрованного идентификатора 
+с типами EAP, которые поддерживают разные туннельные идентификаторы; например, \& EAP-TTLS).
+.It mixed_cell
+Настройте, разрешены ли сети, которые допускают как открытый текст, так и шифрование 
+, при выборе BSS из результатов сканирования.
+По умолчанию для этого параметра установлено значение 0 (отключено).
 .It Va password
-Password string for EAP.
-.It Va ca_cert
-Pathname to CA certificate file.
-This file can have one or more trusted CA certificates.
-If
-.Va ca_cert
-is not included, server certificates will not be verified (not recommended).
+Строка пароля для EAP.
+.It использует ca_cert
+Путь к файлу сертификата CA.
+Этот файл может содержать один или несколько доверенных сертификатов CA.
+Если 
+.Va ca_cert 
+не включен, сертификаты сервера проверяться не будут (не рекомендуется).
 .It Va client_cert
-Pathname to client certificate file (PEM/DER).
+Путь к файлу сертификата клиента (PEM /DER).
 .It Va private_key
-Pathname to a client private key file (PEM/DER/PFX).
-When a PKCS#12/PFX file is used, then
-.Va client_cert
-should not be specified as both the private key and certificate will be
-read from PKCS#12 file.
+Путь к файлу закрытого ключа клиента (PEM /DER /PFX).
+Если используется файл PKCS #12 / PFX, то 
+.Va client_cert 
+указывать не следует, поскольку и закрытый ключ, и сертификат будут считываться 
+из файла PKCS # 12.
 .It Va private_key_passwd
-Password for any private key file.
-.It Va dh_file
-Pathname to a file holding DH/DSA parameters (in PEM format).
-This file holds parameters for an ephemeral DH key exchange.
-In most cases, the default RSA authentication does not use this configuration.
-However, it is possible to set up RSA to use an ephemeral DH key exchange.
-In addition, ciphers with
-DSA keys always use ephemeral DH keys.
-This can be used to achieve forward secrecy.
-If the
+Пароль для любого файла закрытого ключа.
+.It dh_file
+Путь к файлу, содержащему параметры DH / DSA (в формате PEM).
+Этот файл содержит параметры для эфемерного обмена ключами DH.
+В большинстве случаев аутентификация RSA по умолчанию не использует эту конфигурацию.
+Однако можно настроить RSA на использование эфемерного обмена ключами DH.
+Кроме того, шифры с
+Ключи DSA всегда используют эфемерные ключи DH.
+Это можно использовать для обеспечения прямой секретности.
+Если в файле 
 .Va dh_file
-is in DSA parameters format, it will be automatically converted
-into DH parameters.
-.It Va subject_match
-Substring to be matched against the subject of the
-authentication server certificate.
-If this string is set, the server
-certificate is only accepted if it contains this string in the subject.
-The subject string is in following format:
-.Pp
-.Dl "/C=US/ST=CA/L=San Francisco/CN=Test AS/emailAddress=as@example.com"
+находится в формате параметров DSA, он будет автоматически преобразован 
+в параметры DH.
+.It требует subject_match
+Подстрока, которая будет сопоставлена с subject в сертификате сервера аутентификации 
+.
+Если эта строка задана, сервер 
+сертификат принимается только в том случае, если он содержит эту строку в теме письма.
+Строка темы имеет следующий формат:
+.Pp 
+.Dl "/ C = США / ST = Калифорния / L = Сан-Франциско / CN = Тест AS/emailAddress=as@example.com"
 .It Va phase1
-Phase1 (outer authentication, i.e., TLS tunnel) parameters
-(string with field-value pairs, e.g.,
-.Qq Li peapver=0
-or
-.Qq Li "peapver=1 peaplabel=1" ) .
+Параметры фазы 1 (внешняя аутентификация, т.е. Туннель TLS) 
+(строка с парами поле-значение, например, 
+.Qq Li peapver=0 
+или 
+.Qq ( "peapver=1 , peaplabel=1" ) .
 .Bl -inset
 .It Li peapver
-can be used to force which PEAP version (0 or 1) is used.
-.It Li peaplabel=1
-can be used to force new label,
-.Dq "client PEAP encryption" ,
-to be used during key derivation when PEAPv1 or newer.
-Most existing PEAPv1 implementations seem to be using the old label,
-.Dq Li "client EAP encryption" ,
-and
-.Xr wpa_supplicant 8
-is now using that as the
-default value.
-Some servers, e.g.,
-.Tn Radiator ,
-may require
-.Li peaplabel=1
-configuration to interoperate with PEAPv1; see
-.Pa eap_testing.txt
-for more details.
+может использоваться для определения того, какая версия PEAP (0 или 1) используется.
+.It Li peaplabel=1 
+может использоваться для принудительного ввода новой метки, 
+.Dq "шифрование клиента по протоколу PEAP", 
+используется при получении ключа при использовании PEAPv1 или новее.
+Большинство существующих реализаций peap V1, похоже, используют старую метку, 
+.Dq Li "шифрование EAP клиента", 
+и 
+.Xr wpa_supplicant 8 
+теперь использует это как 
+значение по умолчанию.
+Некоторым серверам, например,
+.Tn Radiator , 
+может потребоваться
+.Li peaplabel= 1 
+конфигурация для взаимодействия с PEAPv1; см.
+.Pa eap_testing.txt 
+для получения более подробной информации.
 .It Li peap_outer_success=0
-can be used to terminate PEAP authentication on
-tunneled EAP-Success.
-This is required with some RADIUS servers that
-implement
-.Pa draft-josefsson-pppext-eap-tls-eap-05.txt
-(e.g.,
-.Tn Lucent NavisRadius v4.4.0
-with PEAP in
-.Dq "IETF Draft 5"
-mode).
-.It Li include_tls_length=1
-can be used to force
-.Xr wpa_supplicant 8
-to include
-TLS Message Length field in all TLS messages even if they are not
-fragmented.
+может использоваться для завершения аутентификации PEAP на
+туннелированный EAP-успех.
+Это требуется для некоторых серверов RADIUS, которые 
+реализуют 
+.Pa draft-josefsson-pppext-eap-tls-eap-05.txt 
+(например,,
+.Tn Lucent NavisRadius v4.4.0 
+с PEAP в 
+.Dq "Проект IETF 5"
+режим).
+.Он Li include_tls_length=1 
+может использоваться для принудительного включения
+.Xr wpa_supplicant 8 
+включить
+TLS в поле длины сообщения во всех ТЛС сообщения, даже если они не
+фрагментарный характер.
 .It Li sim_min_num_chal=3
-can be used to configure EAP-SIM to require three
-challenges (by default, it accepts 2 or 3).
-.It Li fast_provisioning=1
-option enables in-line provisioning of EAP-FAST
-credentials (PAC).
-.El
+может использоваться для настройки EAP-SIM на требование трех вызовов 
+(по умолчанию он принимает 2 или 3).
+.It Li fast_provisioning=1 
+опция позволяет в режиме реального времени предоставлять учетные данные EAP-FAST 
+(PAC).
+.El 
 .It Va phase2
-phase2: Phase2 (inner authentication with TLS tunnel) parameters
-(string with field-value pairs, e.g.,
+phase2: Phase2 (внутренняя аутентификация с туннелем TLS) 
+(строка с парами поле-значение, например, 
 .Qq Li "auth=MSCHAPV2"
-for EAP-PEAP or
-.Qq Li "autheap=MSCHAPV2 autheap=MD5"
-for EAP-TTLS).
+для EAP-PEAP или 
+.Qq Li "autheap=MSCHAPV2 autheap= MD5"
+для EAP-TTLS).
 .It Va ca_cert2
-Like
-.Va ca_cert
-but for EAP inner Phase 2.
+Нравится
+.Va ca_cert 
+но для внутренней фазы EAP 2.
 .It Va client_cert2
-Like
-.Va client_cert
-but for EAP inner Phase 2.
+Нравится
+.Va client_cert 
+но для внутренней фазы EAP 2.
 .It Va private_key2
-Like
-.Va private_key
-but for EAP inner Phase 2.
+Нравится
+.Va private_key 
+но для внутренней фазы EAP 2.
 .It Va private_key2_passwd
-Like
-.Va private_key_passwd
-but for EAP inner Phase 2.
+Нравится
+.Va private_key_passwd 
+но для внутренней фазы 2 EAP.
 .It Va dh_file2
-Like
-.Va dh_file
-but for EAP inner Phase 2.
+Нравится
+.Va dh_file 
+но для внутренней фазы EAP 2.
 .It Va subject_match2
-Like
-.Va subject_match
-but for EAP inner Phase 2.
-.It Va eappsk
-16-byte pre-shared key in hex format for use with EAP-PSK.
-.It Va nai
-User NAI for use with EAP-PSK.
-.It Va server_nai
-Authentication Server NAI for use with EAP-PSK.
-.It Va pac_file
-Pathname to the file to use for PAC entries with EAP-FAST.
-The
-.Xr wpa_supplicant 8
-utility
-must be able to create this file and write updates to it when
-PAC is being provisioned or refreshed.
-.It Va eap_workaround
-Enable/disable EAP workarounds for various interoperability issues
-with misbehaving authentication servers.
-By default these workarounds are enabled.
-Strict EAP conformance can be configured by setting this to 0.
-.It Va wep_tx_keyidx
-which key to use for transmission of packets.
-.It Va wep_keyN key
-An
-.Tn ASCII
-string enclosed in quotation marks to encode the WEP key.
-Without quotes this is a hex string of the actual key.
-WEP is considered insecure and should be avoided.
-The exact translation from an ASCII key to a hex key varies.
-Use hex keys where possible.
-.El
-.Sh CERTIFICATES
-Some EAP authentication methods require use of certificates.
-EAP-TLS uses both server- and client-side certificates,
-whereas EAP-PEAP and EAP-TTLS only require a server-side certificate.
-When a client certificate is used, a matching private key file must
-also be included in configuration.
-If the private key uses a passphrase, this
-has to be configured in the
-.Nm
-file as
+Нравится
+.Va subject_match 
+но для внутренней фазы 2 EAP.
+.It использует eappsk
+16-байтовый предварительно разделяемый ключ в шестнадцатеричном формате для использования с EAP-PSK.
+.It использует nai
+Пользовательский NAI для использования с EAP-PSK.
+.It Использует server_nai
+Сервер аутентификации NAI для использования с EAP-PSK.
+.It использует pac_file
+Путь к файлу, который будет использоваться для записей PAC с EAP-FAST.
+утилиты
+.ХС в wpa_supplicant 8
+.
+должен быть в состоянии создать этот файл и записать его, когда
+ПАК подготовке и обновлении.
+.It eap_workaround
+Включение / отключение обходных путей EAP для различных проблем взаимодействия 
+с неправильно работающими серверами аутентификации.
+По умолчанию эти обходные пути включены.
+Строгое соответствие EAP можно настроить, установив для этого значение 0.
+.It использует wep_tx_keyidx 
+какой ключ использовать для передачи пакетов.
+.It использует ключ wep_keyN.
+An 
+.Tn ASCII 
+строка, заключенная в кавычки для кодирования ключа WEP.
+Без кавычек это шестнадцатеричная строка фактического ключа.
+WEP считается небезопасным, и его следует избегать.
+Точный перевод ASCII-ключа в шестнадцатеричный ключ варьируется.
+По возможности используйте шестнадцатеричные ключи.
+СЕРТИФИКАТЫ .El 
+.Sh
+Некоторые методы аутентификации EAP требуют использования сертификатов.
+EAP-TLS использует сертификаты как на стороне сервера, так и на стороне клиента, 
+в то время как EAP-PEAP и EAP-TTLS требуют только сертификат на стороне сервера.
+При использовании сертификата клиента, соответствующий файл закрытого ключа должны
+также будут добавлены в конфигурацию.
+Если закрытый ключ использует кодовую фразу, это 
+должно быть настроено в файле 
+.Nm 
+как 
 .Va private_key_passwd .
+.Pp 
+Утилита 
+.Xr wpa_supplicant 8 
+
+поддерживает сертификаты X.509 в форматах PEM и DER.
+Сертификат пользователя и закрытый ключ могут быть включены в один файл.
 .Pp
-The
-.Xr wpa_supplicant 8
-utility
-supports X.509 certificates in PEM and DER formats.
-User certificate and private key can be included in the same file.
-.Pp
-If the user certificate and private key is received in PKCS#12/PFX
-format, they need to be converted to a suitable PEM/DER format for
-use by
+Если сертификат пользователя и закрытый ключ получены в формате PKCS # 12 / PFX 
+, их необходимо преобразовать в подходящий формат PEM / DER для 
+использования 
 .Xr wpa_supplicant 8 .
-This can be done using the
-.Xr openssl 1
-program, e.g.\& with the following commands:
+Это можно сделать с помощью программы 
+.Xr openssl 1 
+, например,\& с помощью следующих команд:
 .Bd -literal
-# convert client certificate and private key to PEM format
-openssl pkcs12 -in example.pfx -out user.pem -clcerts
-# convert CA certificate (if included in PFX file) to PEM format
-openssl pkcs12 -in example.pfx -out ca.pem -cacerts -nokeys
-.Ed
-.Sh FILES
+# преобразовать сертификат клиента и закрытый ключ в формат PEM 
+openssl pkcs12 -в примере.pfx -для пользователя.pem -clcerts
+# преобразовать сертификат CA (если он включен в файл PFX) в формат PEM 
+файлы openssl pkcs12 -in example.pfx -out ca.pem -cacerts -nokeys 
+.Ed 
+.Sh 
 .Bl -tag -width ".Pa /usr/share/examples/etc/wpa_supplicant.conf" -compact
 .It Pa /etc/wpa_supplicant.conf
 .It Pa /usr/share/examples/etc/wpa_supplicant.conf
-.El
-.Sh EXAMPLES
-WPA-Personal (PSK) as a home network and WPA-Enterprise with EAP-TLS
-as a work network:
+.El 
+.Sh ПРИМЕРЫ
+WPA-Personal (PSK) в качестве домашней сети и WPA-Enterprise с EAP-TLS 
+в качестве рабочей сети:
 .Bd -literal
-# allow frontend (e.g., wpa_cli) to be used by all users in 'wheel' group
-ctrl_interface=/var/run/wpa_supplicant
-ctrl_interface_group=wheel
+# разрешить использование интерфейса (например, wpa_cli) всеми пользователями в группе 'wheel' 
+ctrl_interface=/var/run/wpa_supplicant 
+ctrl_interface_group=колесо
 #
-# home network; allow all valid ciphers
+# домашняя сеть; разрешить все допустимые шифры 
 network={
-        ssid="home"
-        scan_ssid=1
-        key_mgmt=WPA-PSK
-        psk="very secret passphrase"
+ ssid="home"
+ scan_ssid=1
+ key_mgmt=WPA-PSK
+ psk= "очень секретная фраза-пароль"
 }
 #
-# work network; use EAP-TLS with WPA; allow only CCMP and TKIP ciphers
-network={
-        ssid="work"
-        scan_ssid=1
-        key_mgmt=WPA-EAP
-        pairwise=CCMP TKIP
-        group=CCMP TKIP
-        eap=TLS
-        identity="user@example.com"
-        ca_cert="/etc/cert/ca.pem"
-        client_cert="/etc/cert/user.pem"
-        private_key="/etc/cert/user.prv"
-        private_key_passwd="password"
+# работайте в сети; используйте EAP-TLS с WPA; разрешайте только шифры CCMP и TKIP 
+сеть ={
+ ssid="работа" 
+ scan_ssid=1
+ key_mgmt= WPA-EAP 
+ pairwise=CCMP TKIP
+ group=CCMP TKIP
+ eap= TLS 
+ identity="user@example.com"
+ ca_cert="/etc/сертификат/ca.pem"
+ client_cert="/etc/сертификат/user.pem"
+ private_key="/etc/сертификат/user.prv"
+ private_key_passwd="пароль"
 }
-.Ed
-.Pp
-WPA-RADIUS/EAP-PEAP/MSCHAPv2 with RADIUS servers that use old peaplabel
-(e.g., Funk Odyssey and SBR, Meetinghouse Aegis, Interlink RAD-Series):
+.Ed 
+.Pp 
+WPA-RADIUS / EAP-PEAP / MSCHAPv2 с серверами RADIUS, использующими старую метку peaplabel 
+(например, Funk Odyssey и SBR, Meetinghouse Aegis, Interlink RAD-Series):
+.Bd -литерал 
+ctrl_interface=/var/run/wpa_supplicant 
+ctrl_interface_group=wheel 
+сеть={
+ ssid="example"
+ scan_ssid=1
+ key_mgmt= WPA-EAP
+ eap= PEAP 
+ идентификатор ="user@example.com"
+ пароль ="foobar"
+ ca_cert="/etc/cert/ca.pem"
+ фаза1="peaplabel=0"
+ фаза2="auth=MSCHAPV2"
+}
+.Изд. 
+.Рр
+ВП-в ttls/протокол EAP-MD5-это проблема конфигурации с анонимных идентификаторов для
+незашифрованные использования.
+Настоящие удостоверения передаются только в зашифрованном виде по протоколу TLS туннель.
 .Bd -literal
-ctrl_interface=/var/run/wpa_supplicant
-ctrl_interface_group=wheel
-network={
-        ssid="example"
-        scan_ssid=1
-        key_mgmt=WPA-EAP
-        eap=PEAP
-        identity="user@example.com"
-        password="foobar"
-        ca_cert="/etc/cert/ca.pem"
-        phase1="peaplabel=0"
-        phase2="auth=MSCHAPV2"
+ctrl_interface=/var/run/wpa_supplicant 
+ctrl_interface_group=wheel 
+сеть={
+ ssid="example"
+ scan_ssid=1
+ key_mgmt= WPA-EAP
+ eap = TTLS 
+ identity="user@example.com"
+ anonymous_identity="anonymous@example.com"
+ пароль="foobar"
+ ca_cert="/etc/cert/ca.pem"
+ phase2="auth=MD5"
 }
-.Ed
-.Pp
-EAP-TTLS/EAP-MD5-Challenge configuration with anonymous identity for the
-unencrypted use.
-Real identity is sent only within an encrypted TLS tunnel.
+.Ed 
+.Pp 
+Традиционная конфигурация WEP со 104-битным ключом, заданным в шестнадцатеричном формате.
+Обратите внимание, что ключ WEP не заключен в кавычки.
+.Bd -литерал 
+ctrl_interface=/var/run/wpa_supplicant 
+ctrl_interface_group=wheel 
+сеть={
+ ssid="пример"
+ scan_ssid=1
+ key_mgmt = НЕТ
+ wep_tx_keyidx= 0
+ # шестнадцатеричные ключи, обозначенные без кавычек
+ wep_key0=42FEEDDEAFBABEDEAFBEEFAA55
+# ASCII keys denoted with quotes.
+ wep_key1="FreeBSDr0cks!"
+}
+.Ed 
+.Pp 
+Минимальная конфигурация eduroam.
 .Bd -literal
-ctrl_interface=/var/run/wpa_supplicant
-ctrl_interface_group=wheel
-network={
-        ssid="example"
-        scan_ssid=1
-        key_mgmt=WPA-EAP
-        eap=TTLS
-        identity="user@example.com"
-        anonymous_identity="anonymous@example.com"
-        password="foobar"
-        ca_cert="/etc/cert/ca.pem"
-        phase2="auth=MD5"
+ctrl_interface=/var/run/wpa_supplicant 
+ctrl_interface_group= колесо 
+сеть ={
+ ssid="eduroam"
+ scan_ssid=1
+ key_mgmt= WPA-EAP
+ eap = TTLS 
+ identity="user@example.org"
+ пароль ="foobar"
+ фаза 2="auth = MSCHAPV2"
 }
-.Ed
-.Pp
-Traditional WEP configuration with 104 bit key specified in hexadecimal.
-Note the WEP key is not quoted.
-.Bd -literal
-ctrl_interface=/var/run/wpa_supplicant
-ctrl_interface_group=wheel
-network={
-        ssid="example"
-        scan_ssid=1
-        key_mgmt=NONE
-        wep_tx_keyidx=0
-	# hex keys denoted without quotes
-        wep_key0=42FEEDDEAFBABEDEAFBEEFAA55
-	# ASCII keys denoted with quotes.
-	wep_key1="FreeBSDr0cks!"
-}
-.Ed
-.Pp
-Minimal eduroam configuration.
-.Bd -literal
-ctrl_interface=/var/run/wpa_supplicant
-ctrl_interface_group=wheel
-network={
-        ssid="eduroam"
-        scan_ssid=1
-        key_mgmt=WPA-EAP
-        eap=TTLS
-        identity="user@example.org"
-        password="foobar"
-        phase2="auth=MSCHAPV2"
-}
-.Ed
-.Sh SEE ALSO
-.Xr wpa_cli 8 ,
-.Xr wpa_passphrase 8 ,
+.Ed 
+.Sh СМОТРИ ТАКЖЕ
+.Xr wpa_cli 8 , 
+.Xr wpa_passphrase 8 , 
 .Xr wpa_supplicant 8
-.Sh HISTORY
-The
-.Nm
-manual page and
-.Xr wpa_supplicant 8
-functionality first appeared in
+.ИСТОРИЯ Sh
+Страница руководства 
+.Nm 
+и 
+.Xr wpa_supplicant 8 
+функциональность впервые появилась в 
 .Fx 6.0 .
-.Sh AUTHORS
-This manual page is derived from the
-.Pa README
-and
-.Pa wpa_supplicant.conf
-files in the
-.Nm wpa_supplicant
-distribution provided by
+.Sh Авторы 
+Эта страница руководства является производной от 
+.Pa ЧИТАЙ МЕНЯ
+и 
+.Pa wpa_supplicant.conf 
+файлы в дистрибутиве 
+.Nm wpa_supplicant 
+предоставлены
 .An Jouni Malinen Aq Mt j@w1.fi .

@@ -25,10 +25,10 @@
 .Dd July 22, 2020
 .Dt ZFSBOOTCFG 8
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm zfsbootcfg
-.Nd "specify zfsboot options for the next boot"
-.Sh SYNOPSIS
+.Nd "указывает параметры zfsboot для следующей загрузки"
+.Sh СИНТАКСИС
 .Nm
 .Ao Ar options Ac
 .Nm
@@ -39,50 +39,48 @@
 .Op Fl v Ar value
 .Op Fl z Ar pool
 .Nm
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 .Nm
-is used to set
+используется для установки
 .Xr boot.config 5 Ns -style
-options to be used by
+опций, которые будут использоваться
 .Xr zfsboot 8 ,
 .Xr gptzfsboot 8
-or
+или
 .Xr loader 8
-the next time the machine is booted.
-Once
+при следующей загрузке компьютера.
+Однажды
 .Xr zfsboot 8
-or
+или
 .Xr gptzfsboot 8
-or
+или
 .Xr loader 8
-reads the information, it is deleted.
-If booting fails, the machine automatically reverts to the previous
-boot configuration.
-The information is stored in a special boot environment area of a ZFS pool.
+при считывании информации удаляется.
+Если загрузка завершается неудачно, компьютер автоматически возвращается к предыдущей
+конфигурации загрузки.
+Информация сохраняется в специальной области среды загрузки в пула ZFS.
 .Pp
-If used without arguments,
+Если используется без аргументов,
 .Nm
-will output the current boot configuration, if set.
+выведет текущую конфигурацию загрузки, если она задана.
 .Pp
-The following options are supported by
+Следующие опции поддерживаются
 .Nm :
 .Bl -tag -width indent
 .It Fl k Ar key
-Define key for
-.Ao key , value Ac
-pair.
+Определяет ключ для пары
+.Ao key , value Ac .
 .It Fl n Ar name
-Update nvlist
+Обновляет список nvlist
 .Ar name .
 .It Fl p
-Print all information stored in ZFS pool bootenv area.
+Печатает всю информацию, хранящуюся в области загрузка пула ZFS.
 .It Fl t Ar type
-Set type of
+Устанавливает тип
 .Ar value
-used in
-.Ao key , value Ac
-pair.
-Currently supported types are:
+используемый в паре
+.Ao key , value Ac .
+В настоящее время поддерживаются следующие типы:
 .Bl -tag -width indent -compact
 .It Ar DATA_TYPE_BYTE
 .It Ar DATA_TYPE_INT8
@@ -97,45 +95,43 @@ Currently supported types are:
 .It Ar DATA_TYPE_STRING
 .El
 .Pp
-If not specified, the default is
+Если не указано, то по умолчанию используется
 .Ar DATA_TYPE_STRING .
 .It Fl v Ar value
-Define value for
-.Ao key , value Ac
-pair.
+Определяет значение для пары
+.Ao key , value Ac .
 .It Fl z Ar pool
-Operate on
+Работает с
 .Ar pool .
 .El
-.Sh ENVIRONMENT
+.Sh ОКРУЖЕНИЕ
 .Bl -tag -width vfs.root.mountfrom -compact
 .It Ev vfs.root.mountfrom
-The
 .Xr kenv 1
-variable that identifies a pool for which the options are written.
+переменная, определяющая пул, для которого записаны параметры.
 .El
-.Sh EXAMPLES
-Try to boot to a new
+.Sh ПРИМЕРЫ
+Попробуем загрузить на новый
 .Em boot environment
-without changing the
+без изменения
 .Cm bootfs
-property of a pool:
+свойство пула:
 .Pp
 .Dl "zfsbootcfg ""zfs:tank/ROOT/newbe:""
 .Pp
-To clear the boot options:
+Чтобы очистить параметры загрузки:
 .Pp
 .Dl "zfsbootcfg """"
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr boot.config 5 ,
 .Xr bectl 8 ,
 .Xr gptzfsboot 8 ,
 .Xr loader 8 ,
 .Xr zfsboot 8
-.Sh HISTORY
+.Sh ИСТОРИЯ
 .Nm
-appeared in
+появился в
 .Fx 11.1 .
-.Sh AUTHORS
-This manual page was written by
-.An Andriy Gapon Aq Mt avg@FreeBSD.org .
+.Sh АВТОРЫ
+Эта страница руководства была написана
+.An Андрей Гапон Aq Mt avg@FreeBSD.org .

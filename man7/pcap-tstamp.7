@@ -20,182 +20,180 @@
 .\" MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 .\"
 .TH PCAP-TSTAMP 7 "14 July 2020"
-.SH NAME
-pcap-tstamp \- packet time stamps in libpcap
-.SH DESCRIPTION
-When capturing traffic, each packet is given a time stamp representing,
-for incoming packets, the arrival time of the packet and, for outgoing
-packets, the transmission time of the packet.  This time is an
-approximation of the arrival or transmission time.  If it is supplied by
-the operating system running on the host on which the capture is being
-done, there are several reasons why it might not precisely represent the
-arrival or transmission time:
+.SH ИМЯ
+pcap-tstamp \- временные метки пакетов в libpcap
+.SH ОПИСАНИЕ
+При перехвате трафика каждому пакету присваивается временная метка, представляющая
+для входящих пакетов время прибытия пакета, а для исходящих
+пакетов - время передачи пакета.  Это время является
+приблизительным значением времени прибытия или передачи.  Если он предоставляется
+операционной системой, запущенной на хосте, на котором выполняется захват,
+существует несколько причин, по которым он может не точно отражать время
+прибытия или передачи:
 .IP
-if the time stamp is applied to the packet when the networking stack
-receives the packet, the networking stack might not see the packet until
-an interrupt is delivered for the packet or a timer event causes the
-networking device driver to poll for packets, and the time stamp might
-not be applied until the packet has had some processing done by other
-code in the networking stack, so there might be a significant delay
-between the time when the last bit of the packet is received by the
-capture device and when the networking stack time-stamps the packet;
+если временная метка применяется к пакету при
+получении пакета сетевым стеком, сетевой стек может не видеть пакет до
+тех пор, пока для пакета не будет доставлено прерывание или событие таймера не заставит
+драйвер сетевого устройства выполнить опрос на наличие пакетов, и временная метка может
+не применяться до тех пор, пока пакет не получит некоторое количество сообщений. обработка выполняется другим
+кодом в сетевом стеке, поэтому может возникнуть значительная задержка
+между моментом получения последнего бита пакета
+устройством захвата и моментом, когда сетевой стек помечает пакет временными метками;
 .IP
-the timer used to generate the time stamps might have low resolution,
-for example, it might be a timer updated once per host operating system
-timer tick, with the host operating system timer ticking once every few
-milliseconds;
+таймер, используемый для создания временных меток, может иметь низкое разрешение,
+например, это может быть таймер, обновляемый один раз за
+такт работы операционной системы хоста, при этом таймер операционной системы хоста будет работать каждые несколько
+миллисекунд;
 .IP
-a high-resolution timer might use a counter that runs at a rate
-dependent on the processor clock speed, and that clock speed might be
-adjusted upwards or downwards over time and the timer might not be able
-to compensate for all those adjustments;
+таймер с высоким разрешением может использовать счетчик, который работает со скоростью,
+зависящей от тактовой частоты процессора, и эта тактовая частота может
+со временем увеличиваться или уменьшаться, и таймер может быть не в состоянии
+компенсировать все эти корректировки;
 .IP
-the host operating system's clock might be adjusted over time to match a
-time standard to which the host is being synchronized, which might be
-done by temporarily slowing down or speeding up the clock or by making a
-single adjustment;
+часы операционной системы хоста могут со временем корректироваться в соответствии
+со стандартом времени, с которым синхронизируется хост, что может быть
+сделано путем временного замедления или ускорения хода часов или путем
+однократной настройки;
 .IP
-different CPU cores on a multi-core or multi-processor system might be
-running at different speeds, or might not have time counters all
-synchronized, so packets time-stamped by different cores might not have
-consistent time stamps;
+различные процессорные ядра в многоядерной или многопроцессорной системе могут
+работать с разной скоростью или не иметь синхронизированных счетчиков
+времени, поэтому пакеты, помеченные разными ядрами, могут иметь
+несогласованные временные метки;
 .IP
-some time sources, such as those that supply POSIX "seconds since the
-Epoch" time, do not count leap seconds, meaning that the seconds
-portion
+некоторые источники времени, такие как те, которые предоставляют POSIX "секунды с начала
+эпохи", не учитывают високосные секунды, что означает, что секундная часть
 .RB ( tv_sec )
-of the time stamp might not be incremented for a leap second, so that
-the fraction-of-a-second part of the time stamp might roll over past
-zero but the second part would not change, or the clock might run
-slightly more slowly for a period before the leap second.
+временной метки может не увеличиваться на високосную секунду, так что
+часть временной метки, составляющая доли секунды, может превышать
+ноль, но вторая часть не изменится, или часы могут идти
+немного медленнее в течение периода, предшествующего високосной секунде.
 .LP
-For these reasons, time differences between packet time stamps will not
-necessarily accurately reflect the time differences between the receipt
-or transmission times of the packets.
+По этим причинам разница во времени между временными метками пакетов не
+обязательно будет точно отражать разницу во времени между временем получения
+или передачи пакетов.
 .LP
-In addition, packets time-stamped by different cores might be
-time-stamped in one order and added to the queue of packets for libpcap
-to read in another order, so time stamps might not be monotonically
-increasing.
+Кроме того, пакеты, помеченные временем разными ядрами, могут быть
+помечены временем в одном порядке и добавлены в очередь пакетов
+для чтения libpcap в другом порядке, поэтому временные метки могут не
+увеличиваться монотонно.
 .LP
-Some capture devices on some platforms can provide time stamps for
-packets; those time stamps are usually high-resolution time stamps, and
-are usually applied to the packet when the first or last bit of the
-packet arrives, and are thus more accurate than time stamps provided by
-the host operating system.  Those time stamps might not, however, be
-synchronized with the host operating system's clock, so that, for
-example, the time stamp of a packet might not correspond to the time
-stamp of an event on the host triggered by the arrival of that packet.
-If they are synchronized with the host operating system's clock, some of
-the issues listed above with time stamps supplied by the host operating
-system may also apply to time stamps supplied by the capture device.
+Некоторые устройства захвата на некоторых платформах могут предоставлять временные метки для
+пакетов; эти временные метки обычно имеют высокое разрешение и
+обычно применяются к пакету при поступлении первого или последнего бита
+пакета и, таким образом, являются более точными, чем временные метки, предоставляемые
+операционной системой хоста.  Однако эти временные метки могут быть не
+синхронизированы с часами операционной системы хоста, так что,
+например, временная метка пакета может не соответствовать временной
+метке события на хосте, вызванного поступлением этого пакета.
+Если они синхронизированы с часами операционной системы хоста, некоторые из
+перечисленных выше проблем, связанных с отметками времени, предоставляемыми операционной системой хоста,
+могут также относиться к отметкам времени, предоставляемым устройством захвата.
 .LP
-Depending on the capture device and the software on the host, libpcap
-might allow different types of time stamp to be used.  The
-.BR pcap_list_tstamp_types (3)
-routine provides, for a packet capture handle created by
+В зависимости от устройства записи и программного обеспечения на хосте, libpcap
+может разрешать использование различных типов временных меток.  Программа предоставляет
+.BR pcap_list_tstamp_types (3) ,
+для дескриптора захвата пакета, созданного
 .BR pcap_create (3)
-but not yet activated by
+но еще не активирован с помощью
 .BR pcap_activate (3),
-a list of time stamp types supported by the capture device for that
-handle.
-The list might be empty, in which case no choice of time stamp type is
-offered for that capture device.  If the list is not empty, the
+список типов временных меток, поддерживаемых устройством записи для этого
+дескриптора.
+Список может быть пустым, и в этом случае выбор типа временных меток
+для этого устройства записи не предлагается.  Если список не пуст, процедура
 .BR pcap_set_tstamp_type (3)
-routine can be used after a
+может быть использована после вызова
 .BR pcap_create ()
-call and before a
+и перед вызовом
 .BR pcap_activate ()
-call to specify the type of time stamp to be used on the device.
-The time stamp types are listed here; the first value is the #define to
-use in code, the second value is the value returned by
+чтобы указать тип временной метки, которая будет использоваться на устройстве.
+Здесь перечислены типы временных меток; первое значение - это #define для
+использования в коде, второе значение - это значение, возвращаемое с помощью
 .BR pcap_tstamp_type_val_to_name (3)
-and accepted by
+и принятое
 .BR pcap_tstamp_type_name_to_val (3) .
 .RS 5
 .TP 5
 .BR PCAP_TSTAMP_HOST " - " host
-Time stamp provided by the host on which the capture is being done.  The
-precision of this time stamp is unspecified; it might or might not be
-synchronized with the host operating system's clock.
+Временная метка, предоставленная хостом, на котором выполняется запись.  
+Точность этой временной метки не определена; она может быть
+синхронизирована с часами операционной системы хоста, а может и не синхронизироваться.
 .TP 5
 .BR PCAP_TSTAMP_HOST_LOWPREC " - " host_lowprec
-Time stamp provided by the host on which the capture is being done.
-This is a low-precision time stamp, synchronized with the host operating
-system's clock.
+Временная метка, предоставляемая хостом, на котором выполняется запись.
+Это временная метка низкой точности, синхронизированная с
+часами операционной системы хоста.
 .TP 5
 .BR PCAP_TSTAMP_HOST_HIPREC " - " host_hiprec
-Time stamp provided by the host on which the capture is being done.
-This is a high-precision time stamp, synchronized with the host
-operating system's clock. It might be more expensive to fetch than
+Временная метка, предоставляемая хостом, на котором выполняется запись.
+Это высокоточная временная метка, синхронизированная с
+часами операционной системы хоста. Ее получение может оказаться более дорогостоящим, чем
 .BR PCAP_TSTAMP_HOST_LOWPREC .
 .TP 5
 .BR PCAP_TSTAMP_HOST_HIPREC_UNSYNCED " - " host_hiprec_unsynced
-Time stamp provided by the host on which the capture is being done.
-This is a high-precision time stamp, not synchronized with the host
-operating system's clock. It might be more expensive to fetch than
+Временная метка, предоставляемая хостом, на котором выполняется запись.
+Это высокоточная временная метка, не синхронизированная с
+часами операционной системы хоста. Ее получение может оказаться более дорогостоящим, чем
 .BR PCAP_TSTAMP_HOST_LOWPREC .
 .TP 5
 .BR PCAP_TSTAMP_ADAPTER " - " adapter
-Time stamp provided by the network adapter on which the capture is being
-done.  This is a high-precision time stamp, synchronized with the host
-operating system's clock.
+Временная метка, предоставляемая сетевым адаптером, на котором выполняется запись.
+Это высокоточная временная метка, синхронизированная с
+часами операционной системы хоста.
 .TP 5
 .BR PCAP_TSTAMP_ADAPTER_UNSYNCED " - " adapter_unsynced
-Time stamp provided by the network adapter on which the capture is being
-done.  This is a high-precision time stamp; it is not synchronized with
-the host operating system's clock.
+Временная метка, предоставляемая сетевым адаптером, на котором выполняется запись.
+Это высокоточная временная метка; она не синхронизирована с
+часами операционной системы хоста.
 .RE
 .LP
-Time stamps synchronized with the system clock can go backwards, as the
-system clock can go backwards. If a clock is not in sync with the
-system clock, that could be because the system clock isn't keeping
-accurate time, because the other clock isn't keeping accurate time, or
-both.
+Временные метки, синхронизированные с системными часами, могут изменяться в обратном направлении, так как
+системные часы могут идти в обратном направлении. Если часы не синхронизированы с
+системными часами, это может быть связано с тем, что системные часы не
+показывают точное время, потому что другие часы не показывают точное время, или
+с обоими причинами.
 .LP
-Host-provided time stamps generally correspond to the time when the
-time-stamping code sees the packet; this could be some unknown amount of
-time after the first or last bit of the packet is received by the
-network adapter, due to batching of interrupts for packet arrival,
-queueing delays, etc..
+Временные метки, предоставляемые хостом, обычно соответствуют времени, когда
+код с временной меткой видит пакет; это может быть некоторый неизвестный промежуток
+времени после получения сетевым адаптером первого или последнего бита пакета
+из-за пакетной обработки прерываний для поступления пакетов,
+задержек в очереди и т.д.
 .LP
-By default, when performing a live capture or reading from a savefile,
-time stamps are supplied as seconds since January 1, 1970, 00:00:00 UTC,
-and microseconds since that seconds value, even if higher-resolution
-time stamps are available from the capture device or in the savefile.
-If, when reading a savefile, the time stamps in the file have a higher
-resolution than one microsecond, the additional digits of resolution are
-discarded.
+По умолчанию при выполнении записи в реальном времени или чтении из сохраненного файла
+временные метки указываются в секундах с 1 января 1970 года, 00:00:00 UTC,
+и в микросекундах, начиная с этого значения в секундах, даже если
+на устройстве записи или в сохраненном файле доступны временные метки с более высоким разрешением.
+Если при чтении файла сохранения временные метки в файле имеют
+разрешение более одной микросекунды, дополнительные цифры разрешения
+отбрасываются.
 .LP
-The
+Процедура
 .BR pcap_set_tstamp_precision (3)
-routine can be used after a
+может быть использована после вызова
 .BR pcap_create ()
-call and after a
+и после вызова
 .BR pcap_activate ()
-call to specify the resolution of the time stamps to get for the device.
-If the hardware or software cannot supply a higher-resolution time
-stamp, the
+чтобы указать разрешение временных меток, которые необходимо получить для устройства.
+Если аппаратное или программное обеспечение не может предоставить временную метку с более высоким разрешением, вызов
 .BR pcap_set_tstamp_precision ()
-call will fail, and the time stamps supplied after the
+потерпит неудачу, и временные метки, указанные после вызова
 .BR pcap_activate ()
-call will have microsecond resolution.
+будет иметь микросекундное разрешение.
 .LP
-When opening a savefile, the
+При открытии файла сохранения процедуры
 .BR \%pcap_open_offline_with_tstamp_precision (3)
-and
+и
 .BR \%pcap_fopen_offline_with_tstamp_precision (3)
-routines can be used to specify the resolution of time stamps to be read
-from the file; if the time stamps in the file have a lower resolution,
-the fraction-of-a-second portion of the time stamps will be scaled to
-the specified resolution.
+могут использоваться для указания разрешения временных меток, которые будут считываться
+из файла; если временные метки в файле имеют меньшее разрешение,
+часть временных меток, составляющая доли секунды, будет масштабирована до
+указанного разрешения.
 .LP
-The
+Процедура
 .BR pcap_get_tstamp_precision (3)
-routine returns the resolution of time stamps that will be supplied;
-when capturing packets, this does not reflect the actual precision of
-the time stamp supplied by the hardware or operating system and, when
-reading a savefile, this does not indicate the actual precision of time
-stamps in the file.
-.SH SEE ALSO
+возвращает разрешение временных меток, которые будут предоставлены;
+при захвате пакетов это не отражает фактическую точность
+временных меток, предоставляемых аппаратным обеспечением или операционной системой, и при
+чтении файла сохранения это не указывает на фактическую точность временных
+меток в файле.
+.SH СМОТРИТЕ ТАКЖЕ
 .BR pcap (3)

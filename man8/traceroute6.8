@@ -27,18 +27,18 @@
 .\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 .\" SUCH DAMAGE.
 .\"
-.Dd November 25, 2020
+.Dd October 25, 2023
 .Dt TRACEROUTE6 8
 .Os
 .\"
-.Sh NAME
+.Sh ИМЯ
 .Nm traceroute6
-.Nd "print the route IPv6 packets will take to a network node"
+.Nd "выводит маршрут, по которому пакеты IPv6 будут поступать к сетевому узлу"
 .\"
-.Sh SYNOPSIS
+.Sh СИНТАКСИС
 .Nm
 .Bk -words
-.Op Fl adIlnNrSTUv
+.Op Fl adEIlnNrSTUv
 .Ek
 .Bk -words
 .Op Fl f Ar firsthop
@@ -72,137 +72,152 @@
 .Op Ar datalen
 .Ek
 .\"
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility
-uses the IPv6 protocol hop limit field to elicit an ICMPv6 TIME_EXCEEDED
-response from each gateway along the path to some host.
+использует поле ограничения перехода по протоколу IPv6 для получения ответа ICMPv6 TIME_EXCEEDED
+от каждого шлюза на пути к некоторому хосту.
 .Pp
-The only mandatory parameter is the destination host name or IPv6 address.
-The default probe datagram carries 20 bytes of payload,
-in addition to the IPv6 header.
-The size of the payload can be specified by giving a length
-(in bytes)
-after the destination host name.
+Единственным обязательным параметром является имя узла назначения или IPv6-адрес.
+Датаграмма проверки по умолчанию содержит 20 байт полезной нагрузки
+в дополнение к заголовку IPv6.
+Размер полезной нагрузки можно указать, указав длину
+(в байтах)
+после имени целевого хоста.
 .Pp
-Other options are:
+Другими параметрами являются:
 .Bl -tag -width Ds
 .It Fl a
-Turn on AS# lookups for each hop encountered.
+Включает поиск AS# для каждого встреченного перехода.
 .It Fl A Ar as_server
-Turn on AS# lookups and use the given server instead of the default.
+Включает AS# поиск и использует указанный сервер вместо сервера по умолчанию.
 .It Fl d
-Debug mode.
+Режим отладки.
+.It Fl E
+Detect ECN bleaching.
+Set the
+.Em IPTOS_ECN_ECT1
+Explicit Congestion Notification (ECN) bits
+.Pq Dv 01 ,
+and report if the hop has bleached
+.Pq Dv 00
+or mangled
+.Pq Dv 10
+them, or if it is experiencing congestion
+.Pq Dv 11 .
+Otherwise, report that it passed the bits appropriately.
+If
+.Fl t
+is also specified, the corresponding ECN bits will be replaced.
 .It Fl f Ar firsthop
-Specify how many hops to skip in trace.
+Указывает, сколько переходов следует пропустить при трассировке.
 .It Fl g Ar gateway
-Specify intermediate gateway.
-Please note that
+Указывает промежуточный шлюз.
+Пожалуйста, обратите внимание, что
 .Nm
-tries to use routing headers.
+пытается использовать заголовки маршрутизации.
 .It Fl I
-Use ICMP6 ECHO instead of UDP datagrams.
+Использует ICMP6 ECHO вместо UDP-дейтаграмм.
 .It Fl l
-Print both host hostnames and numeric addresses.
-Normally
+Печатает как имена хостов, так и цифровые адреса.
+Обычно
 .Nm
-prints only hostnames if
-.Fl n
-is not specified, and only numeric addresses if
-.Fl n
-is specified.
+печатает только имена хостов, если
+не указан 
+.Fl n , 
+и только цифровые адреса, если
+указан 
+.Fl n .
 .It Fl m Ar hoplimit
-Specify maximum hoplimit, up to 255.
-The default is the value of the
+Указывает максимальный hoplimit, не превышающий 255.
+По умолчанию используется значение
 .Va net.inet6.ip6.hlim
 .Xr sysctl 8
-(the same default used for TCP connections).
+(то же значение по умолчанию используется для TCP-соединений).
 .It Fl n
-Do not resolve numeric address to hostname.
+Не преобразуtn числовой адрес в имя хоста.
 .It Fl N
-Use a packet with no upper layer header for the probes,
-instead of UDP datagrams.
+Использет пакет без заголовка верхнего уровня для зондов
+вместо UDP-дейтаграмм.
 .It Fl p Ar port
-Set SCTP/TCP/UDP port number to
+Устанавливает номер порта SCTP/TCP/UDP равным
 .Ar port .
 .It Fl q Ar probes
-Set the number of probe per hop count to
+Устанавливает количество зондов на один переход равным
 .Ar probes .
 .It Fl r
-Bypass the normal routing tables and send directly to a host
-on an attached network.
-If the host is not on a directly-connected network,
-an error is returned.
-This option corresponds to the
-.Dv SO_DONTROUTE
-socket option;
-it can be used to ping a local host through an interface
-that has no route through it
-(e.g., after the interface was dropped by a routing daemon).
+Обход обычных таблиц маршрутизации и отправка непосредственно на узел
+в подключенной сети.
+Если узел не подключен к сети напрямую,
+возвращается сообщение об ошибке.
+Этот параметр соответствует параметру сокета
+.Dv SO_DONTROUTE ;
+он может быть использован для проверки связи с локальным хостом через интерфейс, 
+через который нет маршрута
+(например, после того, как интерфейс был удален демоном маршрутизации).
 .It Fl s Ar src
 .Ar Src
-specifies the source IPv6 address to be used.
+указывает исходный IPv6-адрес, который будет использоваться.
 .It Fl S
-Use SCTP packets for the probes.
-The size of probe packets must be a multiple of 4.
-If
+Используйте SCTP-пакеты для зондирования.
+Размер зондирующих пакетов должен быть кратен 4.
+Если
 .Ar datalen
-is up to 28, probe packets consist of a SHUTDOWN-ACK chunk possibly bundled
-with a PAD chunk.
-For larger probe packets, an INIT chunk is used.
+поднимается до 28, пакеты проверки состоят из блока подтверждения завершения работы, возможно, связанного
+с блоком PAD.
+Для пакетов проверки большего размера используется блок инициализации.
 .It Fl t Ar tclass
 .Ar tclass
-specifies the
-.Em traffic class
-used when sending probe packets.
-The value must be a decimal integer in the range 0 to 255.
-The default is 0.
+определяет
+.Em класс трафика , 
+используемый при отправке пробных пакетов.
+Значение должно быть десятичным целым числом в диапазоне от 0 до 255.
+Значение по умолчанию равно 0.
 .It Fl T
-Use TCP segments for the probes.
+Использует сегменты TCP для зондов.
 .It Fl U
-Use UDP datagrams for the probes.
-This is the default.
+Используетдейтаграммы UDP для зондирования.
+Это значение используется по умолчанию.
 .It Fl v
-Be verbose.
+Подробнее.
 .It Fl w Ar waittime
-Specify the delay time between probes.
+Указывает время задержки между пробами.
 .El
 .Pp
-This program prints the route to the given destination and the round-trip
-time to each gateway, in the same manner as traceroute.
+Эта программа выводит маршрут до заданного пункта назначения и время в пути туда и обратно
+до каждого шлюза таким же образом, как и traceroute.
 .Pp
-Here is a list of possible annotations after the round-trip time for each gateway:
+Ниже приведен список возможных аннотаций по истечении времени прохождения в оба конца для каждого шлюза:
 .Bl -hang -offset indent
 .It !N
-Destination Unreachable - No Route to Host.
+Пункт назначения недостижим - Нет пути к хосту.
 .It !P
-Destination Unreachable - Administratively Prohibited.
+Пункт назначения недостижим - В административном порядке запрещено.
 .It !S
-Destination Unreachable - Not a Neighbour.
+Пункт назначения недостижим - Не соседний.
 .It !A
-Destination Unreachable - Address Unreachable.
+Пункт назначения недостижим - Адрес недоступен.
 .It !H
-Parameter Problem - Unrecognized Next Header Type.
+Проблема с параметрами - Нераспознанный следующий тип заголовка.
 .It !\&
-This is printed if the hop limit is <= 1 on a port unreachable message.
-This means that the packet got to the destination,
-but that the reply had a hop limit that was just large enough to
-allow it to get back to the source of the traceroute6.
-This was more interesting in the IPv4 case,
-where some IP stack bugs could be identified by this behaviour.
+Это значение выводится, если для сообщения о недоступности порта предел перехода <= 1.
+Это означает, что пакет дошел до адресата,
+но у ответа был предел перехода, который был достаточно велик, чтобы
+позволить ему вернуться к источнику traceroute6.
+Это было более интересно в случае с IPv4,
+где по такому поведению можно было определить некоторые ошибки в стеке IP.
 .El
 .\"
-.Sh EXIT STATUS
-The
+.Sh ВОЗВРАЩАЕМОЕ ЗНАЧЕНИЕ
+Утилита
 .Nm
-utility will exit with 0 on success, and non-zero on errors.
+завершит работу с 0 в случае успеха и ненулевым значением в случае ошибок.
 .\"
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr ping 8 ,
 .Xr traceroute 8
 .\"
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Утилита
 .Nm
-utility first appeared in WIDE hydrangea IPv6 protocol stack kit.
+впервые появилась в комплекте WIDE hydrangea IPv6 protocol stack kit.

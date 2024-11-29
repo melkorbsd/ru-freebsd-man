@@ -1,13 +1,13 @@
-.Dd August 11, 2018
+.Dd 11 августа 2018 г.
 .Dt "AT" 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm at ,
 .Nm batch ,
 .Nm atq ,
 .Nm atrm
-.Nd queue, examine or delete jobs for later execution
-.Sh SYNOPSIS
+.Nd постановка в очередь, проверка или удалениеq заданий, предназначенных для последующего выполнения
+.Sh СИНТАКСИС
 .Nm at
 .Op Fl q Ar queue
 .Op Fl f Ar file
@@ -45,323 +45,319 @@
 .Op Fl f Ar file
 .Op Fl mv
 .Op Ar time
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилиты
 .Nm at
-and
+и
 .Nm batch
-utilities
-read commands from standard input or a specified file which are to
-be executed at a later time, using
-.Xr sh 1 .
+читают из стандартного ввода или указанного файла комманды, которые необходимо
+выполнить позже, используя
+Xr sh 1 .
 .Bl -tag -width indent
 .It Nm at
-executes commands at a specified time;
+выполняет команды в указанное время;
 .It Nm atq
-lists the user's pending jobs, unless the user is the superuser; in that
-case, everybody's jobs are listed;
+выводит список ожидающих заданий пользователя, если только пользователь не является суперпользователем; в этом
+случае выводятся задания всех пользователей;
 .It Nm atrm
-deletes jobs;
+удаляет задания;
 .It Nm batch
-executes commands when system load levels permit; in other words, when
-the load average drops below 1.5 times number of active CPUs,
-or the value specified in the invocation of
+выполняет команды, когда позволяет уровень загрузки системы; другими словами, когда
+средняя нагрузка падает ниже 1,5-кратного количества активных процессоров,
+или значения, указанного при вызове
 .Nm atrun .
 .El
 .Pp
-The
+Утилита
 .Nm at
-utility allows some moderately complex
+позволяет работать с умеренно сложными
 .Ar time
-specifications.
-It accepts times of the form
+характеристиками.
+Оно допускает указание времени в формате
 .Ar HHMM
-or
+или
 .Ar HH:MM
-to run a job at a specific time of day.
-(If that time is already past, the next day is assumed.)
-As an alternative, the following keywords may be specified:
+для запуска задания в определенное время суток.
+(Если это время уже прошло, предполагается, что наступит следующий день.)
+В качестве альтернативы могут быть указаны следующие ключевые слова:
 .Em midnight ,
 .Em noon ,
-or
+или
 .Em teatime
-(4pm)
-and time-of-day may be suffixed with
+(4pm),
+также время суток может быть дополнено суффиксами
 .Em AM
-or
+или
 .Em PM
-for running in the morning or the evening.
-The day on which the job is to be run may also be specified
-by giving a date in the form
+для бега утром или вечером.
+Также можно задать день запуска задания,
+указав дату в форме
 .Ar \%month-name day
-with an optional
+(имя-месяца день)
+с возможным добавлением года
 .Ar year ,
-or giving a date of the forms
+или указать дату в следующих форматах
 .Ar DD.MM.YYYY ,
 .Ar DD.MM.YY ,
 .Ar MM/DD/YYYY ,
 .Ar MM/DD/YY ,
-.Ar MMDDYYYY , or
+.Ar MMDDYYYY или
 .Ar MMDDYY .
-The specification of a date must follow the specification of
-the time of day.
-Time can also be specified as:
+Указание даты должно соответствовать указанию
+время суток.
+Время также можно указать как:
 .Op Em now
 .Em + Ar count \%time-units ,
-where the time-units can be
+где в качестве time-units могут быть указаны следующие единицы времени:
 .Em minutes ,
 .Em hours ,
 .Em days ,
 .Em weeks ,
 .Em months
-or
-.Em years
-and
+или
+.Em years .
+Команде
 .Nm
-may be told to run the job today by suffixing the time with
+может быть поручено запустить задание сегодня, добавив к времени слово
 .Em today
-and to run the job tomorrow by suffixing the time with
+или запустить задание завтра, добавив к времени слово
 .Em tomorrow .
 .Pp
-For example, to run a job at 4pm three days from now, use
+Например, чтобы запустить задание в 16:00 через три дня, используйте
 .Nm at Ar 4pm + 3 days ,
-to run a job at 10:00am on July 31, use
+чтобы запустить задание в 10:00 31 июля, используйте
 .Nm at Ar 10am Jul 31
-and to run a job at 1am tomorrow, use
+и чтобы запустить задание завтра в 1 час ночи, используйте
 .Nm at Ar 1am tomorrow .
 .Pp
-The
+Утилита
 .Nm at
-utility also supports the
+также поддерживает формат времени
 .Tn POSIX
-time format (see
-.Fl t
-option).
+(смотри параметр
+.Fl t ).
 .Pp
-For both
+Обе утилиты
 .Nm
-and
+и
 .Nm batch ,
-commands are read from standard input or the file specified
-with the
-.Fl f
-option and executed.
-The working directory, the environment (except for the variables
+считывают команды со стандартного ввода или из указанного файла,
+если задан параметр
+.Fl f .
+Рабочий каталог, окружение (кроме переменных
 .Ev TERM ,
 .Ev TERMCAP ,
 .Ev DISPLAY
-and
+и
 .Em _ )
-and the
+и
 .Ar umask
-are retained from the time of invocation.
-An
+сохраняются с момента вызова.
+Команды
 .Nm
-or
-.Nm batch
-command invoked from a
+или
+.Nm batch ,
+вызываемые из оболочки
 .Xr su 1
-shell will retain the current userid.
-The user will be mailed standard error and standard output from his
-commands, if any.
-Mail will be sent using the command
+сохраняют текущий идентификатор пользователя.
+Пользователю будут отправлены по почте стандартный вывод ошибок (stderr) и стандартный вывод (stdout)  его
+команды, если они есть.
+Письмо будет отправлено с помощью команды
 .Xr sendmail 8 .
-If
+Если команда
 .Nm
-is executed from a
-.Xr su 1
-shell, the owner of the login shell will receive the mail.
+выполняется из оболочки
+.Xr su 1 ,
+почту получит владелец оболочки login.
 .Pp
-The superuser may use these commands in any case.
-For other users, permission to use
+Суперпользователь может использовать эти команды в любом случае.
+Для других пользователей разрешение на использование
 .Nm
-is determined by the files
+определяется файлами
 .Pa /var/at/at.allow
-and
+и
 .Pa /var/at/at.deny .
 .Pp
-If the file
+Если файл
 .Pa /var/at/at.allow
-exists, only usernames mentioned in it are allowed to use
+существует, только упомянутым в нем пользователямнам разрешено использование
 .Nm .
-In these two files, a user is considered to be listed only if the user
-name has no blank or other characters before it on its line and a
-newline character immediately after the name, even at the end of
-the file.
-Other lines are ignored and may be used for comments.
+В этих двух файлах пользователь считается указанным только в том случае, если перед
+его именем в строке нет пробелов или других символов, а
+символ новой строки размещен сразу после имени, даже если это конец
+файла.
+Остальные строки игнорируются и могут использоваться для комментариев.
 .Pp
-If
+Если
 .Pa /var/at/at.allow
-does not exist,
-.Pa /var/at/at.deny
-is checked, every username not mentioned in it is then allowed
-to use
+не существует, проверяется файл
+.Pa /var/at/at.deny ,
+при этом любое имя пользователя, не упомянутое в нем, будет разрешено
+использовать
 .Nm .
 .Pp
-If neither exists, only the superuser is allowed use of
+Если ни один из них не существует, только суперпользователю разрешено использовать
 .Nm .
-This is the default configuration.
-.Sh IMPLEMENTATION NOTES
-Note that
+Это конфигурация по умолчанию.
+.Sh ОСОБЕННОСТИ РЕАЛИЗАЦИИ
+Обратите внимание, что
 .Nm
-is implemented through the
-.Xr cron 8
-daemon by calling
+реализуется посредством демона
+.Xr cron 8 ,
+вызывающего
 .Xr atrun 8
-every five minutes.
-This implies that the granularity of
+каждые пять минут.
+Это означает, что степень детализации
 .Nm
-might not be optimal for every deployment.
-If a finer granularity is desired, the
+может быть неоптимальным для каждого случая использования.
+Если требуется более мелкая детализация, можно отредактировать файл
 .Pa /etc/cron.d/at
-file can be edited and will be read by the system crontab, from which
-the 
+и он будет прочитан системным демоном crontab, из которого
+тот унаследует переменные среды
 .Ev SHELL 
-and 
-.Ev PATH
-environment variables are inherited. 
-.Sh OPTIONS
+и
+.Ev PATH .
+.Sh ПАРАМЕТРЫ
 .Bl -tag -width indent
 .It Fl q Ar queue
-Use the specified queue.
-A queue designation consists of a single letter; valid queue designations
-range from
+Использовать очередь, указанную в параметре queue.
+Обозначение очереди состоит из одной буквы; действительные обозначения очереди
+диапазон от
 .Ar a
 to
 .Ar z
-and
+и
 .Ar A
 to
 .Ar Z .
-The
+Имя очереди
 .Ar c
-queue is the default for
-.Nm
-and the
+является значением по умолчанию для
+.Nm ,
+а имя очереди
 .Ar E
-queue for
+для
 .Nm batch .
-Queues with higher letters run with increased niceness.
-If a job is submitted to a queue designated with an uppercase letter, it
-is treated as if it had been submitted to batch at that time.
-If
+Очереди с заглавными буквами выполняются с повышенным приоритетом (niceness).
+Если задание отправлено в очередь, обозначенную заглавной буквой, оно
+рассматривается так, как если бы он был отправлен batch только что.
+Если для
 .Nm atq
-is given a specific queue, it will only show jobs pending in that queue.
+задана определенная очередь, будут показаны только задания, ожидающие выполнения в этой очереди.
 .It Fl m
-Send mail to the user when the job has completed even if there was no
-output.
+Отправлять письмо пользователю после завершения задания, даже если задание
+ничего не вывело.
 .It Fl f Ar file
-Read the job from
+Прочитать задание из файла
 .Ar file
-rather than standard input.
+вместо стандартного ввода.
 .It Fl l
-With no arguments, list all jobs for the invoking user.
-If one or more
-job numbers are given, list only those jobs.
+Без аргументов, вывести список всех заданий для вызвавшего пользователя.
+Если указаны номера одной или нескольких
+номеров задач, то вывести только эти задачи.
 .It Fl d
-Is an alias for
+Является псевдонимом для
 .Nm atrm
-(this option is deprecated; use
-.Fl r
-instead).
+(этот параметр устарел; используйте вместо него
+.Fl r ).
 .It Fl b
-Is an alias for
+Является псевдонимом для
 .Nm batch .
 .It Fl v
-For
+Для
 .Nm atq ,
-shows completed but not yet deleted jobs in the queue; otherwise
-shows the time the job will be executed.
+показызать выполненные, но еще не удаленные задания в очереди; в противном случае
+показать время выполнения заданий.
 .It Fl c
-Cat the jobs listed on the command line to standard output.
+Вывести задания, перечисленные в командной строке, в стандартный вывод.
 .It Fl r
-Remove the specified jobs.
+Удалить указанные задания.
 .It Fl t
-Specify the job time using the \*[Px] time format.
-The argument should be in the form
+Задать время задания, используя формат времени \*[Px].
+Аргумент должен быть задан в формате
 .Sm off
 .Op Oo Ar CC Oc Ar YY
 .Ar MM DD hh mm Op . Ar SS
 .Sm on
-where each pair of letters represents the following:
+где каждая пара букв означает следующее:
 .Pp
 .Bl -tag -width indent -compact -offset indent
 .It Ar CC
-The first two digits of the year (the century).
+Первые две цифры года (столетия).
 .It Ar YY
-The second two digits of the year.
+Последние две цифры года.
 .It Ar MM
-The month of the year, from 1 to 12.
+Месяц года от 1 до 12.
 .It Ar DD
-the day of the month, from 1 to 31.
+День месяца, от 1 до 31
 .It Ar hh
-The hour of the day, from 0 to 23.
+Час дня от 0 до 23.
 .It Ar mm
-The minute of the hour, from 0 to 59.
+Минуты часа от 0 до 59.
 .It Ar SS
-The second of the minute, from 0 to 60.
+Секунда минуты от 0 до 60.
 .El
 .Pp
-If the
+Если пары букв
 .Ar CC
-and
+и
 .Ar YY
-letter pairs are not specified, the values default to the current
-year.
-If the
-.Ar SS
-letter pair is not specified, the value defaults to 0.
+не указаны, значением по умолчанию считается текущий
+год.
+Если не указана пара букв
+.Ar SS ,
+значение по умолчанию равно 0.
 .El
-.Sh FILES
+.Sh ФАЙЛЫ
 .Bl -tag -width /var/at/jobs/.lockfile -compact
 .It Pa /var/at/jobs
-directory containing job files
+каталог, содержащий файлы заданий
 .It Pa /var/at/spool
-directory containing output spool files
+каталог, содержащий файлы вывода spool
 .It Pa /var/run/utx.active
-login records
+записи входа в систему
 .It Pa /var/at/at.allow
-allow permission control
+разрешающие настройки доступа
 .It Pa /var/at/at.deny
-deny permission control
+запрещающие настройки допустпа
 .It Pa /var/at/jobs/.lockfile
-job-creation lock file
+файл блокировки для созданного задания
 .El
-.Sh SEE ALSO
+.Sh СМОТРИ ТАКЖЕ
 .Xr nice 1 ,
 .Xr sh 1 ,
 .Xr umask 2 ,
 .Xr atrun 8 ,
 .Xr cron 8 ,
 .Xr sendmail 8
-.Sh AUTHORS
+.Sh АВТОРЫ
 .An -nosplit
-At was mostly written by
+В основном страница документации была написана
 .An Thomas Koenig Aq Mt ig25@rz.uni-karlsruhe.de .
-The time parsing routines are by
+Процедуры работы с форматами времени написаны
 .An David Parsons Aq Mt orc@pell.chi.il.us ,
-with minor enhancements by
+с небольшими улучшениями от
 .An Joe Halpin Aq Mt joe.halpin@attbi.com .
-.Sh BUGS
-If the file
+.Sh ПРОБЛЕМЫ
+Если файл
 .Pa /var/run/utx.active
-is not available or corrupted, or if the user is not logged on at the
-time
-.Nm
-is invoked, the mail is sent to the userid found
-in the environment variable
+недоступен или поврежден, или если пользователь не вошел в систему в
+момент вызова
+.Nm ,
+почта отправляется на идентификатор пользователя (userid),
+содержащийся в переменной окружения
 .Ev LOGNAME .
-If that is undefined or empty, the current userid is assumed.
+Если она не определена или пуста, предполагается использование текущего идентификатора пользователя.
 .Pp
 The
 .Nm at
-and
+и
 .Nm batch
-utilities
-as presently implemented are not suitable when users are competing for
-resources.
-If this is the case, another batch system such as
+коммунальные услуги
+реализованные в настоящее время, не подходят, когда пользователи конкурируют за
+Ресурсы.
+В этом случае можно использовать другую пакетную систему, такую как
 .Em nqs
-may be more suitable.
+может быть более подходящим.
 .Pp
-Specifying a date past 2038 may not work on some systems.
+Указание даты после 2038 года может не работать в некоторых системах.

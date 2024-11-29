@@ -1,36 +1,36 @@
-.\" Copyright (c) 2009,2011 Joseph Koshy <jkoshy@users.sourceforge.net>
-.\" All rights reserved.
+.\" Copyright (c) 2009,2011 Джозеф Коши <jkoshy@users.sourceforge.net>
+.\"Все права защищены.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer
-.\"    in this position and unchanged.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
+.\" Распространение и использование в исходном коде и двоичной форме, с использованием или без использования
+.\" модификаций, если следующие условия
+.\" соблюдаются:
+.\" 1. При распространении исходного кода должно сохраняться вышеуказанное 
+.\"    уведомление об авторских правах, этот список условий 
+.\"    и следующий дисклеймер.
+.\" 2. При распространиении в двоичной форме должно воспроизводиться уведомление об авторских правах,
+.\"    этот список условий и следующий ниже отказ от ответственности в
+.\"    документации и/или других материалах, поставляемых с дистрибутивом.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE AUTHORS ``AS IS'' AND ANY EXPRESS OR
-.\" IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-.\" OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-.\" IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
-.\" INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-.\" NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-.\" DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-.\" THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-.\" (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-.\" THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+.\" ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ АВТОРАМИ ``КАК ЕСТЬ'', И 
+.\" МЫ ОТКАЗЫВАЕМСЯ ОТ ЛЮБЫХ ПОДРАЗУМЕВАЕМЫХ ОБЯЗАТЕЛЬСТВ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, 
+.\" ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ТОВАРНОЙ ПРИГОДНОСТИ И НЕПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ
+.\" ЦЕЛИ. НИ В КОЕМ СЛУЧАЕ ПРАВООБЛАДАТЕЛИ ИЛИ СОВАТОРЫ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ
+.\" ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ, ОСОБЫЕ, ПОКАЗАТЕЛЬНЫЕ ИЛИ ЛОГИЧЕСКИ ВЫТЕКАЮЩИЕ
+.\" УБЫТКИ (ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ ИМИ, ПРИОБРЕТЕНИЕ ЗАМЕНЯЮЩИХ ТОВАРОВ ИЛИ УСЛУГ;
+.\" ПОТЕРЮ ВОЗМОЖНОСТИ ИСПОЛЬЗОВАНИЯ, ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПРЕКРАЩЕНИЕ ДЕЯТЕЛЬНОСТИ)
+.\" НЕЗАВИСИМО ОТ ПРИЧИНЕННОГО УЩЕРБА И НА ОСНОВАНИИ ЛЮБОЙ ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО В РАМКАХ КОНТРАКТА, 
+.\" ПРЯМОЙ ОТВЕТСТВЕННОСТИ ИЛИ ДЕЛИКТА (ВКЛЮЧАЯ ХАЛАТНОСТЬ ИЛИ ИНОЕ), ВОЗНИКШЕГО КАКИМ-ЛИБО ОБРАЗОМ
+.\" В РЕЗУЛЬТАТЕ ИСПОЛЬЗОВАНИЯ ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ ВЫ БЫЛИ ОСВЕДОМЛЕНЫ О ВОЗМОЖНОСТИ ТАКОГО УЩЕРБА.
 .\"
 .\" $Id: readelf.1 3753 2019-06-28 01:13:13Z emaste $
 .\"
-.Dd September 17, 2021
+.Dd 17 сентября, 2021 год
 .Dt READELF 1
 .Os
-.Sh NAME
+.Sh НАЗВАНИЕ
 .Nm readelf
 .Nd display information about ELF objects
-.Sh SYNOPSIS
+.Sh СИНТАКСИС
 .Nm
 .Op Fl a | Fl -all
 .Op Fl c | Fl -archive-index
@@ -40,7 +40,7 @@
 .Op Fl h | Fl -file-header
 .Op Fl l | Fl -program-headers
 .Op Fl n | Fl -notes
-.Op Fl p Ar section | Fl -string-dump Ns = Ns Ar section
+.Op Fl p Ar раздел | Fl -string-dump Ns = Ns Ar раздел
 .Op Fl r | Fl -relocs
 .Op Fl t | Fl -section-details
 .Op Fl u | Fl -unwind
@@ -49,7 +49,7 @@
 .Fl w Ns Oo Ns Ar afilmoprsFLR Ns Oc |
 .Fl -debug-dump Ns Op Ns = Ns Ar long-option-name , Ns ...
 .Oc
-.Op Fl x Ar section | Fl -hex-dump Ns = Ns Ar section
+.Op Fl x Ar раздел | Fl -hex-dump Ns = Ns Ar раздел
 .Op Fl z | Fl -decompress
 .Op Fl A | Fl -arch-specific
 .Op Fl D | Fl -use-dynamic
@@ -59,20 +59,20 @@
 .Op Fl S | Fl -sections | Fl -section-headers
 .Op Fl V | Fl -version-info
 .Op Fl W | Fl -wide
-.Ar file...
-.Sh DESCRIPTION
-The
+.Ar файл...
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility displays information about ELF objects and
+отображает информацию об объектах ELF и
 .Xr ar 1
-archives.
+архивах.
 .Pp
-The
+Утилита
 .Nm
-utility recognizes the following options:
+распознает следующие параметры:
 .Bl -tag -width indent
 .It Fl a | Fl -all
-Turn on the following flags:
+Включает следующие флаги:
 .Fl d ,
 .Fl h ,
 .Fl I ,
@@ -83,48 +83,48 @@ Turn on the following flags:
 .Fl u ,
 .Fl A ,
 .Fl S
-and
+и
 .Fl V .
 .It Fl c | Fl -archive-index
-Print the archive symbol table for archives.
+Выводит таблицу условных обозначений архива для архивов.
 .It Fl d | Fl -dynamic
-Print the contents of the
+Отображает содержимое раздела
 .Li SHT_DYNAMIC
-sections in the ELF object.
+в объекте ELF.
 .It Fl e | Fl -headers
-Print all program, file and section headers in the ELF object.
+Выводит все заголовки программ, файлов и разделов в ELF-объекте.
 .It Fl g | Fl -section-groups
-Print the contents of the section groups in the ELF object.
+Выводит содержимое групп разделов в объекте ELF.
 .It Fl h | Fl -file-header
-Print the file header of the ELF object.
+Выводит заголовок файла ELF-объекта.
 .It Fl l | Fl -program-headers
-Print the content of the program header table for the object.
+Выводит содержимое таблицы заголовков программы для объекта.
 .It Fl n | Fl -notes
-Print the contents of
+Распечатайте содержимое
 .Li PT_NOTE
-segments or
+сегментов или
 .Li SHT_NOTE
-sections present in the ELF object.
-.It Fl p Ar section | Fl -string-dump Ns = Ns Ar section
-Print the contents of the specified section as printable strings.
-The argument
-.Ar section
-should be the name of a section or a numeric section index.
+разделов, присутствующих в объекте ELF.
+.It Fl p Ar section | Fl -string-dump Ns = Ns Ar раздел
+Выводит содержимое указанного раздела в виде выводимых строк.
+Аргумент
+.Ar раздел
+должен быть названием раздела или числовым индексом раздела.
 .It Fl r | Fl -relocs
-Print relocation information.
+Выводит информацию о перемещении.
 .It Fl s | Fl -syms | Fl -symbols
-Print symbol tables.
+Выводит таблицы символов.
 .It Fl t | Fl -section-details
-Print additional information about sections, such as the flags
-fields in section headers.
-Implies
+Выводит дополнительную информацию о разделах, например поля с флагами
+в заголовках разделов.
+Подразумевает
 .Fl S .
 .It Fl u | Fl -unwind
-Not yet implemented (option accepted but ignored).
+Еще не реализован (вариант принят, но проигнорирован).
 .It Fl v | Fl -version
-Prints a version identifier for
+Выводит идентификатор версии для
 .Nm
-and exits.
+и завершает работу.
 .It Fl w Ns Oo afilmoprsFLR Oc | Xo
 .Fl -debug-dump Ns Op Ns = Ns Ar long-option-name , Ns ...
 .Xc
@@ -152,61 +152,61 @@ option names:
 .It R Ta Ranges Ta Show range lists.
 .El
 .Pp
-If no sub-options are specified, the default is to show information
-corresponding to the
+Если не указаны подопции, по умолчанию отображается информация, 
+соответствующая
 .Ar a , f , i, l , o , p , r , s
-and
+и
 .Ar R
-short options.
-.It Fl x Ar section | Fl -hex-dump Ns = Ns Ar section
-Display the contents of the specified section in hexadecimal.
-The argument
-.Ar section
-should be the name of a section or a numeric section index.
+коротким опциям.
+.It Fl x Ar раздел | Fl -hex-dump Ns = Ns Ar раздел
+Отображает содержимое указанной секции в шестнадцатеричном формате.
+Аргумент
+.Ar раздел
+должен быть именем секции или числовым индексом секции.
 .It Fl z | Fl -decompress
-Decompress contents of sections specified by
+Разархивирует содержимое секций, указанных опциями
 .Fl x
-or
+или
 .Fl p
-before displaying.
-If the specified section is not compressed, it is displayed as is.
+перед их отображением.
+Если указанная секция не сжата, она отображается как есть.
 .It Fl A | Fl -arch-specific
-This option is accepted but is currently unimplemented.
+Эта опция принимается, но в настоящее время не реализована.
 .It Fl D | Fl -use-dynamic
-Print the symbol table specified by the
+Отображает таблицу символов, указанную записью
 .Li DT_SYMTAB
-entry in the
+в
 .Dq Li .dynamic
-section.
+секции.
 .It Fl H | Fl -help
-Print a help message.
+Отображает справочное сообщение.
 .It Fl I | Fl -histogram
-Print information on bucket list lengths for sections of type
+Отображает информацию о длине списков корзин для секций типа
 .Li SHT_HASH
-and
+и
 .Li SHT_GNU_HASH .
 .It Fl N | Fl -full-section-name
-This option is accepted but is currently unimplemented.
+Эта опция принимается, но в настоящее время не реализована.
 .It Fl S | Fl -sections | Fl -section-headers
-Print information in the section headers for each ELF object.
+Отображает информацию в заголовках секций для каждого объекта ELF.
 .It Fl V | Fl -version-info
-Print symbol versioning information.
+Отображает информацию о версионировании символов.
 .It Fl W | Fl -wide
-Print information about ELF structures using one long line per
-structure.
-If this option is not specified,
+Отображает информацию о структурах ELF, используя одну длинную строку
+для каждой структуры.
+Если эта опция не указана,
 .Nm
-will list information in the headers of 64 bit ELF objects on two
-separate lines.
+будет отображать информацию в заголовках 64-битных объектов ELF на двух
+отдельных строках.
 .El
-.Sh EXIT STATUS
+.Sh СТАТУС ЗАВЕРШЕНИЯ
 .Ex -std
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr nm 1 ,
 .Xr addr2line 1 ,
 .Xr elfcopy 1 ,
-.Sh AUTHORS
-The
+.Sh АВТОРЫ
+Утилита
 .Nm
-utility was written by
+была написана
 .An Kai Wang Aq Mt kaiwang27@users.sourceforge.net .

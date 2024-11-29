@@ -22,673 +22,637 @@
 .\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 .\" SUCH DAMAGE.
 .\"
-.Dd October 11, 2022
+.Dd November 17, 2023
 .Dt TUNING 7
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm tuning
-.Nd performance tuning under FreeBSD
-.Sh SYSTEM SETUP - DISKLABEL, NEWFS, TUNEFS, SWAP
-The swap partition should typically be approximately 2x the size of
-main memory
-for systems with less than 4GB of RAM, or approximately equal to
-the size of main memory
-if you have more.
-Keep in mind future memory
-expansion when sizing the swap partition.
-Configuring too little swap can lead
-to inefficiencies in the VM page scanning code as well as create issues
-later on if you add more memory to your machine.
-On larger systems
-with multiple disks, configure swap on each drive.
-The swap partitions on the drives should be approximately the same size.
-The kernel can handle arbitrary sizes but
-internal data structures scale to 4 times the largest swap partition.
-Keeping
-the swap partitions near the same size will allow the kernel to optimally
-stripe swap space across the N disks.
-Do not worry about overdoing it a
-little, swap space is the saving grace of
+.Nd настройка производительности под FreeBSD
+.Sh НАСТРОЙКА СИСТЕМЫ - МЕТКА ДИСКА, НОВЫЕ ФАЙЛЫ, НАСТРОЙКИ, ПОДКАЧКА
+Размер раздела подкачки, как правило, должен быть примерно в 2 раза больше размера основной памяти для систем с объемом оперативной памяти менее 4 ГБ или примерно равен размеру основной памяти, если у вас больше.
+При выборе размера раздела подкачки учитывайте возможность расширения памяти в будущем.
+Настройка слишком малого объема подкачки может привести к неэффективности кода сканирования страниц виртуальной машины, а также к возникновению проблем в дальнейшем, если вы увеличите объем памяти на своем компьютере.
+В больших системах с несколькими дисками настройте подкачку на каждом диске.
+Разделы подкачки на дисках должны быть примерно одинакового размера.
+Ядро может обрабатывать данные произвольного размера, но внутренние структуры данных масштабируются в 4 раза больше размера раздела подкачки.
+Сохранение разделов подкачки примерно одинакового размера позволит ядру оптимально распределить пространство подкачки между N дисками.
+Не беспокойтесь о
+том, чтобы немного не перестараться, пространство для подкачки - это спасительная возможность
 .Ux
-and even if you do not normally use much swap, it can give you more time to
-recover from a runaway program before being forced to reboot.
+и даже если вы обычно не используете много подкачки, это может дать вам больше времени для
+восстановления после сбоя программы, прежде чем вы будете вынуждены перезагрузиться.
 .Pp
-It is not a good idea to make one large partition.
-First,
-each partition has different operational characteristics and separating them
-allows the file system to tune itself to those characteristics.
-For example,
-the root and
+Создавать один большой раздел - не очень хорошая идея.
+Во-первых, каждый раздел имеет разные рабочие характеристики, и их разделение
+позволяет файловой системе адаптироваться к этим характеристикам.
+Например,
+корневой каталог и разделы
 .Pa /usr
-partitions are read-mostly, with very little writing, while
-a lot of reading and writing could occur in
-.Pa /var/tmp .
-By properly
-partitioning your system fragmentation introduced in the smaller more
-heavily write-loaded partitions will not bleed over into the mostly-read
-partitions.
+в основном читаются, с очень небольшим количеством записей, в то время
+как в
+.Pa /var/tmp 
+может происходить много чтения и записи.
+При правильном
+разбиении системы на разделы фрагментация, возникающая в небольших разделах с большей
+нагрузкой на запись, не будет распространяться на разделы, которые в основном используются для чтения.
 .Pp
-Properly partitioning your system also allows you to tune
+Правильное разделение вашей системы на разделы также позволяет вам настроить
 .Xr newfs 8 ,
-and
-.Xr tunefs 8
-parameters.
-The only
-.Xr tunefs 8
-option worthwhile turning on is
+и параметры
+.Xr tunefs 8 .
+Единственный вариант
+.В Xr tunefs 8
+стоит включить
 .Em softupdates
-with
+с помощью
 .Dq Li "tunefs -n enable /filesystem" .
-Softupdates drastically improves meta-data performance, mainly file
-creation and deletion.
-We recommend enabling softupdates on most file systems; however, there
-are two limitations to softupdates that you should be aware of when
-determining whether to use it on a file system.
-First, softupdates guarantees file system consistency in the
-case of a crash but could very easily be several seconds (even a minute!\&)
-behind on pending write to the physical disk.
-If you crash you may lose more work
-than otherwise.
-Secondly, softupdates delays the freeing of file system
-blocks.
-If you have a file system (such as the root file system) which is
-close to full, doing a major update of it, e.g.,\&
+Softupdates значительно повышает производительность работы с метаданными, в основном при создании и удалении файлов.
+Мы рекомендуем включить softupdates в большинстве файловых систем; однако у программных обновлений есть два ограничения, о которых вам следует знать, когда вы решаете, использовать ли их в файловой системе.
+Во-первых, softupdates гарантирует стабильность файловой системы в
+случае сбоя, но очень легко может произойти задержка на несколько секунд (даже на минуту!\&) в ожидании записи на физический диск.
+В случае сбоя вы можете потерять больше работы, чем в противном случае.
+Во-вторых, программные обновления задерживают освобождение блоков файловой системы.
+Если у вас есть файловая система (например, корневая файловая система), которая
+близка к заполнению, выполните ее серьезное обновление, например,\&
 .Dq Li "make installworld" ,
-can run it out of space and cause the update to fail.
-For this reason, softupdates will not be enabled on the root file system
-during a typical install.
-There is no loss of performance since the root
-file system is rarely written to.
+может не хватить места на диске, что приведет к сбою обновления.
+По этой причине при обычной установке в корневой файловой системе не будут включены программные обновления.
+Производительность не снижается, поскольку запись в корневую
+файловую систему выполняется редко.
 .Pp
-A number of run-time
+Во время выполнения
 .Xr mount 8
-options exist that can help you tune the system.
-The most obvious and most dangerous one is
+существует ряд опций, которые могут помочь вам настроить систему.
+Самый очевидный и самый опасный из них - это
 .Cm async .
-Only use this option in conjunction with
+Используйте эту опцию только в сочетании с
 .Xr gjournal 8 ,
-as it is far too dangerous on a normal file system.
-A less dangerous and more
-useful
+поскольку в обычной файловой системе это слишком опасно.
+Менее опасный и более
+полезный вариант
 .Xr mount 8
-option is called
+называется
 .Cm noatime .
 .Ux
-file systems normally update the last-accessed time of a file or
-directory whenever it is accessed.
-This operation is handled in
+файловые системы обычно обновляют время последнего обращения к файлу или
+каталогу при каждом обращении к ним.
+Эта операция выполняется в
 .Fx
-with a delayed write and normally does not create a burden on the system.
-However, if your system is accessing a huge number of files on a continuing
-basis the buffer cache can wind up getting polluted with atime updates,
-creating a burden on the system.
-For example, if you are running a heavily
-loaded web site, or a news server with lots of readers, you might want to
-consider turning off atime updates on your larger partitions with this
-.Xr mount 8
-option.
-However, you should not gratuitously turn off atime
-updates everywhere.
-For example, the
+с задержкой записи и, как правило, не создает нагрузки на систему.
+Однако, если ваша система постоянно обращается к огромному количеству файлов,
+буферный кэш может быть загрязнен обновлениями во времени,
+что создает нагрузку на систему.
+Например, если у вас сильно
+загруженный веб-сайт или новостной сервер с большим количеством читателей, вы можете
+рассмотреть возможность отключения обновлений atime на больших разделах с помощью опции
+.Xr mount 8 .
+Однако вам не следует беспричинно отключать временные
+обновления повсеместно.
+Например, файловая система
 .Pa /var
-file system customarily
-holds mailboxes, and atime (in combination with mtime) is used to
-determine whether a mailbox has new mail.
-You might as well leave
-atime turned on for mostly read-only partitions such as
+обычно
+содержит почтовые ящики, а время (в сочетании со значением time) используется для
+определения того, есть ли в почтовом ящике новая почта.
+Вы также можете оставить
+время включенным для разделов, предназначенных в основном только для чтения, таких как
 .Pa /
-and
-.Pa /usr
-as well.
-This is especially useful for
+и также
+.Pa /usr .
+Это особенно полезно для
 .Pa /
-since some system utilities
-use the atime field for reporting.
-.Sh STRIPING DISKS
-In larger systems you can stripe partitions from several drives together
-to create a much larger overall partition.
-Striping can also improve
-the performance of a file system by splitting I/O operations across two
-or more disks.
-The
+поскольку некоторые системные утилиты
+используют поле atime для создания отчетов.
+.Sh ЧЕРЕДОВАНИЕ ДИСКОВ
+В больших системах вы можете разделить разделы с нескольких дисков,
+чтобы создать общий раздел гораздо большего размера.
+Разделение также может повысить
+производительность файловой системы за счет разделения операций ввода-вывода на два
+или более дисков.
+Утилиты
 .Xr gstripe 8 ,
 .Xr gvinum 8 ,
-and
+и
 .Xr ccdconfig 8
-utilities may be used to create simple striped file systems.
-Generally
-speaking, striping smaller partitions such as the root and
+могут использоваться для создания простых чередующихся файловых систем.
+Вообще говоря, разделение небольших разделов, таких как корневой и
 .Pa /var/tmp ,
-or essentially read-only partitions such as
+или, по сути, разделы, доступные только для чтения, такие как
 .Pa /usr
-is a complete waste of time.
-You should only stripe partitions that require serious I/O performance,
-typically
+это пустая трата времени.
+Как правило, вы должны разделять разделы только на те, которые требуют высокой производительности ввода-вывода
 .Pa /var , /home ,
-or custom partitions used to hold databases and web pages.
-Choosing the proper stripe size is also
-important.
-File systems tend to store meta-data on power-of-2 boundaries
-and you usually want to reduce seeking rather than increase seeking.
-This
-means you want to use a large off-center stripe size such as 1152 sectors
-so sequential I/O does not seek both disks and so meta-data is distributed
-across both disks rather than concentrated on a single disk.
-.Sh SYSCTL TUNING
+или пользовательские разделы, используемые для хранения баз данных и веб-страниц.
+Также важен выбор правильного размера разделов.
+
+Файловые системы, как правило, хранят метаданные в ограниченных пределах,
+и обычно требуется уменьшить количество запросов, а не увеличивать количество запросов.
+Это
+означает, что вы хотите использовать полосу большого размера, смещенную от центра, например, 1152 сектора,
+чтобы последовательный ввод-вывод не обращался к обоим дискам и чтобы метаданные распределялись
+по обоим дискам, а не концентрировались на одном диске.
+.Sh НАСТРОЙКА СИСТЕМНОГО КОДА
 .Xr sysctl 8
-variables permit system behavior to be monitored and controlled at
-run-time.
-Some sysctls simply report on the behavior of the system; others allow
-the system behavior to be modified;
-some may be set at boot time using
+переменные позволяют отслеживать и контролировать поведение системы во
+время выполнения.
+Некоторые системные коды просто сообщают о поведении системы; другие позволяют
+изменять поведение системы.;
+некоторые из них могут быть установлены во время загрузки с помощью
 .Xr rc.conf 5 ,
-but most will be set via
+но большинство из них будет установлено с помощью
 .Xr sysctl.conf 5 .
-There are several hundred sysctls in the system, including many that appear
-to be candidates for tuning but actually are not.
-In this document we will only cover the ones that have the greatest effect
-on the system.
+В системе имеется несколько сотен системных каталогов, многие из которых кажутся
+кандидатами на настройку, но на самом деле таковыми не являются.
+В этом документе мы рассмотрим только те, которые оказывают наибольшее влияние
+на систему.
 .Pp
-The
+Системный код
 .Va vm.overcommit
-sysctl defines the overcommit behaviour of the vm subsystem.
-The virtual memory system always does accounting of the swap space
-reservation, both total for system and per-user.
-Corresponding values
-are available through sysctl
+определяет режим избыточной загрузки подсистемы виртуальной машины.
+Система виртуальной памяти всегда выполняет учет
+резервирования пространства подкачки, как общего для системы, так и для каждого пользователя.
+Соответствующие значения
+доступны через системный код
 .Va vm.swap_total ,
-that gives the total bytes available for swapping, and
+который дает общее количество байт, доступных для обмена, и
 .Va vm.swap_reserved ,
-that gives number of bytes that may be needed to back all currently
-allocated anonymous memory.
+который дает количество байт, которое может потребоваться для резервного
+копирования всей выделенной в данный момент анонимной памяти.
 .Pp
-Setting bit 0 of the
+Установка бита 0 в системном коде
 .Va vm.overcommit
-sysctl causes the virtual memory system to return failure
-to the process when allocation of memory causes
+приводит к тому, что система виртуальной памяти возвращает сбой
+процессу, когда выделение памяти приводит к превышению
 .Va vm.swap_reserved
-to exceed
 .Va vm.swap_total .
-Bit 1 of the sysctl enforces
+Бит 1 системного кода устанавливает ограничение
 .Dv RLIMIT_SWAP
-limit
-(see
+(смотрите
 .Xr getrlimit 2 ) .
-Root is exempt from this limit.
-Bit 2 allows to count most of the physical
-memory as allocatable, except wired and free reserved pages
-(accounted by
+Root не попадает под это ограничение.
+Бит 2 позволяет считать большую часть физической
+памяти доступной для выделения, за исключением подключенных и свободных зарезервированных страниц
+(учитываемые системными кодами
 .Va vm.stats.vm.v_free_target
-and
-.Va vm.stats.vm.v_wire_count
-sysctls, respectively).
+и
+.Va vm.stats.vm.v_wire_count ,
+соответственно).
 .Pp
-The
+Настраиваемый загрузчик
 .Va kern.ipc.maxpipekva
-loader tunable is used to set a hard limit on the
-amount of kernel address space allocated to mapping of pipe buffers.
-Use of the mapping allows the kernel to eliminate a copy of the
-data from writer address space into the kernel, directly copying
-the content of mapped buffer to the reader.
-Increasing this value to a higher setting, such as `25165824' might
-improve performance on systems where space for mapping pipe buffers
-is quickly exhausted.
-This exhaustion is not fatal; however, and it will only cause pipes
-to fall back to using double-copy.
+используется для установки жесткого ограничения на
+объем адресного пространства ядра, выделяемого для отображения буферов канала.
+Использование отображения позволяет ядру исключить копирование
+данных из адресного пространства записи в ядро, напрямую копируя
+содержимое отображенного буфера в считывающее устройство.
+Увеличение этого значения до более высокого, например до "25165824", может
+повысить производительность в системах, где пространство для отображения буферов каналов
+быстро исчерпывается.
+Однако это истощение не является фатальным и приведет лишь к тому, что каналы
+вернутся к использованию двойного копирования.
 .Pp
-The
+Системный код
 .Va kern.ipc.shm_use_phys
-sysctl defaults to 0 (off) and may be set to 0 (off) or 1 (on).
-Setting
-this parameter to 1 will cause all System V shared memory segments to be
-mapped to unpageable physical RAM.
-This feature only has an effect if you
-are either (A) mapping small amounts of shared memory across many (hundreds)
-of processes, or (B) mapping large amounts of shared memory across any
-number of processes.
-This feature allows the kernel to remove a great deal
-of internal memory management page-tracking overhead at the cost of wiring
-the shared memory into core, making it unswappable.
+имеет значение по умолчанию равное 0 (выкл.), но может быть изменено на 0 (выкл.) или 1 (вкл.).
+Установка
+этого параметра равным 1 приведет к тому, что все сегменты совместно используемой памяти System V будут
+преобразованы в физическую оперативную память, доступ к которой невозможен.
+Эта функция работает только в том случае, если вы
+либо (А) распределяете небольшие объемы общей памяти между многими (сотнями)
+процессами, либо (Б) распределяете большие объемы общей памяти между любым
+количеством процессов.
+Эта функция позволяет ядру избавиться от значительных
+затрат на управление внутренней памятью, связанных с отслеживанием страниц, за счет подключения
+общей памяти к ядру, что делает ее недоступной для замены.
 .Pp
-The
+Системный код
 .Va vfs.vmiodirenable
-sysctl defaults to 1 (on).
-This parameter controls how directories are cached
-by the system.
-Most directories are small and use but a single fragment
-(typically 2K) in the file system and even less (typically 512 bytes) in
-the buffer cache.
-However, when operating in the default mode the buffer
-cache will only cache a fixed number of directories even if you have a huge
-amount of memory.
-Turning on this sysctl allows the buffer cache to use
-the VM Page Cache to cache the directories.
-The advantage is that all of
-memory is now available for caching directories.
-The disadvantage is that
-the minimum in-core memory used to cache a directory is the physical page
-size (typically 4K) rather than 512 bytes.
-We recommend turning this option off in memory-constrained environments;
-however, when on, it will substantially improve the performance of services
-that manipulate a large number of files.
-Such services can include web caches, large mail systems, and news systems.
-Turning on this option will generally not reduce performance even with the
-wasted memory but you should experiment to find out.
+имеет значение по умолчанию равное 1 (включено).
+Этот параметр определяет, как система кэширует каталоги.
+Большинство каталогов небольшого размера и используют всего один фрагмент
+(обычно 2 КБ) в файловой системе и еще меньше (обычно 512 байт) в
+буферном кэше.
+Однако при работе в режиме по умолчанию буферный
+кэш будет кэшировать только фиксированное количество каталогов, даже если у вас большой
+объем памяти.
+Включение этого sysctl позволяет буферному кэшу использовать
+кэш страниц виртуальной машины для кэширования каталогов.
+Преимущество заключается в том, что теперь вся
+память доступна для кэширования каталогов.
+Недостатком является то, что
+минимальный объем встроенной памяти, используемый для кэширования каталога, равен физическому
+размеру страницы (обычно 4 КБ), а не 512 байтам.
+Мы рекомендуем отключить эту опцию в средах с ограниченным объемом памяти;
+однако, если он включен, это существенно повысит производительность служб,
+которые обрабатывают большое количество файлов.
+Такие службы могут включать веб-кэши, крупные почтовые системы и новостные системы.
+Включение этой опции, как правило, не приводит к снижению производительности даже при
+потере памяти, но вам следует поэкспериментировать, чтобы выяснить это.
 .Pp
-The
+Системный код
 .Va vfs.write_behind
-sysctl defaults to 1 (on).
-This tells the file system to issue media
-writes as full clusters are collected, which typically occurs when writing
-large sequential files.
-The idea is to avoid saturating the buffer
-cache with dirty buffers when it would not benefit I/O performance.
-However,
-this may stall processes and under certain circumstances you may wish to turn
-it off.
+имеет значение по умолчанию равное 1 (включено).
+Это указывает файловой системе на необходимость
+записи на носитель по мере сбора полных кластеров, что обычно происходит при записи
+больших последовательных файлов.
+Идея заключается в том, чтобы избежать переполнения буферного
+кэша грязными буферами, когда это не улучшит производительность ввода-вывода.
+Однако
+это может привести к остановке процессов, и при определенных обстоятельствах вы можете захотеть отключить
+его.
 .Pp
-The
+Системный код
 .Va vfs.hirunningspace
-sysctl determines how much outstanding write I/O may be queued to
-disk controllers system-wide at any given time.
-It is used by the UFS file system.
-The default is self-tuned and
-usually sufficient but on machines with advanced controllers and lots
-of disks this may be tuned up to match what the controllers buffer.
-Configuring this setting to match tagged queuing capabilities of
-controllers or drives with average IO size used in production works
-best (for example: 16 MiB will use 128 tags with IO requests of 128 KiB).
-Note that setting too high a value
-(exceeding the buffer cache's write threshold) can lead to extremely
-bad clustering performance.
-Do not set this value arbitrarily high!
-Higher write queuing values may also add latency to reads occurring at
-the same time.
+определяет, сколько незавершенных операций ввода-вывода для записи может быть поставлено в очередь на
+контроллеры дисков в масштабе всей системы в любой момент времени.
+Используется файловой системой UFS.
+Значение по умолчанию настраивается автоматически и
+обычно этого достаточно, но на компьютерах с продвинутыми контроллерами и большим
+количеством дисков это значение может быть изменено в соответствии с тем, что буферизуют контроллеры.
+Настройка этого параметра в соответствии с возможностями организации очереди с тегами
+для контроллеров или накопителей со средним размером ввода-вывода, используемым в рабочей среде, работает
+лучше всего (например, 16 Мб будет использовать 128 тегов при запросах ввода-вывода размером 128 КБ).
+Обратите внимание, что слишком большое значение
+(превышение порога записи в буферный кэш) может привести к крайне
+низкой производительности кластеризации.
+Не устанавливайте это значение произвольно высоким!
+Более высокие значения очереди записи также могут увеличить задержку одновременного чтения.
 .Pp
-The
+Системный код
 .Va vfs.read_max
-sysctl governs VFS read-ahead and is expressed as the number of blocks
-to pre-read if the heuristics algorithm decides that the reads are
-issued sequentially.
-It is used by the UFS, ext2fs and msdosfs file systems.
-With the default UFS block size of 32 KiB, a setting of 64 will allow
-speculatively reading up to 2 MiB.
-This setting may be increased to get around disk I/O latencies, especially
-where these latencies are large such as in virtual machine emulated
-environments.
-It may be tuned down in specific cases where the I/O load is such that
-read-ahead adversely affects performance or where system memory is really
-low.
+управляет процессом опережающего чтения VFS и выражается как количество блоков
+для предварительного чтения, если эвристический алгоритм решает, что чтение
+выполняется последовательно.
+Используется файловыми системами UFS, ext2fs и msdosfs.
+При размере блока UFS по умолчанию 32 Кбайт, значение 64 позволит
+считывать данные размером до 2 Кбайт.
+Этот параметр может быть увеличен для уменьшения задержек ввода-вывода с диска, особенно
+в тех случаях, когда эти задержки велики, например, в средах, эмулируемых виртуальными машинами.
+В особых случаях, когда нагрузка на ввод-вывод такова, что
+опережающее чтение отрицательно сказывается на производительности или в тех случаях, когда системной памяти действительно
+мало.
 .Pp
-The
+Системный код
 .Va vfs.ncsizefactor
-sysctl defines how large VFS namecache may grow.
-The number of currently allocated entries in namecache is provided by
+определяет, насколько может увеличиться объем кэша имен VFS.
+Количество выделенных в данный момент записей в кэше имен определяется системным кодом
 .Va debug.numcache
-sysctl and the condition
+и состояние
 debug.numcache < kern.maxvnodes * vfs.ncsizefactor
-is adhered to.
+соблюдается.
 .Pp
-The
+Системный код
 .Va vfs.ncnegfactor
-sysctl defines how many negative entries VFS namecache is allowed to create.
-The number of currently allocated negative entries is provided by
+определяет, сколько отрицательных записей разрешено создавать VFS namecache.
+Количество выделенных в данный момент отрицательных записей определяется системным кодом
 .Va debug.numneg
-sysctl and the condition
+и состояние
 vfs.ncnegfactor * debug.numneg < debug.numcache
-is adhered to.
+соблюдается.
 .Pp
-There are various other buffer-cache and VM page cache related sysctls.
-We do not recommend modifying these values.
+Существуют различные другие системные требования, связанные с буферным кэшем и кэшированием страниц виртуальной машины.
+Мы не рекомендуем изменять эти значения.
 .Pp
-The
+Системные коды
 .Va net.inet.tcp.sendspace
-and
+и
 .Va net.inet.tcp.recvspace
-sysctls are of particular interest if you are running network intensive
-applications.
-They control the amount of send and receive buffer space
-allowed for any given TCP connection.
-The default sending buffer is 32K; the default receiving buffer
-is 64K.
-You can often
-improve bandwidth utilization by increasing the default at the cost of
-eating up more kernel memory for each connection.
-We do not recommend
-increasing the defaults if you are serving hundreds or thousands of
-simultaneous connections because it is possible to quickly run the system
-out of memory due to stalled connections building up.
-But if you need
-high bandwidth over a fewer number of connections, especially if you have
-gigabit Ethernet, increasing these defaults can make a huge difference.
-You can adjust the buffer size for incoming and outgoing data separately.
-For example, if your machine is primarily doing web serving you may want
-to decrease the recvspace in order to be able to increase the
-sendspace without eating too much kernel memory.
-Note that the routing table (see
+они представляют особый интерес, если вы используете
+приложения с интенсивной работой в сети.
+Они регулируют объем буферного пространства для отправки и приема,
+разрешенный для любого данного TCP-соединения.
+Буфер отправки по умолчанию равен 32 КБАЙТ, буфер приема по умолчанию
+равен 64 Кбайт.
+Часто можно
+улучшить использование полосы пропускания, увеличив значение по умолчанию за счет
+увеличения объема памяти ядра для каждого подключения.
+Мы не рекомендуем
+увеличивать значения по умолчанию, если вы обслуживаете сотни или тысячи
+одновременных подключений, поскольку это может привести к быстрому запуску системы
+из-за нехватки памяти из-за сбоев в подключениях.
+Но если вам нужна
+высокая пропускная способность при меньшем количестве подключений, особенно если у вас
+гигабитный Ethernet, увеличение значений по умолчанию может иметь огромное значение.
+Вы можете настроить размер буфера для входящих и исходящих данных отдельно.
+Например, если ваша машина в основном занимается веб-обслуживанием, вы можете захотеть
+уменьшить пространство записи, чтобы иметь возможность увеличить
+пространство отправки, не занимая слишком много памяти ядра.
+Обратите внимание, что таблицу маршрутизации (смотрите
 .Xr route 8 )
-can be used to introduce route-specific send and receive buffer size
-defaults.
+можно использовать для введения значений размера буфера отправки и приема
+по умолчанию для конкретного маршрута.
 .Pp
-As an additional management tool you can use pipes in your
-firewall rules (see
+В качестве дополнительного инструмента управления вы можете использовать каналы в своих
+правилах брандмауэра (смотрите
 .Xr ipfw 8 )
-to limit the bandwidth going to or from particular IP blocks or ports.
-For example, if you have a T1 you might want to limit your web traffic
-to 70% of the T1's bandwidth in order to leave the remainder available
-for mail and interactive use.
-Normally a heavily loaded web server
-will not introduce significant latencies into other services even if
-the network link is maxed out, but enforcing a limit can smooth things
-out and lead to longer term stability.
-Many people also enforce artificial
-bandwidth limitations in order to ensure that they are not charged for
-using too much bandwidth.
+чтобы ограничить пропускную способность, идущую к определенным IP-блокам или портам.
+Например, если у вас есть T1, вы можете ограничить свой веб-трафик
+до 70% от пропускной способности T1, чтобы оставшаяся часть была доступна
+для почты и интерактивного использования.
+Обычно сильно загруженный веб-сервер
+не приводит к значительным задержкам в работе других служб, даже если
+сетевое соединение максимально загружено, но введение ограничения может сгладить ситуацию
+и обеспечить долгосрочную стабильность.
+Многие люди также вводят искусственные
+ограничения полосы пропускания, чтобы с них не взимали плату за
+использование слишком большой полосы пропускания.
 .Pp
-Setting the send or receive TCP buffer to values larger than 65535 will result
-in a marginal performance improvement unless both hosts support the window
-scaling extension of the TCP protocol, which is controlled by the
-.Va net.inet.tcp.rfc1323
-sysctl.
-These extensions should be enabled and the TCP buffer size should be set
-to a value larger than 65536 in order to obtain good performance from
-certain types of network links; specifically, gigabit WAN links and
-high-latency satellite links.
-RFC1323 support is enabled by default.
+Установка для буфера отправки или получения TCP значений, превышающих 65535, приведет
+к незначительному повышению производительности, если только оба хоста не поддерживают
+расширение масштабирования окна протокола TCP, которое управляется системным кодом
+.Va net.inet.tcp.rfc1323 .
+Эти расширения должны быть включены, а размер буфера TCP должен быть установлен
+на значение, превышающее 65536, чтобы обеспечить хорошую производительность
+определенных типов сетевых соединений, в частности, гигабитных WAN-соединений и
+спутниковых соединений с высокой задержкой.
+Поддержка RFC1323 включена по умолчанию.
 .Pp
-The
+Системный код
 .Va net.inet.tcp.always_keepalive
-sysctl determines whether or not the TCP implementation should attempt
-to detect dead TCP connections by intermittently delivering
+определяет, должна ли реализация TCP пытаться
+обнаружить неработающие TCP-соединения путем периодической доставки
 .Dq keepalives
-on the connection.
-By default, this is enabled for all applications; by setting this
-sysctl to 0, only applications that specifically request keepalives
-will use them.
-In most environments, TCP keepalives will improve the management of
-system state by expiring dead TCP connections, particularly for
-systems serving dialup users who may not always terminate individual
-TCP connections before disconnecting from the network.
-However, in some environments, temporary network outages may be
-incorrectly identified as dead sessions, resulting in unexpectedly
-terminated TCP connections.
-In such environments, setting the sysctl to 0 may reduce the occurrence of
-TCP session disconnections.
+на соединения.
+По умолчанию это включено для всех приложений; установив для этого
+системного кода значение 0, их будут использовать только те приложения, которые специально запрашивают keepalive.
+В большинстве сред поддержка TCP keepalives улучшит управление состоянием
+системы за счет прекращения действия недействительных TCP-соединений, особенно для
+систем, обслуживающих удаленных пользователей, которые не всегда могут завершить отдельные соединения.
+TCP-соединения перед отключением от сети.
+Однако в некоторых средах временные сбои в работе сети могут быть
+неправильно идентифицированы как неработающие сеансы, что приводит к неожиданному
+завершению TCP-соединений.
+В таких средах установка значения системного кода равным 0 может снизить вероятность
+прерывания сеанса TCP.
 .Pp
-The
+Функция TCP
 .Va net.inet.tcp.delayed_ack
-TCP feature is largely misunderstood.
-Historically speaking, this feature
-was designed to allow the acknowledgement to transmitted data to be returned
-along with the response.
-For example, when you type over a remote shell,
-the acknowledgement to the character you send can be returned along with the
-data representing the echo of the character.
-With delayed acks turned off,
-the acknowledgement may be sent in its own packet, before the remote service
-has a chance to echo the data it just received.
-This same concept also
-applies to any interactive protocol (e.g.,\& SMTP, WWW, POP3), and can cut the
-number of tiny packets flowing across the network in half.
-The
+во многом это неправильно понимается.
+Исторически сложилось так, что эта функция
+была разработана для того, чтобы позволить возвращать подтверждение передаваемых данных
+вместе с ответом.
+Например, когда вы вводите текст через удаленную командную строку,
+подтверждение отправляемого вами символа может быть возвращено вместе с
+данными, представляющими эхо-сигнал этого символа.
+При отключенной функции отложенного
+подтверждения подтверждение может быть отправлено отдельным пакетом, прежде чем удаленная служба
+получит возможность повторить только что полученные данные.
+Эта же концепция
+применима к любому интерактивному протоколу (например, \& SMTP, WWW, POP3) и может сократить
+количество крошечных пакетов, проходящих по сети, сокращается вдвое.
+Отложенная реализация подтверждения
 .Fx
-delayed ACK implementation also follows the TCP protocol rule that
-at least every other packet be acknowledged even if the standard 40ms
-timeout has not yet passed.
-Normally the worst a delayed ACK can do is
-slightly delay the teardown of a connection, or slightly delay the ramp-up
-of a slow-start TCP connection.
-While we are not sure we believe that
-the several FAQs related to packages such as SAMBA and SQUID which advise
-turning off delayed acks may be referring to the slow-start issue.
+также соблюдает правило протокола TCP, согласно которому
+по крайней мере каждый второй пакет должен быть подтвержден, даже если стандартный
+тайм-аут в 40 мс еще не истек.
+Обычно самое худшее, к чему может привести задержка подтверждения, - это
+небольшая задержка разрыва соединения или небольшая задержка запуска
+TCP-соединения с медленным запуском.
+Хотя мы не уверены, мы полагаем, что
+несколько часто задаваемых вопросов, связанных с такими пакетами, как SAMBA и SQUID, в которых рекомендуется
+отключить отложенные подтверждения, могут относиться к проблеме медленного запуска.
 .Pp
-The
+Системные коды
 .Va net.inet.ip.portrange.*
-sysctls control the port number ranges automatically bound to TCP and UDP
-sockets.
-There are three ranges: a low range, a default range, and a
-high range, selectable via the
+контролируйте диапазоны номеров портов, автоматически привязываемые к сокетам TCP и UDP.
+Существует три диапазона: низкий диапазон, диапазон по умолчанию и
+высокий диапазон, которые можно выбрать с помощью вызова
 .Dv IP_PORTRANGE
-.Xr setsockopt 2
-call.
-Most
-network programs use the default range which is controlled by
+.Xr setsockopt 2 .
+Большинство
+сетевых программ используют диапазон по умолчанию, который контролируется
 .Va net.inet.ip.portrange.first
-and
+и
 .Va net.inet.ip.portrange.last ,
-which default to 49152 and 65535, respectively.
-Bound port ranges are
-used for outgoing connections, and it is possible to run the system out
-of ports under certain circumstances.
-This most commonly occurs when you are
-running a heavily loaded web proxy.
-The port range is not an issue
-when running a server which handles mainly incoming connections, such as a
-normal web server, or has a limited number of outgoing connections, such
-as a mail relay.
-For situations where you may run out of ports,
-we recommend decreasing
-.Va net.inet.ip.portrange.first
-modestly.
-A range of 10000 to 30000 ports may be reasonable.
-You should also consider firewall effects when changing the port range.
-Some firewalls
-may block large ranges of ports (usually low-numbered ports) and expect systems
-to use higher ranges of ports for outgoing connections.
-By default
+которые по умолчанию равны 49152 и 65535 соответственно.
+Для исходящих подключений используются ограниченные диапазоны портов, и при определенных обстоятельствах можно запускать систему без
+использования портов.
+Чаще всего это происходит, когда вы
+используете сильно загруженный веб-прокси.
+Диапазон портов не является проблемой
+при работе сервера, который обрабатывает в основном входящие соединения, такие как
+обычный веб-сервер, или имеет ограниченное количество исходящих соединений, таких
+как почтовый ретранслятор.
+В ситуациях, когда у вас могут закончиться порты,
+мы рекомендуем немного уменьшить
+.Va net.inet.ip.portrange.first .
+Допустимым может быть диапазон от 10000 до 30000 портов.
+При изменении диапазона портов следует также учитывать влияние брандмауэра.
+Некоторые брандмауэры
+могут блокировать большие диапазоны портов (обычно с низким номером) и ожидать, что системы
+будут использовать более высокие диапазоны портов для исходящих подключений.
+По умолчанию
 .Va net.inet.ip.portrange.last
-is set at the maximum allowable port number.
+устанавливается максимально допустимый номер порта.
 .Pp
-The
+Системный код
 .Va kern.ipc.soacceptqueue
-sysctl limits the size of the listen queue for accepting new TCP connections.
-The default value of 128 is typically too low for robust handling of new
-connections in a heavily loaded web server environment.
-For such environments,
-we recommend increasing this value to 1024 or higher.
-The service daemon
-may itself limit the listen queue size (e.g.,\&
+ограничивает размер очереди прослушивания для приема новых TCP-подключений.
+Значение по умолчанию 128 обычно слишком мало для надежной обработки новых
+подключений в среде веб-сервера с высокой нагрузкой.
+Для таких сред
+рекомендуется увеличить это значение до 1024 или выше.
+Сервисный демон
+может сам ограничить размер очереди прослушивания (например,\&
 .Xr sendmail 8 ,
-apache) but will
-often have a directive in its configuration file to adjust the queue size up.
-Larger listen queues also do a better job of fending off denial of service
-attacks.
+apache) но
+часто в файле конфигурации есть директива, позволяющая увеличить размер очереди.
+Большие очереди прослушивания также лучше справляются с отражением атак типа отказа в обслуживании.
 .Pp
-The
+Системный код
 .Va kern.maxfiles
-sysctl determines how many open files the system supports.
-The default is
-typically a few thousand but you may need to bump this up to ten or twenty
-thousand if you are running databases or large descriptor-heavy daemons.
-The read-only
-.Va kern.openfiles
-sysctl may be interrogated to determine the current number of open files
-on the system.
+определяет, сколько открытых файлов поддерживает система.
+Обычно значение по умолчанию равно нескольким тысячам, но вам может потребоваться увеличить это значение до десяти или двадцати
+тысяч, если вы используете базы данных или демонов с большим количеством дескрипторов.
+Системный код
+.Va kern.openfiles ,
+доступный только для чтения
+может быть запрошен для определения текущего количества открытых файлов
+в системе.
 .Pp
-The
+Системный код
 .Va vm.swap_idle_enabled
-sysctl is useful in large multi-user systems where you have lots of users
-entering and leaving the system and lots of idle processes.
-Such systems
-tend to generate a great deal of continuous pressure on free memory reserves.
-Turning this feature on and adjusting the swapout hysteresis (in idle
-seconds) via
+это полезно в больших многопользовательских системах, где множество пользователей
+входят в систему и выходят из нее, а также множество незанятых процессов.
+Такие системы
+, как правило, создают значительную постоянную нагрузку на свободные ресурсы памяти.
+Включение этой функции и регулировка гистерезиса замены (в
+секундах простоя) с помощью
 .Va vm.swap_idle_threshold1
-and
+и
 .Va vm.swap_idle_threshold2
-allows you to depress the priority of pages associated with idle processes
-more quickly then the normal pageout algorithm.
-This gives a helping hand
-to the pageout daemon.
-Do not turn this option on unless you need it,
-because the tradeoff you are making is to essentially pre-page memory sooner
-rather than later, eating more swap and disk bandwidth.
-In a small system
-this option will have a detrimental effect but in a large system that is
-already doing moderate paging this option allows the VM system to stage
-whole processes into and out of memory more easily.
-.Sh LOADER TUNABLES
-Some aspects of the system behavior may not be tunable at runtime because
-memory allocations they perform must occur early in the boot process.
-To change loader tunables, you must set their values in
+позволяет снизить приоритет страниц, связанных с незанятыми процессами,
+быстрее, чем при использовании обычного алгоритма вывода страниц.
+Это помогает
+демону вывода страниц.
+Не включайте эту опцию, если она вам не нужна,
+потому что компромисс, на который вы идете, заключается в том, что вы, по сути, раньше загружаете память до загрузки страниц,
+а не позже, что увеличивает объем подкачки и пропускную способность диска.
+В небольшой системе
+этот параметр будет иметь отрицательный эффект, но в большой системе, которая
+уже выполняет умеренную подкачку, этот параметр позволяет системе виртуальной машины легче загружать
+целые процессы в память и извлекать их из нее.
+.Sh НАСТРОЙКА ЗАГРУЗЧИКА
+Некоторые аспекты поведения системы могут быть недоступны для настройки во время выполнения, поскольку
+выделение памяти, которое они выполняют, должно происходить на ранней стадии процесса загрузки.
+Чтобы изменить настройки загрузчика, необходимо задать их значения в
 .Xr loader.conf 5
-and reboot the system.
+и перезагрузить систему.
 .Pp
 .Va kern.maxusers
-controls the scaling of a number of static system tables, including defaults
-for the maximum number of open files, sizing of network memory resources, etc.
+управляет масштабированием ряда статических системных таблиц, включая значения по умолчанию
+для максимального количества открытых файлов, размер ресурсов сетевой памяти, и т.д.
+Размер
 .Va kern.maxusers
-is automatically sized at boot based on the amount of memory available in
-the system, and may be determined at run-time by inspecting the value of the
-read-only
-.Va kern.maxusers
-sysctl.
+автоматически определяется при загрузке в зависимости от объема доступной в
+системе памяти и может быть определен во время выполнения путем проверки значения
+параметра системного кода
+.Va kern.maxusers ,
+предназначенного только для чтения.
 .Pp
-The
+Настраиваемые
 .Va kern.dfldsiz
-and
+и
 .Va kern.dflssiz
-tunables set the default soft limits for process data and stack size
-respectively.
-Processes may increase these up to the hard limits by calling
+устанавливают мягкие ограничения по умолчанию для данных процесса и размера стека
+соответственно.
+Процессы могут увеличить их до жестких пределов, вызвав
 .Xr setrlimit 2 .
-The
+Настраиваемые
 .Va kern.maxdsiz ,
 .Va kern.maxssiz ,
-and
+и
 .Va kern.maxtsiz
-tunables set the hard limits for process data, stack, and text size
-respectively; processes may not exceed these limits.
-The
+устанавливают жесткие ограничения для данных процесса, размера стека и текста
+соответственно; процессы не должны превышать эти ограничения.
+Настраиваемый
 .Va kern.sgrowsiz
-tunable controls how much the stack segment will grow when a process
-needs to allocate more stack.
+определяет, насколько увеличится сегмент стека, когда процессу
+потребуется выделить больше стека.
 .Pp
 .Va kern.ipc.nmbclusters
-may be adjusted to increase the number of network mbufs the system is
-willing to allocate.
-Each cluster represents approximately 2K of memory,
-so a value of 1024 represents 2M of kernel memory reserved for network
-buffers.
-You can do a simple calculation to figure out how many you need.
-If you have a web server which maxes out at 1000 simultaneous connections,
-and each connection eats a 16K receive and 16K send buffer, you need
-approximately 32MB worth of network buffers to deal with it.
-A good rule of
-thumb is to multiply by 2, so 32MBx2 = 64MB/2K = 32768.
-So for this case
-you would want to set
+может быть скорректировано для увеличения количества сетевых mbuf, которые система
+готова выделить.
+Каждый кластер занимает приблизительно 2 КБАЙТ памяти,
+поэтому значение 1024 соответствует 2 мбайт памяти ядра, зарезервированной для сетевых
+буферов.
+Вы можете произвести простой расчет, чтобы определить, сколько их вам нужно.
+Если у вас есть веб-сервер, который обеспечивает максимум 1000 одновременных подключений,
+и каждое подключение потребляет 16 КБ буфера приема и 16 КБ буфера отправки, вам потребуется
+около 32 МБ сетевых буферов, чтобы справиться с этим.
+Хорошее
+эмпирическое правило - умножить на 2, таким образом, 32 Мбит/с2 = 64 МБ/2 КБ = 32768.
+Таким образом, в этом случае
+вы хотели бы установить
 .Va kern.ipc.nmbclusters
-to 32768.
-We recommend values between
-1024 and 4096 for machines with moderates amount of memory, and between 4096
-and 32768 for machines with greater amounts of memory.
-Under no circumstances
-should you specify an arbitrarily high value for this parameter, it could
-lead to a boot-time crash.
-The
+значение 32768.
+Мы рекомендуем значений между
+1024 и 4096 для машин с умеренными объем памяти, а между 4096
+и 32768 для машин с большим объемом памяти.
+Ни при каких обстоятельствах
+не следует указывать сколь угодно высокое значение для этого параметра, это может
+привести к сбою во время загрузки.
+Параметр
 .Fl m
-option to
+к
 .Xr netstat 1
-may be used to observe network cluster use.
+может использоваться для наблюдения за использованием сетевого кластера.
 .Pp
-More and more programs are using the
+Все больше и больше программ используют систему
 .Xr sendfile 2
-system call to transmit files over the network.
-The
+для вызов передачи файлов по сети.
+Системный код
 .Va kern.ipc.nsfbufs
-sysctl controls the number of file system buffers
+управляет количеством буферов файловой системы
 .Xr sendfile 2
-is allowed to use to perform its work.
-This parameter nominally scales
-with
-.Va kern.maxusers
-so you should not need to modify this parameter except under extreme
-circumstances.
-See the
-.Sx TUNING
-section in the
+разрешается использовать для выполнения своей работы.
+Номинал этого параметра измеряется
+с помощью
+.Va kern.maxusers ,
+таким образом, вам не нужно будет изменять этот параметр, за исключением чрезвычайных
+обстоятельств.
+Смотрите раздел
+.Sx НАСТРОЙКА
+на странице руководства
 .Xr sendfile 2
-manual page for details.
-.Sh KERNEL CONFIG TUNING
-There are a number of kernel options that you may have to fiddle with in
-a large-scale system.
-In order to change these options you need to be
-able to compile a new kernel from source.
-The
+для получения подробной информации.
+.Sh НАСТРОЙКА КОНФИГУРАЦИИ ЯДРА
+Существует ряд параметров ядра, с которыми вам, возможно, придется повозиться в
+крупномасштабной системе.
+Чтобы изменить эти параметры, вам необходимо иметь
+возможность скомпилировать новое ядро из исходного кода.
+Страница руководства
 .Xr config 8
-manual page and the handbook are good starting points for learning how to
-do this.
-Generally the first thing you do when creating your own custom
-kernel is to strip out all the drivers and services you do not use.
-Removing things like
-.Dv INET6
-and drivers you do not have will reduce the size of your kernel, sometimes
-by a megabyte or more, leaving more memory available for applications.
+и руководство по эксплуатации являются хорошей отправной точкой для изучения того, как
+это сделать.
+Как правило, первое, что вы делаете при создании собственного пользовательского
+ядра, - это удаляете все драйверы и службы, которые вы не используете.
+Удаляя такие вещи, как
+.Dv INET6 ,
+а драйверы, которых у вас нет, уменьшат размер вашего ядра, иногда
+на мегабайт или больше, оставляя больше памяти доступной для приложений.
 .Pp
 .Dv SCSI_DELAY
-may be used to reduce system boot times.
-The defaults are fairly high and
-can be responsible for 5+ seconds of delay in the boot process.
-Reducing
-.Dv SCSI_DELAY
-to something below 5 seconds could work (especially with modern drives).
+может использоваться для сокращения времени загрузки системы.
+Значения по умолчанию довольно высокие и
+могут приводить к задержке процесса загрузки более чем на 5 секунд.
+Сокращение
+.Dv SCSI_DELAY ,
+чтобы что-то могло сработать менее чем за 5 секунд (особенно с современными приводами).
 .Pp
-There are a number of
-.Dv *_CPU
-options that can be commented out.
-If you only want the kernel to run
-on a Pentium class CPU, you can easily remove
+Есть несколько параметров
+.Dv *_CPU ,
+которые можно прокомментировать.
+Если вы хотите, чтобы ядро работало только
+на процессоре класса Pentium, вы можете легко удалить
 .Dv I486_CPU ,
-but only remove
+но только удалить
 .Dv I586_CPU
-if you are sure your CPU is being recognized as a Pentium II or better.
-Some clones may be recognized as a Pentium or even a 486 and not be able
-to boot without those options.
-If it works, great!
-The operating system
-will be able to better use higher-end CPU features for MMU, task switching,
-timebase, and even device operations.
-Additionally, higher-end CPUs support
-4MB MMU pages, which the kernel uses to map the kernel itself into memory,
-increasing its efficiency under heavy syscall loads.
-.Sh CPU, MEMORY, DISK, NETWORK
-The type of tuning you do depends heavily on where your system begins to
-bottleneck as load increases.
-If your system runs out of CPU (idle times
-are perpetually 0%) then you need to consider upgrading the CPU
-or perhaps you need to revisit the
-programs that are causing the load and try to optimize them.
-If your system
-is paging to swap a lot you need to consider adding more memory.
-If your
-system is saturating the disk you typically see high CPU idle times and
-total disk saturation.
+если вы уверены, что ваш процессор распознается как Pentium II или выше.
+Некоторые клоны могут быть распознаны как Pentium или даже 486 и не смогут
+загрузиться без этих опций.
+Если это работает, отлично!
+Операционная система
+сможет лучше использовать возможности процессора более высокого класса для MMU, переключения задач,
+учета времени и даже работы с устройствами.
+Кроме того, процессоры более высокого класса поддерживают
+MMU-страницы объемом 4 МБ, которые ядро использует для отображения самого ядра в памяти,
+повышая его эффективность при больших нагрузках системного вызова.
+.Sh ПРОЦЕССОР, ПАМЯТЬ, ДИСК, СЕТЬ
+Тип настройки, которую вы выполняете, в значительной степени зависит от того, где ваша система начинает
+испытывать проблемы с увеличением нагрузки.
+Если в вашей системе не хватает процессора (время простоя постоянно
+равно 0%), то вам нужно подумать об обновлении процессора
+или, возможно, вам нужно пересмотреть
+программы, которые вызывают нагрузку, и попытаться оптимизировать их.
+Если ваша система
+часто выполняет подкачку страниц, вам нужно рассмотреть возможность увеличения объема памяти.
+Если ваша
+система перегружает диск, вы, как правило, сталкиваетесь с большим временем простоя процессора и
+общей загруженностью диска.
 .Xr systat 1
-can be used to monitor this.
-There are many solutions to saturated disks:
-increasing memory for caching, mirroring disks, distributing operations across
-several machines, and so forth.
+можно использовать для отслеживания этого.
+Существует множество решений проблемы перегруженных дисков:
+увеличение объема памяти для кэширования, зеркальное отображение дисков, распределение операций между
+несколькими компьютерами и так далее.
 .Pp
-Finally, you might run out of network suds.
-Optimize the network path
-as much as possible.
-For example, in
+Наконец, у вас может закончиться сетевая пена.
+Максимально оптимизируйте сетевой путь.
+Например, в
 .Xr firewall 7
-we describe a firewall protecting internal hosts with a topology where
-the externally visible hosts are not routed through it.
-Most bottlenecks occur at the WAN link.
-If expanding the link is not an option it may be possible to use the
+мы описываем брандмауэр, защищающий внутренние хосты, с топологией, в которой
+внешние видимые хосты не маршрутизируются через него.
+Большинство узких мест возникает в глобальной сети.
+Если расширение сети невозможно, возможно, можно использовать эту функцию
 .Xr dummynet 4
-feature to implement peak shaving or other forms of traffic shaping to
-prevent the overloaded service (such as web services) from affecting other
-services (such as email), or vice versa.
-In home installations this could
-be used to give interactive traffic (your browser,
-.Xr ssh 1
-logins) priority
-over services you export from your box (web services, email).
-.Sh SEE ALSO
+для снижения пиковой нагрузки или других форм формирования трафика,
+чтобы перегруженный сервис (например, веб-службы) не влиял на другие
+сервисы (например, электронную почту), или наоборот.
+В домашних установках это может
+использоваться для обеспечения интерактивного трафика (ваш браузер, логины
+.Xr ssh 1 )
+приоритет
+над сервисами, которые вы экспортируете из своего почтового ящика (веб-сервисы, электронная почта).
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr netstat 1 ,
 .Xr systat 1 ,
 .Xr sendfile 2 ,
@@ -698,6 +662,7 @@ over services you export from your box (web services, email).
 .Xr login.conf 5 ,
 .Xr rc.conf 5 ,
 .Xr sysctl.conf 5 ,
+.Xr ffs 7 ,
 .Xr firewall 7 ,
 .Xr hier 7 ,
 .Xr ports 7 ,
@@ -718,14 +683,14 @@ over services you export from your box (web services, email).
 .Xr route 8 ,
 .Xr sysctl 8 ,
 .Xr tunefs 8
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Страница руководства
 .Nm
-manual page was originally written by
-.An Matthew Dillon
-and first appeared
-in
+первоначально была написана
+.An Мэтью Диллоном
+и впервые появился
+в
 .Fx 4.3 ,
-May 2001.
-The manual page was greatly modified by
-.An Eitan Adler Aq Mt eadler@FreeBSD.org .
+в мае 2001 года.
+Страница руководства была значительно изменена
+.An Итаном Адлером Aq Mt eadler@FreeBSD.org .

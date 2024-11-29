@@ -1,80 +1,83 @@
 .\"
 .\" Copyright (c) 2008 Daniel Gerzo
-.\" All rights reserved.
+.\" Все права защищены.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
+.\" Распространение и использование в исходных и двоичных формах, с модификацией или без
+.\" модификацией, разрешены при соблюдении следующих условий
+.\" соблюдены:
+.\" 1. Перераспределение исходного кода должно сохранять вышеуказанное уведомление об авторских правах
+.\" уведомление об авторских правах, этот список условий и следующий отказ от ответственности.
+.\" 2. Перераспределение в двоичной форме должно воспроизводить вышеуказанное уведомление об авторских правах
+.\" уведомление об авторских правах, этот список условий и следующий отказ от ответственности в
+.\" документации и/или других материалах, поставляемых вместе с дистрибутивом.
 .\"
-.\" THIS DOCUMENTATION IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
-.\" IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-.\" OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-.\" IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
-.\" INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-.\" NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-.\" DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-.\" THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-.\" (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-.\" THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+.\" ДАННАЯ ДОКУМЕНТАЦИЯ ПРЕДОСТАВЛЯЕТСЯ АВТОРОМ ``КАК ЕСТЬ`` И ЛЮБЫЕ ЯВНЫЕ ИЛИ
+.\" ПОДРАЗУМЕВАЕМЫХ ГАРАНТИЙ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПОДРАЗУМЕВАЕМЫМИ ГАРАНТИЯМИ
+.\" ТОВАРНОГО СОСТОЯНИЯ И ПРИГОДНОСТИ ДЛЯ КОНКРЕТНОЙ ЦЕЛИ, НЕ ПРИНИМАЮТСЯ.
+.\" НИ ПРИ КАКИХ ОБСТОЯТЕЛЬСТВАХ АВТОР НЕ НЕСЕТ ОТВЕТСТВЕННОСТИ ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ,
+.\" СЛУЧАЙНЫЕ, СПЕЦИАЛЬНЫЕ, ОБРАЗЦОВЫЕ ИЛИ КОСВЕННЫЕ УБЫТКИ (ВКЛЮЧАЯ, НО
+.\" НЕ ОГРАНИЧИВАЯСЬ, ПРИОБРЕТЕНИЕ ТОВАРОВ ИЛИ УСЛУГ, ЗАМЕНЯЮЩИХ ИХ, ПОТЕРЮ ИСПОЛЬЗОВАНИЯ,
+.\" ДАННЫХ ИЛИ ПРИБЫЛИ; ИЛИ ПЕРЕРЫВА В РАБОТЕ), КАКИМИ БЫ ПРИЧИНАМИ ОНИ НИ БЫЛИ ВЫЗВАНЫ И ПО ЛЮБОМУ
+.\" ТЕОРИИ ОТВЕТСТВЕННОСТИ, БУДЬ ТО ДОГОВОР, СТРОГАЯ ОТВЕТСТВЕННОСТЬ ИЛИ ПРАВОНАРУШЕНИЕ
+.\" (ВКЛЮЧАЯ НЕБРЕЖНОСТЬ ИЛИ ИНОЕ), ВОЗНИКАЮЩИХ В РЕЗУЛЬТАТЕ ИСПОЛЬЗОВАНИЯ
+.\" ДАННОГО ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ, ДАЖЕ ЕСЛИ ВЫ БЫЛИ ПРЕДУПРЕЖДЕНЫ О ВОЗМОЖНОСТИ ТАКОГО УЩЕРБА.
 .\"
-.Dd March 15, 2022
+.Dd 15 марта 2022 г.
 .Dt NULLFS 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm nullfs
-.Nd "null file system"
+.Nd "нулевая файловая система"
 .Sh SYNOPSIS
-To enable support for this driver,
-place the following line in the kernel configuration file:
+Чтобы включить поддержку этого драйвера,
+поместите следующую строку в конфигурационный файл ядра:
 .Bd -ragged -offset indent
-.Cd "options NULLFS"
+.Cd "опции NULLFS"
 .Ed
 .Pp
-Alternatively, to load the driver as a
-module at boot time, place the following line in
+В качестве альтернативы, чтобы загрузить драйвер как
+модуля во время загрузки, поместите следующую строку в
 .Xr loader.conf 5 :
 .Bd -literal -offset indent
 nullfs_load="YES"
 .Ed
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Сайт
 .Nm
-driver will permit the
+драйвер разрешает
 .Fx
-kernel to mount a loopback file system sub-tree.
-.Sh EXAMPLES
-To mount a
+ядру монтировать поддерево файловой системы loopback.
+.Sh ПРИМЕРЫ
+Чтобы смонтировать
 .Nm
-file system:
+файловой системы:
 .Pp
 .Dl "mount_nullfs /usr/ports /home/devel/ports"
 .Pp
-It is also possible to define an entry in
+Также можно определить запись в
 .Xr fstab 5
-that looks similar to:
+которая выглядит примерно так:
 .Pp
-.Bd -literal
-/usr/ports	/home/devel/ports	nullfs		rw	0	0
+.Bd -литеральный
+/usr/ports /home/devel/ports nullfs rw 0 0
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr fstab 5 ,
 .Xr mount_nullfs 8
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Сайт
 .Nm
-layer first appeared in
+впервые появился в
 .Bx 4.4 .
-.Sh AUTHORS
+.Sh АВТОРЫ
 .An -nosplit
-The
+Сайт
 .Nm
-kernel implementation was written by
-.An John Heideman .
+реализация ядра была написана
+.An Джон Хайдеман .
 .Pp
-This manual page was written by
-.An Daniel Gerzo Aq Mt danger@FreeBSD.org .
+Эта страница руководства была написана
+.An Даниэль Герзо Aq Mt danger@FreeBSD.org .
+
+
+

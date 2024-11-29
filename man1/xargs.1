@@ -32,303 +32,293 @@
 .\"	@(#)xargs.1	8.1 (Berkeley) 6/6/93
 .\" $xMach: xargs.1,v 1.2 2002/02/23 05:23:37 tim Exp $
 .\"
-.Dd September 21, 2020
+.Dd Сентябрь 21, 2020
 .Dt XARGS 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm xargs
-.Nd "construct argument list(s) and execute utility"
-.Sh SYNOPSIS
+.Nd "создает список(ки) аргументов и запускает утилиту"
+.Sh СИНТАКСИС
 .Nm
 .Op Fl 0oprt
 .Op Fl E Ar eofstr
 .Oo
 .Fl I Ar replstr
-.Op Fl R Ar replacements
+.Op Fl R Ar замены
 .Op Fl S Ar replsize
 .Oc
 .Op Fl J Ar replstr
-.Op Fl L Ar number
+.Op Fl L Ar номер
 .Oo
-.Fl n Ar number
+.Fl n Ar номер
 .Op Fl x
 .Oc
 .Op Fl P Ar maxprocs
-.Op Fl s Ar size
+.Op Fl s Ar размер
 .Op Ar utility Op Ar argument ...
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility reads space, tab, newline and end-of-file delimited strings
-from the standard input and executes
-.Ar utility
-with the strings as
-arguments.
+считывает строки, разделенные пробелом, табуляцией, новой строкой и концом файла, из стандартного ввода и выполняет
+.Ar утилиту
+с строками в качестве аргумента.
 .Pp
-Any arguments specified on the command line are given to
-.Ar utility
-upon each invocation, followed by some number of the arguments read
-from the standard input of
+Все аргументы, указанные в командной строке, передаются 
+.Ar утилите
+при каждом вызове, за которым следует некоторое количество аргументов, считываемых
+из стандартного ввода
 .Nm .
-This is repeated until standard input is exhausted.
+Это повторяется до тех пор, пока не будет исчерпан стандартный ввод.
 .Pp
-Spaces, tabs and newlines may be embedded in arguments using single
+Пробелы, символы табуляции и новые строки могут быть вставлены в аргументы с помощью одинарные
 (``\ '\ '')
-or double (``"'') quotes or backslashes (``\e'').
-Single quotes escape all non-single quote characters, excluding newlines,
-up to the matching single quote.
-Double quotes escape all non-double quote characters, excluding newlines,
-up to the matching double quote.
-Any single character, including newlines, may be escaped by a backslash.
-.Pp
-The options are as follows:
+или двойныйх (``"'') кавычек или обратной косой черты (``\e'').
+Одинарные кавычки заключают в себя все символы, не заключенные в одинарные кавычки, за исключением перевода строки,
+вплоть до соответствующей одинарной кавычки.
+Двойные кавычки заключают в себя все символы, не заключенные в двойные кавычки, за исключением перевода строки,
+вплоть до соответствующей двойной кавычки.
+Любой отдельный символ, включая символы новой строки, может быть экранирован обратной косой чертой.
+Возможны следующие параметры:
 .Bl -tag -width indent
 .It Fl 0 , Fl -null
-Change
+Менять
 .Nm
-to expect NUL
+на ожидание нулевого значения
 (``\\0'')
-characters as separators, instead of spaces and newlines.
-This is expected to be used in concert with the
+символы в качестве разделителей вместо пробелов и новой строки.
+Подразумевается, что это будет использоваться совместно с функцией
 .Fl print0
-function in
+в
 .Xr find 1 .
 .It Fl E Ar eofstr
-Use
+Использовать
 .Ar eofstr
-as a logical EOF marker.
+в качестве логического маркера EOF.
 .It Fl I Ar replstr
-Execute
-.Ar utility
-for each input line, replacing one or more occurrences of
+Исключать
+.Ar утилиту
+для каждой строки ввода, заменяя одно или несколько вхождений в
 .Ar replstr
-in up to
-.Ar replacements
-(or 5 if no
+вплоть до
+.Ar замен
+(или до 5, если флаги
 .Fl R
-flag is specified) arguments to
-.Ar utility
-with the entire line of input.
-The resulting arguments, after replacement is done, will not be allowed to grow
-beyond
+не указаны) аргументы к
+.Ar утилите
+со всей строкой ввода.
+Результирующим аргументам после выполнения замены не будет разрешено выходить
+за пределы
 .Ar replsize
-(or 255 if no
+(или за 255, если флаг
 .Fl S
-flag is specified)
-bytes; this is implemented by concatenating as much of the argument
-containing
+не указан)
+байт; это реализуется с помощью объединения как можно большей части аргумента, содержащего
 .Ar replstr
-as possible, to the constructed arguments to
-.Ar utility ,
-up to
+насколько это возможно, к построенным аргументам для
+.Ar утилиты ,
+вплоть до
 .Ar replsize
-bytes.
-The size limit does not apply to arguments to
-.Ar utility
-which do not contain
+байт.
+Ограничение по размеру не применяется к аргументам для
+.Ar утилиты ,
+которая не содержит
 .Ar replstr ,
-and furthermore, no replacement will be done on
-.Ar utility
-itself.
-Implies
+и, кроме того, никакая замена не будет производиться на саму
+.Ar утилиту
+.
+Подразумевается, что
 .Fl x .
 .It Fl J Ar replstr
-If this option is specified,
+Если этот параметр указан, то 
 .Nm
-will use the data read from standard input to replace the first occurrence of
+будет использовать данные, считанные из стандартного ввода, для замены первого вхождения
 .Ar replstr
-instead of appending that data after all other arguments.
-This option will not affect how many arguments will be read from input
+вместо того, чтобы добавлять эти данные после всех остальных аргументов.
+Этот параметр не повлияет на то, сколько аргументов будет считываться из входных данных
 .Pq Fl n ,
-or the size of the command(s)
+или размер команды(команд)
 .Nm
-will generate
+сформирует
 .Pq Fl s .
-The option just moves where those arguments will be placed in the command(s)
-that are executed.
-The
+Параметр просто перемещает место, где эти аргументы будут помещены в выполняемые команды.
+
 .Ar replstr
-must show up as a distinct
-.Ar argument
-to
+должен проявиться как отдельный
+.Ar аргумент
+к
 .Nm .
-It will not be recognized if, for instance, it is in the middle of a
-quoted string.
-Furthermore, only the first occurrence of the
+Оно не будет распознано, если, например, оно находится в середине
+строки, заключенной в кавычки.
+Более того, только первое вхождение
 .Ar replstr
-will be replaced.
-For example, the following command will copy the list of files and
-directories which start with an uppercase letter in the current
-directory to
+будет заменено.
+Например, следующая команда скопирует список файлов и
+каталогов, которые начинаются с заглавной буквы в текущем
+каталоге, в
 .Pa destdir :
 .Pp
 .Dl /bin/ls -1d [A-Z]* | xargs -J % cp -Rp % destdir
 .It Fl L Ar number
 Call
 .Ar utility
-for every
-.Ar number
-lines read.
-If EOF is reached and fewer lines have been read than
-.Ar number
-then
-.Ar utility
-will be called with the available lines.
+для каждого
+.Ar номера
+прочитанной строки.
+Если достигнуто значение EOF и было прочитано меньше строк, чем
+.Ar указанное число ,
+тогда
+.Ar утилита
+будет вызван с помощью доступных строк.
 .It Fl n Ar number , Fl -max-args= Ns Ar number
-Set the maximum number of arguments taken from standard input for each
-invocation of
-.Ar utility .
-An invocation of
-.Ar utility
-will use less than
-.Ar number
-standard input arguments if the number of bytes accumulated (see the
+Устанавливает максимальное количество аргументов, получаемых из стандартного ввода, для каждого вызова
+.Ar утилиты .
+Вызов
+.Ar утилиты
+использует меньшее
+.Ar число ,
+чем стандартные входные аргументы, если количество накопленных байт (см. параметр
 .Fl s
-option) exceeds the specified
-.Ar size
-or there are fewer than
-.Ar number
-arguments remaining for the last invocation of
-.Ar utility .
-The current default value for
-.Ar number
-is 5000.
+) превышает заданный
+.Ar размер
+или их меньше, чем
+.Ar число
+аргументов, оставшихся для последнего вызова
+.Ar утилиты .
+Текущим значением по умолчанию для
+.Ar числа
+является 5000.
 .It Fl o
-Reopen stdin as
+Переоткрывать stdin в качестве
 .Pa /dev/tty
-in the child process before executing the command.
-This is useful if you want
+в дочернем процессе перед выполнением команды.
+Это пригождается, если вы хотите
 .Nm
-to run an interactive application.
+запустить интерактивное приложение
 .It Fl P Ar maxprocs , Fl -max-procs= Ns Ar maxprocs
-Parallel mode: run at most
+Параллельный режим: работает не более
 .Ar maxprocs
-invocations of
-.Ar utility
-at once.
-If
+вызовов 
+.Ar утилиты
+одновременно.
+Если
 .Ar maxprocs
-is set to 0,
+значение установлено на 0, то
 .Nm
-will run as many processes as possible.
+будет запущено как можно больше процессов.
 .It Fl p , Fl -interactive
-Echo each command to be executed and ask the user whether it should be
-executed.
-An affirmative response,
+Повторять каждую команду, которая должна быть выполнена, и спрашивайте пользователя, следует ли ее выполнять.
+Положительный ответ,
 .Ql y
-in the POSIX locale,
-causes the command to be executed, any other response causes it to be
-skipped.
-No commands are executed if the process is not attached to a terminal.
+в языковом стандарте POSIX
+вызывает выполнение команды, любой другой ответ приводит к ее
+пропуску.
+Команды не выполняются, если процесс не подключен к терминалу.
 .It Fl r , Fl -no-run-if-empty
-Compatibility with GNU
+Совместимость с GNU
 .Nm .
-The GNU version of
+Версия GNU для
 .Nm
-runs the
-.Ar utility
-argument at least once, even if
+запускает аргумент
+.Ar утилиты
+хотя бы один раз, даже если
 .Nm
-input is empty, and it supports a
-.Fl r
-option to inhibit this behavior.
-The
+входные данные пусты, и он поддерживает параметр
+.Fl r ,
+чтобы исключить такое поведение.
+Версия
 .Fx
-version of
 .Nm
-does not run the
-.Ar utility
-argument on empty input, but it supports the
+не запускает
+.Ar утилиту
+аргумента для пустых входных данных, но она поддерживает параметр
 .Fl r
-option for command-line compatibility with GNU
+для обеспечения совместимости командной строки с GNU
 .Nm ,
-but the
+но параметр
 .Fl r
-option does nothing in the
+не имеет никакого значения
 .Fx
-version of
+в версии
 .Nm .
-.It Fl R Ar replacements
-Specify the maximum number of arguments that
+.It Fl R Ar замены
+Указывать максимальное количество аргументов, которые
 .Fl I
-will do replacement in.
-If
-.Ar replacements
-is negative, the number of arguments in which to replace is unbounded.
+сделают замену.
+Если
+.Ar замены
+является отрицательным, количество аргументов, в которых требуется замена, не ограничено.
 .It Fl S Ar replsize
-Specify the amount of space (in bytes) that
+Указывать объем пространства (в байтах), который
 .Fl I
-can use for replacements.
-The default for
+может быть использован для замены.
+Значением по умолчанию для
 .Ar replsize
-is 255.
-.It Fl s Ar size , Fl -max-chars= Ns Ar size
-Set the maximum number of bytes for the command line length provided to
-.Ar utility .
-The sum of the length of the utility name, the arguments passed to
-.Ar utility
-(including
+является 255.
+.It Fl s Ar размер , Fl -max-chars= Ns Ar размер
+Устанавливать максимальное количество байт для длины командной строки, указанной в
+.Ar утилите .
+Итоговое значение длины имени утилиты, аргументов, переданы в
+.Ar утилиту
+(в том числе и
 .Dv NULL
-terminators) and the current environment will be less than or equal to
-this number.
-The current default value for
-.Ar size
-is
+терминалы) и текущая среда окажется меньше или равна
+этому значению.
+Текущим значением по умолчанию для
+.Ar размера
+является
 .Dv ARG_MAX
 - 4096.
 .It Fl t , Fl -verbose
-Echo the command to be executed to standard error immediately before it
-is executed.
-.It Fl x , Fl -exit
-Force
+Выводит команду, которая должна быть выполнена, на стандартную ошибку непосредственно перед ее выполнением.
+.It Fl x , Fl -выход
+Принудительно
 .Nm
-to terminate immediately if a command line containing
-.Ar number
-arguments will not fit in the specified (or default) command line length.
+завершать работу немедленно, если командная строка, содержащая
+.Ar число
+аргументов не будет вписываться в указанную (или установленную по умолчанию) длину командной строки.
 .El
 .Pp
-If
-.Ar utility
-is omitted,
+Если
+.Ar утилита
+опущена, тто используется
 .Xr echo 1
-is used.
+.
 .Pp
-Undefined behavior may occur if
-.Ar utility
-reads from the standard input.
+Неопределенное поведение может возникнуть, если
+.Ar утилита
+считывается из стандартного ввода.
 .Pp
-If a command line cannot be assembled, or
-cannot be invoked, or if an invocation of
-.Ar utility
-is terminated by a signal,
-or an invocation of
-.Ar utility
-exits with a value of 255, the
+Если командная строка не может быть собрана или вызвана, или если вызов
+.Ar утилиты
+приостанавливается сигналом,
+или вызовом 
+.Ar утилиты ,
+то работа завершается при значении 255,
 .Nm
-utility stops processing input and exits after all invocations of
-.Ar utility
-finish processing.
-.Sh EXIT STATUS
-The
+утилита прекращает обработку входных данных и завершает работу после того, как все вызовы
+.Ar утилиты
+заканчивают обработку.
+.Sh СТАТУС ВЫХОДА
+Утилита
 .Nm
-utility exits with a value of 0 if no error occurs.
-If
-.Ar utility
-cannot be found,
+завершает работу со значением 0, если не возникает никаких ошибок.
+Если
+.Ar утилита
+не может быть обнаружена,
 .Nm
-exits with a value of 127, otherwise if
-.Ar utility
-cannot be executed,
+завершает работу со значением 127, в противном случае, если
+.Ar утилита
+не может быть выполнена,
 .Nm
-exits with a value of 126.
-If any other error occurs,
+завершает работу со значением 126.
+Если возникают какие-либо другие ошибки,
 .Nm
-exits with a value of 1.
-.Sh EXAMPLES
-Create a 3x3 matrix with numbers from 1 to 9.
-Every
+завершает работу со значением 1.
+.Sh ПРИМЕРЫ
+Создание матрицы 3x3 с числами от 1 до 9.
+Каждый
 .Xr echo 1
-instance receives three lines as arguments:
+экземпляр получает в качестве аргументов три строки:
 .Bd -literal -offset indent
 $ seq 1 9 | xargs -L3 echo
 1 2 3
@@ -336,7 +326,7 @@ $ seq 1 9 | xargs -L3 echo
 7 8 9
 .Ed
 .Pp
-Duplicate every line from standard input:
+Дублирует каждую строку из стандартного ввода:
 .Bd -literal -offset indent
 $ echo -e "one\\ntwo\\nthree" | xargs -I % echo % %
 one one
@@ -344,47 +334,47 @@ two two
 three three
 .Ed
 .Pp
-Execute at most 2 concurrent instances of
+Выполняет одновременно не более двух экземпляров
 .Xr find 1
-every one of them using one of the directories from the standard input:
+каждый из которых использует один из каталогов стандартного ввода:
 .Bd -literal -offset indent
-echo -e "/usr/ports\\n/etc\\n/usr/local" | xargs -J % -P2 -n1 find % -name file
+echo -e "/usr/ports\\n/etc\\n/usr/local" | xargs -J % -P2 -n1 find % -имя файла
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr echo 1 ,
 .Xr find 1 ,
 .Xr execvp 3
-.Sh STANDARDS
-The
+.Sh СТАНДАРТЫ
+Утилита
 .Nm
-utility is expected to be
+должна соответствовать 
 .St -p1003.2
-compliant.
-The
+стандарту.
+Параметры
 .Fl J , o , P , R
-and
+и
 .Fl S
-options are non-standard
+являются нестандартными
 .Fx
-extensions which may not be available on other operating systems.
-.Sh HISTORY
-The
+расширениями, которые могут быть недоступны в других операционных системах.
+.Sh ИСТОРИЯ
+Утилита
 .Nm
-utility appeared in PWB UNIX.
-.Sh BUGS
-If
-.Ar utility
-attempts to invoke another command such that the number of arguments or the
-size of the environment is increased, it risks
+появилась в PWB UNIX.
+.Sh ОШИБКИ
+Если
+.Ar утилита
+попытается вызвать другую команду таким образом, чтобы увеличить количество аргументов или
+размер среды, это может привести к риску
 .Xr execvp 3
-failing with
+потерпеть неудачу с
 .Er E2BIG .
 .Pp
-The
+Утилита
 .Nm
-utility does not take multibyte characters into account when performing
-string comparisons for the
+не учитывает многобайтовые символы при выполнении
+сравнения строк для параметров
 .Fl I
-and
+и
 .Fl J
-options, which may lead to incorrect results in some locales.
+что может привести к неверным результатам в некоторых задействованных местах.

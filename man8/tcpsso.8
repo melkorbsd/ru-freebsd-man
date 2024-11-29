@@ -24,13 +24,13 @@
 .\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 .\" SUCH DAMAGE.
 .\"
-.Dd June 30, 2022
+.Dd January 14, 2024
 .Dt TCPSSO 8
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm tcpsso
-.Nd set a socket option on a TCP endpoint
-.Sh SYNOPSIS
+.Nd устанавливает параметр сокета конечной точки TCP
+.Sh СИНТАКСИС
 .Nm
 .Fl i Ar id
 .Op Ar level
@@ -62,111 +62,109 @@
 .Op Ar level
 .Ar optname
 .Ar optval
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Команда
 .Nm
-command applies a
+применяет к уровню
 .Ar level
-level socket option with name
+параметр с названием
 .Ar optname
-and value
+и значением
 .Ar optval
-on a TCP endpoint from the command line.
+в конечной точке TCP из командной строки.
 .Pp
-TCP endpoints in the
-.Dv TIME_WAIT
-state can not be handled by
-.Nm .
-TCP endpoints in the
+Конечные точки TCP с состоянием
 .Dv SYN_RCVD
-state can only be handled if their prior state was
+могут быть обработаны 
+.Nm
+только в том случае, если их предыдущее состояние было
 .Dv SYN_SENT .
 .Pp
+Уровень
 .Op Ar level
-can be specified as a non negative number or a symbolic name like
+может быть задан в виде неотрицательного числа или символического имени, как
 .Dv SOL_SOCKET ,
 .Dv IPPROTO_IP ,
 .Dv IPPROTO_IPV6 ,
-or
+или
 .Dv IPPROTO_TCP .
-If not specified,
+Если не указано,
 .Nm
-deduces the level from
+выводит уровень из
 .Ar optname ,
-if provided as a symbolic name.
-If that is not the case,
-.Dv IPPROTO_TCP
-is used.
+если он указан как символьное имя.
+Если это не так, используется
+.Dv IPPROTO_TCP .
 .Pp
+Имя
 .Ar optname
-can be specified as a non negative number or a symbolic name like
+может быть задано в виде неотрицательного числа или символического имени, как
 .Dv SO_DEBUG ,
 .Dv IP_TOS ,
 .Dv IPV6_TCLASS ,
 .Dv TCP_LOG ,
 .Dv TCP_CONGESTION ,
-or
+или
 .Dv TCP_FUNCTION_BLK .
 .Pp
+Значение
 .Ar optval
-can be in integer value, which will be converted to a binary value and
-passed as an int value.
-If it cannot be parsed as an integer value, it will be processed as a string.
-If the
+может быть целым значением, которое будет преобразовано в двоичное значение и
+распознано как значение типа int.
+Если оно не может быть распознано как целое значение, оно будет обработано как строка.
+Если
 .Ar optname
-is
-.Dv TCP_FUNCTION_BLK
-then
+равно
+.Dv TCP_FUNCTION_BLK ,
+тогда
 .Ar optval
-is converted to a
+преобразуется в
 .Vt "struct tcp_function_set" .
 .Pp
-If
-.Fl i Ar id
-is specified then
+Если указывается
+.Fl i Ar id ,
+тогда
 .Nm
-will apply the socket option to the TCP endpoint with the
+применит параметр сокета к конечной точке TCP с помощью
 .Dv inp_gencnt
-provided as
+предоставленного в качестве
 .Ar id .
-The
 .Dv inp_gencnt
-for existing TCP endpoints can be determined by using
+для существующих конечных точек TCP можно определить с помощью
 .Xr sockstat 1 .
 .Pp
-If
-.Fl a
-is specified then
+Если указывается
+.Fl a ,
+тогда
 .Nm
-will apply the socket option to all TCP endpoints subject to the above state
-restrictions.
+применит опцию socket ко всем конечным точкам TCP с учетом вышеуказанных
+ограничений состояния.
 .Pp
-If
-.Fl C Ar cc-algo
-is specified then
+Если указывается
+.Fl C Ar cc-algo ,
+тогда
 .Nm
-will apply the socket option to all TCP endpoints using the TCP
-congestion control algorithm
+применит параметр socket ко всем конечным точкам TCP, используя
+алгоритм управления перегрузкой TCP
 .Ar cc-algo
-and subject to the above state restrictions.
+и с учетом вышеуказанных ограничений состояния.
 .Pp
-If
-.Fl S Ar stack
-is specified then
+Если указывается
+.Fl S Ar stack ,
+тогда
 .Nm
-will apply the socket option to all TCP endpoints using the TCP
-stack
+применит параметр socket ко всем конечным точкам TCP, используя стек TCP
 .Ar stack
-and subject to the above state restrictions.
+и с учетом вышеуказанных ограничений состояния.
 .Pp
-If
-.Fl s Ar state
-is specified then
+Если указывается
+.Fl s Ar state ,
+тогда
 .Nm
-will apply the socket option to all TCP endpoints being in the state
+будет применен параметр сокета ко всем конечным точкам TCP, находящимся в состоянии
 .Ar state .
 .Ar state
-is one of
+является одним из
 .Dv CLOSED ,
 .Dv LISTEN ,
 .Dv SYN_SENT ,
@@ -176,49 +174,47 @@ is one of
 .Dv FIN_WAIT_1 ,
 .Dv CLOSING ,
 .Dv LAST_ACK ,
-.Dv FIN_WAIT_2 .
-Using
+.Dv FIN_WAIT_2 ,
+или
+.Dv TIME_WAIT .
+Использование
 .Dv SYN_RCVD
-only applies to TCP endpoints in the state
+применяется только к конечным точкам TCP в состоянии
 .Dv SYN_RCVD
-if their prior state was
+если их предыдущее состояние было
 .Dv SYN_SENT .
 .Pp
-If multiple of
+Если указаны несколько
 .Fl C Ar cc-algo ,
 .Fl S Ar stack ,
-and
-.Fl s Ar state
-are specified,
+и
+.Fl s Ar state ,
 .Nm
-will apply the socket option to all TCP endpoints not being in the
-state
-.Dv TIME_WAIT
-and using the congestion control algorithm
+будет применять параметр сокета ко всем конечным точкам TCP с использованием
+алгоритма контроля перегрузки
 .Ar cc-algo ,
-being in the state
+находясь в состоянии
 .Ar state ,
-and using the TCP stack
+и использование стека TCP
 .Ar stack ,
-if specified.
+если указано.
 .Pp
-If none of the
+Если ни один из параметров
 .Fl a ,
 .Fl C ,
 .Fl S ,
-or
+или
 .Fl s
-options are specified then the option
-.Fl i
-must be specified.
-.Sh EXIT STATUS
+не указывается, тогда должен быть указан параметр
+.Fl i .
+.Sh СТАТУС ВЫХОДА
 .Ex -std
-.Sh EXAMPLES
-To diagnose a problem with a particular TCP connection to
+.Sh ПРИМЕРЫ
+Чтобы диагностировать проблему с конкретным TCP-соединением, подключенным к
 .Xr sshd 8 ,
-first determine its
+сначала определите его
 .Dv inp_gencnt
-using
+используя
 .Xr sockstat 1 :
 .Bd -literal -offset indent
 # sockstat -4 -c -i -p 22 -P tcp -q
@@ -226,31 +222,31 @@ root     sshd       827   4  tcp4 \e
 	192.168.1.1:22        192.168.1.2:53736     435
 .Ed
 .Pp
-Then, use the following command to enable Black Box Logging on it:
+Затем используйте следующую команду, чтобы включить на нем запись в черный ящик:
 .Bd -literal -offset indent
 # tcpsso -i 435 TCP_LOG 4
 .Ed
 .Pp
-To switch all TCP endpoints from using the freebsd stack to the rack stack use:
+Чтобы переключить все конечные точки TCP с использования стека freebsd на стек rack, используйте:
 .Bd -literal -offset indent
 # tcpsso -S freebsd TCP_FUNCTION_BLK rack
 .Ed
 .Pp
-The following command will set the congestion control module of all TCP
-endpoints currently using cubic as its congestion control algorithm to the
-congestion control algorithm newreno:
+Следующая команда настроит модуль управления перегрузкой всех
+конечных точек TCP, использующих cubic в качестве алгоритма управления перегрузкой, на алгоритм управления
+перегрузкой newreno:
 .Bd -literal -offset indent
 # tcpsso -C cubic TCP_CONGESTION newreno
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr sockstat 1 ,
 .Xr setsockopt 2 ,
 .Xr tcp 4 ,
 .Xr tcp_functions 9
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Команда
 .Nm
-command first appeared in
+впервые появилась в
 .Fx 14 .
-.Sh AUTHORS
-.An Michael Tuexen Aq Mt tuexen@FreeBSD.org
+.Sh АВТОРЫ
+.An Майкл Тьюксен Aq Mt tuexen@FreeBSD.org

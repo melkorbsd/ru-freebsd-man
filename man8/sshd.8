@@ -37,10 +37,10 @@
 .Dd $Mdocdate: September 19 2023 $
 .Dt SSHD 8
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm sshd
-.Nd OpenSSH daemon
-.Sh SYNOPSIS
+.Nd демон OpenSSH
+.Sh СИНТАКСИС
 .Nm sshd
 .Bk -words
 .Op Fl 46DdeGiqTtV
@@ -54,369 +54,358 @@
 .Op Fl p Ar port
 .Op Fl u Ar len
 .Ek
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 .Nm
-(OpenSSH Daemon) is the daemon program for
+(OpenSSH Daemon) это программа-демон для
 .Xr ssh 1 .
-It provides secure encrypted communications between two untrusted hosts
-over an insecure network.
+Она обеспечивает безопасные зашифрованные коммуникации между двумя ненадежными хостами
+через небезопасную сеть.
 .Pp
 .Nm
-listens for connections from clients.
-It is normally started at boot from
+ожидает соединения от клиентов.
+Обычно она запускается при загрузке из
 .Pa /etc/rc.d/sshd .
-It forks a new
-daemon for each incoming connection.
-The forked daemons handle
-key exchange, encryption, authentication, command execution,
-and data exchange.
+Она порождает нового
+демона для каждого входящего соединения.
+Порожденные демоны управляют
+обменом ключами, шифрованием, аутентификацией, выполнением команд,
+и обменом данными.
 .Pp
 .Nm
-can be configured using command-line options or a configuration file
-(by default
+может быть настроен с помощью параметров командной строки или файла конфигурации
+(по умолчанию
 .Xr sshd_config 5 ) ;
-command-line options override values specified in the
-configuration file.
+параметры командной строки переопределяют значения указанные в
+файле конфигурации.
 .Nm
-rereads its configuration file when it receives a hangup signal,
+перечитывает файлы конфигурации при получении сигнала
 .Dv SIGHUP ,
-by executing itself with the name and options it was started with, e.g.\&
+выполнив себя с именем и параметрами, с которыми она была запущена, например\&
 .Pa /usr/sbin/sshd .
 .Pp
-The options are as follows:
+Параметры следующие:
 .Bl -tag -width Ds
 .It Fl 4
-Forces
+Принуждает
 .Nm
-to use IPv4 addresses only.
+использовать только IPv4 адреса.
 .It Fl 6
-Forces
+Принуждает
 .Nm
-to use IPv6 addresses only.
+использовать только IPv6 адреса.
 .It Fl C Ar connection_spec
-Specify the connection parameters to use for the
+Указывает параметры соединения для использования
 .Fl T
-extended test mode.
-If provided, any
+расщиренного тестового режима.
+Если предусмотрено, любые
 .Cm Match
-directives in the configuration file that would apply are applied before the
-configuration is written to standard output.
-The connection parameters are supplied as keyword=value pairs and may be
-supplied in any order, either with multiple
+директивы примененные в файле конфигурации, применяются до
+записи конфигурации в стандартный вывод.
+Параметры подключения предоставляются как пары ключевое слово=значение и могут быть
+поставлены в любом порядке, также с множеством
 .Fl C
-options or as a comma-separated list.
-The keywords are
+параметров или разделенным запятыми списком.
+Ключевые слова
 .Dq addr ,
 .Dq user ,
 .Dq host ,
 .Dq laddr ,
 .Dq lport ,
-and
+и
 .Dq rdomain
-and correspond to source address, user, resolved source host name,
-local address, local port number and routing domain respectively.
+и соответствуют адресу источника, пользователю, разрешенному имени хоста источника,
+локальному адресу, номеру локального порта и домену маршртизации соответственно.
 .It Fl c Ar host_certificate_file
-Specifies a path to a certificate file to identify
+Указывает путь к файлу сертификата для идентификации
 .Nm
-during key exchange.
-The certificate file must match a host key file specified using the
+во время обмена ключами.
+Файл сертификата должен соответствовать файлу ключа хоста, указанному использованием параметра
 .Fl h
-option or the
-.Cm HostKey
-configuration directive.
+или директивой конфигурации
+.Cm HostKey .
 .It Fl D
-When this option is specified,
+Когда указываается этот параметр,
 .Nm
-will not detach and does not become a daemon.
-This allows easy monitoring of
+не отсоединится и не станет демоном.
+Это позволяет легко контролировать
 .Nm sshd .
 .It Fl d
-Debug mode.
-The server sends verbose debug output to standard error,
-and does not put itself in the background.
-The server also will not
+Режим отладки.
+Сервер выводит подробную отладочную информацию на стандартный вывод ошибок,
+не переходя в фоновый режим.
+Сервер также не будет
 .Xr fork 2
-and will only process one connection.
-This option is only intended for debugging for the server.
-Multiple
+и будет обрабатывать только одно соединение.
+Этот параметр предназначен только для отладки на сервере.
+Несколько
 .Fl d
-options increase the debugging level.
-Maximum is 3.
+параметров увеличивают уровень отладки.
+Максимум 3.
 .It Fl E Ar log_file
-Append debug logs to
+Добавить протоколы отладки в 
 .Ar log_file
-instead of the system log.
+вместо системного протокола.
 .It Fl e
-Write debug logs to standard error instead of the system log.
+Записать протокол отладки в стандартный вывод ошибок вместо системного протокола.
 .It Fl f Ar config_file
-Specifies the name of the configuration file.
-The default is
+Указывает имя файла конфигурации.
+По умолчанию это
 .Pa /etc/ssh/sshd_config .
 .Nm
-refuses to start if there is no configuration file.
+отказывается запускаться если здесь нет файла конфигурации.
 .It Fl G
-Parse and print configuration file.
-Check the validity of the configuration file, output the effective configuration
-to stdout and then exit.
-Optionally,
+Проанализировать и напечатать файл конфигурации.
+Проверяет достоверность файла конфигурации, выводит актуальную конфигурацию
+на стандартный вывод и затем завершается.
+Выборочно правила
 .Cm Match
-rules may be applied by specifying the connection parameters using one or more
-.Fl C
-options.
+могут быть применены путем указания параметров соединения, используя один или более параметров
+.Fl C .
 .It Fl g Ar login_grace_time
-Gives the grace time for clients to authenticate themselves (default
-120 seconds).
-If the client fails to authenticate the user within
-this many seconds, the server disconnects and exits.
-A value of zero indicates no limit.
+Дает дополнительное время для клиентов аутентифицировать себя (по умолчанию
+120 секунд).
+Если клиент не проходит аутентификацию пользователя в течение
+этого множества секунд, сервер отключается и завершает работу.
+Значение ноль указывает на отсутствие лимита.
 .It Fl h Ar host_key_file
-Specifies a file from which a host key is read.
-This option must be given if
+Указывает файл, из которого читается ключ хоста.
+Этот параметр должен быть предоставлен, если
 .Nm
-is not run as root (as the normal
-host key files are normally not readable by anyone but root).
-The default is
+не запускается от root (поскольку
+ключевые файлы хоста обычно не могут быть прочитаны никем кроме root).
+По умолчанию это
 .Pa /etc/ssh/ssh_host_ecdsa_key ,
 .Pa /etc/ssh/ssh_host_ed25519_key
-and
+и
 .Pa /etc/ssh/ssh_host_rsa_key .
-It is possible to have multiple host key files for
-the different host key algorithms.
+Возможно иметь несколько ключевых файлов хоста для
+разных ключевых алгоритмов хоста.
 .It Fl i
-Specifies that
+Указывает что
 .Nm
-is being run from
+был запущен из
 .Xr inetd 8 .
 .It Fl o Ar option
-Can be used to give options in the format used in the configuration file.
-This is useful for specifying options for which there is no separate
-command-line flag.
-For full details of the options, and their values, see
+Может быть использован для выдачи параметров в формате, используемом в файле конфигурации.
+Это полезно для указания параметров, для которых нет отдельного
+флага командной строки.
+Для получения подробных деталей о параметрах и их значениях, смотрите
 .Xr sshd_config 5 .
 .It Fl p Ar port
-Specifies the port on which the server listens for connections
-(default 22).
-Multiple port options are permitted.
-Ports specified in the configuration file with the
+Указывает порт, на котором сервер прослушивает соединения
+(по умолчанию 22).
+Разрешено указание нескольких портов в параметрах.
+Порты, указанные в файле конфигурации с параметром
 .Cm Port
-option are ignored when a command-line port is specified.
-Ports specified using the
+игнорируются, если порт указан в параметрах командной строки.
+Порты указываются с использованием параметра
 .Cm ListenAddress
-option override command-line ports.
+переопределяются параметры в командной строки.
 .It Fl q
-Quiet mode.
-Nothing is sent to the system log.
-Normally the beginning,
-authentication, and termination of each connection is logged.
+Тихий режим.
+Ничего не отправляется в системный протокол.
+Обычно аутентификация в начале и завершение каждого соединения протоколируется.
 .It Fl T
-Extended test mode.
-Check the validity of the configuration file, output the effective configuration
-to stdout and then exit.
-Optionally,
+Расширенный тестовый режим.
+Проверяет достоверность файла конфигурации, выводит эффективную конфигурацию
+на стандартный вывод и затем выходит.
+Выборочно, правила
 .Cm Match
-rules may be applied by specifying the connection parameters using one or more
-.Fl C
-options.
-This is similar to the
-.Fl G
-flag, but it includes the additional testing performed by the
-.Fl t
-flag.
+могут быть применены указанием параметров соединения, используя один или более параметров
+.Fl C .
+Это похоже на флаг
+.Fl G ,
+но оно включает проведение дополнительного тестирования, выполняемого флагом
+.Fl t .
 .It Fl t
-Test mode.
-Only check the validity of the configuration file and sanity of the keys.
-This is useful for updating
-.Nm
-reliably as configuration options may change.
+Тестовый режим.
+Проверяет только достоверность файла конфигурации и работоспособность ключей.
+Это полезно для надежного обновления
+.Nm 
+, поскольку параметры конфигурации могут измениться.
 .It Fl u Ar len
-This option is used to specify the size of the field
-in the
-.Vt utmp
-structure that holds the remote host name.
-If the resolved host name is longer than
+Этот параметр используется для указания размера поля в структуре
+.Vt utmp ,
+которая содержит имя удаленного хоста.
+Если разрешенное имя хоста длиннее, чем
 .Ar len ,
-the dotted decimal value will be used instead.
-This allows hosts with very long host names that
-overflow this field to still be uniquely identified.
-Specifying
+вместо него будет использовано десятичное значение с точками.
+Это позволяет хостам с очень длинными именами хоста, которые 
+переполняют это поле, оставаться однозначно идентифицированными.
+Указание
 .Fl u0
-indicates that only dotted decimal addresses
-should be put into the
-.Pa utmp
-file.
+показывает что только десятичные адреса с точками
+следует помещать в файл
+.Pa utmp .
 .Fl u0
-may also be used to prevent
+может быть использовано, чтобы запретить
 .Nm
-from making DNS requests unless the authentication
-mechanism or configuration requires it.
-Authentication mechanisms that may require DNS include
+выполнять DNS-запросы, если механизм аутентификации
+или конфигурация не требуют этого.
+Механизмы аутентификации, которые могут требовать DNS включают
 .Cm HostbasedAuthentication
-and using a
+и используют параметр
 .Cm from="pattern-list"
-option in a key file.
-Configuration options that require DNS include using a
-USER@HOST pattern in
+в ключевом файле.
+Параметры конфигурации, которые требуют DNS включают использование шаблона
+USER@HOST в
 .Cm AllowUsers
-or
+или
 .Cm DenyUsers .
 .It Fl V
-Display the version number and exit.
+Отображает номер версии и завершается.
 .El
-.Sh AUTHENTICATION
-The OpenSSH SSH daemon supports SSH protocol 2 only.
-Each host has a host-specific key,
-used to identify the host.
-Whenever a client connects, the daemon responds with its public
-host key.
-The client compares the
-host key against its own database to verify that it has not changed.
-Forward secrecy is provided through a Diffie-Hellman key agreement.
-This key agreement results in a shared session key.
-The rest of the session is encrypted using a symmetric cipher.
-The client selects the encryption algorithm
-to use from those offered by the server.
-Additionally, session integrity is provided
-through a cryptographic message authentication code (MAC).
+.Sh АУТЕНТИФИКАЦИЯ
+OpenSSH SSH демон поддерживает только протокол SSH 2.
+Каждый хост имеет свой специфичный ключ,
+используемый для идентификации хоста.
+Всякий раз, когда клиент подключается, демон отвечает свой публичный ключ
+вместе с ответом.
+Клиент сравнивает
+ключ хоста со свой собственной базой данных для проверки, что он не изменился.
+Дальнейшая секретность обеспечивается соглашением о ключах Диффи-Хеллмана.
+Результатом такого согласования ключей является общий сеансовый ключ.
+Остальная часть сеанса шифруется с использованием симметричного шифра.
+Клиент выбирает используемый алгоритм шифрования
+из числа предложенных сервером.
+Кроме того, целостность сеанса обеспечивается
+с помощью криптографического ключа аутентификации (MAC).
 .Pp
-Finally, the server and the client enter an authentication dialog.
-The client tries to authenticate itself using
-host-based authentication,
-public key authentication,
-challenge-response authentication,
-or password authentication.
+Наконец, сервер и клиент вступают в диалог аутентификации.
+Клиент пытается аутентифицировать себя, используя
+аутентификацию на основе хоста, аутентификацию с
+открытым ключом, аутентификацию по
+запросу-ответу
+или аутентификацию по паролю.
 .Pp
-Regardless of the authentication type, the account is checked to
-ensure that it is accessible.  An account is not accessible if it is
-locked, listed in
+Независимо от типа аутентификации, учетная запись проверяется, чтобы
+убедиться, что она доступна.  Учетная запись недоступна, если она
+заблокирована, указана в
 .Cm DenyUsers
-or its group is listed in
+или его группа указана в
 .Cm DenyGroups
-\&.  The definition of a locked account is system dependent. Some platforms
-have their own account database (eg AIX) and some modify the passwd field (
+\&. Определение заблокированной учетной записи зависит от системы. Некоторые платформы
+имеют собственную базу данных учетных записей (например, AIX), а некоторые изменяют поле пароля (
 .Ql \&*LK\&*
-on Solaris and UnixWare,
+в Solaris и UnixWare,
 .Ql \&*
-on HP-UX, containing
+в HP-UX, содержащий
 .Ql Nologin
-on Tru64,
-a leading
+в Tru64,
+ведущий
 .Ql \&*LOCKED\&*
-on FreeBSD and a leading
+в FreeBSD и ведущий
 .Ql \&!
-on most Linuxes).
-If there is a requirement to disable password authentication
-for the account while allowing still public-key, then the passwd field
-should be set to something other than these values (eg
+на большинстве Linux-систем).
+Если существует требование отключить аутентификацию по паролю
+для учетной записи, сохраняя при этом доступ к открытому ключу, то в поле пароль
+должно быть установлено значение, отличное от этих значений (например,
 .Ql NP
-or
+или
 .Ql \&*NP\&*
 ).
 .Pp
-If the client successfully authenticates itself, a dialog for
-preparing the session is entered.
-At this time the client may request
-things like allocating a pseudo-tty, forwarding X11 connections,
-forwarding TCP connections, or forwarding the authentication agent
-connection over the secure channel.
+Если клиент успешно прошел аутентификацию, открывается диалог для
+подготовки сеанса.
+В это время клиент может запросить
+такие действия, как выделение псевдо-терминала, переадресация соединений X11,
+переадресация TCP-соединений или переадресация
+соединения агента аутентификации по защищенному каналу.
 .Pp
-After this, the client either requests an interactive shell or execution
-of a non-interactive command, which
+После этого клиент запрашивает либо интерактивную оболочку, либо выполнение
+неинтерактивной команды, которую
 .Nm
-will execute via the user's shell using its
-.Fl c
-option.
-The sides then enter session mode.
-In this mode, either side may send
-data at any time, and such data is forwarded to/from the shell or
-command on the server side, and the user terminal in the client side.
+выполнит через пользовательскую оболочку, используя свой параметр
+.Fl c .
+Затем стороны переходят в режим сеанса.
+В этом режиме любая из сторон может отправлять
+данные в любое время, и такие данные передаются в/из
+командной строки или команды на стороне сервера, и терминала пользователя на стороне клиента.
 .Pp
-When the user program terminates and all forwarded X11 and other
-connections have been closed, the server sends command exit status to
-the client, and both sides exit.
-.Sh LOGIN PROCESS
-When a user successfully logs in,
+Когда пользовательская программа завершает работу и все переадресованные X11 и другие
+соединения закрыты, сервер отправляет клиенту статус завершения команды, и обе стороны завершают работу.
+.Sh ПРОЦЕСС ВХОДА В СИСТЕМУ
+Когда пользователь успешно входит в систему,
 .Nm
-does the following:
+выполняет следующие действия:
 .Bl -enum -offset indent
 .It
-If the login is on a tty, and no command has been specified,
-prints last login time and
+Если для входа используется tty и не была указана ни одна команда,
+выводится время последнего входа в систему и
 .Pa /etc/motd
-(unless prevented in the configuration file or by
+(если это не запрещено в файле конфигурации или с помощью
 .Pa ~/.hushlogin ;
-see the
+смотрите раздел
 .Sx FILES
-section).
+).
 .It
-If the login is on a tty, records login time.
+Если для входа используется tty, записывается время входа в систему.
 .It
-Checks
-.Pa /etc/nologin and
+Проверяются
+.Pa /etc/nologin и
 .Pa /var/run/nologin ;
-if one exists, it prints the contents and quits
-(unless root).
+если таковой существует, выводится содержимое и завершается
+(если только он не является root).
 .It
-Changes to run with normal user privileges.
+Запускается с обычными правами пользователя.
 .It
-Sets up basic environment.
+Настраивает базовую среду.
 .It
-Reads the file
+Читает содержимое файла файла
 .Pa ~/.ssh/environment ,
-if it exists, and users are allowed to change their environment.
-See the
+если он существует, и пользователям разрешено изменять свое окружение.
+Смотрите параметр
 .Cm PermitUserEnvironment
-option in
+в
 .Xr sshd_config 5 .
 .It
-Changes to user's home directory.
+Переходит в домашний каталог пользователя.
 .It
-If
+Если
 .Pa ~/.ssh/rc
-exists and the
+существует и параметр
 .Xr sshd_config 5
 .Cm PermitUserRC
-option is set, runs it; else if
-.Pa /etc/ssh/sshrc
-exists, runs
-it; otherwise runs
+установлен, запускает его; если же существует
+.Pa /etc/ssh/sshrc ,
+то запускает
+его; в противном случае запускается
 .Xr xauth 1 .
-The
+Файлы
 .Dq rc
-files are given the X11
-authentication protocol and cookie in standard input.
-See
+передаются
+протоколу аутентификации X11 и cookie из стандартного ввода.
+Смотрите
 .Sx SSHRC ,
-below.
+ниже.
 .It
-Runs user's shell or command.
-All commands are run under the user's login shell as specified in the
-system password database.
+Запускает оболочку пользователя или команду.
+Все команды выполняются под учетной записью пользователя, как указано в
+системной базе данных паролей.
 .El
 .Sh SSHRC
-If the file
+Если файл
 .Pa ~/.ssh/rc
-exists,
+существует,
 .Xr sh 1
-runs it after reading the
-environment files but before starting the user's shell or command.
-It must not produce any output on stdout; stderr must be used
-instead.
-If X11 forwarding is in use, it will receive the "proto cookie" pair in
-its standard input (and
+запускает его после чтения файлов
+окружения, но перед запуском пользовательской оболочки или команды.
+Он не должен выдавать никаких выходных данных в стандартный вывод; вместо этого должна использоваться стандартный вывод ошибок.
+Если используется переадресация X11, она получит пару "proto cookie" в
+своем стандартном вводе(и
 .Ev DISPLAY
-in its environment).
-The script must call
+в своем окружении).
+Скрипт должен вызывать
 .Xr xauth 1
-because
+потому что
 .Nm
-will not run xauth automatically to add X11 cookies.
+не будет автоматически запускать xauth для добавления X11 cookie.
 .Pp
-The primary purpose of this file is to run any initialization routines
-which may be needed before the user's home directory becomes
-accessible; AFS is a particular example of such an environment.
+Основное назначение этого файла - запустить любые процедуры инициализации, которые могут потребоваться до того, как домашний каталог пользователя станет
+доступным; AFS является конкретным примером такой среды.
 .Pp
-This file will probably contain some initialization code followed by
-something similar to:
+Этот файл, вероятно, будет содержать некоторый код инициализации, за которым последует
+что-то похожее на:
 .Bd -literal -offset 3n
 if read proto cookie && [ -n "$DISPLAY" ]; then
 	if [ `echo $DISPLAY | cut -c1-10` = 'localhost:' ]; then
@@ -430,27 +419,27 @@ if read proto cookie && [ -n "$DISPLAY" ]; then
 fi
 .Ed
 .Pp
-If this file does not exist,
+Если этот файл не существует,
 .Pa /etc/ssh/sshrc
-is run, and if that
-does not exist either, xauth is used to add the cookie.
-.Sh AUTHORIZED_KEYS FILE FORMAT
+запускается, и если
+он также не существует, для добавления cookie используется xauth.
+.Sh ФОРМАТ ФАЙЛА AUTHORIZED_KEYS
 .Cm AuthorizedKeysFile
-specifies the files containing public keys for
-public key authentication;
-if this option is not specified, the default is
+указывает файлы, содержащие открытые ключи для
+аутентификации с помощью открытого ключа;
+если этот параметр не указан, по умолчанию это
 .Pa ~/.ssh/authorized_keys
-and
+и
 .Pa ~/.ssh/authorized_keys2 .
-Each line of the file contains one
-key (empty lines and lines starting with a
+Каждая строка файла содержит один
+ключ (пустые строки и строки, начинающиеся с
 .Ql #
-are ignored as
-comments).
-Public keys consist of the following space-separated fields:
-options, keytype, base64-encoded key, comment.
-The options field is optional.
-The supported key types are:
+игнорируются как
+комментарии).
+Открытые ключи состоят из следующих полей, разделенных пробелами:
+параметры, тип ключа, ключ в кодировке base64, комментарий.
+Поле параметры является необязательным.
+Поддерживаются следующие типы ключей:
 .Pp
 .Bl -item -compact -offset indent
 .It
@@ -471,560 +460,534 @@ ssh-dss
 ssh-rsa
 .El
 .Pp
-The comment field is not used for anything (but may be convenient for the
-user to identify the key).
+Поле для комментариев ни для чего не используется (но может быть удобным для
+пользователя при идентификации ключа).
 .Pp
-Note that lines in this file can be several hundred bytes long
-(because of the size of the public key encoding) up to a limit of
-8 kilobytes, which permits RSA keys up to 16 kilobits.
-You don't want to type them in; instead, copy the
+Обратите внимание, что длина строк в этом файле может составлять несколько сотен байт
+(из-за размера кодировки с открытым ключом)
+, но не более 8 килобайт, что позволяет использовать ключи RSA объемом до 16 килобит.
+Вы не хотите вводить их; вместо этого скопируйте
 .Pa id_dsa.pub ,
 .Pa id_ecdsa.pub ,
 .Pa id_ecdsa_sk.pub ,
 .Pa id_ed25519.pub ,
 .Pa id_ed25519_sk.pub ,
-or the
+или
 .Pa id_rsa.pub
-file and edit it.
+файл и отредактируйте его.
 .Pp
 .Nm
-enforces a minimum RSA key modulus size of 1024 bits.
+устанавливает минимальный размер модуля ключа RSA в 1024 бита.
 .Pp
-The options (if present) consist of comma-separated option
-specifications.
-No spaces are permitted, except within double quotes.
-The following option specifications are supported (note
-that option keywords are case-insensitive):
+Параметры (если таковые имеются) состоят из
+спецификаций опций, разделенных запятыми.
+Пробелы не допускаются, за исключением двойных кавычек.
+Поддерживаются следующие спецификации параметров (обратите
+внимание, что ключевые слова параметров не чувствительны к регистру):
 .Bl -tag -width Ds
 .It Cm agent-forwarding
-Enable authentication agent forwarding previously disabled by the
+Включает переадресацию агента аутентификации, которая ранее была отключена с помощью параметра
 .Cm restrict
-option.
 .It Cm cert-authority
-Specifies that the listed key is a certification authority (CA) that is
-trusted to validate signed certificates for user authentication.
+Указывает, что указанный ключ является центром сертификации (CA), которому
+доверено проверять подписанные сертификаты для аутентификации пользователя.
 .Pp
-Certificates may encode access restrictions similar to these key options.
-If both certificate restrictions and key options are present, the most
-restrictive union of the two is applied.
+Сертификаты могут содержать ограничения доступа, аналогичные этим параметрам ключа.
+Если присутствуют как ограничения сертификата, так и параметры ключа, применяется наиболее
+строгое объединение из них.
 .It Cm command="command"
-Specifies that the command is executed whenever this key is used for
-authentication.
-The command supplied by the user (if any) is ignored.
-The command is run on a pty if the client requests a pty;
-otherwise it is run without a tty.
-If an 8-bit clean channel is required,
-one must not request a pty or should specify
+Указывает, что команда выполняется всякий раз, когда этот ключ используется для
+аутентификации.
+Команда, введенная пользователем (если таковая имеется), игнорируется.
+Команда выполняется с помощью pty, если клиент запрашивает pty;
+в противном случае она выполняется без tty.
+Если требуется 8-битный чистый канал,
+не нужно запрашивать pty или следует указать
 .Cm no-pty .
-A quote may be included in the command by quoting it with a backslash.
+Кавычка может быть включена в команду с обратной косой чертой перед ней.
 .Pp
-This option might be useful
-to restrict certain public keys to perform just a specific operation.
-An example might be a key that permits remote backups but nothing else.
-Note that the client may specify TCP and/or X11
-forwarding unless they are explicitly prohibited, e.g. using the
-.Cm restrict
-key option.
+Этот параметр может быть полезен
+для ограничения доступа к определенным открытым ключам для выполнения только определенной операции.
+Примером может служить ключ, который разрешает удаленное резервное копирование, но ни что иное.
+Обратите внимание, что клиент может указать переадресацию по протоколу TCP и/или X11, если они явно не запрещены, например, с помощью параметра ключа
+.Cm restrict .
 .Pp
-The command originally supplied by the client is available in the
-.Ev SSH_ORIGINAL_COMMAND
-environment variable.
-Note that this option applies to shell, command or subsystem execution.
-Also note that this command may be superseded by a
+Команда, первоначально предоставленная клиентом, доступна в переменной среды
+.Ev SSH_ORIGINAL_COMMAND .
+Обратите внимание, что этот параметр применяется к командной строке, выполнению команды или подсистемы.
+Также обратите внимание, что эта команда может быть заменена директивой
 .Xr sshd_config 5
-.Cm ForceCommand
-directive.
+.Cm ForceCommand .
 .Pp
-If a command is specified and a forced-command is embedded in a certificate
-used for authentication, then the certificate will be accepted only if the
-two commands are identical.
+Если указана команда и принудительная команда встроена в сертификат, используемый для аутентификации, то сертификат будет принят только в том случае, если эти
+две команды идентичны.
 .It Cm environment="NAME=value"
-Specifies that the string is to be added to the environment when
-logging in using this key.
-Environment variables set this way
-override other default environment values.
-Multiple options of this type are permitted.
-Environment processing is disabled by default and is
-controlled via the
-.Cm PermitUserEnvironment
-option.
+Указывает, что строка должна быть добавлена в среду при
+входе в систему с использованием этого ключа.
+Переменные среды, заданные таким образом, 
+переопределяют другие значения среды по умолчанию.
+Допускается несколько параметров данного типа.
+Обработка среды отключена по умолчанию и
+управляется с помощью параметра
+.Cm PermitUserEnvironment .
 .It Cm expiry-time="timespec"
-Specifies a time after which the key will not be accepted.
-The time may be specified as a YYYYMMDD[Z] date or a YYYYMMDDHHMM[SS][Z] time.
-Dates and times will be interpreted in the system time zone unless suffixed
-by a Z character, in which case they will be interpreted in the UTC time zone.
+Указывает время, по истечении которого ключ не будет принят.
+Время может быть указано в виде даты YYYYMMDD[Z] или времени YYYYMMDDHHMM[SS][Z].
+Даты и время будут интерпретироваться в системном часовом поясе, если
+к ним не добавлен символ Z, и в этом случае они будут интерпретироваться в часовом поясе UTC.
 .It Cm from="pattern-list"
-Specifies that in addition to public key authentication, either the canonical
-name of the remote host or its IP address must be present in the
-comma-separated list of patterns.
-See PATTERNS in
+Указывает, что в дополнение к аутентификации с помощью открытого ключа
+в списке шаблонов, разделенных запятыми, должно присутствовать либо каноническое имя удаленного хоста, либо его IP-адрес.
+Смотрите PATTERNS в
 .Xr ssh_config 5
-for more information on patterns.
+для получения дополнительной информации о шаблонах.
 .Pp
-In addition to the wildcard matching that may be applied to hostnames or
-addresses, a
+В дополнение к подстановочному знаку, который может быть применен к именам хостов или
+адресам, строфа
 .Cm from
-stanza may match IP addresses using CIDR address/masklen notation.
+может соответствовать IP-адресам с использованием обозначения CIDR адреса/маски.
 .Pp
-The purpose of this option is to optionally increase security: public key
-authentication by itself does not trust the network or name servers or
-anything (but the key); however, if somebody somehow steals the key, the key
-permits an intruder to log in from anywhere in the world.
-This additional option makes using a stolen key more difficult (name
-servers and/or routers would have to be compromised in addition to
-just the key).
+Целью этого параметра является дополнительное повышение безопасности:
+аутентификация с помощью открытого ключа сама по себе не обеспечивает доверия к сети, серверам имен или
+чему-либо еще (кроме ключа); однако, если кто-то каким-то образом украдет ключ,
+он позволит злоумышленнику войти в систему из любой точки мира.
+Этот дополнительный параметр усложняет использование украденного ключа 
+(серверы имен и/или маршрутизаторы должны быть скомпрометированы в дополнение к
+самому ключу).
 .It Cm no-agent-forwarding
-Forbids authentication agent forwarding when this key is used for
-authentication.
+Запрещает переадресацию агента аутентификации, когда этот ключ используется для
+аутентификации.
 .It Cm no-port-forwarding
-Forbids TCP forwarding when this key is used for authentication.
-Any port forward requests by the client will return an error.
-This might be used, e.g. in connection with the
-.Cm command
-option.
+Запрещает переадресацию TCP, когда этот ключ используется для аутентификации.
+Любые запросы клиента на переадресацию порта будут возвращать сообщение об ошибке.
+Это может быть использовано, например, в сочетании с опцией
+.Cm command .
 .It Cm no-pty
-Prevents tty allocation (a request to allocate a pty will fail).
+Предотвращает выделение tty (запрос на выделение pty завершится ошибкой).
 .It Cm no-user-rc
-Disables execution of
+Отключает выполнение
 .Pa ~/.ssh/rc .
 .It Cm no-X11-forwarding
-Forbids X11 forwarding when this key is used for authentication.
-Any X11 forward requests by the client will return an error.
+Запрещает переадресацию X11, когда этот ключ используется для аутентификации.
+Любые запросы клиента на переадресацию X11 будут возвращать сообщение об ошибке.
 .It Cm permitlisten="[host:]port"
-Limit remote port forwarding with the
+Ограничивает удаленную переадресацию портов с помощью параметра
 .Xr ssh 1
-.Fl R
-option such that it may only listen on the specified host (optional) and port.
-IPv6 addresses can be specified by enclosing the address in square brackets.
-Multiple
+.Fl R , 
+таким образом, чтобы она могла прослушивать только указанный хост (необязательно) и порт.
+Адреса IPv6 можно указать, заключив их в квадратные скобки.
+Несколькко параметров
 .Cm permitlisten
-options may be applied separated by commas.
-Hostnames may include wildcards as described in the PATTERNS section in
+могут быть применены через запятую.
+Имена хостов могут содержать шаблоны, как описано в разделе PATTERNS в
 .Xr ssh_config 5 .
-A port specification of
-.Cm *
-matches any port.
-Note that the setting of
+.Cm * 
+вместо порта соответствует любому порту.
+Обратите внимание, что настройка
 .Cm GatewayPorts
-may further restrict listen addresses.
-Note that
+может дополнительно ограничить адреса прослушивания.
+Обратите внимание, что
 .Xr ssh 1
-will send a hostname of
+будет использовать имя хоста
 .Dq localhost
-if a listen host was not specified when the forwarding was requested, and
-that this name is treated differently to the explicit localhost addresses
+если при запросе переадресации не был указан прослушиваемый хост и
+это имя обрабатывается иначе, чем явные адреса локального хоста
 .Dq 127.0.0.1
-and
+и
 .Dq ::1 .
 .It Cm permitopen="host:port"
-Limit local port forwarding with the
+Ограничивает переадресацию локальных портов с помощью параметра
 .Xr ssh 1
 .Fl L
-option such that it may only connect to the specified host and port.
-IPv6 addresses can be specified by enclosing the address in square brackets.
-Multiple
+позволяющего подключаться только к указанному хосту и порту.
+Адреса IPv6 можно указать, заключив адрес в квадратные скобки.
+Несколько параметров
 .Cm permitopen
-options may be applied separated by commas.
-No pattern matching or name lookup is performed on the
-specified hostnames, they must be literal host names and/or addresses.
-A port specification of
-.Cm *
-matches any port.
+могут быть использованы через запятую.
+Для указанных имен хостов не выполняется сопоставление с шаблоном или поиск по имени, они должны быть буквальными именами хостов и/или адресами.
+.Cm * 
+вместо порта соответствует любому порту.
 .It Cm port-forwarding
-Enable port forwarding previously disabled by the
-.Cm restrict
-option.
+Включить переадресацию портов, ранее отключенную с помощью параметра
+.Cm restrict .
 .It Cm principals="principals"
-On a
-.Cm cert-authority
-line, specifies allowed principals for certificate authentication as a
-comma-separated list.
-At least one name from the list must appear in the certificate's
-list of principals for the certificate to be accepted.
-This option is ignored for keys that are not marked as trusted certificate
-signers using the
-.Cm cert-authority
-option.
+В строке
+.Cm cert-authority ,
+указываются разрешенные участников для проверки подлинности сертификата в
+виде списка, разделенного запятыми.
+Чтобы сертификат был принят, по крайней мере одно имя из этого списка должно присутствовать в
+списке участников сертификата.
+Этот параметр игнорируется для ключей, которые не помечены как доверенные
+лица, подписывающие сертификаты, используя параметр
+.Cm cert-authority .
 .It Cm pty
-Permits tty allocation previously disabled by the
-.Cm restrict
-option.
+Разрешает распределение tty, ранее отключенное с помощью параметра
+.Cm restrict .
 .It Cm no-touch-required
-Do not require demonstration of user presence
-for signatures made using this key.
-This option only makes sense for the FIDO authenticator algorithms
+Для подписей, созданных с использованием этого ключа, не требуется демонстрация присутствия пользователя.
+Этот параметр имеет смысл только для алгоритмов аутентификации FIDO
 .Cm ecdsa-sk
-and
+и
 .Cm ed25519-sk .
 .It Cm verify-required
-Require that signatures made using this key attest that they verified
-the user, e.g. via a PIN.
-This option only makes sense for the FIDO authenticator algorithms
+Требуется, чтобы подписи, сделанные с использованием этого ключа, подтверждали, что они проверили
+пользователя, например, с помощью PIN-кода.
+Этот параметр имеет смысл только для алгоритмов аутентификации FIDO
 .Cm ecdsa-sk
-and
+и
 .Cm ed25519-sk .
 .It Cm restrict
-Enable all restrictions, i.e. disable port, agent and X11 forwarding,
-as well as disabling PTY allocation
-and execution of
+Выключает все ограничения, т.е. отключает переадресацию портов, агентов и X11,
+а также отключите распределение PTY
+и выполнение
 .Pa ~/.ssh/rc .
-If any future restriction capabilities are added to authorized_keys files,
-they will be included in this set.
+Если в будущем к файлам authorized_keys будут добавлены какие-либо возможности ограничения,
+они будут включены в этот набор.
 .It Cm tunnel="n"
-Force a
+Принудительно подключает устройство
 .Xr tun 4
-device on the server.
-Without this option, the next available device will be used if
-the client requests a tunnel.
+к серверу.
+При отсутствии этого параметра будет использовано следующее доступное устройство, если
+клиент запросит туннель.
 .It Cm user-rc
-Enables execution of
-.Pa ~/.ssh/rc
-previously disabled by the
-.Cm restrict
-option.
+Включает выполнение
+.Pa ~/.ssh/rc ,
+которое ранее было отключено с помощью параметра
+.Cm restrict .
 .It Cm X11-forwarding
-Permits X11 forwarding previously disabled by the
-.Cm restrict
-option.
+Разрешает переадресацию X11, которая ранее была отключена с помощью параметра
+.Cm restrict .
 .El
 .Pp
-An example authorized_keys file:
+Пример файла authorized_keys:
 .Bd -literal -offset 3n
-# Comments are allowed at start of line. Blank lines are allowed.
-# Plain key, no restrictions
+# Комментарии допускаются в начале строки. Допускаются пустые строки.
+# Простой ключ, без ограничений
 ssh-rsa ...
-# Forced command, disable PTY and all forwarding
+# Принудительная команда, отключающая PTY и всю переадресацию
 restrict,command="dump /home" ssh-rsa ...
-# Restriction of ssh -L forwarding destinations
+# RОграничение адресатов переадресации по ssh -L
 permitopen="192.0.2.1:80",permitopen="192.0.2.2:25" ssh-rsa ...
-# Restriction of ssh -R forwarding listeners
+# Ограничение прослушивателей пересылки по ssh -R
 permitlisten="localhost:8080",permitlisten="[::1]:22000" ssh-rsa ...
-# Configuration for tunnel forwarding
+# Конфигурация для туннельной переадресации
 tunnel="0",command="sh /etc/netstart tun0" ssh-rsa ...
-# Override of restriction to allow PTY allocation
+# Переопределение ограничения для разрешения распределения PTY
 restrict,pty,command="nethack" ssh-rsa ...
-# Allow FIDO key without requiring touch
+# Разрешить использование клавиши FIDO без необходимости касания
 no-touch-required sk-ecdsa-sha2-nistp256@openssh.com ...
-# Require user-verification (e.g. PIN or biometric) for FIDO key
+# Требуется подтверждение пользователя (например, PIN-код или биометрические данные) для получения ключа FIDO
 verify-required sk-ecdsa-sha2-nistp256@openssh.com ...
-# Trust CA key, allow touch-less FIDO if requested in certificate
+# Доверенный ключу CA, разрешайте бесконтактный доступ к FIDO, если это запрошено в сертификате
 cert-authority,no-touch-required,principals="user_a" ssh-rsa ...
 .Ed
-.Sh SSH_KNOWN_HOSTS FILE FORMAT
-The
+.Sh ФОРМАТ ФАЙЛА SSH_KNOWN_HOSTS
+Файлы
 .Pa /etc/ssh/ssh_known_hosts
-and
+и
 .Pa ~/.ssh/known_hosts
-files contain host public keys for all known hosts.
-The global file should
-be prepared by the administrator (optional), and the per-user file is
-maintained automatically: whenever the user connects to an unknown host,
-its key is added to the per-user file.
+содержат открытые ключи хостов для всех известных хостов.
+Глобальный файл должен
+быть подготовлен администратором (необязательно), а файл для каждого пользователя
+поддерживается автоматически: всякий раз, когда пользователь подключается к неизвестному хосту,
+его ключ добавляется в файл для каждого пользователя.
 .Pp
-Each line in these files contains the following fields: marker (optional),
-hostnames, keytype, base64-encoded key, comment.
-The fields are separated by spaces.
+Каждая строка в этих файлах содержит следующие поля: маркер (необязательно),
+имена хостов, тип ключа, ключ в кодировке base64, комментарий.
+Поля разделены пробелами.
 .Pp
-The marker is optional, but if it is present then it must be one of
+Маркер необязателен, но если он присутствует, то это должен быть один из
 .Dq @cert-authority ,
-to indicate that the line contains a certification authority (CA) key,
-or
+чтобы указать, что строка содержит ключ центра сертификации (CA),
+или
 .Dq @revoked ,
-to indicate that the key contained on the line is revoked and must not ever
-be accepted.
-Only one marker should be used on a key line.
+чтобы указать, что ключ, содержащийся в строке, аннулирован и никогда не должен
+быть принят.
+На ключевой линии следует использовать только один маркер.
 .Pp
-Hostnames is a comma-separated list of patterns
+Имена хостов - это список шаблонов, разделенных запятыми
 .Pf ( Ql *
-and
+и
 .Ql \&?
-act as
-wildcards); each pattern in turn is matched against the host name.
-When
+действуют как
+шаблоны); каждый шаблон, в свою очередь, сопоставляется с именем хоста.
+Когда
 .Nm sshd
-is authenticating a client, such as when using
+выполняет аутентификацию клиента, например, при использовании
 .Cm HostbasedAuthentication ,
-this will be the canonical client host name.
-When
+это будет каноническое имя клиентского хоста.
+Когда
 .Xr ssh 1
-is authenticating a server, this will be the host name
-given by the user, the value of the
+производит аутентификацию сервера - это будет имя хоста,
+указанное пользователем, значение
 .Xr ssh 1
 .Cm HostkeyAlias
-if it was specified, or the canonical server hostname if the
+если оно было указано, или каноническое имя хоста сервера, если параметр
 .Xr ssh 1
 .Cm CanonicalizeHostname
-option was used.
+был использован.
 .Pp
-A pattern may also be preceded by
+Шаблону также может предшествовать
 .Ql \&!
-to indicate negation: if the host name matches a negated
-pattern, it is not accepted (by that line) even if it matched another
-pattern on the line.
-A hostname or address may optionally be enclosed within
+чтобы указать на отрицание: если имя хоста соответствует отрицаемому
+шаблону, оно не принимается (этой строкой), даже если оно соответствует другому
+шаблону в строке.
+Имя хоста или адрес могут быть необязательно заключены в скобки
 .Ql \&[
-and
+и
 .Ql \&]
-brackets then followed by
+с последующим
 .Ql \&:
-and a non-standard port number.
+и нестандартным номером порта.
 .Pp
-Alternately, hostnames may be stored in a hashed form which hides host names
-and addresses should the file's contents be disclosed.
-Hashed hostnames start with a
-.Ql |
-character.
-Only one hashed hostname may appear on a single line and none of the above
-negation or wildcard operators may be applied.
+В качестве альтернативы, имена хостов могут храниться в хэшированном виде, который скрывает имена хостов
+и адреса в случае раскрытия содержимого файла.
+Хэшированные имена хостов начинаются с символа
+.Ql | .
+В одной строке может отображаться только одно хэшированное имя хоста, и ни один из вышеперечисленных
+операторов отрицания или подстановочных знаков не может быть применен.
 .Pp
-The keytype and base64-encoded key are taken directly from the host key; they
-can be obtained, for example, from
+Тип ключа и ключ в кодировке base64 берутся непосредственно из ключа хоста; они
+могут быть получены, например, из
 .Pa /etc/ssh/ssh_host_rsa_key.pub .
-The optional comment field continues to the end of the line, and is not used.
+Необязательное поле для комментариев продолжается до конца строки и не используется.
 .Pp
-Lines starting with
+Строки, начинающиеся с
 .Ql #
-and empty lines are ignored as comments.
+и пустые строки игнорируются как комментарии.
 .Pp
-When performing host authentication, authentication is accepted if any
-matching line has the proper key; either one that matches exactly or,
-if the server has presented a certificate for authentication, the key
-of the certification authority that signed the certificate.
-For a key to be trusted as a certification authority, it must use the
-.Dq @cert-authority
-marker described above.
+При выполнении проверки подлинности хоста проверка подлинности принимается, если какая-либо
+соответствующая строка содержит соответствующий ключ; либо тот, который точно соответствует, либо,
+если сервер предоставил сертификат для проверки подлинности, ключ
+центра сертификации, подписавшего сертификат.
+Чтобы ключу можно было доверять в качестве центра сертификации, он должен использовать маркер, описанный выше.
+.Dq @cert-authority ,
+описанный выше.
 .Pp
-The known hosts file also provides a facility to mark keys as revoked,
-for example when it is known that the associated private key has been
-stolen.
-Revoked keys are specified by including the
+Файл известных хостов также предоставляет возможность помечать ключи как аннулированные,
+например, когда известно, что связанный с ними закрытый ключ был
+украден.
+Аннулированные ключи указываются путем включения маркера
 .Dq @revoked
-marker at the beginning of the key line, and are never accepted for
-authentication or as certification authorities, but instead will
-produce a warning from
+в начале строки ключа и никогда не принимаются для
+проверки подлинности или в качестве центров сертификации, а вместо этого
+выдают предупреждение от
 .Xr ssh 1
-when they are encountered.
+когда они встречаются.
 .Pp
-It is permissible (but not
-recommended) to have several lines or different host keys for the same
-names.
-This will inevitably happen when short forms of host names
-from different domains are put in the file.
-It is possible
-that the files contain conflicting information; authentication is
-accepted if valid information can be found from either file.
+Допустимо (но не
+рекомендуется) использовать одни и те же имена в разных строках или разных ключах хоста.
+Это неизбежно произойдет, если в файл будут помещены краткие формы имен хостов
+из разных доменов.
+Возможно, что файлы содержат противоречивую информацию; аутентификация
+принимается, если в любом из файлов можно найти достоверную информацию.
 .Pp
-Note that the lines in these files are typically hundreds of characters
-long, and you definitely don't want to type in the host keys by hand.
-Rather, generate them by a script,
-.Xr ssh-keyscan 1
-or by taking, for example,
+Обратите внимание, что длина строк в этих файлах обычно составляет сотни символов, и вам определенно не захочется вводить ключи хоста вручную.
+Лучше сгенерируйте их с помощью скрипта
+.Xr ssh-keyscan 1 ,
+или взяв, например,
 .Pa /etc/ssh/ssh_host_rsa_key.pub
-and adding the host names at the front.
+и добавить имена хостов в начале.
 .Xr ssh-keygen 1
-also offers some basic automated editing for
+также предлагает некоторые базовые функции автоматического редактирования для
 .Pa ~/.ssh/known_hosts
-including removing hosts matching a host name and converting all host
-names to their hashed representations.
+включая удаление хостов, соответствующих имени хоста, и преобразование всех
+имен хостов в их хэшированные представления.
 .Pp
-An example ssh_known_hosts file:
+Пример файла ssh_known_hosts:
 .Bd -literal -offset 3n
-# Comments allowed at start of line
+# Комментарии разрешены в начале строки
 cvs.example.net,192.0.2.10 ssh-rsa AAAA1234.....=
-# A hashed hostname
+# Хэшированное имя хоста
 |1|JfKTdBh7rNbXkVAQCRp4OQoPfmI=|USECr3SWf1JUPsms5AqfD5QfxkM= ssh-rsa
 AAAA1234.....=
-# A revoked key
+# Отозванный ключ
 @revoked * ssh-rsa AAAAB5W...
-# A CA key, accepted for any host in *.mydomain.com or *.mydomain.org
+# Ключ CA, принятый для любого хоста в *.mydomain.com или *.mydomain.org
 @cert-authority *.mydomain.org,*.mydomain.com ssh-rsa AAAAB5W...
 .Ed
-.Sh FILES
+.Sh ФАЙЛЫ
 .Bl -tag -width Ds -compact
 .It Pa ~/.hushlogin
-This file is used to suppress printing the last login time and
+Этот файл используется для того, чтобы не выводить на печать время последнего входа в систему и
 .Pa /etc/motd ,
-if
+если
 .Cm PrintLastLog
-and
+и
 .Cm PrintMotd ,
-respectively,
-are enabled.
-It does not suppress printing of the banner specified by
+соответственно,
+включены.
+Это не препятствует печати баннера, указанного в
 .Cm Banner .
 .Pp
 .It Pa ~/.rhosts
-This file is used for host-based authentication (see
+Этот файл используется для аутентификации на основе хоста (смотрите
 .Xr ssh 1
-for more information).
-On some machines this file may need to be
-world-readable if the user's home directory is on an NFS partition,
-because
+для получения дополнительной информации).
+На некоторых компьютерах этот файл может быть
+доступен для чтения во всем мире, если домашний каталог пользователя находится в разделе NFS,
+поскольку
 .Nm
-reads it as root.
-Additionally, this file must be owned by the user,
-and must not have write permissions for anyone else.
-The recommended
-permission for most machines is read/write for the user, and not
-accessible by others.
+читает его от имени root.
+Кроме того, этот файл должен принадлежать пользователю
+и не должен иметь разрешений на запись для кого-либо еще.
+Рекомендуемое
+разрешение для большинства компьютеров - чтение/запись для пользователя,
+отсутствие доступа для других.
 .Pp
 .It Pa ~/.shosts
-This file is used in exactly the same way as
+Этот файл используется точно так же, как
 .Pa .rhosts ,
-but allows host-based authentication without permitting login with
-rlogin/rsh.
+но допускает аутентификацию на основе хоста без разрешения входа в систему с
+помощью rlogin/rsh.
 .Pp
 .It Pa ~/.ssh/
-This directory is the default location for all user-specific configuration
-and authentication information.
-There is no general requirement to keep the entire contents of this directory
-secret, but the recommended permissions are read/write/execute for the user,
-and not accessible by others.
+Этот каталог является расположением по умолчанию для всей пользовательской конфигурации
+и информации об аутентификации.
+Нет общего требования сохранять все содержимое этого каталога
+в секрете, но рекомендуемые разрешения на чтение/запись/выполнение для пользователя
+и отсутствие доступа для остальных.
 .Pp
 .It Pa ~/.ssh/authorized_keys
-Lists the public keys (DSA, ECDSA, Ed25519, RSA)
-that can be used for logging in as this user.
-The format of this file is described above.
-The content of the file is not highly sensitive, but the recommended
-permissions are read/write for the user, and not accessible by others.
+Содержит список открытых ключей (DSA, ECDSA, Ed25519, RSA), 
+которые можно использовать для входа в систему под именем этого пользователя.
+Формат этого файла описан выше.
+Содержимое файла не является особо конфиденциальным, но рекомендуемые
+права доступа - чтение/запись для пользователя и отсутствие доступа для остальных.
 .Pp
-If this file, the
+Если этот файл, каталог
 .Pa ~/.ssh
-directory, or the user's home directory are writable
-by other users, then the file could be modified or replaced by unauthorized
-users.
-In this case,
+или домашний каталог пользователя доступен для записи
+другим пользователям, то файл может быть изменен или заменен неавторизованными
+пользователями.
+В этом случае,
 .Nm
-will not allow it to be used unless the
+не позволит его использовать, если только для параметра
 .Cm StrictModes
-option has been set to
+не было установлено значение
 .Dq no .
 .Pp
 .It Pa ~/.ssh/environment
-This file is read into the environment at login (if it exists).
-It can only contain empty lines, comment lines (that start with
-.Ql # ) ,
-and assignment lines of the form name=value.
-The file should be writable
-only by the user; it need not be readable by anyone else.
-Environment processing is disabled by default and is
-controlled via the
-.Cm PermitUserEnvironment
-option.
+Этот файл читается окружением при входе в систему (если он существует).
+Он может содержать только пустые строки, строки комментариев (которые начинаются с
+.Ql # )
+и строки присвоения вида имя=значение.
+Файл должен быть доступен
+только для записи пользователем; он не должен быть доступен для чтения кем-либо еще.
+Обработка окружения по умолчанию отключена и
+управляется с помощью параметра
+.Cm PermitUserEnvironment .
 .Pp
 .It Pa ~/.ssh/known_hosts
-Contains a list of host keys for all hosts the user has logged into
-that are not already in the systemwide list of known host keys.
-The format of this file is described above.
-This file should be writable only by root/the owner and
-can, but need not be, world-readable.
+Содержит список ключей хоста для всех хостов, на которые пользователь заходил
+и которые еще не включены в общесистемный список известных ключей хоста.
+Формат этого файла описан выше.
+Этот файл должен быть доступен для записи только root/владельцу и
+может быть доступен для чтения всему миру (но не обязательно).
 .Pp
 .It Pa ~/.ssh/rc
-Contains initialization routines to be run before
-the user's home directory becomes accessible.
-This file should be writable only by the user, and need not be
-readable by anyone else.
+Содержит процедуры инициализации, которые должны быть запущены до
+того, как домашний каталог пользователя станет доступным.
+Этот файл должен быть доступен только для записи пользователю и не должен быть
+доступен для чтения кому-либо еще.
 .Pp
 .It Pa /etc/hosts.allow
 .It Pa /etc/hosts.deny
-Access controls that should be enforced by tcp-wrappers are defined here.
-Further details are described in
+Элементы управления доступом, которые должны быть реализованы с помощью tcp-оболочек, определены здесь.
+Более подробная информация описана в
 .Xr hosts_access 5 .
 .Pp
 .It Pa /etc/hosts.equiv
-This file is for host-based authentication (see
+Этот файл предназначен для проверки подлинности на основе хоста (смотрите
 .Xr ssh 1 ) .
-It should only be writable by root.
+Он должен быть доступен для записи только пользователю root.
 .Pp
 .It Pa /etc/moduli
-Contains Diffie-Hellman groups used for the "Diffie-Hellman Group Exchange"
-key exchange method.
-The file format is described in
+Содержит группы Диффи-Хеллмана, используемые для метода обмена ключами "обмен группами Диффи-Хеллмана".
+Формат файла описан в
 .Xr moduli 5 .
-If no usable groups are found in this file then fixed internal groups will
-be used.
+Если в этом файле не найдено доступных групп, то будут использоваться фиксированные внутренние группы.
 .Pp
 .It Pa /etc/motd
-See
+Смотрите
 .Xr motd 5 .
 .Pp
 .It Pa /etc/nologin
-If this file exists,
+Если этот файл существует,
 .Nm
-refuses to let anyone except root log in.
-The contents of the file
-are displayed to anyone trying to log in, and non-root connections are
-refused.
-The file should be world-readable.
+не позволяет входить в систему никому, кроме пользователя root.
+Содержимое файла
+отображается всем, кто пытается войти в систему, затем подключения, не связанные с root, отклоняются.
+Файл должен быть доступен для чтения всему миру.
 .Pp
 .It Pa /etc/shosts.equiv
-This file is used in exactly the same way as
+Этот файл используется точно так же, как
 .Pa hosts.equiv ,
-but allows host-based authentication without permitting login with
-rlogin/rsh.
+но допускает аутентификацию на основе хоста без разрешения входа в систему с
+помощью rlogin/rsh.
 .Pp
 .It Pa /etc/ssh/ssh_host_ecdsa_key
 .It Pa /etc/ssh/ssh_host_ed25519_key
 .It Pa /etc/ssh/ssh_host_rsa_key
-These files contain the private parts of the host keys.
-These files should only be owned by root, readable only by root, and not
-accessible to others.
-Note that
+Эти файлы содержат закрытые части ключей хоста.
+Эти файлы должны принадлежать только пользователю root, быть доступны для чтения только пользователю root и
+недоступны для других пользователей.
+Обратите внимание, что
 .Nm
-does not start if these files are group/world-accessible.
+не запускается, если эти файлы доступны для группы или всего мира.
 .Pp
 .It Pa /etc/ssh/ssh_host_ecdsa_key.pub
 .It Pa /etc/ssh/ssh_host_ed25519_key.pub
 .It Pa /etc/ssh/ssh_host_rsa_key.pub
-These files contain the public parts of the host keys.
-These files should be world-readable but writable only by
+Эти файлы содержат открытые части ключей хоста.
+Эти файлы должны быть доступны для чтения всему миру, но доступны для записи только пользователю
 root.
-Their contents should match the respective private parts.
-These files are not
-really used for anything; they are provided for the convenience of
-the user so their contents can be copied to known hosts files.
-These files are created using
+Их содержимое должно соответствовать соответствующим закрытым частям.
+Эти файлы
+на самом деле ни для чего не используются; они предоставлены для удобства
+пользователя, чтобы их содержимое можно было скопировано в файлы известных хостов.
+Эти файлы созданы с помощью
 .Xr ssh-keygen 1 .
 .Pp
 .It Pa /etc/ssh/ssh_known_hosts
-Systemwide list of known host keys.
-This file should be prepared by the
-system administrator to contain the public host keys of all machines in the
-organization.
-The format of this file is described above.
-This file should be writable only by root/the owner and
-should be world-readable.
+Общесистемный список известных ключей хоста.
+Системный администратор должен подготовить этот файл, содержащий общедоступные ключи хоста для всех компьютеров в
+организации.
+Формат этого файла описан выше.
+Этот файл должен быть доступен для записи только root и владельцу и
+доступен для чтения всему миру.
 .Pp
 .It Pa /etc/ssh/sshd_config
-Contains configuration data for
+Содержит конфигурационные данные для
 .Nm sshd .
-The file format and configuration options are described in
+Формат файла и параметры конфигурации описаны в
 .Xr sshd_config 5 .
 .Pp
 .It Pa /etc/ssh/sshrc
-Similar to
+Похожий на
 .Pa ~/.ssh/rc ,
-it can be used to specify
-machine-specific login-time initializations globally.
-This file should be writable only by root, and should be world-readable.
+он может использоваться для
+специфичной для данного компьютера инициализации при входе в систему.
+Этот файл должен быть доступен для записи только пользователю root и доступен для чтения всему миру.
 .Pp
 .It Pa /var/empty
-.Xr chroot 2
-directory used by
+Каталог
+.Xr chroot 2 , 
+используемый
 .Nm
-during privilege separation in the pre-authentication phase.
-The directory should not contain any files and must be owned by root
-and not group or world-writable.
+во время разделения привилегий на этапе предварительной аутентификации.
+Каталог не должен содержать никаких файлов и должен принадлежать пользователю root
+и не должен быть доступен для записи группе или миру.
 .Pp
 .It Pa /var/run/sshd.pid
-Contains the process ID of the
-.Nm
-listening for connections (if there are several daemons running
-concurrently for different ports, this contains the process ID of the one
-started last).
-The content of this file is not sensitive; it can be world-readable.
+Содержит ID процесса
+.Nm ,
+прослушивающего соединения (если есть несколько демонов, запущенных
+одновременно для разных портов, здесь содержится идентификатор процесса,
+запущенного последним).
+Содержимое этого файла не является конфиденциальным; оно может быть доступно для чтения всему миру.
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr scp 1 ,
 .Xr sftp 1 ,
 .Xr ssh 1 ,
@@ -1039,14 +1002,14 @@ The content of this file is not sensitive; it can be world-readable.
 .Xr sshd_config 5 ,
 .Xr inetd 8 ,
 .Xr sftp-server 8
-.Sh AUTHORS
-OpenSSH is a derivative of the original and free
-ssh 1.2.12 release by Tatu Ylonen.
-Aaron Campbell, Bob Beck, Markus Friedl, Niels Provos,
-Theo de Raadt and Dug Song
-removed many bugs, re-added newer features and
-created OpenSSH.
-Markus Friedl contributed the support for SSH
-protocol versions 1.5 and 2.0.
-Niels Provos and Markus Friedl contributed support
-for privilege separation.
+.Sh АВТОРЫ
+OpenSSH является производной от оригинальной и бесплатной
+версии ssh 1.2.12 от Tatu Ylonen.
+Аарон Кэмпбелл, Боб Бек, Маркус Фридл, Нильс Провос,
+Тео де Раадт и Дуг Сонг
+устранили множество ошибок, добавили новые функции и
+создали OpenSSH.
+Маркус Фридл внес свой вклад в поддержку
+протоколов SSH версий 1.5 и 2.0.
+Нильс Провос и Маркус Фридл внесли
+свой вклад в поддержку разделения привилегий.

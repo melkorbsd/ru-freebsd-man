@@ -22,7 +22,7 @@
 .\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 .\" SUCH DAMAGE.
 .\"
-.Dd October 12, 2023
+.Dd November 20, 2023
 .Dt BHYVE 8
 .Os
 .Sh НАИМЕНОВАНИЕ
@@ -247,8 +247,8 @@ Message (например, tightVNC), раскладка по умолчанию
 .Sm on
 .Oc
 .Xc
-Установка размера физической памяти гостя Это должен быть тот же размер,
-который был задан в 
+Установка размера физической памяти гостя.
+Это должен быть такой же размер, как и заданный c помощью
 .Xr bhyveload 8 .
 .Pp
 Аргумент size может иметь суффикс
@@ -414,6 +414,10 @@ High Definition Audio Controller.
 .Op Cm \&,mac= Ar xx:xx:xx:xx:xx:xx
 .Op Cm \&,mtu= Ar N
 .Xc
+.It
+.Xo
+.Cm slirp,hostfwd= Ar proto : Ar hostaddr : Ar hostport - Ar guestaddr : Ar guestport
+.Xc
 .El
 .Sm on
 .Pp
@@ -437,14 +441,14 @@ MAC-адрес представляет собой строку ASCII в фор�
 .Cm path
 и
 .Cm peerhook
-чтобы задать узел назначения и соответствующий хук.
+чтобы задать узел назначения и соответствующее исправление.
 Необязательные параметры
 .Cm socket
 и
 .Cm hook
 могут использоваться для задания имени узла
 .Xr ng_socket 4
-и исходного хука.
+и исправления исходных текстов.
 Параметры
 .Ar ADDRESS ,
 .Ar HOOK ,
@@ -453,7 +457,21 @@ MAC-адрес представляет собой строку ASCII в фор�
 должны соответствовать правилам адресации 
 .Xr netgraph 4 .
 .Pp
-Бэкенды блочных устройств хранения:
+The slirp backend can be used to provide a NATed network to the guest.
+This backend has poor performance but does not require any network
+configuration on the host system.
+It depends on the
+.Pa net/libslirp
+port.
+The
+.Cm hostfwd
+option takes a 5-tuple describing how connections from the host are to be
+forwarded to the guest.
+Multiple rules can be specified, separated by semicolons.
+Note that semicolons must be escaped or quoted to prevent the shell from
+interpreting them.
+.Pp
+Механизмы блочных устройств хранения:
 .Sm off
 .Bl -bullet
 .It

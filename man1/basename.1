@@ -30,13 +30,13 @@
 .\"
 .\"     @(#)basename.1	8.2 (Berkeley) 4/18/94
 .\"
-.Dd June 21, 2021
+.Dd 21 июня 2021 г.
 .Dt BASENAME 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm basename , dirname
 .Nd return filename or directory portion of pathname
-.Sh SYNOPSIS
+.Sh СИНТАКСИС
 .Nm
 .Ar string
 .Op Ar suffix
@@ -48,74 +48,72 @@
 .Nm dirname
 .Ar string
 .Op Ar ...
-.Sh DESCRIPTION
+.Sh ОПИСАНИЕ
 The
 .Nm
-utility deletes any prefix ending with the last slash
+утилита удаляет любой префикс, заканчивающийся последней косой чертой
 .Ql \&/
-character present in
+персонаж присутствует в
 .Ar string
-(after first stripping trailing slashes),
-and a
+(после первого удаления косых черт),
+и
 .Ar suffix ,
-if given.
-The
+если дано.
 .Ar suffix
-is not stripped if it is identical to the remaining characters in
+не удаляется, если он идентичен остальным символам в
 .Ar string .
-The resulting filename is written to the standard output.
-A non-existent suffix is ignored.
-If
+Полученное имя файла записывается в стандартный вывод.
+Несуществующий суффикс игнорируется.
+Если
 .Fl a
-is specified, then every argument is treated as a
+указан, то каждый аргумент рассматривается как
 .Ar string
-as if
+будто
 .Nm
-were invoked with just one argument.
-If
+были вызваны только с одним аргументом.
+Если
 .Fl s
-is specified, then the
+указано, то
 .Ar suffix
-is taken as its argument, and all other arguments are treated as a
+принимается в качестве аргумента, а все остальные аргументы рассматриваются как
 .Ar string .
 .Pp
-The
 .Nm dirname
-utility deletes the filename portion, beginning
-with the last slash
+утилита удаляет часть имени файла, начиная
+с последней чертой
 .Ql \&/
-character to the end of
+персонаж до конца
 .Ar string
-(after first stripping trailing slashes),
-and writes the result to the standard output.
-.Sh EXIT STATUS
+(после первого удаления косых черт),
+и записывает результат в стандартный вывод.
+.Sh ВОЗВРАЩАЕМОЕ ЗНАЧЕНИЕ
 .Ex -std basename dirname
-.Sh EXAMPLES
-The following line sets the shell variable
+.Sh ПРИМЕРЫ
+Следующая строка устанавливает переменную оболочки
 .Ev FOO
 to
 .Pa /usr/bin .
 .Pp
 .Dl FOO=`dirname /usr/bin/trail`
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr csh 1 ,
 .Xr sh 1 ,
 .Xr basename 3 ,
 .Xr dirname 3
-.Sh STANDARDS
+.Sh СТАНДАРТЫ
 The
 .Nm
-and
+и
 .Nm dirname
-utilities are expected to be
+коммунальные услуги, как ожидается, будут
 .St -p1003.2
-compatible.
-.Sh HISTORY
+совместимы.
+.Sh ИСТОРИЯ
 The
 .Nm
-utility first appeared in
+утилита впервые появилась в
 .At v7 .
 The
 .Nm dirname
-utility first appeared in
+утилита впервые появилась в
 .At III .

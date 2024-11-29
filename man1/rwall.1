@@ -27,52 +27,51 @@
 .\"
 .\"     from: @(#)rwall.1	6.7 (Berkeley) 4/23/91
 .\"
-.Dd April 23, 1991
+.Dd 23 Апреля, 1991
 .Dt RWALL 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm rwall
-.Nd send a message to users logged on a host
-.Sh SYNOPSIS
+.Nd отправляет сообщение пользователям, вошедшим в систему на хосте
+.Sh СИНТАКСИС
 .Nm
 .Ar host
 .Op Ar file
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Команда
 .Nm
-command sends a message to the users logged into the specified
-.Ar host .
-The
-message to be sent can be typed in and terminated with EOF or it can
-be in a
-.Ar file .
-.Sh DIAGNOSTICS
+отправляет сообщение пользователям, вошедшим в указанный
+.Ar хост .
+Отправляемое сообщение 
+может быть введено и завершено с помощью EOF, или оно может
+находиться в
+.Ar файле .
+.Sh ДИАГНОСТИКА
 .Bl -diag
-.It rwall: RPC: Program not registered
+.It rwall: RPC: Программа не зарегистрирована
 The
 .Xr rpc.rwalld 8
-daemon has not been started on the remote host.
+daemon не был запущен на удаленном хосте.
 .It rwall: RPC: Timed out
-A communication error occurred.
-Either the network is
-excessively congested, or the
+Произошла ошибка связи.
+Либо сеть
+чрезмерно перегружена, либо
 .Xr rpc.rwalld 8
-daemon has terminated on the remote host.
+daemon завершилось на удаленном хосте.
 .It rwall: RPC: Port mapper failure - RPC: Timed out
-The remote host is not running the portmapper (see
+На удаленном хосте не запущен portmapper (см.
 .Xr rpcbind 8 ) ,
-and cannot accommodate any RPC-based services.
-The host may be down.
+и не может поддерживать какие-либо службы на основе RPC.
+Возможно, хост не работает.
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr who 1 ,
 .Xr rpc.rwalld 8 ,
 .Xr rpcbind 8
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Команда
 .Nm
-command
-appeared in
+появилась в
 .Em Sun-OS .
-.Sh BUGS
-The sorting options are not implemented.
+.Sh ОШИБКИ
+Параметры сортировки не реализованы.

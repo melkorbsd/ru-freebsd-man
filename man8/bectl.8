@@ -15,7 +15,7 @@
 .\"
 .\"     @(#)be.1
 .\"
-.Dd June 28, 2023
+.Dd March 18, 2024
 .Dt BECTL 8
 .Os
 .Sh NAME
@@ -23,7 +23,7 @@
 .Nd Utility to manage boot environments on ZFS
 .Sh SYNOPSIS
 .Nm
-.Op Fl h\&?
+.Op Fl h
 .Nm
 .Op Fl r Ar beroot
 .Cm activate
@@ -114,13 +114,12 @@ For instance, booting into the recovery media and manually importing a pool from
 one of the system's resident disks will require the
 .Fl r
 flag to work.
-.Pp
 .Ss Supported Subcommands and Flags
 .Bl -tag -width activate
 .It Xo
-.Fl h |
-.Fl \&?
-Print usage information.
+.Fl h
+.Xc
+Print usage information and exit.
 .It Xo
 .Cm activate
 .Op Fl t | Fl T
@@ -396,7 +395,6 @@ will force the unmount if busy.
 .Pp
 Unmount will not remove the mount point.
 .El
-.Pp
 .Ss Boot Environment Structures
 The traditional
 .Fx
@@ -482,11 +480,11 @@ A future version of
 may default to handling both styles and deprecate the various
 .Fl r
 flags.
-\" .Sh EXAMPLES
-\" .Bl -bullet
-\" .It
-\" To fill in with jail upgrade example when behavior is firm.
-\" .El
+.\" .Sh EXAMPLES
+.\" .Bl -bullet
+.\" .It
+.\" To fill in with jail upgrade example when behavior is firm.
+.\" .El
 .Sh SEE ALSO
 .Xr libbe 3 ,
 .Xr zfsprops 7 ,

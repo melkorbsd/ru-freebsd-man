@@ -51,41 +51,41 @@
 .ie n  .IP \(bu 4
 .el    .IP \(bu 2
 ..
-.SH NAME
-scr_dump \- format of curses screen-dumps.
-.SH SYNOPSIS
-.B scr_dump
-.SH DESCRIPTION
+.SH ИМЯ
+scr_dump \- формат экранных дампов curses.
+.SH КРАТКИЙ ОБЗОР
+.B сброс данных
+.SH ОПИСАНИЕ
 .PP
-The curses library provides applications with the ability to write the
-contents of a window to an external file using \fBscr_dump\fP or \fBputwin\fP,
-and read it back using \fBscr_restore\fP or \fBgetwin\fP.
+Библиотека курсов предоставляет приложениям возможность писать
+содержимое окна во внешний файл с помощью \fBscr_dump\fP или \fBputwin\fP,
+и прочитайте его, используя \fBscr_restore\fP или \fBgetwin\fP.
 .PP
-The \fBputwin\fP and \fBgetwin\fP functions do the work;
-while \fBscr_dump\fP and \fBscr_restore\fP conveniently save and restore
-the whole screen, i.e., \fBstdscr\fP.
+Функции \fBputwin\fP и \fBgetwin\fP выполняют всю работу;
+в то время как \fBscr_dump\fP и \fBscr_restore\fP удобно сохраняют и восстанавливают
+весь экран, т. е. \fBstdscr\fP.
 .SS ncurses6
 .PP
-A longstanding implementation of screen-dump was
-revised with ncurses6 to remedy problems with the earlier approach:
+Давняя реализация дампа экрана была
+исправлено с помощью ncurses6 для устранения проблем с предыдущим подходом:
 .bP
-A \*(``magic number\*('' is written to the beginning of the dump file,
-allowing applications (such as \fBfile\fP(1)) to recognize curses dump files.
+В начало файла дампа записывается \*(``магическое число\*('',
+позволяет приложениям (таким как \fBfile\fP(1)) распознавать файлы дампов курсов.
 .IP
-Because ncurses6 uses a new format,
-that requires a new magic number
-was unused by other applications.
-This 16-bit number was unused:
+Поскольку ncurses6 использует новый формат,
+для этого требуется новое магическое число
+не использовался другими приложениями.
+Это 16-битное число не использовалось:
 .NS
 0x8888 (octal \*(``\\210\\210\*('')
 .NE
 .IP
-but to be more certain, this 32-bit number was chosen:
+но для большей уверенности было выбрано вот это 32-битное число:
 .NS
 0x88888888 (octal \*(``\\210\\210\\210\\210\*('')
 .NE
 .IP
-This is the pattern submitted to the maintainers of the \fBfile\fP program:
+Это шаблон, отправленный сопровождающим программы \fBfile\fP:
 .NS
 #
 # ncurses5 (and before) did not use a magic number,
@@ -96,87 +96,87 @@ This is the pattern submitted to the maintainers of the \fBfile\fP program:
 #
 .NE
 .bP
-The screen dumps are written in textual form,
-so that internal data sizes are not directly related to the dump-format, and
-enabling the library to read dumps from either narrow- or wide-character-
-configurations.
+Дампы экрана записываются в текстовом виде,
+чтобы внутренние размеры данных не были напрямую связаны с форматом дампа, и
+позволяя библиотеке читать дампы как с узкими, так и с широкими символами.
+конфигурации.
 .IP
-The \fInarrow\fP library configuration holds characters and video attributes
-in a 32-bit \fBchtype\fP, while the \fIwide-character\fP library stores
-this information in the \fBcchar_t\fP structure, which is much larger than
-32-bits.
+Конфигурация библиотеки \fInarrow\fP содержит символы и атрибуты видео.
+в 32-битном \fBchtype\fP, а библиотека \fIwide-character\fP хранит
+эта информация находится в структуре \fBcchar_t\fP, которая намного больше, чем
+32-бит.
 .bP
-It is possible to read a screen dump into a terminal with a different
-screen-size,
-because the library truncates or fills the screen as necessary.
+Можно прочитать дамп экрана в терминале с другим
+размером экрана,
+потому что библиотека усекает или заполняет экран по мере необходимости.
 .bP
-The ncurses6 \fBgetwin\fP reads the legacy screen dumps from ncurses5.
+ncurses6 \fBgetwin\fP считывает устаревшие дампы экрана из ncurses5.
 .SS ncurses5 (legacy)
 .PP
-The screen-dump feature was added to ncurses in June 1995.
-While there were fixes and improvements in succeeding years,
-the basic scheme was unchanged:
+Функция дампа экрана была добавлена ​​в ncurses в июне 1995 года.
+Хотя в последующие годы были исправления и улучшения,
+основная схема осталась неизменной:
 .bP
-The \fBWINDOW\fP structure was written in binary form.
+Структура \fBWINDOW\fP была записана в двоичной форме.
 .bP
-The \fBWINDOW\fP structure refers to lines of data,
-which were written as an array of binary data following the \fBWINDOW\fP.
+Структура \fBWINDOW\fP относится к строкам данных,
+которые были записаны как массив двоичных данных после \fBWINDOW\fP.
 .bP
-When \fBgetwin\fP restored the window,
-it would keep track of offsets into the array of line-data
-and adjust the \fBWINDOW\fP structure which was read back into memory.
+Когда \fBgetwin\fP восстановил окно,
+он будет отслеживать смещения в массиве строковых данных
+и откорректируйте структуру \fBWINDOW\fP, которая была считана обратно в память.
 .PP
-This is similar to Unix SystemV,
-but does not write a \*(``magic number\*('' to identify the file format.
-.SH PORTABILITY
+Это похоже на Unix SystemV,
+но не записывает \*(``магическое число\*('' для идентификации формата файла.
+.SH ПОРТАТИВНОСТЬ
 .PP
-There is no standard format for \fBputwin\fP.
-This section gives a brief description of the existing formats.
+Для \fBputwin\fP не существует стандартного формата.
+В этом разделе дается краткое описание существующих форматов.
 .SS X/Open Curses
 .PP
-Refer to \fIX/Open Curses, Issue 7\fP (2009).
+См. \fIX/Open Curses, выпуск 7\fP (2009).
 .PP
-X/Open's documentation for \fIenhanced curses\fP says only:
+В документации X/Open для \fIenhanced Curses\fP говорится только:
 .RS 3
 .PP
-The \fIgetwin(\ ) \fPfunction reads window-related data
-stored in the file by \fIputwin(\ )\fP.
-The function
-then creates and initializes a new window using that data.
+Функция \fIgetwin(\) \fP считывает данные, связанные с окном.
+хранится в файле \fIputwin(\ )\fP.
+Функция
+затем создает и инициализирует новое окно, используя эти данные.
 .PP
-The \fIputwin(\ )\fP function writes all data associated
-with \fIwin\fP into the \fIstdio\fP stream to which \fIfilep\fP
-points, using an \fBunspecified format\fP.
-This information can be retrieved later using \fIgetwin(\ )\fP.
+Функция \fIputwin(\ )\fP записывает все связанные данные.
+с \fIwin\fP в поток \fIstdio\fP, к которому \fIfilep\fP
+точек, используя формат \fBunspecified\fP.
+Эту информацию можно получить позже, используя \fIgetwin(\ )\fP.
 .RE
 .PP
-In the mid-1990s when the X/Open Curses document was written,
-there were still systems using older, less capable curses libraries
-(aside from the BSD curses library which was not relevant to X/Open
-because it did not meet the criteria for \fIbase curses\fP).
-The document explained the term \*(``enhanced\*('' as follows:
+В середине 1990-х годов, когда был написан документ X/Open Curses,
+все еще существовали системы, использующие старые, менее функциональные библиотеки курсов.
+(кроме библиотеки курсов BSD, которая не имела отношения к X/Open
+потому что оно не соответствовало критериям \fIbase курсов\fP).
+В документе термин \*(``улучшенный\*('' объясняется следующим образом:
 .RS 3
 .bP
-Shading is used to identify \fIX/Open Enhanced Curses\fP material,
-relating to interfaces included to provide enhanced capabilities
-for applications originally written to be compiled on systems
-based on the UNIX operating system.
-Therefore, the features described may not be present on systems
-that conform to \fBXPG4 or to earlier XPG releases\fP.
-The relevant reference pages may provide additional
-or more specific portability warnings about use of the material.
+Затенение используется для идентификации материала \fIX/Open Enhanced Curses\fP,
+относящиеся к интерфейсам, включенным для обеспечения расширенных возможностей
+для приложений, изначально написанных для компиляции в системах
+на базе операционной системы UNIX.
+Поэтому описанные функции могут отсутствовать в системах
+которые соответствуют \fBXPG4 или более ранним выпускам XPG\fP.
+Соответствующие справочные страницы могут содержать дополнительную информацию.
+или более конкретные предупреждения о переносимости использования материала.
 .RE
 .PP
-In the foregoing, emphasis was added to \fBunspecified format\fP
-and to \fBXPG4 or to earlier XPG releases\fP,
-for clarity.
-.SS Unix SystemV
+Выше был сделан акцент на \fBunspecified format\fP.
+и \fBXPG4 или более ранние версии XPG\fP,
+для ясности.
+.SS Система Unixv
 .PP
-Unix SystemV curses identified the file format by writing a
-\*(``magic number\*('' at the beginning of the dump.
-The \fBWINDOW\fP data and the lines of text follow, all in binary form.
+В curses of Unix System V был определен формат файла, написав
+\*(``магическое число\*('' в начале дампа.
+Далее следуют данные \fBWINDOW\fP и строки текста, все в двоичной форме.
 .PP
-The Solaris curses source has these definitions:
+В источнике курсов Solaris есть следующие определения:
 .NS
 /* terminfo magic number */
 #define MAGNUM  0432
@@ -186,95 +186,95 @@ The Solaris curses source has these definitions:
 #define SVR3_DUMP_MAGIC_NUMBER  0434
 .NE
 .PP
-That is, the feature was likely introduced in SVr2 (1984),
-and improved in SVr3 (1987).
-The Solaris curses source has no magic number for SVr4 (1989).
-Other operating systems (AIX and HPUX) use a magic number which would
-correspond to this definition:
+То есть эта функция, скорее всего, была введена в SVr2 (1984 г.),
+и улучшен в СВр3 (1987).
+В источнике курсов Соляриса нет магического числа для SVr4 (1989).
+Другие операционные системы (AIX и HPUX) используют магическое число, которое
+соответствуют этому определению:
 .NS
 /* curses screen dump magic number */
 #define SVR4_DUMP_MAGIC_NUMBER  0435
 .NE
 .PP
-That octal number in bytes is 001, 035.
-Because most Unix vendors use big-endian hardware,
-the magic number is written with the high-order byte first, e.g.,
+Это восьмеричное число в байтах — 001, 035.
+Поскольку большинство поставщиков Unix используют оборудование с прямым порядком байтов,
+магическое число записывается сначала старшим байтом, например,
 .NS
 \001\035
 .NE
 .PP
-After the magic number, the \fBWINDOW\fP structure and line-data are
-written in binary format.
-While the magic number used by the Unix systems can be seen using \fBod\fP(1),
-none of the Unix systems documents the format used for screen-dumps.
+После магического числа указывается структура \fBWINDOW\fP и строковые данные.
+записанный в двоичном формате.
+Хотя магическое число, используемое в системах Unix, можно увидеть с помощью \fBod\fP(1),
+ни одна из систем Unix не документирует формат, используемый для дампов экрана.
 .PP
-The Unix systems do not use identical formats.
-While collecting information for for this manual page,
-the \fIsavescreen\fP test-program
-produced dumps of different size
-(all on 64-bit hardware, on 40x80 screens):
+Системы Unix не используют одинаковые форматы.
+При сборе информации для этой страницы руководства,
+тестовая программа \fIsavescreen\fP
+производятся отвалы разного размера
+(все на 64-битном железе, на экранах 40х80):
 .bP
-AIX (51817 bytes)
+AIX (51817 байт)
 .bP
-HPUX (90093 bytes)
+HPUX (90093 байта)
 .bP
-Solaris 10 (13273 bytes)
+Solaris 10 (13273 байта)
 .bP
-ncurses5 (12888 bytes)
+ncurses5 (12888 байт)
 .SS Solaris
 .PP
-As noted above, Solaris curses has no magic number corresponding
-to SVr4 curses.
-This is odd since Solaris was the first operating system
-to pass the SVr4 guidelines.
-Solaris has two versions of curses:
+Как отмечалось выше, проклятия Соляриса не имеют магического числа, соответствующего
+на ругательства СВр4.
+Это странно, поскольку Solaris была первой операционной системой.
+пройти рекомендации SVR4.
+В Solaris есть две версии курсов:
 .bP
-The default curses library uses the SVr3 magic number.
+Библиотека курсов по умолчанию использует магическое число SVr3.
 .bP
-There is an alternate curses library in \fB/usr/xpg4\fP.
-This uses a textual format with no magic number.
+Альтернативная библиотека курсов находится в \fB/usr/xpg4\fP.
+При этом используется текстовый формат без магического числа.
 .IP
-According to the copyright notice, the \fIxpg4\fP Solaris curses library was
-developed by MKS (Mortice Kern Systems) from 1990 to 1995.
+Согласно уведомлению об авторских правах, библиотека курсов \fIxpg4\fP Solaris была
+разработан компанией MKS (Mortice Kern Systems) с 1990 по 1995 год.
 .IP
-Like ncurses6, there is a file-header with parameters.
-Unlike ncurses6, the contents of the window are written piecemeal,
-with coordinates and attributes for each chunk of text rather
-than writing the whole window from top to bottom.
+Как и в ncurses6, здесь есть заголовок файла с параметрами.
+В отличие от ncurses6, содержимое окна записывается по частям,
+с координатами и атрибутами для каждого фрагмента текста, а не
+чем писать все окно сверху вниз.
 .SS PDCurses
 .PP
-PDCurses added support for screen dumps in version 2.7 (2005).
-Like Unix SystemV and ncurses5,
-it writes the \fBWINDOW\fP structure in binary,
-but begins the file with its three-byte identifier \*(``PDC\*('',
-followed by a one-byte version,
-e.g.,
+В PDCurses добавлена ​​поддержка дампов экрана в версии 2.7 (2005 г.).
+Подобно Unix SystemV и ncurses5,
+он записывает структуру \fBWINDOW\fP в двоичном формате,
+но начинает файл со своего трехбайтового идентификатора \*(``PDC\*('',
+за которым следует однобайтовая версия,
+например,
 .NS
 	\*(``PDC\\001\*(''
 .NE
 .SS NetBSD
 .PP
-As of April 2017, NetBSD curses does
-not support \fBscr_dump\fP and \fBscr_restore\fP
-(or \fBscr_init\fP, \fBscr_set\fP),
-although it has \fBputwin\fP and \fBgetwin\fP.
+По состоянию на апрель 2017 года проклятия NetBSD
+не поддерживает \fBscr_dump\fP и \fBscr_restore\fP
+(или \fBscr_init\fP, \fBscr_set\fP),
+хотя у него есть \fBputwin\fP и \fBgetwin\fP.
 .PP
-Like ncurses5, NetBSD \fBputwin\fP does not identify its dumps with a
-useful magic number.
-It writes
+Как и ncurses5, NetBSD \fBputwin\fP не идентифицирует свои дампы с помощью
+полезное магическое число.
+Он записывает
 .bP
-the curses shared library major and minor versions
-as the first two bytes (e.g., 7 and 1),
+основные и второстепенные версии общей библиотеки курсов
+как первые два байта (например, 7 и 1),
 .bP
-followed by a binary dump of the \fBWINDOW\fP,
+за которым следует двоичный дамп \fBWINDOW\fP,
 .bP
-some data for wide-characters referenced by the \fBWINDOW\fP structure, and
+некоторые данные для расширенных символов, на которые ссылается структура \fBWINDOW\fP, и
 .bP
-finally, lines as done by other implementations.
-.SH EXAMPLE
+наконец, строки, как это делается в других реализациях.
+.SH пример
 .PP
-Given a simple program which writes text to the screen
-(and for the sake of example, limiting the screen-size to 10x20):
+Дана простая программа, которая выводит текст на экран.
+(и для примера ограничение размера экрана до 10х20):
 .NS
 #include <curses.h>
 
@@ -302,7 +302,7 @@ main(void)
 }
 .NE
 .PP
-When run using ncurses6, the output looks like this:
+При запуске с использованием ncurses6 вывод выглядит следующим образом:
 .NS
 \\210\\210\\210\\210ncurses 6.0.20170415
 _cury=5
@@ -328,23 +328,23 @@ rows:
 10:\\s\\s\\s\\s\\s\\s\\s\\s\\s\\s\\s\\s\\s\\s\\s\\s\\s\\s\\s\\s
 .NE
 .PP
-The first four octal escapes are actually nonprinting characters,
-while the remainder of the file is printable text.
-You may notice:
+Первые четыре восьмеричных escape-символа на самом деле являются непечатаемыми символами,
+а остальная часть файла представляет собой печатный текст.
+Вы можете заметить:
 .bP
-The actual color pair values are not written to the file.
+Фактические значения цветовых пар не записываются в файл.
 .bP
-All characters are shown in printable form; spaces are \*(``\\s\*('' to
-ensure they are not overlooked.
+Все символы показаны в печатном виде; пробелы - это \*(``\\s\*('' до
+убедиться, что их не упускают из виду.
 .bP
-Attributes are written in escaped curly braces, e.g., \*(``\\{BOLD}\*('',
-and may include a color-pair (C1 or C2 in this example).
+Атрибуты записываются в экранированных фигурных скобках, например, \*(``\\{BOLD}\*('',
+и может включать пару цветов (в данном примере C1 или C2).
 .bP
-The parameters in the header are written out only if they are nonzero.
-When reading back, order does not matter.
+Параметры в заголовке выписываются, только если они ненулевые.
+При обратном чтении порядок не имеет значения.
 .ne 10
 .PP
-Running the same program with Solaris \fIxpg4\fP curses gives this dump:
+Запуск той же программы с курсами Solaris \fIxpg4\fP дает такой дамп: 
 .NS
 MAX=10,20
 BEG=0,0
@@ -381,15 +381,15 @@ BG=0,0,
 CUR=11,5
 .NE
 .PP
-Solaris \fBgetwin\fP requires that all parameters are present, and
-in the same order.
-The \fIxpg4\fP curses library does not know about the \fBbce\fP
-(back color erase) capability, and does not color the window background.
+Solaris \fBgetwin\fP требует присутствия всех параметров и
+в том же порядке.
+Библиотека проклятий \fIxpg4\fP не знает о \fBbce\fP
+(стирание заднего цвета) и не окрашивает фон окна.
 .ne 10
 .PP
-On the other hand, the SVr4 curses library does know about the background color.
-However, its screen dumps are in binary.
-Here is the corresponding dump (using \*(``od -t x1\*(''):
+С другой стороны, библиотека проклятий SVr4 знает о цвете фона.
+Однако его дампы экрана находятся в двоичном формате.
+Вот соответствующий дамп (с использованием \*(``od -t x1\*(''):
 .NS
 0000000 1c 01 c3 d6 f3 58 05 00 0b 00 0a 00 14 00 00 00
 0000020 00 00 02 00 00 00 00 00 00 00 00 00 00 00 00 00
@@ -414,16 +414,16 @@ Here is the corresponding dump (using \*(``od -t x1\*(''):
 *
 0002371
 .NE
-.SH SEE ALSO
+.SH СМОТРИТЕ ТАКЖЕ
 .PP
 \fBcurs_scr_dump\fR(3X),
 \fBcurs_util\fR(3X).
 .SH AUTHORS
 .PP
-Thomas E. Dickey
+Томас Э. Дики
 .br
-extended screen-dump format for ncurses 6.0 (2015)
+расширенный формат дампа экрана для ncurses 6.0 (2015)
 .sp
-Eric S. Raymond
+Эрик С. Рэймонд
 .br
-screen dump feature in ncurses 1.9.2d (1995)
+функция дампа экрана в ncurses 1.9.2d (1995)
