@@ -31,137 +31,129 @@
 .\"
 .\"     @(#)cat.1	8.3 (Berkeley) 5/2/95
 .\"
-.Dd January 29, 2013
+.Dd 29 января 2013
 .Dt CAT 1
 .Os
-.Sh NAME
+.Sh НАЗВАНИЕ
 .Nm cat
-.Nd concatenate and print files
-.Sh SYNOPSIS
+.Nd объединение и вывод содержимого файлов
+.Sh СИНТАКСИС
 .Nm
 .Op Fl belnstuv
 .Op Ar
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm
-utility reads files sequentially, writing them to the standard output.
-The
+читает последовательно файлов и записывает их в стандартный вывод.
+Операнды
 .Ar file
-operands are processed in command-line order.
-If
+обрабатываются в порядке, заданного в командной строке.
+Если
 .Ar file
-is a single dash
+представляет собой одиночный дефис
 .Pq Sq Fl
-or absent,
+или отсутствует,
 .Nm
-reads from the standard input.
-If
+читает из стандартного ввода..
+Если
 .Ar file
-is a
-.Ux
-domain socket,
+является сокетом домена
+.Ux ,
 .Nm
-connects to it and then reads it until
+подключается к нему и затем считывает данные до
 .Dv EOF .
-This complements the
-.Ux
-domain binding capability available in
+Это дополняет возможности привязки домена
+.Ux ,
+доступные в
 .Xr inetd 8 .
 .Pp
-The options are as follows:
+Параметры следующие:
 .Bl -tag -width indent
 .It Fl b
-Number the non-blank output lines, starting at 1.
+Нумеровать непустые строки вывода, начиная с 1.
 .It Fl e
-Display non-printing characters (see the
-.Fl v
-option), and display a dollar sign
+Отображать непечатаемые символы (см. параметр
+.Fl v ),
+и отображать символ доллара
 .Pq Ql \&$
-at the end of each line.
+в конце каждой строки.
 .It Fl l
-Set an exclusive advisory lock on the standard output file descriptor.
-This lock is set using
+Установить эксклюзивную рекомендательную блокировку на файловый дескриптор стандартного вывода.
+Эта блокировка устанавливается с использованием
 .Xr fcntl 2
-with the
-.Dv F_SETLKW
-command.
-If the output file is already locked,
+с командой
+.Dv F_SETLKW .
+Если выходной файл уже заблокирован,
 .Nm
-will block until the lock is acquired.
+будет заблокирован до тех пор, пока не будет получена блокировка.
 .It Fl n
-Number the output lines, starting at 1.
+Нумеровать строки вывода, начиная с 1.
 .It Fl s
-Squeeze multiple adjacent empty lines, causing the output to be
-single spaced.
+Сжимать несколько последовательных пустых строк, чтобы вывод был однострочным.
 .It Fl t
-Display non-printing characters (see the
-.Fl v
-option), and display tab characters as
+Отображать непечатаемые символы (см. параметр
+.Fl v ),
+и отображать символы табуляции как
 .Ql ^I .
 .It Fl u
-Disable output buffering.
+Отключить буферизацию вывода.
 .It Fl v
-Display non-printing characters so they are visible.
-Control characters print as
+Отображать непечатаемые символы, чтобы они были видимы.
+Символы управления отображаются как
 .Ql ^X
-for control-X; the delete
-character (octal 0177) prints as
+для Control-X; символ удаления (восьмеричный 0177) отображается как
 .Ql ^? .
-.Pf Non- Tn ASCII
-characters (with the high bit set) are printed as
+.Пф Непечатаемые Tn ASCII
+символы (с установленным старшим битом) отображаются как
 .Ql M-
-(for meta) followed by the character for the low 7 bits.
+(для мета) с последующим символом для младших 7 бит.
 .El
-.Sh EXIT STATUS
+.Sh КОД ЗАВЕРШЕНИЯ
 .Ex -std
-.Sh EXAMPLES
-The command:
+.Sh ПРИМЕРЫ
+Команда:
 .Pp
 .Dl "cat file1"
 .Pp
-will print the contents of
+выведет содержимое
 .Pa file1
-to the standard output.
+на стандартный вывод.
 .Pp
-The command:
+Команда:
 .Pp
 .Dl "cat file1 file2 > file3"
 .Pp
-will sequentially print the contents of
+последовательно выведет содержимое
 .Pa file1
-and
+и
 .Pa file2
-to the file
+в файл
 .Pa file3 ,
-truncating
-.Pa file3
-if it already exists.
-See the manual page for your shell (e.g.,
+перезаписывая
+.Pa file3 ,
+если он уже существует.
+См. страницу руководства для вашей оболочки (например,
 .Xr sh 1 )
-for more information on redirection.
+для получения дополнительной информации о перенаправлении.
 .Pp
-The command:
+Команда:
 .Pp
 .Dl "cat file1 - file2 - file3"
 .Pp
-will print the contents of
+выведет содержимое
 .Pa file1 ,
-print data it receives from the standard input until it receives an
+затем данные, полученные из стандартного ввода, пока не будет получен символ
 .Dv EOF
-.Pq Sq ^D
-character, print the contents of
+.Pq Sq ^D ,
+затем выведет содержимое
 .Pa file2 ,
-read and output contents of the standard input again, then finally output
-the contents of
+затем снова считывает и выводит содержимое из стандартного ввода, а затем наконец выводит содержимое
 .Pa file3 .
-Note that if the standard input referred to a file, the second dash
-on the command-line would have no effect, since the entire contents of the file
-would have already been read and printed by
+Обратите внимание, что если стандартный ввод ссылается на файл, второй дефис в командной строке не окажет никакого эффекта, так как все содержимое файла уже было считано и выведено
 .Nm
-when it encountered the first
-.Sq Fl
-operand.
-.Sh SEE ALSO
+к моменту, когда он встретил первый операнд
+.Sq Fl .
+.Sh СМ. ТАКЖЕ
 .Xr head 1 ,
 .Xr more 1 ,
 .Xr pr 1 ,
@@ -177,37 +169,34 @@ operand.
 .%J "USENIX Summer Conference Proceedings"
 .%D 1983
 .Re
-.Sh STANDARDS
-The
+.Sh СТАНДАРТЫ
+Утилита
 .Nm
-utility is compliant with the
-.St -p1003.2-92
-specification.
+соответствует спецификации
+.St -p1003.2-92 .
 .Pp
-The flags
+Флаги
 .Op Fl belnstv
-are extensions to the specification.
-.Sh HISTORY
-A
+являются расширениями к спецификации.
+.Sh ИСТОРИЯ
+Утилита
 .Nm
-utility appeared in
+появилась в
 .At v1 .
 .An Dennis Ritchie
-designed and wrote the first man page.
-It appears to have been for
+разработал и написал первую страницу руководства.
+Похоже, что она была для
 .Nm .
-.Sh BUGS
-Because of the shell language mechanism used to perform output
-redirection, the command
+.Sh ОШИБКИ
+Из-за механизма языка оболочки, используемого для перенаправления вывода, команда
 .Dq Li cat file1 file2 > file1
-will cause the original data in
-.Pa file1
-to be destroyed!
+приведет к уничтожению исходных данных в
+.Pa file1 !
 .Pp
-The
+Утилита
 .Nm
-utility does not recognize multibyte characters when the
+не распознает многобайтовые символы, когда параметр
 .Fl t
-or
+или
 .Fl v
-option is in effect.
+активна.

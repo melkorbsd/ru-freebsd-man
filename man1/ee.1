@@ -1,6 +1,6 @@
 .\"
 .\"
-.\"  To format this reference page, use the command:
+.\"  Для форматирования этой справочной страницы используйте команду:
 .\"
 .\"    nroff -man ee.1
 .\"
@@ -8,539 +8,590 @@
 .\"
 .\"
 .TH ee 1 "" "" ""
-.SH NAME
-ee \- easy editor
-.SH SYNOPSIS
+.SH НАЗВАНИЕ
+ee \- простой редактор
+.SH СИНТАКСИС
 .nf
 ee [-e] [-i] [-h] [+#] [\fIfile\fR ...]
 ree [-e] [-i] [-h] [+#] [\fIfile\fR ...]
 .ta
 .fi
 .ad b
-.SH DESCRIPTION
-The command
+.SH ОПИСАНИЕ
+Команда
 .I ee
-is a simple screen oriented text editor.
-It is always in text insertion mode unless there is a prompt at the bottom
-of the terminal, or a menu present (in a box in the middle of the terminal).
-The command
+является простым текстовым редактором
+с экранным интерфейсом.
+Он всегда находится в режиме вставки текста,
+если внизу терминала нет подсказки или меню
+(в прямоугольнике посередине терминала).
+Команда
 .I ree
-is the same as
+то же самое, что и
 .I ee,
-but restricted to editing the named file (no file operations, or shell escapes
-are allowed).
+но ограничена редактированием указанного файла
+(операции с файлами и выход в оболочку не разрешены).
 .PP
-An editor with similar user-friendly qualities but more features is available
-and is called
+Редактор с похожими удобными функциями,
+но большим количеством возможностей,
+называется
 .I aee.
 .PP
-For
+Для правильной работы
 .I ee
-to work properly, the environment variable
+переменная окружения
 .SM TERM
-must be set to indicate the type of terminal being used.
-For example, for an
+должна быть установлена для указания
+типа используемого терминала.
+Например, для терминала
 .SM HP 700/92
-terminal, the
+переменная
 .SM TERM
-variable should be set to "70092".
-See your System Administrator if you need more information.
+должна быть установлена на "70092".
+Обратитесь к системному администратору,
+если вам нужна дополнительная информация.
 .\"
-.\"     options
+.\"     параметры
 .\"
-.SS Options
-The following options are available from the command line:
+.SS Параметры
+Следующие параметры доступны при запуске команды:
 .PP
 .TP 4
 .B -e
-Turns off expansion of tab character to spaces.
+Отключает преобразование символов табуляции в пробелы.
 .TP
 .B -i
-Turns off display of information window at top of terminal.
+Отключает отображение информационного окна в
+верхней части терминала.
 .TP
 .B -h
-Turns off highlighting of borders of windows and menus (improves performance on
-some terminals).
+Отключает выделение границ окон и меню
+(улучшает производительность на некоторых терминалах).
 .TP
 .B +#
-Moves the cursor to line '#' at startup.
+Перемещает курсор на строку '#' при запуске.
 .br
 .\"
-.\"     control keys
+.\"     управляющие клавиши
 .\"
-.SS "Control keys"
-To do anything other than insert text, the user must use the control keys (the
-.B Control
-key, represented by a "^",  pressed in conjunction with an
-alphabetic key, e.g., ^a) and function keys available on the keyboard
-(such as
-.BR "Next Page" ", " "Prev Page" ,
-arrow keys, etc.).
+.SS "Управляющие клавиши"
+Чтобы выполнить что-то, кроме вставки текста,
+пользователь должен использовать управляющие клавиши
+(клавишу
+.B Control,
+обозначаемую символом "^", нажимаемую в сочетании с
+алфавитной клавишей, например, ^a) и функциональные
+клавиши, доступные на клавиатуре
+(такие как
+.BR "Следующая страница" ", " "Предыдущая страница" ,
+стрелки и т.д.).
 .PP
-Since not all terminals have function keys,
+Поскольку не все терминалы имеют функциональные клавиши,
 .I ee
-has the basic cursor movement functions assigned to control keys as well as more
-intuitive keys on the keyboard when available.
-For instance, to move the cursor up, the user can use the up arrow key, or
-.BR ^u .
+основные функции перемещения курсора также назначены
+на управляющие клавиши, а также более интуитивные клавиши,
+если они доступны.
+Например, для перемещения курсора вверх пользователь
+может использовать клавишу стрелки вверх или
+.BR ^u.
 .RS 4
 .nf
 .ta 1.4i
 .sp
-^a 	Prompt for the decimal value of a character to insert.
-^b 	Move to the bottom of the text.
-^c 	Get the prompt for a command.
-^d 	Move the cursor down.
-^e 	Prompt for the string to search for.
-^f 	Undelete the last deleted character.
-^g 	Move to the beginning of the line.
+^a 	Запрос десятичного значения символа для вставки.
+^b 	Переход в конец текста.
+^c 	Получить приглашение для команды.
+^d 	Переместить курсор вниз.
+^e 	Запрос строки для поиска.
+^f 	Отменить удаление последнего удаленного символа.
+^g 	Переход в начало строки.
 ^h 	Backspace.
 ^i 	Tab.
-^j 	Insert a newline.
-^k 	Delete the character the cursor is sitting on.
-^l 	Move the cursor left.
-^m 	Insert a newline.
-^n 	Move to the next page.
-^o 	Move to the end of the line.
-^p 	Move to the previous page.
-^r 	Move the cursor to the right.
-^t 	Move to the top of the text.
-^u 	Move the cursor up.
-^v 	Undelete the last deleted word.
-^w 	Delete the word beginning at the cursor position.
-^x 	Search.
-^y 	Delete from the cursor position to the end of line.
-^z 	Undelete the last deleted line.
-^[ (ESC)	Pop up menu.
+^j 	Вставить новую строку.
+^k 	Удалить символ, на котором находится курсор.
+^l 	Переместить курсор влево.
+^m 	Вставить новую строку.
+^n 	Перейти на следующую страницу.
+^o 	Переход в конец строки.
+^p 	Перейти на предыдущую страницу.
+^r 	Переместить курсор вправо.
+^t 	Переход в начало текста.
+^u 	Переместить курсор вверх.
+^v 	Отменить удаление последнего удаленного слова.
+^w 	Удалить слово, начиная с позиции курсора.
+^x 	Поиск.
+^y 	Удалить от позиции курсора до конца строки.
+^z 	Отменить удаление последней удаленной строки.
+^[ (ESC)	Всплывающее меню.
 .ta
 .fi
 .RE
 .sp
-.SS "EMACS keys mode"
+.SS "Режим клавиш EMACS"
 .PP
-Since many shells provide an Emacs mode (for cursor movement and other editing
-operations), some bindings that may be more useful for people familiar with those
-bindings have been provided.
-These are accessible via the
+Так как многие оболочки поддерживают режим Emacs
+(для перемещения курсора и выполнения других операций
+редактирования), некоторые привязки, полезные для
+знакомых с ними пользователей, также предусмотрены.
+Эти привязки доступны через меню
 .B settings
-menu, or via the initialization file (see below).
-The mappings are as follows:
+или через файл инициализации (см. ниже).
+Привязки следующие:
 .RS
 .nf
 .ta 1.4i
-^a	Move to the beginning of the line.
-^b	Back 1 character.
-^c	Command prompt.
-^d	Delete character the cursor is sitting on.
-^e	End of line.
-^f	Forward 1 character.
-^g	Go back 1 page.
+^a	Переместить в начало строки.
+^b	Назад на 1 символ.
+^c	Командная строка.
+^d	Удалить символ, на котором находится курсор.
+^e	Конец строки.
+^f	Вперед на 1 символ.
+^g	Вернуться на 1 страницу назад.
 ^h	Backspace.
-^i	Tab.
-^j	Undelete last deleted character.
-^k	Delete line.
-^l	Undelete last deleted line.
-^m	Insert a newline.
-^n	Move to the next line.
-^o	Prompt for the decimal value of a character to insert.
-^p	Previous line.
-^r	Restore last deleted word.
-^t	Move to the top of the text.
-^u	Move to the bottom of the text.
-^v	Move to the next page.
-^w	Delete the word beginning at the cursor position.
-^y	Prompt for the string to search for.
-^z	Next word.
-^[ (ESC)	Pop up menu.
+^i	Табуляция.
+^j	Отменить последнее удаление символа.
+^k	Удалить строку.
+^l	Отменить последнее удаление строки.
+^m	Вставить новую строку.
+^n	Переместиться на следующую строку.
+^o	Запросить десятичное значение символа для вставки.
+^p	Предыдущая строка.
+^r	Восстановить последнее удаление слова.
+^t	Переместить в начало текста.
+^u	Переместить в конец текста.
+^v	Перейти на следующую страницу.
+^w	Удалить слово, начиная с позиции курсора.
+^y	Запросить строку для поиска.
+^z	Следующее слово.
+^[ (ESC)	Вызвать меню.
 .ta
 .fi
 .RE
 .sp
 .\"
-.\"     function keys
+.\"     функциональные клавиши
 .\"
-.SS "Function Keys"
+.SS "Функциональные клавиши"
 .RS 4
 .IP "\fBNext Page\fR"
-Move to the next page.
+Перейти на следующую страницу.
 .IP "\fBPrev Page\fR"
-Move to the previous page.
+Перейти на предыдущую страницу.
 .IP "\fBDelete Char\fR"
-Delete the character the cursor is on.
+Удалить символ, на котором находится курсор.
 .IP "\fBDelete Line\fR"
-Delete from the cursor to the end of line.
+Удалить от курсора до конца строки.
 .IP "\fBInsert line\fR"
-Insert a newline at the cursor position.
+Вставить новую строку на позиции курсора.
 .IP "\fBArrow keys\fR"
-Move the cursor in the direction indicated.
+Перемещать курсор в указанном направлении.
 .RE
 .\"
-.\"     commands
+.\"     команды
 .\"
-.SS Commands
+.SS Команды
 .PP
-Some operations require more information than a single keystroke can provide.
-For the most basic operations, there is a menu that can be obtained by
-pressing the
-.SM \fBESC\fR
-key.
-The same operations, and more can be performed by obtaining the
-command prompt (^c) and typing in one of the commands below.
+Некоторые операции требуют больше информации,
+чем может быть предоставлено одной клавишей.
+Для самых основных операций существует меню,
+которое можно вызвать нажатием
+.SM \fBESC\fR.
+Эти же операции и многие другие можно выполнить,
+вызвав командную строку (^c) и введя одну из
+приведенных ниже команд.
 .RS 4
 .IP "!\fBcmd\fR"
-Execute \fBcmd\fR in a shell.
+Выполнить \fBcmd\fR в оболочке.
 .IP "\fB0-9\fR"
-Move to the line indicated.
+Перейти на указанную строку.
 .IP "\fBcase\fR"
-Make searches case sensitive.
+Сделать поиск с учетом регистра.
 .IP "\fBcharacter\fR"
-Display the ascii value of the character at the cursor.
+Отобразить ASCII-значение символа на позиции курсора.
 .IP "\fBexit\fR"
-Save the edited text, and leave the editor.
+Сохранить текст и выйти из редактора.
 .IP "\fBexpand\fR"
-Expand tabs to spaces.
+Преобразовать табуляцию в пробелы.
 .IP "\fBfile\fR"
-Print the name of the file.
+Отобразить имя файла.
 .IP "\fBhelp\fR"
-Display help screen.
+Показать экран справки.
 .IP "\fBline\fR"
-Display the current line number.
-.IP "\fBnocase\fR
-Make searches insensitive to case (the default).
+Отобразить номер текущей строки.
+.IP "\fBnocase\fR"
+Сделать поиск без учета регистра (по умолчанию).
 .IP "\fBnoexpand\fR"
-Don't expand tab to spaces when the TAB key is pressed.
+Не преобразовывать табуляцию в пробелы при нажатии клавиши TAB.
 .IP "\fBquit\fR"
-Leave the editor without saving changes.
+Выйти из редактора без сохранения изменений.
 .IP "\fBread\fR \fIfile\fR"
-Read the named \fIfile\fR.
+Прочитать указанный \fIфайл\fR.
 .IP "\fBwrite\fR \fIfile\fR"
-Write the text to the named \fIfile\fR.
+Записать текст в указанный \fIфайл\fR.
 .RE
 .\"
-.\"     menu operations
+.\"     операции с меню
 .\"
-.SS "Menu Operations"
+.SS "Операции с меню"
 .PP
-Pop-up menus can be obtained by pressing the
+Всплывающие меню можно вызвать нажатием клавиши
 .B escape
-key (or
+(или
 .B ^[
-if no
-.B escape
-key is present).
-When in the menu, the escape key can be used to leave the menu without performing
-any operations.
-Use the up and down arrow keys, or
+если клавиша escape отсутствует).
+Находясь в меню, клавиша escape может использоваться
+для выхода из меню без выполнения каких-либо операций.
+Используйте клавиши со стрелками вверх и вниз или
 .B ^u
-for moving up and
+для перемещения вверх и
 .B ^d
-for moving down to move to the desired items in the menu, then press
+для перемещения вниз к нужным элементам меню,
+затем нажмите
 .B return
-to perform the indicated task.
+для выполнения указанного действия.
 .PP
-To the left of each menu item is a letter, which if the corresponding letter is pressed
-on the keyboard selects that menu entry.
+Слева от каждого элемента меню находится буква,
+которая, если соответствующая буква нажата
+на клавиатуре, выбирает этот элемент меню.
 .PP
-The main menu in \fIee\fR is as follows:
+Главное меню в \fIee\fR выглядит следующим образом:
 .RS 4
 .IP "\fBleave editor\fR"
-If changes have been made, the user will get a menu prompting whether or not the
-changes should be saved.
+Если были внесены изменения, пользователь
+увидит меню с запросом на сохранение изменений.
 .IP "\fBhelp\fR"
-Displays a help screen, with all of the keyboard operations and commands.
+Отображает экран справки с информацией обо
+всех клавишах и командах.
 .IP "\fBfile operations\fR"
-Pops up a menu for selecting whether to read a file, write to a file, or
-save the current contents of the editor, as well as send the contents of
-the editor to a print command (see the section \fBInitializing ee from a
-file\fR).
+Открывает меню для выбора между чтением файла,
+записью в файл или сохранением текущего содержимого
+редактора, а также отправкой содержимого редактора
+на команду печати (см. раздел \fBInitializing ee from a file\fR).
 .IP "\fBredraw screen\fR"
-Provides a means to repaint the screen if the screen has been corrupted.
+Позволяет перерисовать экран, если он был поврежден.
 .IP "\fBsettings\fR"
-Shows the current values of the operating modes, and right margin.  By
-pressing return when the cursor is on a particular item, the value can be
-changed.
-To leave this menu, press the \fBescape\fR key.  (See \fBModes\fR below.)
+Показывает текущие значения режимов работы и правого поля.
+При нажатии клавиши возврата, когда курсор находится на
+определенном элементе, значение может быть изменено.
+Чтобы выйти из этого меню, нажмите клавишу \fBescape\fR.
+(См. раздел \fBModes\fR ниже.)
 .IP "\fBsearch\fR"
 .br
-Pops up a menu in which the user may choose to enter a string to search
-for, or search for a string already entered.
+Открывает меню, в котором пользователь может ввести
+строку для поиска или выполнить поиск уже введенной строки.
 .IP "\fBmiscellaneous\fR"
-Pops up a menu that allows the user to format the current paragraph,
-execute a shell command, or check the spelling of the text in the editor.
+Открывает меню, которое позволяет пользователю
+форматировать текущий абзац, выполнить команду
+оболочки или проверить орфографию текста в редакторе.
 .RE
 .\"
-.\"     paragraph formatting
+.\"     форматирование абзаца
 .\"
-.SS "Paragraph Formatting"
+.SS "Форматирование абзаца"
 .PP
-Paragraphs are defined for \fIee\fR by a block of text bounded by:
+Абзацы в \fIee\fR определяются как блок текста,
+ограниченный:
 .sp 
 .RS 8
 .IP \(bu
-Begin or end of file.
+Началом или концом файла.
 .IP \(bu
-Line with no characters, or only spaces and/or tabs.
+Строкой без символов или содержащей только
+пробелы и/или табуляцию.
 .IP \(bu
-Line starting with a period ('.') or right angle bracket ('>').
+Строкой, начинающейся с точки ('.') или
+правого углового скобки ('>').
 .RE
 .PP
-A paragraph may be formatted two ways:  explicitly by choosing the
-\fBformat paragraph\fR menu item, or by setting \fIee\fR to automatically
-format paragraphs.  The automatic mode may be set via a menu, or via the
-initialization file.
+Абзац может быть отформатирован двумя способами:
+явно, выбрав элемент меню \fBformat paragraph\fR,
+или настроив \fIee\fR на автоматическое
+форматирование абзацев. Автоматический режим
+можно включить через меню или файл инициализации.
 .PP
-There are three states for text operation in \fIee\fR: free-form, margins,
-and automatic formatting.
+Существует три состояния для работы с текстом в \fIee\fR:
+свободная форма, поля и автоматическое форматирование.
 .PP
-"Free-form" is best used for things like programming.  There are no
-restrictions on the length of lines, and no formatting takes place.
+"Свободная форма" лучше всего подходит для программирования.
+Нет ограничений на длину строк, и форматирование не выполняется.
 .PP
-"Margins" allows the user to type in text without having to worry about going
-beyond the right margin (the right margin may be set in the \fBsettings\fR
-menu, the default is for the margin to be the right edge of the terminal).
-This is the mode that allows the \fBformat paragraph\fR menu item to work.
+"Поля" позволяют пользователю вводить текст, не беспокоясь
+о выходе за правое поле (правое поле можно установить
+в меню \fBsettings\fR, по умолчанию правое поле — это
+правая граница терминала). Это режим, который позволяет
+работать функции \fBformat paragraph\fR.
 .PP
-"Automatic formatting" provides word-processor-like behavior.
-The user may type in text, while \fIee\fR will make sure the entire paragraph fits
-within the width of the terminal every time the user inserts a space after
-typing or deleting text.
-Margin observation must also be enabled in order for automatic formatting to occur.
+"Автоматическое форматирование" обеспечивает поведение,
+похожее на текстовый процессор. Пользователь может
+вводить текст, и \fIee\fR будет автоматически
+форматировать абзац, чтобы он уместился по ширине
+терминала каждый раз, когда пользователь вставляет
+пробел после ввода или удаления текста.
+Для работы автоматического форматирования также
+должно быть включено соблюдение правого поля.
 .\"
-.\"     modes
+.\"     режимы
 .\"
-.SS Modes
+.SS Режимы
 .PP
-Although ee is a 'modeless' editor (it is in text insertion mode all the
-time), there are modes in some of the things it does.
-These include:
+Хотя \fIee\fR является «безрежимным» редактором
+(всегда находится в режиме вставки текста),
+некоторые его функции работают в режимах.
+Эти режимы включают:
 .RS 4
 .IP "\fBtab expansion\fR"
-Tabs may be inserted as a single tab character, or replaced with spaces.
+Табуляция может быть вставлена как один символ
+табуляции или заменена на пробелы.
 .IP "\fBcase sensitivity\fR"
-The search operation can be sensitive to whether characters are upper- or
-lower-case, or ignore case completely.
+Операция поиска может учитывать регистр символов
+или игнорировать его.
 .IP "\fBmargins observed\fR"
-Lines can either be truncated at the right margin, or extend on forever.
+Строки могут либо обрезаться на правом поле, либо
+продолжаться бесконечно.
 .IP "\fBauto paragraph formatting\fR"
-While typing in text, the editor can try to keep it looking reasonably well
-within the width of the screen.
+При вводе текста редактор может автоматически
+форматировать абзацы, чтобы они выглядели более
+аккуратно в пределах ширины экрана.
 .IP "\fBeightbit characters\fR"
-Toggles whether eight bit characters are displayed as their value in angle
-brackets (e.g. "<220>") or as a character.
+Переключает отображение восьмибитных символов
+как их значения в угловых скобках (например, "<220>")
+или как символы.
 .IP "\fBinfo window\fR"
-A window showing the keyboard operations that can be performed can be
-displayed or not.
+Может отображать или скрывать окно с информацией
+о доступных операциях клавиатуры.
 .IP "\fBemacs keys\fR"
-Control keys may be given bindings similar to emacs, or not.
+Могут быть назначены привязки клавиш,
+похожие на emacs, или нет.
 .IP "\fB16 bit characters\fR"
-Toggles whether sixteen bit characters are handled as one 16-bit quantity or
-two 8-bit quantities.  This works primarily with the Chinese Big 5 code set.
+Переключает обработку 16-битных символов как одного
+16-битного значения или двух 8-битных значений.
+Это в основном работает с китайским набором символов Big 5.
 .RE
 .PP
-You may set these modes via the initialization file (see below), or with a
-menu (see above).
+Вы можете настроить эти режимы через файл
+инициализации (см. ниже) или через меню (см. выше).
 .\"
-.\"     spell checking
+.\"     проверка орфографии
 .\"
-.SS "Spell Checking"
+.SS "Проверка орфографии"
 .PP
-There are two ways to have the spelling in the text checked from \fIee\fR.
-One is by the traditional \fIspell\fR(1) command, the other is with the
-optional \fIispell\fR(1) command.
+Существует два способа проверки орфографии
+текста в \fIee\fR. Один из них — традиционная
+команда \fIspell\fR(1), другой — опциональная
+команда \fIispell\fR(1).
 .PP
-Using \fIspell\fR, the words that are not recognized will be placed at the top
-of the file.  For the \fIispell\fR option, the file is written to disk,
-then \fIispell\fR run on the file, and the file read back in once
-\fIispell\fR has completed making changes to the file.
+При использовании \fIspell\fR слова, которые
+не были распознаны, будут добавлены в начало файла.
+Для параметры \fIispell\fR файл записывается на диск,
+затем запускается \fIispell\fR для проверки файла,
+и файл снова читается после того, как \fIispell\fR
+завершит внесение изменений.
 .\"
-.\"     printing
+.\"     печать содержимого редактора
 .\"
-.SS "Printing the contents of the editor"
+.SS "Печать содержимого редактора"
 .PP
-The user may select a menu item which prints the contents of the editor.
+Пользователь может выбрать пункт меню,
+который печатает содержимое редактора.
 .I ee
-pipes the text in the editor to the command specified by the initialization
-command
+перенаправляет текст в редакторе в команду,
+указанную в инициализационной команде
 .B printcommand
-(see the section
-.B Initializing ee from a file below).
-The default is to send the contents to "lp".
+(см. раздел
+.B Инициализация ee из файла ниже).
+По умолчанию содержимое отправляется на "lp".
 .PP
-Whatever the user assigns to
-.B printcommand
-must take input from standard input.
-See your system administrator for more details.
+Что бы ни было назначено пользователем на
+.B printcommand,
+эта команда должна принимать входные данные
+из стандартного ввода. Обратитесь к системному
+администратору за подробной информацией.
 .\"
-.\"     shell operations
+.\"     операции с оболочкой
 .\"
-.SS "Shell operations"
+.SS "Операции с оболочкой Shell"
 .PP
-Shell commands can be executed from within
-.I ee
-by selecting the
-.B shell command
-item in the
-.B miscellaneous
-menu, or by placing an exclamation mark ("!") before the command to
-execute at the
-.B command:
-prompt.
-Additionally, the user may direct the contents of the edit buffer out to
-a shell operation (via a pipe) by using the left angle bracket
-(">"), followed by a "!" and the shell command to execute.
-The output of a shell operation can also be directed into the
-edit buffer by using a right angle bracket ("<") before the exclamation mark.
-These can even be used together to send output to a shell operation and
-read back the results into the editor.
-So, if the editor contained a list of words to be sorted, they could be
-sorted by typing the following at the command prompt:
+Команды оболочки могут выполняться из \fIee\fR, выбрав пункт
+.B команда оболочки
+в меню
+.B прочие функции
+или введя в командной строке перед командой
+восклицательный знак ("!").
+Кроме того, пользователь может передать содержимое
+буфера редактора в операцию оболочки (через pipe),
+используя знак ">" перед восклицательным знаком и
+командой оболочки для выполнения.
+Вывод команды оболочки также может быть направлен
+в буфер редактора, используя "<" перед
+восклицательным знаком. Эти операции могут
+использоваться совместно для отправки данных
+в команду оболочки и возврата результата в редактор.
+Например, если редактор содержит список слов для
+сортировки, они могут быть отсортированы,
+введя следующую команду в командной строке:
 .RS 4
 .sp
 ><!sort
 .sp
 .RE
-This would send the contents of the editor to be piped into the
-.I sort
-utility and the result would be placed into the edit buffer at the current
-cursor location.
-The old information would have to be deleted by the user.
+Это отправит содержимое редактора в программу
+.I sort,
+и результат будет помещен в буфер редактора
+на текущую позицию курсора.
+Пользователю придется самостоятельно удалить
+старую информацию.
 .\"
-.\"     initializing ee from a file
+.\"     инициализация ee из файла
 .\"
-.SS "Initializing ee from a file"
+.SS "Инициализация ee из файла"
 .PP
-Since different users have different preferences, \fIee\fR allows some
-slight configurability.
-There are three possible locations for an initialization file for ee:
-the file \fI/usr/share/misc/init.ee\fR, the file \fI.init.ee\fR in the
-user's home directory, or the file \fI.init.ee\fR in the current directory
-(if different from the home directory).
-This allows system administrators to set some preferences for the users on a
-system-wide basis (for example, the \fBprint\fR command), and the user to customize
-settings for particular directories (like one for correspondence, and a
-different directory for programming).
+Поскольку у разных пользователей могут быть
+разные предпочтения, \fIee\fR предоставляет
+возможность незначительной настройки.
+Существует три возможных места для инициализационного
+файла \fIee\fR: файл \fI/usr/share/misc/init.ee\fR,
+файл \fI.init.ee\fR в домашнем каталоге пользователя
+или файл \fI.init.ee\fR в текущем каталоге
+(если он отличается от домашнего каталога).
+Это позволяет системным администраторам задавать
+некоторые параметры для пользователей на уровне
+всей системы (например, команду печати \fBprint\fR),
+а также пользователям настраивать параметры для
+отдельных каталоговий (например, одну для переписки,
+другую для программирования).
 .PP
-The file \fI\/usr/share/misc/init.ee\fR is read first, then
-\fI$HOME/.init.ee\fR, then \fI.init.ee\fR, with the settings specified by the most
-recent file read taking precedence.
+Сначала читается файл \fI/usr/share/misc/init.ee\fR,
+затем \fI$HOME/.init.ee\fR, затем \fI.init.ee\fR,
+при этом настройки из последнего прочитанного файла
+имеют приоритет.
 .PP
-The following items may be entered in the initialization file:
+Следующие элементы могут быть заданы
+в инициализационном файле:
 .RS 4
 .IP \fBcase\fR
-Sets searches to be case sensitive.
+Устанавливает поиск с учетом регистра.
 .IP \fBnocase\fR
-Sets searches to be insensitive to case (default).
+Устанавливает поиск без учета регистра (по умолчанию).
 .IP \fBexpand\fR
-Causes \fIee\fR to expand tabs to spaces (default).
+Заставляет \fIee\fR преобразовывать табуляцию
+в пробелы (по умолчанию).
 .IP \fBnoexpand\fR
-Causes \fIee\fR to insert tabs as a single character.
+Заставляет \fIee\fR вставлять табуляцию
+как один символ.
 .IP \fBinfo\fR
-A small information window is displayed at the top of the terminal (default).
+Отображает небольшое информационное окно в
+верхней части терминала (по умолчанию).
 .IP \fBnoinfo\fR
-Turns off the display of the information window.
+Отключает отображение информационного окна.
 .IP \fBmargins\fR
-Causes \fIee\fR to truncate lines at the right margin when the cursor passes
-beyond the right margin as set by the user while text is being inserted (default).
+Заставляет \fIee\fR обрезать строки на правом поле,
+если курсор выходит за пределы правого поля во время
+вставки текста (по умолчанию).
 .IP \fBnomargins\fR
-Allows lines to extend beyond the right margin.
+Разрешает строкам выходить за пределы правого поля.
 .IP \fBautoformat\fR
-Causes \fIee\fR to automatically try to format the current paragraph while
-text insertion is occurring.
+Заставляет \fIee\fR автоматически форматировать
+текущий абзац при вставке текста.
 .IP \fBnoautoformat\fR
-Turns off automatic paragraph formatting (default).
+Отключает автоматическое форматирование
+абзацев (по умолчанию).
 .IP \fBprintcommand\fR
-Allows the setting of the print command (default: "lp").
+Позволяет установить команду для печати
+(по умолчанию: "lp").
 .IP \fBrightmargin\fR
-The user can select a value for the right margin (the first column on the screen is zero).
+Пользователь может установить значение для
+правого поля (первый столбец экрана — это ноль).
 .IP \fBhighlight\fR
-Turns on highlighting border of information window and menus (default).
+Включает выделение границ информационного окна
+и меню (по умолчанию).
 .IP \fBnohighlight\fR
-Turns off highlighting of border of information window and menus.
+Отключает выделение границ информационного
+окна и меню.
 .IP \fBeightbit\fR
-Turns on display of eight bit characters.
+Включает отображение восьмибитных символов.
 .IP \fBnoeightbit\fR
-Turns off display of eight bit characters (they are displayed as their decimal
-value inside angle brackets, e.g., "<220>").
+Отключает отображение восьмибитных символов
+(они отображаются как их десятичное значение
+в угловых скобках, например "<220>").
 .IP \fB16bit\fR
-Turns on handling of 16-bit characters.
+Включает обработку 16-битных символов.
 .IP \fBno16bit\fR
-Turns off handling of 16-bit characters.
+Отключает обработку 16-битных символов.
 .IP \fBemacs\fR
-Turns on emacs key bindings.
+Включает привязки клавиш, похожие на emacs.
 .IP \fBnoemacs\fR
-Turns off emacs key bindings.
+Отключает привязки клавиш, похожие на emacs.
 .RE
 .\"
-.\"     save editor configuration
+.\"     сохранение конфигурации редактора
 .\"
-.SS "Save Editor Configuration"
+.SS "Сохранение конфигурации редактора"
 .PP
-When using this entry from the
-.B settings
-menu, the user may choose to save the current configuration of
-the editor (see \fBInitializing ee from a
-file\fR above) to a file named
+При использовании этого пункта меню
+.B настройки
+пользователь может сохранить текущую конфигурацию
+редактора (см. раздел  \fBInitializing ee from a file\fR выше)
+в файл с именем
 .I .init.ee
-in the current directory or the user's home directory.
-If a file named
+в текущем каталоге или в домашнем каталоге пользователя.
+Если файл с именем
 .I .init.ee
-already exists, it will be renamed
+уже существует, он будет переименован в
 .IR .init.ee.old .
 .\"
-.\"     Caveats
+.\"     Предупреждения
 .\"
-.SH CAVEATS
+.SH ПРЕДОСТЕРЕЖЕНИЯ
 .PP
-THIS MATERIAL IS PROVIDED "AS IS".  THERE ARE
-NO WARRANTIES OF ANY KIND WITH REGARD TO THIS
-MATERIAL, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND
-FITNESS FOR A PARTICULAR PURPOSE.  Neither
-Hewlett-Packard nor Hugh Mahon shall be liable
-for errors contained herein, nor for
-incidental or consequential damages in
-connection with the furnishing, performance or
-use of this material.  Neither Hewlett-Packard
-nor Hugh Mahon assumes any responsibility for
-the use or reliability of this software or
-documentation.  This software and
-documentation is totally UNSUPPORTED.  There
-is no support contract available.  Hewlett-Packard
-has done NO Quality Assurance on ANY
-of the program or documentation.  You may find
-the quality of the materials inferior to
-supported materials.
+ДАННЫЕ МАТЕРИАЛЫ ПРЕДОСТАВЛЯЮТСЯ "КАК ЕСТЬ".
+НЕ ПРЕДОСТАВЛЯЕТСЯ НИКАКИХ ГАРАНТИЙ НА ДАННЫЕ МАТЕРИАЛЫ,
+ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПОДРАЗУМЕВАЕМЫЕ
+ГАРАНТИИ ПРИГОДНОСТИ ДЛЯ КОНКРЕТНОЙ ЦЕЛИ И ТОВАРНОСТИ.
+Компания Hewlett-Packard и Хью Маон не несут
+ответственности за ошибки, содержащиеся в этих материалах,
+а также за случайные или косвенные убытки, возникшие
+в результате использования этих материалов.
+Компания Hewlett-Packard и Хью Маон не несут ответственности
+за использование или надежность этого программного
+обеспечения или документации. Данное программное обеспечение
+и документация предоставляются БЕЗ ПОДДЕРЖКИ.
+Договор на поддержку отсутствует. Hewlett-Packard НЕ проводила
+тестирование качества НИ ОДНОЙ из программ или документации.
+Вы можете обнаружить, что качество этих материалов ниже по
+сравнению с поддерживаемыми материалами.
 .PP
-Always make a copy of files that cannot be easily reproduced before
-editing.  Save files early, and save often.
-.SS "International Code Set Support"
+Всегда создавайте копию файлов, которые невозможно легко
+восстановить, перед редактированием. Сохраняйте файлы рано
+и сохраняйте их часто.
+.SS "Поддержка международных наборов символов"
 .I ee
-supports single-byte character code sets (eight-bit clean), or the
-Chinese Big-5 code set.
-(Other multi-byte code sets may function, but the reason Big-5 works is
-that a two-byte character also takes up two columns on the screen.)
-.SH WARNINGS
-The automatic paragraph formatting operation may be too slow for
-slower systems.
-.SH FILES
+поддерживает однобайтовые наборы символов
+(восьмибитная поддержка) и китайский набор символов Big-5.
+(Другие многобайтовые наборы символов могут работать,
+но Big-5 поддерживается, так как двухбайтовый символ
+занимает две колонки на экране.)
+.SH ПРЕДУПРЕЖДЕНИЯ
+Операция автоматического форматирования абзацев
+может быть слишком медленной для
+более медленных систем.
+.SH ФАЙЛЫ
 .PP
 .I /usr/share/misc/init.ee
 .br
 .I $HOME/.init.ee
 .br
 .I .init.ee
-.SH AUTHOR
+.SH АВТОР
 .PP
-The software
+Программное обеспечение
 .I ee
-was developed by Hugh Mahon.
+было разработано Хью Маоном.
 .PP
-This software and documentation contains
-proprietary information which is protected by
-copyright.  All rights are reserved.
+Это программное обеспечение и документация содержат
+конфиденциальную информацию, которая защищена
+авторским правом. Все права защищены.
 .PP
-Copyright (c) 1990, 1991, 1992, 1993, 1995, 1996, 2001 Hugh Mahon.
-.SH "SEE ALSO"
+Copyright (c) 1990, 1991, 1992, 1993, 1995, 1996, 2001 Хью Маон.
+.SH "СМ. ТАКЖЕ"
 .PP
 termcap(4), terminfo(4), environ(5), spell(1), ispell(1), lp(1), aee(1)
-

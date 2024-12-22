@@ -29,16 +29,16 @@
 .\"
 .\"	@(#)grep.1	8.3 (Berkeley) 4/18/94
 .\"
-.Dd December 18, 2022
+.Dd 18 декабря 2022
 .Dt GREP 1
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm grep ,
 .Nm egrep ,
 .Nm fgrep ,
 .Nm rgrep
-.Nd file pattern searcher
-.Sh SYNOPSIS
+.Nd поиск шаблона в файлах
+.Sh СИНТАКСИС
 .Nm grep
 .Bk -words
 .Op Fl abcdDEFGHhIiLlmnOopqRSsUVvwxz
@@ -57,538 +57,570 @@
 .Op Ar pattern
 .Op Ar
 .Ek
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Утилита
 .Nm grep
-utility searches any given input files,
-selecting lines that match one or more patterns.
-By default, a pattern matches an input line if the regular expression
-(RE) in the pattern matches the input line
-without its trailing newline.
-An empty expression matches every line.
-Each input line that matches at least one of the patterns is written
-to the standard output.
+ищет строки, соответствующие одному или нескольким
+шаблонам, в заданных файлах.
+По умолчанию строка считается подходящей,
+если регулярное выражение
+.RE в шаблоне совпадает с входной строкой
+без завершающего символа новой строки.
+Пустое выражение соответствует каждой строке.
+Каждая строка, которая соответствует хотя бы
+одному из шаблонов, записывается в стандартный вывод.
 .Pp
 .Nm grep
-is used for simple patterns and
-basic regular expressions
+используется для простых шаблонов и
+базовых регулярных выражений
 .Pq BREs ;
 .Nm egrep
-can handle extended regular expressions
+может работать с расширенными регулярными выражениями
 .Pq EREs .
-See
+См.
 .Xr re_format 7
-for more information on regular expressions.
+для получения дополнительной информации
+о регулярных выражениях.
 .Nm fgrep
-is quicker than both
+работает быстрее, чем
 .Nm grep
-and
+и
 .Nm egrep ,
-but can only handle fixed patterns
-(i.e., it does not interpret regular expressions).
-Patterns may consist of one or more lines,
-allowing any of the pattern lines to match a portion of the input.
+но может обрабатывать только фиксированные шаблоны
+(т. е. не интерпретирует регулярные выражения).
+Шаблоны могут состоять из одной или нескольких строк,
+что позволяет любой строке шаблона соответствовать
+части входных данных.
 .Pp
-The following options are available:
+Доступны следующие параметры:
 .Bl -tag -width indent
 .It Fl A Ar num , Fl Fl after-context= Ns Ar num
-Print
+Вывести
 .Ar num
-lines of trailing context after each match.
-See also the
+строк контекста после каждой совпадающей строки.
+См. также параметры
 .Fl B
-and
-.Fl C
-options.
+и
+.Fl C .
 .It Fl a , Fl Fl text
-Treat all files as ASCII text.
-Normally
+Рассматривать все файлы как текстовые файлы ASCII.
+Обычно
 .Nm
-will simply print
-.Dq Binary file ... matches
-if files contain binary characters.
-Use of this option forces
+просто выводит
+.Dq Бинарный файл ... совпадает
+если файлы содержат бинарные символы.
+Использование этого параметра заставляет
 .Nm
-to output lines matching the specified pattern.
+выводить строки, соответствующие указанному шаблону.
 .It Fl B Ar num , Fl Fl before-context= Ns Ar num
-Print
+Вывести
 .Ar num
-lines of leading context before each match.
-See also the
+строк контекста перед каждой совпадающей строкой.
+См. также параметры
 .Fl A
-and
-.Fl C
-options.
+и
+.Fl C .
 .It Fl b , Fl Fl byte-offset
-The offset in bytes of a matched pattern is
-displayed in front of the respective matched line.
+Смещение в байтах совпадающего шаблона
+отображается перед соответствующей строкой.
 .It Fl C Ar num , Fl Fl context= Ns Ar num
-Print
+Вывести
 .Ar num
-lines of leading and trailing context surrounding each match.
-See also the
+строк контекста перед и после каждой
+совпадающей строки.
+См. также параметры
 .Fl A
-and
-.Fl B
-options.
+и
+.Fl B .
 .It Fl c , Fl Fl count
-Only a count of selected lines is written to standard output.
+Только количество выбранных строк выводится
+в стандартный вывод.
 .It Fl Fl colour= Ns Oo Ar when Oc , Fl Fl color= Ns Oo Ar when Oc
-Mark up the matching text with the expression stored in the
-.Ev GREP_COLOR
-environment variable.
-The possible values of
+Выделить совпадающий текст с помощью выражения,
+хранящегося в переменной окружения
+.Ev GREP_COLOR .
+Возможные значения параметра
 .Ar when
-are
+включают
 .Dq Cm never ,
 .Dq Cm always
-and
+и
 .Dq Cm auto .
 .It Fl D Ar action , Fl Fl devices= Ns Ar action
-Specify the demanded
+Указать требуемое
 .Ar action
-for devices, FIFOs and sockets.
-The default
+для устройств, каналов FIFO и сокетов.
+Значение по умолчанию
 .Ar action
-is
+это
 .Dq Cm read ,
-which means, that they are read as if they were normal files.
-If the
+что означает, что они обрабатываются
+как обычные файлы.
+Если параметр
 .Ar action
-is set to
+установлен на
 .Dq Cm skip ,
-devices are silently skipped.
+устройства пропускаются без сообщений.
 .It Fl d Ar action , Fl Fl directories= Ns Ar action
-Specify the demanded
+Указать требуемое
 .Ar action
-for directories.
-It is
-.Dq Cm read
-by default, which means that the directories
-are read in the same manner as normal files.
-Other possible values are
+для каталогов.
+По умолчанию используется
+.Dq Cm read ,
+что означает, что каталоги
+читаются так же, как обычные файлы.
+Другие возможные значения:
 .Dq Cm skip
-to silently ignore the directories, and
+для игнорирования каталогов, и
 .Dq Cm recurse
-to read them recursively, which has the same effect as the
+для рекурсивного чтения каталогов,
+что аналогично параметрам
 .Fl R
-and
-.Fl r
-option.
+и
+.Fl r .
 .It Fl E , Fl Fl extended-regexp
-Interpret
+Интерпретировать
 .Ar pattern
-as an extended regular expression
-(i.e., force
+как расширенное регулярное выражение
+(т. е. заставить
 .Nm grep
-to behave as
+работать как
 .Nm egrep ) .
 .It Fl e Ar pattern , Fl Fl regexp= Ns Ar pattern
-Specify a
+Указать
 .Ar pattern
-used during the search of the input:
-an input line is selected if it matches any of the specified patterns.
-This option is most useful when multiple
+для поиска по входным данным:
+строка выбирается, если она соответствует
+любому из указанных шаблонов. Этот параметр
+особенно полезен при использовании нескольких параметров
 .Fl e
-options are used to specify multiple patterns,
-or when a
+для указания нескольких шаблонов,
+или если шаблон
 .Ar pattern
-begins with a dash
+начинается с дефиса
 .Pq Sq - .
 .It Fl Fl exclude Ar pattern
-If specified, it excludes files matching the given
-filename
+Если указано, исключает файлы, соответствующие указанному
+шаблону имени файла
 .Ar pattern
-from the search.
-Note that
+из поиска.
+Обратите внимание, что
 .Fl Fl exclude
-and
+и
 .Fl Fl include
-patterns are processed in the order given.
-If a name matches multiple patterns, the latest matching rule wins.
-If no
+шаблоны обрабатываются в порядке их указания.
+Если имя совпадает с несколькими шаблонами,
+последняя совпадающая инструкция имеет приоритет.
+Если шаблон
 .Fl Fl include
-pattern is specified, all files are searched that are
-not excluded.
-Patterns are matched to the full path specified,
-not only to the filename component.
+не указан, будут обрабатываться все файлы,
+которые не исключены.
+Шаблоны соответствуют полному пути,
+а не только компоненту имени файла.
 .It Fl Fl exclude-dir Ar pattern
-If
-.Fl R
-is specified, it excludes directories matching the
-given filename
+Если указан параметр
+.Fl R ,
+исключает каталоги, соответствующие
+указанному шаблону имени файла
 .Ar pattern
-from the search.
-Note that
+из поиска.
+Обратите внимание, что
 .Fl Fl exclude-dir
-and
+и
 .Fl Fl include-dir
-patterns are processed in the order given.
-If a name matches multiple patterns, the latest matching rule wins.
-If no
+шаблоны обрабатываются в порядке их указания.
+Если имя совпадает с несколькими шаблонами,
+последняя совпадающая инструкция имеет приоритет.
+Если шаблон
 .Fl Fl include-dir
-pattern is specified, all directories are searched that are
-not excluded.
+не указан, будут обрабатываться все каталоги,
+которые не исключены.
 .It Fl F , Fl Fl fixed-strings
-Interpret
+Интерпретировать
 .Ar pattern
-as a set of fixed strings
-(i.e., force
+как набор фиксированных строк
+(т. е. заставить
 .Nm grep
-to behave as
+работать как
 .Nm fgrep ) .
 .It Fl f Ar file , Fl Fl file= Ns Ar file
-Read one or more newline separated patterns from
+Прочитать один или несколько шаблонов,
+разделенных новой строкой, из файла
 .Ar file .
-Empty pattern lines match every input line.
-Newlines are not considered part of a pattern.
-If
+Пустые строки шаблонов соответствуют каждой
+входной строке.
+Новые строки не считаются частью шаблона.
+Если файл
 .Ar file
-is empty, nothing is matched.
+пуст, ничего не будет соответствовать.
 .It Fl G , Fl Fl basic-regexp
-Interpret
+Интерпретировать
 .Ar pattern
-as a basic regular expression
-(i.e., force
+как базовое регулярное выражение
+(т. е. заставить
 .Nm grep
-to behave as traditional
+работать как традиционный
 .Nm grep ) .
 .It Fl H
-Always print filename headers with output lines.
+Всегда выводить заголовки с именами файлов
+для строк вывода.
 .It Fl h , Fl Fl no-filename
-Never print filename headers
-.Pq i.e., filenames
-with output lines.
+Никогда не выводить заголовки с именами файлов
+.Пq т. е. имена файлов
+для строк вывода.
 .It Fl Fl help
-Print a brief help message.
+Вывести краткое сообщение справки.
 .It Fl I
-Ignore binary files.
-This option is equivalent to the
-.Dq Fl Fl binary-files= Ns Cm without-match
-option.
+Игнорировать бинарные файлы.
+Этот параметр эквивалентен параметру
+.Dq Fl Fl binary-files= Ns Cm without-match .
 .It Fl i , Fl Fl ignore-case
-Perform case insensitive matching.
-By default,
+Производить нечувствительный к регистру поиск.
+По умолчанию
 .Nm grep
-is case sensitive.
+чувствителен к регистру.
 .It Fl Fl include Ar pattern
-If specified, only files matching the given filename
-.Ar pattern
-are searched.
-Note that
+Если указано, ищет только файлы, соответствующие
+указанному шаблону имени файла
+.Ar pattern .
+Обратите внимание, что шаблоны
 .Fl Fl include
-and
+и
 .Fl Fl exclude
-patterns are processed in the order given.
-If a name matches multiple patterns, the latest matching rule wins.
-Patterns are matched to the full path specified,
-not only to the filename component.
+обрабатываются в порядке их указания.
+Если имя совпадает с несколькими шаблонами,
+последняя совпадающая инструкция имеет приоритет.
+Шаблоны соответствуют полному пути,
+а не только компоненту имени файла.
 .It Fl Fl include-dir Ar pattern
-If
-.Fl R
-is specified, only directories matching the given filename
-.Ar pattern
-are searched.
-Note that
+Если указан параметр
+.Fl R ,
+ищутся только каталоги, соответствующие указанному
+шаблону имени файла
+.Ar pattern .
+Обратите внимание, что шаблоны
 .Fl Fl include-dir
-and
+и
 .Fl Fl exclude-dir
-patterns are processed in the order given.
-If a name matches multiple patterns, the latest matching rule wins.
+обрабатываются в порядке их указания.
+Если имя совпадает с несколькими шаблонами,
+последняя совпадающая инструкция имеет приоритет.
 .It Fl L , Fl Fl files-without-match
-Only the names of files not containing selected lines are written to
-standard output.
-Pathnames are listed once per file searched.
-If the standard input is searched, the string
+Выводятся только имена файлов, не содержащих
+выбранные строки.
+Имена файлов выводятся один раз для каждого
+обработанного файла.
+Если производится поиск по стандартному вводу,
+выводится строка
 .Dq (standard input)
-is written unless a
-.Fl Fl label
-is specified.
+если не указан парамер
+.Fl Fl label .
 .It Fl l , Fl Fl files-with-matches
-Only the names of files containing selected lines are written to
-standard output.
+Выводятся только имена файлов, содержащих
+выбранные строки.
 .Nm grep
-will only search a file until a match has been found,
-making searches potentially less expensive.
-Pathnames are listed once per file searched.
-If the standard input is searched, the string
+будет искать в файле только до тех пор,
+пока не будет найдено совпадение,
+что делает поиск потенциально менее затратным.
+Имена файлов выводятся один раз для каждого
+обработанного файла.
+Если производится поиск по стандартному вводу,
+выводится строка
 .Dq (standard input)
-is written unless a
-.Fl Fl label
-is specified.
+если не указан параметр
+.Fl Fl label .
 .It Fl Fl label
-Label to use in place of
+Метка, которая используется вместо
 .Dq (standard input)
-for a file name where a file name would normally be printed.
-This option applies to
+для файла, где обычно выводилось бы имя файла.
+Этот параметр применяется к параметрам
 .Fl H ,
-.Fl L ,
-and
+.Fl L
+и
 .Fl l .
 .It Fl Fl mmap
-Use
+Использовать
 .Xr mmap 2
-instead of
+вместо
 .Xr read 2
-to read input, which can result in better performance under some
-circumstances but can cause undefined behaviour.
+для чтения входных данных, что в некоторых случаях
+может повысить производительность, но может привести
+к неопределенному поведению.
 .It Fl m Ar num , Fl Fl max-count= Ns Ar num
-Stop reading the file after
+Прекратить чтение файла после
 .Ar num
-matches.
+совпадений.
 .It Fl n , Fl Fl line-number
-Each output line is preceded by its relative line number in the file,
-starting at line 1.
-The line number counter is reset for each file processed.
-This option is ignored if
+Каждая выводимая строка предваряется ее относительным
+номером в файле,
+начиная с 1.
+Счетчик строк сбрасывается для каждого обработанного файла.
+Этот параметр игнорируется, если указаны
 .Fl c ,
 .Fl L ,
-.Fl l ,
-or
-.Fl q
-is
-specified.
+.Fl l
+или
+.Fl q .
 .It Fl Fl null
-Prints a zero-byte after the file name.
+Выводит нулевой байт после имени файла.
 .It Fl O
-If
-.Fl R
-is specified, follow symbolic links only if they were explicitly listed
-on the command line.
-The default is not to follow symbolic links.
+Если указан параметр
+.Fl R ,
+символические ссылки следуются только если они явно
+указаны в командной строке.
+По умолчанию символические ссылки не раскрываются.
 .It Fl o , Fl Fl only-matching
-Prints only the matching part of the lines.
+Выводит только ту часть строк, которая совпадает
+с шаблоном.
 .It Fl p
-If
-.Fl R
-is specified, no symbolic links are followed.
-This is the default.
+Если указан параметр
+.Fl R ,
+символические ссылки не раскрываются.
+Это значение по умолчанию.
 .It Fl q , Fl Fl quiet , Fl Fl silent
-Quiet mode:
-suppress normal output.
+Тихий режим:
+подавление обычного вывода.
 .Nm grep
-will only search a file until a match has been found,
-making searches potentially less expensive.
+будет искать в файле только до тех пор, пока не
+будет найдено совпадение,
+что делает поиск потенциально менее затратным.
 .It Fl R , Fl r , Fl Fl recursive
-Recursively search subdirectories listed.
-(i.e., force
+Рекурсивный поиск в подкаталогах, указанных
+в командной строке.
+(т. е. заставить
 .Nm grep
-to behave as
+работать как
 .Nm rgrep ) .
 .It Fl S
-If
-.Fl R
-is specified, all symbolic links are followed.
-The default is not to follow symbolic links.
+Если указан параметр
+.Fl R ,
+все символические ссылки следуются.
+По умолчанию символические ссылки не раскрываются.
 .It Fl s , Fl Fl no-messages
-Silent mode.
-Nonexistent and unreadable files are ignored
-(i.e., their error messages are suppressed).
+Тихий режим.
+Несуществующие и недоступные для чтения файлы
+игнорируются
+(т. е. их сообщения об ошибках подавляются).
 .It Fl U , Fl Fl binary
-Search binary files, but do not attempt to print them.
+Поиск в бинарных файлах, но без попытки вывести
+их содержимое.
 .It Fl u
-This option has no effect and is provided only for compatibility with GNU grep.
+Этот параметр не оказывает влияния и предоставлена
+только для совместимости с GNU grep.
 .It Fl V , Fl Fl version
-Display version information and exit.
+Вывести информацию о версии и выйти.
 .It Fl v , Fl Fl invert-match
-Selected lines are those
-.Em not
-matching any of the specified patterns.
+Выбранные строки — это те, которые
+.Em не
+совпадают с любым из указанных шаблонов.
 .It Fl w , Fl Fl word-regexp
-The expression is searched for as a word (as if surrounded by
+Выражение ищется как слово (как если бы
+оно было окружено
 .Sq [[:<:]]
-and
+и
 .Sq [[:>:]] ;
-see
+см.
 .Xr re_format 7 ) .
-This option has no effect if
-.Fl x
-is also specified.
+Этот параметр не действует, если также указан параметр
+.Fl x .
 .It Fl x , Fl Fl line-regexp
-Only input lines selected against an entire fixed string or regular
-expression are considered to be matching lines.
+Только строки, которые полностью соответствуют
+фиксированной строке или регулярному
+выражению, считаются совпадающими.
 .It Fl y
-Equivalent to
+Эквивалентно параметру
 .Fl i .
-Obsoleted.
+Устаревшая.
 .It Fl z , Fl Fl null-data
-Treat input and output data as sequences of lines terminated by a
-zero-byte instead of a newline.
+Рассматривать входные и выходные данные как
+последовательности строк, разделенных
+нулевым байтом, а не новой строкой.
 .It Fl Fl binary-files= Ns Ar value
-Controls searching and printing of binary files.
-Options are:
-.Bl -tag -compact -width "binary (default)"
-.It Cm binary No (default)
-Search binary files but do not print them.
+Управляет поиском и выводом бинарных файлов.
+Доступные варианты:
+.Bl -tag -compact -width "binary (по умолчанию)"
+.It Cm binary No (по умолчанию)
+Искать в бинарных файлах, но не выводить их содержимое.
 .It Cm without-match
-Do not search binary files.
+Не искать в бинарных файлах.
 .It Cm text
-Treat all files as text.
+Рассматривать все файлы как текстовые.
 .El
 .It Fl Fl line-buffered
-Force output to be line buffered.
-By default, output is line buffered when standard output is a terminal
-and block buffered otherwise.
+Принудительно использовать буферизацию вывода построчно.
+По умолчанию вывод буферизуется построчно, если
+стандартный вывод — это терминал,
+и блочно в противном случае.
 .El
 .Pp
-If no file arguments are specified, the standard input is used.
-Additionally,
+Если не указаны файлы для обработки,
+используется стандартный ввод.
+Дополнительно,
 .Dq Cm -
-may be used in place of a file name, anywhere that a file name is accepted, to
-read from standard input.
-This includes both
-.Fl f
-and file arguments.
-.Sh ENVIRONMENT
-The following environment variables affect the execution of
+может быть использовано вместо имени файла в любом месте,
+где принимается имя файла,
+для чтения из стандартного ввода.
+Это касается как аргументов для параметра
+.Fl f ,
+так и файловых аргументов.
+.Sh ПЕРЕМЕННЫЕ ОКРУЖЕНИЯ
+Следующие переменные окружения влияют на выполнение
 .Nm :
 .Bl -tag -width "GREP_OPTIONS"
 .It Ev GREP_COLOR
-This variable specifies the color used to highlight matched (non-empty) text.
+Эта переменная задает цвет, используемый для выделения
+совпадающего (непустого) текста.
 .It Ev GREP_OPTIONS
-This variable specifies default options
-to be placed in front of any explicit options.
-It may cause problems with portable scripts.
+Эта переменная задает параметры по умолчанию,
+которые помещаются перед любыми явными параметрами.
+Это может вызвать проблемы с портативными скриптами.
 .It Ev TERM
-This variable specifies the type name of the terminal, console or display-device
-type to be used.
-See
+Эта переменная задает тип терминала, консоли или
+дисплейного устройства,
+которое будет использоваться.
+См.
 .Xr term 7 .
 .El
-.Sh EXIT STATUS
-The
+.Sh КОД ЗАВЕРШЕНИЯ
+Утилита
 .Nm grep
-utility exits with one of the following values:
+завершается с одним из следующих значений:
 .Pp
 .Bl -tag -width flag -compact
 .It Li 0
-One or more lines were selected.
+Были выбраны одна или несколько строк.
 .It Li 1
-No lines were selected.
+Не было выбрано ни одной строки.
 .It Li \*(Gt1
-An error occurred.
+Произошла ошибка.
 .El
-.Sh EXAMPLES
+.Sh ПРИМЕРЫ
 .Bl -dash
 .It
-Find all occurrences of the pattern
+Найти все вхождения шаблона
 .Sq patricia
-in a file:
+в файле:
 .Pp
 .Dl $ grep 'patricia' myfile
 .It
-Same as above but looking only for complete words:
+То же самое, но искать только полные слова:
 .Pp
 .Dl $ grep -w 'patricia' myfile
 .It
-Count occurrences of the exact pattern
-.Sq FOO
-:
+Подсчитать количество вхождений точного шаблона
+.Sq FOO :
 .Pp
 .Dl $ grep -c FOO myfile
 .It
-Same as above but ignoring case:
+То же самое, но игнорируя регистр:
 .Pp
 .Dl $ grep -c -i FOO myfile
 .It
-Find all occurrences of the pattern
+Найти все вхождения шаблона
 .Ql .Pp
-at the beginning of a line:
+в начале строки:
 .Pp
 .Dl $ grep '^\e.Pp' myfile
 .Pp
-The apostrophes ensure the entire expression is evaluated by
+Кавычки гарантируют, что все выражение будет
+интерпретировано утилитой
 .Nm grep
-instead of by the user's shell.
-The caret
-.Ql ^
-matches the null string at the beginning of a line,
-and the
+вместо оболочки пользователя.
+Символ каретки
+.Ql ^ 
+соответствует пустой строке в начале строки,
+а символ
 .Ql \e
-escapes the
+экранирует точку
 .Ql \&. ,
-which would otherwise match any character.
+которая иначе соответствовала бы любому символу.
 .It
-Find all lines in a file which do not contain the words
+Найти все строки в файле, которые не содержат слов
 .Sq foo
-or
+или
 .Sq bar :
 .Pp
 .Dl $ grep -v -e 'foo' -e 'bar' myfile
 .It
-Peruse the file
+Просмотреть файл
 .Sq calendar
-looking for either 19, 20, or 25 using extended regular expressions:
+в поисках чисел 19, 20 или 25, используя
+расширенные регулярные выражения:
 .Pp
 .Dl $ egrep '19|20|25' calendar
 .It
-Show matching lines and the name of the
-.Sq *.h
-files which contain the pattern
+Показать строки с совпадениями и имена файлов с расширением
+.Sq *.h ,
+содержащие шаблон
 .Sq FIXME .
-Do the search recursively from the
-.Pa /usr/src/sys/arm
-directory
+Выполнить поиск рекурсивно из каталога
+.Pa /usr/src/sys/arm :
 .Pp
 .Dl $ grep -H -R FIXME --include="*.h" /usr/src/sys/arm/
 .It
-Same as above but show only the name of the matching file:
+То же самое, но показывать только имя файла с совпадением:
 .Pp
 .Dl $ grep -l -R FIXME --include="*.h" /usr/src/sys/arm/
 .It
-Show lines containing the text
+Показать строки, содержащие текст
 .Sq foo .
-The matching part of the output is colored and every line is prefixed with
-the line number and the offset in the file for those lines that matched.
+Совпадающая часть строки будет выделена цветом,
+и каждая строка будет
+начинаться с номера строки и смещения
+в файле для этих строк:
 .Pp
 .Dl $ grep -b --colour -n foo myfile
 .It
-Show lines that match the extended regular expression patterns read from the
-standard input:
+Показать строки, которые соответствуют шаблону
+расширенного регулярного выражения,
+прочитанному из стандартного ввода:
 .Pp
 .Dl $ echo -e 'Free\enBSD\enAll.*reserved' | grep -E -f - myfile
 .It
-Show lines from the output of the
-.Xr pciconf 8
-command matching the specified extended regular expression along with
-three lines of leading context and one line of trailing context:
+Показать строки из вывода команды
+.Xr pciconf 8 ,
+которые соответствуют указанному расширенному
+регулярному выражению,
+с тремя строками контекста до совпадения и одной
+строкой контекста после него:
 .Pp
 .Dl $ pciconf -lv | grep -B3 -A1 -E 'class.*=.*storage'
 .It
-Suppress any output and use the exit status to show an appropriate message:
+Подавить любой вывод и использовать код завершения,
+чтобы показать соответствующее сообщение:
 .Pp
-.Dl $ grep -q foo myfile && echo File matches
+.Dl $ grep -q foo myfile && echo Файл содержит совпадения
 .El
-.Sh SEE ALSO
+.Sh СМ. ТАКЖЕ
 .Xr ed 1 ,
 .Xr ex 1 ,
 .Xr sed 1 ,
 .Xr zgrep 1 ,
 .Xr re_format 7
-.Sh STANDARDS
-The
+.Sh СТАНДАРТЫ
+Утилита
 .Nm
-utility is compliant with the
-.St -p1003.1-2008
-specification.
+соответствует спецификации
+.St -p1003.1-2008 .
 .Pp
-The flags
+Параметры
 .Op Fl AaBbCDdGHhILmopRSUVw
-are extensions to that specification, and the behaviour of the
+являются расширениями этой спецификации, а поведение
+параметра
 .Fl f
-flag when used with an empty pattern file is left undefined.
+при использовании с пустым файлом шаблонов не определено.
 .Pp
-All long options are provided for compatibility with
-GNU versions of this utility.
+Все длинные параметры предоставлены для совместимости с
+GNU-версиями этой утилиты.
 .Pp
-Historic versions of the
+Исторические версии утилиты
 .Nm grep
-utility also supported the flags
+также поддерживали параметры
 .Op Fl ruy .
-This implementation supports those options;
-however, their use is strongly discouraged.
-.Sh HISTORY
-The
+Эта реализация поддерживает эти параметры;
+однако их использование крайне не рекомендуется.
+.Sh ИСТОРИЯ
+Команда
 .Nm grep
-command first appeared in
+впервые появилась в
 .At v6 .
