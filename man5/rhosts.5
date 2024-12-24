@@ -25,105 +25,106 @@
 .\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 .\" SUCH DAMAGE.
 .\"
-.Dd December 25, 2013
+.Dd 25 декабря, 2013
 .Dt HOSTS.EQUIV 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm hosts.equiv ,
 .Nm .rhosts
-.Nd trusted remote host and user name data base
-.Sh DESCRIPTION
+.Nd база данных доверенного удаленного хоста и имени пользователя
+.Sh ОПИСАНИЕ
 The
 .Nm
 and
 .Nm .rhosts
-files contain information regarding
-trusted hosts and users on the network.
-For each host a single line should be present
-with the following information:
+файлы содержат информацию о
+доверенных хостах и пользователях в сети.
+Для каждого хоста должна быть выделена отдельная строка
+со следующей информацией:
 .Pp
-simple
+простое
 .Bd -unfilled -offset indent
-hostname [username]
+имя хоста [username]
 .Ed
 .Pp
-or the more verbose
+или более многословное имя хоста
 .Bd -unfilled -offset indent
 [+-][hostname|@netgroup] [[+-][username|@netgroup]]
 .Ed
 .Pp
 A
 .Dq @
-indicates a host by netgroup or user by netgroup.
-A single
+указывает хост по сетевой группе или пользователя 
+по сетевой группе.
+Единица соответствует 
 .Dq +
-matches all hosts or users.
-A host name with a leading
+всем хостам или пользователям.
+Имя хоста, начинающееся с 
 .Dq -
-will reject
-all matching hosts and all their users.
-A user name with leading
+будет отклонять
+все подходящие хосты и всех их пользователей.
+Имя пользователя с ведущим параметром
 .Dq -
-will reject all matching users from matching hosts.
+будет отклонять всех подходящих пользователей с подходящих хостов..
 .Pp
-Items are separated by any number of blanks and/or
-tab characters.
-A
+Элементы разделяются любым количеством пробелов и/или
+символов табуляции.
+Параметр
 .Dq #
-indicates the beginning of
-a comment; characters up to the end of the line are
-not interpreted by routines which search the file.
+указывает начало
+комментария; символы до конца строки
+не интерпретируются подпрограммами, выполняющими поиск в файле.
 .Pp
-Host names are specified in the conventional Internet DNS
-dotted-domains
+Имена хостов указываются в обычных интернет-DNS
+доменах с точечным отображением
 .Dq .\&
-(dot) notation using the
+(dot) обозначение с использованием порядка
 .Xr inet_addr 3
-routine
-from the Internet address manipulation library,
+из библиотеки манипулирования интернет-адресами,
 .Xr inet 3 .
-Host names may contain any printable
-character other than a field delimiter, newline,
-or comment character.
+Имена хостов могут содержать любой печатаемый
+символ, отличный от разделителя полей,
+символа новой строки или комментария.
 .Pp
-For security reasons, a user's
+В целях безопасности пользовательский файл
 .Nm .rhosts
-file will be ignored if it is not a regular file, or if it
-is not owned by the user, or
-if it is writable by anyone other than the user.
-.Sh FILES
+будет проигнорирован, если он не является обычным файлом, или если он
+не принадлежит пользователю, или
+если он доступен для записи кем-либо, кроме пользователя.
+.Sh ФАЙЛЫ
 .Bl -tag -width /etc/hosts.equivxxx -compact
 .It Pa /etc/hosts.equiv
-The
+Файл
 .Nm
-file resides in
+находится в
 .Pa /etc .
 .It Pa $HOME/.rhosts
+файл
 .Nm .rhosts
-file resides in
+находится в
 .Pa $HOME .
 .El
-.Sh EXAMPLES
+.Sh ПРИМЕРЫ
 .Dl bar.com foo
 .Pp
-Trust user
+Доверенный пользователь
 .Dq foo
-from host
+с хоста
 .Dq bar.com .
 .Pp
 .Dl +@allclient
 .Pp
-Trust all hosts from netgroup
+Доверяется всем хостам из netgroup
 .Dq allclient .
 .Pp
 .Dl +@allclient -@dau
 .Pp
-Trust all hosts from netgroup
+Доверяется всем хостам из netgroup
 .Dq allclient
-and their users
-except users from netgroup
+и их пользователям, 
+за исключением пользователей из netgroup
 .Dq dau .
-.Sh SEE ALSO
+.Sh СМОТРЕТЬ ТАКЖЕ
 .Xr rcp 1 ,
 .Xr gethostbyname 3 ,
 .Xr inet 3 ,
@@ -132,9 +133,9 @@ except users from netgroup
 .Xr netgroup 5 ,
 .Xr ifconfig 8 ,
 .Xr yp 8
-.Sh BUGS
-This manual page is incomplete.
-For more information read
-the source in
+.Sh ОШИБКИ
+Эта страница руководства является неполной.
+Для получения дополнительной информации ознакомьтесь
+с источником по
 .Pa src/lib/libc/net/rcmd.c
-or the SunOS manual page.
+или на странице руководства SunOS.

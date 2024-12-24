@@ -47,59 +47,57 @@
 .\" *                                                                          *
 .\" ***************************************************************************/
 .\"
-.Dd December 13, 2009
+.Dd 13 декабря, 2009 год
 .Dt TERMCAP 5
 .Os
-.Sh NAME
-.Nm termcap
-.Nd terminal capability data base
-.Sh SYNOPSIS
+.Sh ИМЯ
+.Nm ограничение срока действия
+.Nd базs данных о возможностях терминала
+.Sh КРАТКИЙ ОБЗОР
 .Nm
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Файл 
 .Nm
-file
-is a data base describing terminals,
-used,
-for example,
-by
+представляет собой базу данных, описывающую терминалы,
+используемые,
+например,
 .Xr \&vi 1
-and
+и
 .Xr ncurses 3 .
-Terminals are described in
+Терминалы описаны в
 .Nm
-by giving a set of capabilities that they have and by describing
-how operations are performed.
-Padding requirements and initialization sequences
-are included in
+предоставляя набор возможностей, которыми они обладают, и описывая, 
+как выполняются операции.
+Требования к заполнению и последовательности инициализации
+включены в
 .Nm .
 .Pp
-Entries in
+Записи в
 .Nm
-consist of a number of `:'-separated fields.
-The first entry for each terminal gives the names that are known for the
-terminal, separated by `|' characters.
-The first name given is the most common abbreviation for the terminal.
-The last name given should be a long name fully identifying the terminal,
-and all others are understood as synonyms for the terminal name.
-All names but the last should be in lower case and contain no blanks;
-the last name may well contain upper case characters and blanks for
-readability.
+состоят из ряда полей, разделенных с помощью `:'.
+В первой записи для каждого терминала указаны имена, известные для данного
+терминала, разделенные параметрами `|'.
+Первое приведенное название является наиболее распространенной аббревиатурой терминала.
+Последнее название должно быть длинным, полностью идентифицирующим терминал,
+а все остальные должны восприниматься как синонимы названия терминала.
+Все названия, кроме последнего, должны быть написаны строчными буквами и не содержать пробелов;
+фамилия вполне может содержать символы верхнего регистра и пробелы для
+удобства чтения.
 .Pp
-Terminal names (except for the last, verbose entry)
-should be chosen using the following conventions.
-The particular piece of hardware making up the terminal
-should have a root name chosen, thus
+Наименования терминала (за исключением последней, подробной записи)
+следует выбирать, руководствуясь следующими соглашениями.
+Для конкретной аппаратной части терминала
+должно быть выбрано корневое имя с помощью
 .Dq hp2621
-This name should not contain hyphens.
-Modes that the hardware can be in
-or user preferences
-should be indicated by appending a hyphen and an indicator of the mode.
-Therefore, a
+Это название не должно содержать дефисов.
+Режимы, в которых может работать оборудование, 
+или пользовательские настройки
+следует указывать, добавляя дефис и индикатор режима.
+Следовательно,
 .Dq vt100
-in 132-column mode would be
+в режиме с 132 столбцами было бы
 .Dq vt100-w .
-The following suffixes should be used where possible:
+По возможности следует использовать следующие суффиксы:
 .Bl -column indent "With automatic margins (usually default)xx" -offset indent
 .Sy "Suffix	Meaning	Example"
 -w	Wide mode (more than 80 columns)	vt100-w
@@ -110,27 +108,27 @@ The following suffixes should be used where possible:
 .Pf \- Ar \&np Ta No "Number of pages of memory	concept100-4p"
 -rv	Reverse video	concept100-rv
 .El
-.Sh CAPABILITIES
-The description field attempts to convey the semantics of the
-capability.
-You may find some codes in the description field:
+.Sh ВОЗМОЖНОСТИ
+В поле "Описание" делается попытка передать семантику
+возможности.
+В поле "Описание" вы можете найти некоторые коды:
 .Bl -tag -width #[1-9]
 .It (P)
-indicates that padding may be specified.
+указывает, что может быть указано заполнение.
 .It #[1-9]
-in the description field indicates that the string is passed through
+в поле описание указывается, что строка передается через
 .Xr tparm 3
-or
+или
 .Xr tgoto 3
-with parms as given (#\fIi\fP).
+как указано с parms (#\fIi\fP).
 .It (P*)
-indicates that padding may vary in proportion to the number of
-lines affected.
+указывает, что заполнение может варьироваться пропорционально количеству
+затронутых строк.
 .It (#\d\fIi\fP\u)
-indicates the \fIi\fP\uth\d parameter.
+Указывает параметр \fIi\fP\uth\d .
 .El
 .Pp
-These are the boolean capabilities:
+Это логические возможности:
 .Bd -literal
 \fBBoolean			TCap	Description\fR
 \fBVariables		Code\fR
@@ -545,7 +543,7 @@ user7			u7	User string #7
 user8			u8	User string #8
 user9			u9	User string #9
 #
-# SVr4 added these capabilities to support color
+# В SVr4 были добавлены следующие возможности для поддержки цвета
 #
 orig_pair		op	Set default pair to its	original value
 orig_colors		oc	Set all	color pairs to the original ones
@@ -556,7 +554,7 @@ set_color_pair		sp	Set current color pair to #1
 set_foreground		Sf	Set foreground color #1
 set_background		Sb	Set background color #1
 #
-# SVr4 added these capabilities to support printers
+# В SVr4 были добавлены эти возможности для поддержки принтеров
 #
 change_char_pitch	ZA	Change number of characters per	inch
 change_line_pitch	ZB	Change number of lines per inch
@@ -610,8 +608,8 @@ superscript_characters	Zv	List of	superscriptible	characters
 these_cause_cr		Zw	Printing any of	these chars causes CR
 zero_motion		Zx	No motion for subsequent character
 #
-# The following	string capabilities are	present	in the SVr4.0 term
-# structure, but are not documented in the man page.
+# Следующие возможности использования строк присутствуют в терминах SVr4.0
+# structure, но не описаны на странице руководства.
 #
 char_set_names		Zy	List of	character set names
 key_mouse		Km	Mouse event has	occurred
@@ -639,7 +637,7 @@ end_bit_image_region	Yy	End a bit-image	region
 set_color_band		Yz	Change to ribbon color #1
 set_page_length		YZ	Set page length	to #1 lines
 #
-# SVr4 added these capabilities for direct PC-clone support
+# SVr4 добавлены возможности для прямой поддержки клонирования ПК
 #
 display_pc_char		S1	Display	PC character
 enter_pc_charset_mode	S2	Enter PC character display mode
@@ -650,7 +648,7 @@ pc_term_options		S6	PC terminal options
 scancode_escape		S7	Escape for scancode emulation
 alt_scancode_esc	S8	Alternate escape for scancode emulation
 #
-# The XSI Curses standard added	these.
+# XSI Curses standard добавил следующие возможности.
 #
 enter_horizontal_hl_mode	Xh	Enter horizontal highlight mode
 enter_left_hl_mode	Xl	Enter left highlight mode
@@ -721,98 +719,97 @@ ca\||\|concept100\||\|c100\||\|concept\||\|c104\||\|concept100-4p\||\|HDS Concep
 	:bs:cr=^M:dC#9:dT#8:nl=^J:ta=^I:pt:
 .Ed
 .Pp
-Entries may continue onto multiple lines by giving a \e as the last
-character of a line, and empty fields
-may be included for readability (here between the last field on a line
-and the first field on the next).
-Comments may be included on lines beginning with
+Записи могут быть продолжены на несколько строк, если в качестве последнего
+символа строки указывается символ a \e, а
+для удобства чтения могут быть включены пустые поля (в данном случае между последним полем в строке
+и первым полем в следующей).
+Комментарии могут быть включены в строки, начинающиеся с
 .Dq # .
 .Ss Types of Capabilities
-Capabilities in
+Возможности в
 .Nm
-are of three types: Boolean capabilities,
-which indicate particular features that the terminal has;
-numeric capabilities,
-giving the size of the display or the size of other attributes;
-and string capabilities,
-which give character sequences that can be used to perform particular
-terminal operations.
-All capabilities have two-letter codes.
-For instance, the fact that
-the Concept has
-.Em automatic margins
-(an automatic return and linefeed
-when the end of a line is reached) is indicated by the Boolean capability
+разделяются на тр типа: Bвозможности oolean,
+которые указывают на конкретные функции, которыми обладает терминал;
+числовые возможности,
+задающие размер дисплея или размер других атрибутов;
+и строковые возможности,
+которые задают последовательности символов, которые могут использоваться для выполнения определенных
+операций с терминалом.
+Все возможности имеют двухбуквенные коды.
+Например, тот факт, что
+Концепция имеет
+.Em автоматические поля
+(автоматический возврат и перевод строки
+при достижении конца строки) обозначается логической функцией
 .Sy \&am .
-Hence the description of the Concept includes
+Следовательно, описание концепции включает в себя
 .Sy \&am .
 .Pp
-Numeric capabilities are followed by the character `#' then the value.
-In the example above
+За числовыми параметрами следует символ `#' затем значение.
+В приведенном выше примере
 .Sy \&co ,
-which indicates the number of columns the display has,
-gives the value `80' for the Concept.
+который указывает количество столбцов, отображаемых на дисплее,
+и дает значение `80' для Концепции.
 .Pp
-Finally, string-valued capabilities, such as
+Наконец, возможности, связанные со строковыми значениями, такие как
 .Sy \&ce
 (clear-to-end-of-line
-sequence) are given by the two-letter code, an `=', then a string
-ending at the next following `:'.
-A delay in milliseconds may appear after
-the `=' in such a capability,
-which causes padding characters to be supplied by
+sequence) задаются двухбуквенным кодом, обозначающим `=', затем строка, 
+заканчивающаяся на следующем за ней `:'.
+В такой возможности после
+`=' может появиться задержка в миллисекундах,
+что приводит к вводу символов заполнения с помощью
 .Xr tputs 3
-after the remainder of the string is sent to provide this delay.
-The delay can be either a number,
-such as `20', or a number followed by
-an `*',
-such as `3*'.
-An `*' indicates that the padding required is proportional
-to the number of lines affected by the operation, and the amount given is
-the per-affected-line padding required.
-(In the case of insert-character,
-the factor is still the number of
-.Em lines
-affected;
-this is always 1 unless the terminal has
+после того, как будет отправлена оставшаяся часть строки, чтобы обеспечить эту задержку.
+Задержка может быть либо числом,
+например `20', либо числом, за которым следует
+параметр `*',
+такой как `3*'.
+Параметр `*' указывает, что требуемое заполнение пропорционально
+количеству строк, на которые влияет операция, и
+указанное значение соответствует требуемому заполнению для каждой затронутой строки.
+(В случае insert-character
+коэффициент по-прежнему равен количеству строк, на которые влияет операция.
+.Em строчки
+затрагиваются;
+это значение всегда равно 1, если только в терминале нет
 .Sy \&in
-and the software uses it.)
-When an `*' is specified, it is sometimes useful to give a delay of the form
-`3.5' to specify a delay per line to tenths of milliseconds.
-(Only one decimal place is allowed.)
+и программное обеспечение это использует.)
+Когда параметр `*' иногда полезно задать задержку в виде
+`3.5' чтобы указать задержку для каждой строки с точностью до десятых долей миллисекунд.
+(Допускается только один знак после запятой).
 .Pp
-A number of escape sequences are provided in the string-valued capabilities
-for easy encoding of control characters there.
+В возможностях использования строковых значений предусмотрен ряд управляющих последовательностей
+для упрощения кодирования управляющих параметров.
 .Sy \&\eE
-maps to an
+сопоставляется с параметром
 .Dv ESC
-character,
+,
 .Sy \&^X
-maps to a control-X for any appropriate X,
-and the sequences
-.Sy \&\en
+сопоставляется с элементом управления-X для любого подходящего X,
+а последовательности.Sy \&\en
 .Sy \&\er
 .Sy \&\et
 .Sy \&\eb
 .Sy \&\ef
-map to linefeed, return, tab, backspace, and formfeed, respectively.
-Finally, characters may be given as three octal digits after a
+используется для перевода строки, возврата, табуляции, обратного пробела и перевода формы соответственно.
+Наконец, параметры могут быть представлены в виде трех восьмеричных цифр после
 .Sy \&\e ,
-and the characters
+и после параметров
 .Sy \&^
-and
+и 
 .Sy \&\e
-may be given as
+может быть представлен в виде
 .Sy \&\e^
-and
+и в виде
 .Sy \&\e\e .
-If it is necessary to place a
+Если необходимо разместить
 .Sy \&:
 in a capability it must be escaped as
 .Sy \e:
-or be encoded as
+или быть закодированным как
 .Sy \&\e072 .
-If it is necessary to place a
+Если необходимо разместить
 .Dv NUL
 character in a string capability it
 must be encoded as

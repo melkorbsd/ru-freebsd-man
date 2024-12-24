@@ -24,39 +24,38 @@
 .\"
 .\" $Id: bluetooth.hosts.5,v 1.5 2003/05/20 22:52:39 max Exp $
 .\"
-.Dd May 8, 2003
+.Dd 8 мая, 2003
 .Dt BLUETOOTH.HOSTS 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm bluetooth.hosts
-.Nd Bluetooth host name database
-.Sh DESCRIPTION
-The
+.Nd База данных имен хостов Bluetooth
+.Sh ОПИСАНИЕ
+Файл
 .Pa /etc/bluetooth/hosts
-file contains information regarding the known Bluetooth hosts.
-For each Bluetooth host a single line should be present with the
-following information:
+содержит информацию о известных Bluetooth-хостах.
+Для каждого Bluetooth-хоста должна быть представлена одна строка
+с следующей информацией:
 .Bd -unfilled -offset indent
-Bluetooth address
-official host name
-aliases
+Bluetooth-адрес
+официальное имя хоста
+псевдонимы
 .Ed
 .Pp
-Items are separated by any number of blanks and/or tab characters.
-A
-.Ql #
-indicates the beginning of a comment; characters up to the end of the line are
-not interpreted by routines which search the file.
+Элементы разделяются любым количеством пробелов и/или табуляций. 
+.Ql # 
+указывает на начало комментария; символы до конца строки
+не интерпретируются процедурами, которые ищут файл.
 .Pp
-Bluetooth addresses are specified as six hex bytes separated by columns
+Bluetooth-адреса указываются в виде шести шестнадцатеричных байтов, разделенных двоеточиями
 (BD_ADDR).
-Host names may contain any printable character other than a field
-delimiter, newline, or comment character.
-.Sh FILES
+Имена хостов могут содержать любые печатные символы, кроме разделителей полей,
+символа новой строки или символа комментария.
+.Sh ФАЙЛЫ
 .Bl -tag -width ".Pa /etc/bluetooth/hosts" -compact
 .It Pa /etc/bluetooth/hosts
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr bluetooth 3
-.Sh AUTHORS
+.Sh АВТОРЫ
 .An Maksim Yevmenkin Aq Mt m_evmenkin@yahoo.com

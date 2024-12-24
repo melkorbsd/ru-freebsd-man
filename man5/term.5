@@ -53,52 +53,52 @@
 ..
 .ds n 5
 .ds d /usr/share/misc/terminfo
-.SH NAME
-term \- format of compiled term file.
+.SH ИМЯ
+срок \- формат скомпилированного файла term.
 .SH SYNOPSIS
 .B term
-.SH DESCRIPTION
-.SS STORAGE LOCATION
-Compiled terminfo descriptions are placed under the directory \fB\*d\fP.
-Two configurations are supported (when building the \fBncurses\fP libraries):
+.SH ОПИСАНИЕ
+.SS МЕСТО ХРАНЕНИЯ
+Скомпилированные описания terminfo помещаются в каталог \fB\*d\fP.
+Поддерживаются две конфигурации (при построении библиотек \fBncurses\fP):
 .TP 5
-.B directory tree
-A two-level scheme is used to avoid a linear search
-of a huge \s-1UNIX\s+1 system directory: \fB\*d/c/name\fP where
-.I name
-is the name of the terminal, and
+.B дерево каталогов
+Двухуровневая схема используется для того, чтобы избежать линейного поиска
+в огромном системном каталоге \s-1UNIX\s+1: \fB\*d/c/name\fP где
+.I наименование
+является названием терминала, и
 .I c
-is the first character of
-.IR name .
-Thus,
+является первым символом
+.IR наименования .
+Таким образом,
 .I act4
-can be found in the file \fB\*d/a/act4\fP.
-Synonyms for the same terminal are implemented by multiple
-links to the same compiled file.
+можно найти в файле \fB\*d/a/act4\fP.
+Синонимы для одного и того же терминала реализуются с помощью нескольких
+ссылок на один и тот же скомпилированный файл.
 .TP 5
-.B hashed database
-Using Berkeley database, two types of records are stored:
-the terminfo data in the same format as stored in a directory tree with
-the terminfo's primary name as a key,
-and records containing only aliases pointing to the primary name.
+.B хэшированная база данных
+В базе данных Berkeley хранятся записи двух типов:
+данные terminfo в том же формате, что и в дереве каталогов, с
+основным именем terminfo в качестве ключа,
+и записи, содержащие только псевдонимы, указывающие на основное имя.
 .IP
-If built to write hashed databases,
-\fBncurses\fP can still read terminfo databases organized as a directory tree,
-but cannot write entries into the directory tree.
-It can write (or rewrite) entries in the hashed database.
+Если создается для записи хэшированных баз данных,
+\fBncurses\fP по-прежнему может считывать базы данных terminfo, организованные в виде дерева каталогов,
+но не может записывать записи в дерево каталогов.
+Он может записывать (или перезаписывать) записи в хэшированной базе данных.
 .IP
-\fBncurses\fP distinguishes the two cases in the TERMINFO and TERMINFO_DIRS
-environment variable by assuming a directory tree for entries that
-correspond to an existing directory,
-and hashed database otherwise.
-.SS LEGACY STORAGE FORMAT
-The format has been chosen so that it will be the same on all hardware.
-An 8 or more bit byte is assumed, but no assumptions about byte ordering
-or sign extension are made.
+\fBncurses\fP различает эти два случая в TERMINFO и TERMINFO_DIRS
+переменная окружения, предполагающая дерево каталогов для записей,
+соответствующих существующему каталогу,
+и хэшированную базу данных в противном случае.
+.SS УСТАРЕВШИЙ ФОРМАТ ХРАНЕНИЯ
+Формат был выбран таким образом, чтобы он был одинаковым для всего оборудования.
+Предполагается, что размер байта составляет 8 или более бит, но не делается никаких предположений относительно порядка байтов
+или расширения знака.
 .PP
-The compiled file is created with the \fBtic\fP program,
-and read by the routine \fBsetupterm\fP(3X).
-The file is divided into six parts:
+Скомпилированный файл создается с помощью программы \fBtic\fP ,
+и читается по заведенному порядку \fBsetupterm\fP(3X).
+Файл разделен на шесть частей:
 .RS 5
 .TP 3
 a) \fIheader\fP,
@@ -114,241 +114,235 @@ e) \fIstrings\fP, and
 f) \fIstring table\fP.
 .RE
 .PP
-The \fIheader\fP section begins the file.
-This section contains six short integers in the format
-described below.
-These integers are
+Раздел \fIheader\fP начинает файл.
+Этот раздел содержит шесть коротких целых чисел в формате
+, описанном ниже.
+Эти целые числа являются
 .RS 5
 .TP 5
-(1) the \fImagic number\fP (octal 0432);
+(1) \fImagic number\fP (octal 0432);
 .TP 5
-(2) the size, in bytes, of the \fIterminal names\fP section;
+(2) размер файла в байтах \fIterminal names\fP раздела;
 .TP 5
-(3) the number of bytes in the \fIboolean flags\fP section;
+(3) количество байт в файле \fIboolean flags\fP раздела;
 .TP 5
-(4) the number of short integers in the \fInumbers\fP section;
+(4) количество коротких целых чисел в разделе \fInumbers\fP ;
 .TP 5
-(5) the number of offsets (short integers) in the \fIstrings\fP section;
+(5) количество смещений (коротких целых чисел) в разделе \fIstrings\fP ;
 .TP 5
-(6) the size, in bytes, of the \fIstring table\fP.
+(6) размер файла в байтах раздела \fIstring table\fP.
 .RE
 .PP
-The capabilities in the
+Возможности в разделах
 \fIboolean flags\fP,
-\fInumbers\fP, and
+\fInumbers\fP, и разделе
 \fIstrings\fP
-sections are in the same order as the file <term.h>.
+находятся в том же порядке, что и файл <term.h>.
 .PP
-Short integers are signed, in the range \-32768 to 32767.
-They are stored as two 8-bit bytes.
-The first byte contains the least significant 8 bits of the value,
-and the second byte contains the most significant 8 bits.
-(Thus, the value represented is 256*second+first.)
-This format corresponds to the hardware of the \s-1VAX\s+1
-and \s-1PDP\s+1-11 (that is, little-endian machines).
-Machines where this does not correspond to the hardware must read the
-integers as two bytes and compute the little-endian value.
+Короткие целые числа обозначаются знаком в диапазоне \-32768 to 32767.
+Они хранятся в виде двух 8-разрядных байтов.
+Первый байт содержит 8 младших битов значения,
+а второй байт содержит 8 старших битов.
+(Таким образом, представленное значение равно 256*второй+первый.)
+Этот формат соответствует аппаратному обеспечению устройства. \s-1VAX\s+1
+и \s-1PDP\s+1-11 (то есть, машины с малым числом последовательностей).
+Машины, где это не соответствует аппаратному обеспечению, должны считывать
+целые числа в виде двух байт и вычислять значение в порядке убывания.
 .PP
-Numbers in a terminal description,
-whether they are entries in the \fInumbers\fP or \fIstrings\fP table,
-are positive integers.
-Boolean flags are treated as positive one-byte integers.
-In each case, those positive integers represent a terminal capability.
-The terminal compiler tic uses negative integers to handle the cases where
-a capability is not available:
+Номера в описании терминала,
+независимо от того, являются ли они записями в \fInumbers\fP или \fIstrings\fP таблице,
+являются положительными целыми числами.
+Логические флаги обрабатываются как положительные однобайтовые целые числа.
+В каждом случае эти положительные целые числа представляют возможность терминала.
+Tic компилятора терминала использует отрицательные целые числа для обработки случаев, когда
+возможность недоступна:
 .bP
-If a capability is absent from this terminal,
-tic stores a \-1 in the corresponding table.
+Если в этом терминале отсутствует какая-либо возможность,
+tic сохраняет \-1 в соответствующей таблице.
 .IP
-The integer value \-1 is represented by two bytes 0377, 0377.
+Целочисленное значение \-1 представлен двумя байтами 0377, 0377.
 .br
-Absent boolean values are represented by the byte 0 (false).
+Отсутствующие логические значения представлены байтом 0 (ложь).
 .bP
-If a capability has been canceled from this terminal,
-tic stores a \-2 in the corresponding table.
+Если функция была отменена на этом терминале,
+tic сохраняет значение \-2 в соответствующей таблице.
 .IP
-The integer value \-2 is represented by two bytes 0377, 0376.
+Целое значение \-2 представлено двумя байтами 0377, 0376.
 .br
-The boolean value \-2 is represented by the byte 0376.
+Логическое значение \-2 представлено байтом 0376.
 .br
 .bP
-Other negative values are illegal.
+Другие отрицательные значения недопустимы.
 .PP
-The \fIterminal names\fP section comes after the \fIheader\fP.
-It contains the first line of the terminfo description,
-listing the various names for the terminal,
-separated by the \*(``|\*('' character.
-The \fIterminal names\fP section is terminated
-with an \s-1ASCII NUL\s+1 character.
+Раздел \fIterminal names\fP идет после раздела \fIheader\fP.
+Он содержит первую строку описания terminfo,
+в которой перечислены различные названия терминала,
+разделенные параметрами \*(``|\*('' .
+Раздел \fIterminal names\fP завершается 
+символом \s-1ASCII NUL\s+1 .
 .PP
-The \fIboolean flags\fP section has one byte for each flag.
-Boolean capabilities are either 1 or 0 (true or false)
-according to whether the terminal supports the given capability or not.
+Раздел \fIboolean flags\fP имеет один байт для каждого флага.
+Логические возможности равны 1 или 0 (true или false)
+в зависимости от того, поддерживает ли терминал данную возможность или нет.
 .PP
-Between the \fIboolean flags\fP section and the \fInumber\fP section,
-a null byte will be inserted, if necessary,
-to ensure that the \fInumber\fP section begins on an even byte
-This is a relic of the PDP\-11's word-addressed architecture,
-originally designed to avoid traps induced
-by addressing a word on an odd byte boundary.
-All short integers are aligned on a short word boundary.
+Между разделом \fIboolean flags\fP и раделом cessary,
+чтобы гарантировать, что раздел  \fInumber\fP начинается с четного байта
+Это пережиток архитектуры PDP\-11'с адресацией по словам,
+изначально разработанной для предотвращения ошибок, возникающих
+при адресации слова на границе нечетного байта.
+Все короткие целые числа выравниваются по границе короткого слова.
 .PP
-The \fInumbers\fP section is similar to the \fIboolean flags\fP section.
-Each capability takes up two bytes,
-and is stored as a little-endian short integer.
+Раздел \fInumbers\fP похож на раздел \fIboolean flags\fP .
+Каждая функция занимает два байта
+и хранится в виде короткого целого числа, начинающегося с запятой.
 .PP
-The \fIstrings\fP section is also similar.
-Each capability is stored as a short integer.
-The capability value is an index into the \fIstring table\fP.
+Раздел \fIstrings\fP тоже похож.
+Каждая способность сохраняется в виде короткого целого числа.
+Значение способности является индексом в \fIstring table\fP.
 .PP
-The \fIstring table\fP is the last section.
-It contains all of the values of string capabilities referenced in
-the \fIstrings\fP section.
-Each string is null-terminated.
-Special characters in ^X or \ec notation are stored in their
-interpreted form, not the printing representation.
-Padding information $<nn> and parameter information %x are
-stored intact in uninterpreted form.
-.SS EXTENDED STORAGE FORMAT
-The previous section describes the conventional terminfo binary format.
-With some minor variations of the offsets (see PORTABILITY),
-the same binary format is used in all modern UNIX systems.
-Each system uses a predefined set of boolean, number or string capabilities.
+Раздел \fIstring table\fP является последним.
+Он содержит все значения строковых возможностей, 
+на которые ссылаются в раздел \fIstrings\fP .
+Он содержит все значения string, каждая строка заканчивается нулем.
+Специальные символы в ^X или возможности, на которые ссылаются в
+ \ec обозначения сохраняются в их
+интерпретируемой форме, а не в печатном виде.
+Информация о дополнении $<nn> и информация о параметрах %x
+сохраняются в неизменном виде в неинтерпретированном виде.
+.SS РАСШИРЕННЫЙ ФОРМАТ ХРАНЕНИЯ ДАННЫХ
+В предыдущем разделе описан обычный двоичный формат terminfo.
+С некоторыми незначительными изменениями в смещениях (см. раздел "ПЕРЕНОСИМОСТЬ"),
+один и тот же двоичный формат используется во всех современных системах UNIX..
+Каждая система использует предопределенный набор логических, числовых или строковых функций.
 .PP
-The \fBncurses\fP libraries and applications support
-extended terminfo binary format,
-allowing users to define capabilities which are loaded at runtime.
-This
-extension is made possible by using the fact that the other implementations
-stop reading the terminfo data when they have reached the end of the size given
-in the header.
-\fBncurses\fP checks the size,
-and if it exceeds that due to the predefined data,
-continues to parse according to its own scheme.
+Библиотеки \fBncurses\fP приложения поддерживают
+расширенный двоичный формат terminfo,
+позволяющий пользователям определять возможности, которые загружаются во время выполнения.
+Это
+расширение стало возможным благодаря тому, что другие реализации
+прекращают чтение данных terminfo, когда они достигают конечного размера, указанного
+в заголовке.
+\fBncurses\fP проверяет размер,
+и если оно превышает это значение из-за предопределенных данных,
+продолжает разбор по своей собственной схеме.
 .PP
-First, it reads the extended header (5 short integers):
+Сначала он считывает расширенный заголовок (5 коротких целых чисел).:
 .RS 5
 .TP 5
 (1)
-count of extended boolean capabilities
+количество расширенных логических возможностей
 .TP 5
 (2)
-count of extended numeric capabilities
+количество расширенных числовых возможностей
 .TP 5
 (3)
-count of extended string capabilities
+количество расширенных возможностей построения строк
 .TP 5
 (4)
-count of the items in extended string table
+количество элементов в расширенной таблице строк
 .TP 5
 (5)
-size of the extended string table in bytes
+размер расширенной таблицы строк в байтах
 .RE
 .PP
-The count- and size-values for the extended string table
-include the extended capability \fInames\fP as well as
-extended capability \fIvalues\fP.
+Параметры count- и size-values для расширенной таблицы строк
+включите расширенную возможность \fInames\fP а также
+расширенные возможности \fIvalues\fP.
 .PP
-Using the counts and sizes, \fBncurses\fP allocates arrays and reads data
-for the extended capabilities in the same order as the header information.
+Используя количество и размеры, \fBncurses\fP выделяет массивы и считывает данные
+для расширенных возможностей в том же порядке, что и информация заголовка.
 .PP
-The extended string table contains values for string capabilities.
-After the end of these values, it contains the names for each of
-the extended capabilities in order, e.g., booleans, then numbers and
-finally strings.
+Таблица расширенных строк содержит значения для возможностей string.
+После окончания этих значений в ней содержатся имена для каждой из
+расширенных возможностей по порядку, например, логические значения, затем числа и, 
+наконец, строки.
 .PP
-Applications which manipulate terminal data can use the definitions
-described in \fBterm_variables\fP(3X) which associate the long capability
-names with members of a \fBTERMTYPE\fP structure.
+Приложения, которые манипулируют данными терминала, могут использовать определения, описанные в \fBterm_variables\fP(3X) которые связывают длинные
+имена возможностей с членами структуры \fBTERMTYPE\fP .
 .
-.SS EXTENDED NUMBER FORMAT
+.SS РАСШИРЕННЫЙ ФОРМАТ НОМЕРА
 .PP
-On occasion, 16-bit signed integers are not large enough.
-With \fBncurses\fP 6.1, a new format was introduced by making a few changes
-to the legacy format:
+Иногда 16-разрядные целые числа со знаком недостаточно велики.
+С \fBncurses\fP 6.1, новый формат был введен путем внесения нескольких изменений
+в устаревший формат:
 .bP
-a different magic number (octal 01036)
+другое магическое число (восьмеричное 01036)
 .bP
-changing the type for the \fInumber\fP array from signed 16-bit integers
-to signed 32-bit integers.
+изменение типа массива \fInumber\fP со знаковых 16-разрядных целых
+чисел на знаковые 32-разрядные целые числа.
 .PP
-To maintain compatibility, the library presents the same data structures
-to direct users of the \fBTERMTYPE\fP structure as in previous formats.
-However, that cannot provide callers with the extended numbers.
-The library uses a similar but hidden data structure \fBTERMTYPE2\fP
-to provide data for the terminfo functions.
-.SH PORTABILITY
+Для обеспечения совместимости библиотека предоставляет
+непосредственным пользователям структуры \fBTERMTYPE\fP те же структуры данных, что и в предыдущих форматах.
+Однако это не позволяет предоставлять абонентам расширенные номера.
+Библиотека использует аналогичную, но скрытую структуру данных \fBTERMTYPE2\fP
+для предоставления данных для функций terminfo.
+.SH МОБИЛЬНОСТЬ
 .SS setupterm
 .PP
-Note that it is possible for
+Обратите внимание, что это возможно для
 .B setupterm
-to expect a different set of capabilities
-than are actually present in the file.
-Either the database may have been updated since
+ожидать, что набор возможностей
+будет отличаться от того, который на самом деле присутствует в файле.
+Либо база данных могла быть обновлена с тех пор, как
 .B setupterm
-has been recompiled
-(resulting in extra unrecognized entries in the file)
-or the program may have been recompiled more recently
-than the database was updated
-(resulting in missing entries).
-The routine
+была перекомпилирована
+(что привело к появлению дополнительных нераспознанных записей в файле)
+или программа могла быть перекомпилирована
+позже обновления базы
+данных (что привело к отсутствию записей).
+Процедура
 .B setupterm
-must be prepared for both possibilities \-
-this is why the numbers and sizes are included.
-Also, new capabilities must always be added at the end of the lists
-of boolean, number, and string capabilities.
-.SS Binary format
+необходимо быть готовым к обеим возможностям \-
+вот почему указаны номера и размеры.
+Кроме того, новые возможности всегда должны добавляться в конце списков
+логических, числовых и строковых возможностей.
+.SS Двоичный формат
 .PP
-X/Open Curses does not specify a format for the terminfo database.
-UNIX System V curses used a directory-tree of binary files,
-one per terminal description.
+X/Open Curses не указан формат базы данных terminfo.
+В UNIX System V curses использовалось дерево каталогов двоичных файлов,
+по одному на описание терминала.
 .PP
-Despite the consistent use of little-endian for numbers and the otherwise
-self-describing format, it is not wise to count on portability of binary
-terminfo entries between commercial UNIX versions.
-The problem is that there
-are at least three versions of terminfo (under HP\-UX, AIX, and OSF/1) which
-diverged from System V terminfo after SVr1, and have added extension
-capabilities to the string table that (in the binary format) collide with
-System V and XSI Curses extensions.
-See \fBterminfo\fR(\*n) for detailed
-discussion of terminfo source compatibility issues.
+Несмотря на последовательное использование литтл-эндиана для чисел и в остальном
+самоописывающийся формат, неразумно рассчитывать на переносимость двоичных записей
+terminfo между коммерческими версиями UNIX.
+Проблема в том, что существует
+по крайней мере три версии terminfo (под HP\-UX, AIX и OSF/1), которые
+отличаются от System V terminfo после SVr1 и добавили
+возможности расширения в таблицу строк, которые (в двоичном формате) противоречат
+Расширения System V и XSI Curses.
+См. раздел \fBterminfo\fR(\*n) для подробного
+обсуждения проблем совместимости исходных текстов terminfo.
 .PP
-This implementation is by default compatible with the binary
-terminfo format used by Solaris curses,
-except in a few less-used details
-where it was found that the latter did not match X/Open Curses.
-The format used by the other Unix versions
-can be matched by building ncurses
-with different configuration options.
-.SS Magic codes
+Эта реализация по умолчанию совместима с двоичным
+форматом terminfo, используемым Solaris curses,
+за исключением нескольких менее используемых деталей, в которых было обнаружено, что последний не соответствует X/Open Curses.
+Формат, используемый в других версиях Unix, может быть согласован путем создания ncurses
+с различными параметрами конфигурации.
+.SS Магические коды
 .PP
-The magic number in a binary terminfo file is the first 16-bits (two bytes).
-Besides making it more reliable for the library to check that a file
-is terminfo,
-utilities such as \fBfile\fP also use that to tell what the file-format is.
-System V defined more than one magic number,
-with 0433, 0435 as screen-dumps (see \fBscr_dump\fP(5)).
-This implementation uses 01036 as a continuation of that sequence,
-but with a different high-order byte to avoid confusion.
-.SS The TERMTYPE structure
+Магическим числом в двоичном файле terminfo являются первые 16 бит (два байта).
+Помимо повышения надежности проверки библиотекой того, что файл
+является terminfo,
+такие утилиты, как \fBfile\fP также используйте это, чтобы определить формат файла.
+System V определила более одного магического числа,
+с 0433, 0435 в качестве дампов экрана (см. \fBscr_dump\fP(5)).
+Эта реализация использует 01036 как продолжение этой последовательности,
+но с другим старшим байтом, чтобы избежать путаницы.
+.SS Структура TERMTYPE
 .PP
-Direct access to the \fBTERMTYPE\fP structure is provided for legacy
-applications.
-Portable applications should use the \fBtigetflag\fP and related functions
-described in \fBcurs_terminfo\fP(3X) for reading terminal capabilities.
-.SS Mixed-case terminal names
+Для устаревших приложений предусмотрен прямой доступ к структуре \fBTERMTYPE\fP.
+Портативные приложения должны использовать \fBtigetflag\fP и связанные с ним функции, описанные в \fBcurs_terminfo\fP(3X) для чтения возможностей терминала.
+.SS Названия терминалов со смешанным регистром
 .PP
-A small number of terminal descriptions use uppercase characters in
-their names.
-If the underlying filesystem ignores the difference between
-uppercase and lowercase,
-\fBncurses\fP represents the \*(``first character\*(''
-of the terminal name used as
-the intermediate level of a directory tree in (two-character) hexadecimal form.
-.SH EXAMPLE
-As an example, here is a description for the Lear-Siegler
-ADM\-3, a popular though rather stupid early terminal:
+В названиях небольшого числа терминалов используются заглавные буквы.
+Если базовая файловая система игнорирует разницу между
+прописными и строчными буквами,
+\fBncurses\fP представляет собой \*(``первый параметр\*(''
+от имени терминала, используемого в качестве
+промежуточный уровень дерева каталогов в (двухсимвольной) шестнадцатеричной форме.
+.SH ПРИМЕР
+В качестве примера, вот описание для Lear-Siegler
+ADM\-3, популярный, хотя и довольно глупый ранний терминал:
 .NS
 adm3a|lsi adm3a,
         am,
@@ -386,32 +380,32 @@ and a hexadecimal dump of the compiled terminal description:
 .ft R
 .NE
 .sp
-.SH LIMITS
-Some limitations:
+.SH ОГРАНИЧЕНИЯ
+Некоторые ограничения:
 .bP
-total compiled entries cannot exceed 4096 bytes in the legacy format.
+общее количество скомпилированных записей не может превышать 4096 байт в устаревшем формате.
 .bP
-total compiled entries cannot exceed 32768 bytes in the extended format.
+общее количество скомпилированных записей не может превышать 32768 байт в расширенном формате.
 .bP
-the name field cannot exceed 128 bytes.
+размер поля "имя" не может превышать 128 байт.
 .PP
-Compiled entries are limited to 32768 bytes because offsets into the
-\fIstrings table\fP use two-byte integers.
-The legacy format could have supported 32768-byte entries,
-but was limited a virtual memory page's 4096 bytes.
-.SH FILES
-\*d/*/*	compiled terminal capability data base
-.SH SEE ALSO
+Размер скомпилированных записей ограничен 32768 байтами, поскольку для смещений в
+таблице \fIstrings\fP используются двухбайтовые целые числа.
+Устаревший формат мог поддерживать записи размером 32768 байт,
+но был ограничен объемом страницы виртуальной памяти в 4096 байт.
+.SH ФАЙЛЫ
+\*d/*/*	составленная база данных о возможностях терминала
+.SH СМ. ТАКЖЕ
 \fBcurses\fR(3X), \fBterminfo\fR(\*n).
-.SH AUTHORS
+.SH АВТОРЫ
 Thomas E. Dickey
 .br
-extended terminfo format for ncurses 5.0
+расширенный формат terminfo для ncurses 5.0
 .br
-hashed database support for ncurses 5.6
+поддержка хэшированной базы данных для ncurses 5.6
 .br
-extended number support for ncurses 6.1
+расширенная поддержка номеров для ncurses 6.1
 .sp
 Eric S. Raymond
 .br
-documented legacy terminfo format, e.g., from pcurses.
+документированный устаревший формат terminfo, например, из pcurses.

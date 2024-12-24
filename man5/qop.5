@@ -21,79 +21,78 @@
 .\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 .\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 .\" SUCH DAMAGE.
-.Dd January 26, 2010
+.Dd 26 января, 2010
 .Dt MECH 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm mech ,
 .Nm qop
 .Nd "GSS-API Mechanism and QOP files"
-.Sh SYNOPSIS
+.Sh КРАТКИЙ ОБЗОР
 .Pa "/etc/gss/mech"
 .Pa "/etc/gss/qop"
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Файл
 .Pa "/etc/gss/mech"
-file contains a list of installed GSS-API security mechanisms.
-Each line of the file either contains a comment if the first character
-is '#' or it contains five fields with the following meanings:
+содержит список установленных механизмов безопасности GSS-API.
+Каждая строка файла либо содержит комментарий, если первым символом
+является "#", либо содержит пять полей со следующими значениями:
 .Bl -tag -width ".It Object identifier"
-.It Name
-The name of this GSS-API mechanism.
-.It Object identifier
-The OID for this mechanism.
-.It Library
-A shared library containing the implementation of this mechanism.
-.It Kernel module
-Optional kernel module containing the implementation of this mechanism (not
-yet supported in FreeBSD).
-.It Library options
-Optional parameters interpreted by the mechanism. Library options
-must be enclosed in brackets ([ ]) to differentiate them from the
-optional kernel module entry.
+.It Имя
+Название этого  GSS-API механизма.
+.It Идентификатор объекта
+OID для этого механизма.
+.It Библиотека
+Общая библиотека, содержащая реализацию этого механизма.
+.It Модуль ядра
+Дополнительный модуль ядра, содержащий реализацию этого механизма 
+(пока не поддерживается в FreeBSD).
+.It Параметры библиотеки
+Необязательные параметры, интерпретируемые механизмом. Параметры библиотеки
+должны быть заключены в квадратные скобки ([ ]) чтобы отличить их от
+необязательной записи модуля ядра.
 .El
 .Pp
-The first mechanism listed in
+Первый механизм, перечисленный в
 .Pa "/etc/gss/mech"
-is the default mechanism.
-This mechanism will be used by
+является механизмом по умолчанию.
+Этот механизм будет использоваться с помощью
 .Xr gss_init_sec_context 3
-if the user doesn't specify a specific mechanism.
+если пользователь не указывает конкретный механизм.
 .Pp
-The
+Файл
 .Pa "/etc/gss/qop"
-file contains a list of Quality of Protection values for use with
+содержит список значений качества защиты для использования с
 GSS-API.
-Each line of the file either contains a comment if the first character
-is '#' or it contains three fields with the following meanings:
+Каждая строка файла либо содержит комментарий, если первым параметром
+является '#' или он содержит три поля со следующими значениями:
 .Bl -tag -width ".It Mechanism name"
 .It QOP string
-The name of this Quality of Protection algorithm.
+Название алгоритма защиты этого качества.
 .It QOP value
-The numeric value used to select this algorithm for use with GSS-API
-functions such as
+Числовое значение, используемое для выбора этого алгоритма для использования с функциями GSS-API, такими как
 .Xr gss_get_mic 3 .
 .It Mechanism name
-The GSS-API mechanism name that corresponds to this algorithm.
+Название механизма GSS-API, соответствующее этому алгоритму.
 .El
-.Sh EXAMPLES
-This is a typical entry from
+.Sh ПРИМЕРЫ
+Это типичная запись из
 .Pa "/etc/gss/mech" :
 .Bd -literal
 kerberosv5	1.2.840.113554.1.2.2	/usr/lib/libgssapi_krb5.so.8	-
 .Ed
 .Pp
-This is a typical entry from
+Это типичная запись из
 .Pa "/etc/gss/qop" :
 .Bd -literal
 GSS_KRB5_CONF_C_QOP_DES		0x0100	kerberosv5
 .Ed
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Страница руководства 
 .Nm
-manual page first appeared in
+впервые появилась в
 .Fx 7.0 .
-.Sh AUTHORS
-This
-manual page was written by
+.Sh АВТОРЫ
+Эта
+страница руководства была написана
 .An Doug Rabson Aq Mt dfr@FreeBSD.org .

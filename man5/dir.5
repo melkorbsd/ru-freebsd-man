@@ -27,140 +27,139 @@
 .\"
 .\"     @(#)dir.5	8.3 (Berkeley) 4/19/94
 .\"
-.Dd November 14, 2018
+.Dd 14 ноября, 2018
 .Dt DIR 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm dir ,
 .Nm dirent
-.Nd directory file format
-.Sh SYNOPSIS
+.Nd формат файлов каталогов
+.Sh КРАТКОЕ ОПИСАНИЕ
 .In dirent.h
-.Sh DESCRIPTION
-Directories provide a convenient hierarchical method of grouping
-files while obscuring the underlying details of the storage medium.
-A directory file is differentiated from a plain file
-by a flag in its
-.Xr inode 5
-entry.
-It consists of records (directory entries) each of which contains
-information about a file and a pointer to the file itself.
-Directory entries may contain other directories
-as well as plain files; such nested directories are referred to as
-subdirectories.
-A hierarchy of directories and files is formed in this manner
-and is called a file system (or referred to as a file system tree).
+.Sh ОПИСАНИЕ
+Каталоги предоставляют удобный иерархический способ группировки
+файлов, скрывая детали хранения. 
+Файл каталога отличается от обычного файла
+флагом в его записи
+.Xr inode 5 .
+Он состоит из записей (записей каталога), каждая из которых содержит 
+информацию о файле и указатель на сам файл. 
+Записи каталога могут содержать другие каталоги, 
+а также обычные файлы; такие вложенные каталоги называются
+подкаталогами. 
+Таким образом, формируется иерархия каталогов 
+и файлов, которая называется файловой системой (или файловым деревом).
 .\" An entry in this tree,
 .\" nested or not nested,
 .\" is a pathname.
 .Pp
-Each directory file contains two special directory entries; one is a pointer
-to the directory itself
-called dot
-.Ql .\&
-and the other a pointer to its parent directory called dot-dot
-.Ql \&.. .
-Dot and dot-dot
-are valid pathnames, however,
-the system root directory
-.Ql / ,
-has no parent and dot-dot points to itself like dot.
+Каждый файл каталога содержит две специальные записи каталога; одна из них — это указатель 
+на сам каталог, 
+называемый точкой 
+.Ql .&
+и другая — указатель на родительский каталог, называемая точка-точка 
+.Ql &.. .
+Точка и точка-точка 
+являются допустимыми именами путей, однако 
+корневой каталог системы 
+.Ql / 
+не имеет родителя, и точка-точка указывает на себя так же, как и точка.
 .Pp
-File system nodes are ordinary directory files on which has
-been grafted a file system object, such as a physical disk or a
-partitioned area of such a disk.
-(See
-.Xr mount 2
-and
-.Xr mount 8 . )
+Узлы файловой системы — это обычные файлы каталогов, к которым 
+присоединен объект файловой системы, такой как физический диск или 
+раздел такого диска. 
+(См. 
+.Xr mount 2 
+и 
+.Xr mount 8 .)
 .Pp
-The directory entry format is defined in the file
-.In sys/dirent.h
-(which should not be included directly by applications):
+Формат записи каталога определен в файле 
+.In sys/dirent.h 
+(который не следует включать напрямую в приложения):
 .Bd -literal
-#ifndef	_SYS_DIRENT_H_
-#define	_SYS_DIRENT_H_
+#ifndef _SYS_DIRENT_H_
+#define _SYS_DIRENT_H_
 
 #include <machine/ansi.h>
 
 /*
- * The dirent structure defines the format of directory entries returned by
- * the getdirentries(2) system call.
+ * Структура dirent определяет формат записей каталога, возвращаемых
+ * системным вызовом getdirentries(2).
  *
- * A directory entry has a struct dirent at the front of it, containing its
- * inode number, the length of the entry, and the length of the name
- * contained in the entry.  These are followed by the name padded to a 8
- * byte boundary with null bytes.  All names are guaranteed null terminated.
- * The maximum length of a name in a directory is MAXNAMLEN.
- * Explicit pad is added between the last member of the header and
- * d_name, to avoid having the ABI padding in the end of dirent on
- * LP64 arches.  There is code depending on d_name being last.  Also,
- * keeping this pad for ILP32 architectures simplifies compat32 layer.
- */
+ * Запись каталога имеет структуру struct dirent в начале, содержащую ее
+ * номер inode, длину записи и длину имени,
+ * содержащегося в записи. За ними следует имя, дополненное до 8
+ * байт с помощью нулевых байтов. Все имена гарантированно заканчиваются нулем.
+ * Максимальная длина имени в каталоге — MAXNAMLEN.
+ * Явное дополнение добавляется между последним членом заголовка и
+ * d_name, чтобы избежать наличия дополнения ABI в конце dirent на
+ * архитектурах LP64. Есть код, зависящий от d_name как последнего. Также,
+ * сохранение этого дополнения для архитектур ILP32 упрощает слой compat32.
+*/
 
 struct dirent {
-	ino_t      d_fileno;		/* file number of entry */
-	off_t      d_off;		/* directory offset of the next entry */
-	__uint16_t d_reclen;		/* length of this record */
-	__uint8_t  d_type;		/* file type, see below */
-	__uint8_t  d_namlen;		/* length of string in d_name */
-	__uint32_t d_pad0;
+    ino_t      d_fileno;  /* номер файла записи */
+    off_t      d_off;     /* смещение каталога следующей записи */
+    __uint16_t d_reclen;  /* длина этой записи */
+    __uint8_t  d_type;    /* тип файла, см. ниже */
+    __uint8_t  d_namlen;  /* длина строки в d_name */
+    __uint32_t d_pad0;
 #if __BSD_VISIBLE
-#define	MAXNAMLEN	255
-	char	d_name[MAXNAMLEN + 1];	/* name must be no longer than this */
+#define MAXNAMLEN 255
+    char d_name[MAXNAMLEN + 1]; /* имя не должно превышать эту длину */
 #else
-	char	d_name[255 + 1];	/* name must be no longer than this */
+    char d_name[255 + 1]; /* имя не должно превышать эту длину */
 #endif
 };
 
 /*
- * File types
+ * Типы файлов
  */
-#define	DT_UNKNOWN	 0
-#define	DT_FIFO		 1
-#define	DT_CHR		 2
-#define	DT_DIR		 4
-#define	DT_BLK		 6
-#define	DT_REG		 8
-#define	DT_LNK		10
-#define	DT_SOCK		12
-#define	DT_WHT		14
+#define DT_UNKNOWN  0
+#define DT_FIFO     1
+#define DT_CHR      2
+#define DT_DIR      4
+#define DT_BLK      6
+#define DT_REG      8
+#define DT_LNK     10
+#define DT_SOCK    12
+#define DT_WHT     14
 
 /*
- * Convert between stat structure types and directory types.
+ * Преобразование между типами структуры stat и типами каталога.
  */
-#define	IFTODT(mode)	(((mode) & 0170000) >> 12)
-#define	DTTOIF(dirtype)	((dirtype) << 12)
+#define IFTODT(mode) (((mode) & 0170000) >> 12)
+#define DTTOIF(dirtype) ((dirtype) << 12)
 
 /*
- * The _GENERIC_DIRSIZ macro gives the minimum record length which will hold
- * the directory entry.  This returns the amount of space in struct direct
- * without the d_name field, plus enough space for the name with a terminating
- * null byte (dp->d_namlen+1), rounded up to a 8 byte boundary.
+ * Макрос _GENERIC_DIRSIZ дает минимальную длину записи, которая будет содержать
+ * запись каталога. Это возвращает количество места в структуре direct
+ * без поля d_name, плюс достаточно места для имени с завершающим
+ * нулевым байтом (dp->d_namlen+1), округленным до границы в 8 байт.
  *
- * XXX although this macro is in the implementation namespace, it requires
- * a manifest constant that is not.
+ * XXX хотя этот макрос находится в пространстве имен реализации, он требует
+ * манифестной константы, которая не является таковой.
  */
-#define	_GENERIC_DIRLEN(namlen)					\
-	((__offsetof(struct dirent, d_name) + (namlen) + 1 + 7) & ~7)
-#define	_GENERIC_DIRSIZ(dp)	_GENERIC_DIRLEN((dp)->d_namlen)
+#define _GENERIC_DIRLEN(namlen)     
+ ((__offsetof(struct dirent, d_name) + (namlen) + 1 + 7) & ~7)
+#define _GENERIC_DIRSIZ(dp) _GENERIC_DIRLEN((dp)->d_namlen)
 #endif /* __BSD_VISIBLE */
 
 #ifdef _KERNEL
-#define	GENERIC_DIRSIZ(dp)	_GENERIC_DIRSIZ(dp)
+#define GENERIC_DIRSIZ(dp) _GENERIC_DIRSIZ(dp)
 #endif
 
 #endif /* !_SYS_DIRENT_H_ */
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr fs 5 ,
 .Xr inode 5
-.Sh HISTORY
-A
-.Nm
-file format appeared in
+.Sh ИСТОРИЯ
+Формат файла 
+.Nm 
+появился в 
 .At v7 .
-.Sh BUGS
-The usage of the member d_type of struct dirent is unportable as it is
-.Fx Ns -specific .
-It also may fail on certain file systems, for example the cd9660 file system.
+.Sh ОШИБКИ
+Использование поля d_type структуры dirent является непортируемым, так как оно специфично для 
+.Fx . 
+Также оно может не работать на некоторых файловых системах, например, на файловой системе cd9660.

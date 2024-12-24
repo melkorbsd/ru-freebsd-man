@@ -26,60 +26,58 @@
 .\"
 .\"	from: Id: bootparams.5,v 1.2 1994/10/03 19:26:13 gwr Exp
 .\"
-.Dd October 2, 1994
+.Dd 2 октября, 1994
 .Dt BOOTPARAMS 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm bootparams
-.Nd boot parameter database
-.Sh SYNOPSIS
+.Nd База данных параметров загрузки
+.Sh СИНТАКСИС
 .Nm /etc/bootparams
-.Sh DESCRIPTION
-The
-.Nm
-file specifies the boot parameters that
+.Sh ОПИСАНИЕ
+Файл
+.Nm указывает параметры загрузки, которые могут запрашивать клиенты
 .Xr diskless 8
-clients may request when booting over the network.
-Each client supported by this server must have an entry in the
+при загрузке по сети.
+Каждый клиент, поддерживаемый этим сервером, должен иметь запись в файле
 .Nm
-file containing the pathnames for its
+содержащую пути к его
 .Dq root
-and (optionally)
-.Dq swap
-areas.
+и (по желанию)
+.Dq swapareas.
 .Pp
-Each line in the file
-(other than comment lines that begin with a
-.Ql # )
-specifies the client name followed by the pathnames that
-the client may request by their logical names.
-The components of the line are delimited with blank or tab,
-and may be continued onto multiple lines with a backslash.
+Каждая строка в файле 
+(за исключением строк комментариев, начинающихся с
+.Ql #) 
+указывает имя клиента, за которым следуют пути, которые
+клиент может запрашивать под своими логическими именами.
+Компоненты строки разделяются пробелами или табуляцией 
+и могут продолжаться на нескольких строках с помощью обратной косой черты.
 .Pp
-For example:
+Например:
 .Bd -literal -offset indent
-dummy	root=host:/export/dummy/root \\
-	swap=host:/export/dummy/swap \\
-	dump=host:/export/dummy/swap
+dummy  root=host:/export/dummy/root \\
+       swap=host:/export/dummy/swap \\ 
+       dump=host:/export/dummy/swap
 .Ed
 .Pp
-When the client named
+Когда клиент с именем
 .Dq dummy
-requests the pathname for its logical
+запрашивает путь к своему логическому 
 .Dq root
-it will be given the pathname
+ему будет возвращен путь 
 .Dq Pa host:/export/dummy/root
-as the response to its
-.Tn RPC
-request.
-The
+в ответ на его 
+.Tn RPC 
+запрос.
+Компонент 
 .Dq host:
-component must be supplied.
-.Sh FILES
+должен быть предоставлен.
+.Sh ФАЙЛЫ
 .Bl -tag -width /etc/bootparams -compact
 .It Pa /etc/bootparams
-default configuration file
+файл конфигурации по умолчанию.
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr bootparamd 8 ,
 .Xr diskless 8

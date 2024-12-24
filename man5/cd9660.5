@@ -23,59 +23,58 @@
 .\" (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 .\" THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 .\"
-.Dd April 25, 2023
+.Dd 25 апреля, 2023
 .Dt CD9660 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm cd9660
-.Nd "ISO-9660 file system"
-.Sh SYNOPSIS
-To link into the kernel:
+.Nd "Файловая система ISO-9660"
+.Sh СИНТАКСИС
+Чтобы встроить в ядро:
 .Bd -ragged -offset indent
 .Cd "options CD9660"
 .Ed
 .Pp
-Alternatively, to load the driver as a
-module at boot time, place the following line in
+В качестве альтернативы, чтобы загрузить драйвер как
+модуль во время загрузки, добавьте следующую строку в
 .Xr loader.conf 5 :
 .Bd -literal -offset indent
 cd9660_load="YES"
 .Ed
-.Sh DESCRIPTION
-The
+.Sh ОПИСАНИЕ
+Драйвер
+.Nm 
+позволит ядру
+.Fx 
+получить доступ к файловой системе
+.Tn cd9660.
+.Sh ПРИМЕРЫ
+Чтобы смонтировать том
 .Nm
-driver will permit the
-.Fx
-kernel to access the
-.Tn cd9660
-file system.
-.Sh EXAMPLES
-To mount a
-.Nm
-volume located on
+расположенный на
 .Pa /dev/cd0 :
 .Pp
 .Dl "mount -t cd9660 /dev/cd0 /mnt"
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr nmount 2 ,
 .Xr unmount 2 ,
 .Xr cd 4 ,
 .Xr fstab 5 ,
 .Xr mount 8 ,
 .Xr mount_cd9660 8
-.Sh HISTORY
-The
-.Nm
-driver first appeared in
-.Bx 4.4 Lite .
-.Sh AUTHORS
+.Sh ИСТОРИЯ
+Драйвер
+.Nm 
+впервые появился в
+.Bx 4.4 Lite.
+.Sh АВТОРЫ
 .An -nosplit
-The
+Реализация ядра 
 .Nm
-kernel implementation was originally written by
+была первоначально написана
 .An Pace Willisson Aq Mt pace@blitz.com
-and
-.An Atsushi Murai Aq Mt amurai@spec.co.jp .
+и
+.An Atsushi Murai Aq Mt amurai@spec.co.jp.
 .Pp
-This manual page was written by
-.An Enji Cooper Aq Mt ngie@FreeBSD.org .
+Эта справочная страница была написана
+.An Enji Cooper Aq Mt ngie@FreeBSD.org.

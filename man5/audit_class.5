@@ -25,54 +25,48 @@
 .\" IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 .\" POSSIBILITY OF SUCH DAMAGE.
 .\"
-.Dd January 24, 2004
+.Dd 24 января,2004 
 .Dt AUDIT_CLASS 5
 .Os
-.Sh NAME
-.Nm audit_class
-.Nd "audit event class descriptions"
-.Sh DESCRIPTION
-The
-.Nm
-file contains descriptions of the auditable event classes on the system.
-Each auditable event is a member of an event class.
-Each line maps an audit event
-mask (bitmap) to a class and a description.
-Entries are of the form:
+.Sh ИМЯ
+.Nm audit_class.Nd "описания классов событий аудита"
+.Sh ОПИСАНИЕ
+Файл
+.Nm 
+содержит описания классов событий, подлежащих аудиту, в системе. 
+Каждое событие аудита является членом класса события.
+Каждая строка сопоставляет маску события аудита (битовую карту) 
+с классом и описанием. Записи имеют следующий формат:
 .Pp
 .D1 Ar classmask Ns : Ns Ar eventclass Ns : Ns Ar description
 .Pp
-Example entries in this file are:
+Примеры записей в этом файле:
 .Bd -literal -offset indent
-0x00000000:no:invalid class
-0x00000001:fr:file read
-0x00000002:fw:file write
-0x00000004:fa:file attribute access
-0x00000080:pc:process
-0xffffffff:all:all flags set
+0x00000000:no:недопустимый класс
+0x00000001:fr:чтение файла
+0x00000002:fw:запись файла
+0x00000004:fa:доступ к атрибутам файла
+0x00000080:pc:процесс
+0xffffffff:all:все флаги установлены
 .Ed
-.Sh FILES
+.Sh ФАЙЛЫ
 .Bl -tag -width ".Pa /etc/security/audit_class" -compact
 .It Pa /etc/security/audit_class
 .El
-.Sh SEE ALSO
+.Sh СМОТРИТЕ ТАКЖЕ
 .Xr audit 4 ,
 .Xr audit_control 5 ,
 .Xr audit_event 5 ,
 .Xr audit_user 5
-.Sh HISTORY
-The OpenBSM implementation was created by McAfee Research, the security
-division of McAfee Inc., under contract to Apple Computer Inc.\& in 2004.
-It was subsequently adopted by the TrustedBSD Project as the foundation for
-the OpenBSM distribution.
-.Sh AUTHORS
+.Sh ИСТОРИЯ
+Реализация OpenBSM была создана McAfee Research, исследовательским подразделением безопасности McAfee Inc., по контракту с Apple Computer Inc. в 2004 году. 
+Позже она была принята проектом TrustedBSD как основа
+для дистрибутива OpenBSM.
+.Sh АВТОРЫ
 .An -nosplit
-This software was created by McAfee Research, the security research division
-of McAfee, Inc., under contract to Apple Computer Inc.
-Additional authors include
-.An Wayne Salamon ,
-.An Robert Watson ,
-and SPARTA Inc.
+Это программное обеспечение было создано McAfee Research, исследовательским подразделением безопасности McAfee, Inc., по контракту с Apple Computer Inc. Дополнительные авторы включают:
+.An Уэйн Саламан,
+.An Роберт Уотсон,
+и SPARTA Inc.
 .Pp
-The Basic Security Module (BSM) interface to audit records and audit event
-stream format were defined by Sun Microsystems.
+Интерфейс Основного Модуля Безопасности (BSM) для аудиторских записей и формат потока событий аудита были определены компанией Sun Microsystems.

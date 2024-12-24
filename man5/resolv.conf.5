@@ -27,230 +27,231 @@
 .\"
 .\"     @(#)resolver.5	8.1 (Berkeley) 6/5/93
 .\"
-.Dd November 23, 2022
-.Dt RESOLVER 5
+.Dd 23 Ноября, 2022
+.Dt РАСПОЗНАВАТЕЛЬ 5
 .Os
-.Sh NAME
-.Nm resolver
-.Nd resolver configuration file
-.Sh SYNOPSIS
+.Sh ИМЯ
+.Nm распознаватель
+.Nd файл конфигурации распознавателя
+.Sh КРАТКИЙ ОБЗОР
 .Nm resolv.conf
-.Sh DESCRIPTION
-The
-.Xr resolver 3
-is a set of routines in the C library
-which provide access to the Internet Domain Name System.
-The resolver configuration file contains information that is read
-by the resolver routines the first time they are invoked by a process.
-The file is designed to be human readable and contains a list of
-keywords with values that provide various types of resolver information.
+.Sh ОПИСАНИЕ
+Параметр
+.Xr распознаватель 3
+является набором подпрограмм в библиотеке C, 
+которые предоставляют доступ к системе доменных имен Интернета.
+Файл конфигурации распознавателя содержит информацию, которая считывается
+подпрограммами распознавателя при первом их вызове процессом.
+Файл предназначен для чтения человеком и содержит список
+ключевых слов со значениями, которые предоставляют различные типы информации о распознавателе.
 .Pp
-On a normally configured system, setting this file manually should not
-be necessary.
-The only name server(s) to be queried will be on the local machine
-or automatically configured using DHCP or a similar mechanism,
-the domain name is determined from the host name,
-and the domain search path is constructed from the domain name.
+В нормально настроенной системе установка этого файла вручную не должна
+быть необходимой.
+Единственный сервер(серверы) имен, к которому(которым) будет выполнен запрос, будет находиться на локальном компьютере
+или автоматически настроен с использованием DHCP или аналогичного механизма,
+доменное имя определяется по имени хоста,
+а путь поиска домена строится по имени домена.
 .Pp
-The different configuration options are:
+Существуют различные варианты конфигурации:
 .Bl -tag -width nameserver
 .It Sy nameserver
-IPv4 or IPv6 address of a name server
-that the resolver should query.
-Up to
+IPv4 or IPv6 адрес сервера имен, 
+который должен запросить распознаватель.
+Вплоть до
 .Dv MAXNS
-(currently 3) name servers may be listed,
-one per keyword.
-If there are multiple servers,
-the resolver library queries them in the order listed.
-If no
+(3 в настоящее время) могут быть указаны серверы имен,
+по одному для каждого ключевого слова.
+Если серверов несколько,
+библиотека распознавателя запрашивает их в указанном порядке.
+Если нет
 .Sy nameserver
-entries are present,
-the default is to use the name server on the local machine.
-(The algorithm used is to try a name server, and if the query times out,
-try the next, until out of name servers,
-then repeat trying all the name servers
-until a maximum number of retries are made).
+записи присутствуют,
+по умолчанию используется сервер имен на локальном компьютере.
+(Используемый алгоритм заключается в том, чтобы попробовать сервер имен, и если время выполнения запроса истекло,
+попробуйте следующий, пока не закончатся серверы имен,
+затем повторите попытку на всех серверах имен, 
+пока не будет сделано максимальное количество повторных попыток).
 .It Sy domain
-Local domain name.
-Most queries for names within this domain can use short names
-relative to the local domain.
-If no
+Имя локального домена.
+В большинстве запросов на имена в этом домене могут использоваться короткие имена, 
+относящиеся к локальному домену.
+Если нет, то
 .Sy domain
-entry is present, the domain is determined
-from the local host name returned by
+запись присутствует, домен определяется
+по имени локального хоста, возвращаемому к
 .Xr gethostname 3 ;
-the domain part is taken to be everything after the first
+доменной частью считается все, что находится после первой
 .Ql \&. .
-Finally, if the host name does not contain a domain part, the root
-domain is assumed.
+Наконец, если имя хоста не содержит доменной части, предполагается, что это корневой
+домен.
 .It Sy search
-Search list for host-name lookup.
-The search list is normally determined from the local domain name;
-by default, it contains only the local domain name.
-This may be changed by listing the desired domain search path
-following the
+Список поиска для поиска по имени хоста.
+Список поиска обычно определяется по имени локального домена;
+по умолчанию он содержит только имя локального домена.
+Это можно изменить, указав желаемый путь поиска по домену, 
+следующий за ключевым словом
 .Sy search
-keyword with spaces or tabs separating
-the names.
-Most resolver queries will be attempted using each component
-of the search path in turn until a match is found.
-Note that this process may be slow and will generate a lot of network
-traffic if the servers for the listed domains are not local,
-and that queries will time out if no server is available
-for one of the domains.
+с пробелами или символами табуляции, разделяющими
+имена.
+Большинство запросов распознавателя будут выполняться с использованием каждого компонента
+пути поиска по очереди, пока не будет найдено совпадение.
+Обратите внимание, что этот процесс может быть медленным и приведет к возникновению большого сетевого
+трафика, если серверы для перечисленных доменов не являются локальными,
+и что время ожидания запросов будет ограничено, если сервер
+для одного из доменов недоступен.
 .Pp
-The search list is currently limited to six domains
-with a total of 256 characters.
+В настоящее время список поиска ограничен шестью доменами
+общей длиной 256 символов.
 .It Sy sortlist
-Sortlist allows addresses returned by gethostbyname to be sorted.
-A sortlist is specified by IP address netmask pairs.
-If the netmask is not specified,
-it defaults to the historical Class A/B/C netmask of the net;
-this usage is deprecated.
-The IP address
-and network pairs are separated by slashes.
-Up to 10 pairs may
-be specified.
+Список сортировки позволяет сортировать адреса, возвращаемые с помощью gethostbyname.
+Список сортировки определяется по парам сетевых масок IP-адресов.
+Если маска сети не указана,
+по умолчанию используется историческая маска сети класса A/B/C.;
+это использование устарело.
+Пары IP-адресов
+и сетей разделяются косой чертой.
+Можно указать до 10 пар.
+.
 E.g.,
 .Pp
 .Dl "sortlist 10.9.1.0/255.255.240.0 10.9.0.0/255.255.0.0"
 .It Sy options
-Options allows certain internal resolver variables to be modified.
-The syntax is
+параметр Options позволяет изменять некоторые внутренние переменные распознавателя.
+Синтаксис следующий
 .Pp
 \fBoptions\fP \fIoption\fP \fI...\fP
 .Pp
-where
+где параметр
 .Sy option
-is one of the following:
+является одним из следующих:
 .Bl -tag -width no_tld_query
 .It Sy debug
-sets
+комплекты
 .Dv RES_DEBUG
 in _res.options.
 .It Sy usevc
-sets
+комплекты
 .Dv RES_USEVC
-to use TCP instead of UDP for queries.
+используется TCP вместо UDP для запросов.
 .It Sy ndots : Ns Ar n
-sets a threshold for the number of dots which must appear in a name given to
+устанавливает пороговое значение для количества точек, которые должны присутствовать в имени, присвоенном
 .Fn res_query
-(see
+(см. раздел
 .Xr resolver 3 )
-before an
-.Em initial absolute query
-will be made.
-The default for
+прежде чем
+.Em 
+будет выполнен первоначальный абсолютный запрос.
+Значение по умолчанию для
 .Em n
-is
+будет
 .Dq 1 ,
-meaning that if there are any dots in a name, the name
-will be tried first as an absolute name before any
-.Em search list
-elements are appended to it.
+это означает, что если в имени есть какие-либо точки, то это имя
+будет опробовано сначала как абсолютное имя, а затем как любое другое.
+.Em к нему добавляются 
+элементы списка поиска.
 .It Sy timeout : Ns Ar n
-sets the initial amount of time the resolver will wait
-for a response from a remote
-name server before retrying the query via a different name server.
-The resolver may wait longer during subsequent retries
-of the current query since an exponential back-off is applied to
-the timeout value.
-Measured in seconds, the default is
+устанавливает начальное время, в течение которого распознаватель будет ожидать
+ответа от удаленного
+сервера имен, прежде чем повторить запрос через другой сервер имен.
+Распознаватель может ожидать дольше при последующих попытках
+выполнения текущего запроса, поскольку к значению тайм-аута применяется экспоненциальное
+замедление.
+Значение по умолчанию измеряется в секундах.
 .Dv RES_TIMEOUT ,
-the allowed maximum is
+допустимый максимум составляет
 .Dv RES_MAXRETRANS
-(see
+(см. раздел
 .In resolv.h ) .
 .It Sy attempts : Ns Ar n
-sets the number of times the resolver will send a query to each of
-its name servers
-before giving up and returning an error to the calling application.
-The default is
+задает количество раз, когда распознаватель отправит запрос на каждый из
+своих серверов имен, 
+прежде чем прекратить работу и вернуть сообщение об ошибке вызывающему приложению.
+По умолчанию используется
 .Dv RES_DFLRETRY ,
-the allowed maximum is
+допустимый максимум составляет
 .Dv RES_MAXRETRY
-(see
+(см. раздел
 .In resolv.h ) .
 .It Sy no_tld_query
-tells the resolver not to attempt to resolve a top level domain name, that
-is, a name that contains no dots.
-Use of this option does not prevent
-the resolver from obeying the standard
+указывает программе распознавания не пытаться разрешить доменное имя верхнего уровня, то есть имя, 
+не содержащее точек.
+Использование этого параметра не мешает
+программе распознавания выполнять стандартные
+парметр
 .Sy domain
-and
+и параметр
 .Sy search
-rules with the given name.
+руководит с данным именем.
 .It Sy reload-period : Ns Ar n
-The resolver checks the modification time of
+Распознаватель проверяет время изменения
 .Pa /etc/resolv.conf
-every
+каждую
 .Ar n
-seconds.
-If
+секунду.
+Если путь
 .Pa /etc/resolv.conf
-has changed, it is automatically reloaded.
-The default for
+если что-то изменилось, оно автоматически перезагружается.
+Значение по умолчанию для
 .Ar n
-is two seconds.
-Setting it to zero disables the file check.
+это займет две секунды.
+Установка значения на ноль отключает проверку файла.
 .El
 .Pp
-Options may also be specified as a space or tab separated list using the
+Параметры также могут быть указаны в виде списка, разделенного пробелом или табуляцией, с помощью
 .Dv RES_OPTIONS
-environment variable.
+переменная среды.
 .El
 .Pp
-The
+Ключевые слова
 .Sy domain
-and
+и 
 .Sy search
-keywords are mutually exclusive.
-If more than one instance of these keywords is present,
-the last instance will override.
+являются взаимоисключающими.
+Если присутствует более одного экземпляра этих ключевых слов,
+последний экземпляр будет переопределять.
 .Pp
-The keyword and value must appear on a single line, and the keyword
-.Pq for example, Sy nameserver
-must start the line.
-The value follows the keyword, separated by white space.
-.Sh FILES
+Ключевое слово и значение должны располагаться в одной строке, а ключевое слово
+.Pq например, Sy nameserver
+должно начинать строку.
+Значение следует за ключевым словом, разделенным пробелом.
+.Sh ФАЙЛЫ
 .Bl -tag -width /etc/resolv.conf -compact
 .It Pa /etc/resolv.conf
-The file
+Файл
 .Nm resolv.conf
-resides in
+находится в
 .Pa /etc .
 .El
-.Sh EXAMPLES
-A basic resolv.conf file could be in the following form.
+.Sh ПРИМЕРЫ
+Базовый файл resolv.conf может иметь следующий вид
 .Bd -literal -offset indent
-# The domain directive is only necessary, if your local
-# router advertises something like localdomain and you have
-# set up your hostnames via an external domain.
-domain localdomain.tld
+# Директива domain необходима только в том случае, если ваш локальный
+# маршрутизатор рекламирует что-то вроде localdomain, и у вас есть
+# настройте свои имена хостов через внешний домен.
+домен localdomain.tld
 
-# In case you a running a local dns server or caching name server
-# like local-unbound(8) for example.
+# В случае, если у вас запущен локальный dns-сервер или кэширующий сервер имен
+# таким образом как local-unbound(8), например.
 nameserver 127.0.0.1
 
-# IP address of the local or ISP name service
+# IP-адрес локальной службы имен или интернет-провайдера
 nameserver 192.168.2.1
 
-# Fallback nameservers, in this case these from Google.
+# Резервные серверы имен, в данном случае от Google.
 nameserver 8.8.8.8
 nameserver 4.4.4.4
 
-# Attach an OPT pseudo-RR for the EDNS0 extension,
-# as specified in RFC 2671.
+# Прикрепите псевдо-RR OPT для расширения EDNS0,
+# как указано в RFC 2671.
 options edns0
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРЕТЬ ТАКЖЕ
 .Xr gethostbyname 3 ,
 .Xr resolver 3 ,
 .Xr hostname 7 ,
 .Xr resolvconf 8
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Формат файла
 .Nm resolv.conf
-file format appeared in
+появился в
 .Bx 4.3 .

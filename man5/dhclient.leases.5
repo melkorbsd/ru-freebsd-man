@@ -36,58 +36,55 @@
 .\" see ``http://www.isc.org/isc''.  To learn more about Vixie
 .\" Enterprises, see ``http://www.vix.com''.
 .\"
-.Dd January 1, 1997
+.Dd 1 января, 1997
 .Dt DHCLIENT.LEASES 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm dhclient.leases
-.Nd DHCP client lease database
-.Sh DESCRIPTION
-The Internet Software Consortium DHCP client keeps a persistent
-database of leases that it has acquired that are still valid.
-The database is a free-form ASCII file containing one valid declaration
-per lease.
-If more than one declaration appears for a given lease,
-the last one in the file is used.
-The file is written as a log, so this is not an unusual occurrence.
+.Nd "База данных аренды DHCP-клиента"
+.Sh ОПИСАНИЕ
+DHCP-клиент Internet Software Consortium ведет постоянную базу данных аренды,
+которую он получил и которая все еще действительна. 
+База данных представляет собой свободноформатный ASCII-файл, содержащий одно допустимое объявление 
+на каждую аренду. 
+Если для данной аренды появляется более одного объявления, используется последнее в файле. 
+Файл записывается в виде журнала, поэтому это не является необычным случаем.
 .Pp
-The lease file is named
-.Pa dhclient.leases . Ns Ar IFNAME ,
-where
-.Ar IFNAME
-represents the network interface the DHCP client acquired the lease on.
-For example, if
-.Xr dhclient 8
-is configured for the
-.Li em0
-network device,
-the lease file will be named
+Файл аренды называется
+.Pa dhclient.leases . Ns Ar IFNAME , 
+где
+.Ar IFNAME 
+представляет собой сетевой интерфейс, на котором DHCP-клиент получил аренду. 
+Например, если
+.Xr dhclient 8 
+настроен для сетевого устройства 
+.Li em0 
+то файл аренды будет называться 
 .Pa dhclient.leases.em0 .
 .Pp
-The format of the lease declarations is described in
+Формат объявлений аренды описан в 
 .Xr dhclient.conf 5 .
-.Sh FILES
+.Sh ФАЙЛЫ
 .Bl -tag -width ".Pa /var/db/dhclient.leases. Ns Ar IFNAME"
 .It Pa /var/db/dhclient.leases . Ns Ar IFNAME
-Current lease file.
+Текущий файл аренды.
 .El
-.Sh SEE ALSO
-.Xr dhclient.conf 5 ,
-.Xr dhcp-options 5 ,
-.Xr dhcpd.conf 5 ,
-.Xr dhclient 8 ,
-.Xr dhcpd 8
+.Sh СМОТРИТЕ ТАКЖЕ
+.Xr dhclient.conf 5 , 
+.Xr dhcp-options 5 , 
+.Xr dhcpd.conf 5 , 
+.Xr dhclient 8 , 
+.Xr dhcpd 8 
 .Rs
 .%R "RFC 2132, RFC 2131"
 .Re
-.Sh AUTHORS
+.Sh АВТОРЫ
 .An -nosplit
-The
-.Xr dhclient 8
-utility
-was written by
-.An Ted Lemon Aq Mt mellon@vix.com
-under a contract with Vixie Labs.
+Утилита 
+.Xr dhclient 8 
+была написана 
+.An Ted Lemon Aq Mt mellon@vix.com 
+по контракту с Vixie Labs.
 .Pp
-The current implementation was reworked by
+Текущая реализация была переработана 
 .An Henning Brauer Aq Mt henning@openbsd.org .

@@ -25,94 +25,85 @@
 .\" IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 .\" POSSIBILITY OF SUCH DAMAGE.
 .\"
-.Dd January 4, 2008
+.Dd 4 января, 2008 
 .Dt AUDIT_USER 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm audit_user
-.Nd "events to be audited for given users"
-.Sh DESCRIPTION
-The
-.Nm
-file specifies which audit event classes are to be audited for the given users.
-If specified, these flags are combined with the system-wide audit flags in the
-.Xr audit_control 5
-file to determine which classes of events to audit for that user.
-These settings take effect when the user logs in.
+.Nd "события, подлежащие аудиту для заданных пользователей"
+.Sh ОПИСАНИЕ
+Файл
+.Nm 
+указывает, какие классы событий аудита должны быть проверены для заданных пользователей.
+Если указано, эти флаги комбинируются с флагами аудита на уровне системы из файла
+.Xr audit_control 5,
+чтобы определить, какие классы событий следует проверять для этого пользователя. Эти настройки вступают в силу, когда пользователь выполняет вход в систему.
 .Pp
-Each line maps a user name to a list of classes that should be audited and a
-list of classes that should not be audited.
-Entries are of the form:
+Каждая строка сопоставляет имя пользователя со списком классов, которые должны быть проверены, и списком классов, которые не должны быть проверены.
+Записи имеют следующий формат:
 .Pp
 .D1 Ar username Ns : Ns Ar alwaysaudit Ns : Ns Ar neveraudit
 .Pp
-In the format above,
+В указанном формате,
 .Ar alwaysaudit
-is a set of event classes that are always audited, and
+это набор классов событий, которые всегда подлежат аудиту, а
 .Ar neveraudit
-is a set of event classes that should not be audited.
-These sets can indicate
-the inclusion or exclusion of multiple classes, and whether to audit successful
-or failed events.
-See
-.Xr audit_control 5
-for more information about audit flags.
+это набор классов событий, которые не должны подлежать аудиту.
+Эти наборы могут указывать на включение
+или исключение нескольких классов, а также на то, следует ли проверять успешные или неудачные события. 
+См.
+.Xr audit_control 5 
+для получения дополнительной информации о флагах аудита.
 .Pp
-Example entries in this file are:
+Примеры записей в этом файле:
 .Bd -literal -offset indent
 root:lo,ad:no
 jdoe:-fc,ad:+fw
 .Ed
 .Pp
-These settings would cause login/logout and administrative events that
-are performed on behalf of user
-.Dq Li root
-to be audited.
-No failure events are audited.
-For the user
-.Dq Li jdoe ,
-failed file creation events are audited, administrative events are
-audited, and successful file write events are never audited.
-.Sh IMPLEMENTATION NOTES
-Per-user and global audit preselection configuration are evaluated at time of
-login, so users must log out and back in again for audit changes relating to
-preselection to take effect.
+Эти настройки приведут к тому, что события входа/выхода и административные события, выполняемые от имени пользователя
+.Dq Li root,
+будут проверяться.
+События неудачи не подлежат аудиту.
+Для пользователя
+.Dq Li jdoe,
+события неудачного создания файла будут проверяться, административные события будут проверяться, а успешные события записи файла никогда не будут проверяться.
+.Sh ЗАМЕТКИ ПО РЕАЛИЗАЦИИ
+Конфигурация предвыбора аудита для каждого пользователя и глобальная конфигурация оцениваются во время входа в систему, поэтому пользователи должны выйти из системы и войти снова, чтобы изменения аудита, относящиеся к предвыбору, вступили в силу.
 .Pp
-Audit record preselection occurs with respect to the audit identifier
-associated with a process, rather than with respect to the UNIX user or group
-ID.
-The audit identifier is set as part of the user credential context as part of
-login, and typically does not change as a result of running setuid or setgid
-applications, such as
-.Xr su 1 .
-This has the advantage that events that occur after running
-.Xr su 1
-can be audited to the original authenticated user, as required by CAPP, but
-may be surprising if not expected.
-.Sh FILES
+Предвыбор записей аудита происходит относительно идентификатора аудита, 
+связанного с процессом, а не относительно идентификатора пользователя или группы UNIX.
+Идентификатор аудита устанавливается как часть контекста учетных данных пользователя во время входа в систему и обычно не изменяется в результате выполнения
+приложений setuid или setgid, таких как
+.Xr su 1.
+Это имеет преимущество в том, что события, происходящие после выполнения
+.Xr su 1,
+могут быть проверены на оригинального аутентифицированного пользователя, как требуется CAPP, 
+но это может быть неожиданным, если не ожидалось.
+.Sh ФАЙЛЫ
 .Bl -tag -width ".Pa /etc/security/audit_user" -compact
 .It Pa /etc/security/audit_user
 .El
-.Sh SEE ALSO
-.Xr login 1 ,
-.Xr su 1 ,
-.Xr audit 4 ,
-.Xr audit_class 5 ,
-.Xr audit_control 5 ,
+.Sh СМОТРИТЕ ТАКЖЕ
+.Xr login 1,
+.Xr su 1,
+.Xr audit 4,
+.Xr audit_class 5,
+.Xr audit_control 5,
 .Xr audit_event 5
-.Sh HISTORY
-The OpenBSM implementation was created by McAfee Research, the security
-division of McAfee Inc., under contract to Apple Computer Inc.\& in 2004.
-It was subsequently adopted by the TrustedBSD Project as the foundation for
-the OpenBSM distribution.
-.Sh AUTHORS
+.Sh ИСТОРИЯ
+Реализация OpenBSM была создана McAfee Research, исследовательским
+подразделением безопасности McAfee Inc., по контракту с Apple Computer Inc. в 2004 году.
+Позже она была принята проектом TrustedBSD как основа
+для дистрибутива OpenBSM.
+.Sh АВТОРЫ
 .An -nosplit
-This software was created by McAfee Research, the security research division
-of McAfee, Inc., under contract to Apple Computer Inc.
-Additional authors include
-.An Wayne Salamon ,
-.An Robert Watson ,
-and SPARTA Inc.
+Это программное обеспечение было создано McAfee Research, исследовательским
+подразделением безопасности McAfee Inc., по контракту с Apple Computer Inc.
+Дополнительные авторы включают:
+.An Уэйн Саламан,
+.An Роберт Уотсон,
+и SPARTA Inc.
 .Pp
-The Basic Security Module (BSM) interface to audit records and audit event
-stream format were defined by Sun Microsystems.
+Интерфейс Основного Модуля Безопасности (BSM) для аудиторских записей и формат потока
+событий аудита были определены компанией Sun Microsystems.

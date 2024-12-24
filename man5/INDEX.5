@@ -24,75 +24,75 @@
 .\" (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 .\" THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 .\"
-.Dd October 14, 2012
+.Dd 14 октября, 2012
 .Dt PORTINDEX 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm INDEX
-.Nd "File containing information about the state of the ports tree"
-.Sh DESCRIPTION
-The port index file in
+.Nd "Файл, содержащий информацию о состоянии дерева портов"
+.Sh ОПИСАНИЕ
+Файл индекса портов в
 .Pa /usr/ports
-contains various bits of information about the ports tree.
-Each major branch of
+содержит различные сведения о дереве портов.
+Каждая основная ветвь
 .Fx
-has a separate index file, named
+имеет отдельный файл индекса, названный
 .Dq INDEX- Ns Ar N ,
-where
+где
 .Ar N
-is the major version number of the
+это номер основной версии
 .Fx
-branch, i.e.:
+ветви, т.е.:
 .Pa INDEX-7 ,
-or
+или
 .Pa INDEX-8 .
 .Bl -tag -width XXXXXXXXXX
 .It Cm \&name
-The name of the package.
+Имя пакета.
 .It Cm \&path
-The path to the port directory.
+Путь к каталогу порта.
 .It Cm \&install prefix
-The default install prefix.
+Префикс установки по умолчанию.
 .It Cm \&short description
-A short description.
+Краткое описание.
 .It Cm \&full description
-The path to the full description.
+Путь к полному описанию.
 .It Cm \&maintainer email
-The email address of the maintainer.
+Адрес электронной почты поддерживающего.
 .It Cm \&index
-The categories this port is part of.
+Категории, к которым относится этот порт.
 .It Cm \&build dependencies
-Ports required to be installed prior to building this port.
+Порты, которые необходимо установить перед сборкой этого порта.
 .It Cm \&run dependencies
-Ports required to be installed for this port to run.
+Порты, которые необходимо установить для работы этого порта.
 .It Cm \&website
-The project website for the port.
+Веб-сайт проекта для порта.
 .It Cm \&e-deps
-Ports that may be required to extract this port.
+Порты, которые могут потребоваться для извлечения этого порта.
 .It Cm \&p-deps
-Ports that may be required to patch this port.
+Порты, которые могут потребоваться для патча этого порта.
 .It Cm \&f-deps
-Ports that may be required to fetch this port.
+Порты, которые могут потребоваться для загрузки этого порта.
 .El
-.Sh FILES
+.Sh ФАЙЛЫ
 .Bl -tag -width /usr/ports/INDEX-8XX
 .It Pa /usr/ports/INDEX- Ns Ar N
-where
+где
 .Ar N
-is the major version number of the
+это номер основной версии
 .Fx
-branch.
+ветви.
 .El
-.Sh EXAMPLES
+.Sh ПРИМЕРЫ
 .Bd -literal
-vim-6.3.15|/usr/ports/editors/vim|/usr/local|Vi "workalike", with many additional features|/usr/ports/editors/vim/pkg-descr|obrien@FreeBSD.org|editors|libiconv-1.9.2_1|libiconv-1.9.2_1|http://www.vim.org/|||
+vim-6.3.15|/usr/ports/editors/vim|/usr/local|Vi "аналог", с множеством дополнительных функций|/usr/ports/editors/vim/pkg-descr|obrien@FreeBSD.org|editors|libiconv-1.9.2_1|libiconv-1.9.2_1|http://www.vim.org/|||
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРИ ТАКЖЕ
 .Xr build 7 ,
 .Xr ports 7
-.Sh AUTHORS
+.Sh АВТОРЫ
 .An -nosplit
-This manual page was written by
+Эта страница руководства была написана
 .An Paul Armstrong
-and
+и
 .An Thomas Abthorpe Aq Mt tabthorpe@FreeBSD.org .

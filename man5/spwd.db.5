@@ -30,395 +30,393 @@
 .\"
 .\"     From: @(#)passwd.5	8.1 (Berkeley) 6/5/93
 .\"
-.Dd May 16, 2023
+.Dd 16 мая, 2023
 .Dt PASSWD 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm passwd ,
 .Nm master.passwd ,
 .Nm pwd.db ,
 .Nm spwd.db
-.Nd format of the password file
-.Sh DESCRIPTION
-The
+.Nd формат файла с паролем
+.Sh ОПИСАНИЕ
+Файлы
 .Nm
-files are the local source of password information.
-They can be used in conjunction with the Hesiod domains
+являются локальным источником информации о паролях.
+Их можно использовать совместно с Hesiod доменами
 .Sq Li passwd
-and
+и
 .Sq Li uid ,
-and the
+и с
 NIS
 maps
 .Sq Li passwd.byname ,
 .Sq Li passwd.byuid ,
 .Sq Li master.passwd.byname ,
-and
+и
 .Sq Li master.passwd.byuid ,
-as controlled by
+как контролируемый
 .Xr nsswitch.conf 5 .
 .Pp
-For consistency, none of these files should ever be modified
-manually.
+Для обеспечения согласованности ни один из этих файлов никогда не должен изменяться
+вручную.
 .Pp
-The
+Файл
 .Nm master.passwd
-file is readable only by root, and consists of newline separated
-records, one per user, containing ten colon
+файл доступен для чтения только пользователю root и состоит из
+записей, разделенных новой строкой, по одной на пользователя, содержащих десять двоеточий
 .Pq Ql \&:
-separated
-fields.
-These fields are as follows:
+разделенные
+поля.
+Эти поля следуют:
 .Bl -tag -width ".Ar password" -offset indent
 .It Ar name
-User's login name.
+Имя пользователя для входа в систему.
 .It Ar password
-User's
+Пароль
 .Em encrypted
-password.
+пользователя.
 .It Ar uid
-User's id.
+Пользовательский id.
 .It Ar gid
-User's login group id.
+Группа входа пользователя в систему id.
 .It Ar class
-User's login class.
+Класс входа пользователя в систему.
 .It Ar change
-Password change time.
+Время смены пароля.
 .It Ar expire
-Account expiration time.
+Время истечения срока действия учетной записи.
 .It Ar gecos
-General information about the user.
+Общая информация о пользователе.
 .It Ar home_dir
-User's home directory.
+Домашний каталог пользователя.
 .It Ar shell
-User's login shell.
+Оболочка входа пользователя в систему.
 .El
 .Pp
-The
+Файл
 .Nm
-file is generated from the
+сгенерирован из файла
 .Nm master.passwd
-file by
+с помощью
 .Xr pwd_mkdb 8 ,
-has the
+имеет параметры
 .Ar class ,
 .Ar change ,
-and
+и
 .Ar expire
-fields removed, and the
+поля удалены, и
 .Ar password
-field replaced by a
+поле заменено на параметр
 .Ql *
-character.
+.
 .Pp
-The
+Поле
 .Ar name
-field is the login used to access the computer account, and the
+является логином, используемый для доступа к учетной записи компьютера, а также
 .Ar uid
-field is the number associated with it.
-They should both be unique
-across the system (and often across a group of systems) since they
-control file access.
+поле - это связанный с ним номер.
+Они оба должны быть уникальными
+в системе (а часто и в группе систем), поскольку они
+управляют доступом к файлам.
 .Pp
-While it is possible to have multiple entries with identical login names
-and/or identical user id's, it is usually a mistake to do so.
-Routines
-that manipulate these files will often return only one of the multiple
-entries, and that one by random selection.
+Пусть и возможно иметь несколько записей с одинаковыми именами входа
+и/или идентичными идентификаторами пользователя, обычно это является ошибкой.
+Процедуры, 
+которые манипулируют этими файлами, часто возвращают только одну из нескольких
+записей, и то путем случайного выбора.
 .Pp
-The login name must not begin with a hyphen
+Имя пользователя не должно начинаться с дефиса
 .Pq Ql \&- ,
-and cannot contain 8-bit characters, tabs or spaces, or any of these
-symbols:
+и не может содержать 8-разрядных символов, табуляции, пробелов или любого из этих
+символов:
 .Ql \&,:+&#%^\&(\&)!@~*?<>=|\e\\&/"\&; .
-The dollar symbol
+Символ доллара
 .Pq Ql \&$
-is allowed only as the last character for use with Samba.
-No field may contain a
-colon
+допускается только в качестве последнего символа для использования в Samba.
+Ни одно поле не может содержать
+двоеточие
 .Pq Ql \&:
-as this has been used historically to separate the fields
-in the user database.
+поскольку исторически это использовалось для разделения полей
+в пользовательской базе данных.
 .Pp
-Case is significant.
-Login names
+Регистр имеет значение.
+Имена для входа
 .Ql Lrrr
-and
+и
 .Ql lrrr
-represent different users.
-Be aware of this when interoperating with systems that do not have
-case-sensitive login names.
+представлять интересы разных пользователей.
+Помните об этом при взаимодействии с системами, в которых имена для входа не учитывают
+регистр.
 .Pp
-In the
+В файле
 .Nm master.passwd
-file,
-the
+поле
 .Ar password
-field is the
+является
 .Em encrypted
-form of the password, see
+форму пароля см. в разделе
 .Xr crypt 3 .
-If the
+Если поле
 .Ar password
-field is empty, no password will be required to gain access to the
-machine.
-This is almost invariably a mistake, so authentication components
-such as PAM can forcibly disallow remote access to passwordless accounts.
-Because this file contains the encrypted user passwords, it should
-not be readable by anyone without appropriate privileges.
+если поле пустое, пароль для доступа к
+компьютеру не потребуется.
+Это почти всегда ошибка, поэтому компоненты аутентификации, 
+такие как PAM, могут принудительно запретить удаленный доступ к учетным записям без пароля.
+Поскольку этот файл содержит зашифрованные пароли пользователей, он
+не должен быть доступен для чтения никому без соответствующих привилегий.
 .Pp
-A password of
+Пароль от
 .Ql *
-indicates that
-password authentication is disabled for that account
-(logins through other forms of
-authentication, e.g., using
+указывает, что
+проверка подлинности по паролю отключена для этой учетной
+записи (вход в систему с помощью других способов
+проверки подлинности, например, с помощью ключей
 .Xr ssh 1
-keys, will still work).
-The field only contains encrypted passwords, and
+все равно будут работать).
+Поле содержит только зашифрованные пароли, а
 .Ql *
-can never be the result of encrypting a password.
+это никогда не может быть результатом шифрования пароля.
 .Pp
-An encrypted password prefixed by
+Зашифрованный пароль с префиксом
 .Ql *LOCKED*
-means that the account is temporarily locked out
-and no one can log into it using any authentication.
-For a convenient command-line interface to account locking, see
+означает, что учетная запись временно заблокирована
+и никто не может войти в нее с помощью какой-либо аутентификации.
+Удобный интерфейс командной строки для блокировки учетной записи приведен в разделе
 .Xr pw 8 .
 .Pp
-The
+Поле
 .Ar group
-field is the group that the user will be placed in upon login.
-Since this system supports multiple groups (see
+поле - это группа, в которую пользователь будет включен при входе в систему.
+Поскольку эта система поддерживает несколько групп (см.
 .Xr groups 1 )
-this field currently has little special meaning.
+в настоящее время это поле не имеет особого значения.
 .Pp
-The
+Поле
 .Ar class
-field is a key for a user's login class.
-Login classes
-are defined in
+поле является ключом для класса входа пользователя.
+Классы входа
+определены в
 .Xr login.conf 5 ,
-which is a
+что является 
 .Xr termcap 5
-style database of user attributes, accounting, resource,
-and environment settings.
+базой данных стилей, содержащая пользовательские атрибуты, настройки учета, ресурсов
+и среды.
 .Pp
-The
+Поле
 .Ar change
-field is the number of seconds from the epoch,
+это количество секунд с начала эпохи,
 .Dv UTC ,
-until the
-password for the account must be changed.
-This field may be left empty to turn off the password aging feature;
-a value of zero is equivalent to leaving the field empty.
+до тех
+пор, пока пароль для учетной записи не будет изменен.
+Это поле можно оставить пустым, чтобы отключить функцию устаревания пароля.;
+нулевое значение эквивалентно тому, что поле остается пустым.
 .Pp
-The
+Поле
 .Ar expire
-field is the number of seconds from the epoch,
+это количество секунд с начала эпохи,
 .Dv UTC ,
-until the
-account expires.
-This field may be left empty to turn off the account aging feature;
-a value of zero is equivalent to leaving the field empty.
+пока
+не истечет срок действия учетной записи.
+Это поле можно оставить пустым, чтобы отключить функцию устаревания учетной записи;
+нулевое значение эквивалентно тому, что поле остается пустым.
 .Pp
-The
+Поле
 .Ar gecos
-field normally contains comma
+обычно содержит запятую
 .Pq Ql \&,
-separated subfields as follows:
+разделенные подполя следующим образом:
 .Pp
 .Bl -tag -width ".Ar office" -offset indent -compact
 .It Ar name
-user's full name
+полное имя пользователя
 .It Ar office
-user's office number
+рабочий номер пользователя
 .It Ar wphone
-user's work phone number
+номер рабочего телефона пользователя
 .It Ar hphone
-user's home phone number
+номер домашнего телефона пользователя
 .El
 .Pp
-The full
+Полное
 .Ar name
-may contain an ampersand
+может содержать амперсанд
 .Pq Ql &
-which will be replaced by
-the capitalized login
+который будет заменен на
+логин с заглавной буквы
 .Ar name
-when the
+когда поле
 .Ar gecos
-field is displayed or used
-by various programs such as
+отображается или используется
+различными программами, такими как
 .Xr finger 1 ,
 .Xr sendmail 8 ,
 etc.
 .Pp
-The
+Параметр
 .Ar office
-and phone number subfields are used by the
+подполя и номер телефона используются пользователем.
 .Xr finger 1
-program, and possibly other applications.
+программа и, возможно, другие приложения.
 .Pp
-The user's home directory,
+Домашний каталог пользователя,
 .Ar home_dir ,
-is the full
+является полным именем
 .Ux
-path name where the user
-will be placed on login.
+пути, по которому пользователь
+будет помещен при входе в систему.
 .Pp
-The
+Поле
 .Ar shell
-field is the command interpreter the user prefers.
-If there is nothing in the
+поле - это интерпретатор команд, который предпочитает пользователь.
+Если в поле ничего нет
 .Ar shell
-field, the Bourne shell
+оболочка Bourne
 .Pq Pa /bin/sh
-is assumed.
-The conventional way to disable logging into an account once and for all,
-as it is done for system accounts,
-is to set its
+предполагается.
+Обычный способ отключить вход в учетную запись раз и навсегда,
+как это делается для системных учетных записей,
+заключается в установке
 .Ar shell
-to
+к
 .Pa /sbin/nologin
 .Pq see Xr nologin 8 .
 .Sh HESIOD SUPPORT
-If
+Если
 .Sq Li dns
-is specified for the
+укзан для
 .Sq Li passwd
-database in
+базы данных в
 .Xr nsswitch.conf 5 ,
-then
+то
 .Nm
-lookups occur from the
+поиск происходит с помощью
 .Sq Li passwd
-Hesiod domain.
-.Sh NIS SUPPORT
-If
+Hesiod домен.
+.Sh NIS ПОДДЕРЖКА
+Если
 .Sq Li nis
-is specified for the
+указывается для базы данных
 .Sq Li passwd
-database in
+в
 .Xr nsswitch.conf 5 ,
-then
+то
 .Nm
-lookups occur from the
+поиск происходит с помощью
 .Sq Li passwd.byname ,
 .Sq Li passwd.byuid ,
 .Sq Li master.passwd.byname ,
-and
+и
 .Sq Li master.passwd.byuid
 NIS
 maps.
-.Sh COMPAT SUPPORT
+.Sh ПОДДЕРЖКА СОВМЕСТИМОСТИ
 If
 .Sq Li compat
-is specified for the
+указывается для базы данных
 .Sq Li passwd
-database, and either
+база данных, и либо
 .Sq Li dns
-or
+или
 .Sq Li nis
-is specified for the
+указывается для базы данных
 .Sq Li passwd_compat
-database in
+в
 .Xr nsswitch.conf 5 ,
-then the
+затем файл
 .Nm
-file also supports standard
+также поддерживает стандарты
 .Sq Li + Ns / Ns Li -
-exclusions and inclusions, based on user names and netgroups.
+исключения и включения, основанные на именах пользователей и сетевых группах.
 .Pp
-Lines beginning with a
+Строки начинаются с
 .Ql -
-(minus sign) are entries marked as being excluded
-from any following inclusions, which are marked with a
+(minus sign) отмечены ли записи как исключенные
+из любых следующих включений, которые помечены знаком
 .Ql +
 (plus sign).
 .Pp
-If the second character of the line is a
+Если второй символ строки является символом
 .Ql @
-(at sign), the operation
-involves the user fields of all entries in the netgroup specified by the
-remaining characters of the
+(at sign), в этой операции
+задействованы пользовательские поля всех записей в сетевой группе, указанные
+оставшимися символами поле
 .Ar name
-field.
-Otherwise, the remainder of the
+.
+В противном случае оставшаяся часть поля
 .Ar name
-field is assumed to be a specific user name.
+предполагается, что поле представляет собой конкретное имя пользователя.
 .Pp
-The
+Токен
 .Ql +
-token may also be alone in the
+также может быть один в поле
 .Ar name
-field, which causes all users from either the Hesiod domain
-.Nm
-(with
+которое вызывает всех пользователей из любого домена Hesiod.Nm
+(с
 .Sq Li passwd_compat: dns )
-or
+или
 .Sq Li passwd.byname
-and
+и
 .Sq Li passwd.byuid
 NIS
 maps (with
 .Sq Li passwd_compat: nis )
-to be included.
+будут включенными.
 .Pp
-If the entry contains non-empty
+Если запись содержит непустое поле
 .Ar uid
-or
+или поля
 .Ar gid
-fields, the specified numbers will override the information retrieved
-from the Hesiod domain or the
+, указанные номера будут заменять информацию, полученную
+из домена Hesiod или из
 NIS
 maps.
 Likewise, if the
 .Ar gecos ,
 .Ar dir
-or
+или
 .Ar shell
-entries contain text, it will override the information included via
-Hesiod or
+записи содержат текст, он будет заменять информацию, включенную через
+Hesiod или
 NIS .
-On some systems, the
+В некоторых системах поле
 .Ar passwd
-field may also be overridden.
-.Sh FILES
+может быть переопределено.
+.Sh ФАЙЛЫ
 .Bl -tag -width ".Pa /etc/master.passwd" -compact
 .It Pa /etc/passwd
 ASCII
-password file, with passwords removed
+файл паролей с удаленными паролями
 .It Pa /etc/pwd.db
 .Xr db 3 Ns -format
-password database, with passwords removed
+база данных паролей с удаленными паролями
 .It Pa /etc/master.passwd
 ASCII
-password file, with passwords intact
+файл паролей с сохраненными паролями
 .It Pa /etc/spwd.db
 .Xr db 3 Ns -format
-password database, with passwords intact
+база данных паролей с сохраненными паролями
 .El
-.Sh COMPATIBILITY
-The password file format has changed since
+.Sh СОВМЕСТИМОСТЬ
+С тех пор формат файла паролей изменился
 .Bx 4.3 .
-The following awk script can be used to convert your old-style password
-file into a new style password file.
-The additional fields
+Следующий awk-скрипт можно использовать для преобразования вашего файла паролей старого образца
+в файл паролей нового образца.
+Дополнительные поля
 .Ar class ,
 .Ar change
-and
+и
 .Ar expire
-are added, but are turned off by default
-.Pq setting these fields to zero is equivalent to leaving them blank .
-Class is currently not implemented, but change and expire are; to set them,
-use the current day in seconds from the epoch + whatever number of seconds
-of offset you want.
+добавляются, но по умолчанию отключены
+.Pq установка для этих полей нулевого значения равносильна оставлению их пустыми.
+Класс в настоящее время не реализован, но change и expire реализованы; чтобы установить их,
+используйте текущий день в секундах от эпохи + любое количество секунд
+смещения, которое вы хотите.
 .Bd -literal -offset indent
 BEGIN { FS = ":"}
 { print $1 ":" $2 ":" $3 ":" $4 "::0:0:" $5 ":" $6 ":" $7 }
 .Ed
-.Sh SEE ALSO
+.Sh СМОТРЕТЬ ТАКЖЕ
 .Xr chpass 1 ,
 .Xr login 1 ,
 .Xr passwd 1 ,
@@ -437,26 +435,25 @@ BEGIN { FS = ":"}
 .%T "Managing NFS and NIS"
 (O'Reilly & Associates)
 .Sh HISTORY
-A
+
 .Nm
-file format first appeared in
+формат файла впервые появился в
 .At v1 .
 .Pp
 The
 NIS
 .Nm
-file format first appeared in SunOS.
+формат файла впервые появился в SunOS.
 .Pp
-The Hesiod support first appeared in
+Поддержка Hesiod впервые появилась в
 .Fx 4.1 .
-It was imported from the
+был импортирован из
 .Nx
-Project, where it first appeared in
+Проект, где он впервые появился в
 .Nx 1.4 .
-.Sh BUGS
-User information should (and eventually will) be stored elsewhere.
-.Pp
+.Sh ОШИБКИ
+Пользовательская информация должна храниться (и в конечном итоге будет храниться) в другом месте..Pp
 Placing
 .Sq Li compat
-exclusions in the file after any inclusions will have
-unexpected results.
+исключения из файла после любых включений приведут
+к неожиданным результатам.

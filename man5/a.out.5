@@ -30,56 +30,56 @@
 .\"
 .\"	@(#)a.out.5	8.1 (Berkeley) 6/5/93
 .\"
-.Dd June 10, 2010
+.Dd 10 июня, 2010
 .Dt A.OUT 5
 .Os
-.Sh NAME
+.Sh ИМЯ
 .Nm a.out
-.Nd format of executable binary files
-.Sh SYNOPSIS
+.Nd формат исполняемых бинарных файлов
+.Sh СИНТАКСИС
 .In a.out.h
-.Sh DESCRIPTION
-The include file
+.Sh ОПИСАНИЕ
+Файл заголовка
 .In a.out.h
-declares three structures and several macros.
-The structures describe the format of
-executable machine code files
-.Pq Sq binaries
-on the system.
+объявляет три структуры и несколько макросов.
+Структуры описывают формат 
+исполняемых файлов машинного кода 
+.Pq Sq бинарников
+в системе.
 .Pp
-A binary file consists of up to 7 sections.
-In order, these sections are:
+Бинарный файл состоит из 7 секций. 
+В порядке, эти секции:
 .Bl -tag -width "text relocations"
 .It exec header
-Contains parameters used by the kernel
-to load a binary file into memory and execute it,
-and by the link editor
+Содержит параметры, используемые ядром
+для загрузки бинарного файла в память и его выполнения,
+а также редактором линковки 
 .Xr ld 1
-to combine a binary file with other binary files.
-This section is the only mandatory one.
+для объединения бинарного файла с другими бинарными файлами.
+Эта секция является единственной обязательной.
 .It text segment
-Contains machine code and related data
-that are loaded into memory when a program executes.
-May be loaded read-only.
+Содержит машинный код и связанные данные, 
+которые загружаются в память при выполнении программы.
+Может быть загружен как только для чтения.
 .It data segment
-Contains initialized data; always loaded into writable memory.
+Содержит инициализированные данные; всегда загружается в записываемую память.
 .It text relocations
-Contains records used by the link editor
-to update pointers in the text segment when combining binary files.
+Содержит записи, используемые редактором линковки 
+для обновления указателей в текстовом сегменте при объединении бинарных файлов.
 .It data relocations
-Like the text relocation section, but for data segment pointers.
+Как и секция текстовых перемещений, но для указателей сегмента данных.
 .It symbol table
-Contains records used by the link editor
-to cross reference the addresses of named variables and functions
-.Pq Sq symbols
-between binary files.
+Содержит записи, используемые редактором линковки
+для перекрестной ссылки адресов именованных переменных и функций 
+.Pq Sq символов
+между бинарными файлами.
 .It string table
-Contains the character strings corresponding to the symbol names.
+Содержит строковые символы, соответствующие именам символов.
 .El
 .Pp
-Every binary file begins with an
+Каждый бинарный файл начинается со
 .Fa exec
-structure:
+структуры:
 .Bd -literal -offset indent
 struct exec {
 	unsigned long	a_midmag;
@@ -93,117 +93,116 @@ struct exec {
 };
 .Ed
 .Pp
-The fields have the following functions:
+Поля имеют следующие функции:
 .Bl -tag -width a_trsize
 .It Fa a_midmag
-This field is stored in host byte-order.
-It has a number of sub-components accessed by the macros
+Это поле хранится в порядке байтов хоста.
+Оно имеет несколько подкомпонентов, к которым можно получить доступ с помощью макросов 
 .Fn N_GETFLAG ,
 .Fn N_GETMID ,
-and
+и
 .Fn N_GETMAGIC ,
-and set by the macro
+и устанавливается макросом 
 .Fn N_SETMAGIC .
 .Pp
-The macro
+Макрос
 .Fn N_GETFLAG
-returns a few flags:
+возвращает несколько флагов:
 .Bl -tag -width EX_DYNAMIC
 .It Dv EX_DYNAMIC
-indicates that the executable requires the services of the run-time link editor.
+указывает на то, что исполняемый файл требует услуг редактора линковки времени выполнения.
 .It Dv EX_PIC
-indicates that the object contains position independent code.
-This flag is
-set by
+указывает на то, что объект содержит код, независимый от позиции. 
+Этот флаг 
+устанавливается 
 .Xr as 1
-when given the
+при использовании
 .Sq -k
-flag and is preserved by
+и сохраняется 
 .Xr ld 1
-if necessary.
+при необходимости.
 .El
 .Pp
-If both EX_DYNAMIC and EX_PIC are set, the object file is a position independent
-executable image (e.g.\& a shared library), which is to be loaded into the
-process address space by the run-time link editor.
+Если оба флага EX_DYNAMIC и EX_PIC установлены, объектный файл представляет собой исполняемый файл, независимый от позиции (например, \& общая библиотека), который должен быть загружен в 
+адресное пространство процесса редактором линковки времени выполнения.
 .Pp
-The macro
+Макрос
 .Fn N_GETMID
-returns the machine-id.
-This indicates which machine(s) the binary is intended to run on.
+возвращает идентификатор машины. 
+Это указывает, на какой машине(ах) предназначен бинарный файл для выполнения.
 .Pp
 .Fn N_GETMAGIC
-specifies the magic number, which uniquely identifies binary files
-and distinguishes different loading conventions.
-The field must contain one of the following values:
+указывает магическое число, которое уникально идентифицирует бинарные файлы 
+и различает различные конвенции загрузки.
+Поле должно содержать одно из следующих значений:
 .Bl -tag -width ZMAGIC
 .It Dv OMAGIC
-The text and data segments immediately follow the header
-and are contiguous.
-The kernel loads both text and data segments into writable memory.
+Текстовые и данные сегменты немедленно следуют за заголовком 
+и являются смежными. 
+Ядро загружает как текст, так и данные в записываемую память.
 .It Dv NMAGIC
-As with
+Как и в случае
 .Dv OMAGIC ,
-text and data segments immediately follow the header and are contiguous.
-However, the kernel loads the text into read-only memory
-and loads the data into writable memory at the next
-page boundary after the text.
+текстовые и данные сегменты немедленно следуют за заголовком и являются смежными.
+Однако ядро загружает текст в память только для чтения
+и загружает данные в записываемую память 
+на следующей границе страницы после текста.
 .It Dv ZMAGIC
-The kernel loads individual pages on demand from the binary.
-The header, text segment and data segment are all
-padded by the link editor to a multiple of the page size.
-Pages that the kernel loads from the text segment are read-only,
-while pages from the data segment are writable.
+Ядро загружает отдельные страницы по требованию из бинарного файла. 
+Заголовок, текстовый сегмент и сегмент данных все
+дополнены редактором линковки до кратного размеру страницы. 
+Страницы, которые ядро загружает из текстового сегмента, являются только для чтения, 
+в то время как страницы из сегмента данных являются записываемыми.
 .El
 .It Fa a_text
-Contains the size of the text segment in bytes.
+Содержит размер текстового сегмента в байтах.
 .It Fa a_data
-Contains the size of the data segment in bytes.
+Содержит размер сегмента данных в байтах.
 .It Fa a_bss
-Contains the number of bytes in the
-.Sq bss segment
-and is used by the kernel to set the initial break
+Содержит количество байтов в
+.Sq bss сегменте
+и используется ядром для установки начального разрыва.
 .Pq Xr brk 2
-after the data segment.
-The kernel loads the program so that this amount of writable memory
-appears to follow the data segment and initially reads as zeroes.
+после сегмента данных. 
+Ядро загружает программу так, чтобы это количество записываемой памяти 
+казалось следовать за сегментом данных и изначально читалось как нули. 
 .Em ( bss
-= block started by symbol)
+= блок, начатый символом)
 .It Fa a_syms
-Contains the size in bytes of the symbol table section.
+Содержит размер в байтах секции таблицы символов.
 .It Fa a_entry
-Contains the address in memory of the entry point
-of the program after the kernel has loaded it;
-the kernel starts the execution of the program
-from the machine instruction at this address.
+Содержит адрес в памяти точки входа
+программы после загрузки ядром;
+ядро начинает выполнение программы 
+с машинной инструкции по этому адресу.
 .It Fa a_trsize
-Contains the size in bytes of the text relocation table.
+Содержит размер в байтах таблицы перемещений текста.
 .It Fa a_drsize
-Contains the size in bytes of the data relocation table.
+Содержит размер в байтах таблицы перемещений данных.
 .El
 .Pp
-The
+Файл включения
 .In a.out.h
-include file defines several macros which use an
+определяет несколько макросов, которые используют 
 .Fa exec
-structure to test consistency or to locate section offsets in the binary file.
+структуру для проверки согласованности или для нахождения смещений секций в бинарном файле.
 .Bl -tag -width N_BADMAG(exec)
 .It Fn N_BADMAG exec
-Nonzero if the
+Ненулевое значение, если поле 
 .Fa a_magic
-field does not contain a recognized value.
+не содержит распознанного значения.
 .It Fn N_TXTOFF exec
-The byte offset in the binary file of the beginning of the text segment.
+Байтовое смещение в бинарном файле начала текстового сегмента.
 .It Fn N_SYMOFF exec
-The byte offset of the beginning of the symbol table.
+Байтовое смещение начала таблицы символов.
 .It Fn N_STROFF exec
-The byte offset of the beginning of the string table.
+Байтовое смещение начала строковой таблицы.
 .El
 .Pp
-Relocation records have a standard format which
-is described by the
+Записи о перемещениях имеют стандартный формат, который 
+описывается
 .Fa relocation_info
-structure:
+структурой:
 .Bd -literal -offset indent
 struct relocation_info {
 	int		r_address;
@@ -218,87 +217,86 @@ struct relocation_info {
 };
 .Ed
 .Pp
-The
+Поля
 .Fa relocation_info
-fields are used as follows:
+используются следующим образом:
 .Bl -tag -width r_symbolnum
 .It Fa r_address
-Contains the byte offset of a pointer that needs to be link-edited.
-Text relocation offsets are reckoned from the start of the text segment,
-and data relocation offsets from the start of the data segment.
-The link editor adds the value that is already stored at this offset
-into the new value that it computes using this relocation record.
+Содержит байтовое смещение указателя, который необходимо редактировать. 
+Смещения перемещений текста считаются от начала текстового сегмента, 
+а смещения перемещений данных — от начала сегмента данных. 
+Редактор линковки добавляет значение, уже хранящееся по этому смещению, 
+к новому значению, которое он вычисляет с помощью этой записи о перемещении.
 .It Fa r_symbolnum
-Contains the ordinal number of a symbol structure
-in the symbol table (it is
-.Em not
-a byte offset).
-After the link editor resolves the absolute address for this symbol,
-it adds that address to the pointer that is undergoing relocation.
-(If the
+Содержит порядковый номер структуры символа 
+в таблице символов (это
+.Em не
+байтовое смещение).
+После того как редактор линковки разрешает абсолютный адрес для этого символа, 
+он добавляет этот адрес к указателю, который подвергается перемещению. 
+(Если
 .Fa r_extern
-bit is clear, the situation is different; see below.)
+бит очищен, ситуация отличается; см. ниже.)
 .It Fa r_pcrel
-If this is set,
-the link editor assumes that it is updating a pointer
-that is part of a machine code instruction using pc-relative addressing.
-The address of the relocated pointer is implicitly added
-to its value when the running program uses it.
+Если этот бит установлен,
+редактор линковки предполагает, что он обновляет указатель, 
+который является частью машинной инструкции с использованием относительной адресации по счетчику программы. 
+Адрес перемещаемого указателя неявно добавляется
+к его значению, когда выполняющая программа его использует.
 .It Fa r_length
-Contains the log base 2 of the length of the pointer in bytes;
-0 for 1-byte displacements, 1 for 2-byte displacements,
-2 for 4-byte displacements.
+Содержит логарифм по основанию 2 длины указателя в байтах; 
+0 для смещений на 1 байт, 1 для смещений на 2 байта, 
+2 для смещений на 4 байта.
 .It Fa r_extern
-Set if this relocation requires an external reference;
-the link editor must use a symbol address to update the pointer.
-When the
+Установлен, если это перемещение требует внешней ссылки; 
+редактор линковки должен использовать адрес символа для обновления указателя. 
+Когда
 .Fa r_extern
-bit is clear, the relocation is
-.Sq local ;
-the link editor updates the pointer to reflect
-changes in the load addresses of the various segments,
-rather than changes in the value of a symbol (except when
+бит очищен, перемещение является 
+.Sq локальным ;
+редактор линковки обновляет указатель, чтобы отразить изменения в адресах загрузки различных сегментов, 
+вместо изменений значения символа (за исключением случаев, когда
 .Fa r_baserel
-is also set (see below).
-In this case, the content of the
+также установлен бит (см. ниже).
+В этом случае содержимое
 .Fa r_symbolnum
-field is an
+поля является
 .Fa n_type
-value (see below);
-this type field tells the link editor
-what segment the relocated pointer points into.
+значением (см. ниже);
+это поле типа указывает редактору линковки, 
+в какой сегмент указывает перемещаемый указатель.
 .It Fa r_baserel
-If set, the symbol, as identified by the
+Если установлен, символ, определяемый
 .Fa r_symbolnum
-field, is to be relocated to an offset into the Global Offset Table.
-At run-time, the entry in the Global Offset Table at this offset is set to
-be the address of the symbol.
+полем, должен быть перемещен на смещение в Таблицу глобальных смещений (Global Offset Table). 
+Во время выполнения запись в Таблице глобальных смещений по этому смещению устанавливается 
+как адрес символа.
 .It Fa r_jmptable
-If set, the symbol, as identified by the
+Если установлен, символ, определяемый
 .Fa r_symbolnum
-field, is to be relocated to an offset into the Procedure Linkage Table.
+полем, должен быть перемещен на смещение в Таблицу связывания процедур (Procedure Linkage Table).
 .It Fa r_relative
-If set, this relocation is relative to the (run-time) load address of the
-image this object file is going to be a part of.
-This type of relocation
-only occurs in shared objects.
+Если установлен, это перемещение относительно (временного) адреса загрузки
+образа, частью которого будет этот объектный файл. 
+Этот тип перемещения происходит
+только в общих объектах.
 .It Fa r_copy
-If set, this relocation record identifies a symbol whose contents should
-be copied to the location given in
+Если установлен, эта запись о перемещении идентифицирует символ, содержимое которого должно
+быть скопировано в место, указанное в
 .Fa r_address .
-The copying is done by the run-time link-editor from a suitable data
-item in a shared object.
+Копирование выполняется редактором линковки во время выполнения из подходящего элемента данных
+в общем объекте.
 .El
 .Pp
-Symbols map names to addresses (or more generally, strings to values).
-Since the link-editor adjusts addresses,
-a symbol's name must be used to stand for its address
-until an absolute value has been assigned.
-Symbols consist of a fixed-length record in the symbol table
-and a variable-length name in the string table.
-The symbol table is an array of
+Символы сопоставляют имена с адресами (или, более общо, строки со значениями)
+Поскольку редактор ссылок корректирует адреса,
+имя символа должно использоваться для обозначения его адреса
+до тех пор, пока не будет назначено абсолютное значение.
+Символы состоят из записи фиксированной длины в таблице символов
+и имени переменной длины в строковой таблице.
+Таблица символов представляет собой массив 
 .Fa nlist
-structures:
+структур:
 .Bd -literal -offset indent
 struct nlist {
 	union {
@@ -312,121 +310,121 @@ struct nlist {
 };
 .Ed
 .Pp
-The fields are used as follows:
+Поля используются следующим образом:
 .Bl -tag -width n_un.n_strx
 .It Fa n_un.n_strx
-Contains a byte offset into the string table
-for the name of this symbol.
-When a program accesses a symbol table with the
+Содержит смещение в байтах в строковой таблице
+для имени этого символа
+Когда программа обращается к таблице символов с помощью
 .Xr nlist 3
-function,
-this field is replaced with the
+функции,
+это поле заменяется 
 .Fa n_un.n_name
-field, which is a pointer to the string in memory.
+полем, которое является указателем на строку в памяти.
 .It Fa n_type
-Used by the link editor to determine
-how to update the symbol's value.
-The
+Используется редактором ссылок для определения того, 
+как обновить значение символа.
+Поле
 .Fa n_type
-field is broken down into three sub-fields using bitmasks.
-The link editor treats symbols with the
+делится на три подполя с использованием битовых масок.
+Редактор ссылок рассматривает символы с
 .Dv N_EXT
-type bit set as
+установленным битом типа, как 
 .Sq external
-symbols and permits references to them from other binary files.
-The
+внешние символы и позволяет на них ссылаться из других двоичных файлов. 
+Маска
 .Dv N_TYPE
-mask selects bits of interest to the link editor:
+выбирает интересующие биты для редактора ссылок:  
 .Bl -tag -width N_TEXT
 .It Dv N_UNDF
-An undefined symbol.
-The link editor must locate an external symbol with the same name
-in another binary file to determine the absolute value of this symbol.
-As a special case, if the
+Неопределенный символ.
+Редактор ссылок должен найти внешний символ с тем же 
+именем в другом двоичном файле, чтобы определить абсолютное значение этого символа.
+В качестве особого случая, если
 .Fa n_value
-field is nonzero and no binary file in the link-edit defines this symbol,
-the link-editor will resolve this symbol to an address
-in the bss segment,
-reserving an amount of bytes equal to
+поле ненулевое и ни один двоичный файл в редактировании не определяет этот символ,
+редактор ссылок разрешит этот символ на адрес
+в сегменте bss, 
+резервируя количество байт, равное
 .Fa n_value .
-If this symbol is undefined in more than one binary file
-and the binary files do not agree on the size,
-the link editor chooses the greatest size found across all binaries.
+Если этот символ неопределен в более чем одном двоичном файле 
+и двоичные файлы не согласны по размеру,
+редактор ссылок выбирает наибольший размер, найденный среди всех бинарников.  
 .It Dv N_ABS
-An absolute symbol.
-The link editor does not update an absolute symbol.
+Абсолютный символ. 
+Редактор ссылок не обновляет абсолютный символ.  
 .It Dv N_TEXT
-A text symbol.
-This symbol's value is a text address and
-the link editor will update it when it merges binary files.
+Текстовый символ.
+Значение этого символа — адрес текста,
+и редактор ссылок обновит его, когда объединит двоичные файлы.  
 .It Dv N_DATA
-A data symbol; similar to
+Данные символ; аналогично
 .Dv N_TEXT
-but for data addresses.
-The values for text and data symbols are not file offsets but
-addresses; to recover the file offsets, it is necessary
-to identify the loaded address of the beginning of the corresponding
-section and subtract it, then add the offset of the section.
+но для адресов данных.
+Значения для текстовых и данных символов не являются смещениями в файле, а
+адресами; чтобы восстановить смещения файла, необходимо
+определить загруженный адрес начала соответствующего
+раздела и вычесть его, затем добавить смещение раздела.  
 .It Dv N_BSS
-A bss symbol; like text or data symbols but
-has no corresponding offset in the binary file.
+Символ bss; как текстовые или данные символы, 
+но не имеет соответствующего смещения в двоичном файле.  
 .It Dv N_FN
-A filename symbol.
-The link editor inserts this symbol before
-the other symbols from a binary file when
-merging binary files.
-The name of the symbol is the filename given to the link editor,
-and its value is the first text address from that binary file.
-Filename symbols are not needed for link-editing or loading,
-but are useful for debuggers.
+Символ имени файла.
+Редактор ссылок вставляет этот символ перед
+другими символами из двоичного файла при
+объединении двоичных файлов.
+Имя символа — это имя файла, указанное редактору ссылок,
+а его значение — первый текстовый адрес из этого двоичного файла.
+Символы имени файла не нужны для редактирования или загрузки ссылок,
+но полезны для отладчиков.
 .El
 .Pp
-The
+Маска
 .Dv N_STAB
-mask selects bits of interest to symbolic debuggers
-such as
+выбирает интересующие биты для символических отладчиков,
+таких как
 .Xr gdb 1 Pq Pa ports/devel/gdb ;
-the values are described in
+начения описаны в 
 .Xr stab 5 .
 .It Fa n_other
-This field provides information on the nature of the symbol independent of
-the symbol's location in terms of segments as determined by the
+Это поле предоставляет информацию о характере
+символа независимо от его расположения в терминах сегментов, определяемых
 .Fa n_type
-field.
-Currently, the lower 4 bits of the
+полем.
+В настоящее время младшие 4 бита поля
 .Fa n_other
-field hold one of two values:
+содержат одно из двух значений: 
 .Dv AUX_FUNC
-and
+и
 .Dv AUX_OBJECT
-(see
+(см.
 .In link.h
-for their definitions).
+для их определений).
 .Dv AUX_FUNC
-associates the symbol with a callable function, while
+ассоциирует символ с вызываемой функцией, в то время как
 .Dv AUX_OBJECT
-associates the symbol with data, irrespective of their locations in
-either the text or the data segment.
-This field is intended to be used by
+ассоциирует символ с данными, независимо от их местоположения в
+текстовом или сегменте данных.
+Это поле предназначено для использования
 .Xr ld 1
-for the construction of dynamic executables.
+при построении динамических исполняемых файлов.  
 .It Fa n_desc
-Reserved for use by debuggers; passed untouched by the link editor.
-Different debuggers use this field for different purposes.
+Резервировано для использования отладчиками; передается без изменений редактором ссылок.
+Разные отладчики используют это поле для различных целей.
 .It Fa n_value
-Contains the value of the symbol.
-For text, data and bss symbols, this is an address;
-for other symbols (such as debugger symbols),
-the value may be arbitrary.
+Содержит значение символа.
+Для текстовых, данных и bss символов это адрес;
+для других символов (таких как символы отладчика)
+значение может быть произвольным. 
 .El
 .Pp
-The string table consists of an
+Строковая таблица состоит из длины
 .Em unsigned long
-length followed by null-terminated symbol strings.
-The length represents the size of the entire table in bytes,
-so its minimum value (or the offset of the first string)
-is always 4 on 32-bit machines.
-.Sh SEE ALSO
+за которой следуют строки символов, заканчивающиеся нулем.
+Длина представляет собой размер всей таблицы в байтах, 
+поэтому ее минимальное значение (или смещение первой строки)
+всегда равно 4 на 32-битных машинах.  
+.Sh СМОТРИ ТАКЖЕ
 .Xr as 1 ,
 .Xr gdb 1 Pq Pa ports/devel/gdb ,
 .Xr ld 1 ,
@@ -437,19 +435,18 @@ is always 4 on 32-bit machines.
 .Xr elf 5 ,
 .Xr link 5 ,
 .Xr stab 5
-.Sh HISTORY
-The
+.Sh ИСТОРИЯ
+Файл
 .In a.out.h
-include file appeared in
+включения появился в
 .At v7 .
-.Sh BUGS
-Since not all of the supported architectures use the
+.Sh ОШИБКИ
+Поскольку не все поддерживаемые архитектуры используют поле
 .Fa a_midmag
-field,
-it can be difficult to determine what
-architecture a binary will execute on
-without examining its actual machine code.
-Even with a machine identifier,
-the byte order of the
+может быть трудно определить, на какой
+архитектуре будет выполняться бинарный файл,
+не исследуя его фактический машинный код. 
+Даже с идентификатором машины
+порядок байтов заголовка
 .Fa exec
-header is machine-dependent.
+зависит от машины.
